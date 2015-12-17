@@ -1,0 +1,131 @@
+apply plugin: 'base'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'http://repo.spring.io/plugins-release' }
+    }
+    dependencies {
+        classpath("org.springframework.build.gradle:propdeps-plugin:0.0.7")
+        classpath("io.spring.gradle:spring-io-plugin:0.0.4.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'maven'
+apply plugin: 'propdeps'
+apply plugin: 'propdeps-maven'
+apply plugin: 'propdeps-idea'
+apply plugin: 'propdeps-eclipse'
+
+apply from: "${rootProject.projectDir}/publish-maven.gradle"
+
+if (project.hasProperty('platformVersion')) {
+    apply plugin: 'spring-io'
+
+    // necessary to resolve the Spring IO versions (which may include snapshots)
+    repositories {
+        maven { url "https://repo.spring.io/libs-snapshot" }
+    }
+
+    dependencyManagement {
+        springIoTestRuntime {
+            imports {
+                mavenBom "io.spring.platform:platform-bom:${platformVersion}"
+            }
+        }
+    }
+}
+
+version = "1.0.0.BUILD-SNAPSHOT"
+group = "org.springframework.cloud"
+description = "Spring Cloud - Cloud Foundry Service Broker"
+
+ext {
+    springBootVersion = '1.2.7.RELEASE'
+    hibernateValidatorVersion = '5.1.0.Final'
+    jsonPathVersion = '0.9.1'
+
+    javadocLinks = [
+            'http://docs.oracle.com/javase/8/docs/api/',
+            'http://docs.spring.io/spring/docs/current/javadoc-api/',
+    ] as String[]
+}
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
+    compile("org.hibernate:hibernate-validator:${hibernateValidatorVersion}")
+    compile("commons-beanutils:commons-beanutils:1.9.2")
+    provided("org.projectlombok:lombok:1.16.6")
+
+    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+    testCompile("com.jayway.jsonpath:json-path:${jsonPathVersion}")
+}
+
+task testsJar(type: Jar) {
+    classifier = 'tests'
+    from sourceSets.test.output
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task apidocs(type: Javadoc) {
+    group = "Documentation"
+    description = "Generates aggregated Javadoc API documentation."
+    title = "${project.description} ${version} API"
+    options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
+    options.author = true
+    options.header = rootProject.description
+    options.links(project.ext.javadocLinks)
+
+    source project.sourceSets.main.allJava
+
+    classpath = files(project.sourceSets.main.compileClasspath)
+
+    maxMemory = "1024m"
+    destinationDir = new File(buildDir, "apidocs")
+}
+
+task docsZip(type: Zip) {
+    group = 'Distribution'
+    classifier = 'docs'
+    description = "Builds -${classifier} archive containing api and reference."
+
+    from(apidocs) {
+        into 'apidocs'
+    }
+}
+
+artifacts {
+    archives testsJar
+    archives sourcesJar
+    archives javadocJar
+    archives docsZip
+}
+
+task dist(dependsOn: assemble) {
+    group = 'Distribution'
+    description = 'Builds -dist and -docs distribution archives.'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.0'
+}
