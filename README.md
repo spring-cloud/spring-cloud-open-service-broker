@@ -1,8 +1,9 @@
-Spring Cloud project for creating Cloud Foundry service brokers.
 
 # Overview
 
 This project provides a framework for building a [Spring Boot](http://projects.spring.io/spring-boot/) project to quickly implement a [service broker](http://docs.cloudfoundry.org/services/overview.html) for [Cloud Foundry](http://www.cloudfoundry.org).
+
+This project replaces [Spring Boot CF Service Broker](https://github.com/cloudfoundry-community/spring-boot-cf-service-broker). 
 
 ## Compatibility
 
