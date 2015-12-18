@@ -15,6 +15,37 @@ See the [Spring Boot documentation](http://docs.spring.io/spring-boot/docs/curre
 
 A sample [MongoDB service broker](https://github.com/spring-cloud-samples/cloudfoundry-service-broker) project is available.
 
+Add dependencies to your project's build file. 
+
+Maven example: 
+
+    <dependencies>
+        ...
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-cloudfoundry-service-broker</artifactId>
+            <version>${springCloudServiceBrokerVersion}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-cloudfoundry-service-broker</artifactId>
+            <version>${springCloudServiceBrokerVersion}</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        ...
+    </dependencies>
+
+Gradle example: 
+
+    dependencies {
+        ...
+        compile("org.springframework.cloud:spring-cloud-cloudfoundry-service-broker:${springCloudServiceBrokerVersion}")
+        testCompile(group: "org.springframework.cloud", name: "spring-cloud-cloudfoundry-service-broker", version: "${springCloudServiceBrokerVersion}", classifier: "tests")
+        ...
+    }        
+
 # Configuring the broker
 
 The framework provides default implementations of most of the components needed to implement a service broker. In Spring Boot fashion, you can override the default behavior by providing your own implementation of Spring beans, and the framework will back away from its defaults.
