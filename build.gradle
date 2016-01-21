@@ -40,7 +40,6 @@ if (project.hasProperty('platformVersion')) {
 }
 
 archivesBaseName = "spring-cloud-cloudfoundry-service-broker"
-version = "1.0.0.BUILD-SNAPSHOT"
 group = "org.springframework.cloud"
 description = "Spring Cloud - Cloud Foundry Service Broker"
 
