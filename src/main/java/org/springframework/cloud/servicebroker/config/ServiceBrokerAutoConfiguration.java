@@ -12,8 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import static org.springframework.cloud.servicebroker.model.BrokerApiVersion.API_VERSION_CURRENT;
-
 @Configuration
 @ComponentScan(basePackages = {"org.springframework.cloud.servicebroker"})
 @ConditionalOnWebApplication
@@ -23,7 +21,7 @@ public class ServiceBrokerAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean(BrokerApiVersion.class)
 	public BrokerApiVersion brokerApiVersion() {
-		return new BrokerApiVersion(API_VERSION_CURRENT);
+		return new BrokerApiVersion();
 	}
 
 	@Bean
