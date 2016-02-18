@@ -4,7 +4,8 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingD
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.CreateServiceInstanceAppBindingResponse;
+import org.springframework.cloud.servicebroker.model.CreateServiceInstanceRouteBindingResponse;
 import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.junit.Before;
@@ -48,7 +49,6 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ControllerI
 	private UriComponentsBuilder uriBuilder;
 
 	private CreateServiceInstanceBindingRequest createRequest;
-	private CreateServiceInstanceBindingResponse createResponse;
 
 	private DeleteServiceInstanceBindingRequest deleteRequest;
 
@@ -60,14 +60,15 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ControllerI
 		uriBuilder = UriComponentsBuilder.fromPath("/v2/service_instances/")
 				.pathSegment("service-instance-one-id", "service_bindings");
 
-		createRequest = ServiceInstanceBindingFixture.buildCreateBindingRequestForApp();
-		createResponse = ServiceInstanceBindingFixture.buildCreateBindingResponseForApp();
+		createRequest = ServiceInstanceBindingFixture.buildCreateAppBindingRequest();
 
 		deleteRequest = ServiceInstanceBindingFixture.buildDeleteServiceInstanceBindingRequest();
 	}
 
 	@Test
 	public void createBindingToAppSucceeds() throws Exception {
+		CreateServiceInstanceAppBindingResponse createResponse = ServiceInstanceBindingFixture.buildCreateAppBindingResponse();
+
 		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(createRequest)))
 				.thenReturn(createResponse);
 
@@ -87,8 +88,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ControllerI
 
 	@Test
 	public void createBindingToRouteSucceeds() throws Exception {
-		CreateServiceInstanceBindingRequest request = ServiceInstanceBindingFixture.buildCreateBindingRequestForRoute();
-		CreateServiceInstanceBindingResponse response = ServiceInstanceBindingFixture.buildCreateBindingResponseForRoute();
+		CreateServiceInstanceBindingRequest request = ServiceInstanceBindingFixture.buildCreateRouteBindingRequest();
+		CreateServiceInstanceRouteBindingResponse response = ServiceInstanceBindingFixture.buildCreateBindingResponseForRoute();
 		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(request)))
 				.thenReturn(response);
 
@@ -106,7 +107,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ControllerI
 
 	@Test
 	public void createBindingWithSyslogDrainUrlSucceeds() throws Exception {
-		CreateServiceInstanceBindingResponse response = ServiceInstanceBindingFixture.buildCreateBindingResponseWithSyslog();
+		CreateServiceInstanceAppBindingResponse response = ServiceInstanceBindingFixture.buildCreateAppBindingResponseWithSyslog();
 		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(createRequest)))
 			.thenReturn(response);
 
@@ -141,6 +142,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ControllerI
 
 	@Test
 	public void createBindingWithUnknownServiceDefinitionIdSucceeds() throws Exception {
+		CreateServiceInstanceAppBindingResponse createResponse = ServiceInstanceBindingFixture.buildCreateAppBindingResponse();
+
 		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(createRequest)))
 				.thenReturn(createResponse);
 

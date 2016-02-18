@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.CreateServiceInstanceRouteBindingResponse;
 import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.ServiceBindingResource;
 import org.springframework.cloud.servicebroker.model.ServiceDefinition;
@@ -18,7 +20,7 @@ public class ServiceInstanceBindingFixture {
 	public static final String APP_GUID = "app_guid";
 	public static final String ROUTE = "http://route.example.com";
 
-	public static CreateServiceInstanceBindingRequest buildCreateBindingRequestForApp() {
+	public static CreateServiceInstanceBindingRequest buildCreateAppBindingRequest() {
 		return new CreateServiceInstanceBindingRequest(
 				ServiceFixture.getSimpleService().getId(),
 				PlanFixture.getPlanOne().getId(),
@@ -29,7 +31,7 @@ public class ServiceInstanceBindingFixture {
 				.withServiceInstanceId(SERVICE_INSTANCE_ID);
 	}
 
-	public static CreateServiceInstanceBindingRequest buildCreateBindingRequestForRoute() {
+	public static CreateServiceInstanceBindingRequest buildCreateRouteBindingRequest() {
 		return new CreateServiceInstanceBindingRequest(
 				ServiceFixture.getSimpleService().getId(),
 				PlanFixture.getPlanOne().getId(),
@@ -40,16 +42,16 @@ public class ServiceInstanceBindingFixture {
 				.withServiceInstanceId(SERVICE_INSTANCE_ID);
 	}
 
-	public static CreateServiceInstanceBindingResponse buildCreateBindingResponseForApp() {
-		return new CreateServiceInstanceBindingResponse(getCredentials());
+	public static CreateServiceInstanceAppBindingResponse buildCreateAppBindingResponse() {
+		return new CreateServiceInstanceAppBindingResponse(getCredentials());
 	}
 
-	public static CreateServiceInstanceBindingResponse buildCreateBindingResponseForRoute() {
-		return new CreateServiceInstanceBindingResponse(ROUTE);
+	public static CreateServiceInstanceAppBindingResponse buildCreateAppBindingResponseWithSyslog() {
+		return new CreateServiceInstanceAppBindingResponse(getCredentials(), SYSLOG_DRAIN_URL);
 	}
 
-	public static CreateServiceInstanceBindingResponse buildCreateBindingResponseWithSyslog() {
-		return new CreateServiceInstanceBindingResponse(getCredentials(), SYSLOG_DRAIN_URL);
+	public static CreateServiceInstanceRouteBindingResponse buildCreateBindingResponseForRoute() {
+		return new CreateServiceInstanceRouteBindingResponse(ROUTE);
 	}
 
 	public static DeleteServiceInstanceBindingRequest buildDeleteServiceInstanceBindingRequest() {

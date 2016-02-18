@@ -25,11 +25,6 @@ public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 	@JsonProperty("dashboard_url")
 	private String dashboardUrl;
 
-	public CreateServiceInstanceResponse(String dashboardUrl, boolean async) {
-		super(async);
-		this.dashboardUrl = dashboardUrl;
-	}
-
 	public CreateServiceInstanceResponse() {
 		this(null, false);
 	}
@@ -40,5 +35,10 @@ public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 
 	public CreateServiceInstanceResponse(String dashboardUrl) {
 		this(dashboardUrl, false);
+	}
+
+	public CreateServiceInstanceResponse(String dashboardUrl, boolean async) {
+		super(async);
+		this.dashboardUrl = dashboardUrl;
 	}
 }
