@@ -24,7 +24,9 @@ public class ServiceInstanceFixture {
 	}
 
 	public static CreateServiceInstanceResponse buildCreateServiceInstanceResponse(boolean async) {
-		return new CreateServiceInstanceResponse("https://dashboard_url.example.com", async);
+		return new CreateServiceInstanceResponse()
+				.withDashboardUrl("https://dashboard_url.example.com")
+				.withAsync(async);
 	}
 
 	public static DeleteServiceInstanceRequest buildDeleteServiceInstanceRequest(boolean acceptsIncomplete) {
@@ -37,7 +39,7 @@ public class ServiceInstanceFixture {
 	}
 
 	public static DeleteServiceInstanceResponse buildDeleteServiceInstanceResponse(boolean async) {
-		return new DeleteServiceInstanceResponse(async);
+		return new DeleteServiceInstanceResponse().withAsync(async);
 	}
 
 	public static UpdateServiceInstanceRequest buildUpdateServiceInstanceRequest(boolean acceptsIncomplete) {
@@ -51,7 +53,7 @@ public class ServiceInstanceFixture {
 	}
 
 	public static UpdateServiceInstanceResponse buildUpdateServiceInstanceResponse(boolean async) {
-		return new UpdateServiceInstanceResponse(async);
+		return new UpdateServiceInstanceResponse().withAsync(async);
 	}
 
 	public static GetLastServiceOperationRequest buildGetLastOperationRequest() {

@@ -13,11 +13,8 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class DeleteServiceInstanceResponse extends AsyncServiceInstanceResponse {
-	public DeleteServiceInstanceResponse(boolean async) {
-		super(async);
-	}
-
-	public DeleteServiceInstanceResponse() {
-		this(false);
+	public DeleteServiceInstanceResponse withAsync(final boolean async) {
+		this.async = async;
+		return this;
 	}
 }

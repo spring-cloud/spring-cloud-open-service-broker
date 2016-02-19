@@ -32,7 +32,7 @@ public class CreateServiceInstanceAppBindingResponse implements CreateServiceIns
 	@JsonSerialize
 	@JsonProperty("credentials")
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private final Map<String, Object> credentials;
+	private Map<String, Object> credentials;
 
 	/**
 	 * The URL to which Cloud Foundry should drain logs for the bound application. Can be <code>null</code> to
@@ -41,19 +41,15 @@ public class CreateServiceInstanceAppBindingResponse implements CreateServiceIns
 	@JsonSerialize
 	@JsonProperty("syslog_drain_url")
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private final String syslogDrainUrl;
+	private String syslogDrainUrl;
 
-	public CreateServiceInstanceAppBindingResponse() {
-		this.credentials = null;
-		this.syslogDrainUrl = null;
-	}
-
-	public CreateServiceInstanceAppBindingResponse(Map<String, Object> credentials) {
-		this(credentials, null);
-	}
-
-	public CreateServiceInstanceAppBindingResponse(Map<String, Object> credentials, String syslogDrainUrl) {
+	public CreateServiceInstanceAppBindingResponse withCredentials(final Map<String, Object> credentials) {
 		this.credentials = credentials;
+		return this;
+	}
+
+	public CreateServiceInstanceAppBindingResponse withSyslogDrainUrl(final String syslogDrainUrl) {
 		this.syslogDrainUrl = syslogDrainUrl;
+		return this;
 	}
 }

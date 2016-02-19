@@ -18,9 +18,5 @@ public abstract class AsyncServiceInstanceResponse {
 	 * request was completed, a <code>true</code> value indicates that the broker is processing the request
 	 * asynchronously.
 	 */
-	protected final boolean async;
-
-	public AsyncServiceInstanceResponse(boolean async) {
-		this.async = async;
-	}
+	protected boolean async = false;
 }

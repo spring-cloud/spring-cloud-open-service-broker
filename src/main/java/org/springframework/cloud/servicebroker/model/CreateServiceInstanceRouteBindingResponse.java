@@ -27,13 +27,10 @@ public class CreateServiceInstanceRouteBindingResponse implements CreateServiceI
 	@JsonSerialize
 	@JsonProperty("route_service_url")
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private final String routeServiceUrl;
+	private String routeServiceUrl;
 
-	public CreateServiceInstanceRouteBindingResponse() {
-		this.routeServiceUrl = null;
-	}
-
-	public CreateServiceInstanceRouteBindingResponse(String routeServiceUrl) {
+	public CreateServiceInstanceRouteBindingResponse withRouteServiceUrl(final String routeServiceUrl) {
 		this.routeServiceUrl = routeServiceUrl;
+		return this;
 	}
 }

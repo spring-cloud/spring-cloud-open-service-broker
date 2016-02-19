@@ -13,11 +13,8 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class UpdateServiceInstanceResponse extends AsyncServiceInstanceResponse {
-	public UpdateServiceInstanceResponse(boolean async) {
-		super(async);
-	}
-
-	public UpdateServiceInstanceResponse() {
-		this(false);
+	public UpdateServiceInstanceResponse withAsync(final boolean async) {
+		this.async = async;
+		return this;
 	}
 }

@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceAppBindingResponse;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceRouteBindingResponse;
 import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.ServiceBindingResource;
@@ -43,15 +42,19 @@ public class ServiceInstanceBindingFixture {
 	}
 
 	public static CreateServiceInstanceAppBindingResponse buildCreateAppBindingResponse() {
-		return new CreateServiceInstanceAppBindingResponse(getCredentials());
+		return new CreateServiceInstanceAppBindingResponse()
+				.withCredentials(getCredentials());
 	}
 
 	public static CreateServiceInstanceAppBindingResponse buildCreateAppBindingResponseWithSyslog() {
-		return new CreateServiceInstanceAppBindingResponse(getCredentials(), SYSLOG_DRAIN_URL);
+		return new CreateServiceInstanceAppBindingResponse()
+				.withCredentials(getCredentials())
+				.withSyslogDrainUrl(SYSLOG_DRAIN_URL);
 	}
 
 	public static CreateServiceInstanceRouteBindingResponse buildCreateBindingResponseForRoute() {
-		return new CreateServiceInstanceRouteBindingResponse(ROUTE);
+		return new CreateServiceInstanceRouteBindingResponse()
+				.withRouteServiceUrl(ROUTE);
 	}
 
 	public static DeleteServiceInstanceBindingRequest buildDeleteServiceInstanceBindingRequest() {

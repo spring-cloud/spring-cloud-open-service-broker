@@ -361,7 +361,9 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 	@Test
 	public void lastOperationHasInProgressStatus() throws Exception {
 		when(serviceInstanceService.getLastOperation(eq(lastOperationRequest)))
-				.thenReturn(new GetLastServiceOperationResponse(OperationState.IN_PROGRESS, "working on it", false));
+				.thenReturn(new GetLastServiceOperationResponse()
+						.withOperationState(OperationState.IN_PROGRESS)
+						.withDescription("working on it"));
 
 		mockMvc.perform(get(buildUrl(lastOperationRequest)))
 				.andExpect(status().isOk())
@@ -371,8 +373,11 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void lastOperationHasSucceededStatus() throws Exception {
-		when(serviceInstanceService.getLastOperation(eq(lastOperationRequest)))
-				.thenReturn(new GetLastServiceOperationResponse(OperationState.SUCCEEDED, "all good", false));
+		GetLastServiceOperationResponse response = new GetLastServiceOperationResponse()
+				.withOperationState(OperationState.SUCCEEDED)
+				.withDescription("all good");
+
+		when(serviceInstanceService.getLastOperation(eq(lastOperationRequest))).thenReturn(response);
 
 		mockMvc.perform(get(buildUrl(lastOperationRequest)))
 				.andExpect(status().isOk())
@@ -382,8 +387,13 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void lastOperationHasSucceededStatusWithDeletionComplete() throws Exception {
+		GetLastServiceOperationResponse response = new GetLastServiceOperationResponse()
+				.withOperationState(OperationState.SUCCEEDED)
+				.withDescription("all gone")
+				.withDeleteOperation(true);
+
 		when(serviceInstanceService.getLastOperation(eq(lastOperationRequest)))
-				.thenReturn(new GetLastServiceOperationResponse(OperationState.SUCCEEDED, "all gone", true));
+				.thenReturn(response);
 
 		mockMvc.perform(get(buildUrl(lastOperationRequest)))
 				.andExpect(status().isGone())
@@ -393,8 +403,12 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void lastOperationHasFailedStatus() throws Exception {
+		GetLastServiceOperationResponse response = new GetLastServiceOperationResponse()
+				.withOperationState(OperationState.FAILED)
+				.withDescription("not so good");
+
 		when(serviceInstanceService.getLastOperation(eq(lastOperationRequest)))
-				.thenReturn(new GetLastServiceOperationResponse(OperationState.FAILED, "not so good", false));
+				.thenReturn(response);
 
 		mockMvc.perform(get(buildUrl(lastOperationRequest)))
 				.andExpect(status().isOk())
