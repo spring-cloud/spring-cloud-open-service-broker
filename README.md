@@ -66,11 +66,11 @@ This will trigger the inclusion of the default configuration.
 
 The Cloud Foundry service broker API has three main endpoint groupings: catalog management, service instance provisioning/deprovisioning, and service instance binding/unbinding. The broker will need to provide one Spring bean to provide the necessary functionality for each endpoint grouping.
 
-For catalog management, the framework provides a default implementation that requires the broker to just provide an implementation of a [`Catalog` bean](src/main/java/org/springframework/cloud/servicebroker/model/Catalog.java). There is an example of this approach in the [MongoDB sample broker](https://github.com/spgreenberg/spring-boot-cf-service-broker-mongo/blob/master/src/main/java/org/springframework/cloud/servicebroker/mongodb/config/CatalogConfig.java). To override this default, provide your own bean that implements the [`CatalogService`](src/main/java/org/springframework/cloud/servicebroker/service/CatalogService.java) interface.
+For catalog management, the framework provides a default implementation that requires the broker to just provide an implementation of a [`Catalog` bean](src/main/java/org/springframework/cloud/servicebroker/model/Catalog.java). There is an example of this approach in the [MongoDB sample broker](https://github.com/spring-cloud-samples/cloudfoundry-service-broker/blob/master/src/main/java/org/springframework/cloud/servicebroker/mongodb/config/CatalogConfig.java). To override this default, provide your own bean that implements the [`CatalogService`](src/main/java/org/springframework/cloud/servicebroker/service/CatalogService.java) interface.
 
 For service instance provisioning/deprovisioning, provide a Spring bean that implements the [`ServiceInstanceService`](src/main/java/org/springframework/cloud/servicebroker/service/ServiceInstanceService.java) interface. There is no default implementation provided.
 
-For service instance binding/unbinding, provide a Spring bean that implements the [`ServiceInstanceBindingService`](src/main/java/org/springframework/cloud/servicebroker/service/ServiceInstanceBindingService.java) interface. There is no default implementation provided.
+For service instance binding/unbinding, provide a Spring bean that implements the [`ServiceInstanceBindingService`](src/main/java/org/springframework/cloud/servicebroker/service/ServiceInstanceBindingService.java) interface. If the service broker does not provide any bindable services, this bean can be omitted and a default implementation will be provided.
 
 ## Security
 

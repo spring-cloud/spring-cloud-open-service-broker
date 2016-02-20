@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
+import org.springframework.cloud.servicebroker.service.NonBindableServiceInstanceBindingService;
+import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -30,4 +32,9 @@ public class ServiceBrokerAutoConfiguration {
 		return new BeanCatalogService(catalog);
 	}
 
+	@Bean
+	@ConditionalOnMissingBean(ServiceInstanceBindingService.class)
+	public ServiceInstanceBindingService nonBindableServiceInstanceBindingService() {
+		return new NonBindableServiceInstanceBindingService();
+	}
 }

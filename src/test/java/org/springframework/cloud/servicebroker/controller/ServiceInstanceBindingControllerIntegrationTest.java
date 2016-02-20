@@ -6,7 +6,6 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotE
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceRouteBindingResponse;
-import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -36,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ServiceInstanceBindingControllerIntegrationTest extends ControllerIntegrationTest {
+public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInstanceBindingIntegrationTest {
 
 	private MockMvc mockMvc;
 	
@@ -45,24 +43,11 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ControllerI
 	
 	@Mock
 	private ServiceInstanceBindingService serviceInstanceBindingService;
-	
-	private UriComponentsBuilder uriBuilder;
-
-	private CreateServiceInstanceBindingRequest createRequest;
-
-	private DeleteServiceInstanceBindingRequest deleteRequest;
 
 	@Before
 	public void setup() {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
-
-		uriBuilder = UriComponentsBuilder.fromPath("/v2/service_instances/")
-				.pathSegment("service-instance-one-id", "service_bindings");
-
-		createRequest = ServiceInstanceBindingFixture.buildCreateAppBindingRequest();
-
-		deleteRequest = ServiceInstanceBindingFixture.buildDeleteServiceInstanceBindingRequest();
 	}
 
 	@Test
@@ -244,16 +229,5 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ControllerI
 		mockMvc.perform(delete(buildUrl(deleteRequest))
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
-	}
-
-	private String buildUrl(CreateServiceInstanceBindingRequest request) {
-		return uriBuilder.path(request.getBindingId()).toUriString();
-	}
-
-	private String buildUrl(DeleteServiceInstanceBindingRequest request) {
-		return uriBuilder.path(request.getBindingId())
-				.queryParam("service_id", request.getServiceDefinitionId())
-				.queryParam("plan_id", request.getPlanId())
-				.toUriString();
 	}
 }
