@@ -89,17 +89,17 @@ public class ServiceInstanceController extends BaseController {
 	public ResponseEntity<?> deleteServiceInstance(@PathVariable("instanceId") String serviceInstanceId,
 												   @RequestParam("service_id") String serviceDefinitionId,
 												   @RequestParam("plan_id") String planId,
-												   @RequestParam(value = "async", required = false) boolean acceptsIncomplete) {
+												   @RequestParam(value = "async", required = false) boolean async) {
 		log.debug("Deleting a service instance: "
 				+ "serviceInstanceId=" + serviceInstanceId
 				+ ", serviceDefinitionId=" + serviceDefinitionId
 				+ ", planId=" + planId
-				+ ", acceptsIncomplete=" + acceptsIncomplete);
+				+ ", async=" + async);
 
 		try {
 			DeleteServiceInstanceRequest request =
 					new DeleteServiceInstanceRequest(serviceInstanceId, serviceDefinitionId, planId,
-							getServiceDefinition(serviceDefinitionId), acceptsIncomplete);
+							getServiceDefinition(serviceDefinitionId), async);
 
 			DeleteServiceInstanceResponse response = service.deleteServiceInstance(request);
 
