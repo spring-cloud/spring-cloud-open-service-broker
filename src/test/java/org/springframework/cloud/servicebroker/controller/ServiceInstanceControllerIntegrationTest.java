@@ -436,7 +436,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		return uriBuilder.path(request.getServiceInstanceId())
 				.queryParam("service_id", request.getServiceDefinitionId())
 				.queryParam("plan_id", request.getPlanId())
-				.queryParam("async", request.isAsyncAccepted())
+				.queryParam("accepts_incomplete", request.isAsyncAccepted())
 				.toUriString();
 	}
 
