@@ -2,13 +2,11 @@ package org.springframework.cloud.servicebroker.model;
 
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -20,11 +18,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * @author Scott Frederick
  */
 @Getter
-@ToString
-@EqualsAndHashCode
-@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class CreateServiceInstanceAppBindingResponse implements CreateServiceInstanceBindingResponse {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstanceBindingResponse {
 
 	/**
 	 * A free-form hash of credentials that the bound application can use to access the service.
@@ -50,6 +46,11 @@ public class CreateServiceInstanceAppBindingResponse implements CreateServiceIns
 
 	public CreateServiceInstanceAppBindingResponse withSyslogDrainUrl(final String syslogDrainUrl) {
 		this.syslogDrainUrl = syslogDrainUrl;
+		return this;
+	}
+
+	public CreateServiceInstanceAppBindingResponse withBindingExisted(final boolean bindingExisted) {
+		this.bindingExisted = bindingExisted;
 		return this;
 	}
 }

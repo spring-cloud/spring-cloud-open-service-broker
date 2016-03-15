@@ -34,6 +34,7 @@ import javax.validation.Valid;
  * See: http://docs.cloudfoundry.org/services/api.html
  * 
  * @author sgreenberg@pivotal.io
+ * @author Scott Frederick
  */
 @RestController
 @RequestMapping("/v2/service_instances/{instanceId}")
@@ -64,7 +65,17 @@ public class ServiceInstanceController extends BaseController {
 
 		log.debug("Creating a service instance succeeded: serviceInstanceId=" + serviceInstanceId);
 
-		return new ResponseEntity<>(response, response.isAsync() ? HttpStatus.ACCEPTED : HttpStatus.CREATED);
+		return new ResponseEntity<>(response, getCreateResponseCode(response));
+	}
+
+	private HttpStatus getCreateResponseCode(CreateServiceInstanceResponse response) {
+		if (response.isAsync()) {
+			return HttpStatus.ACCEPTED;
+		} else if (response.isInstanceExisted()) {
+			return HttpStatus.OK;
+		} else {
+			return HttpStatus.CREATED;
+		}
 	}
 
 	@RequestMapping(value = "/last_operation", method = RequestMethod.GET)

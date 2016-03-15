@@ -59,7 +59,7 @@ public class ServiceInstanceBindingController extends BaseController {
 				+ "serviceInstanceId=" + serviceInstanceId
 				+ "bindingId=" + bindingId);
 
-		return new ResponseEntity<>(response, HttpStatus.CREATED);
+		return new ResponseEntity<>(response, response.isBindingExisted() ? HttpStatus.OK : HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE)

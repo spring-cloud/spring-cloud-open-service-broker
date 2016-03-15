@@ -121,6 +121,21 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 	}
 
 	@Test
+	public void createServiceInstanceWithExistingInstanceSucceeds() throws Exception {
+		when(serviceInstanceService.createServiceInstance(eq(syncCreateRequest)))
+				.thenReturn(syncCreateResponse.withInstanceExisted(true));
+
+		setupCatalogService(syncCreateRequest.getServiceDefinitionId());
+
+		mockMvc.perform(put(buildUrl(syncCreateRequest))
+				.content(DataFixture.toJson(syncCreateRequest))
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.dashboard_url", is(syncCreateResponse.getDashboardUrl())));
+	}
+
+	@Test
 	public void createServiceInstanceWithUnknownServiceDefinitionIdFails() throws Exception {
 		when(catalogService.getServiceDefinition(eq(syncCreateRequest.getServiceDefinitionId())))
 				.thenReturn(null);

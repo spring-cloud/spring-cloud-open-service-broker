@@ -72,6 +72,29 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	}
 
 	@Test
+	public void createBindingToAppWithExistingSucceeds() throws Exception {
+		CreateServiceInstanceAppBindingResponse createResponse =
+				ServiceInstanceBindingFixture.buildCreateAppBindingResponse()
+				.withBindingExisted(true);
+
+		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(createRequest)))
+				.thenReturn(createResponse);
+
+		setupCatalogService(createRequest.getServiceDefinitionId());
+
+		mockMvc.perform(put(buildUrl(createRequest))
+				.content(DataFixture.toJson(createRequest))
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.credentials.uri", is(createResponse.getCredentials().get("uri"))))
+				.andExpect(jsonPath("$.credentials.username", is(createResponse.getCredentials().get("username"))))
+				.andExpect(jsonPath("$.credentials.password", is(createResponse.getCredentials().get("password"))))
+				.andExpect(jsonPath("$.syslog_drain_url", nullValue()))
+				.andExpect(jsonPath("$.route_service_url", nullValue()));
+	}
+
+	@Test
 	public void createBindingToRouteSucceeds() throws Exception {
 		CreateServiceInstanceBindingRequest request = ServiceInstanceBindingFixture.buildCreateRouteBindingRequest();
 		CreateServiceInstanceRouteBindingResponse response = ServiceInstanceBindingFixture.buildCreateBindingResponseForRoute();
@@ -85,6 +108,27 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.credentials", nullValue()))
+				.andExpect(jsonPath("$.syslog_drain_url", nullValue()))
+				.andExpect(jsonPath("$.route_service_url", is(response.getRouteServiceUrl())));
+	}
+
+	@Test
+	public void createBindingToRouteWithExistingSucceeds() throws Exception {
+		CreateServiceInstanceBindingRequest request = ServiceInstanceBindingFixture.buildCreateRouteBindingRequest();
+		CreateServiceInstanceRouteBindingResponse response =
+				ServiceInstanceBindingFixture.buildCreateBindingResponseForRoute()
+				.withBindingExisted(true);
+		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(request)))
+				.thenReturn(response);
+
+		setupCatalogService(request.getServiceDefinitionId());
+
+		mockMvc.perform(put(buildUrl(request))
+				.content(DataFixture.toJson(request))
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.credentials", nullValue()))
 				.andExpect(jsonPath("$.syslog_drain_url", nullValue()))
 				.andExpect(jsonPath("$.route_service_url", is(response.getRouteServiceUrl())));

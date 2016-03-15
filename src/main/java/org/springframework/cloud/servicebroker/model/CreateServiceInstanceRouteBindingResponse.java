@@ -1,7 +1,5 @@
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -15,12 +13,9 @@ import lombok.ToString;
  * @author Scott Frederick
  */
 @Getter
-@ToString
-@EqualsAndHashCode
-@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class CreateServiceInstanceRouteBindingResponse implements CreateServiceInstanceBindingResponse {
-
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInstanceBindingResponse {
 	/**
 	 * A URL to which Cloud Foundry should proxy requests for the bound route. Can be <code>null</code>.
 	 */
@@ -31,6 +26,11 @@ public class CreateServiceInstanceRouteBindingResponse implements CreateServiceI
 
 	public CreateServiceInstanceRouteBindingResponse withRouteServiceUrl(final String routeServiceUrl) {
 		this.routeServiceUrl = routeServiceUrl;
+		return this;
+	}
+
+	public CreateServiceInstanceRouteBindingResponse withBindingExisted(final boolean bindingExisted) {
+		this.bindingExisted = bindingExisted;
 		return this;
 	}
 }
