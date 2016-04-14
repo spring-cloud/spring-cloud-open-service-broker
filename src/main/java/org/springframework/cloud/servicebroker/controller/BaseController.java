@@ -3,6 +3,7 @@ package org.springframework.cloud.servicebroker.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.AsyncRequiredErrorMessage;
@@ -84,6 +85,12 @@ public class BaseController {
 		log.debug("Broker requires async support: ", ex);
 		return new ResponseEntity<>(
 				new AsyncRequiredErrorMessage(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+
+	@ExceptionHandler(ServiceBrokerInvalidParametersException.class)
+	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerInvalidParametersException ex) {
+		log.debug("Invalid parameters received: " + ex);
+		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(Exception.class)

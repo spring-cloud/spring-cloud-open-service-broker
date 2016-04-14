@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
@@ -178,6 +179,21 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.error", org.hamcrest.Matchers.is(AsyncRequiredErrorMessage.ASYNC_REQUIRED_ERROR)))
 				.andExpect(jsonPath("$.description", is("async required description")));
+	}
+
+	@Test
+	public void createServiceInstanceWithInvalidParametersFails() throws Exception {
+		when(serviceInstanceService.createServiceInstance(eq(syncCreateRequest)))
+				.thenThrow(new ServiceBrokerInvalidParametersException("invalid parameters description"));
+
+		setupCatalogService(syncCreateRequest.getServiceDefinitionId());
+
+		mockMvc.perform(put(buildUrl(syncCreateRequest))
+				.content(DataFixture.toJson(syncCreateRequest))
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isUnprocessableEntity())
+				.andExpect(jsonPath("$.description", is("invalid parameters description")));
 	}
 
 	@Test
