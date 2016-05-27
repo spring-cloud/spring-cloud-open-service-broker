@@ -1,0 +1,74 @@
+---
+# The name of your project
+title: Spring Cloud Cloud Foundry Service Broker
+
+badges:
+
+  # Customize your project's badges. Delete any entries that do not apply.
+  custom:
+    - name: Source (GitHub)
+      url:  https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker
+      icon: github
+
+    - name: Issues (GitHub)
+      url:  https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker/issues
+      icon: tracking
+
+---
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<!-- Specify the parent of this project (or delete if none) to influence the rendering of the breadcrumb -->
+{% capture parent_link %}
+[Spring Cloud]({{ site.projects_site_url }}/spring-cloud)
+{% endcapture %}
+
+
+{% capture billboard_description %}
+
+Spring Cloud Cloud Foundry Service Broker is a framework for building Spring Boot applications that implement the Cloud Foundry Service Broker API and manage service offerings available in the Cloud Foundry Marketplace.
+
+{% endcapture %}
+
+{% capture main_content %}
+
+Cloud Foundry managed services are managed by service brokers, which advertise the service plans offered by their services and provision, destroy, bind, and unbind service instances. Spring Cloud Cloud Foundry Service Broker provides a framework based on Spring Boot that enables you to quickly create a broker for your own managed service on Cloud Foundry.
+
+## Features
+
+* Default configuration for catalog and service binding/unbinding endpoints
+* Support for asynchronous service operations (Cloud Foundry Service Broker API 2.7)
+* Support for arbitrary parameters supplied to cf Command Line Interface tool
+* Support for Cloud Foundry route services
+
+## Quick Start
+
+{% include download_widget.md %}
+
+To enable the Spring Cloud Cloud Foundry Service Broker framework's default configuration, your broker application needs only one of the `@EnableAutoConfiguration` or `@SpringBootApplication` annotations on its main application class:
+
+```java
+@SpringBootApplication
+public class Application {
+
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
+}
+```
+
+See the [project documentation](https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker/blob/master/README.md) for more information on the interfaces included for implementing API functionality and on what default implementations are provided. For more information on developing Cloud Foundry managed services, see the [Cloud Foundry documentation](http://docs.cloudfoundry.org/services/).
+
+{% endcapture %}
+
+{% capture related_resources %}
+
+### Sample Projects
+
+* [MongoDB Service Broker](https://github.com/spring-cloud-samples/cloudfoundry-service-broker)
+
+{% endcapture %}
+
+
+{% include project_page.html %}
+</html>
