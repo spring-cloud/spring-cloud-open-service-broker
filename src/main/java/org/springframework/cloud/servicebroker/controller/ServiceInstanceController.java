@@ -53,7 +53,7 @@ public class ServiceInstanceController extends BaseController {
 	public ResponseEntity<?> createServiceInstance(@PathVariable("instanceId") String serviceInstanceId,
 												   @Valid @RequestBody CreateServiceInstanceRequest request,
 												   @RequestParam(value = "accepts_incomplete", required = false) boolean acceptsIncomplete) {
-		log.debug("Creating a service instance: serviceInstanceId=" + serviceInstanceId);
+		log.debug("Creating a service instance: serviceInstanceId={}", serviceInstanceId);
 
 		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(request.getServiceDefinitionId());
 
@@ -63,7 +63,7 @@ public class ServiceInstanceController extends BaseController {
 
 		CreateServiceInstanceResponse response = service.createServiceInstance(request);
 
-		log.debug("Creating a service instance succeeded: serviceInstanceId=" + serviceInstanceId);
+		log.debug("Creating a service instance succeeded: serviceInstanceId={}", serviceInstanceId);
 
 		return new ResponseEntity<>(response, getCreateResponseCode(response));
 	}
@@ -81,15 +81,15 @@ public class ServiceInstanceController extends BaseController {
 	@RequestMapping(value = "/last_operation", method = RequestMethod.GET)
 	public ResponseEntity<?> getServiceInstanceLastOperation(@PathVariable("instanceId") String serviceInstanceId) {
 
-		log.debug("Getting service instance status: serviceInstanceId=" + serviceInstanceId);
+		log.debug("Getting service instance status: serviceInstanceId={}", serviceInstanceId);
 
 		GetLastServiceOperationRequest request = new GetLastServiceOperationRequest(serviceInstanceId);
 
 		GetLastServiceOperationResponse response = service.getLastOperation(request);
 
-		log.debug("Getting service instance status succeeded: serviceInstanceId=" + serviceInstanceId
-				+ ", state=" + response.getState()
-				+ ", description=" + response.getDescription());
+		if (log.isDebugEnabled()) {
+			log.debug("Getting service instance status succeeded: serviceInstanceId={}, state={}, description={}", serviceInstanceId, response.getState(), response.getDescription());
+		}
 
 		boolean isSuccessfulDelete = response.getState().equals(OperationState.SUCCEEDED) && response.isDeleteOperation();
 
@@ -101,11 +101,7 @@ public class ServiceInstanceController extends BaseController {
 												   @RequestParam("service_id") String serviceDefinitionId,
 												   @RequestParam("plan_id") String planId,
 												   @RequestParam(value = "accepts_incomplete", required = false) boolean acceptsIncomplete) {
-		log.debug("Deleting a service instance: "
-				+ "serviceInstanceId=" + serviceInstanceId
-				+ ", serviceDefinitionId=" + serviceDefinitionId
-				+ ", planId=" + planId
-				+ ", acceptsIncomplete=" + acceptsIncomplete);
+		log.debug("Deleting a service instance: serviceInstanceId={}, serviceDefinitionId={}, planId={}, acceptsIncomplete={}", serviceInstanceId, serviceDefinitionId, planId, acceptsIncomplete);
 
 		try {
 			DeleteServiceInstanceRequest request =
@@ -114,12 +110,11 @@ public class ServiceInstanceController extends BaseController {
 
 			DeleteServiceInstanceResponse response = service.deleteServiceInstance(request);
 
-			log.debug("Deleting a service instance succeeded: "
-					+ "serviceInstanceId=" + serviceInstanceId);
+			log.debug("Deleting a service instance succeeded: serviceInstanceId={}", serviceInstanceId);
 
 			return new ResponseEntity<>("{}", response.isAsync() ? HttpStatus.ACCEPTED : HttpStatus.OK);
 		} catch (ServiceInstanceDoesNotExistException e) {
-			log.debug("Service instance does not exist: " + e);
+			log.debug("Service instance does not exist: ", e);
 			return new ResponseEntity<>("{}", HttpStatus.GONE);
 		}
 	}
@@ -128,9 +123,9 @@ public class ServiceInstanceController extends BaseController {
 	public ResponseEntity<String> updateServiceInstance(@PathVariable("instanceId") String serviceInstanceId,
 														@Valid @RequestBody UpdateServiceInstanceRequest request,
 														@RequestParam(value = "accepts_incomplete", required = false) boolean acceptsIncomplete) {
-		log.debug("Updating a service instance: "
-				+ "serviceInstanceId = " + serviceInstanceId
-				+ ", planId = " + request.getPlanId());
+		if (log.isDebugEnabled()) {
+			log.debug("Updating a service instance: serviceInstanceId={}, planId={}", serviceInstanceId, request.getPlanId());
+		}
 
 		ServiceDefinition serviceDefinition = getServiceDefinition(request.getServiceDefinitionId());
 
@@ -140,21 +135,20 @@ public class ServiceInstanceController extends BaseController {
 
 		UpdateServiceInstanceResponse response = service.updateServiceInstance(request);
 
-		log.debug("Updating a service instance succeeded: "
-				+ "serviceInstanceId=" + serviceInstanceId);
+		log.debug("Updating a service instance succeeded: serviceInstanceId={}", serviceInstanceId);
 
 		return new ResponseEntity<>("{}", response.isAsync() ? HttpStatus.ACCEPTED : HttpStatus.OK);
 	}
 
 	@ExceptionHandler(ServiceInstanceExistsException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceExistsException ex) {
-		log.debug("Service instance already exists: " + ex);
+		log.debug("Service instance already exists: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(ServiceInstanceUpdateNotSupportedException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceUpdateNotSupportedException ex) {
-		log.debug("Service instance update not supported: " + ex);
+		log.debug("Service instance update not supported: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 }

@@ -45,9 +45,7 @@ public class ServiceInstanceBindingController extends BaseController {
 	public ResponseEntity<?> createServiceInstanceBinding(@PathVariable("instanceId") String serviceInstanceId,
 														  @PathVariable("bindingId") String bindingId,
 														  @Valid @RequestBody CreateServiceInstanceBindingRequest request) {
-		log.debug("Creating a service instance binding: "
-				+ "serviceInstanceId=" + serviceInstanceId
-				+ ", bindingId=" + bindingId);
+        log.debug("Creating a service instance binding: serviceInstanceId={}, bindingId={}", serviceInstanceId, bindingId);
 
 		request.withServiceInstanceId(serviceInstanceId)
 				.withBindingId(bindingId)
@@ -55,9 +53,7 @@ public class ServiceInstanceBindingController extends BaseController {
 
 		CreateServiceInstanceBindingResponse response = serviceInstanceBindingService.createServiceInstanceBinding(request);
 
-		log.debug("Creating a service instance binding succeeded: "
-				+ "serviceInstanceId=" + serviceInstanceId
-				+ "bindingId=" + bindingId);
+        log.debug("Creating a service instance binding succeeded: serviceInstanceId={} bindingId={}", serviceInstanceId, bindingId);
 
 		return new ResponseEntity<>(response, response.isBindingExisted() ? HttpStatus.OK : HttpStatus.CREATED);
 	}
@@ -67,11 +63,7 @@ public class ServiceInstanceBindingController extends BaseController {
 															   @PathVariable("bindingId") String bindingId,
 															   @RequestParam("service_id") String serviceDefinitionId,
 															   @RequestParam("plan_id") String planId) {
-		log.debug("Deleting a service instance binding: "
-				+ "serviceInstanceId=" + serviceInstanceId
-				+ ", bindingId=" + bindingId
-				+ ", serviceDefinitionId=" + serviceDefinitionId
-				+ ", planId=" + planId);
+        log.debug("Deleting a service instance binding: serviceInstanceId={}, bindingId={}, serviceDefinitionId={}, planId={}", serviceInstanceId, bindingId, serviceDefinitionId, planId);
 
 		try {
 			DeleteServiceInstanceBindingRequest request =
@@ -80,18 +72,18 @@ public class ServiceInstanceBindingController extends BaseController {
 
 			serviceInstanceBindingService.deleteServiceInstanceBinding(request);
 		} catch (ServiceInstanceBindingDoesNotExistException e) {
-			log.debug("Service instance binding does not exist: " + e);
+			log.debug("Service instance binding does not exist: ", e);
 			return new ResponseEntity<>("{}", HttpStatus.GONE);
 		}
 
-		log.debug("Deleting a service instance binding succeeded: bindingId=" + bindingId);
+        log.debug("Deleting a service instance binding succeeded: bindingId={}", bindingId);
 
 		return new ResponseEntity<>("{}", HttpStatus.OK);
 	}
 
 	@ExceptionHandler(ServiceInstanceBindingExistsException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceBindingExistsException ex) {
-		log.debug("Service instance binding already exists: " + ex);
+		log.debug("Service instance binding already exists: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
 	}
 }
