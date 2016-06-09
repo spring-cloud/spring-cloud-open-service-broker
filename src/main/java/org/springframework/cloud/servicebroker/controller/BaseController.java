@@ -89,7 +89,7 @@ public class BaseController {
 
 	@ExceptionHandler(ServiceBrokerInvalidParametersException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerInvalidParametersException ex) {
-		log.debug("Invalid parameters received: " + ex);
+		log.debug("Invalid parameters received: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
