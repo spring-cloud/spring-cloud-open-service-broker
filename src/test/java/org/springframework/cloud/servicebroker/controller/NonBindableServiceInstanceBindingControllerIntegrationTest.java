@@ -35,7 +35,7 @@ public class NonBindableServiceInstanceBindingControllerIntegrationTest extends 
 	public void createBindingToAppFails() throws Exception {
 		setupCatalogService(createRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(createRequest))
+		mockMvc.perform(put(buildUrl(createRequest, false))
 				.content(DataFixture.toJson(createRequest))
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -46,7 +46,7 @@ public class NonBindableServiceInstanceBindingControllerIntegrationTest extends 
 	public void deleteBindingFails() throws Exception {
 		setupCatalogService(deleteRequest.getServiceDefinitionId());
 
-		mockMvc.perform(delete(buildUrl(deleteRequest))
+		mockMvc.perform(delete(buildUrl(deleteRequest, false))
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
 	}

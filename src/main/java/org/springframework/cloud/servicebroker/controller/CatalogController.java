@@ -22,7 +22,8 @@ public class CatalogController extends BaseController {
 		super(service);
 	}
 
-	@RequestMapping(value = "/v2/catalog", method = RequestMethod.GET)
+	@RequestMapping(value = {"/v2/catalog", "{foundationId}/v2/catalog"},
+		method = RequestMethod.GET)
 	public Catalog getCatalog() {
 		log.debug("getCatalog()");
 		return catalogService.getCatalog();
