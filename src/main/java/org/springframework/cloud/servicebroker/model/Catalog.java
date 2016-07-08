@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class Catalog {
 	private final List<ServiceDefinition> serviceDefinitions;
 
 	public Catalog() {
-		this.serviceDefinitions = null;
+		this.serviceDefinitions = new ArrayList<>();
 	}
 
 	public Catalog(List<ServiceDefinition> serviceDefinitions) {
