@@ -1,11 +1,13 @@
 package org.springframework.cloud.servicebroker.controller;
 
+import org.mockito.ArgumentCaptor;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceRouteBindingResponse;
+import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +26,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -59,7 +62,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		setupCatalogService(createRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(createRequest))
+		mockMvc.perform(put(buildUrl(createRequest, false))
 				.content(DataFixture.toJson(createRequest))
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -69,6 +72,31 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.andExpect(jsonPath("$.credentials.password", is(createResponse.getCredentials().get("password"))))
 				.andExpect(jsonPath("$.syslog_drain_url", nullValue()))
 				.andExpect(jsonPath("$.route_service_url", nullValue()));
+	}
+
+	@Test
+	public void createBindingToAppWithFoundationIdSucceeds() throws Exception {
+		CreateServiceInstanceAppBindingResponse createResponse = ServiceInstanceBindingFixture.buildCreateAppBindingResponse();
+
+		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(createRequest)))
+				.thenReturn(createResponse);
+
+		setupCatalogService(createRequest.getServiceDefinitionId());
+
+		mockMvc.perform(put(buildUrl(createRequest, true))
+				.content(DataFixture.toJson(createRequest))
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.credentials.uri", is(createResponse.getCredentials().get("uri"))))
+				.andExpect(jsonPath("$.credentials.username", is(createResponse.getCredentials().get("username"))))
+				.andExpect(jsonPath("$.credentials.password", is(createResponse.getCredentials().get("password"))))
+				.andExpect(jsonPath("$.syslog_drain_url", nullValue()))
+				.andExpect(jsonPath("$.route_service_url", nullValue()));
+
+		ArgumentCaptor<CreateServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor.forClass(CreateServiceInstanceBindingRequest.class);
+		verify(serviceInstanceBindingService).createServiceInstanceBinding(argumentCaptor.capture());
+		assertEquals("123", argumentCaptor.getValue().getFoundationId());
 	}
 
 	@Test
@@ -82,7 +110,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		setupCatalogService(createRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(createRequest))
+		mockMvc.perform(put(buildUrl(createRequest, false))
 				.content(DataFixture.toJson(createRequest))
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -103,7 +131,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		setupCatalogService(request.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(request))
+		mockMvc.perform(put(buildUrl(request, false))
 				.content(DataFixture.toJson(request))
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -124,7 +152,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		setupCatalogService(request.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(request))
+		mockMvc.perform(put(buildUrl(request, false))
 				.content(DataFixture.toJson(request))
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -142,7 +170,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		setupCatalogService(createRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(createRequest))
+		mockMvc.perform(put(buildUrl(createRequest, false))
 				.content(DataFixture.toJson(createRequest))
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -161,7 +189,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		setupCatalogService(createRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(createRequest))
+		mockMvc.perform(put(buildUrl(createRequest, false))
 				.content(DataFixture.toJson(createRequest))
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -179,7 +207,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		when(catalogService.getServiceDefinition(eq(createRequest.getServiceDefinitionId())))
 				.thenReturn(null);
 
-		mockMvc.perform(put(buildUrl(createRequest))
+		mockMvc.perform(put(buildUrl(createRequest, false))
 				.content(DataFixture.toJson(createRequest))
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -193,7 +221,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		setupCatalogService(createRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(createRequest))
+		mockMvc.perform(put(buildUrl(createRequest, false))
 				.content(DataFixture.toJson(createRequest))
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -207,7 +235,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		String body = DataFixture.toJson(createRequest);
 		body = body.replace("service_id", "foo");
 
-		mockMvc.perform(put(buildUrl(createRequest))
+		mockMvc.perform(put(buildUrl(createRequest, false))
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(body))
 				.andExpect(status().isUnprocessableEntity())
@@ -218,7 +246,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	public void createBindingWithMissingFieldsFails() throws Exception {
 		String body = "{}";
 
-		mockMvc.perform(put(buildUrl(createRequest))
+		mockMvc.perform(put(buildUrl(createRequest, false))
 				.content(body)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -231,12 +259,26 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	public void deleteBindingSucceeds() throws Exception {
 		setupCatalogService(deleteRequest.getServiceDefinitionId());
 
-		mockMvc.perform(delete(buildUrl(deleteRequest))
+		mockMvc.perform(delete(buildUrl(deleteRequest, false))
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", is("{}")));
 
 		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(eq(deleteRequest));
+	}
+
+	@Test
+	public void deleteBindingWithFoundationIdSucceeds() throws Exception {
+		setupCatalogService(deleteRequest.getServiceDefinitionId());
+
+		mockMvc.perform(delete(buildUrl(deleteRequest, true))
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$", is("{}")));
+
+		ArgumentCaptor<DeleteServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor.forClass(DeleteServiceInstanceBindingRequest.class);
+		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(argumentCaptor.capture());
+		assertEquals("123", argumentCaptor.getValue().getFoundationId());
 	}
 
 	@Test
@@ -246,7 +288,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		setupCatalogService(deleteRequest.getServiceDefinitionId());
 
-		mockMvc.perform(delete(buildUrl(deleteRequest))
+		mockMvc.perform(delete(buildUrl(deleteRequest, false))
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.description", containsString(deleteRequest.getServiceInstanceId())));
@@ -259,7 +301,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		setupCatalogService(deleteRequest.getServiceDefinitionId());
 
-		mockMvc.perform(delete(buildUrl(deleteRequest))
+		mockMvc.perform(delete(buildUrl(deleteRequest, false))
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isGone())
 				.andExpect(jsonPath("$", is("{}")));
@@ -270,7 +312,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		when(catalogService.getServiceDefinition(eq(deleteRequest.getServiceDefinitionId())))
 				.thenReturn(null);
 
-		mockMvc.perform(delete(buildUrl(deleteRequest))
+		mockMvc.perform(delete(buildUrl(deleteRequest, false))
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}

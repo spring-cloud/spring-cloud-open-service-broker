@@ -1,6 +1,7 @@
 package org.springframework.cloud.servicebroker.controller;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
@@ -47,6 +48,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 	private ServiceInstanceService serviceInstanceService;
 
 	private UriComponentsBuilder uriBuilder;
+	private UriComponentsBuilder foundationIdUriBuilder;
 
 	private CreateServiceInstanceRequest syncCreateRequest;
 	private CreateServiceInstanceRequest asyncCreateRequest;
@@ -72,6 +74,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.build();
 
 		uriBuilder = UriComponentsBuilder.fromPath("/v2/service_instances/");
+		foundationIdUriBuilder = UriComponentsBuilder.fromPath("/456/v2/service_instances/");
 
 		syncCreateRequest = ServiceInstanceFixture.buildCreateServiceInstanceRequest(false);
 		syncCreateResponse = ServiceInstanceFixture.buildCreateServiceInstanceResponse(false);
@@ -98,12 +101,31 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		setupCatalogService(syncCreateRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(syncCreateRequest))
+		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(DataFixture.toJson(syncCreateRequest))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.dashboard_url", is(syncCreateResponse.getDashboardUrl())));
+	}
+
+	@Test
+	public void createServiceInstanceWithFoundationIdSucceeds() throws Exception {
+		when(serviceInstanceService.createServiceInstance(eq(syncCreateRequest)))
+				.thenReturn(syncCreateResponse);
+
+		setupCatalogService(syncCreateRequest.getServiceDefinitionId());
+
+		mockMvc.perform(put(buildUrl(syncCreateRequest, true))
+				.content(DataFixture.toJson(syncCreateRequest))
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.dashboard_url", is(syncCreateResponse.getDashboardUrl())));
+
+		ArgumentCaptor<CreateServiceInstanceRequest> argumentCaptor = ArgumentCaptor.forClass(CreateServiceInstanceRequest.class);
+		Mockito.verify(serviceInstanceService).createServiceInstance(argumentCaptor.capture());
+		assertEquals("456", argumentCaptor.getValue().getFoundationId());
 	}
 
 	@Test
@@ -113,7 +135,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		setupCatalogService(asyncCreateRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(asyncCreateRequest))
+		mockMvc.perform(put(buildUrl(asyncCreateRequest, false))
 				.content(DataFixture.toJson(asyncCreateRequest))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
@@ -128,7 +150,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		setupCatalogService(syncCreateRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(syncCreateRequest))
+		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(DataFixture.toJson(syncCreateRequest))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
@@ -141,7 +163,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		when(catalogService.getServiceDefinition(eq(syncCreateRequest.getServiceDefinitionId())))
 				.thenReturn(null);
 
-		mockMvc.perform(put(buildUrl(syncCreateRequest))
+		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(DataFixture.toJson(syncCreateRequest))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
@@ -157,7 +179,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		setupCatalogService(syncCreateRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(syncCreateRequest))
+		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(DataFixture.toJson(syncCreateRequest))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
@@ -172,7 +194,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		setupCatalogService(syncCreateRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(syncCreateRequest))
+		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(DataFixture.toJson(syncCreateRequest))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
@@ -188,7 +210,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		setupCatalogService(syncCreateRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(syncCreateRequest))
+		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(DataFixture.toJson(syncCreateRequest))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
@@ -206,7 +228,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		String body = DataFixture.toJson(syncCreateRequest);
 		body = body.replace("service_id", "foo");
 
-		mockMvc.perform(put(buildUrl(syncCreateRequest))
+		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(body)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
@@ -221,7 +243,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		String body = "{}";
 
-		mockMvc.perform(put(buildUrl(syncCreateRequest))
+		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(body)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
@@ -239,9 +261,25 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		setupCatalogService(syncDeleteRequest.getServiceDefinitionId());
 
-		mockMvc.perform(delete(buildUrl(syncDeleteRequest))
+		mockMvc.perform(delete(buildUrl(syncDeleteRequest, false))
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void deleteServiceInstanceWithFoundationIdSucceeds() throws Exception {
+		when(serviceInstanceService.deleteServiceInstance(eq(syncDeleteRequest)))
+				.thenReturn(syncDeleteResponse);
+
+		setupCatalogService(syncDeleteRequest.getServiceDefinitionId());
+
+		mockMvc.perform(delete(buildUrl(syncDeleteRequest, true))
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+
+		ArgumentCaptor<DeleteServiceInstanceRequest> argumentCaptor = ArgumentCaptor.forClass(DeleteServiceInstanceRequest.class);
+		Mockito.verify(serviceInstanceService).deleteServiceInstance(argumentCaptor.capture());
+		assertEquals("456", argumentCaptor.getValue().getFoundationId());
 	}
 
 	@Test
@@ -251,7 +289,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		setupCatalogService(asyncDeleteRequest.getServiceDefinitionId());
 
-		mockMvc.perform(delete(buildUrl(asyncDeleteRequest))
+		mockMvc.perform(delete(buildUrl(asyncDeleteRequest, false))
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isAccepted());
 	}
@@ -263,7 +301,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		setupCatalogService(syncDeleteRequest.getServiceDefinitionId());
 
-		mockMvc.perform(delete(buildUrl(syncDeleteRequest))
+		mockMvc.perform(delete(buildUrl(syncDeleteRequest, false))
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isGone())
 				.andExpect(jsonPath("$", is("{}")));
@@ -277,7 +315,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		when(catalogService.getServiceDefinition(eq(syncDeleteRequest.getServiceDefinitionId())))
 				.thenReturn(null);
 
-		mockMvc.perform(delete(buildUrl(syncDeleteRequest))
+		mockMvc.perform(delete(buildUrl(syncDeleteRequest, false))
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
@@ -289,7 +327,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		setupCatalogService(syncDeleteRequest.getServiceDefinitionId());
 
-		mockMvc.perform(delete(buildUrl(syncDeleteRequest))
+		mockMvc.perform(delete(buildUrl(syncDeleteRequest, false))
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.error", org.hamcrest.Matchers.is(AsyncRequiredErrorMessage.ASYNC_REQUIRED_ERROR)))
@@ -303,12 +341,31 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		setupCatalogService(syncUpdateRequest.getServiceDefinitionId());
 
-		mockMvc.perform(patch(buildUrl(syncUpdateRequest))
+		mockMvc.perform(patch(buildUrl(syncUpdateRequest, false))
 				.content(DataFixture.toJson(syncUpdateRequest))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", is("{}")));
+	}
+
+	@Test
+	public void updateServiceInstanceWithFoundationIdSucceeds() throws Exception {
+		when(serviceInstanceService.updateServiceInstance(eq(syncUpdateRequest)))
+				.thenReturn(syncUpdateResponse);
+
+		setupCatalogService(syncUpdateRequest.getServiceDefinitionId());
+
+		mockMvc.perform(patch(buildUrl(syncUpdateRequest, true))
+				.content(DataFixture.toJson(syncUpdateRequest))
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$", is("{}")));
+
+		ArgumentCaptor<UpdateServiceInstanceRequest> argumentCaptor = ArgumentCaptor.forClass(UpdateServiceInstanceRequest.class);
+		Mockito.verify(serviceInstanceService).updateServiceInstance(argumentCaptor.capture());
+		assertEquals("456", argumentCaptor.getValue().getFoundationId());
 	}
 
 	@Test
@@ -318,7 +375,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		setupCatalogService(asyncUpdateRequest.getServiceDefinitionId());
 
-		mockMvc.perform(patch(buildUrl(asyncUpdateRequest))
+		mockMvc.perform(patch(buildUrl(asyncUpdateRequest, false))
 				.content(DataFixture.toJson(asyncUpdateRequest))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
@@ -333,7 +390,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		setupCatalogService(syncUpdateRequest.getServiceDefinitionId());
 
-		mockMvc.perform(patch(buildUrl(syncUpdateRequest))
+		mockMvc.perform(patch(buildUrl(syncUpdateRequest, false))
 				.content(DataFixture.toJson(syncUpdateRequest))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
@@ -349,7 +406,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		setupCatalogService(syncUpdateRequest.getServiceDefinitionId());
 
-		mockMvc.perform(patch(buildUrl(syncUpdateRequest))
+		mockMvc.perform(patch(buildUrl(syncUpdateRequest, false))
 				.content(DataFixture.toJson(syncUpdateRequest))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
@@ -366,7 +423,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		when(catalogService.getServiceDefinition(eq(syncUpdateRequest.getServiceDefinitionId())))
 				.thenReturn(null);
 
-		mockMvc.perform(patch(buildUrl(syncUpdateRequest))
+		mockMvc.perform(patch(buildUrl(syncUpdateRequest, false))
 				.content(DataFixture.toJson(syncUpdateRequest))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
@@ -380,7 +437,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		setupCatalogService(syncUpdateRequest.getServiceDefinitionId());
 
-		mockMvc.perform(patch(buildUrl(syncUpdateRequest))
+		mockMvc.perform(patch(buildUrl(syncUpdateRequest, false))
 				.content(DataFixture.toJson(syncUpdateRequest))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
@@ -396,7 +453,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 						.withOperationState(OperationState.IN_PROGRESS)
 						.withDescription("working on it"));
 
-		mockMvc.perform(get(buildUrl(lastOperationRequest)))
+		mockMvc.perform(get(buildUrl(lastOperationRequest, false)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.state", is(OperationState.IN_PROGRESS.getValue())))
 				.andExpect(jsonPath("$.description", is("working on it")));
@@ -410,7 +467,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		when(serviceInstanceService.getLastOperation(eq(lastOperationRequest))).thenReturn(response);
 
-		mockMvc.perform(get(buildUrl(lastOperationRequest)))
+		mockMvc.perform(get(buildUrl(lastOperationRequest, false)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.state", is(OperationState.SUCCEEDED.getValue())))
 				.andExpect(jsonPath("$.description", is("all good")));
@@ -426,7 +483,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		when(serviceInstanceService.getLastOperation(eq(lastOperationRequest)))
 				.thenReturn(response);
 
-		mockMvc.perform(get(buildUrl(lastOperationRequest)))
+		mockMvc.perform(get(buildUrl(lastOperationRequest, false)))
 				.andExpect(status().isGone())
 				.andExpect(jsonPath("$.state", is(OperationState.SUCCEEDED.getValue())))
 				.andExpect(jsonPath("$.description", is("all gone")));
@@ -441,7 +498,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		when(serviceInstanceService.getLastOperation(eq(lastOperationRequest)))
 				.thenReturn(response);
 
-		mockMvc.perform(get(buildUrl(lastOperationRequest)))
+		mockMvc.perform(get(buildUrl(lastOperationRequest, false)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.state", is(OperationState.FAILED.getValue())))
 				.andExpect(jsonPath("$.description", is("not so good")));
@@ -452,32 +509,36 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		when(serviceInstanceService.getLastOperation(eq(lastOperationRequest)))
 				.thenThrow(new ServiceInstanceDoesNotExistException(lastOperationRequest.getServiceInstanceId()));
 
-		mockMvc.perform(get(buildUrl(lastOperationRequest)))
+		mockMvc.perform(get(buildUrl(lastOperationRequest, false)))
 				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.description", containsString(lastOperationRequest.getServiceInstanceId())));
 	}
 
-	private String buildUrl(CreateServiceInstanceRequest request) {
-		return uriBuilder.path(request.getServiceInstanceId())
+	private String buildUrl(CreateServiceInstanceRequest request, Boolean withFoundationId) {
+		UriComponentsBuilder builder = withFoundationId ? foundationIdUriBuilder : uriBuilder;
+		return builder.path(request.getServiceInstanceId())
 				.queryParam("accepts_incomplete", request.isAsyncAccepted())
 				.toUriString();
 	}
 
-	private String buildUrl(DeleteServiceInstanceRequest request) {
-		return uriBuilder.path(request.getServiceInstanceId())
+	private String buildUrl(DeleteServiceInstanceRequest request, Boolean withFoundationId) {
+		UriComponentsBuilder builder = withFoundationId ? foundationIdUriBuilder : uriBuilder;
+		return builder.path(request.getServiceInstanceId())
 				.queryParam("service_id", request.getServiceDefinitionId())
 				.queryParam("plan_id", request.getPlanId())
 				.queryParam("accepts_incomplete", request.isAsyncAccepted())
 				.toUriString();
 	}
 
-	private String buildUrl(UpdateServiceInstanceRequest request) {
-		return uriBuilder.path(request.getServiceInstanceId())
+	private String buildUrl(UpdateServiceInstanceRequest request, Boolean withFoundationId) {
+		UriComponentsBuilder builder = withFoundationId ? foundationIdUriBuilder : uriBuilder;
+		return builder.path(request.getServiceInstanceId())
 				.queryParam("accepts_incomplete", request.isAsyncAccepted())
 				.toUriString();
 	}
 
-	private String buildUrl(GetLastServiceOperationRequest request) {
-		return uriBuilder.pathSegment(request.getServiceInstanceId(), "last_operation").toUriString();
+	private String buildUrl(GetLastServiceOperationRequest request, Boolean withFoundationId) {
+		UriComponentsBuilder builder = withFoundationId ? foundationIdUriBuilder : uriBuilder;
+		return builder.pathSegment(request.getServiceInstanceId(), "last_operation").toUriString();
 	}
 }

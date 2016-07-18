@@ -28,6 +28,7 @@ public class DeleteServiceInstanceBindingRequest {
 	private final String serviceDefinitionId;
 	private final String planId;
 	private transient final ServiceDefinition serviceDefinition;
+	private transient String foundationId;
 
 	public DeleteServiceInstanceBindingRequest(String serviceInstanceId, String bindingId,
 											   String serviceDefinitionId, String planId,
@@ -37,5 +38,10 @@ public class DeleteServiceInstanceBindingRequest {
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
 		this.serviceDefinition = serviceDefinition;
+	}
+
+	public DeleteServiceInstanceBindingRequest withFoundationId(String foundationId) {
+		this.foundationId = foundationId;
+		return this;
 	}
 }
