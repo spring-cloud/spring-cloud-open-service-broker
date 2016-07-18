@@ -37,7 +37,6 @@ import javax.validation.Valid;
  * @author Scott Frederick
  */
 @RestController
-@RequestMapping("/v2/service_instances/{instanceId}")
 @Slf4j
 public class ServiceInstanceController extends BaseController {
 
@@ -49,7 +48,7 @@ public class ServiceInstanceController extends BaseController {
 		this.service = serviceInstanceService;
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
+	@RequestMapping(value = "/v2/service_instances/{instanceId}", method = RequestMethod.PUT)
 	public ResponseEntity<?> createServiceInstance(@PathVariable("instanceId") String serviceInstanceId,
 												   @Valid @RequestBody CreateServiceInstanceRequest request,
 												   @RequestParam(value = "accepts_incomplete", required = false) boolean acceptsIncomplete) {
@@ -68,6 +67,14 @@ public class ServiceInstanceController extends BaseController {
 		return new ResponseEntity<>(response, getCreateResponseCode(response));
 	}
 
+	@RequestMapping(value = "/{foundationId}/v2/service_instances/{instanceId}", method = RequestMethod.PUT)
+	public ResponseEntity<?> createServiceInstance(@PathVariable(value = "foundationId") String foundationId,
+												   @PathVariable("instanceId") String serviceInstanceId,
+												   @Valid @RequestBody CreateServiceInstanceRequest request,
+												   @RequestParam(value = "accepts_incomplete", required = false) boolean acceptsIncomplete) {
+		return createServiceInstance(serviceInstanceId, request.withFoundationId(foundationId), acceptsIncomplete);
+	}
+
 	private HttpStatus getCreateResponseCode(CreateServiceInstanceResponse response) {
 		if (response.isAsync()) {
 			return HttpStatus.ACCEPTED;
@@ -78,7 +85,7 @@ public class ServiceInstanceController extends BaseController {
 		}
 	}
 
-	@RequestMapping(value = "/last_operation", method = RequestMethod.GET)
+	@RequestMapping(value = "/v2/service_instances/{instanceId}/last_operation", method = RequestMethod.GET)
 	public ResponseEntity<?> getServiceInstanceLastOperation(@PathVariable("instanceId") String serviceInstanceId) {
 
 		log.debug("Getting service instance status: serviceInstanceId={}", serviceInstanceId);
@@ -96,18 +103,42 @@ public class ServiceInstanceController extends BaseController {
 		return new ResponseEntity<>(response, isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{foundationId}/v2/service_instances/{instanceId}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deleteServiceInstance(@PathVariable("foundationId") String foundationId,
+												   @PathVariable("instanceId") String serviceInstanceId,
+												   @RequestParam("service_id") String serviceDefinitionId,
+												   @RequestParam("plan_id") String planId,
+												   @RequestParam(value = "accepts_incomplete", required = false) boolean acceptsIncomplete) {
+		log.debug("Deleting a service instance: "
+				+ "serviceInstanceId=" + serviceInstanceId
+				+ ", serviceDefinitionId=" + serviceDefinitionId
+				+ ", planId=" + planId
+				+ ", foundationId=" + foundationId
+				+ ", acceptsIncomplete=" + acceptsIncomplete);
+
+		DeleteServiceInstanceRequest request =
+				new DeleteServiceInstanceRequest(serviceInstanceId, serviceDefinitionId, planId,
+						getServiceDefinition(serviceDefinitionId), acceptsIncomplete);
+
+		return deleteServiceInstance(serviceInstanceId, request.withFoundationId(foundationId));
+	}
+
+	@RequestMapping(value = "/v2/service_instances/{instanceId}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteServiceInstance(@PathVariable("instanceId") String serviceInstanceId,
 												   @RequestParam("service_id") String serviceDefinitionId,
 												   @RequestParam("plan_id") String planId,
 												   @RequestParam(value = "accepts_incomplete", required = false) boolean acceptsIncomplete) {
 		log.debug("Deleting a service instance: serviceInstanceId={}, serviceDefinitionId={}, planId={}, acceptsIncomplete={}", serviceInstanceId, serviceDefinitionId, planId, acceptsIncomplete);
 
-		try {
-			DeleteServiceInstanceRequest request =
-					new DeleteServiceInstanceRequest(serviceInstanceId, serviceDefinitionId, planId,
-							getServiceDefinition(serviceDefinitionId), acceptsIncomplete);
+		DeleteServiceInstanceRequest request =
+				new DeleteServiceInstanceRequest(serviceInstanceId, serviceDefinitionId, planId,
+						getServiceDefinition(serviceDefinitionId), acceptsIncomplete);
 
+		return deleteServiceInstance(serviceInstanceId, request);
+	}
+
+	private ResponseEntity<?> deleteServiceInstance(String serviceInstanceId, DeleteServiceInstanceRequest request) {
+		try {
 			DeleteServiceInstanceResponse response = service.deleteServiceInstance(request);
 
 			log.debug("Deleting a service instance succeeded: serviceInstanceId={}", serviceInstanceId);
@@ -119,7 +150,15 @@ public class ServiceInstanceController extends BaseController {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.PATCH)
+	@RequestMapping(value = "/{foundationId}/v2/service_instances/{instanceId}", method = RequestMethod.PATCH)
+	public ResponseEntity<String> updateServiceInstance(@PathVariable("foundationId") String foundationId,
+														@PathVariable("instanceId") String serviceInstanceId,
+														@Valid @RequestBody UpdateServiceInstanceRequest request,
+														@RequestParam(value = "accepts_incomplete", required = false) boolean acceptsIncomplete) {
+		return updateServiceInstance(serviceInstanceId, request.withFoundationId(foundationId), acceptsIncomplete);
+	}
+
+	@RequestMapping(value = "/v2/service_instances/{instanceId}", method = RequestMethod.PATCH)
 	public ResponseEntity<String> updateServiceInstance(@PathVariable("instanceId") String serviceInstanceId,
 														@Valid @RequestBody UpdateServiceInstanceRequest request,
 														@RequestParam(value = "accepts_incomplete", required = false) boolean acceptsIncomplete) {

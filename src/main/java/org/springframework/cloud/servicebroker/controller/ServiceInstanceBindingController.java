@@ -28,7 +28,6 @@ import javax.validation.Valid;
  * @author sgreenberg@pivotal.io
  */
 @RestController
-@RequestMapping("/v2/service_instances/{instanceId}/service_bindings/{bindingId}")
 @Slf4j
 public class ServiceInstanceBindingController extends BaseController {
 
@@ -41,7 +40,15 @@ public class ServiceInstanceBindingController extends BaseController {
 		this.serviceInstanceBindingService = serviceInstanceBindingService;
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
+	@RequestMapping(value = "/{foundationId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}", method = RequestMethod.PUT)
+	public ResponseEntity<?> createServiceInstanceBinding(@PathVariable("foundationId") String foundationId,
+														  @PathVariable("instanceId") String serviceInstanceId,
+														  @PathVariable("bindingId") String bindingId,
+														  @Valid @RequestBody CreateServiceInstanceBindingRequest request) {
+		return createServiceInstanceBinding(serviceInstanceId, bindingId, request.withFoundationId(foundationId));
+	}
+
+	@RequestMapping(value = "/v2/service_instances/{instanceId}/service_bindings/{bindingId}", method = RequestMethod.PUT)
 	public ResponseEntity<?> createServiceInstanceBinding(@PathVariable("instanceId") String serviceInstanceId,
 														  @PathVariable("bindingId") String bindingId,
 														  @Valid @RequestBody CreateServiceInstanceBindingRequest request) {
@@ -58,18 +65,43 @@ public class ServiceInstanceBindingController extends BaseController {
 		return new ResponseEntity<>(response, response.isBindingExisted() ? HttpStatus.OK : HttpStatus.CREATED);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE)
+
+	@RequestMapping(value = "/{foundationId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteServiceInstanceBinding(@PathVariable("foundationId") String foundationId,
+															   @PathVariable("instanceId") String serviceInstanceId,
+															   @PathVariable("bindingId") String bindingId,
+															   @RequestParam("service_id") String serviceDefinitionId,
+															   @RequestParam("plan_id") String planId) {
+
+		log.debug("Deleting a service instance binding: serviceInstanceId={}, bindingId={}, serviceDefinitionId={}, planId={}, foundationId={}",
+				serviceInstanceId, bindingId, serviceDefinitionId, planId, foundationId);
+
+		DeleteServiceInstanceBindingRequest request =
+				new DeleteServiceInstanceBindingRequest(serviceInstanceId, bindingId, serviceDefinitionId, planId,
+						getServiceDefinition(serviceDefinitionId));
+
+		return deleteServiceInstanceBinding(bindingId, request.withFoundationId(foundationId));
+	}
+
+	@RequestMapping(value = "/v2/service_instances/{instanceId}/service_bindings/{bindingId}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteServiceInstanceBinding(@PathVariable("instanceId") String serviceInstanceId,
 															   @PathVariable("bindingId") String bindingId,
 															   @RequestParam("service_id") String serviceDefinitionId,
 															   @RequestParam("plan_id") String planId) {
-		log.debug("Deleting a service instance binding: serviceInstanceId={}, bindingId={}, serviceDefinitionId={}, planId={}", serviceInstanceId, bindingId, serviceDefinitionId, planId);
 
+		log.debug("Deleting a service instance binding: serviceInstanceId={}, bindingId={}, serviceDefinitionId={}, planId={}",
+				serviceInstanceId, bindingId, serviceDefinitionId, planId);
+
+		DeleteServiceInstanceBindingRequest request =
+				new DeleteServiceInstanceBindingRequest(serviceInstanceId, bindingId, serviceDefinitionId, planId,
+						getServiceDefinition(serviceDefinitionId));
+
+		return deleteServiceInstanceBinding(bindingId, request);
+	}
+
+	private ResponseEntity<String> deleteServiceInstanceBinding(String bindingId,
+																DeleteServiceInstanceBindingRequest request) {
 		try {
-			DeleteServiceInstanceBindingRequest request =
-					new DeleteServiceInstanceBindingRequest(serviceInstanceId, bindingId, serviceDefinitionId, planId,
-							getServiceDefinition(serviceDefinitionId));
-
 			serviceInstanceBindingService.deleteServiceInstanceBinding(request);
 		} catch (ServiceInstanceBindingDoesNotExistException e) {
 			log.debug("Service instance binding does not exist: ", e);
