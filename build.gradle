@@ -22,6 +22,8 @@ apply plugin: 'propdeps-eclipse'
 
 apply from: "${rootProject.projectDir}/publish-maven.gradle"
 
+compileJava.dependsOn(processResources)
+
 if (project.hasProperty('platformVersion')) {
     apply plugin: 'spring-io'
 
@@ -70,6 +72,7 @@ dependencies {
 
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
     testCompile("com.jayway.jsonpath:json-path:${jsonPathVersion}")
+    optional "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
 }
 
 task testsJar(type: Jar) {
