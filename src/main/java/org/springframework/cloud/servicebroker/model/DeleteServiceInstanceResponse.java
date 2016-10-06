@@ -17,4 +17,9 @@ public class DeleteServiceInstanceResponse extends AsyncServiceInstanceResponse 
 		this.async = async;
 		return this;
 	}
+
+	public DeleteServiceInstanceResponse withOperation(final String operation) {
+		this.operation = operation;
+		return this;
+	}
 }

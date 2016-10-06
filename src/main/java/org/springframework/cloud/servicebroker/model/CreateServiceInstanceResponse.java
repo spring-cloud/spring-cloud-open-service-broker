@@ -47,4 +47,9 @@ public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 		this.async = async;
 		return this;
 	}
+
+	public CreateServiceInstanceResponse withOperation(final String operation) {
+		this.operation = operation;
+		return this;
+	}
 }

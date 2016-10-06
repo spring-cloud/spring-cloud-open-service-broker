@@ -17,4 +17,9 @@ public class UpdateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 		this.async = async;
 		return this;
 	}
+
+	public UpdateServiceInstanceResponse withOperation(final String operation) {
+		this.operation = operation;
+		return this;
+	}
 }

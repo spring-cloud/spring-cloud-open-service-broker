@@ -140,7 +140,8 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isAccepted())
-				.andExpect(jsonPath("$.dashboard_url", is(asyncCreateResponse.getDashboardUrl())));
+				.andExpect(jsonPath("$.dashboard_url", is(asyncCreateResponse.getDashboardUrl())))
+ 		        .andExpect(jsonPath("$.operation", is(asyncCreateResponse.getOperation())));
 	}
 
 	@Test
@@ -263,7 +264,8 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(delete(buildUrl(syncDeleteRequest, false))
 				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isOk())
+				.andExpect(content().string("{}"));
 	}
 
 	@Test
@@ -291,7 +293,8 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(delete(buildUrl(asyncDeleteRequest, false))
 				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isAccepted());
+				.andExpect(status().isAccepted())
+				.andExpect(jsonPath("$.operation", is(asyncDeleteResponse.getOperation())));
 	}
 
 	@Test
@@ -346,7 +349,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$", is("{}")));
+				.andExpect(content().string("{}"));
 	}
 
 	@Test
@@ -361,7 +364,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$", is("{}")));
+				.andExpect(content().string("{}"));
 
 		ArgumentCaptor<UpdateServiceInstanceRequest> argumentCaptor = ArgumentCaptor.forClass(UpdateServiceInstanceRequest.class);
 		Mockito.verify(serviceInstanceService).updateServiceInstance(argumentCaptor.capture());
@@ -380,7 +383,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isAccepted())
-				.andExpect(jsonPath("$", is("{}")));
+				.andExpect(jsonPath("$.operation", is(asyncUpdateResponse.getOperation())));
 	}
 
 	@Test
@@ -539,6 +542,10 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	private String buildUrl(GetLastServiceOperationRequest request, Boolean withFoundationId) {
 		UriComponentsBuilder builder = withFoundationId ? foundationIdUriBuilder : uriBuilder;
-		return builder.pathSegment(request.getServiceInstanceId(), "last_operation").toUriString();
+		return builder.pathSegment(request.getServiceInstanceId(), "last_operation")
+				.queryParam("service_id", request.getServiceDefinitionId())
+				.queryParam("plan_id", request.getPlanId())
+				.queryParam("operation", request.getOperation())
+				.toUriString();
 	}
 }

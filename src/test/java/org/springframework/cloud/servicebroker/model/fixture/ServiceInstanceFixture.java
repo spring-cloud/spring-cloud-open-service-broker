@@ -24,9 +24,10 @@ public class ServiceInstanceFixture {
 	}
 
 	public static CreateServiceInstanceResponse buildCreateServiceInstanceResponse(boolean async) {
-		return new CreateServiceInstanceResponse()
+		final CreateServiceInstanceResponse response = new CreateServiceInstanceResponse()
 				.withDashboardUrl("https://dashboard_url.example.com")
 				.withAsync(async);
+		return response.isAsync() ? response.withOperation("task_10") : response;
 	}
 
 	public static DeleteServiceInstanceRequest buildDeleteServiceInstanceRequest(boolean acceptsIncomplete) {
@@ -39,7 +40,8 @@ public class ServiceInstanceFixture {
 	}
 
 	public static DeleteServiceInstanceResponse buildDeleteServiceInstanceResponse(boolean async) {
-		return new DeleteServiceInstanceResponse().withAsync(async);
+		final DeleteServiceInstanceResponse response = new DeleteServiceInstanceResponse().withAsync(async);
+        return response.isAsync() ? response.withOperation("task_10") : response;
 	}
 
 	public static UpdateServiceInstanceRequest buildUpdateServiceInstanceRequest(boolean acceptsIncomplete) {
@@ -53,10 +55,16 @@ public class ServiceInstanceFixture {
 	}
 
 	public static UpdateServiceInstanceResponse buildUpdateServiceInstanceResponse(boolean async) {
-		return new UpdateServiceInstanceResponse().withAsync(async);
+		final UpdateServiceInstanceResponse response = new UpdateServiceInstanceResponse().withAsync(async);
+        return response.isAsync() ? response.withOperation("task_10") : response;
 	}
 
 	public static GetLastServiceOperationRequest buildGetLastOperationRequest() {
-		return new GetLastServiceOperationRequest("service-instance-id");
+		ServiceDefinition service = ServiceFixture.getSimpleService();
+		return new GetLastServiceOperationRequest(
+				"service-instance-id",
+				service.getId(),
+				service.getPlans().get(0).getId())
+				.withOperation("task_10");
 	}
 }
