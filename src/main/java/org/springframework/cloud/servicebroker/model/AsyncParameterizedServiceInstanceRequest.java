@@ -36,7 +36,7 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 			BeanUtils.populate(bean, parameters);
 			return bean;
 		} catch (Exception e) {
-			throw new IllegalArgumentException("Error mapping parameters to class of type " + cls.getName());
+			throw new IllegalArgumentException("Error mapping parameters to class of type " + cls.getName(), e);
 		}
 	}
 }
