@@ -86,11 +86,19 @@ public class ServiceInstanceController extends BaseController {
 	}
 
 	@RequestMapping(value = "/v2/service_instances/{instanceId}/last_operation", method = RequestMethod.GET)
-	public ResponseEntity<?> getServiceInstanceLastOperation(@PathVariable("instanceId") String serviceInstanceId) {
+	public ResponseEntity<?> getServiceInstanceLastOperation(@PathVariable("instanceId") String serviceInstanceId,
+															 @RequestParam("service_id") String serviceDefinitionId,
+															 @RequestParam("plan_id") String planId,
+															 @RequestParam(value = "operation", required = false) String operation) {
 
-		log.debug("Getting service instance status: serviceInstanceId={}", serviceInstanceId);
+		log.debug("Getting service instance status: serviceInstanceId={}, serviceDefinitionId={}, planId={}, operation={}",
+				serviceInstanceId,
+				serviceDefinitionId,
+				planId,
+				operation);
 
-		GetLastServiceOperationRequest request = new GetLastServiceOperationRequest(serviceInstanceId);
+		GetLastServiceOperationRequest request = new GetLastServiceOperationRequest(serviceInstanceId, serviceDefinitionId, planId);
+		request.withOperation(operation);
 
 		GetLastServiceOperationResponse response = service.getLastOperation(request);
 
@@ -143,7 +151,7 @@ public class ServiceInstanceController extends BaseController {
 
 			log.debug("Deleting a service instance succeeded: serviceInstanceId={}", serviceInstanceId);
 
-			return new ResponseEntity<>("{}", response.isAsync() ? HttpStatus.ACCEPTED : HttpStatus.OK);
+			return new ResponseEntity<>(response, response.isAsync() ? HttpStatus.ACCEPTED : HttpStatus.OK);
 		} catch (ServiceInstanceDoesNotExistException e) {
 			log.debug("Service instance does not exist: ", e);
 			return new ResponseEntity<>("{}", HttpStatus.GONE);
@@ -151,7 +159,7 @@ public class ServiceInstanceController extends BaseController {
 	}
 
 	@RequestMapping(value = "/{foundationId}/v2/service_instances/{instanceId}", method = RequestMethod.PATCH)
-	public ResponseEntity<String> updateServiceInstance(@PathVariable("foundationId") String foundationId,
+	public ResponseEntity<?> updateServiceInstance(@PathVariable("foundationId") String foundationId,
 														@PathVariable("instanceId") String serviceInstanceId,
 														@Valid @RequestBody UpdateServiceInstanceRequest request,
 														@RequestParam(value = "accepts_incomplete", required = false) boolean acceptsIncomplete) {
@@ -159,7 +167,7 @@ public class ServiceInstanceController extends BaseController {
 	}
 
 	@RequestMapping(value = "/v2/service_instances/{instanceId}", method = RequestMethod.PATCH)
-	public ResponseEntity<String> updateServiceInstance(@PathVariable("instanceId") String serviceInstanceId,
+	public ResponseEntity<?> updateServiceInstance(@PathVariable("instanceId") String serviceInstanceId,
 														@Valid @RequestBody UpdateServiceInstanceRequest request,
 														@RequestParam(value = "accepts_incomplete", required = false) boolean acceptsIncomplete) {
 		if (log.isDebugEnabled()) {
@@ -176,7 +184,7 @@ public class ServiceInstanceController extends BaseController {
 
 		log.debug("Updating a service instance succeeded: serviceInstanceId={}", serviceInstanceId);
 
-		return new ResponseEntity<>("{}", response.isAsync() ? HttpStatus.ACCEPTED : HttpStatus.OK);
+		return new ResponseEntity<>(response, response.isAsync() ? HttpStatus.ACCEPTED : HttpStatus.OK);
 	}
 
 	@ExceptionHandler(ServiceInstanceExistsException.class)
