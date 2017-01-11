@@ -74,7 +74,8 @@ public class CatalogControllerIntegrationTest {
 				.andExpect(jsonPath("$.services[*].plans[*].id", containsInAnyOrder(plans.get(0).getId(), plans.get(1).getId())))
 				.andExpect(jsonPath("$.services[*].plans[*].name", containsInAnyOrder(plans.get(0).getName(), plans.get(1).getName())))
 				.andExpect(jsonPath("$.services[*].plans[*].description", containsInAnyOrder(plans.get(0).getDescription(), plans.get(1).getDescription())))
-				.andExpect(jsonPath("$.services[*].plans[*].metadata", containsInAnyOrder(Collections.EMPTY_MAP, plans.get(1).getMetadata())));
+				.andExpect(jsonPath("$.services[*].plans[*].metadata", containsInAnyOrder(Collections.EMPTY_MAP, plans.get(1).getMetadata())))
+		        .andExpect(jsonPath("$.services[*].plans[*].free", containsInAnyOrder(plans.get(0).isFree(), plans.get(1).isFree())));
 	}
 
 	@Test
@@ -134,7 +135,8 @@ public class CatalogControllerIntegrationTest {
 				.andExpect(jsonPath("$.services[*].plans[*].id", containsInAnyOrder(plans.get(0).getId(), plans.get(1).getId())))
 				.andExpect(jsonPath("$.services[*].plans[*].name", containsInAnyOrder(plans.get(0).getName(), plans.get(1).getName())))
 				.andExpect(jsonPath("$.services[*].plans[*].description", containsInAnyOrder(plans.get(0).getDescription(), plans.get(1).getDescription())))
-				.andExpect(jsonPath("$.services[*].plans[*].metadata", containsInAnyOrder(Collections.EMPTY_MAP, plans.get(1).getMetadata())));
+				.andExpect(jsonPath("$.services[*].plans[*].metadata", containsInAnyOrder(Collections.EMPTY_MAP, plans.get(1).getMetadata())))
+		        .andExpect(jsonPath("$.services[*].plans[*].free", containsInAnyOrder(plans.get(0).isFree(), plans.get(1).isFree())));
 	}
 
 }

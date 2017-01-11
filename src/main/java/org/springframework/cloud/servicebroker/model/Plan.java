@@ -63,7 +63,7 @@ public class Plan {
 	 */
 	@JsonSerialize
 	@JsonProperty("free")
-	private boolean free;
+	private boolean free = true;
 
 	public Plan() {
 	}
