@@ -17,7 +17,7 @@ import java.util.List;
  *     public List<String> strings;
  * </code>
  */
-class EmptyMapSerializer extends JsonSerializer<List<?>> {
+public class EmptyMapSerializer extends JsonSerializer<List<?>> {
 	public EmptyMapSerializer() {
 	}
 
