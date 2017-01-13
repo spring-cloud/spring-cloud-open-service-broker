@@ -28,4 +28,9 @@ public enum OperationState {
 	public String getValue() {
 		return state;
 	}
+
+	@Override
+	public String toString() {
+		return state;
+	}
 }

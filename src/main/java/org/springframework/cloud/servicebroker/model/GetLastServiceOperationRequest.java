@@ -35,6 +35,12 @@ public class GetLastServiceOperationRequest {
 	 */
 	protected String operation;
 
+	public GetLastServiceOperationRequest(String instanceId) {
+		this.serviceInstanceId = instanceId;
+		this.serviceDefinitionId = null;
+		this.planId = null;
+	}
+
 	public GetLastServiceOperationRequest(String instanceId, String serviceId, String planId) {
 		this.serviceInstanceId = instanceId;
 		this.serviceDefinitionId = serviceId;

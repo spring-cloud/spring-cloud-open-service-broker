@@ -2,14 +2,18 @@ package org.springframework.cloud.servicebroker.model.fixture;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceRouteBindingResponse;
+import org.springframework.cloud.servicebroker.model.CreateServiceInstanceVolumeBindingResponse;
 import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.ServiceBindingResource;
 import org.springframework.cloud.servicebroker.model.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.SharedVolumeDevice;
+import org.springframework.cloud.servicebroker.model.VolumeMount;
 
 public class ServiceInstanceBindingFixture {
 
@@ -55,6 +59,17 @@ public class ServiceInstanceBindingFixture {
 	public static CreateServiceInstanceRouteBindingResponse buildCreateBindingResponseForRoute() {
 		return new CreateServiceInstanceRouteBindingResponse()
 				.withRouteServiceUrl(ROUTE);
+	}
+
+	public static CreateServiceInstanceVolumeBindingResponse buildCreateBindingResponseForVolume() {
+		Map<String, Object> volumeDeviceConfig = Collections.singletonMap("configKey", (Object) "configValue");
+		List<VolumeMount> volumeMounts = Collections.singletonList(
+				new VolumeMount("cephdriver", "/data/images", VolumeMount.Mode.READ_WRITE,
+						VolumeMount.DeviceType.SHARED,
+						new SharedVolumeDevice("volumeId", volumeDeviceConfig))
+		);
+		return new CreateServiceInstanceVolumeBindingResponse()
+				.withVolumeMounts(volumeMounts);
 	}
 
 	public static DeleteServiceInstanceBindingRequest buildDeleteServiceInstanceBindingRequest() {

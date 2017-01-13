@@ -2,6 +2,7 @@ package org.springframework.cloud.servicebroker.model;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -19,6 +20,7 @@ public class GetLastServiceOperationResponse {
 	/**
 	 * The current state of the asynchronous request.
 	 */
+	@JsonSerialize(using = ToStringSerializer.class)
 	private OperationState state;
 
 	/**
@@ -47,11 +49,5 @@ public class GetLastServiceOperationResponse {
 	public GetLastServiceOperationResponse withDeleteOperation(final boolean deleteOperation) {
 		this.deleteOperation = deleteOperation;
 		return this;
-	}
-
-	@JsonSerialize
-	@JsonProperty("state")
-	public String getStateValue() {
-		return state.getValue();
 	}
 }

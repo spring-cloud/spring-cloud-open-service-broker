@@ -7,7 +7,10 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotE
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceRouteBindingResponse;
+import org.springframework.cloud.servicebroker.model.CreateServiceInstanceVolumeBindingResponse;
 import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.SharedVolumeDevice;
+import org.springframework.cloud.servicebroker.model.VolumeMount;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.junit.Before;
 import org.junit.Test;
@@ -180,6 +183,31 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.andExpect(jsonPath("$.credentials.password", is(response.getCredentials().get("password"))))
 				.andExpect(jsonPath("$.syslog_drain_url", is(response.getSyslogDrainUrl())))
 				.andExpect(jsonPath("$.route_service_url", nullValue()));
+	}
+
+	@Test
+	public void createBindingToVolumeSucceeds() throws Exception {
+		CreateServiceInstanceBindingRequest request = ServiceInstanceBindingFixture.buildCreateAppBindingRequest();
+		CreateServiceInstanceVolumeBindingResponse response = ServiceInstanceBindingFixture.buildCreateBindingResponseForVolume();
+		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(request)))
+				.thenReturn(response);
+		VolumeMount volumeMount = response.getVolumeMounts().get(0);
+		SharedVolumeDevice device = (SharedVolumeDevice) volumeMount.getDevice();
+
+		setupCatalogService(request.getServiceDefinitionId());
+
+		mockMvc.perform(put(buildUrl(request, false))
+				.content(DataFixture.toJson(request))
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.credentials", nullValue()))
+				.andExpect(jsonPath("$..volume_mounts[0].driver", is(volumeMount.getDriver())))
+				.andExpect(jsonPath("$.volume_mounts[0].container_dir", is(volumeMount.getContainerDir())))
+				.andExpect(jsonPath("$.volume_mounts[0].mode", is(volumeMount.getMode().toString())))
+				.andExpect(jsonPath("$.volume_mounts[0].device_type", is(volumeMount.getDeviceType().toString())))
+				.andExpect(jsonPath("$.volume_mounts[0].device.volume_id", is(device.getVolumeId())))
+				.andExpect(jsonPath("$.volume_mounts[0].device.mount_config", is(device.getMountConfig())));
 	}
 
 	@Test

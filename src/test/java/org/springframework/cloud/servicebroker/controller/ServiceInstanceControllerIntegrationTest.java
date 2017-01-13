@@ -458,7 +458,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(get(buildUrl(lastOperationRequest, false)))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.state", is(OperationState.IN_PROGRESS.getValue())))
+				.andExpect(jsonPath("$.state", is(OperationState.IN_PROGRESS.toString())))
 				.andExpect(jsonPath("$.description", is("working on it")));
 	}
 
@@ -472,7 +472,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(get(buildUrl(lastOperationRequest, false)))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.state", is(OperationState.SUCCEEDED.getValue())))
+				.andExpect(jsonPath("$.state", is(OperationState.SUCCEEDED.toString())))
 				.andExpect(jsonPath("$.description", is("all good")));
 	}
 
@@ -488,7 +488,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(get(buildUrl(lastOperationRequest, false)))
 				.andExpect(status().isGone())
-				.andExpect(jsonPath("$.state", is(OperationState.SUCCEEDED.getValue())))
+				.andExpect(jsonPath("$.state", is(OperationState.SUCCEEDED.toString())))
 				.andExpect(jsonPath("$.description", is("all gone")));
 	}
 
@@ -503,7 +503,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(get(buildUrl(lastOperationRequest, false)))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.state", is(OperationState.FAILED.getValue())))
+				.andExpect(jsonPath("$.state", is(OperationState.FAILED.toString())))
 				.andExpect(jsonPath("$.description", is("not so good")));
 	}
 
