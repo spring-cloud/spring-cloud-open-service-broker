@@ -71,11 +71,14 @@ public class CatalogControllerIntegrationTest {
 				.andExpect(jsonPath("$.services[*].bindable", contains(service.isBindable())))
 				.andExpect(jsonPath("$.services[*].plan_updateable", contains(service.isPlanUpdateable())))
 				.andExpect(jsonPath("$.services[*].requires[*]", empty()))
+				.andExpect(jsonPath("$.services[*].plans[*]", hasSize(2)))
 				.andExpect(jsonPath("$.services[*].plans[*].id", containsInAnyOrder(plans.get(0).getId(), plans.get(1).getId())))
 				.andExpect(jsonPath("$.services[*].plans[*].name", containsInAnyOrder(plans.get(0).getName(), plans.get(1).getName())))
 				.andExpect(jsonPath("$.services[*].plans[*].description", containsInAnyOrder(plans.get(0).getDescription(), plans.get(1).getDescription())))
 				.andExpect(jsonPath("$.services[*].plans[*].metadata", containsInAnyOrder(Collections.EMPTY_MAP, plans.get(1).getMetadata())))
-		        .andExpect(jsonPath("$.services[*].plans[*].free", containsInAnyOrder(plans.get(0).isFree(), plans.get(1).isFree())));
+				.andExpect(jsonPath("$.services[*].plans[*].bindable", hasSize(1)))
+				.andExpect(jsonPath("$.services[*].plans[*].bindable", contains(plans.get(1).isBindable())))
+				.andExpect(jsonPath("$.services[*].plans[*].free", containsInAnyOrder(plans.get(0).isFree(), plans.get(1).isFree())));
 	}
 
 	@Test
@@ -112,7 +115,6 @@ public class CatalogControllerIntegrationTest {
 				.andExpect(jsonPath("$.services", empty()));
 	}
 
-
 	@Test
 	public void catalogIsRetrievedCorrectlyWithFoundationId() throws Exception {
 		when(catalogService.getCatalog()).thenReturn(getCatalog());
@@ -136,7 +138,6 @@ public class CatalogControllerIntegrationTest {
 				.andExpect(jsonPath("$.services[*].plans[*].name", containsInAnyOrder(plans.get(0).getName(), plans.get(1).getName())))
 				.andExpect(jsonPath("$.services[*].plans[*].description", containsInAnyOrder(plans.get(0).getDescription(), plans.get(1).getDescription())))
 				.andExpect(jsonPath("$.services[*].plans[*].metadata", containsInAnyOrder(Collections.EMPTY_MAP, plans.get(1).getMetadata())))
-		        .andExpect(jsonPath("$.services[*].plans[*].free", containsInAnyOrder(plans.get(0).isFree(), plans.get(1).isFree())));
+				.andExpect(jsonPath("$.services[*].plans[*].free", containsInAnyOrder(plans.get(0).isFree(), plans.get(1).isFree())));
 	}
-
 }

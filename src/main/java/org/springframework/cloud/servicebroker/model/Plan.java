@@ -3,6 +3,9 @@ package org.springframework.cloud.servicebroker.model;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -59,6 +62,16 @@ public class Plan {
 	private Map<String, Object> metadata;
 
 	/**
+	 * Indicates whether the service with this plan can be bound to applications. This is an optional field. If the
+	 * value is <code>null</code>, the field will be omitted from the serialized JSON.
+	 */
+	@Getter(AccessLevel.NONE)
+	@JsonSerialize
+	@JsonProperty("bindable")
+	@JsonInclude(Include.NON_NULL)
+	private Boolean bindable;
+
+	/**
 	 * Indicates whether the plan can be limited by the non_basic_services_allowed field in a Cloud Foundry Quota.
 	 */
 	@JsonSerialize
@@ -82,5 +95,14 @@ public class Plan {
 	public Plan(String id, String name, String description, Map<String, Object> metadata, boolean free) {
 		this(id, name, description, metadata);
 		this.free = free;
+	}
+
+	public Plan(String id, String name, String description, Map<String, Object> metadata, boolean free, boolean bindable) {
+		this(id, name, description, metadata, free);
+		this.bindable = bindable;
+	}
+
+	public Boolean isBindable() {
+		return bindable;
 	}
 }

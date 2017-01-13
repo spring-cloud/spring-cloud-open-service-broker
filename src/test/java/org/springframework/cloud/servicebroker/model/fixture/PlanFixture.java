@@ -24,7 +24,6 @@ public class PlanFixture {
 		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("key1", "value1");
 		metadata.put("key2", "value2");
-		return new Plan("plan-two-id", "Plan Two", "Description for Plan Two", metadata, false);
+		return new Plan("plan-two-id", "Plan Two", "Description for Plan Two", metadata, false, true);
 	}
-	
 }

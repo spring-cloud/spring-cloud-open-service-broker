@@ -6,9 +6,9 @@ import static org.junit.Assert.assertEquals;
 
 public class PlanTest {
 
-    @Test
-    public void servicePlanIsFreeByDefault() throws Exception {
-        final Plan plan = new Plan();
-        assertEquals(Boolean.TRUE, plan.isFree());
-    }
+	@Test
+	public void servicePlanIsFreeByDefault() throws Exception {
+		final Plan plan = new Plan();
+		assertEquals(Boolean.TRUE, plan.isFree());
+	}
 }
