@@ -14,7 +14,7 @@ import java.util.List;
  * Example:
  * <code>
  *     {@literal @JsonSerialize(nullsUsing = EmptyListSerializer.class)}
- *     public List<String> strings;
+ *     public List&lt;String&gt; strings;
  * </code>
  */
 public class EmptyListSerializer extends JsonSerializer<List<?>> {
