@@ -8,6 +8,9 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 public abstract class ControllerIntegrationTest {
+	protected static final String API_INFO_LOCATION = "https://api.cf.example.com";
+	protected static final String FOUNDATION_ID = "foundation-abc";
+
 	@Mock
 	protected CatalogService catalogService;
 

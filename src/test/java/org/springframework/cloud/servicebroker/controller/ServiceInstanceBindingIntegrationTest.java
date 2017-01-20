@@ -7,6 +7,8 @@ import org.springframework.cloud.servicebroker.model.fixture.ServiceInstanceBind
 import org.springframework.web.util.UriComponentsBuilder;
 
 public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIntegrationTest {
+	protected static final String SERVICE_INSTANCES_ROOT_PATH = "/v2/service_instances/";
+
 	protected UriComponentsBuilder uriBuilder;
 	protected UriComponentsBuilder foundationIdUriBuilder;
 
@@ -15,9 +17,9 @@ public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIn
 
 	@Before
 	public void setupBase() {
-		uriBuilder = UriComponentsBuilder.fromPath("/v2/service_instances/")
+		uriBuilder = UriComponentsBuilder.fromPath(SERVICE_INSTANCES_ROOT_PATH)
 				.pathSegment("service-instance-one-id", "service_bindings");
-		foundationIdUriBuilder = UriComponentsBuilder.fromPath("/123/v2/service_instances/")
+		foundationIdUriBuilder = UriComponentsBuilder.fromPath("/").path(FOUNDATION_ID).path(SERVICE_INSTANCES_ROOT_PATH)
 				.pathSegment("service-instance-one-id", "service_bindings");
 
 		createRequest = ServiceInstanceBindingFixture.buildCreateAppBindingRequest();

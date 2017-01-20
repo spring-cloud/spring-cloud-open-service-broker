@@ -64,13 +64,6 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	private transient String serviceInstanceId;
 
 	/**
-	 * The Cloud Foundry Foundation ID used to identify the foundation instance by a nested route in a
-	 * multi-cloud scenario.
-	 */
-	@JsonIgnore
-	private transient String foundationId;
-
-	/**
 	 * The {@link ServiceDefinition} of the service to provision. This is resolved from the
 	 * <code>serviceDefinitionId</code> as a convenience to the broker.
 	 */
@@ -83,7 +76,6 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		this.planId = null;
 		this.organizationGuid = null;
 		this.spaceGuid = null;
-		this.foundationId = null;
 	}
 	
 	public CreateServiceInstanceRequest(String serviceDefinitionId, String planId,
@@ -118,6 +110,11 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 	public CreateServiceInstanceRequest withAsyncAccepted(boolean asyncAccepted) {
 		this.asyncAccepted = asyncAccepted;
+		return this;
+	}
+
+	public CreateServiceInstanceRequest withApiInfoLocation(String apiInfoLocation) {
+		this.apiInfoLocation = apiInfoLocation;
 		return this;
 	}
 }

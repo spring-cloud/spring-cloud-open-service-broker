@@ -30,10 +30,12 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -67,6 +69,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		mockMvc.perform(put(buildUrl(createRequest, false))
 				.content(DataFixture.toJson(createRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
@@ -75,6 +78,10 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.andExpect(jsonPath("$.credentials.password", is(createResponse.getCredentials().get("password"))))
 				.andExpect(jsonPath("$.syslog_drain_url", nullValue()))
 				.andExpect(jsonPath("$.route_service_url", nullValue()));
+
+		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
+		assertNull(actualRequest.getFoundationId());
+		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
 	}
 
 	@Test
@@ -88,6 +95,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		mockMvc.perform(put(buildUrl(createRequest, true))
 				.content(DataFixture.toJson(createRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
@@ -97,9 +105,9 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.andExpect(jsonPath("$.syslog_drain_url", nullValue()))
 				.andExpect(jsonPath("$.route_service_url", nullValue()));
 
-		ArgumentCaptor<CreateServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor.forClass(CreateServiceInstanceBindingRequest.class);
-		verify(serviceInstanceBindingService).createServiceInstanceBinding(argumentCaptor.capture());
-		assertEquals("123", argumentCaptor.getValue().getFoundationId());
+		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
+		assertEquals(FOUNDATION_ID, actualRequest.getFoundationId());
+		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
 	}
 
 	@Test
@@ -115,6 +123,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		mockMvc.perform(put(buildUrl(createRequest, false))
 				.content(DataFixture.toJson(createRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
@@ -136,6 +145,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		mockMvc.perform(put(buildUrl(request, false))
 				.content(DataFixture.toJson(request))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
@@ -157,6 +167,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		mockMvc.perform(put(buildUrl(request, false))
 				.content(DataFixture.toJson(request))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
@@ -175,6 +186,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		mockMvc.perform(put(buildUrl(createRequest, false))
 				.content(DataFixture.toJson(createRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
@@ -198,6 +210,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		mockMvc.perform(put(buildUrl(request, false))
 				.content(DataFixture.toJson(request))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
@@ -219,6 +232,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		mockMvc.perform(put(buildUrl(createRequest, false))
 				.content(DataFixture.toJson(createRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
@@ -237,6 +251,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		mockMvc.perform(put(buildUrl(createRequest, false))
 				.content(DataFixture.toJson(createRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated());
@@ -251,6 +266,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		mockMvc.perform(put(buildUrl(createRequest, false))
 				.content(DataFixture.toJson(createRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isConflict())
@@ -264,8 +280,9 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		body = body.replace("service_id", "foo");
 
 		mockMvc.perform(put(buildUrl(createRequest, false))
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(body))
+				.content(body)
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.description", containsString("serviceDefinitionId")));
 	}
@@ -276,6 +293,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		mockMvc.perform(put(buildUrl(createRequest, false))
 				.content(body)
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
@@ -288,11 +306,16 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		setupCatalogService(deleteRequest.getServiceDefinitionId());
 
 		mockMvc.perform(delete(buildUrl(deleteRequest, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", is("{}")));
 
 		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(eq(deleteRequest));
+
+		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
+		assertNull(actualRequest.getFoundationId());
+		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
 	}
 
 	@Test
@@ -300,13 +323,13 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		setupCatalogService(deleteRequest.getServiceDefinitionId());
 
 		mockMvc.perform(delete(buildUrl(deleteRequest, true))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", is("{}")));
 
-		ArgumentCaptor<DeleteServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor.forClass(DeleteServiceInstanceBindingRequest.class);
-		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(argumentCaptor.capture());
-		assertEquals("123", argumentCaptor.getValue().getFoundationId());
+		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
+		assertEquals(FOUNDATION_ID, actualRequest.getFoundationId());
 	}
 
 	@Test
@@ -317,6 +340,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		setupCatalogService(deleteRequest.getServiceDefinitionId());
 
 		mockMvc.perform(delete(buildUrl(deleteRequest, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.description", containsString(deleteRequest.getServiceInstanceId())));
@@ -330,6 +354,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		setupCatalogService(deleteRequest.getServiceDefinitionId());
 
 		mockMvc.perform(delete(buildUrl(deleteRequest, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isGone())
 				.andExpect(jsonPath("$", is("{}")));
@@ -341,7 +366,20 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.thenReturn(null);
 
 		mockMvc.perform(delete(buildUrl(deleteRequest, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
+	}
+
+	private CreateServiceInstanceBindingRequest verifyCreateBinding() {
+		ArgumentCaptor<CreateServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor.forClass(CreateServiceInstanceBindingRequest.class);
+		Mockito.verify(serviceInstanceBindingService).createServiceInstanceBinding(argumentCaptor.capture());
+		return argumentCaptor.getValue();
+	}
+
+	private DeleteServiceInstanceBindingRequest verifyDeleteBinding() {
+		ArgumentCaptor<DeleteServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor.forClass(DeleteServiceInstanceBindingRequest.class);
+		Mockito.verify(serviceInstanceBindingService).deleteServiceInstanceBinding(argumentCaptor.capture());
+		return argumentCaptor.getValue();
 	}
 }

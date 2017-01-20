@@ -1,7 +1,6 @@
 package org.springframework.cloud.servicebroker.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.servicebroker.interceptor.ApiInfoLocationInterceptor;
 import org.springframework.cloud.servicebroker.interceptor.BrokerApiVersionInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -16,12 +15,8 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 	@Autowired
 	private BrokerApiVersionInterceptor brokerApiVersionInterceptor;
 
-	@Autowired
-	private ApiInfoLocationInterceptor apiInfoLocationInterceptor;
-
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(brokerApiVersionInterceptor).addPathPatterns(V2_API_PATH_PATTERN);
-		registry.addInterceptor(apiInfoLocationInterceptor).addPathPatterns(V2_API_PATH_PATTERN);
 	}
 }

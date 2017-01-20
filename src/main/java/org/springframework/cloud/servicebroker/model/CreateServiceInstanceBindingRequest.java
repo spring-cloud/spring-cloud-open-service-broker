@@ -20,11 +20,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * @author Scott Frederick
  */
 @Getter
-@ToString
-@EqualsAndHashCode
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 @SuppressWarnings("deprecation")
-public class CreateServiceInstanceBindingRequest {
+public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	/**
 	 * The ID of the service being bound, from the broker catalog.
 	 */
@@ -72,13 +72,6 @@ public class CreateServiceInstanceBindingRequest {
 	 */
 	@JsonIgnore
 	private transient String serviceInstanceId;
-
-	/**
-	 * The Cloud Foundry Foundation ID used to identify the foundation instance by a nested route in a
-	 * multi-cloud scenario.
-	 */
-	@JsonIgnore
-	private transient String foundationId;
 
 	/**
 	 * The Cloud Controller GUID of the service binding being created. This ID will be used for future
@@ -142,6 +135,16 @@ public class CreateServiceInstanceBindingRequest {
 		return this;
 	}
 
+	public CreateServiceInstanceBindingRequest withFoundationId(String foundationId) {
+		this.foundationId = foundationId;
+		return this;
+	}
+
+	public CreateServiceInstanceBindingRequest withApiInfoLocation(String apiInfoLocation) {
+		this.apiInfoLocation = apiInfoLocation;
+		return this;
+	}
+
 	public String getBoundAppGuid() {
 		if (bindResource == null) {
 			return null;
@@ -154,10 +157,5 @@ public class CreateServiceInstanceBindingRequest {
 			return null;
 		}
 		return (String) bindResource.get(ServiceBindingResource.BIND_RESOURCE_KEY_ROUTE.toString());
-	}
-
-	public CreateServiceInstanceBindingRequest withFoundationId(String foundationId) {
-		this.foundationId = foundationId;
-		return this;
 	}
 }

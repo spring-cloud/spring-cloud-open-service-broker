@@ -2,9 +2,13 @@ package org.springframework.cloud.servicebroker.controller;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
+import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -38,6 +42,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrationTest {
+
+	private static final String SERVICE_INSTANCES_ROOT_PATH = "/v2/service_instances/";
 
 	private MockMvc mockMvc;
 
@@ -73,8 +79,8 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.setMessageConverters(new MappingJackson2HttpMessageConverter())
 				.build();
 
-		uriBuilder = UriComponentsBuilder.fromPath("/v2/service_instances/");
-		foundationIdUriBuilder = UriComponentsBuilder.fromPath("/456/v2/service_instances/");
+		uriBuilder = UriComponentsBuilder.fromPath(SERVICE_INSTANCES_ROOT_PATH);
+		foundationIdUriBuilder = UriComponentsBuilder.fromPath("/").path(FOUNDATION_ID).path(SERVICE_INSTANCES_ROOT_PATH);
 
 		syncCreateRequest = ServiceInstanceFixture.buildCreateServiceInstanceRequest(false);
 		syncCreateResponse = ServiceInstanceFixture.buildCreateServiceInstanceResponse(false);
@@ -103,10 +109,16 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(DataFixture.toJson(syncCreateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.dashboard_url", is(syncCreateResponse.getDashboardUrl())));
+
+		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
+		assertFalse(actualRequest.isAsyncAccepted());
+		assertNull(actualRequest.getFoundationId());
+		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
 	}
 
 	@Test
@@ -118,14 +130,14 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(put(buildUrl(syncCreateRequest, true))
 				.content(DataFixture.toJson(syncCreateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.dashboard_url", is(syncCreateResponse.getDashboardUrl())));
 
-		ArgumentCaptor<CreateServiceInstanceRequest> argumentCaptor = ArgumentCaptor.forClass(CreateServiceInstanceRequest.class);
-		Mockito.verify(serviceInstanceService).createServiceInstance(argumentCaptor.capture());
-		assertEquals("456", argumentCaptor.getValue().getFoundationId());
+		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
+		assertEquals(FOUNDATION_ID, actualRequest.getFoundationId());
 	}
 
 	@Test
@@ -137,11 +149,15 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(put(buildUrl(asyncCreateRequest, false))
 				.content(DataFixture.toJson(asyncCreateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isAccepted())
 				.andExpect(jsonPath("$.dashboard_url", is(asyncCreateResponse.getDashboardUrl())))
- 		        .andExpect(jsonPath("$.operation", is(asyncCreateResponse.getOperation())));
+				.andExpect(jsonPath("$.operation", is(asyncCreateResponse.getOperation())));
+
+		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
+		assertTrue(actualRequest.isAsyncAccepted());
 	}
 
 	@Test
@@ -153,6 +169,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(DataFixture.toJson(syncCreateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
@@ -166,6 +183,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(DataFixture.toJson(syncCreateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
@@ -182,6 +200,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(DataFixture.toJson(syncCreateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isConflict())
@@ -197,6 +216,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(DataFixture.toJson(syncCreateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
@@ -213,6 +233,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(DataFixture.toJson(syncCreateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
@@ -231,6 +252,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(body)
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
@@ -246,6 +268,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(body)
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
@@ -263,9 +286,15 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		setupCatalogService(syncDeleteRequest.getServiceDefinitionId());
 
 		mockMvc.perform(delete(buildUrl(syncDeleteRequest, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().string("{}"));
+
+		DeleteServiceInstanceRequest actualRequest = verifyDeleteServiceInstance();
+		assertFalse(actualRequest.isAsyncAccepted());
+		assertNull(actualRequest.getFoundationId());
+		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
 	}
 
 	@Test
@@ -276,12 +305,12 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		setupCatalogService(syncDeleteRequest.getServiceDefinitionId());
 
 		mockMvc.perform(delete(buildUrl(syncDeleteRequest, true))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 
-		ArgumentCaptor<DeleteServiceInstanceRequest> argumentCaptor = ArgumentCaptor.forClass(DeleteServiceInstanceRequest.class);
-		Mockito.verify(serviceInstanceService).deleteServiceInstance(argumentCaptor.capture());
-		assertEquals("456", argumentCaptor.getValue().getFoundationId());
+		DeleteServiceInstanceRequest actualRequest = verifyDeleteServiceInstance();
+		assertEquals(FOUNDATION_ID, actualRequest.getFoundationId());
 	}
 
 	@Test
@@ -292,9 +321,13 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		setupCatalogService(asyncDeleteRequest.getServiceDefinitionId());
 
 		mockMvc.perform(delete(buildUrl(asyncDeleteRequest, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isAccepted())
 				.andExpect(jsonPath("$.operation", is(asyncDeleteResponse.getOperation())));
+
+		DeleteServiceInstanceRequest actualRequest = verifyDeleteServiceInstance();
+		assertTrue(actualRequest.isAsyncAccepted());
 	}
 
 	@Test
@@ -305,6 +338,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		setupCatalogService(syncDeleteRequest.getServiceDefinitionId());
 
 		mockMvc.perform(delete(buildUrl(syncDeleteRequest, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isGone())
 				.andExpect(jsonPath("$", is("{}")));
@@ -319,6 +353,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.thenReturn(null);
 
 		mockMvc.perform(delete(buildUrl(syncDeleteRequest, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
@@ -331,6 +366,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		setupCatalogService(syncDeleteRequest.getServiceDefinitionId());
 
 		mockMvc.perform(delete(buildUrl(syncDeleteRequest, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.error", org.hamcrest.Matchers.is(AsyncRequiredErrorMessage.ASYNC_REQUIRED_ERROR)))
@@ -346,10 +382,16 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(patch(buildUrl(syncUpdateRequest, false))
 				.content(DataFixture.toJson(syncUpdateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().string("{}"));
+
+		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
+		assertFalse(actualRequest.isAsyncAccepted());
+		assertNull(actualRequest.getFoundationId());
+		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
 	}
 
 	@Test
@@ -361,14 +403,14 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(patch(buildUrl(syncUpdateRequest, true))
 				.content(DataFixture.toJson(syncUpdateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().string("{}"));
 
-		ArgumentCaptor<UpdateServiceInstanceRequest> argumentCaptor = ArgumentCaptor.forClass(UpdateServiceInstanceRequest.class);
-		Mockito.verify(serviceInstanceService).updateServiceInstance(argumentCaptor.capture());
-		assertEquals("456", argumentCaptor.getValue().getFoundationId());
+		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
+		assertEquals(FOUNDATION_ID, actualRequest.getFoundationId());
 	}
 
 	@Test
@@ -380,10 +422,14 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(patch(buildUrl(asyncUpdateRequest, false))
 				.content(DataFixture.toJson(asyncUpdateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isAccepted())
 				.andExpect(jsonPath("$.operation", is(asyncUpdateResponse.getOperation())));
+
+		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
+		assertTrue(actualRequest.isAsyncAccepted());
 	}
 
 	@Test
@@ -395,6 +441,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(patch(buildUrl(syncUpdateRequest, false))
 				.content(DataFixture.toJson(syncUpdateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
@@ -411,6 +458,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(patch(buildUrl(syncUpdateRequest, false))
 				.content(DataFixture.toJson(syncUpdateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
@@ -428,6 +476,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(patch(buildUrl(syncUpdateRequest, false))
 				.content(DataFixture.toJson(syncUpdateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
@@ -442,6 +491,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(patch(buildUrl(syncUpdateRequest, false))
 				.content(DataFixture.toJson(syncUpdateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
@@ -456,10 +506,15 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 						.withOperationState(OperationState.IN_PROGRESS)
 						.withDescription("working on it"));
 
-		mockMvc.perform(get(buildUrl(lastOperationRequest, false)))
+		mockMvc.perform(get(buildUrl(lastOperationRequest, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.state", is(OperationState.IN_PROGRESS.toString())))
 				.andExpect(jsonPath("$.description", is("working on it")));
+
+		GetLastServiceOperationRequest actualRequest = verifyLastOperation();
+		assertNull(actualRequest.getFoundationId());
+		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
 	}
 
 	@Test
@@ -470,10 +525,29 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		when(serviceInstanceService.getLastOperation(eq(lastOperationRequest))).thenReturn(response);
 
-		mockMvc.perform(get(buildUrl(lastOperationRequest, false)))
+		mockMvc.perform(get(buildUrl(lastOperationRequest, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.state", is(OperationState.SUCCEEDED.toString())))
 				.andExpect(jsonPath("$.description", is("all good")));
+	}
+
+	@Test
+	public void lastOperationHasSucceededStatusWithFoundationId() throws Exception {
+		GetLastServiceOperationResponse response = new GetLastServiceOperationResponse()
+				.withOperationState(OperationState.SUCCEEDED)
+				.withDescription("all good");
+
+		when(serviceInstanceService.getLastOperation(eq(lastOperationRequest))).thenReturn(response);
+
+		mockMvc.perform(get(buildUrl(lastOperationRequest, true))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.state", is(OperationState.SUCCEEDED.toString())))
+				.andExpect(jsonPath("$.description", is("all good")));
+
+		GetLastServiceOperationRequest actualRequest = verifyLastOperation();
+		assertEquals(FOUNDATION_ID, actualRequest.getFoundationId());
 	}
 
 	@Test
@@ -486,7 +560,8 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		when(serviceInstanceService.getLastOperation(eq(lastOperationRequest)))
 				.thenReturn(response);
 
-		mockMvc.perform(get(buildUrl(lastOperationRequest, false)))
+		mockMvc.perform(get(buildUrl(lastOperationRequest, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION))
 				.andExpect(status().isGone())
 				.andExpect(jsonPath("$.state", is(OperationState.SUCCEEDED.toString())))
 				.andExpect(jsonPath("$.description", is("all gone")));
@@ -501,7 +576,8 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		when(serviceInstanceService.getLastOperation(eq(lastOperationRequest)))
 				.thenReturn(response);
 
-		mockMvc.perform(get(buildUrl(lastOperationRequest, false)))
+		mockMvc.perform(get(buildUrl(lastOperationRequest, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.state", is(OperationState.FAILED.toString())))
 				.andExpect(jsonPath("$.description", is("not so good")));
@@ -512,7 +588,8 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		when(serviceInstanceService.getLastOperation(eq(lastOperationRequest)))
 				.thenThrow(new ServiceInstanceDoesNotExistException(lastOperationRequest.getServiceInstanceId()));
 
-		mockMvc.perform(get(buildUrl(lastOperationRequest, false)))
+		mockMvc.perform(get(buildUrl(lastOperationRequest, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION))
 				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.description", containsString(lastOperationRequest.getServiceInstanceId())));
 	}
@@ -547,5 +624,29 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.queryParam("plan_id", request.getPlanId())
 				.queryParam("operation", request.getOperation())
 				.toUriString();
+	}
+
+	private CreateServiceInstanceRequest verifyCreateServiceInstance() {
+		ArgumentCaptor<CreateServiceInstanceRequest> argumentCaptor = ArgumentCaptor.forClass(CreateServiceInstanceRequest.class);
+		Mockito.verify(serviceInstanceService).createServiceInstance(argumentCaptor.capture());
+		return argumentCaptor.getValue();
+	}
+
+	private DeleteServiceInstanceRequest verifyDeleteServiceInstance() {
+		ArgumentCaptor<DeleteServiceInstanceRequest> argumentCaptor = ArgumentCaptor.forClass(DeleteServiceInstanceRequest.class);
+		Mockito.verify(serviceInstanceService).deleteServiceInstance(argumentCaptor.capture());
+		return argumentCaptor.getValue();
+	}
+
+	private UpdateServiceInstanceRequest verifyUpdateServiceInstance() {
+		ArgumentCaptor<UpdateServiceInstanceRequest> argumentCaptor = ArgumentCaptor.forClass(UpdateServiceInstanceRequest.class);
+		Mockito.verify(serviceInstanceService).updateServiceInstance(argumentCaptor.capture());
+		return argumentCaptor.getValue();
+	}
+
+	private GetLastServiceOperationRequest verifyLastOperation() {
+		ArgumentCaptor<GetLastServiceOperationRequest> argumentCaptor = ArgumentCaptor.forClass(GetLastServiceOperationRequest.class);
+		Mockito.verify(serviceInstanceService).getLastOperation(argumentCaptor.capture());
+		return argumentCaptor.getValue();
 	}
 }

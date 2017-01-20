@@ -10,9 +10,10 @@ import lombok.ToString;
  * @author Scott Frederick
  */
 @Getter
-@ToString
-@EqualsAndHashCode
-public abstract class AsyncServiceInstanceRequest {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public abstract class AsyncServiceInstanceRequest extends ServiceBrokerRequest {
+	public final static String ASYNC_REQUEST_PARAMETER = "accepts_incomplete";
 
 	/**
 	 * Indicates whether clients of the service broker allow the broker to complete the request asynchronously. A

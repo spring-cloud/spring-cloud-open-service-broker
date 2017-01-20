@@ -11,9 +11,9 @@ import lombok.ToString;
  * @author Scott Frederick
  */
 @Getter
-@ToString
-@EqualsAndHashCode
-public class DeleteServiceInstanceBindingRequest {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class DeleteServiceInstanceBindingRequest extends ServiceBrokerRequest {
 
 	/**
 	 * The Cloud Controller GUID of the service instance to being unbound.
@@ -28,7 +28,6 @@ public class DeleteServiceInstanceBindingRequest {
 	private final String serviceDefinitionId;
 	private final String planId;
 	private transient final ServiceDefinition serviceDefinition;
-	private transient String foundationId;
 
 	public DeleteServiceInstanceBindingRequest(String serviceInstanceId, String bindingId,
 											   String serviceDefinitionId, String planId,
@@ -42,6 +41,11 @@ public class DeleteServiceInstanceBindingRequest {
 
 	public DeleteServiceInstanceBindingRequest withFoundationId(String foundationId) {
 		this.foundationId = foundationId;
+		return this;
+	}
+
+	public DeleteServiceInstanceBindingRequest withApiInfoLocation(String apiInfoLocation) {
+		this.apiInfoLocation = apiInfoLocation;
 		return this;
 	}
 }

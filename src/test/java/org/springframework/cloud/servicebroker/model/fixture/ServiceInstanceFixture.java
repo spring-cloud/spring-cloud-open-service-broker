@@ -35,8 +35,8 @@ public class ServiceInstanceFixture {
 		return new DeleteServiceInstanceRequest("service-instance-id",
 				service.getId(),
 				service.getPlans().get(0).getId(),
-				service,
-				acceptsIncomplete);
+				service)
+				.withAsyncAccepted(acceptsIncomplete);
 	}
 
 	public static DeleteServiceInstanceResponse buildDeleteServiceInstanceResponse(boolean async) {
@@ -64,7 +64,7 @@ public class ServiceInstanceFixture {
 		return new GetLastServiceOperationRequest(
 				"service-instance-id",
 				service.getId(),
-				service.getPlans().get(0).getId())
-				.withOperation("task_10");
+				service.getPlans().get(0).getId(),
+				"task_10");
 	}
 }

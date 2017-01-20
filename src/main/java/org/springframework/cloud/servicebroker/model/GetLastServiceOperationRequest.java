@@ -10,9 +10,9 @@ import lombok.ToString;
  * @author Scott Frederick
  */
 @Getter
-@ToString
-@EqualsAndHashCode
-public class GetLastServiceOperationRequest {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	/**
 	 * The Cloud Controller GUID of the service instance to get the status of.
 	 */
@@ -29,8 +29,8 @@ public class GetLastServiceOperationRequest {
 	private final String planId;
 
 	/**
-	 * The field optionally returned by the service broker on Provision, Update, Deprovision async responses.
-	 * Represents any state the service broker responsed with as a URL encoded string. Can be <code>null</code>
+	 * The field optionally returned by the service broker on async provision, update, deprovision responses.
+	 * Represents any state the service broker responded with as a URL encoded string. Can be <code>null</code>
 	 * to indicate that an operation state is not provided.
 	 */
 	protected String operation;
@@ -41,15 +41,20 @@ public class GetLastServiceOperationRequest {
 		this.planId = null;
 	}
 
-	public GetLastServiceOperationRequest(String instanceId, String serviceId, String planId) {
+	public GetLastServiceOperationRequest(String instanceId, String serviceId, String planId, String operation) {
 		this.serviceInstanceId = instanceId;
 		this.serviceDefinitionId = serviceId;
 		this.planId = planId;
+		this.operation = operation;
 	}
 
-	public GetLastServiceOperationRequest withOperation(final String operation) {
-		this.operation = operation;
+	public GetLastServiceOperationRequest withFoundationId(String foundationId) {
+		this.foundationId = foundationId;
 		return this;
 	}
 
+	public GetLastServiceOperationRequest withApiInfoLocation(String apiInfoLocation) {
+		this.apiInfoLocation = apiInfoLocation;
+		return this;
+	}
 }

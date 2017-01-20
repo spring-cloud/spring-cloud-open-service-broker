@@ -51,18 +51,10 @@ public class UpdateServiceInstanceRequest  extends AsyncParameterizedServiceInst
 	@JsonIgnore
 	private transient ServiceDefinition serviceDefinition;
 
-	/**
-	 * The Cloud Foundry Foundation ID used to identify the foundation instance in a multi-cloud scenario.
-	 * This is optionally resolved from the <code>cfId</code> as a convenience to the broker.
-	 */
-	@JsonIgnore
-	private transient String foundationId;
-
 	public UpdateServiceInstanceRequest() {
 		super(null);
 		this.serviceDefinitionId = null;
 		this.planId = null;
-		this.foundationId = null;
 	}
 	
 	public UpdateServiceInstanceRequest(String serviceDefinitionId, String planId,
@@ -93,6 +85,11 @@ public class UpdateServiceInstanceRequest  extends AsyncParameterizedServiceInst
 
 	public UpdateServiceInstanceRequest withFoundationId(String foundationId) {
 		this.foundationId = foundationId;
+		return this;
+	}
+
+	public UpdateServiceInstanceRequest withApiInfoLocation(String apiInfoLocation) {
+		this.apiInfoLocation = apiInfoLocation;
 		return this;
 	}
 }
