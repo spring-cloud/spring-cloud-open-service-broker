@@ -39,8 +39,8 @@ public class DeleteServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		this.serviceDefinition = serviceDefinition;
 	}
 
-	public DeleteServiceInstanceBindingRequest withFoundationId(String foundationId) {
-		this.foundationId = foundationId;
+	public DeleteServiceInstanceBindingRequest withCfInstanceId(String cfInstanceId) {
+		this.cfInstanceId = cfInstanceId;
 		return this;
 	}
 

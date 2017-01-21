@@ -98,8 +98,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		return this;
 	}
 
-	public CreateServiceInstanceRequest withFoundationId(String foundationId) {
-		this.foundationId = foundationId;
+	public CreateServiceInstanceRequest withCfInstanceId(String cfInstanceId) {
+		this.cfInstanceId = cfInstanceId;
 		return this;
 	}
 

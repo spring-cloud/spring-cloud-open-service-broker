@@ -116,7 +116,7 @@ public class CatalogControllerIntegrationTest {
 	}
 
 	@Test
-	public void catalogIsRetrievedCorrectlyWithFoundationId() throws Exception {
+	public void catalogIsRetrievedCorrectlyWithCfInstanceId() throws Exception {
 		when(catalogService.getCatalog()).thenReturn(getCatalog());
 
 		ServiceDefinition service = ServiceFixture.getSimpleService();

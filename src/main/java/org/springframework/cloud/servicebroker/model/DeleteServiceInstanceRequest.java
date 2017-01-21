@@ -54,8 +54,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 		return this;
 	}
 
-	public DeleteServiceInstanceRequest withFoundationId(String foundationId) {
-		this.foundationId = foundationId;
+	public DeleteServiceInstanceRequest withCfInstanceId(String cfInstanceId) {
+		this.cfInstanceId = cfInstanceId;
 		return this;
 	}
 

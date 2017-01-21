@@ -55,7 +55,7 @@ public class ServiceInstanceController extends BaseController {
 	}
 
 	@RequestMapping(value = {
-			"/{foundationId}/v2/service_instances/{instanceId}",
+			"/{cfInstanceId}/v2/service_instances/{instanceId}",
 			"/v2/service_instances/{instanceId}"
 	}, method = RequestMethod.PUT)
 	public ResponseEntity<?> createServiceInstance(@PathVariable Map<String, String> pathVariables,
@@ -71,7 +71,7 @@ public class ServiceInstanceController extends BaseController {
 		request.withServiceInstanceId(serviceInstanceId)
 				.withServiceDefinition(serviceDefinition)
 				.withAsyncAccepted(acceptsIncomplete)
-				.withFoundationId(pathVariables.get("foundationId"))
+				.withCfInstanceId(pathVariables.get("cfInstanceId"))
 				.withApiInfoLocation(apiInfoLocation);
 
 		CreateServiceInstanceResponse response = service.createServiceInstance(request);
@@ -92,7 +92,7 @@ public class ServiceInstanceController extends BaseController {
 	}
 
 	@RequestMapping(value = {
-			"/{foundationId}/v2/service_instances/{instanceId}/last_operation",
+			"/{cfInstanceId}/v2/service_instances/{instanceId}/last_operation",
 			"/v2/service_instances/{instanceId}/last_operation"
 	}, method = RequestMethod.GET)
 	public ResponseEntity<?> getServiceInstanceLastOperation(@PathVariable Map<String, String> pathVariables,
@@ -105,7 +105,7 @@ public class ServiceInstanceController extends BaseController {
 				serviceInstanceId, serviceDefinitionId, planId, operation);
 
 		GetLastServiceOperationRequest request = new GetLastServiceOperationRequest(serviceInstanceId, serviceDefinitionId, planId, operation)
-				.withFoundationId(pathVariables.get("foundationId"))
+				.withCfInstanceId(pathVariables.get("cfInstanceId"))
 				.withApiInfoLocation(apiInfoLocation);
 
 		GetLastServiceOperationResponse response = service.getLastOperation(request);
@@ -118,7 +118,7 @@ public class ServiceInstanceController extends BaseController {
 	}
 
 	@RequestMapping(value = {
-			"/{foundationId}/v2/service_instances/{instanceId}",
+			"/{cfInstanceId}/v2/service_instances/{instanceId}",
 			"/v2/service_instances/{instanceId}"
 	}, method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteServiceInstance(@PathVariable Map<String, String> pathVariables,
@@ -133,7 +133,7 @@ public class ServiceInstanceController extends BaseController {
 		DeleteServiceInstanceRequest request =
 				new DeleteServiceInstanceRequest(serviceInstanceId, serviceDefinitionId, planId, getServiceDefinition(serviceDefinitionId))
 				.withAsyncAccepted(acceptsIncomplete)
-				.withFoundationId(pathVariables.get("foundationId"))
+				.withCfInstanceId(pathVariables.get("cfInstanceId"))
 				.withApiInfoLocation(apiInfoLocation);
 
 		try {
@@ -149,7 +149,7 @@ public class ServiceInstanceController extends BaseController {
 	}
 
 	@RequestMapping(value = {
-			"/{foundationId}/v2/service_instances/{instanceId}",
+			"/{cfInstanceId}/v2/service_instances/{instanceId}",
 			"/v2/service_instances/{instanceId}"
 	}, method = RequestMethod.PATCH)
 	public ResponseEntity<?> updateServiceInstance(@PathVariable Map<String, String> pathVariables,
@@ -165,7 +165,7 @@ public class ServiceInstanceController extends BaseController {
 		request.withServiceInstanceId(serviceInstanceId)
 				.withServiceDefinition(serviceDefinition)
 				.withAsyncAccepted(acceptsIncomplete)
-				.withFoundationId(pathVariables.get("foundationId"))
+				.withCfInstanceId(pathVariables.get("cfInstanceId"))
 				.withApiInfoLocation(apiInfoLocation);
 
 		UpdateServiceInstanceResponse response = service.updateServiceInstance(request);

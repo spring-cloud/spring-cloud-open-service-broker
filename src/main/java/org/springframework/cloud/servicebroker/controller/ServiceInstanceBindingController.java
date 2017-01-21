@@ -46,7 +46,7 @@ public class ServiceInstanceBindingController extends BaseController {
 	}
 
 	@RequestMapping(value = {
-			"/{foundationId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
+			"/{cfInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
 			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
 	}, method = RequestMethod.PUT)
 	public ResponseEntity<?> createServiceInstanceBinding(@PathVariable Map<String, String> pathVariables,
@@ -59,7 +59,7 @@ public class ServiceInstanceBindingController extends BaseController {
 		request.withServiceInstanceId(serviceInstanceId)
 				.withBindingId(bindingId)
 				.withServiceDefinition(getServiceDefinition(request.getServiceDefinitionId()))
-				.withFoundationId(pathVariables.get("foundationId"))
+				.withCfInstanceId(pathVariables.get("cfInstanceId"))
 				.withApiInfoLocation(apiInfoLocation);
 
 		CreateServiceInstanceBindingResponse response = serviceInstanceBindingService.createServiceInstanceBinding(request);
@@ -70,7 +70,7 @@ public class ServiceInstanceBindingController extends BaseController {
 	}
 
 	@RequestMapping(value = {
-			"/{foundationId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
+			"/{cfInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
 			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
 	}, method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteServiceInstanceBinding(@PathVariable Map<String, String> pathVariables,
@@ -85,7 +85,7 @@ public class ServiceInstanceBindingController extends BaseController {
 		DeleteServiceInstanceBindingRequest request =
 				new DeleteServiceInstanceBindingRequest(serviceInstanceId, bindingId, serviceDefinitionId, planId,
 						getServiceDefinition(serviceDefinitionId))
-				.withFoundationId(pathVariables.get("foundationId"))
+				.withCfInstanceId(pathVariables.get("cfInstanceId"))
 				.withApiInfoLocation(apiInfoLocation);
 
 		try {

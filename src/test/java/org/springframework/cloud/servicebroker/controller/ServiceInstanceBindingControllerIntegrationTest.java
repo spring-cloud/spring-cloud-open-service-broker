@@ -80,12 +80,12 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.andExpect(jsonPath("$.route_service_url", nullValue()));
 
 		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
-		assertNull(actualRequest.getFoundationId());
+		assertNull(actualRequest.getCfInstanceId());
 		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
 	}
 
 	@Test
-	public void createBindingToAppWithFoundationIdSucceeds() throws Exception {
+	public void createBindingToAppWithCfInstanceIdSucceeds() throws Exception {
 		CreateServiceInstanceAppBindingResponse createResponse = ServiceInstanceBindingFixture.buildCreateAppBindingResponse();
 
 		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(createRequest)))
@@ -106,7 +106,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.andExpect(jsonPath("$.route_service_url", nullValue()));
 
 		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
-		assertEquals(FOUNDATION_ID, actualRequest.getFoundationId());
+		assertEquals(CF_INSTANCE_ID, actualRequest.getCfInstanceId());
 		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
 	}
 
@@ -314,12 +314,12 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(eq(deleteRequest));
 
 		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
-		assertNull(actualRequest.getFoundationId());
+		assertNull(actualRequest.getCfInstanceId());
 		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
 	}
 
 	@Test
-	public void deleteBindingWithFoundationIdSucceeds() throws Exception {
+	public void deleteBindingWithCfInstanceIdSucceeds() throws Exception {
 		setupCatalogService(deleteRequest.getServiceDefinitionId());
 
 		mockMvc.perform(delete(buildUrl(deleteRequest, true))
@@ -329,7 +329,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.andExpect(jsonPath("$", is("{}")));
 
 		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
-		assertEquals(FOUNDATION_ID, actualRequest.getFoundationId());
+		assertEquals(CF_INSTANCE_ID, actualRequest.getCfInstanceId());
 	}
 
 	@Test

@@ -135,8 +135,8 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		return this;
 	}
 
-	public CreateServiceInstanceBindingRequest withFoundationId(String foundationId) {
-		this.foundationId = foundationId;
+	public CreateServiceInstanceBindingRequest withCfInstanceId(String cfInstanceId) {
+		this.cfInstanceId = cfInstanceId;
 		return this;
 	}
 

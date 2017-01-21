@@ -18,10 +18,11 @@ public abstract class ServiceBrokerRequest {
 
 	/**
 	 * The Cloud Foundry instance ID used to identify the Cloud Foundry instance when the service broker is registered
-	 * to multiple instances.
+	 * to multiple instances. Will be <code>null</code> if the service broker is not registered with an instance ID
+	 * in the registered URL.
 	 */
 	@JsonIgnore
-	protected transient String foundationId;
+	protected transient String cfInstanceId;
 
 	/**
 	 * Exposes the API info endpoint of the Cloud Foundry instance making the call to the service broker.
@@ -30,7 +31,7 @@ public abstract class ServiceBrokerRequest {
 	protected transient String apiInfoLocation;
 
 	public ServiceBrokerRequest() {
-		this.foundationId = null;
+		this.cfInstanceId = null;
 		this.apiInfoLocation = null;
 	}
 }

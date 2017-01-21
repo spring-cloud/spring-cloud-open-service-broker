@@ -48,8 +48,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		this.operation = operation;
 	}
 
-	public GetLastServiceOperationRequest withFoundationId(String foundationId) {
-		this.foundationId = foundationId;
+	public GetLastServiceOperationRequest withCfInstanceId(String cfInstanceId) {
+		this.cfInstanceId = cfInstanceId;
 		return this;
 	}
 

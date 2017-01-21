@@ -83,8 +83,8 @@ public class UpdateServiceInstanceRequest  extends AsyncParameterizedServiceInst
 		return this;
 	}
 
-	public UpdateServiceInstanceRequest withFoundationId(String foundationId) {
-		this.foundationId = foundationId;
+	public UpdateServiceInstanceRequest withCfInstanceId(String cfInstanceId) {
+		this.cfInstanceId = cfInstanceId;
 		return this;
 	}
 

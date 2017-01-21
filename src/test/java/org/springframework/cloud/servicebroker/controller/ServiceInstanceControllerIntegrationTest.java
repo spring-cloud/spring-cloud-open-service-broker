@@ -54,7 +54,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 	private ServiceInstanceService serviceInstanceService;
 
 	private UriComponentsBuilder uriBuilder;
-	private UriComponentsBuilder foundationIdUriBuilder;
+	private UriComponentsBuilder cfInstanceIdUriBuilder;
 
 	private CreateServiceInstanceRequest syncCreateRequest;
 	private CreateServiceInstanceRequest asyncCreateRequest;
@@ -80,7 +80,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.build();
 
 		uriBuilder = UriComponentsBuilder.fromPath(SERVICE_INSTANCES_ROOT_PATH);
-		foundationIdUriBuilder = UriComponentsBuilder.fromPath("/").path(FOUNDATION_ID).path(SERVICE_INSTANCES_ROOT_PATH);
+		cfInstanceIdUriBuilder = UriComponentsBuilder.fromPath("/").path(CF_INSTANCE_ID).path(SERVICE_INSTANCES_ROOT_PATH);
 
 		syncCreateRequest = ServiceInstanceFixture.buildCreateServiceInstanceRequest(false);
 		syncCreateResponse = ServiceInstanceFixture.buildCreateServiceInstanceResponse(false);
@@ -117,12 +117,12 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
 		assertFalse(actualRequest.isAsyncAccepted());
-		assertNull(actualRequest.getFoundationId());
+		assertNull(actualRequest.getCfInstanceId());
 		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
 	}
 
 	@Test
-	public void createServiceInstanceWithFoundationIdSucceeds() throws Exception {
+	public void createServiceInstanceWithCfInstanceIdSucceeds() throws Exception {
 		when(serviceInstanceService.createServiceInstance(eq(syncCreateRequest)))
 				.thenReturn(syncCreateResponse);
 
@@ -137,7 +137,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.andExpect(jsonPath("$.dashboard_url", is(syncCreateResponse.getDashboardUrl())));
 
 		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
-		assertEquals(FOUNDATION_ID, actualRequest.getFoundationId());
+		assertEquals(CF_INSTANCE_ID, actualRequest.getCfInstanceId());
 	}
 
 	@Test
@@ -293,12 +293,12 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		DeleteServiceInstanceRequest actualRequest = verifyDeleteServiceInstance();
 		assertFalse(actualRequest.isAsyncAccepted());
-		assertNull(actualRequest.getFoundationId());
+		assertNull(actualRequest.getCfInstanceId());
 		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
 	}
 
 	@Test
-	public void deleteServiceInstanceWithFoundationIdSucceeds() throws Exception {
+	public void deleteServiceInstanceWithCfInstanceIdSucceeds() throws Exception {
 		when(serviceInstanceService.deleteServiceInstance(eq(syncDeleteRequest)))
 				.thenReturn(syncDeleteResponse);
 
@@ -310,7 +310,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.andExpect(status().isOk());
 
 		DeleteServiceInstanceRequest actualRequest = verifyDeleteServiceInstance();
-		assertEquals(FOUNDATION_ID, actualRequest.getFoundationId());
+		assertEquals(CF_INSTANCE_ID, actualRequest.getCfInstanceId());
 	}
 
 	@Test
@@ -390,12 +390,12 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertFalse(actualRequest.isAsyncAccepted());
-		assertNull(actualRequest.getFoundationId());
+		assertNull(actualRequest.getCfInstanceId());
 		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
 	}
 
 	@Test
-	public void updateServiceInstanceWithFoundationIdSucceeds() throws Exception {
+	public void updateServiceInstanceWithCfInstanceIdSucceeds() throws Exception {
 		when(serviceInstanceService.updateServiceInstance(eq(syncUpdateRequest)))
 				.thenReturn(syncUpdateResponse);
 
@@ -410,7 +410,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.andExpect(content().string("{}"));
 
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
-		assertEquals(FOUNDATION_ID, actualRequest.getFoundationId());
+		assertEquals(CF_INSTANCE_ID, actualRequest.getCfInstanceId());
 	}
 
 	@Test
@@ -513,7 +513,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.andExpect(jsonPath("$.description", is("working on it")));
 
 		GetLastServiceOperationRequest actualRequest = verifyLastOperation();
-		assertNull(actualRequest.getFoundationId());
+		assertNull(actualRequest.getCfInstanceId());
 		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
 	}
 
@@ -533,7 +533,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 	}
 
 	@Test
-	public void lastOperationHasSucceededStatusWithFoundationId() throws Exception {
+	public void lastOperationHasSucceededStatusWithCfInstanceId() throws Exception {
 		GetLastServiceOperationResponse response = new GetLastServiceOperationResponse()
 				.withOperationState(OperationState.SUCCEEDED)
 				.withDescription("all good");
@@ -547,7 +547,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.andExpect(jsonPath("$.description", is("all good")));
 
 		GetLastServiceOperationRequest actualRequest = verifyLastOperation();
-		assertEquals(FOUNDATION_ID, actualRequest.getFoundationId());
+		assertEquals(CF_INSTANCE_ID, actualRequest.getCfInstanceId());
 	}
 
 	@Test
@@ -594,15 +594,15 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.andExpect(jsonPath("$.description", containsString(lastOperationRequest.getServiceInstanceId())));
 	}
 
-	private String buildUrl(CreateServiceInstanceRequest request, Boolean withFoundationId) {
-		UriComponentsBuilder builder = withFoundationId ? foundationIdUriBuilder : uriBuilder;
+	private String buildUrl(CreateServiceInstanceRequest request, Boolean withCfInstanceId) {
+		UriComponentsBuilder builder = withCfInstanceId ? cfInstanceIdUriBuilder : uriBuilder;
 		return builder.path(request.getServiceInstanceId())
 				.queryParam("accepts_incomplete", request.isAsyncAccepted())
 				.toUriString();
 	}
 
-	private String buildUrl(DeleteServiceInstanceRequest request, Boolean withFoundationId) {
-		UriComponentsBuilder builder = withFoundationId ? foundationIdUriBuilder : uriBuilder;
+	private String buildUrl(DeleteServiceInstanceRequest request, Boolean withCfInstanceId) {
+		UriComponentsBuilder builder = withCfInstanceId ? cfInstanceIdUriBuilder : uriBuilder;
 		return builder.path(request.getServiceInstanceId())
 				.queryParam("service_id", request.getServiceDefinitionId())
 				.queryParam("plan_id", request.getPlanId())
@@ -610,15 +610,15 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.toUriString();
 	}
 
-	private String buildUrl(UpdateServiceInstanceRequest request, Boolean withFoundationId) {
-		UriComponentsBuilder builder = withFoundationId ? foundationIdUriBuilder : uriBuilder;
+	private String buildUrl(UpdateServiceInstanceRequest request, Boolean withCfInstanceId) {
+		UriComponentsBuilder builder = withCfInstanceId ? cfInstanceIdUriBuilder : uriBuilder;
 		return builder.path(request.getServiceInstanceId())
 				.queryParam("accepts_incomplete", request.isAsyncAccepted())
 				.toUriString();
 	}
 
-	private String buildUrl(GetLastServiceOperationRequest request, Boolean withFoundationId) {
-		UriComponentsBuilder builder = withFoundationId ? foundationIdUriBuilder : uriBuilder;
+	private String buildUrl(GetLastServiceOperationRequest request, Boolean withCfInstanceId) {
+		UriComponentsBuilder builder = withCfInstanceId ? cfInstanceIdUriBuilder : uriBuilder;
 		return builder.pathSegment(request.getServiceInstanceId(), "last_operation")
 				.queryParam("service_id", request.getServiceDefinitionId())
 				.queryParam("plan_id", request.getPlanId())
