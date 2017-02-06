@@ -10,14 +10,13 @@ import lombok.ToString;
 import java.util.Map;
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 public class SharedVolumeDevice extends VolumeDevice {
 	@JsonSerialize
 	@JsonProperty("volume_id")
 	private String volumeId;
-
 
 	@JsonSerialize
 	@JsonProperty("mount_config")

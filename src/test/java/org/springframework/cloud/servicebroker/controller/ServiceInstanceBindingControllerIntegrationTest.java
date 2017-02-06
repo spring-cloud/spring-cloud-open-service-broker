@@ -7,7 +7,6 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotE
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceRouteBindingResponse;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceVolumeBindingResponse;
 import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.SharedVolumeDevice;
 import org.springframework.cloud.servicebroker.model.VolumeMount;
@@ -131,6 +130,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.andExpect(jsonPath("$.credentials.username", is(createResponse.getCredentials().get("username"))))
 				.andExpect(jsonPath("$.credentials.password", is(createResponse.getCredentials().get("password"))))
 				.andExpect(jsonPath("$.syslog_drain_url", nullValue()))
+				.andExpect(jsonPath("$.volume_mounts", nullValue()))
 				.andExpect(jsonPath("$.route_service_url", nullValue()));
 	}
 
@@ -151,6 +151,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.credentials", nullValue()))
 				.andExpect(jsonPath("$.syslog_drain_url", nullValue()))
+				.andExpect(jsonPath("$.volume_mounts", nullValue()))
 				.andExpect(jsonPath("$.route_service_url", is(response.getRouteServiceUrl())));
 	}
 
@@ -173,6 +174,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.credentials", nullValue()))
 				.andExpect(jsonPath("$.syslog_drain_url", nullValue()))
+				.andExpect(jsonPath("$.volume_mounts", nullValue()))
 				.andExpect(jsonPath("$.route_service_url", is(response.getRouteServiceUrl())));
 	}
 
@@ -194,13 +196,14 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.andExpect(jsonPath("$.credentials.username", is(response.getCredentials().get("username"))))
 				.andExpect(jsonPath("$.credentials.password", is(response.getCredentials().get("password"))))
 				.andExpect(jsonPath("$.syslog_drain_url", is(response.getSyslogDrainUrl())))
+				.andExpect(jsonPath("$.volume_mounts", nullValue()))
 				.andExpect(jsonPath("$.route_service_url", nullValue()));
 	}
 
 	@Test
-	public void createBindingToVolumeSucceeds() throws Exception {
+	public void createBindingWithVolumeSucceeds() throws Exception {
 		CreateServiceInstanceBindingRequest request = ServiceInstanceBindingFixture.buildCreateAppBindingRequest();
-		CreateServiceInstanceVolumeBindingResponse response = ServiceInstanceBindingFixture.buildCreateBindingResponseForVolume();
+		CreateServiceInstanceAppBindingResponse response = ServiceInstanceBindingFixture.buildCreateAppBindingResponseWithVolumeMount();
 		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(request)))
 				.thenReturn(response);
 		VolumeMount volumeMount = response.getVolumeMounts().get(0);
@@ -215,7 +218,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.credentials", nullValue()))
-				.andExpect(jsonPath("$..volume_mounts[0].driver", is(volumeMount.getDriver())))
+				.andExpect(jsonPath("$.syslog_drain_url", nullValue()))
+				.andExpect(jsonPath("$.volume_mounts[0].driver", is(volumeMount.getDriver())))
 				.andExpect(jsonPath("$.volume_mounts[0].container_dir", is(volumeMount.getContainerDir())))
 				.andExpect(jsonPath("$.volume_mounts[0].mode", is(volumeMount.getMode().toString())))
 				.andExpect(jsonPath("$.volume_mounts[0].device_type", is(volumeMount.getDeviceType().toString())))

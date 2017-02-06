@@ -1,5 +1,6 @@
 package org.springframework.cloud.servicebroker.model;
 
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -39,6 +40,13 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private String syslogDrainUrl;
 
+	/**
+	 * The details of the volume mounts available to applications.
+	 */
+	@JsonProperty("volume_mounts")
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private List<VolumeMount> volumeMounts;
+
 	public CreateServiceInstanceAppBindingResponse withCredentials(final Map<String, Object> credentials) {
 		this.credentials = credentials;
 		return this;
@@ -46,6 +54,11 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 
 	public CreateServiceInstanceAppBindingResponse withSyslogDrainUrl(final String syslogDrainUrl) {
 		this.syslogDrainUrl = syslogDrainUrl;
+		return this;
+	}
+
+	public CreateServiceInstanceAppBindingResponse withVolumeMounts(final List<VolumeMount> volumeMounts) {
+		this.volumeMounts = volumeMounts;
 		return this;
 	}
 
