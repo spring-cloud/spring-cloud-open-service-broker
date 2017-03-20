@@ -1,10 +1,10 @@
 package org.springframework.cloud.servicebroker.model.fixture;
 
-import org.springframework.cloud.servicebroker.model.Catalog;
-import org.springframework.cloud.servicebroker.model.ServiceDefinition;
-
 import java.util.Collections;
 import java.util.List;
+
+import org.springframework.cloud.servicebroker.model.Catalog;
+import org.springframework.cloud.servicebroker.model.ServiceDefinition;
 
 public class CatalogFixture {
 

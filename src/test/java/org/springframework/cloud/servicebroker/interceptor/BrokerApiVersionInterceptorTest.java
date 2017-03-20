@@ -1,9 +1,7 @@
 package org.springframework.cloud.servicebroker.interceptor;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 
@@ -11,12 +9,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
-import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
+import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 
 public class BrokerApiVersionInterceptorTest {
 

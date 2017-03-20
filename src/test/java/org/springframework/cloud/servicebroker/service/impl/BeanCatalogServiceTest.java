@@ -1,16 +1,15 @@
 package org.springframework.cloud.servicebroker.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.Catalog;
 import org.springframework.cloud.servicebroker.model.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.BeanCatalogService;
-import org.junit.Before;
-import org.junit.Test;
 
 public class BeanCatalogServiceTest {
 
