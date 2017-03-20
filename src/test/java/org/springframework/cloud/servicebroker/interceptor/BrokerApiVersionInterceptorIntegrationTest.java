@@ -1,19 +1,18 @@
 package org.springframework.cloud.servicebroker.interceptor;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.cloud.servicebroker.model.BrokerApiVersion.DEFAULT_API_VERSION_HEADER;
+import static org.springframework.cloud.servicebroker.model.ServiceBrokerApiVersion.DEFAULT_API_VERSION_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import org.springframework.cloud.servicebroker.controller.CatalogController;
-import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
-import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.cloud.servicebroker.controller.CatalogController;
+import org.springframework.cloud.servicebroker.model.ServiceBrokerApiVersion;
+import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,17 +31,18 @@ public class BrokerApiVersionInterceptorIntegrationTest {
 
 	@Test
 	public void noHeaderSent() throws Exception {
-		mockWithExpectedVersion().perform(get(CATALOG_PATH)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isPreconditionFailed())
-				.andExpect(jsonPath("$.description.", containsString("expected-version")));
+		mockWithExpectedVersion()
+				.perform(get(CATALOG_PATH).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isPreconditionFailed()).andExpect(
+						jsonPath("$.description.", containsString("expected-version")));
 	}
 
 	@Test
 	public void incorrectHeaderSent() throws Exception {
-		mockWithExpectedVersion().perform(get(CATALOG_PATH)
-				.header(DEFAULT_API_VERSION_HEADER, "wrong-version")
-				.accept(MediaType.APPLICATION_JSON))
+		mockWithExpectedVersion()
+				.perform(get(CATALOG_PATH)
+						.header(DEFAULT_API_VERSION_HEADER, "wrong-version")
+						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isPreconditionFailed())
 				.andExpect(jsonPath("$.description.", containsString("expected-version")))
 				.andExpect(jsonPath("$.description.", containsString("wrong-version")));
@@ -50,36 +50,39 @@ public class BrokerApiVersionInterceptorIntegrationTest {
 
 	@Test
 	public void matchingHeaderSent() throws Exception {
-		mockWithExpectedVersion().perform(get(CATALOG_PATH)
-				.header(DEFAULT_API_VERSION_HEADER, "expected-version")
-				.accept(MediaType.APPLICATION_JSON))
+		mockWithExpectedVersion()
+				.perform(get(CATALOG_PATH)
+						.header(DEFAULT_API_VERSION_HEADER, "expected-version")
+						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void anyHeaderNotSent() throws Exception {
-		mockWithDefaultVersion().perform(get(CATALOG_PATH)
-				.accept(MediaType.APPLICATION_JSON))
+		mockWithDefaultVersion()
+				.perform(get(CATALOG_PATH).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void anyHeaderSent() throws Exception {
-		mockWithDefaultVersion().perform(get(CATALOG_PATH)
-				.header(DEFAULT_API_VERSION_HEADER, "ignored-version")
-				.accept(MediaType.APPLICATION_JSON))
+		mockWithDefaultVersion()
+				.perform(get(CATALOG_PATH)
+						.header(DEFAULT_API_VERSION_HEADER, "ignored-version")
+						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
 
 	private MockMvc mockWithDefaultVersion() {
 		return MockMvcBuilders.standaloneSetup(controller)
-				.addInterceptors(new BrokerApiVersionInterceptor(new BrokerApiVersion()))
+				.addInterceptors(new ServiceBrokerApiVersionInterceptor(new ServiceBrokerApiVersion()))
 				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
 	}
 
 	private MockMvc mockWithExpectedVersion() {
 		return MockMvcBuilders.standaloneSetup(controller)
-				.addInterceptors(new BrokerApiVersionInterceptor(new BrokerApiVersion("expected-version")))
+				.addInterceptors(new ServiceBrokerApiVersionInterceptor(
+						new ServiceBrokerApiVersion("expected-version")))
 				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
 	}
 }

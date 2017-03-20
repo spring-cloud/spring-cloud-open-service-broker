@@ -1,5 +1,8 @@
 package org.springframework.cloud.servicebroker.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,20 +15,17 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @RunWith(MockitoJUnitRunner.class)
-public class NonBindableServiceInstanceBindingControllerIntegrationTest extends ServiceInstanceBindingIntegrationTest {
+public class NonBindableServiceInstanceBindingControllerIntegrationTest
+		extends ServiceInstanceBindingIntegrationTest {
 
 	private MockMvc mockMvc;
 
 	@Before
 	public void setup() {
 		ServiceInstanceBindingService serviceInstanceBindingService = new NonBindableServiceInstanceBindingService();
-		ServiceInstanceBindingController controller =
-				new ServiceInstanceBindingController(catalogService, serviceInstanceBindingService);
+		ServiceInstanceBindingController controller = new ServiceInstanceBindingController(
+				catalogService, serviceInstanceBindingService);
 
 		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();

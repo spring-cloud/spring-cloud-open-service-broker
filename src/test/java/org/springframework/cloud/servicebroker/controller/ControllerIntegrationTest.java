@@ -1,11 +1,11 @@
 package org.springframework.cloud.servicebroker.controller;
 
-import org.springframework.cloud.servicebroker.model.fixture.ServiceFixture;
-import org.springframework.cloud.servicebroker.service.CatalogService;
-import org.mockito.Mock;
-
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
+
+import org.mockito.Mock;
+import org.springframework.cloud.servicebroker.model.fixture.ServiceFixture;
+import org.springframework.cloud.servicebroker.service.CatalogService;
 
 public abstract class ControllerIntegrationTest {
 	protected static final String API_INFO_LOCATION = "https://api.cf.example.com";

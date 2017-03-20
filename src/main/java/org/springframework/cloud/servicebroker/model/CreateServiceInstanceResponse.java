@@ -1,9 +1,26 @@
+/*
+ * Copyright 2002-2017 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.springframework.cloud.servicebroker.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -19,16 +36,17 @@ import lombok.ToString;
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse {
 	/**
-	 * The URL of a web-based management user interface for the service instance. Can be <code>null</code> to indicate
-	 * that a management dashboard is not provided.
+	 * The URL of a web-based management user interface for the service instance. Can be
+	 * <code>null</code> to indicate that a management dashboard is not provided.
 	 */
 	@JsonSerialize
 	@JsonProperty("dashboard_url")
 	private String dashboardUrl;
 
 	/**
-	 * <code>true</code> to indicated that the service instance already existed with the same parameters as the
-	 * requested service instance, <code>false</code> to indicate that the instance was created as new
+	 * <code>true</code> to indicated that the service instance already existed with the
+	 * same parameters as the requested service instance, <code>false</code> to indicate
+	 * that the instance was created as new
 	 */
 	@JsonIgnore
 	private boolean instanceExisted;
@@ -38,7 +56,8 @@ public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 		return this;
 	}
 
-	public CreateServiceInstanceResponse withInstanceExisted(final boolean instanceExisted) {
+	public CreateServiceInstanceResponse withInstanceExisted(
+			final boolean instanceExisted) {
 		this.instanceExisted = instanceExisted;
 		return this;
 	}

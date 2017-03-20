@@ -1,3 +1,19 @@
+/*
+ * Copyright 2002-2017 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.springframework.cloud.servicebroker.model;
 
 import java.util.HashMap;
@@ -5,25 +21,25 @@ import java.util.Map;
 
 /**
  * A binding to a service instance
- * 
+ *
  * @author sgreenberg@pivotal.io
  *
- * @deprecated This class is no longer used internally to represent service instance bindings. Implementing brokers should
- * create their own class to represent service instances bindings and persist them as necessary. The will remain in the project
- * for a time as a convenience, but it should no longer be used by implementing brokers.
+ * @deprecated This class is no longer used internally to represent service instance
+ * bindings. Implementing brokers should create their own class to represent service
+ * instances bindings and persist them as necessary. The will remain in the project for a
+ * time as a convenience, but it should no longer be used by implementing brokers.
  */
+@Deprecated
 public class ServiceInstanceBinding {
 
 	private String id;
 	private String serviceInstanceId;
-	private Map<String,Object> credentials = new HashMap<String,Object>();
+	private Map<String, Object> credentials = new HashMap<String, Object>();
 	private String syslogDrainUrl;
 	private String appGuid;
 
-	public ServiceInstanceBinding(String id, 
-			String serviceInstanceId, 
-			Map<String,Object> credentials,
-			String syslogDrainUrl, String appGuid) {
+	public ServiceInstanceBinding(String id, String serviceInstanceId,
+			Map<String, Object> credentials, String syslogDrainUrl, String appGuid) {
 		this.id = id;
 		this.serviceInstanceId = serviceInstanceId;
 		setCredentials(credentials);
@@ -46,7 +62,8 @@ public class ServiceInstanceBinding {
 	private void setCredentials(Map<String, Object> credentials) {
 		if (credentials == null) {
 			this.credentials = new HashMap<>();
-		} else {
+		}
+		else {
 			this.credentials = credentials;
 		}
 	}
@@ -54,9 +71,9 @@ public class ServiceInstanceBinding {
 	public String getSyslogDrainUrl() {
 		return syslogDrainUrl;
 	}
-	
+
 	public String getAppGuid() {
 		return appGuid;
 	}
-	
+
 }

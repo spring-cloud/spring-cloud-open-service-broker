@@ -1,14 +1,34 @@
+/*
+ * Copyright 2002-2017 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.springframework.cloud.servicebroker.model;
 
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * Details of a request to update a service instance.
@@ -20,7 +40,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @EqualsAndHashCode(callSuper = true)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UpdateServiceInstanceRequest  extends AsyncParameterizedServiceInstanceRequest {
+public class UpdateServiceInstanceRequest
+		extends AsyncParameterizedServiceInstanceRequest {
 
 	/**
 	 * The ID of the service to update, from the broker catalog.
@@ -56,9 +77,9 @@ public class UpdateServiceInstanceRequest  extends AsyncParameterizedServiceInst
 		this.serviceDefinitionId = null;
 		this.planId = null;
 	}
-	
+
 	public UpdateServiceInstanceRequest(String serviceDefinitionId, String planId,
-										Map<String, Object> parameters) {
+			Map<String, Object> parameters) {
 		super(parameters);
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
@@ -73,7 +94,8 @@ public class UpdateServiceInstanceRequest  extends AsyncParameterizedServiceInst
 		return this;
 	}
 
-	public UpdateServiceInstanceRequest withServiceDefinition(ServiceDefinition serviceDefinition) {
+	public UpdateServiceInstanceRequest withServiceDefinition(
+			ServiceDefinition serviceDefinition) {
 		this.serviceDefinition = serviceDefinition;
 		return this;
 	}
