@@ -18,37 +18,45 @@ package org.springframework.cloud.servicebroker.config;
 
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.cloud.servicebroker.controller.CatalogController;
+import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
+import org.springframework.cloud.servicebroker.controller.ServiceInstanceController;
 import org.springframework.cloud.servicebroker.model.Catalog;
-import org.springframework.cloud.servicebroker.service.BeanCatalogService;
 import org.springframework.cloud.servicebroker.service.CatalogService;
-import org.springframework.cloud.servicebroker.service.NonBindableServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * This auto configuration class configures basic services of the service broker.
+ * This auto configuration class configures the rest controllers of the service broker.
  *
  * @author Benjamin Ihrig
  */
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnBean({ Catalog.class, ServiceInstanceService.class })
-@AutoConfigureAfter(ServiceBrokerApiVersionAutoConfiguration.class)
-public class ServiceBrokerAutoConfiguration {
+@AutoConfigureAfter(ServiceBrokerAutoConfiguration.class)
+public class ServiceBrokerWebMvcAutoConfiguration {
 
 	@Bean
-	@ConditionalOnMissingBean(CatalogService.class)
-	public CatalogService beanCatalogService(Catalog catalog) {
-		return new BeanCatalogService(catalog);
+	public CatalogController catalogController(CatalogService catalogService) {
+		return new CatalogController(catalogService);
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(ServiceInstanceBindingService.class)
-	public ServiceInstanceBindingService nonBindableServiceInstanceBindingService() {
-		return new NonBindableServiceInstanceBindingService();
+	public ServiceInstanceBindingController serviceInstanceBindingController(
+			CatalogService catalogService,
+			ServiceInstanceBindingService serviceInstanceBindingService) {
+		return new ServiceInstanceBindingController(catalogService,
+				serviceInstanceBindingService);
+	}
+
+	@Bean
+	public ServiceInstanceController serviceInstanceController(
+			CatalogService catalogService,
+			ServiceInstanceService serviceInstanceService) {
+		return new ServiceInstanceController(catalogService, serviceInstanceService);
 	}
 }
