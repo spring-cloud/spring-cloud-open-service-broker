@@ -9,12 +9,14 @@ import java.util.List;
 public class CatalogFixture {
 
 	public static Catalog getCatalog() {
-		List<ServiceDefinition> services = Collections.singletonList(ServiceFixture.getSimpleService());
+		List<ServiceDefinition> services = Collections
+				.singletonList(ServiceFixture.getSimpleService());
 		return new Catalog(services);
 	}
 
 	public static Catalog getCatalogWithRequires() {
-		List<ServiceDefinition> services = Collections.singletonList(ServiceFixture.getServiceWithRequires());
+		List<ServiceDefinition> services = Collections
+				.singletonList(ServiceFixture.getServiceWithRequires());
 		return new Catalog(services);
 	}
 

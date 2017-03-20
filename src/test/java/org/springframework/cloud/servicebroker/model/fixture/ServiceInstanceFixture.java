@@ -11,60 +11,57 @@ import org.springframework.cloud.servicebroker.model.UpdateServiceInstanceRespon
 
 public class ServiceInstanceFixture {
 
-	public static CreateServiceInstanceRequest buildCreateServiceInstanceRequest(boolean acceptsIncomplete) {
+	public static CreateServiceInstanceRequest buildCreateServiceInstanceRequest(
+			boolean acceptsIncomplete) {
 		ServiceDefinition service = ServiceFixture.getSimpleService();
-		return new CreateServiceInstanceRequest(
-				service.getId(),
-				service.getPlans().get(0).getId(),
-				DataFixture.getOrgOneGuid(),
-				DataFixture.getSpaceOneGuid(),
-				ParametersFixture.getParameters())
-				.withServiceInstanceId("service-instance-id")
-				.withAsyncAccepted(acceptsIncomplete);
+		return new CreateServiceInstanceRequest(service.getId(),
+				service.getPlans().get(0).getId(), DataFixture.getOrgOneGuid(),
+				DataFixture.getSpaceOneGuid(), ParametersFixture.getParameters())
+						.withServiceInstanceId("service-instance-id")
+						.withAsyncAccepted(acceptsIncomplete);
 	}
 
-	public static CreateServiceInstanceResponse buildCreateServiceInstanceResponse(boolean async) {
+	public static CreateServiceInstanceResponse buildCreateServiceInstanceResponse(
+			boolean async) {
 		final CreateServiceInstanceResponse response = new CreateServiceInstanceResponse()
-				.withDashboardUrl("https://dashboard_url.example.com")
+				.withDashboardUrl("https://dashboard_url.example.com").withAsync(async);
+		return response.isAsync() ? response.withOperation("task_10") : response;
+	}
+
+	public static DeleteServiceInstanceRequest buildDeleteServiceInstanceRequest(
+			boolean acceptsIncomplete) {
+		ServiceDefinition service = ServiceFixture.getSimpleService();
+		return new DeleteServiceInstanceRequest("service-instance-id", service.getId(),
+				service.getPlans().get(0).getId(), service)
+						.withAsyncAccepted(acceptsIncomplete);
+	}
+
+	public static DeleteServiceInstanceResponse buildDeleteServiceInstanceResponse(
+			boolean async) {
+		final DeleteServiceInstanceResponse response = new DeleteServiceInstanceResponse()
 				.withAsync(async);
 		return response.isAsync() ? response.withOperation("task_10") : response;
 	}
 
-	public static DeleteServiceInstanceRequest buildDeleteServiceInstanceRequest(boolean acceptsIncomplete) {
+	public static UpdateServiceInstanceRequest buildUpdateServiceInstanceRequest(
+			boolean acceptsIncomplete) {
 		ServiceDefinition service = ServiceFixture.getSimpleService();
-		return new DeleteServiceInstanceRequest("service-instance-id",
-				service.getId(),
-				service.getPlans().get(0).getId(),
-				service)
-				.withAsyncAccepted(acceptsIncomplete);
+		return new UpdateServiceInstanceRequest(service.getId(),
+				service.getPlans().get(0).getId(), ParametersFixture.getParameters())
+						.withServiceInstanceId("service-instance-id")
+						.withAsyncAccepted(acceptsIncomplete);
 	}
 
-	public static DeleteServiceInstanceResponse buildDeleteServiceInstanceResponse(boolean async) {
-		final DeleteServiceInstanceResponse response = new DeleteServiceInstanceResponse().withAsync(async);
-        return response.isAsync() ? response.withOperation("task_10") : response;
-	}
-
-	public static UpdateServiceInstanceRequest buildUpdateServiceInstanceRequest(boolean acceptsIncomplete) {
-		ServiceDefinition service = ServiceFixture.getSimpleService();
-		return new UpdateServiceInstanceRequest(
-				service.getId(),
-				service.getPlans().get(0).getId(),
-				ParametersFixture.getParameters())
-				.withServiceInstanceId("service-instance-id")
-				.withAsyncAccepted(acceptsIncomplete);
-	}
-
-	public static UpdateServiceInstanceResponse buildUpdateServiceInstanceResponse(boolean async) {
-		final UpdateServiceInstanceResponse response = new UpdateServiceInstanceResponse().withAsync(async);
-        return response.isAsync() ? response.withOperation("task_10") : response;
+	public static UpdateServiceInstanceResponse buildUpdateServiceInstanceResponse(
+			boolean async) {
+		final UpdateServiceInstanceResponse response = new UpdateServiceInstanceResponse()
+				.withAsync(async);
+		return response.isAsync() ? response.withOperation("task_10") : response;
 	}
 
 	public static GetLastServiceOperationRequest buildGetLastOperationRequest() {
 		ServiceDefinition service = ServiceFixture.getSimpleService();
-		return new GetLastServiceOperationRequest(
-				"service-instance-id",
-				service.getId(),
-				service.getPlans().get(0).getId(),
-				"task_10");
+		return new GetLastServiceOperationRequest("service-instance-id", service.getId(),
+				service.getPlans().get(0).getId(), "task_10");
 	}
 }

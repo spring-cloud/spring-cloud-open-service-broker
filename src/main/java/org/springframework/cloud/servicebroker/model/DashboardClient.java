@@ -16,9 +16,10 @@ import lombok.ToString;
 public class DashboardClient {
 
 	/**
-	 * The client ID of the dashboard OAuth2 client that the service intends to use. The name must be unique within a
-	 * Cloud Foundry UAA deployment. If the name is already in use, Cloud Foundry will return an error to the
-	 * operator when the service is registered.
+	 * The client ID of the dashboard OAuth2 client that the service intends to use. The
+	 * name must be unique within a Cloud Foundry UAA deployment. If the name is already
+	 * in use, Cloud Foundry will return an error to the operator when the service is
+	 * registered.
 	 */
 	@JsonSerialize
 	@JsonProperty("id")
@@ -32,7 +33,8 @@ public class DashboardClient {
 	private String secret;
 
 	/**
-	 * A domain for the service dashboard that will be whitelisted by the UAA to enable dashboard SSO.
+	 * A domain for the service dashboard that will be whitelisted by the UAA to enable
+	 * dashboard SSO.
 	 */
 	@JsonSerialize
 	@JsonProperty("redirect_uri")

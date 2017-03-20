@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 /**
- *  Details of a request to delete a service instance binding.
+ * Details of a request to delete a service instance binding.
  *
  * @author krujos
  * @author Scott Frederick
@@ -30,8 +30,8 @@ public class DeleteServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	private transient final ServiceDefinition serviceDefinition;
 
 	public DeleteServiceInstanceBindingRequest(String serviceInstanceId, String bindingId,
-											   String serviceDefinitionId, String planId,
-											   ServiceDefinition serviceDefinition) {
+			String serviceDefinitionId, String planId,
+			ServiceDefinition serviceDefinition) {
 		this.serviceInstanceId = serviceInstanceId;
 		this.bindingId = bindingId;
 		this.serviceDefinitionId = serviceDefinitionId;
@@ -44,7 +44,8 @@ public class DeleteServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		return this;
 	}
 
-	public DeleteServiceInstanceBindingRequest withApiInfoLocation(String apiInfoLocation) {
+	public DeleteServiceInstanceBindingRequest withApiInfoLocation(
+			String apiInfoLocation) {
 		this.apiInfoLocation = apiInfoLocation;
 		return this;
 	}

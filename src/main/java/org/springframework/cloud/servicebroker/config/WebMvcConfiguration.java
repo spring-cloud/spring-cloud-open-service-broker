@@ -17,6 +17,7 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(brokerApiVersionInterceptor).addPathPatterns(V2_API_PATH_PATTERN);
+		registry.addInterceptor(brokerApiVersionInterceptor)
+				.addPathPatterns(V2_API_PATH_PATTERN);
 	}
 }

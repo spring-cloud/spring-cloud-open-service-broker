@@ -26,8 +26,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServiceDefinition {
 	/**
-	 * An identifier used to correlate this service in future requests to the catalog. This must be unique within
-	 * a Cloud Foundry deployment. Using a GUID is recommended.
+	 * An identifier used to correlate this service in future requests to the catalog.
+	 * This must be unique within a Cloud Foundry deployment. Using a GUID is recommended.
 	 */
 	@NotEmpty
 	@JsonSerialize
@@ -35,8 +35,8 @@ public class ServiceDefinition {
 	private String id;
 
 	/**
-	 * A CLI-friendly name of the service that will appear in the catalog. The value should be all lowercase,
-	 * with no spaces.
+	 * A CLI-friendly name of the service that will appear in the catalog. The value
+	 * should be all lowercase, with no spaces.
 	 */
 	@NotEmpty
 	@JsonSerialize
@@ -59,8 +59,8 @@ public class ServiceDefinition {
 	private boolean bindable;
 
 	/**
-	 * Indicates whether the service supports requests to update instances to use a different plan from the one
-	 * used to provision a service instance.
+	 * Indicates whether the service supports requests to update instances to use a
+	 * different plan from the one used to provision a service instance.
 	 */
 	@JsonSerialize
 	@JsonProperty("plan_updateable")
@@ -75,7 +75,8 @@ public class ServiceDefinition {
 	private List<Plan> plans;
 
 	/**
-	 * A list of tags to aid in categorizing and classifying services with similar characteristics.
+	 * A list of tags to aid in categorizing and classifying services with similar
+	 * characteristics.
 	 */
 	@JsonSerialize(nullsUsing = EmptyListSerializer.class)
 	@JsonProperty("tags")
@@ -89,8 +90,8 @@ public class ServiceDefinition {
 	private Map<String, Object> metadata;
 
 	/**
-	 * A list of permissions that the user would have to give the service, if they provision it. See
-	 * {@link ServiceDefinitionRequires} for supported permissions.
+	 * A list of permissions that the user would have to give the service, if they
+	 * provision it. See {@link ServiceDefinitionRequires} for supported permissions.
 	 */
 	@JsonSerialize(nullsUsing = EmptyListSerializer.class)
 	@JsonProperty("requires")
@@ -106,7 +107,8 @@ public class ServiceDefinition {
 	public ServiceDefinition() {
 	}
 
-	public ServiceDefinition(String id, String name, String description, boolean bindable, List<Plan> plans) {
+	public ServiceDefinition(String id, String name, String description, boolean bindable,
+			List<Plan> plans) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -114,9 +116,10 @@ public class ServiceDefinition {
 		this.plans = plans;
 	}
 
-	public ServiceDefinition(String id, String name, String description, boolean bindable, boolean planUpdateable,
-							 List<Plan> plans, List<String> tags, Map<String, Object> metadata, List<String> requires,
-							 DashboardClient dashboardClient) {
+	public ServiceDefinition(String id, String name, String description, boolean bindable,
+			boolean planUpdateable, List<Plan> plans, List<String> tags,
+			Map<String, Object> metadata, List<String> requires,
+			DashboardClient dashboardClient) {
 		this(id, name, description, bindable, plans);
 		this.tags = tags;
 		this.metadata = metadata;

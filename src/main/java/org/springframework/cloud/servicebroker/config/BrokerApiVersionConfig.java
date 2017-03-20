@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BrokerApiVersionConfig {
 	@Bean
-	public BrokerApiVersionInterceptor brokerApiVersionInterceptor(BrokerApiVersion brokerApiVersion) {
+	public BrokerApiVersionInterceptor brokerApiVersionInterceptor(
+			BrokerApiVersion brokerApiVersion) {
 		return new BrokerApiVersionInterceptor(brokerApiVersion);
 	}
 }

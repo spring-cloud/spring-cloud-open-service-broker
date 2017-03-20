@@ -1,8 +1,8 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * General exception for underlying broker errors (like connectivity to the service
- * being brokered).
+ * General exception for underlying broker errors (like connectivity to the service being
+ * brokered).
  * 
  * @author sgreenberg@pivotal.io
  *

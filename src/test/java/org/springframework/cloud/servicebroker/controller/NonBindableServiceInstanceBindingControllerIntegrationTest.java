@@ -17,15 +17,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
-public class NonBindableServiceInstanceBindingControllerIntegrationTest extends ServiceInstanceBindingIntegrationTest {
+public class NonBindableServiceInstanceBindingControllerIntegrationTest
+		extends ServiceInstanceBindingIntegrationTest {
 
 	private MockMvc mockMvc;
 
 	@Before
 	public void setup() {
 		ServiceInstanceBindingService serviceInstanceBindingService = new NonBindableServiceInstanceBindingService();
-		ServiceInstanceBindingController controller =
-				new ServiceInstanceBindingController(catalogService, serviceInstanceBindingService);
+		ServiceInstanceBindingController controller = new ServiceInstanceBindingController(
+				catalogService, serviceInstanceBindingService);
 
 		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();

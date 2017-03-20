@@ -1,7 +1,8 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that parameters passed in a provision or update request are not understood.
+ * Thrown to indicate that parameters passed in a provision or update request are not
+ * understood.
  */
 public class ServiceBrokerInvalidParametersException extends RuntimeException {
 

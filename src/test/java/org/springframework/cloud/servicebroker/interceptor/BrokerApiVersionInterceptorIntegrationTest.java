@@ -32,17 +32,18 @@ public class BrokerApiVersionInterceptorIntegrationTest {
 
 	@Test
 	public void noHeaderSent() throws Exception {
-		mockWithExpectedVersion().perform(get(CATALOG_PATH)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isPreconditionFailed())
-				.andExpect(jsonPath("$.description.", containsString("expected-version")));
+		mockWithExpectedVersion()
+				.perform(get(CATALOG_PATH).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isPreconditionFailed()).andExpect(
+						jsonPath("$.description.", containsString("expected-version")));
 	}
 
 	@Test
 	public void incorrectHeaderSent() throws Exception {
-		mockWithExpectedVersion().perform(get(CATALOG_PATH)
-				.header(DEFAULT_API_VERSION_HEADER, "wrong-version")
-				.accept(MediaType.APPLICATION_JSON))
+		mockWithExpectedVersion()
+				.perform(get(CATALOG_PATH)
+						.header(DEFAULT_API_VERSION_HEADER, "wrong-version")
+						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isPreconditionFailed())
 				.andExpect(jsonPath("$.description.", containsString("expected-version")))
 				.andExpect(jsonPath("$.description.", containsString("wrong-version")));
@@ -50,24 +51,26 @@ public class BrokerApiVersionInterceptorIntegrationTest {
 
 	@Test
 	public void matchingHeaderSent() throws Exception {
-		mockWithExpectedVersion().perform(get(CATALOG_PATH)
-				.header(DEFAULT_API_VERSION_HEADER, "expected-version")
-				.accept(MediaType.APPLICATION_JSON))
+		mockWithExpectedVersion()
+				.perform(get(CATALOG_PATH)
+						.header(DEFAULT_API_VERSION_HEADER, "expected-version")
+						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void anyHeaderNotSent() throws Exception {
-		mockWithDefaultVersion().perform(get(CATALOG_PATH)
-				.accept(MediaType.APPLICATION_JSON))
+		mockWithDefaultVersion()
+				.perform(get(CATALOG_PATH).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void anyHeaderSent() throws Exception {
-		mockWithDefaultVersion().perform(get(CATALOG_PATH)
-				.header(DEFAULT_API_VERSION_HEADER, "ignored-version")
-				.accept(MediaType.APPLICATION_JSON))
+		mockWithDefaultVersion()
+				.perform(get(CATALOG_PATH)
+						.header(DEFAULT_API_VERSION_HEADER, "ignored-version")
+						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
 
@@ -79,7 +82,8 @@ public class BrokerApiVersionInterceptorIntegrationTest {
 
 	private MockMvc mockWithExpectedVersion() {
 		return MockMvcBuilders.standaloneSetup(controller)
-				.addInterceptors(new BrokerApiVersionInterceptor(new BrokerApiVersion("expected-version")))
+				.addInterceptors(new BrokerApiVersionInterceptor(
+						new BrokerApiVersion("expected-version")))
 				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
 	}
 }

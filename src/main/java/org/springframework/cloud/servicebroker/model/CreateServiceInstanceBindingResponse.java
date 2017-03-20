@@ -19,8 +19,9 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateServiceInstanceBindingResponse {
 	/**
-	 * <code>true</code> to indicated that the service instance binding already existed with the same parameters as the
-	 * requested service instance binding, <code>false</code> to indicate that the binding was created as new
+	 * <code>true</code> to indicated that the service instance binding already existed
+	 * with the same parameters as the requested service instance binding,
+	 * <code>false</code> to indicate that the binding was created as new
 	 */
 	@JsonIgnore
 	protected boolean bindingExisted;

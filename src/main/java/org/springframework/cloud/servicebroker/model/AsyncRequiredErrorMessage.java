@@ -10,9 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AsyncRequiredErrorMessage extends ErrorMessage {
 
 	public final static String ASYNC_REQUIRED_ERROR = "AsyncRequired";
-		
+
 	/**
-	 * This broker requires asynchronous processing. 
+	 * This broker requires asynchronous processing.
 	 *
 	 * @param description user facing error message.
 	 */
@@ -21,7 +21,7 @@ public class AsyncRequiredErrorMessage extends ErrorMessage {
 	}
 
 	@JsonProperty("error")
-	public String getError() { 
+	public String getError() {
 		return ASYNC_REQUIRED_ERROR;
 	}
 }

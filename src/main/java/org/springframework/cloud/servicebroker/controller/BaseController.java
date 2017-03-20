@@ -46,31 +46,36 @@ public class BaseController {
 	}
 
 	@ExceptionHandler(ServiceBrokerApiVersionException.class)
-	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerApiVersionException ex) {
+	public ResponseEntity<ErrorMessage> handleException(
+			ServiceBrokerApiVersionException ex) {
 		log.debug("Unsupported service broker API version: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.PRECONDITION_FAILED);
 	}
 
 	@ExceptionHandler(ServiceInstanceDoesNotExistException.class)
-	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceDoesNotExistException ex) {
+	public ResponseEntity<ErrorMessage> handleException(
+			ServiceInstanceDoesNotExistException ex) {
 		log.debug("Service instance does not exist: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceDefinitionDoesNotExistException.class)
-	public ResponseEntity<ErrorMessage> handleException(ServiceDefinitionDoesNotExistException ex) {
+	public ResponseEntity<ErrorMessage> handleException(
+			ServiceDefinitionDoesNotExistException ex) {
 		log.debug("Service definition does not exist: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public ResponseEntity<ErrorMessage> handleException(HttpMessageNotReadableException ex) {
+	public ResponseEntity<ErrorMessage> handleException(
+			HttpMessageNotReadableException ex) {
 		log.debug("Unprocessable request received: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ErrorMessage> handleException(MethodArgumentNotValidException ex) {
+	public ResponseEntity<ErrorMessage> handleException(
+			MethodArgumentNotValidException ex) {
 		log.debug("Unprocessable request received: ", ex);
 		BindingResult result = ex.getBindingResult();
 		String message = "Missing required fields:";
@@ -81,14 +86,16 @@ public class BaseController {
 	}
 
 	@ExceptionHandler(ServiceBrokerAsyncRequiredException.class)
-	public ResponseEntity<AsyncRequiredErrorMessage> handleException(ServiceBrokerAsyncRequiredException ex) {
+	public ResponseEntity<AsyncRequiredErrorMessage> handleException(
+			ServiceBrokerAsyncRequiredException ex) {
 		log.debug("Broker requires async support: ", ex);
-		return new ResponseEntity<>(
-				new AsyncRequiredErrorMessage(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+		return new ResponseEntity<>(new AsyncRequiredErrorMessage(ex.getMessage()),
+				HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceBrokerInvalidParametersException.class)
-	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerInvalidParametersException ex) {
+	public ResponseEntity<ErrorMessage> handleException(
+			ServiceBrokerInvalidParametersException ex) {
 		log.debug("Invalid parameters received: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
@@ -99,7 +106,8 @@ public class BaseController {
 		return getErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	public ResponseEntity<ErrorMessage> getErrorResponse(String message, HttpStatus status) {
+	public ResponseEntity<ErrorMessage> getErrorResponse(String message,
+			HttpStatus status) {
 		return new ResponseEntity<>(new ErrorMessage(message), status);
 	}
 }

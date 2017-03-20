@@ -15,7 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackages = {"org.springframework.cloud.servicebroker"})
+@ComponentScan(basePackages = { "org.springframework.cloud.servicebroker" })
 @ConditionalOnWebApplication
 @AutoConfigureAfter(WebMvcAutoConfiguration.class)
 public class ServiceBrokerAutoConfiguration {

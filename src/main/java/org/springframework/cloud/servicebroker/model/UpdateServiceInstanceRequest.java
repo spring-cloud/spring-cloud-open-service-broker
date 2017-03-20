@@ -20,7 +20,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @EqualsAndHashCode(callSuper = true)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UpdateServiceInstanceRequest  extends AsyncParameterizedServiceInstanceRequest {
+public class UpdateServiceInstanceRequest
+		extends AsyncParameterizedServiceInstanceRequest {
 
 	/**
 	 * The ID of the service to update, from the broker catalog.
@@ -56,9 +57,9 @@ public class UpdateServiceInstanceRequest  extends AsyncParameterizedServiceInst
 		this.serviceDefinitionId = null;
 		this.planId = null;
 	}
-	
+
 	public UpdateServiceInstanceRequest(String serviceDefinitionId, String planId,
-										Map<String, Object> parameters) {
+			Map<String, Object> parameters) {
 		super(parameters);
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
@@ -73,7 +74,8 @@ public class UpdateServiceInstanceRequest  extends AsyncParameterizedServiceInst
 		return this;
 	}
 
-	public UpdateServiceInstanceRequest withServiceDefinition(ServiceDefinition serviceDefinition) {
+	public UpdateServiceInstanceRequest withServiceDefinition(
+			ServiceDefinition serviceDefinition) {
 		this.serviceDefinition = serviceDefinition;
 		return this;
 	}

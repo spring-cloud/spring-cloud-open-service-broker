@@ -1,7 +1,8 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a request is received for an unknown service instance binding ID.
+ * Thrown to indicate that a request is received for an unknown service instance binding
+ * ID.
  */
 public class ServiceInstanceBindingDoesNotExistException extends RuntimeException {
 

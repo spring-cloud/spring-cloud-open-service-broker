@@ -29,8 +29,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public class Plan {
 
 	/**
-	 * An identifier used to correlate this plan in future requests to the catalog. This must be unique within
-	 * a Cloud Foundry deployment. Using a GUID is recommended.
+	 * An identifier used to correlate this plan in future requests to the catalog. This
+	 * must be unique within a Cloud Foundry deployment. Using a GUID is recommended.
 	 */
 	@NotEmpty
 	@JsonSerialize
@@ -38,8 +38,8 @@ public class Plan {
 	private String id;
 
 	/**
-	 * A CLI-friendly name of the plan that will appear in the catalog. The value should be all lowercase,
-	 * with no spaces.
+	 * A CLI-friendly name of the plan that will appear in the catalog. The value should
+	 * be all lowercase, with no spaces.
 	 */
 	@NotEmpty
 	@JsonSerialize
@@ -62,8 +62,9 @@ public class Plan {
 	private Map<String, Object> metadata;
 
 	/**
-	 * Indicates whether the service with this plan can be bound to applications. This is an optional field. If the
-	 * value is <code>null</code>, the field will be omitted from the serialized JSON.
+	 * Indicates whether the service with this plan can be bound to applications. This is
+	 * an optional field. If the value is <code>null</code>, the field will be omitted
+	 * from the serialized JSON.
 	 */
 	@Getter(AccessLevel.NONE)
 	@JsonSerialize
@@ -72,7 +73,8 @@ public class Plan {
 	private Boolean bindable;
 
 	/**
-	 * Indicates whether the plan can be limited by the non_basic_services_allowed field in a Cloud Foundry Quota.
+	 * Indicates whether the plan can be limited by the non_basic_services_allowed field
+	 * in a Cloud Foundry Quota.
 	 */
 	@JsonSerialize
 	@JsonProperty("free")
@@ -87,17 +89,20 @@ public class Plan {
 		this.description = description;
 	}
 
-	public Plan(String id, String name, String description, Map<String, Object> metadata) {
+	public Plan(String id, String name, String description,
+			Map<String, Object> metadata) {
 		this(id, name, description);
 		this.metadata = metadata;
 	}
 
-	public Plan(String id, String name, String description, Map<String, Object> metadata, boolean free) {
+	public Plan(String id, String name, String description, Map<String, Object> metadata,
+			boolean free) {
 		this(id, name, description, metadata);
 		this.free = free;
 	}
 
-	public Plan(String id, String name, String description, Map<String, Object> metadata, boolean free, boolean bindable) {
+	public Plan(String id, String name, String description, Map<String, Object> metadata,
+			boolean free, boolean bindable) {
 		this(id, name, description, metadata, free);
 		this.bindable = bindable;
 	}

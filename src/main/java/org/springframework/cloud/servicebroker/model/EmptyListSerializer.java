@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * This {@link JsonSerializer} can be used to serialize an empty array (e.g. <code>{}</code>) into a JSON string instead
- * of a <code>null</code> value for collection and map types.
+ * This {@link JsonSerializer} can be used to serialize an empty array (e.g.
+ * <code>{}</code>) into a JSON string instead of a <code>null</code> value for collection
+ * and map types.
  *
- * Example:
- * <code>
+ * Example: <code>
  *     {@literal @JsonSerialize(nullsUsing = EmptyListSerializer.class)}
  *     public List&lt;String&gt; strings;
  * </code>
@@ -22,7 +22,8 @@ public class EmptyListSerializer extends JsonSerializer<List<?>> {
 	}
 
 	@Override
-	public void serialize(List<?> value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+	public void serialize(List<?> value, JsonGenerator jgen, SerializerProvider provider)
+			throws IOException {
 		jgen.writeStartArray();
 		jgen.writeEndArray();
 	}

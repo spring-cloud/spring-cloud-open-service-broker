@@ -5,17 +5,20 @@ package org.springframework.cloud.servicebroker.model;
  */
 public enum OperationState {
 	/**
-	 * Indicates that a request is still being processed. Cloud Foundry will continue polling for the current state.
+	 * Indicates that a request is still being processed. Cloud Foundry will continue
+	 * polling for the current state.
 	 */
 	IN_PROGRESS("in progress"),
 
 	/**
-	 * Indicates that a request completed successfully. Cloud Foundry will stop polling for the current state.
+	 * Indicates that a request completed successfully. Cloud Foundry will stop polling
+	 * for the current state.
 	 */
 	SUCCEEDED("succeeded"),
 
 	/**
-	 * Indicates that a request completed unsuccessfully. Cloud Foundry will stop polling for the current state.
+	 * Indicates that a request completed unsuccessfully. Cloud Foundry will stop polling
+	 * for the current state.
 	 */
 	FAILED("failed");
 

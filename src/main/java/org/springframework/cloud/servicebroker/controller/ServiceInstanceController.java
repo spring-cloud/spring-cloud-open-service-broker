@@ -49,24 +49,25 @@ public class ServiceInstanceController extends BaseController {
 	private ServiceInstanceService service;
 
 	@Autowired
- 	public ServiceInstanceController(CatalogService catalogService, ServiceInstanceService serviceInstanceService) {
+	public ServiceInstanceController(CatalogService catalogService,
+			ServiceInstanceService serviceInstanceService) {
 		super(catalogService);
 		this.service = serviceInstanceService;
 	}
 
-	@RequestMapping(value = {
-			"/{cfInstanceId}/v2/service_instances/{instanceId}",
-			"/v2/service_instances/{instanceId}"
-	}, method = RequestMethod.PUT)
-	public ResponseEntity<?> createServiceInstance(@PathVariable Map<String, String> pathVariables,
-												   @PathVariable("instanceId") String serviceInstanceId,
-												   @RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
-												   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-												   @Valid @RequestBody CreateServiceInstanceRequest request) {
+	@RequestMapping(value = { "/{cfInstanceId}/v2/service_instances/{instanceId}",
+			"/v2/service_instances/{instanceId}" }, method = RequestMethod.PUT)
+	public ResponseEntity<?> createServiceInstance(
+			@PathVariable Map<String, String> pathVariables,
+			@PathVariable("instanceId") String serviceInstanceId,
+			@RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
+			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+			@Valid @RequestBody CreateServiceInstanceRequest request) {
 		log.debug("Creating a service instance: serviceInstanceId={}, planId=",
 				serviceInstanceId, request.getPlanId());
 
-		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(request.getServiceDefinitionId());
+		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(
+				request.getServiceDefinitionId());
 
 		request.withServiceInstanceId(serviceInstanceId)
 				.withServiceDefinition(serviceDefinition)
@@ -76,7 +77,8 @@ public class ServiceInstanceController extends BaseController {
 
 		CreateServiceInstanceResponse response = service.createServiceInstance(request);
 
-		log.debug("Creating a service instance succeeded: serviceInstanceId={}", serviceInstanceId);
+		log.debug("Creating a service instance succeeded: serviceInstanceId={}",
+				serviceInstanceId);
 
 		return new ResponseEntity<>(response, getCreateResponseCode(response));
 	}
@@ -84,83 +86,96 @@ public class ServiceInstanceController extends BaseController {
 	private HttpStatus getCreateResponseCode(CreateServiceInstanceResponse response) {
 		if (response.isAsync()) {
 			return HttpStatus.ACCEPTED;
-		} else if (response.isInstanceExisted()) {
+		}
+		else if (response.isInstanceExisted()) {
 			return HttpStatus.OK;
-		} else {
+		}
+		else {
 			return HttpStatus.CREATED;
 		}
 	}
 
 	@RequestMapping(value = {
 			"/{cfInstanceId}/v2/service_instances/{instanceId}/last_operation",
-			"/v2/service_instances/{instanceId}/last_operation"
-	}, method = RequestMethod.GET)
-	public ResponseEntity<?> getServiceInstanceLastOperation(@PathVariable Map<String, String> pathVariables,
-															 @PathVariable("instanceId") String serviceInstanceId,
-															 @RequestParam("service_id") String serviceDefinitionId,
-															 @RequestParam("plan_id") String planId,
-															 @RequestParam(value = "operation", required = false) String operation,
-															 @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation) {
-		log.debug("Getting service instance status: serviceInstanceId={}, serviceDefinitionId={}, planId={}, operation={}",
+			"/v2/service_instances/{instanceId}/last_operation" }, method = RequestMethod.GET)
+	public ResponseEntity<?> getServiceInstanceLastOperation(
+			@PathVariable Map<String, String> pathVariables,
+			@PathVariable("instanceId") String serviceInstanceId,
+			@RequestParam("service_id") String serviceDefinitionId,
+			@RequestParam("plan_id") String planId,
+			@RequestParam(value = "operation", required = false) String operation,
+			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation) {
+		log.debug(
+				"Getting service instance status: serviceInstanceId={}, serviceDefinitionId={}, planId={}, operation={}",
 				serviceInstanceId, serviceDefinitionId, planId, operation);
 
-		GetLastServiceOperationRequest request = new GetLastServiceOperationRequest(serviceInstanceId, serviceDefinitionId, planId, operation)
-				.withCfInstanceId(pathVariables.get("cfInstanceId"))
-				.withApiInfoLocation(apiInfoLocation);
+		GetLastServiceOperationRequest request = new GetLastServiceOperationRequest(
+				serviceInstanceId, serviceDefinitionId, planId, operation)
+						.withCfInstanceId(pathVariables.get("cfInstanceId"))
+						.withApiInfoLocation(apiInfoLocation);
 
 		GetLastServiceOperationResponse response = service.getLastOperation(request);
 
-		log.debug("Getting service instance status succeeded: serviceInstanceId={}, state={}, description={}", serviceInstanceId, response.getState(), response.getDescription());
+		log.debug(
+				"Getting service instance status succeeded: serviceInstanceId={}, state={}, description={}",
+				serviceInstanceId, response.getState(), response.getDescription());
 
-		boolean isSuccessfulDelete = response.getState().equals(OperationState.SUCCEEDED) && response.isDeleteOperation();
+		boolean isSuccessfulDelete = response.getState().equals(OperationState.SUCCEEDED)
+				&& response.isDeleteOperation();
 
-		return new ResponseEntity<>(response, isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK);
+		return new ResponseEntity<>(response,
+				isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK);
 	}
 
-	@RequestMapping(value = {
-			"/{cfInstanceId}/v2/service_instances/{instanceId}",
-			"/v2/service_instances/{instanceId}"
-	}, method = RequestMethod.DELETE)
-	public ResponseEntity<?> deleteServiceInstance(@PathVariable Map<String, String> pathVariables,
-												   @PathVariable("instanceId") String serviceInstanceId,
-												   @RequestParam("service_id") String serviceDefinitionId,
-												   @RequestParam("plan_id") String planId,
-												   @RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
-												   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation) {
-		log.debug("Deleting a service instance: serviceInstanceId={}, serviceDefinitionId={}, planId={}",
+	@RequestMapping(value = { "/{cfInstanceId}/v2/service_instances/{instanceId}",
+			"/v2/service_instances/{instanceId}" }, method = RequestMethod.DELETE)
+	public ResponseEntity<?> deleteServiceInstance(
+			@PathVariable Map<String, String> pathVariables,
+			@PathVariable("instanceId") String serviceInstanceId,
+			@RequestParam("service_id") String serviceDefinitionId,
+			@RequestParam("plan_id") String planId,
+			@RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
+			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation) {
+		log.debug(
+				"Deleting a service instance: serviceInstanceId={}, serviceDefinitionId={}, planId={}",
 				serviceInstanceId, serviceDefinitionId, planId);
 
-		DeleteServiceInstanceRequest request =
-				new DeleteServiceInstanceRequest(serviceInstanceId, serviceDefinitionId, planId, getServiceDefinition(serviceDefinitionId))
-				.withAsyncAccepted(acceptsIncomplete)
-				.withCfInstanceId(pathVariables.get("cfInstanceId"))
-				.withApiInfoLocation(apiInfoLocation);
+		DeleteServiceInstanceRequest request = new DeleteServiceInstanceRequest(
+				serviceInstanceId, serviceDefinitionId, planId,
+				getServiceDefinition(serviceDefinitionId))
+						.withAsyncAccepted(acceptsIncomplete)
+						.withCfInstanceId(pathVariables.get("cfInstanceId"))
+						.withApiInfoLocation(apiInfoLocation);
 
 		try {
-			DeleteServiceInstanceResponse response = service.deleteServiceInstance(request);
+			DeleteServiceInstanceResponse response = service
+					.deleteServiceInstance(request);
 
-			log.debug("Deleting a service instance succeeded: serviceInstanceId={}", serviceInstanceId);
+			log.debug("Deleting a service instance succeeded: serviceInstanceId={}",
+					serviceInstanceId);
 
-			return new ResponseEntity<>(response, response.isAsync() ? HttpStatus.ACCEPTED : HttpStatus.OK);
-		} catch (ServiceInstanceDoesNotExistException e) {
+			return new ResponseEntity<>(response,
+					response.isAsync() ? HttpStatus.ACCEPTED : HttpStatus.OK);
+		}
+		catch (ServiceInstanceDoesNotExistException e) {
 			log.debug("Service instance does not exist: ", e);
 			return new ResponseEntity<>("{}", HttpStatus.GONE);
 		}
 	}
 
-	@RequestMapping(value = {
-			"/{cfInstanceId}/v2/service_instances/{instanceId}",
-			"/v2/service_instances/{instanceId}"
-	}, method = RequestMethod.PATCH)
-	public ResponseEntity<?> updateServiceInstance(@PathVariable Map<String, String> pathVariables,
-												   @PathVariable("instanceId") String serviceInstanceId,
-												   @RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
-												   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-												   @Valid @RequestBody UpdateServiceInstanceRequest request) {
+	@RequestMapping(value = { "/{cfInstanceId}/v2/service_instances/{instanceId}",
+			"/v2/service_instances/{instanceId}" }, method = RequestMethod.PATCH)
+	public ResponseEntity<?> updateServiceInstance(
+			@PathVariable Map<String, String> pathVariables,
+			@PathVariable("instanceId") String serviceInstanceId,
+			@RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
+			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+			@Valid @RequestBody UpdateServiceInstanceRequest request) {
 		log.debug("Updating a service instance: serviceInstanceId={}, planId={}",
 				serviceInstanceId, request.getPlanId());
 
-		ServiceDefinition serviceDefinition = getServiceDefinition(request.getServiceDefinitionId());
+		ServiceDefinition serviceDefinition = getServiceDefinition(
+				request.getServiceDefinitionId());
 
 		request.withServiceInstanceId(serviceInstanceId)
 				.withServiceDefinition(serviceDefinition)
@@ -170,19 +185,23 @@ public class ServiceInstanceController extends BaseController {
 
 		UpdateServiceInstanceResponse response = service.updateServiceInstance(request);
 
-		log.debug("Updating a service instance succeeded: serviceInstanceId={}", serviceInstanceId);
+		log.debug("Updating a service instance succeeded: serviceInstanceId={}",
+				serviceInstanceId);
 
-		return new ResponseEntity<>(response, response.isAsync() ? HttpStatus.ACCEPTED : HttpStatus.OK);
+		return new ResponseEntity<>(response,
+				response.isAsync() ? HttpStatus.ACCEPTED : HttpStatus.OK);
 	}
 
 	@ExceptionHandler(ServiceInstanceExistsException.class)
-	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceExistsException ex) {
+	public ResponseEntity<ErrorMessage> handleException(
+			ServiceInstanceExistsException ex) {
 		log.debug("Service instance already exists: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(ServiceInstanceUpdateNotSupportedException.class)
-	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceUpdateNotSupportedException ex) {
+	public ResponseEntity<ErrorMessage> handleException(
+			ServiceInstanceUpdateNotSupportedException ex) {
 		log.debug("Service instance update not supported: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}

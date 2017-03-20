@@ -42,11 +42,12 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	private final String planId;
 
 	/**
-	 * The Cloud Controller GUID of the application the service instance will be bound to. Will be provided when
-	 * users bind applications to service instances, or <code>null</code> if an application is not being bound.
+	 * The Cloud Controller GUID of the application the service instance will be bound to.
+	 * Will be provided when users bind applications to service instances, or
+	 * <code>null</code> if an application is not being bound.
 	 *
-	 * @deprecated The <code>bindResource</code> field will contain references to the resource being bound, and should
-	 * be used instead of this field.
+	 * @deprecated The <code>bindResource</code> field will contain references to the
+	 * resource being bound, and should be used instead of this field.
 	 */
 	@JsonSerialize
 	@JsonProperty("app_guid")
@@ -60,8 +61,9 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	private final Map<String, Object> bindResource;
 
 	/**
-	 * Parameters passed by the user in the form of a JSON structure. The service broker is responsible
-	 * for validating the contents of the parameters for correctness or applicability.
+	 * Parameters passed by the user in the form of a JSON structure. The service broker
+	 * is responsible for validating the contents of the parameters for correctness or
+	 * applicability.
 	 */
 	@JsonSerialize
 	@JsonProperty("parameters")
@@ -74,15 +76,16 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	private transient String serviceInstanceId;
 
 	/**
-	 * The Cloud Controller GUID of the service binding being created. This ID will be used for future
-	 * requests for the same service instance binding, so the broker must use it to correlate any resource it creates.
+	 * The Cloud Controller GUID of the service binding being created. This ID will be
+	 * used for future requests for the same service instance binding, so the broker must
+	 * use it to correlate any resource it creates.
 	 */
 	@JsonIgnore
 	private transient String bindingId;
 
 	/**
-	 * The {@link ServiceDefinition} of the service to provision. This is resolved from the
-	 * <code>serviceDefinitionId</code> as a convenience to the broker.
+	 * The {@link ServiceDefinition} of the service to provision. This is resolved from
+	 * the <code>serviceDefinitionId</code> as a convenience to the broker.
 	 */
 	@JsonIgnore
 	private transient ServiceDefinition serviceDefinition;
@@ -94,10 +97,10 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		bindResource = null;
 		parameters = null;
 	}
-	
+
 	public CreateServiceInstanceBindingRequest(String serviceDefinitionId, String planId,
-											   String appGuid, Map<String, Object> bindResource,
-											   Map<String, Object> parameters) {
+			String appGuid, Map<String, Object> bindResource,
+			Map<String, Object> parameters) {
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
 		this.appGuid = appGuid;
@@ -106,7 +109,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	}
 
 	public CreateServiceInstanceBindingRequest(String serviceDefinitionId, String planId,
-											   String appGuid, Map<String, Object> bindResource) {
+			String appGuid, Map<String, Object> bindResource) {
 		this(serviceDefinitionId, planId, appGuid, bindResource, null);
 	}
 
@@ -115,17 +118,21 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 			T bean = cls.newInstance();
 			BeanUtils.populate(bean, parameters);
 			return bean;
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Error mapping parameters to class of type " + cls.getName());
+		}
+		catch (Exception e) {
+			throw new IllegalArgumentException(
+					"Error mapping parameters to class of type " + cls.getName());
 		}
 	}
 
-	public CreateServiceInstanceBindingRequest withServiceDefinition(final ServiceDefinition serviceDefinition) {
+	public CreateServiceInstanceBindingRequest withServiceDefinition(
+			final ServiceDefinition serviceDefinition) {
 		this.serviceDefinition = serviceDefinition;
 		return this;
 	}
 
-	public CreateServiceInstanceBindingRequest withServiceInstanceId(final String serviceInstanceId) {
+	public CreateServiceInstanceBindingRequest withServiceInstanceId(
+			final String serviceInstanceId) {
 		this.serviceInstanceId = serviceInstanceId;
 		return this;
 	}
@@ -140,7 +147,8 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		return this;
 	}
 
-	public CreateServiceInstanceBindingRequest withApiInfoLocation(String apiInfoLocation) {
+	public CreateServiceInstanceBindingRequest withApiInfoLocation(
+			String apiInfoLocation) {
 		this.apiInfoLocation = apiInfoLocation;
 		return this;
 	}
@@ -149,13 +157,15 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		if (bindResource == null) {
 			return null;
 		}
-		return (String) bindResource.get(ServiceBindingResource.BIND_RESOURCE_KEY_APP.toString());
+		return (String) bindResource
+				.get(ServiceBindingResource.BIND_RESOURCE_KEY_APP.toString());
 	}
 
 	public String getBoundRoute() {
 		if (bindResource == null) {
 			return null;
 		}
-		return (String) bindResource.get(ServiceBindingResource.BIND_RESOURCE_KEY_ROUTE.toString());
+		return (String) bindResource
+				.get(ServiceBindingResource.BIND_RESOURCE_KEY_ROUTE.toString());
 	}
 }

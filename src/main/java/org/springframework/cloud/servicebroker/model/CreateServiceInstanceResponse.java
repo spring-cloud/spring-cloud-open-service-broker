@@ -19,16 +19,17 @@ import lombok.ToString;
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse {
 	/**
-	 * The URL of a web-based management user interface for the service instance. Can be <code>null</code> to indicate
-	 * that a management dashboard is not provided.
+	 * The URL of a web-based management user interface for the service instance. Can be
+	 * <code>null</code> to indicate that a management dashboard is not provided.
 	 */
 	@JsonSerialize
 	@JsonProperty("dashboard_url")
 	private String dashboardUrl;
 
 	/**
-	 * <code>true</code> to indicated that the service instance already existed with the same parameters as the
-	 * requested service instance, <code>false</code> to indicate that the instance was created as new
+	 * <code>true</code> to indicated that the service instance already existed with the
+	 * same parameters as the requested service instance, <code>false</code> to indicate
+	 * that the instance was created as new
 	 */
 	@JsonIgnore
 	private boolean instanceExisted;
@@ -38,7 +39,8 @@ public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 		return this;
 	}
 
-	public CreateServiceInstanceResponse withInstanceExisted(final boolean instanceExisted) {
+	public CreateServiceInstanceResponse withInstanceExisted(
+			final boolean instanceExisted) {
 		this.instanceExisted = instanceExisted;
 		return this;
 	}

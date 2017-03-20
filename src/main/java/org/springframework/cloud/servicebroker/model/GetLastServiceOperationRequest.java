@@ -29,9 +29,10 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	private final String planId;
 
 	/**
-	 * The field optionally returned by the service broker on async provision, update, deprovision responses.
-	 * Represents any state the service broker responded with as a URL encoded string. Can be <code>null</code>
-	 * to indicate that an operation state is not provided.
+	 * The field optionally returned by the service broker on async provision, update,
+	 * deprovision responses. Represents any state the service broker responded with as a
+	 * URL encoded string. Can be <code>null</code> to indicate that an operation state is
+	 * not provided.
 	 */
 	protected String operation;
 
@@ -41,7 +42,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		this.planId = null;
 	}
 
-	public GetLastServiceOperationRequest(String instanceId, String serviceId, String planId, String operation) {
+	public GetLastServiceOperationRequest(String instanceId, String serviceId,
+			String planId, String operation) {
 		this.serviceInstanceId = instanceId;
 		this.serviceDefinitionId = serviceId;
 		this.planId = planId;

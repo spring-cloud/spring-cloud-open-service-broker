@@ -4,7 +4,8 @@ import org.springframework.cloud.servicebroker.model.Catalog;
 import org.springframework.cloud.servicebroker.model.ServiceDefinition;
 
 /**
- * This interface is implemented by service brokers to process requests to retrieve the service catalog.
+ * This interface is implemented by service brokers to process requests to retrieve the
+ * service catalog.
  * 
  * @author sgreenberg@pivotal.io
  */
@@ -20,9 +21,9 @@ public interface CatalogService {
 	/**
 	 * Get a service definition from the catalog by ID.
 	 *
-	 * @param serviceId  The ID of the service definition in the catalog
+	 * @param serviceId The ID of the service definition in the catalog
 	 * @return the service definition, or null if it doesn't exist
 	 */
 	ServiceDefinition getServiceDefinition(String serviceId);
-	
+
 }

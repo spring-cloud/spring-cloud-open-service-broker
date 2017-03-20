@@ -41,4 +41,3 @@ public class Catalog {
 		this.serviceDefinitions = serviceDefinitions;
 	}
 }
-

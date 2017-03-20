@@ -24,8 +24,9 @@ public class BrokerApiVersionInterceptor extends HandlerInterceptorAdapter {
 		if (version != null && !anyVersionAllowed()) {
 			String apiVersion = request.getHeader(version.getBrokerApiVersionHeader());
 			if (!version.getApiVersion().equals(apiVersion)) {
-				throw new ServiceBrokerApiVersionException(version.getApiVersion(), apiVersion);
-			} 
+				throw new ServiceBrokerApiVersionException(version.getApiVersion(),
+						apiVersion);
+			}
 		}
 		return true;
 	}

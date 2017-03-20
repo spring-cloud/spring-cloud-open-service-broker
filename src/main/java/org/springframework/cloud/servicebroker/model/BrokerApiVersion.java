@@ -1,6 +1,5 @@
 package org.springframework.cloud.servicebroker.model;
 
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -15,13 +14,14 @@ public class BrokerApiVersion {
 	public final static String API_VERSION_CURRENT = "2.10";
 
 	/**
-	 * The name of the HTTP header field expected to contain the API version of the service broker client.
+	 * The name of the HTTP header field expected to contain the API version of the
+	 * service broker client.
 	 */
 	private final String brokerApiVersionHeader;
 
 	/**
-	 * The version of the broker API supported by the broker. A value of <code>null</code> or
-	 * <code>API_VERSION_ANY</code> will disable API version validation.
+	 * The version of the broker API supported by the broker. A value of <code>null</code>
+	 * or <code>API_VERSION_ANY</code> will disable API version validation.
 	 */
 	private final String apiVersion;
 

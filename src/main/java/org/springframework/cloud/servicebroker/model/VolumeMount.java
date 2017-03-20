@@ -21,8 +21,7 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VolumeMount {
 	public enum Mode {
-		READ_ONLY("r"),
-		READ_WRITE("rw");
+		READ_ONLY("r"), READ_WRITE("rw");
 
 		private final String value;
 
@@ -38,8 +37,8 @@ public class VolumeMount {
 
 	public enum DeviceType {
 		/**
-		 * A shared volume mount represents a distributed file system which can be mounted on all app instances
-		 * simultaneously.
+		 * A shared volume mount represents a distributed file system which can be mounted
+		 * on all app instances simultaneously.
 		 */
 		SHARED("shared");
 

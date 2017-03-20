@@ -25,23 +25,25 @@ public class ServiceInstanceBindingFixture {
 	public static CreateServiceInstanceBindingRequest buildCreateAppBindingRequest() {
 		return new CreateServiceInstanceBindingRequest(
 				ServiceFixture.getSimpleService().getId(),
-				PlanFixture.getPlanOne().getId(),
-				APP_GUID,
-				Collections.singletonMap(ServiceBindingResource.BIND_RESOURCE_KEY_APP.toString(), (Object) APP_GUID),
+				PlanFixture.getPlanOne().getId(), APP_GUID,
+				Collections.singletonMap(
+						ServiceBindingResource.BIND_RESOURCE_KEY_APP.toString(),
+						(Object) APP_GUID),
 				ParametersFixture.getParameters())
-				.withBindingId(SERVICE_INSTANCE_BINDING_ID)
-				.withServiceInstanceId(SERVICE_INSTANCE_ID);
+						.withBindingId(SERVICE_INSTANCE_BINDING_ID)
+						.withServiceInstanceId(SERVICE_INSTANCE_ID);
 	}
 
 	public static CreateServiceInstanceBindingRequest buildCreateRouteBindingRequest() {
 		return new CreateServiceInstanceBindingRequest(
 				ServiceFixture.getSimpleService().getId(),
-				PlanFixture.getPlanOne().getId(),
-				null,
-				Collections.singletonMap(ServiceBindingResource.BIND_RESOURCE_KEY_ROUTE.toString(), (Object) ROUTE),
+				PlanFixture.getPlanOne().getId(), null,
+				Collections.singletonMap(
+						ServiceBindingResource.BIND_RESOURCE_KEY_ROUTE.toString(),
+						(Object) ROUTE),
 				ParametersFixture.getParameters())
-				.withBindingId(SERVICE_INSTANCE_BINDING_ID)
-				.withServiceInstanceId(SERVICE_INSTANCE_ID);
+						.withBindingId(SERVICE_INSTANCE_BINDING_ID)
+						.withServiceInstanceId(SERVICE_INSTANCE_ID);
 	}
 
 	public static CreateServiceInstanceAppBindingResponse buildCreateAppBindingResponse() {
@@ -51,36 +53,35 @@ public class ServiceInstanceBindingFixture {
 
 	public static CreateServiceInstanceAppBindingResponse buildCreateAppBindingResponseWithSyslog() {
 		return new CreateServiceInstanceAppBindingResponse()
-				.withCredentials(getCredentials())
-				.withSyslogDrainUrl(SYSLOG_DRAIN_URL);
+				.withCredentials(getCredentials()).withSyslogDrainUrl(SYSLOG_DRAIN_URL);
 	}
 
 	public static CreateServiceInstanceAppBindingResponse buildCreateAppBindingResponseWithVolumeMount() {
-		Map<String, Object> volumeDeviceConfig = Collections.singletonMap("configKey", (Object) "configValue");
-		List<VolumeMount> volumeMounts = Collections.singletonList(
-				new VolumeMount("cephdriver", "/data/images", VolumeMount.Mode.READ_WRITE,
-						VolumeMount.DeviceType.SHARED,
-						new SharedVolumeDevice("volumeId", volumeDeviceConfig))
-		);
+		Map<String, Object> volumeDeviceConfig = Collections.singletonMap("configKey",
+				(Object) "configValue");
+		List<VolumeMount> volumeMounts = Collections
+				.singletonList(new VolumeMount("cephdriver", "/data/images",
+						VolumeMount.Mode.READ_WRITE, VolumeMount.DeviceType.SHARED,
+						new SharedVolumeDevice("volumeId", volumeDeviceConfig)));
 		return new CreateServiceInstanceAppBindingResponse()
 				.withVolumeMounts(volumeMounts);
 	}
 
 	public static CreateServiceInstanceRouteBindingResponse buildCreateBindingResponseForRoute() {
-		return new CreateServiceInstanceRouteBindingResponse()
-				.withRouteServiceUrl(ROUTE);
+		return new CreateServiceInstanceRouteBindingResponse().withRouteServiceUrl(ROUTE);
 	}
 
 	public static DeleteServiceInstanceBindingRequest buildDeleteServiceInstanceBindingRequest() {
 		ServiceDefinition service = ServiceFixture.getSimpleService();
 
-		return new DeleteServiceInstanceBindingRequest(SERVICE_INSTANCE_ID, SERVICE_INSTANCE_BINDING_ID,
-				service.getId(), service.getPlans().get(0).getId(), service);
+		return new DeleteServiceInstanceBindingRequest(SERVICE_INSTANCE_ID,
+				SERVICE_INSTANCE_BINDING_ID, service.getId(),
+				service.getPlans().get(0).getId(), service);
 	}
 
-	private static Map<String,Object> getCredentials() {
-		Map<String,Object> credentials = new HashMap<>();
-		credentials.put("uri","http://uri.example.com");
+	private static Map<String, Object> getCredentials() {
+		Map<String, Object> credentials = new HashMap<>();
+		credentials.put("uri", "http://uri.example.com");
 		credentials.put("username", "user1");
 		credentials.put("password", "pwd1");
 		return credentials;

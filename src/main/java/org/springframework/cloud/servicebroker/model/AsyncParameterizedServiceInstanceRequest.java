@@ -17,10 +17,12 @@ import java.util.Map;
 @Getter
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServiceInstanceRequest {
+public abstract class AsyncParameterizedServiceInstanceRequest
+		extends AsyncServiceInstanceRequest {
 	/**
-	 * Parameters passed by the user in the form of a JSON structure. The service broker is responsible
-	 * for validating the contents of the parameters for correctness or applicability.
+	 * Parameters passed by the user in the form of a JSON structure. The service broker
+	 * is responsible for validating the contents of the parameters for correctness or
+	 * applicability.
 	 */
 	@JsonSerialize
 	@JsonProperty("parameters")
@@ -35,8 +37,10 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 			T bean = cls.newInstance();
 			BeanUtils.populate(bean, parameters);
 			return bean;
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Error mapping parameters to class of type " + cls.getName(), e);
+		}
+		catch (Exception e) {
+			throw new IllegalArgumentException(
+					"Error mapping parameters to class of type " + cls.getName(), e);
 		}
 	}
 }

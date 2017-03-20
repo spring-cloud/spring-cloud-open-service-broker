@@ -8,22 +8,21 @@ import java.util.Map;
  * 
  * @author sgreenberg@pivotal.io
  *
- * @deprecated This class is no longer used internally to represent service instance bindings. Implementing brokers should
- * create their own class to represent service instances bindings and persist them as necessary. The will remain in the project
- * for a time as a convenience, but it should no longer be used by implementing brokers.
+ * @deprecated This class is no longer used internally to represent service instance
+ * bindings. Implementing brokers should create their own class to represent service
+ * instances bindings and persist them as necessary. The will remain in the project for a
+ * time as a convenience, but it should no longer be used by implementing brokers.
  */
 public class ServiceInstanceBinding {
 
 	private String id;
 	private String serviceInstanceId;
-	private Map<String,Object> credentials = new HashMap<String,Object>();
+	private Map<String, Object> credentials = new HashMap<String, Object>();
 	private String syslogDrainUrl;
 	private String appGuid;
 
-	public ServiceInstanceBinding(String id, 
-			String serviceInstanceId, 
-			Map<String,Object> credentials,
-			String syslogDrainUrl, String appGuid) {
+	public ServiceInstanceBinding(String id, String serviceInstanceId,
+			Map<String, Object> credentials, String syslogDrainUrl, String appGuid) {
 		this.id = id;
 		this.serviceInstanceId = serviceInstanceId;
 		setCredentials(credentials);
@@ -46,7 +45,8 @@ public class ServiceInstanceBinding {
 	private void setCredentials(Map<String, Object> credentials) {
 		if (credentials == null) {
 			this.credentials = new HashMap<>();
-		} else {
+		}
+		else {
 			this.credentials = credentials;
 		}
 	}
@@ -54,9 +54,9 @@ public class ServiceInstanceBinding {
 	public String getSyslogDrainUrl() {
 		return syslogDrainUrl;
 	}
-	
+
 	public String getAppGuid() {
 		return appGuid;
 	}
-	
+
 }

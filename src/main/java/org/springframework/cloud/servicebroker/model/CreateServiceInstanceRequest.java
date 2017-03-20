@@ -21,7 +21,8 @@ import java.util.Map;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
-public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
+public class CreateServiceInstanceRequest
+		extends AsyncParameterizedServiceInstanceRequest {
 
 	/**
 	 * The ID of the service to provision, from the broker catalog.
@@ -40,7 +41,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	private final String planId;
 
 	/**
-	 * The Cloud Controller GUID of the organization under which the service is to be provisioned.
+	 * The Cloud Controller GUID of the organization under which the service is to be
+	 * provisioned.
 	 */
 	@NotEmpty
 	@JsonSerialize
@@ -48,7 +50,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	private final String organizationGuid;
 
 	/**
-	 * The Cloud Controller GUID of the space under which the service is to be provisioned.
+	 * The Cloud Controller GUID of the space under which the service is to be
+	 * provisioned.
 	 */
 	@NotEmpty
 	@JsonSerialize
@@ -56,16 +59,16 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	private final String spaceGuid;
 
 	/**
-	 * The Cloud Controller GUID of the service instance to provision. This ID will be used for future
-	 * requests for the same service instance (e.g. bind and deprovision), so the broker must use it to
-	 * correlate any resource it creates.
+	 * The Cloud Controller GUID of the service instance to provision. This ID will be
+	 * used for future requests for the same service instance (e.g. bind and deprovision),
+	 * so the broker must use it to correlate any resource it creates.
 	 */
 	@JsonIgnore
 	private transient String serviceInstanceId;
 
 	/**
-	 * The {@link ServiceDefinition} of the service to provision. This is resolved from the
-	 * <code>serviceDefinitionId</code> as a convenience to the broker.
+	 * The {@link ServiceDefinition} of the service to provision. This is resolved from
+	 * the <code>serviceDefinitionId</code> as a convenience to the broker.
 	 */
 	@JsonIgnore
 	private transient ServiceDefinition serviceDefinition;
@@ -77,10 +80,9 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		this.organizationGuid = null;
 		this.spaceGuid = null;
 	}
-	
+
 	public CreateServiceInstanceRequest(String serviceDefinitionId, String planId,
-										String organizationGuid, String spaceGuid,
-										Map<String, Object> parameters) {
+			String organizationGuid, String spaceGuid, Map<String, Object> parameters) {
 		super(parameters);
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
@@ -89,11 +91,12 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	public CreateServiceInstanceRequest(String serviceDefinitionId, String planId,
-										String organizationGuid, String spaceGuid) {
+			String organizationGuid, String spaceGuid) {
 		this(serviceDefinitionId, planId, organizationGuid, spaceGuid, null);
 	}
 
-	public CreateServiceInstanceRequest withServiceDefinition(ServiceDefinition serviceDefinition) {
+	public CreateServiceInstanceRequest withServiceDefinition(
+			ServiceDefinition serviceDefinition) {
 		this.serviceDefinition = serviceDefinition;
 		return this;
 	}
@@ -103,7 +106,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		return this;
 	}
 
-	public CreateServiceInstanceRequest withServiceInstanceId(final String serviceInstanceId) {
+	public CreateServiceInstanceRequest withServiceInstanceId(
+			final String serviceInstanceId) {
 		this.serviceInstanceId = serviceInstanceId;
 		return this;
 	}

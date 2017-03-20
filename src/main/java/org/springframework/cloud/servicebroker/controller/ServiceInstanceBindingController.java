@@ -40,68 +40,78 @@ public class ServiceInstanceBindingController extends BaseController {
 
 	@Autowired
 	public ServiceInstanceBindingController(CatalogService catalogService,
-											ServiceInstanceBindingService serviceInstanceBindingService) {
+			ServiceInstanceBindingService serviceInstanceBindingService) {
 		super(catalogService);
 		this.serviceInstanceBindingService = serviceInstanceBindingService;
 	}
 
 	@RequestMapping(value = {
 			"/{cfInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
-			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
-	}, method = RequestMethod.PUT)
-	public ResponseEntity<?> createServiceInstanceBinding(@PathVariable Map<String, String> pathVariables,
-														  @PathVariable("instanceId") String serviceInstanceId,
-														  @PathVariable("bindingId") String bindingId,
-														  @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-														  @Valid @RequestBody CreateServiceInstanceBindingRequest request) {
-		log.debug("Creating a service instance binding: serviceInstanceId={}, bindingId={}", serviceInstanceId, bindingId);
+			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}" }, method = RequestMethod.PUT)
+	public ResponseEntity<?> createServiceInstanceBinding(
+			@PathVariable Map<String, String> pathVariables,
+			@PathVariable("instanceId") String serviceInstanceId,
+			@PathVariable("bindingId") String bindingId,
+			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+			@Valid @RequestBody CreateServiceInstanceBindingRequest request) {
+		log.debug(
+				"Creating a service instance binding: serviceInstanceId={}, bindingId={}",
+				serviceInstanceId, bindingId);
 
-		request.withServiceInstanceId(serviceInstanceId)
-				.withBindingId(bindingId)
-				.withServiceDefinition(getServiceDefinition(request.getServiceDefinitionId()))
+		request.withServiceInstanceId(serviceInstanceId).withBindingId(bindingId)
+				.withServiceDefinition(
+						getServiceDefinition(request.getServiceDefinitionId()))
 				.withCfInstanceId(pathVariables.get("cfInstanceId"))
 				.withApiInfoLocation(apiInfoLocation);
 
-		CreateServiceInstanceBindingResponse response = serviceInstanceBindingService.createServiceInstanceBinding(request);
+		CreateServiceInstanceBindingResponse response = serviceInstanceBindingService
+				.createServiceInstanceBinding(request);
 
-		log.debug("Creating a service instance binding succeeded: serviceInstanceId={} bindingId={}", serviceInstanceId, bindingId);
+		log.debug(
+				"Creating a service instance binding succeeded: serviceInstanceId={} bindingId={}",
+				serviceInstanceId, bindingId);
 
-		return new ResponseEntity<>(response, response.isBindingExisted() ? HttpStatus.OK : HttpStatus.CREATED);
+		return new ResponseEntity<>(response,
+				response.isBindingExisted() ? HttpStatus.OK : HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = {
 			"/{cfInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
-			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
-	}, method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteServiceInstanceBinding(@PathVariable Map<String, String> pathVariables,
-															   @PathVariable("instanceId") String serviceInstanceId,
-															   @PathVariable("bindingId") String bindingId,
-															   @RequestParam("service_id") String serviceDefinitionId,
-															   @RequestParam("plan_id") String planId,
-															   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation) {
-		log.debug("Deleting a service instance binding: serviceInstanceId={}, bindingId={}, serviceDefinitionId={}, planId={}",
+			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}" }, method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteServiceInstanceBinding(
+			@PathVariable Map<String, String> pathVariables,
+			@PathVariable("instanceId") String serviceInstanceId,
+			@PathVariable("bindingId") String bindingId,
+			@RequestParam("service_id") String serviceDefinitionId,
+			@RequestParam("plan_id") String planId,
+			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation) {
+		log.debug(
+				"Deleting a service instance binding: serviceInstanceId={}, bindingId={}, serviceDefinitionId={}, planId={}",
 				serviceInstanceId, bindingId, serviceDefinitionId, planId);
 
-		DeleteServiceInstanceBindingRequest request =
-				new DeleteServiceInstanceBindingRequest(serviceInstanceId, bindingId, serviceDefinitionId, planId,
-						getServiceDefinition(serviceDefinitionId))
-				.withCfInstanceId(pathVariables.get("cfInstanceId"))
-				.withApiInfoLocation(apiInfoLocation);
+		DeleteServiceInstanceBindingRequest request = new DeleteServiceInstanceBindingRequest(
+				serviceInstanceId, bindingId, serviceDefinitionId, planId,
+				getServiceDefinition(serviceDefinitionId))
+						.withCfInstanceId(pathVariables.get("cfInstanceId"))
+						.withApiInfoLocation(apiInfoLocation);
 
 		try {
 			serviceInstanceBindingService.deleteServiceInstanceBinding(request);
-		} catch (ServiceInstanceBindingDoesNotExistException e) {
+		}
+		catch (ServiceInstanceBindingDoesNotExistException e) {
 			log.debug("Service instance binding does not exist: ", e);
 			return new ResponseEntity<>("{}", HttpStatus.GONE);
 		}
 
-		log.debug("Deleting a service instance binding succeeded: bindingId={}", bindingId);
+		log.debug("Deleting a service instance binding succeeded: bindingId={}",
+				bindingId);
 
 		return new ResponseEntity<>("{}", HttpStatus.OK);
 	}
 
 	@ExceptionHandler(ServiceInstanceBindingExistsException.class)
-	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceBindingExistsException ex) {
+	public ResponseEntity<ErrorMessage> handleException(
+			ServiceInstanceBindingExistsException ex) {
 		log.debug("Service instance binding already exists: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
 	}
