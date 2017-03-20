@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.springframework.cloud.servicebroker.config.ServiceBrokerApiVersionAutoConfiguration,
-org.springframework.cloud.servicebroker.config.ServiceBrokerAutoConfiguration
+org.springframework.cloud.servicebroker.config.ServiceBrokerApiVersionAutoConfiguration,\
+org.springframework.cloud.servicebroker.config.ServiceBrokerAutoConfiguration,\
+org.springframework.cloud.servicebroker.config.ServiceBrokerWebMvcAutoConfiguration

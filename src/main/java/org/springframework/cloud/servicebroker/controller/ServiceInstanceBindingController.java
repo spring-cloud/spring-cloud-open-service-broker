@@ -49,6 +49,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author sgreenberg@pivotal.io
  */
 @RestController
+@RequestMapping("${spring.cloud.cloudfoundry.servicebroker.basePath:}")
 @Slf4j
 public class ServiceInstanceBindingController extends BaseController {
 

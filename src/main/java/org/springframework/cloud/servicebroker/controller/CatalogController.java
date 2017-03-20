@@ -31,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author Scott Frederick
  */
 @RestController
+@RequestMapping("${spring.cloud.cloudfoundry.servicebroker.basePath:}")
 @Slf4j
 public class CatalogController extends BaseController {
 
