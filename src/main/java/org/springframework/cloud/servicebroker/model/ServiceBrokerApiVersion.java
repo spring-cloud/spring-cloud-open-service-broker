@@ -23,7 +23,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class BrokerApiVersion {
+public class ServiceBrokerApiVersion {
 
 	public final static String DEFAULT_API_VERSION_HEADER = "X-Broker-Api-Version";
 	public final static String API_VERSION_ANY = "*";
@@ -41,16 +41,16 @@ public class BrokerApiVersion {
 	 */
 	private final String apiVersion;
 
-	public BrokerApiVersion(String brokerApiVersionHeader, String apiVersion) {
+	public ServiceBrokerApiVersion(String brokerApiVersionHeader, String apiVersion) {
 		this.brokerApiVersionHeader = brokerApiVersionHeader;
 		this.apiVersion = apiVersion;
 	}
 
-	public BrokerApiVersion(String apiVersion) {
+	public ServiceBrokerApiVersion(String apiVersion) {
 		this(DEFAULT_API_VERSION_HEADER, apiVersion);
 	}
 
-	public BrokerApiVersion() {
+	public ServiceBrokerApiVersion() {
 		this(DEFAULT_API_VERSION_HEADER, API_VERSION_ANY);
 	}
 }

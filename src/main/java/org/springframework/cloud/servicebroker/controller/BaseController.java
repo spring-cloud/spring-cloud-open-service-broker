@@ -44,10 +44,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BaseController {
 
-	protected CatalogService catalogService;
+	private final CatalogService catalogService;
 
 	public BaseController(CatalogService catalogService) {
 		this.catalogService = catalogService;
+	}
+
+	protected CatalogService getCatalogService() {
+		return catalogService;
 	}
 
 	protected ServiceDefinition getRequiredServiceDefinition(String serviceDefinitionId) {

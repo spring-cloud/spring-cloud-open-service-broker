@@ -19,7 +19,6 @@ package org.springframework.cloud.servicebroker.service;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.servicebroker.model.Catalog;
 import org.springframework.cloud.servicebroker.model.ServiceDefinition;
 
@@ -31,10 +30,9 @@ import org.springframework.cloud.servicebroker.model.ServiceDefinition;
  */
 public class BeanCatalogService implements CatalogService {
 
-	private Catalog catalog;
-	private Map<String, ServiceDefinition> serviceDefs = new HashMap<String, ServiceDefinition>();
+	private final Catalog catalog;
+	private final Map<String, ServiceDefinition> serviceDefs = new HashMap<String, ServiceDefinition>();
 
-	@Autowired
 	public BeanCatalogService(Catalog catalog) {
 		this.catalog = catalog;
 		initializeMap();

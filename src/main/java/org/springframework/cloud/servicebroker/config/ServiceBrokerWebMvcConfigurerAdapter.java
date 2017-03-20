@@ -16,24 +16,23 @@
 
 package org.springframework.cloud.servicebroker.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.servicebroker.interceptor.BrokerApiVersionInterceptor;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.cloud.servicebroker.interceptor.ServiceBrokerApiVersionInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-@Configuration
-@EnableWebMvc
-public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
+public class ServiceBrokerWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter {
 	private static final String V2_API_PATH_PATTERN = "/v2/**";
 
-	@Autowired
-	private BrokerApiVersionInterceptor brokerApiVersionInterceptor;
+	private final ServiceBrokerApiVersionInterceptor serviceBrokerApiVersionInterceptor;
+
+	public ServiceBrokerWebMvcConfigurerAdapter(
+			ServiceBrokerApiVersionInterceptor serviceBrokerApiVersionInterceptor) {
+		this.serviceBrokerApiVersionInterceptor = serviceBrokerApiVersionInterceptor;
+	}
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(brokerApiVersionInterceptor)
+		registry.addInterceptor(serviceBrokerApiVersionInterceptor)
 				.addPathPatterns(V2_API_PATH_PATTERN);
 	}
 }

@@ -22,7 +22,6 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
@@ -53,9 +52,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ServiceInstanceBindingController extends BaseController {
 
-	private ServiceInstanceBindingService serviceInstanceBindingService;
+	private final ServiceInstanceBindingService serviceInstanceBindingService;
 
-	@Autowired
 	public ServiceInstanceBindingController(CatalogService catalogService,
 			ServiceInstanceBindingService serviceInstanceBindingService) {
 		super(catalogService);

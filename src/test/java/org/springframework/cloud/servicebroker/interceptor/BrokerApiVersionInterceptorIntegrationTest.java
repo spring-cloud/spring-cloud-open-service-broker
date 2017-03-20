@@ -1,7 +1,7 @@
 package org.springframework.cloud.servicebroker.interceptor;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.cloud.servicebroker.model.BrokerApiVersion.DEFAULT_API_VERSION_HEADER;
+import static org.springframework.cloud.servicebroker.model.ServiceBrokerApiVersion.DEFAULT_API_VERSION_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -11,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
-import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
+import org.springframework.cloud.servicebroker.model.ServiceBrokerApiVersion;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -75,14 +75,14 @@ public class BrokerApiVersionInterceptorIntegrationTest {
 
 	private MockMvc mockWithDefaultVersion() {
 		return MockMvcBuilders.standaloneSetup(controller)
-				.addInterceptors(new BrokerApiVersionInterceptor(new BrokerApiVersion()))
+				.addInterceptors(new ServiceBrokerApiVersionInterceptor(new ServiceBrokerApiVersion()))
 				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
 	}
 
 	private MockMvc mockWithExpectedVersion() {
 		return MockMvcBuilders.standaloneSetup(controller)
-				.addInterceptors(new BrokerApiVersionInterceptor(
-						new BrokerApiVersion("expected-version")))
+				.addInterceptors(new ServiceBrokerApiVersionInterceptor(
+						new ServiceBrokerApiVersion("expected-version")))
 				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
 	}
 }

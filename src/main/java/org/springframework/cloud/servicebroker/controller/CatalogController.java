@@ -16,7 +16,6 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.servicebroker.model.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @Slf4j
 public class CatalogController extends BaseController {
-	@Autowired
+
 	public CatalogController(CatalogService service) {
 		super(service);
 	}
@@ -43,6 +42,6 @@ public class CatalogController extends BaseController {
 			"{cfInstanceId}/v2/catalog" }, method = RequestMethod.GET)
 	public Catalog getCatalog() {
 		log.debug("getCatalog()");
-		return catalogService.getCatalog();
+		return getCatalogService().getCatalog();
 	}
 }

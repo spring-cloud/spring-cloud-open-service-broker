@@ -20,18 +20,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
-import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
+import org.springframework.cloud.servicebroker.model.ServiceBrokerApiVersion;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-public class BrokerApiVersionInterceptor extends HandlerInterceptorAdapter {
+public class ServiceBrokerApiVersionInterceptor extends HandlerInterceptorAdapter {
 
-	private final BrokerApiVersion version;
+	private final ServiceBrokerApiVersion version;
 
-	public BrokerApiVersionInterceptor() {
+	public ServiceBrokerApiVersionInterceptor() {
 		this(null);
 	}
 
-	public BrokerApiVersionInterceptor(BrokerApiVersion version) {
+	public ServiceBrokerApiVersionInterceptor(ServiceBrokerApiVersion version) {
 		this.version = version;
 	}
 
@@ -49,7 +49,7 @@ public class BrokerApiVersionInterceptor extends HandlerInterceptorAdapter {
 	}
 
 	private boolean anyVersionAllowed() {
-		return BrokerApiVersion.API_VERSION_ANY.equals(version.getApiVersion());
+		return ServiceBrokerApiVersion.API_VERSION_ANY.equals(version.getApiVersion());
 	}
 
 }

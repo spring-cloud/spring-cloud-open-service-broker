@@ -23,7 +23,6 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
@@ -63,9 +62,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ServiceInstanceController extends BaseController {
 
-	private ServiceInstanceService service;
+	private final ServiceInstanceService service;
 
-	@Autowired
 	public ServiceInstanceController(CatalogService catalogService,
 			ServiceInstanceService serviceInstanceService) {
 		super(catalogService);

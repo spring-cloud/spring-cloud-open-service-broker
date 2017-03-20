@@ -14,9 +14,9 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
-import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
+import org.springframework.cloud.servicebroker.model.ServiceBrokerApiVersion;
 
-public class BrokerApiVersionInterceptorTest {
+public class ServiceBrokerApiVersionInterceptorTest {
 
 	@Mock
 	private HttpServletRequest request;
@@ -25,7 +25,7 @@ public class BrokerApiVersionInterceptorTest {
 	private HttpServletResponse response;
 
 	@Mock
-	private BrokerApiVersion brokerApiVersion;
+	private ServiceBrokerApiVersion brokerApiVersion;
 
 	@Before
 	public void setup() {
@@ -35,7 +35,7 @@ public class BrokerApiVersionInterceptorTest {
 	@Test
 	public void noBrokerApiVersionConfigured()
 			throws IOException, ServletException, ServiceBrokerApiVersionException {
-		BrokerApiVersionInterceptor interceptor = new BrokerApiVersionInterceptor(null);
+		ServiceBrokerApiVersionInterceptor interceptor = new ServiceBrokerApiVersionInterceptor(null);
 		assertTrue(interceptor.preHandle(request, response, null));
 	}
 
@@ -43,12 +43,12 @@ public class BrokerApiVersionInterceptorTest {
 	public void anyVersionAccepted()
 			throws IOException, ServletException, ServiceBrokerApiVersionException {
 		String header = "header";
-		String version = BrokerApiVersion.API_VERSION_ANY;
+		String version = ServiceBrokerApiVersion.API_VERSION_ANY;
 		when(brokerApiVersion.getBrokerApiVersionHeader()).thenReturn(header);
 		when(brokerApiVersion.getApiVersion()).thenReturn(version);
 		when(request.getHeader(header)).thenReturn("version");
 
-		BrokerApiVersionInterceptor interceptor = new BrokerApiVersionInterceptor(
+		ServiceBrokerApiVersionInterceptor interceptor = new ServiceBrokerApiVersionInterceptor(
 				brokerApiVersion);
 		assertTrue(interceptor.preHandle(request, response, null));
 		verify(brokerApiVersion, atLeastOnce()).getApiVersion();
@@ -63,7 +63,7 @@ public class BrokerApiVersionInterceptorTest {
 		when(brokerApiVersion.getApiVersion()).thenReturn(version);
 		when(request.getHeader(header)).thenReturn(version);
 
-		BrokerApiVersionInterceptor interceptor = new BrokerApiVersionInterceptor(
+		ServiceBrokerApiVersionInterceptor interceptor = new ServiceBrokerApiVersionInterceptor(
 				brokerApiVersion);
 		assertTrue(interceptor.preHandle(request, response, null));
 		verify(brokerApiVersion, atLeastOnce()).getApiVersion();
@@ -79,7 +79,7 @@ public class BrokerApiVersionInterceptorTest {
 		when(brokerApiVersion.getApiVersion()).thenReturn(version);
 		when(request.getHeader(header)).thenReturn(notVersion);
 
-		BrokerApiVersionInterceptor interceptor = new BrokerApiVersionInterceptor(
+		ServiceBrokerApiVersionInterceptor interceptor = new ServiceBrokerApiVersionInterceptor(
 				brokerApiVersion);
 		interceptor.preHandle(request, response, null);
 		verify(brokerApiVersion).getBrokerApiVersionHeader();
