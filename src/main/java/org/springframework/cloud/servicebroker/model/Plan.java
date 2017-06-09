@@ -62,6 +62,14 @@ public class Plan {
 	private Map<String, Object> metadata;
 
 	/**
+	 * The schemas for this plan.
+	 */
+	@JsonSerialize
+	@JsonProperty("schemas")
+	@JsonInclude(Include.NON_NULL)
+	private Schemas schemas;
+
+	/**
 	 * Indicates whether the service with this plan can be bound to applications. This is an optional field. If the
 	 * value is <code>null</code>, the field will be omitted from the serialized JSON.
 	 */
@@ -101,6 +109,12 @@ public class Plan {
 		this(id, name, description, metadata, free);
 		this.bindable = bindable;
 	}
+
+	public Plan(String id, String name, String description, Map<String, Object> metadata, boolean free, boolean bindable, Schemas schemas) {
+		this(id, name, description, metadata, free, bindable);
+		this.schemas = schemas;
+	}
+
 
 	public Boolean isBindable() {
 		return bindable;
