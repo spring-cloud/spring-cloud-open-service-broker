@@ -19,15 +19,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.core.IsNot.not;
 import static org.springframework.cloud.servicebroker.model.ServiceDefinitionRequires.SERVICE_REQUIRES_ROUTE_FORWARDING;
 import static org.springframework.cloud.servicebroker.model.ServiceDefinitionRequires.SERVICE_REQUIRES_SYSLOG_DRAIN;
 import static org.springframework.cloud.servicebroker.model.fixture.CatalogFixture.getCatalog;
 import static org.springframework.cloud.servicebroker.model.fixture.CatalogFixture.getCatalogWithRequires;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -59,6 +58,10 @@ public class CatalogControllerIntegrationTest {
 		ServiceDefinition service = ServiceFixture.getSimpleService();
 		List<Plan> plans = PlanFixture.getAllPlans();
 
+		Map<String, Object> createServiceInstanceSchema = plans.get(1).getSchemas().getServiceInstanceSchema().getCreateMethodSchema().getConfigParametersSchema();
+		Map<String, Object> updateServiceInstanceSchema = plans.get(1).getSchemas().getServiceInstanceSchema().getUpdateMethodSchema().getConfigParametersSchema();
+		Map<String, Object> createServiceBindingSchema = plans.get(1).getSchemas().getServiceBindingSchema().getCreateMethodSchema().getConfigParametersSchema();
+
 		this.mockMvc.perform(get("/v2/catalog")
 				.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
@@ -78,7 +81,10 @@ public class CatalogControllerIntegrationTest {
 				.andExpect(jsonPath("$.services[*].plans[*].metadata", containsInAnyOrder(Collections.EMPTY_MAP, plans.get(1).getMetadata())))
 				.andExpect(jsonPath("$.services[*].plans[*].bindable", hasSize(1)))
 				.andExpect(jsonPath("$.services[*].plans[*].bindable", contains(plans.get(1).isBindable())))
-				.andExpect(jsonPath("$.services[*].plans[*].free", containsInAnyOrder(plans.get(0).isFree(), plans.get(1).isFree())));
+				.andExpect(jsonPath("$.services[*].plans[*].free", containsInAnyOrder(plans.get(0).isFree(), plans.get(1).isFree())))
+				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_instance.create.parameters", contains(createServiceInstanceSchema)))
+				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_instance.update.parameters", contains(updateServiceInstanceSchema)))
+				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_binding.create.parameters", contains(createServiceBindingSchema)));
 	}
 
 	@Test
