@@ -38,6 +38,9 @@ public class Schemas {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private ServiceBindingSchema serviceBindingSchema;
 
+    public Schemas(){
+    }
+
     public Schemas(ServiceInstanceSchema serviceInstanceSchema, ServiceBindingSchema serviceBindingSchema) {
         this.serviceInstanceSchema = serviceInstanceSchema;
         this.serviceBindingSchema = serviceBindingSchema;

@@ -30,6 +30,9 @@ public class ServiceBindingSchema {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private MethodSchema createMethodSchema;
 
+    public ServiceBindingSchema(){
+    }
+
     public ServiceBindingSchema(MethodSchema createMethodSchema) {
         this.createMethodSchema = createMethodSchema;
     }
