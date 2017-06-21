@@ -22,18 +22,19 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServiceBindingSchema {
 
-    /**
-     * The JSON schema for configuration parameters when creating a service binding.
-     */
-    @JsonSerialize
-    @JsonProperty("create")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private MethodSchema createMethodSchema;
+	/**
+	 * The JSON schema for configuration parameters when creating a service binding.
+	 */
+	@JsonSerialize
+	@JsonProperty("create")
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private MethodSchema createMethodSchema;
 
-    public ServiceBindingSchema(){
-    }
+	public ServiceBindingSchema() {
+		createMethodSchema = null;
+	}
 
-    public ServiceBindingSchema(MethodSchema createMethodSchema) {
-        this.createMethodSchema = createMethodSchema;
-    }
+	public ServiceBindingSchema(MethodSchema createMethodSchema) {
+		this.createMethodSchema = createMethodSchema;
+	}
 }

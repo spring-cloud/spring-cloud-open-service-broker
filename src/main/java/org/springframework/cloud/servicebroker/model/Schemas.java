@@ -22,27 +22,30 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Schemas {
 
-    /**
-     * The schemas available on a service instance.
-     */
-    @JsonSerialize
-    @JsonProperty("service_instance")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private ServiceInstanceSchema serviceInstanceSchema;
+	/**
+	 * The schemas available on a service instance.
+	 */
+	@JsonSerialize
+	@JsonProperty("service_instance")
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private ServiceInstanceSchema serviceInstanceSchema;
 
-    /**
-     * The schemas available on a service binding.
-     */
-    @JsonSerialize
-    @JsonProperty("service_binding")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private ServiceBindingSchema serviceBindingSchema;
+	/**
+	 * The schemas available on a service binding.
+	 */
+	@JsonSerialize
+	@JsonProperty("service_binding")
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private ServiceBindingSchema serviceBindingSchema;
 
-    public Schemas(){
+	public Schemas() {
+		serviceInstanceSchema = null;
+        serviceBindingSchema = null;
     }
 
-    public Schemas(ServiceInstanceSchema serviceInstanceSchema, ServiceBindingSchema serviceBindingSchema) {
-        this.serviceInstanceSchema = serviceInstanceSchema;
-        this.serviceBindingSchema = serviceBindingSchema;
-    }
+	public Schemas(ServiceInstanceSchema serviceInstanceSchema,
+			ServiceBindingSchema serviceBindingSchema) {
+		this.serviceInstanceSchema = serviceInstanceSchema;
+		this.serviceBindingSchema = serviceBindingSchema;
+	}
 }

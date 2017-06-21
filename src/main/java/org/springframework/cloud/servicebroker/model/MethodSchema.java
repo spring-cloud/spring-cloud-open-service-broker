@@ -1,15 +1,14 @@
 package org.springframework.cloud.servicebroker.model;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-
-import java.util.Map;
 
 /**
  * JSON Schema for a service broker object method.
@@ -24,17 +23,18 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MethodSchema {
 
-    /**
-     * A map of JSON schema for configuration parameters.
-     */
-    @JsonProperty("parameters")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Map<String, Object> configParametersSchema;
-    
-    public MethodSchema(){
-    }
+	/**
+	 * A map of JSON schema for configuration parameters.
+	 */
+	@JsonProperty("parameters")
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private Map<String, Object> configParametersSchema;
 
-    public MethodSchema(Map<String, Object> configParametersSchema) {
-        this.configParametersSchema = configParametersSchema;
-    }
+	public MethodSchema() {
+		configParametersSchema = null;
+	}
+
+	public MethodSchema(Map<String, Object> configParametersSchema) {
+		this.configParametersSchema = configParametersSchema;
+	}
 }

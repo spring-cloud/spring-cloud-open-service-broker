@@ -22,27 +22,30 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServiceInstanceSchema {
 
-    /**
-     * The JSON schema for configuration parameters when creating a service instance.
-     */
-    @JsonSerialize
-    @JsonProperty("create")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private MethodSchema createMethodSchema;
+	/**
+	 * The JSON schema for configuration parameters when creating a service instance.
+	 */
+	@JsonSerialize
+	@JsonProperty("create")
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private MethodSchema createMethodSchema;
 
-    /**
-     * The JSON schema for configuration parameters when updating a service instance.
-     */
-    @JsonSerialize
-    @JsonProperty("update")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private MethodSchema updateMethodSchema;
+	/**
+	 * The JSON schema for configuration parameters when updating a service instance.
+	 */
+	@JsonSerialize
+	@JsonProperty("update")
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private MethodSchema updateMethodSchema;
 
-    public ServiceInstanceSchema(){
-    }
+	public ServiceInstanceSchema() {
+		createMethodSchema = null;
+		updateMethodSchema = null;
+	}
 
-    public ServiceInstanceSchema(MethodSchema createMethodSchema, MethodSchema updateMethodSchema) {
-        this.createMethodSchema = createMethodSchema;
-        this.updateMethodSchema = updateMethodSchema;
-    }
+	public ServiceInstanceSchema(MethodSchema createMethodSchema,
+			MethodSchema updateMethodSchema) {
+		this.createMethodSchema = createMethodSchema;
+		this.updateMethodSchema = updateMethodSchema;
+	}
 }
