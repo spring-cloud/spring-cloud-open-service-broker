@@ -38,6 +38,9 @@ public class ServiceInstanceSchema {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private MethodSchema updateMethodSchema;
 
+    public ServiceInstanceSchema(){
+    }
+
     public ServiceInstanceSchema(MethodSchema createMethodSchema, MethodSchema updateMethodSchema) {
         this.createMethodSchema = createMethodSchema;
         this.updateMethodSchema = updateMethodSchema;

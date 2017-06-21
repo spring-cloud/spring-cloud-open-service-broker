@@ -30,6 +30,9 @@ public class MethodSchema {
     @JsonProperty("parameters")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Map<String, Object> configParametersSchema;
+    
+    public MethodSchema(){
+    }
 
     public MethodSchema(Map<String, Object> configParametersSchema) {
         this.configParametersSchema = configParametersSchema;
