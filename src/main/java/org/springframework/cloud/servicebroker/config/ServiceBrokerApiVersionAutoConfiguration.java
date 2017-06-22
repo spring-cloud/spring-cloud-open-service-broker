@@ -20,35 +20,41 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
+import org.springframework.cloud.servicebroker.interceptor.ServiceBrokerApiVersionInterceptor;
 import org.springframework.cloud.servicebroker.model.Catalog;
-import org.springframework.cloud.servicebroker.service.BeanCatalogService;
-import org.springframework.cloud.servicebroker.service.CatalogService;
-import org.springframework.cloud.servicebroker.service.NonBindableServiceInstanceBindingService;
-import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
+import org.springframework.cloud.servicebroker.model.ServiceBrokerApiVersion;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * This auto configuration class configures basic services of the service broker.
+ * This auto configuration class configures the version system of the service broker.
  *
  * @author Benjamin Ihrig
  */
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnBean({ Catalog.class, ServiceInstanceService.class })
-@AutoConfigureAfter(ServiceBrokerApiVersionAutoConfiguration.class)
-public class ServiceBrokerAutoConfiguration {
+@AutoConfigureAfter(WebMvcAutoConfiguration.class)
+public class ServiceBrokerApiVersionAutoConfiguration {
 
 	@Bean
-	@ConditionalOnMissingBean(CatalogService.class)
-	public CatalogService beanCatalogService(Catalog catalog) {
-		return new BeanCatalogService(catalog);
+	@ConditionalOnMissingBean(ServiceBrokerApiVersion.class)
+	public ServiceBrokerApiVersion brokerApiVersion() {
+		return new ServiceBrokerApiVersion();
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(ServiceInstanceBindingService.class)
-	public ServiceInstanceBindingService nonBindableServiceInstanceBindingService() {
-		return new NonBindableServiceInstanceBindingService();
+	public ServiceBrokerApiVersionInterceptor serviceBrokerApiVersionInterceptor(
+			ServiceBrokerApiVersion serviceBrokerApiVersion) {
+		return new ServiceBrokerApiVersionInterceptor(serviceBrokerApiVersion);
+	}
+
+	@Bean
+	public ServiceBrokerWebMvcConfigurerAdapter serviceBrokerWebMvcConfigurerAdapter(
+			ServiceBrokerApiVersionInterceptor serviceBrokerApiVersionInterceptor) {
+		return new ServiceBrokerWebMvcConfigurerAdapter(
+				serviceBrokerApiVersionInterceptor);
 	}
 }
