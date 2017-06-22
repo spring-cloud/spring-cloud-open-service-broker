@@ -11,7 +11,7 @@ import lombok.ToString;
  * @author Scott Frederick
  */
 @Getter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"serviceDefinition"})
 @EqualsAndHashCode(callSuper = true)
 public class DeleteServiceInstanceBindingRequest extends ServiceBrokerRequest {
 

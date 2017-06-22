@@ -10,7 +10,7 @@ import lombok.ToString;
  * @author krujos
  */
 @Getter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"serviceDefinition"})
 @EqualsAndHashCode(callSuper = true)
 public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 	/**

@@ -63,9 +63,6 @@ public class ServiceInstanceController extends BaseController {
 												   @RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 												   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 												   @Valid @RequestBody CreateServiceInstanceRequest request) {
-		log.debug("Creating a service instance: serviceInstanceId={}, planId=",
-				serviceInstanceId, request.getPlanId());
-
 		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(request.getServiceDefinitionId());
 
 		request.withServiceInstanceId(serviceInstanceId)
@@ -74,9 +71,12 @@ public class ServiceInstanceController extends BaseController {
 				.withCfInstanceId(pathVariables.get("cfInstanceId"))
 				.withApiInfoLocation(apiInfoLocation);
 
+		log.debug("Creating a service instance: request={}", request);
+
 		CreateServiceInstanceResponse response = service.createServiceInstance(request);
 
-		log.debug("Creating a service instance succeeded: serviceInstanceId={}", serviceInstanceId);
+		log.debug("Creating a service instance succeeded: serviceInstanceId={}, response={}",
+				serviceInstanceId, response);
 
 		return new ResponseEntity<>(response, getCreateResponseCode(response));
 	}
@@ -101,16 +101,16 @@ public class ServiceInstanceController extends BaseController {
 															 @RequestParam("plan_id") String planId,
 															 @RequestParam(value = "operation", required = false) String operation,
 															 @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation) {
-		log.debug("Getting service instance status: serviceInstanceId={}, serviceDefinitionId={}, planId={}, operation={}",
-				serviceInstanceId, serviceDefinitionId, planId, operation);
-
 		GetLastServiceOperationRequest request = new GetLastServiceOperationRequest(serviceInstanceId, serviceDefinitionId, planId, operation)
 				.withCfInstanceId(pathVariables.get("cfInstanceId"))
 				.withApiInfoLocation(apiInfoLocation);
 
+		log.debug("Getting service instance status: request={}", request);
+
 		GetLastServiceOperationResponse response = service.getLastOperation(request);
 
-		log.debug("Getting service instance status succeeded: serviceInstanceId={}, state={}, description={}", serviceInstanceId, response.getState(), response.getDescription());
+		log.debug("Getting service instance status succeeded: serviceInstanceId={}, response={}",
+				serviceInstanceId, response);
 
 		boolean isSuccessfulDelete = response.getState().equals(OperationState.SUCCEEDED) && response.isDeleteOperation();
 
@@ -127,19 +127,19 @@ public class ServiceInstanceController extends BaseController {
 												   @RequestParam("plan_id") String planId,
 												   @RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 												   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation) {
-		log.debug("Deleting a service instance: serviceInstanceId={}, serviceDefinitionId={}, planId={}",
-				serviceInstanceId, serviceDefinitionId, planId);
-
 		DeleteServiceInstanceRequest request =
 				new DeleteServiceInstanceRequest(serviceInstanceId, serviceDefinitionId, planId, getServiceDefinition(serviceDefinitionId))
 				.withAsyncAccepted(acceptsIncomplete)
 				.withCfInstanceId(pathVariables.get("cfInstanceId"))
 				.withApiInfoLocation(apiInfoLocation);
 
+		log.debug("Deleting a service instance: request={}", request);
+
 		try {
 			DeleteServiceInstanceResponse response = service.deleteServiceInstance(request);
 
-			log.debug("Deleting a service instance succeeded: serviceInstanceId={}", serviceInstanceId);
+			log.debug("Deleting a service instance succeeded: serviceInstanceId={}, response={}",
+					serviceInstanceId, response);
 
 			return new ResponseEntity<>(response, response.isAsync() ? HttpStatus.ACCEPTED : HttpStatus.OK);
 		} catch (ServiceInstanceDoesNotExistException e) {
@@ -157,9 +157,6 @@ public class ServiceInstanceController extends BaseController {
 												   @RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 												   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 												   @Valid @RequestBody UpdateServiceInstanceRequest request) {
-		log.debug("Updating a service instance: serviceInstanceId={}, planId={}",
-				serviceInstanceId, request.getPlanId());
-
 		ServiceDefinition serviceDefinition = getServiceDefinition(request.getServiceDefinitionId());
 
 		request.withServiceInstanceId(serviceInstanceId)
@@ -168,9 +165,12 @@ public class ServiceInstanceController extends BaseController {
 				.withCfInstanceId(pathVariables.get("cfInstanceId"))
 				.withApiInfoLocation(apiInfoLocation);
 
+		log.debug("Updating a service instance: request={}", request);
+
 		UpdateServiceInstanceResponse response = service.updateServiceInstance(request);
 
-		log.debug("Updating a service instance succeeded: serviceInstanceId={}", serviceInstanceId);
+		log.debug("Updating a service instance succeeded: serviceInstanceId={}, response={}",
+				serviceInstanceId, response);
 
 		return new ResponseEntity<>(response, response.isAsync() ? HttpStatus.ACCEPTED : HttpStatus.OK);
 	}

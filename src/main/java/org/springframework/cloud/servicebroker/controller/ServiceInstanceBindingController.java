@@ -54,17 +54,18 @@ public class ServiceInstanceBindingController extends BaseController {
 														  @PathVariable("bindingId") String bindingId,
 														  @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 														  @Valid @RequestBody CreateServiceInstanceBindingRequest request) {
-		log.debug("Creating a service instance binding: serviceInstanceId={}, bindingId={}", serviceInstanceId, bindingId);
-
 		request.withServiceInstanceId(serviceInstanceId)
 				.withBindingId(bindingId)
 				.withServiceDefinition(getServiceDefinition(request.getServiceDefinitionId()))
 				.withCfInstanceId(pathVariables.get("cfInstanceId"))
 				.withApiInfoLocation(apiInfoLocation);
 
+		log.debug("Creating a service instance binding: request={}", request);
+
 		CreateServiceInstanceBindingResponse response = serviceInstanceBindingService.createServiceInstanceBinding(request);
 
-		log.debug("Creating a service instance binding succeeded: serviceInstanceId={} bindingId={}", serviceInstanceId, bindingId);
+		log.debug("Creating a service instance binding succeeded: serviceInstanceId={}, bindingId={}, response={}",
+				serviceInstanceId, bindingId, response);
 
 		return new ResponseEntity<>(response, response.isBindingExisted() ? HttpStatus.OK : HttpStatus.CREATED);
 	}
@@ -79,14 +80,13 @@ public class ServiceInstanceBindingController extends BaseController {
 															   @RequestParam("service_id") String serviceDefinitionId,
 															   @RequestParam("plan_id") String planId,
 															   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation) {
-		log.debug("Deleting a service instance binding: serviceInstanceId={}, bindingId={}, serviceDefinitionId={}, planId={}",
-				serviceInstanceId, bindingId, serviceDefinitionId, planId);
-
 		DeleteServiceInstanceBindingRequest request =
 				new DeleteServiceInstanceBindingRequest(serviceInstanceId, bindingId, serviceDefinitionId, planId,
 						getServiceDefinition(serviceDefinitionId))
 				.withCfInstanceId(pathVariables.get("cfInstanceId"))
 				.withApiInfoLocation(apiInfoLocation);
+
+		log.debug("Deleting a service instance binding: request={}", request);
 
 		try {
 			serviceInstanceBindingService.deleteServiceInstanceBinding(request);

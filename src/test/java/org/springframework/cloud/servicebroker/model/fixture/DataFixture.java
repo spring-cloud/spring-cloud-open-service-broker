@@ -15,8 +15,8 @@ public class DataFixture {
 	}
 	
 	public static String toJson(Object object) throws IOException {
-		 ObjectMapper mapper = new ObjectMapper();
-		 return mapper.writeValueAsString(object);
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.writeValueAsString(object);
 	}
 	
 }

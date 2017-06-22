@@ -7,6 +7,7 @@ import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceRespon
 import org.springframework.cloud.servicebroker.model.GetLastServiceOperationRequest;
 import org.springframework.cloud.servicebroker.model.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.UpdateServiceInstanceRequest;
+import org.springframework.cloud.servicebroker.model.UpdateServiceInstanceRequest.PreviousValues;
 import org.springframework.cloud.servicebroker.model.UpdateServiceInstanceResponse;
 
 public class ServiceInstanceFixture {
@@ -48,8 +49,9 @@ public class ServiceInstanceFixture {
 		ServiceDefinition service = ServiceFixture.getSimpleService();
 		return new UpdateServiceInstanceRequest(
 				service.getId(),
-				service.getPlans().get(0).getId(),
-				ParametersFixture.getParameters())
+				service.getPlans().get(1).getId(),
+				ParametersFixture.getParameters(),
+				new PreviousValues(service.getPlans().get(0).getId()))
 				.withServiceInstanceId("service-instance-id")
 				.withAsyncAccepted(acceptsIncomplete);
 	}

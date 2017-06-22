@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Scott Frederick
  */
 @Getter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"serviceDefinition"})
 @EqualsAndHashCode(callSuper = true)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
