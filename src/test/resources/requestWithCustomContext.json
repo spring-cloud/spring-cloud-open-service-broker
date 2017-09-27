@@ -1,0 +1,14 @@
+{
+	"service_id": "test-service-id",
+	"plan_id": "test-plan-id",
+	"context": {
+		"platform": "test-platform",
+		"field1": "data",
+		"field2": 2
+	},
+	"parameters": {
+		"parameter1": 1,
+		"parameter2": "foo",
+		"parameter3": true
+	}
+}

@@ -1,5 +1,6 @@
 package org.springframework.cloud.servicebroker.model.fixture;
 
+import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceRequest;
@@ -14,11 +15,13 @@ public class ServiceInstanceFixture {
 
 	public static CreateServiceInstanceRequest buildCreateServiceInstanceRequest(boolean acceptsIncomplete) {
 		ServiceDefinition service = ServiceFixture.getSimpleService();
+		CloudFoundryContext context = ContextFixture.getCloudFoundryContext();
 		return new CreateServiceInstanceRequest(
 				service.getId(),
 				service.getPlans().get(0).getId(),
-				DataFixture.getOrgOneGuid(),
-				DataFixture.getSpaceOneGuid(),
+				context.getOrganizationGuid(),
+				context.getSpaceGuid(),
+				context,
 				ParametersFixture.getParameters())
 				.withServiceInstanceId("service-instance-id")
 				.withAsyncAccepted(acceptsIncomplete);
@@ -51,7 +54,8 @@ public class ServiceInstanceFixture {
 				service.getId(),
 				service.getPlans().get(1).getId(),
 				ParametersFixture.getParameters(),
-				new PreviousValues(service.getPlans().get(0).getId()))
+				new PreviousValues(service.getPlans().get(0).getId()),
+				ContextFixture.getCloudFoundryContext())
 				.withServiceInstanceId("service-instance-id")
 				.withAsyncAccepted(acceptsIncomplete);
 	}

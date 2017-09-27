@@ -26,8 +26,16 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	@JsonProperty("parameters")
 	protected final Map<String, Object> parameters;
 
-	public AsyncParameterizedServiceInstanceRequest(Map<String, Object> parameters) {
+	/**
+	 * Platform specific contextual information under which the service instance is to be provisioned or updated.
+	 */
+	@JsonSerialize
+	@JsonProperty("context")
+	private final Context context;
+
+	public AsyncParameterizedServiceInstanceRequest(Map<String, Object> parameters, Context context) {
 		this.parameters = parameters;
+		this.context = context;
 	}
 
 	public <T> T getParameters(Class<T> cls) {

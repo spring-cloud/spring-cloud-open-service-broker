@@ -1,0 +1,18 @@
+{
+	"service_id": "test-service-id",
+	"plan_id": "test-plan-id",
+	"context": {
+		"platform": "cloudfoundry",
+		"organization_guid": "test-organization-guid",
+		"space_guid": "test-space-guid",
+		"field1": "data",
+		"field2": 2
+	},
+	"organization_guid": "test-organization-guid",
+	"space_guid": "test-space-guid",
+	"parameters": {
+		"parameter1": 1,
+		"parameter2": "foo",
+		"parameter3": true
+	}
+}

@@ -17,6 +17,7 @@ import java.util.Map;
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  */
+@SuppressWarnings({"deprecation", "DeprecatedIsStillUsed"})
 @Getter
 @ToString(callSuper = true, exclude = {"serviceDefinition"})
 @EqualsAndHashCode(callSuper = true)
@@ -41,6 +42,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 	/**
 	 * The Cloud Controller GUID of the organization under which the service is to be provisioned.
+	 *
+	 * @deprecated use {@link #context}
 	 */
 	@NotEmpty
 	@JsonSerialize
@@ -49,6 +52,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 	/**
 	 * The Cloud Controller GUID of the space under which the service is to be provisioned.
+	 *
+	 * @deprecated use {@link #context}
 	 */
 	@NotEmpty
 	@JsonSerialize
@@ -71,17 +76,18 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	private transient ServiceDefinition serviceDefinition;
 
 	public CreateServiceInstanceRequest() {
-		super(null);
+		super(null, null);
 		this.serviceDefinitionId = null;
 		this.planId = null;
 		this.organizationGuid = null;
 		this.spaceGuid = null;
 	}
-	
+
 	public CreateServiceInstanceRequest(String serviceDefinitionId, String planId,
 										String organizationGuid, String spaceGuid,
+										Context context,
 										Map<String, Object> parameters) {
-		super(parameters);
+		super(parameters, context);
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
 		this.organizationGuid = organizationGuid;
@@ -89,8 +95,9 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	public CreateServiceInstanceRequest(String serviceDefinitionId, String planId,
-										String organizationGuid, String spaceGuid) {
-		this(serviceDefinitionId, planId, organizationGuid, spaceGuid, null);
+										String organizationGuid, String spaceGuid,
+										Map<String, Object> parameters) {
+		this(serviceDefinitionId, planId, organizationGuid, spaceGuid, null, parameters);
 	}
 
 	public CreateServiceInstanceRequest withServiceDefinition(ServiceDefinition serviceDefinition) {

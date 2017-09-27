@@ -59,18 +59,24 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	private transient ServiceDefinition serviceDefinition;
 
 	public UpdateServiceInstanceRequest() {
-		super(null);
+		super(null, null);
 		this.serviceDefinitionId = null;
 		this.planId = null;
 		this.previousValues = null;
 	}
 
 	public UpdateServiceInstanceRequest(String serviceDefinitionId, String planId,
-										Map<String, Object> parameters, PreviousValues previousValues) {
-		super(parameters);
+										Map<String, Object> parameters, PreviousValues previousValues,
+										Context context) {
+		super(parameters, context);
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
 		this.previousValues = previousValues;
+	}
+
+	public UpdateServiceInstanceRequest(String serviceDefinitionId, String planId,
+										Map<String, Object> parameters, PreviousValues previousValues) {
+		this(serviceDefinitionId, planId, parameters, previousValues, null);
 	}
 
 	public UpdateServiceInstanceRequest(String serviceDefinitionId, String planId,
