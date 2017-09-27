@@ -4,7 +4,8 @@ import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM;
 import static org.springframework.cloud.servicebroker.model.KubernetesContext.KUBERNETES_PLATFORM;
 
@@ -12,7 +13,7 @@ public class AsyncParameterizedServiceInstanceRequestTest {
 	@Test
 	public void requestWithCloudFoundryContextIsRead() {
 		AsyncParameterizedServiceInstanceRequest request =
-				DataFixture.readTestDataFile("requestWithCloudFoundryContext.json",
+				DataFixture.readTestDataFile("createRequestWithCloudFoundryContext.json",
 						CreateServiceInstanceRequest.class);
 
 		assertEquals(CLOUD_FOUNDRY_PLATFORM, request.getContext().getPlatform());
@@ -28,7 +29,7 @@ public class AsyncParameterizedServiceInstanceRequestTest {
 	@Test
 	public void requestWithKubernetesContextIsRead() {
 		AsyncParameterizedServiceInstanceRequest request =
-				DataFixture.readTestDataFile("requestWithKubernetesContext.json",
+				DataFixture.readTestDataFile("createRequestWithKubernetesContext.json",
 						CreateServiceInstanceRequest.class);
 
 		assertEquals(KUBERNETES_PLATFORM, request.getContext().getPlatform());
@@ -43,7 +44,7 @@ public class AsyncParameterizedServiceInstanceRequestTest {
 	@Test
 	public void requestWithUnknownContextIsRead() {
 		AsyncParameterizedServiceInstanceRequest request =
-				DataFixture.readTestDataFile("requestWithCustomContext.json",
+				DataFixture.readTestDataFile("createRequestWithCustomContext.json",
 						CreateServiceInstanceRequest.class);
 
 		assertEquals("test-platform", request.getContext().getPlatform());

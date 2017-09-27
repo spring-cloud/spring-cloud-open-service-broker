@@ -17,11 +17,11 @@ import java.util.Map;
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  */
-@SuppressWarnings({"deprecation", "DeprecatedIsStillUsed"})
 @Getter
 @ToString(callSuper = true, exclude = {"serviceDefinition"})
 @EqualsAndHashCode(callSuper = true)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
+@SuppressWarnings({"deprecation", "DeprecatedIsStillUsed"})
 public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
 
 	/**

@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.cloud.servicebroker.model.BindResource;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceRouteBindingResponse;
 import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
-import org.springframework.cloud.servicebroker.model.ServiceBindingResource;
 import org.springframework.cloud.servicebroker.model.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.SharedVolumeDevice;
 import org.springframework.cloud.servicebroker.model.VolumeMount;
@@ -26,8 +26,7 @@ public class ServiceInstanceBindingFixture {
 		return new CreateServiceInstanceBindingRequest(
 				ServiceFixture.getSimpleService().getId(),
 				PlanFixture.getPlanOne().getId(),
-				APP_GUID,
-				Collections.singletonMap(ServiceBindingResource.BIND_RESOURCE_KEY_APP.toString(), (Object) APP_GUID),
+				new BindResource(APP_GUID, null, null),
 				ParametersFixture.getParameters())
 				.withBindingId(SERVICE_INSTANCE_BINDING_ID)
 				.withServiceInstanceId(SERVICE_INSTANCE_ID);
@@ -37,8 +36,7 @@ public class ServiceInstanceBindingFixture {
 		return new CreateServiceInstanceBindingRequest(
 				ServiceFixture.getSimpleService().getId(),
 				PlanFixture.getPlanOne().getId(),
-				null,
-				Collections.singletonMap(ServiceBindingResource.BIND_RESOURCE_KEY_ROUTE.toString(), (Object) ROUTE),
+				new BindResource(null, ROUTE, null),
 				ParametersFixture.getParameters())
 				.withBindingId(SERVICE_INSTANCE_BINDING_ID)
 				.withServiceInstanceId(SERVICE_INSTANCE_ID);

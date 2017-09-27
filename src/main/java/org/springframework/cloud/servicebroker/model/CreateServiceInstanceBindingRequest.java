@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @ToString(callSuper = true, exclude = {"serviceDefinition"})
 @EqualsAndHashCode(callSuper = true)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "DeprecatedIsStillUsed"})
 public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	/**
 	 * The ID of the service being bound, from the broker catalog.
@@ -57,7 +57,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 */
 	@JsonSerialize
 	@JsonProperty("bind_resource")
-	private final Map<String, Object> bindResource;
+	private final BindResource bindResource;
 
 	/**
 	 * Parameters passed by the user in the form of a JSON structure. The service broker is responsible
@@ -96,13 +96,23 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	}
 	
 	public CreateServiceInstanceBindingRequest(String serviceDefinitionId, String planId,
-											   String appGuid, Map<String, Object> bindResource,
+											   BindResource bindResource,
 											   Map<String, Object> parameters) {
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
-		this.appGuid = appGuid;
-		this.bindResource = bindResource;
 		this.parameters = parameters;
+		this.bindResource = bindResource;
+		if (bindResource != null) {
+			this.appGuid = bindResource.getAppGuid();
+		} else {
+			this.appGuid = null;
+		}
+	}
+
+	public CreateServiceInstanceBindingRequest(String serviceDefinitionId, String planId,
+											   String appGuid, Map<String, Object> bindResource,
+											   Map<String, Object> parameters) {
+		this(serviceDefinitionId, planId, new BindResource(appGuid, null, bindResource), parameters);
 	}
 
 	public CreateServiceInstanceBindingRequest(String serviceDefinitionId, String planId,
@@ -145,17 +155,29 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		return this;
 	}
 
+	/**
+	 * Get the GUID of the application associated with the binding.
+	 *
+	 * @return the app GUID
+	 * @deprecated use {@link #getBindResource()#getAppGuid()} directly
+	 */
 	public String getBoundAppGuid() {
 		if (bindResource == null) {
 			return null;
 		}
-		return (String) bindResource.get(ServiceBindingResource.BIND_RESOURCE_KEY_APP.toString());
+		return bindResource.getAppGuid();
 	}
 
+	/**
+	 * Get the URL of the route service associated with the binding.
+	 *
+	 * @return the route URL
+	 * @deprecated use {@link #getBindResource()#getRoute()} directly
+	 */
 	public String getBoundRoute() {
 		if (bindResource == null) {
 			return null;
 		}
-		return (String) bindResource.get(ServiceBindingResource.BIND_RESOURCE_KEY_ROUTE.toString());
+		return bindResource.getRoute();
 	}
 }

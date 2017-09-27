@@ -44,7 +44,9 @@ public class Context {
 
 	public Context(String platform, Map<String, Object> fields) {
 		this.platform = platform;
-		this.fields.putAll(fields);
+		if (fields != null) {
+			this.fields.putAll(fields);
+		}
 	}
 
 	@JsonAnySetter
