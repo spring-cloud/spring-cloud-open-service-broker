@@ -6,6 +6,12 @@
 		"field1": "data",
 		"field2": 2
 	},
+	"context": {
+		"platform": "kubernetes",
+		"namespace": "test-namespace",
+		"field1": "data",
+		"field2": 2
+	},
 	"parameters": {
 		"parameter1": 1,
 		"parameter2": "foo",

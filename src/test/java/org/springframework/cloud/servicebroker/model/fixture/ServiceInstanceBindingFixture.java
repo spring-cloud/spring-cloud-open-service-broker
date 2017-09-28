@@ -27,6 +27,7 @@ public class ServiceInstanceBindingFixture {
 				ServiceFixture.getSimpleService().getId(),
 				PlanFixture.getPlanOne().getId(),
 				new BindResource(APP_GUID, null, null),
+				ContextFixture.getCloudFoundryContext(),
 				ParametersFixture.getParameters())
 				.withBindingId(SERVICE_INSTANCE_BINDING_ID)
 				.withServiceInstanceId(SERVICE_INSTANCE_ID);
@@ -37,6 +38,7 @@ public class ServiceInstanceBindingFixture {
 				ServiceFixture.getSimpleService().getId(),
 				PlanFixture.getPlanOne().getId(),
 				new BindResource(null, ROUTE, null),
+				ContextFixture.getCloudFoundryContext(),
 				ParametersFixture.getParameters())
 				.withBindingId(SERVICE_INSTANCE_BINDING_ID)
 				.withServiceInstanceId(SERVICE_INSTANCE_ID);

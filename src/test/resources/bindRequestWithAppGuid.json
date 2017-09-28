@@ -7,6 +7,13 @@
 		"field2": 2
 	},
 	"app_guid": "test-app-guid",
+	"context": {
+		"platform": "cloudfoundry",
+		"organization_guid": "test-organization-guid",
+		"space_guid": "test-space-guid",
+		"field1": "data",
+		"field2": 2
+	},
 	"parameters": {
 		"parameter1": 1,
 		"parameter2": "foo",

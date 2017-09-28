@@ -68,6 +68,13 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	private final Map<String, Object> parameters;
 
 	/**
+	 * Platform specific contextual information under which the service instance is to be bound.
+	 */
+	@JsonSerialize
+	@JsonProperty("context")
+	private final Context context;
+
+	/**
 	 * The Cloud Controller GUID of the service instance to being bound.
 	 */
 	@JsonIgnore
@@ -92,11 +99,12 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		planId = null;
 		appGuid = null;
 		bindResource = null;
+		context = null;
 		parameters = null;
 	}
 	
 	public CreateServiceInstanceBindingRequest(String serviceDefinitionId, String planId,
-											   BindResource bindResource,
+											   BindResource bindResource, Context context,
 											   Map<String, Object> parameters) {
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
@@ -107,12 +115,13 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		} else {
 			this.appGuid = null;
 		}
+		this.context = context;
 	}
 
 	public CreateServiceInstanceBindingRequest(String serviceDefinitionId, String planId,
 											   String appGuid, Map<String, Object> bindResource,
 											   Map<String, Object> parameters) {
-		this(serviceDefinitionId, planId, new BindResource(appGuid, null, bindResource), parameters);
+		this(serviceDefinitionId, planId, new BindResource(appGuid, null, bindResource), null, parameters);
 	}
 
 	public CreateServiceInstanceBindingRequest(String serviceDefinitionId, String planId,
