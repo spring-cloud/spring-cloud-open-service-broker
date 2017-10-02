@@ -164,11 +164,16 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		return this;
 	}
 
+	public CreateServiceInstanceBindingRequest withOriginatingIdentity(Context originatingIdentity) {
+		this.originatingIdentity = originatingIdentity;
+		return this;
+	}
+
 	/**
 	 * Get the GUID of the application associated with the binding.
 	 *
 	 * @return the app GUID
-	 * @deprecated use {@link #getBindResource()#getAppGuid()} directly
+	 * @deprecated use {@link #bindResource} directly
 	 */
 	public String getBoundAppGuid() {
 		if (bindResource == null) {
@@ -181,7 +186,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 * Get the URL of the route service associated with the binding.
 	 *
 	 * @return the route URL
-	 * @deprecated use {@link #getBindResource()#getRoute()} directly
+	 * @deprecated use {@link #bindResource} directly
 	 */
 	public String getBoundRoute() {
 		if (bindResource == null) {

@@ -63,4 +63,9 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 		this.apiInfoLocation = apiInfoLocation;
 		return this;
 	}
+
+	public DeleteServiceInstanceRequest withOriginatingIdentity(Context originatingIdentity) {
+		this.originatingIdentity = originatingIdentity;
+		return this;
+	}
 }

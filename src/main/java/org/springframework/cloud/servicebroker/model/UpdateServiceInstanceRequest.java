@@ -113,6 +113,11 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		return this;
 	}
 
+	public UpdateServiceInstanceRequest withOriginatingIdentity(Context originatingIdentity) {
+		this.originatingIdentity = originatingIdentity;
+		return this;
+	}
+
 	/**
 	 * Information about the service instance prior to the update request.
 	 */

@@ -22,8 +22,8 @@ public class AsyncParameterizedServiceInstanceRequestTest {
 		CloudFoundryContext context = (CloudFoundryContext) request.getContext();
 		assertEquals("test-organization-guid", context.getOrganizationGuid());
 		assertEquals("test-space-guid", context.getSpaceGuid());
-		assertEquals("data", context.getField("field1"));
-		assertEquals(2, context.getField("field2"));
+		assertEquals("data", context.getProperty("field1"));
+		assertEquals(2, context.getProperty("field2"));
 	}
 
 	@Test
@@ -37,8 +37,8 @@ public class AsyncParameterizedServiceInstanceRequestTest {
 
 		KubernetesContext context = (KubernetesContext) request.getContext();
 		assertEquals("test-namespace", context.getNamespace());
-		assertEquals("data", context.getField("field1"));
-		assertEquals(2, context.getField("field2"));
+		assertEquals("data", context.getProperty("field1"));
+		assertEquals(2, context.getProperty("field2"));
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class AsyncParameterizedServiceInstanceRequestTest {
 
 		assertEquals("test-platform", request.getContext().getPlatform());
 
-		assertEquals("data", request.getContext().getField("field1"));
-		assertEquals(2, request.getContext().getField("field2"));
+		assertEquals("data", request.getContext().getProperty("field1"));
+		assertEquals(2, request.getContext().getProperty("field2"));
 	}
 }

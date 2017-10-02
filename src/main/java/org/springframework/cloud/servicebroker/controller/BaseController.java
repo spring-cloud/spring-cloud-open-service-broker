@@ -1,5 +1,7 @@
 package org.springframework.cloud.servicebroker.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
@@ -7,16 +9,24 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidPar
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.AsyncRequiredErrorMessage;
+import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.ErrorMessage;
 import org.springframework.cloud.servicebroker.model.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.io.IOException;
+import java.util.Map;
+
+import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 
 /**
  * Base controller.
@@ -43,6 +53,44 @@ public class BaseController {
 
 	protected ServiceDefinition getServiceDefinition(String serviceDefinitionId) {
 		return catalogService.getServiceDefinition(serviceDefinitionId);
+	}
+
+	protected Context parseOriginatingIdentity(String originatingIdentityString) {
+		if (originatingIdentityString == null) {
+			return null;
+		}
+
+		String[] parts = originatingIdentityString.split(" ", 2);
+
+		if (parts.length != 2) {
+			throw new HttpMessageNotReadableException("Expected platform and properties values in "
+					+ ORIGINATING_IDENTITY_HEADER + " header in request");
+		}
+
+		String platform = parts[0];
+
+		String encodedProperties;
+		try {
+			encodedProperties = new String(Base64.decode(parts[1].getBytes()));
+		} catch (Exception e) {
+			throw new HttpMessageNotReadableException("Error decoding JSON properties from "
+					+ ORIGINATING_IDENTITY_HEADER + " header in request", e);
+		}
+
+		Map<String, Object> properties;
+		try {
+			properties = readJsonFromString(encodedProperties);
+		} catch (IOException e) {
+			throw new HttpMessageNotReadableException("Error parsing JSON properties from "
+					+ ORIGINATING_IDENTITY_HEADER + " header in request", e);
+		}
+
+		return new Context(platform, properties);
+	}
+
+	private Map<String, Object> readJsonFromString(String value) throws java.io.IOException {
+		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
+		return objectMapper.readValue(value, new TypeReference<Map<String,Object>>() {});
 	}
 
 	@ExceptionHandler(ServiceBrokerApiVersionException.class)

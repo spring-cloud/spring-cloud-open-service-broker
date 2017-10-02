@@ -15,9 +15,10 @@ import lombok.ToString;
 @EqualsAndHashCode
 public abstract class ServiceBrokerRequest {
 	public final static String API_INFO_LOCATION_HEADER = "X-Api-Info-Location";
+	public final static String ORIGINATING_IDENTITY_HEADER = "X-Broker-API-Originating-Identity";
 
 	/**
-	 * The Cloud Foundry instance ID used to identify the Cloud Foundry instance when the service broker is registered
+	 * The ID used to identify the platform instance when the service broker is registered
 	 * to multiple instances. Will be <code>null</code> if the service broker is not registered with an instance ID
 	 * in the registered URL.
 	 */
@@ -25,13 +26,21 @@ public abstract class ServiceBrokerRequest {
 	protected transient String cfInstanceId;
 
 	/**
-	 * Exposes the API info endpoint of the Cloud Foundry instance making the call to the service broker.
+	 * The API info endpoint of the platform instance making the call to the service broker.
 	 */
 	@JsonIgnore
 	protected transient String apiInfoLocation;
 
+	/**
+	 * The identity of the of the user that initiated the request from the platform.
+	 */
+	@JsonIgnore
+	protected transient Context originatingIdentity;
+
+
 	public ServiceBrokerRequest() {
 		this.cfInstanceId = null;
 		this.apiInfoLocation = null;
+		this.originatingIdentity = null;
 	}
 }

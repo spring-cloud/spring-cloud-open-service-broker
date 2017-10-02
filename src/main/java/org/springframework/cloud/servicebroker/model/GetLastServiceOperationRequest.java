@@ -57,4 +57,9 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		this.apiInfoLocation = apiInfoLocation;
 		return this;
 	}
+
+	public GetLastServiceOperationRequest withOriginatingIdentity(Context originatingIdentity) {
+		this.originatingIdentity = originatingIdentity;
+		return this;
+	}
 }

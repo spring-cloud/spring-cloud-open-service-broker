@@ -48,4 +48,9 @@ public class DeleteServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		this.apiInfoLocation = apiInfoLocation;
 		return this;
 	}
+
+	public DeleteServiceInstanceBindingRequest withOriginatingIdentity(Context originatingIdentity) {
+		this.originatingIdentity = originatingIdentity;
+		return this;
+	}
 }

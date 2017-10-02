@@ -35,6 +35,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
+import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -69,6 +70,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		mockMvc.perform(put(buildUrl(createRequest, false))
 				.content(DataFixture.toJson(createRequest))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
@@ -81,6 +83,9 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
 		assertNull(actualRequest.getCfInstanceId());
 		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
+		assertEquals(ORIGINATING_IDENTITY_PLATFORM, actualRequest.getOriginatingIdentity().getPlatform());
+		assertEquals(ORIGINATING_USER_VALUE, actualRequest.getOriginatingIdentity().getProperty(ORIGINATING_USER_KEY));
+		assertEquals(ORIGINATING_EMAIL_VALUE, actualRequest.getOriginatingIdentity().getProperty(ORIGINATING_EMAIL_KEY));
 	}
 
 	@Test
@@ -107,6 +112,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
 		assertEquals(CF_INSTANCE_ID, actualRequest.getCfInstanceId());
 		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
+		assertNull(actualRequest.getOriginatingIdentity());
 	}
 
 	@Test
@@ -311,6 +317,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		mockMvc.perform(delete(buildUrl(deleteRequest, false))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", is("{}")));
@@ -320,6 +327,9 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
 		assertNull(actualRequest.getCfInstanceId());
 		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
+		assertEquals(ORIGINATING_IDENTITY_PLATFORM, actualRequest.getOriginatingIdentity().getPlatform());
+		assertEquals(ORIGINATING_USER_VALUE, actualRequest.getOriginatingIdentity().getProperty(ORIGINATING_USER_KEY));
+		assertEquals(ORIGINATING_EMAIL_VALUE, actualRequest.getOriginatingIdentity().getProperty(ORIGINATING_EMAIL_KEY));
 	}
 
 	@Test
@@ -334,6 +344,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
 		assertEquals(CF_INSTANCE_ID, actualRequest.getCfInstanceId());
+		assertNull(actualRequest.getOriginatingIdentity());
 	}
 
 	@Test

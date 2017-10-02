@@ -124,4 +124,9 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		this.apiInfoLocation = apiInfoLocation;
 		return this;
 	}
+
+	public CreateServiceInstanceRequest withOriginatingIdentity(Context originatingIdentity) {
+		this.originatingIdentity = originatingIdentity;
+		return this;
+	}
 }

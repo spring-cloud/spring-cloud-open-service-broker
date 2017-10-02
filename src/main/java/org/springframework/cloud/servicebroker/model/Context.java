@@ -16,8 +16,8 @@ import static org.springframework.cloud.servicebroker.model.KubernetesContext.KU
 
 /**
  * Platform specific contextual information under which the service instance is to be provisioned or updated. Fields
- * known by concrete subtypes will be parsed into discrete fields of the appropriate subtype. Any additional fields
- * will available using {@link #getField(String)}.
+ * known by concrete subtypes will be parsed into discrete properties of the appropriate subtype. Any additional
+ * properties will available using {@link #getProperty(String)}.
  *
  * @author Scott Frederick
  */
@@ -37,21 +37,21 @@ public class Context {
 	@JsonProperty("platform")
 	private String platform;
 
-	private Map<String, Object> fields = new HashMap<>();
+	private Map<String, Object> properties = new HashMap<>();
 
 	public Context() {
 	}
 
-	public Context(String platform, Map<String, Object> fields) {
+	public Context(String platform, Map<String, Object> properties) {
 		this.platform = platform;
-		if (fields != null) {
-			this.fields.putAll(fields);
+		if (properties != null) {
+			this.properties.putAll(properties);
 		}
 	}
 
 	@JsonAnySetter
-	private void setField(String key, Object value) {
-		fields.put(key, value);
+	private void setProperty(String key, Object value) {
+		properties.put(key, value);
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class Context {
 	 * @param key the key of the value to retrieve
 	 * @return the value of the field, or {@literal null} if the key is not present in the request
 	 */
-	public Object getField(String key) {
-		return fields.get(key);
+	public Object getProperty(String key) {
+		return properties.get(key);
 	}
 }

@@ -27,8 +27,8 @@ public class CreateServiceInstanceBindingRequestTest {
 		CloudFoundryContext context = (CloudFoundryContext) request.getContext();
 		assertEquals("test-organization-guid", context.getOrganizationGuid());
 		assertEquals("test-space-guid", context.getSpaceGuid());
-		assertEquals("data", context.getField("field1"));
-		assertEquals(2, context.getField("field2"));
+		assertEquals("data", context.getProperty("field1"));
+		assertEquals(2, context.getProperty("field2"));
 
 		assertNull(request.getBindResource().getRoute());
 		assertEquals("data", request.getBindResource().getField("field1"));
@@ -58,8 +58,8 @@ public class CreateServiceInstanceBindingRequestTest {
 
 		KubernetesContext context = (KubernetesContext) request.getContext();
 		assertEquals("test-namespace", context.getNamespace());
-		assertEquals("data", context.getField("field1"));
-		assertEquals(2, context.getField("field2"));
+		assertEquals("data", context.getProperty("field1"));
+		assertEquals(2, context.getProperty("field2"));
 
 		assertEquals(1, request.getParameters().get("parameter1"));
 		assertEquals("foo", request.getParameters().get("parameter2"));

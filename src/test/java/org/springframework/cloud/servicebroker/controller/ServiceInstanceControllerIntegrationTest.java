@@ -9,6 +9,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
+import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -110,6 +111,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
 				.content(DataFixture.toJson(syncCreateRequest))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
@@ -119,6 +121,9 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		assertFalse(actualRequest.isAsyncAccepted());
 		assertNull(actualRequest.getCfInstanceId());
 		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
+		assertEquals(ORIGINATING_IDENTITY_PLATFORM, actualRequest.getOriginatingIdentity().getPlatform());
+		assertEquals(ORIGINATING_USER_VALUE, actualRequest.getOriginatingIdentity().getProperty(ORIGINATING_USER_KEY));
+		assertEquals(ORIGINATING_EMAIL_VALUE, actualRequest.getOriginatingIdentity().getProperty(ORIGINATING_EMAIL_KEY));
 	}
 
 	@Test
@@ -138,6 +143,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
 		assertEquals(CF_INSTANCE_ID, actualRequest.getCfInstanceId());
+		assertNull(actualRequest.getOriginatingIdentity());
 	}
 
 	@Test
@@ -279,6 +285,42 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 	}
 
 	@Test
+	public void createServiceInstanceWithMissingIdentityPropertiesFails() throws Exception {
+		when(serviceInstanceService.createServiceInstance(eq(syncCreateRequest)))
+				.thenReturn(syncCreateResponse);
+
+		setupCatalogService(syncCreateRequest.getServiceDefinitionId());
+
+		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
+				.content(DataFixture.toJson(syncCreateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, "test-platform")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isUnprocessableEntity())
+				.andExpect(jsonPath("$.description", containsString("Expected platform and properties")))
+				.andExpect(jsonPath("$.description", containsString(ORIGINATING_IDENTITY_HEADER)));
+	}
+
+	@Test
+	public void createServiceInstanceWithMalformedIdentityPropertiesFails() throws Exception {
+		when(serviceInstanceService.createServiceInstance(eq(syncCreateRequest)))
+				.thenReturn(syncCreateResponse);
+
+		setupCatalogService(syncCreateRequest.getServiceDefinitionId());
+
+		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
+				.content(DataFixture.toJson(syncCreateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, "test-platform nonBase64EncodedString")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isUnprocessableEntity())
+				.andExpect(jsonPath("$.description", containsString("Error parsing JSON properties")))
+				.andExpect(jsonPath("$.description", containsString(ORIGINATING_IDENTITY_HEADER)));
+	}
+
+	@Test
 	public void deleteServiceInstanceSucceeds() throws Exception {
 		when(serviceInstanceService.deleteServiceInstance(eq(syncDeleteRequest)))
 				.thenReturn(syncDeleteResponse);
@@ -287,6 +329,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		mockMvc.perform(delete(buildUrl(syncDeleteRequest, false))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().string("{}"));
@@ -295,6 +338,9 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		assertFalse(actualRequest.isAsyncAccepted());
 		assertNull(actualRequest.getCfInstanceId());
 		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
+		assertEquals(ORIGINATING_IDENTITY_PLATFORM, actualRequest.getOriginatingIdentity().getPlatform());
+		assertEquals(ORIGINATING_USER_VALUE, actualRequest.getOriginatingIdentity().getProperty(ORIGINATING_USER_KEY));
+		assertEquals(ORIGINATING_EMAIL_VALUE, actualRequest.getOriginatingIdentity().getProperty(ORIGINATING_EMAIL_KEY));
 	}
 
 	@Test
@@ -311,6 +357,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		DeleteServiceInstanceRequest actualRequest = verifyDeleteServiceInstance();
 		assertEquals(CF_INSTANCE_ID, actualRequest.getCfInstanceId());
+		assertNull(actualRequest.getOriginatingIdentity());
 	}
 
 	@Test
@@ -383,6 +430,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		mockMvc.perform(patch(buildUrl(syncUpdateRequest, false))
 				.content(DataFixture.toJson(syncUpdateRequest))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
@@ -392,6 +440,9 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		assertFalse(actualRequest.isAsyncAccepted());
 		assertNull(actualRequest.getCfInstanceId());
 		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
+		assertEquals(ORIGINATING_IDENTITY_PLATFORM, actualRequest.getOriginatingIdentity().getPlatform());
+		assertEquals(ORIGINATING_USER_VALUE, actualRequest.getOriginatingIdentity().getProperty(ORIGINATING_USER_KEY));
+		assertEquals(ORIGINATING_EMAIL_VALUE, actualRequest.getOriginatingIdentity().getProperty(ORIGINATING_EMAIL_KEY));
 	}
 
 	@Test
@@ -411,6 +462,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertEquals(CF_INSTANCE_ID, actualRequest.getCfInstanceId());
+		assertNull(actualRequest.getOriginatingIdentity());
 	}
 
 	@Test
@@ -507,7 +559,8 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 						.withDescription("working on it"));
 
 		mockMvc.perform(get(buildUrl(lastOperationRequest, false))
-				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader()))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.state", is(OperationState.IN_PROGRESS.toString())))
 				.andExpect(jsonPath("$.description", is("working on it")));
@@ -515,6 +568,9 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		GetLastServiceOperationRequest actualRequest = verifyLastOperation();
 		assertNull(actualRequest.getCfInstanceId());
 		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
+		assertEquals(ORIGINATING_IDENTITY_PLATFORM, actualRequest.getOriginatingIdentity().getPlatform());
+		assertEquals(ORIGINATING_USER_VALUE, actualRequest.getOriginatingIdentity().getProperty(ORIGINATING_USER_KEY));
+		assertEquals(ORIGINATING_EMAIL_VALUE, actualRequest.getOriginatingIdentity().getProperty(ORIGINATING_EMAIL_KEY));
 	}
 
 	@Test
@@ -548,6 +604,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		GetLastServiceOperationRequest actualRequest = verifyLastOperation();
 		assertEquals(CF_INSTANCE_ID, actualRequest.getCfInstanceId());
+		assertNull(actualRequest.getOriginatingIdentity());
 	}
 
 	@Test

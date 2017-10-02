@@ -35,6 +35,7 @@ import java.util.Map;
 
 import static org.springframework.cloud.servicebroker.model.AsyncServiceInstanceRequest.ASYNC_REQUEST_PARAMETER;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
+import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 
 /**
  * See: http://docs.cloudfoundry.org/services/api.html
@@ -62,6 +63,7 @@ public class ServiceInstanceController extends BaseController {
 												   @PathVariable("instanceId") String serviceInstanceId,
 												   @RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 												   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+												   @RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 												   @Valid @RequestBody CreateServiceInstanceRequest request) {
 		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(request.getServiceDefinitionId());
 
@@ -69,7 +71,8 @@ public class ServiceInstanceController extends BaseController {
 				.withServiceDefinition(serviceDefinition)
 				.withAsyncAccepted(acceptsIncomplete)
 				.withCfInstanceId(pathVariables.get("cfInstanceId"))
-				.withApiInfoLocation(apiInfoLocation);
+				.withApiInfoLocation(apiInfoLocation)
+				.withOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
 
 		log.debug("Creating a service instance: request={}", request);
 
@@ -100,10 +103,12 @@ public class ServiceInstanceController extends BaseController {
 															 @RequestParam("service_id") String serviceDefinitionId,
 															 @RequestParam("plan_id") String planId,
 															 @RequestParam(value = "operation", required = false) String operation,
-															 @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation) {
+															 @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+															 @RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
 		GetLastServiceOperationRequest request = new GetLastServiceOperationRequest(serviceInstanceId, serviceDefinitionId, planId, operation)
 				.withCfInstanceId(pathVariables.get("cfInstanceId"))
-				.withApiInfoLocation(apiInfoLocation);
+				.withApiInfoLocation(apiInfoLocation)
+				.withOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
 
 		log.debug("Getting service instance status: request={}", request);
 
@@ -126,12 +131,14 @@ public class ServiceInstanceController extends BaseController {
 												   @RequestParam("service_id") String serviceDefinitionId,
 												   @RequestParam("plan_id") String planId,
 												   @RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
-												   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation) {
+												   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+												   @RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
 		DeleteServiceInstanceRequest request =
 				new DeleteServiceInstanceRequest(serviceInstanceId, serviceDefinitionId, planId, getServiceDefinition(serviceDefinitionId))
 				.withAsyncAccepted(acceptsIncomplete)
 				.withCfInstanceId(pathVariables.get("cfInstanceId"))
-				.withApiInfoLocation(apiInfoLocation);
+				.withApiInfoLocation(apiInfoLocation)
+				.withOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
 
 		log.debug("Deleting a service instance: request={}", request);
 
@@ -156,6 +163,7 @@ public class ServiceInstanceController extends BaseController {
 												   @PathVariable("instanceId") String serviceInstanceId,
 												   @RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 												   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+												   @RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 												   @Valid @RequestBody UpdateServiceInstanceRequest request) {
 		ServiceDefinition serviceDefinition = getServiceDefinition(request.getServiceDefinitionId());
 
@@ -163,7 +171,8 @@ public class ServiceInstanceController extends BaseController {
 				.withServiceDefinition(serviceDefinition)
 				.withAsyncAccepted(acceptsIncomplete)
 				.withCfInstanceId(pathVariables.get("cfInstanceId"))
-				.withApiInfoLocation(apiInfoLocation);
+				.withApiInfoLocation(apiInfoLocation)
+				.withOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
 
 		log.debug("Updating a service instance: request={}", request);
 
