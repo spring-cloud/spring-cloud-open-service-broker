@@ -12,7 +12,7 @@ public class BrokerApiVersion {
 
 	public final static String DEFAULT_API_VERSION_HEADER = "X-Broker-Api-Version";
 	public final static String API_VERSION_ANY = "*";
-	public final static String API_VERSION_CURRENT = "2.10";
+	public final static String API_VERSION_CURRENT = "2.13";
 
 	/**
 	 * The name of the HTTP header field expected to contain the API version of the service broker client.

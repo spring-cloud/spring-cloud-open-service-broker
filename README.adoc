@@ -7,7 +7,7 @@ This project replaces https://github.com/cloudfoundry-community/spring-boot-cf-s
 
 == Compatibility
 
-* http://docs.cloudfoundry.org/services/api.html[Service Broker API]: 2.11
+* http://docs.cloudfoundry.org/services/api.html[Service Broker API]: 2.13
 
 == Getting Started
 
