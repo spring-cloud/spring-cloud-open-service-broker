@@ -26,28 +26,28 @@ public class BindResource {
 	@JsonProperty
 	private final String route;
 
-	private Map<String, Object> fields = new HashMap<>();
+	private Map<String, Object> properties = new HashMap<>();
 
 	public BindResource() {
 		this.appGuid = null;
 		this.route = null;
 	}
 
-	public BindResource(String appGuid, String route, Map<String, Object> fields) {
+	public BindResource(String appGuid, String route, Map<String, Object> properties) {
 		this.appGuid = appGuid;
 		this.route = route;
-		if (fields != null) {
-			this.fields.putAll(fields);
+		if (properties != null) {
+			this.properties.putAll(properties);
 		}
 	}
 
-	public BindResource(Map<String, Object> fields) {
-		this(null, null, fields);
+	public BindResource(Map<String, Object> properties) {
+		this(null, null, properties);
 	}
 
 	@JsonAnySetter
-	private void setField(String key, Object value) {
-		fields.put(key, value);
+	private void setProperty(String key, Object value) {
+		properties.put(key, value);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class BindResource {
 	 * @param key the key of the value to retrieve
 	 * @return the value of the field, or {@literal null} if the key is not present in the request
 	 */
-	public Object getField(String key) {
-		return fields.get(key);
+	public Object getProperty(String key) {
+		return properties.get(key);
 	}
 }

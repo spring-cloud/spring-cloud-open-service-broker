@@ -31,8 +31,8 @@ public class CreateServiceInstanceBindingRequestTest {
 		assertEquals(2, context.getProperty("field2"));
 
 		assertNull(request.getBindResource().getRoute());
-		assertEquals("data", request.getBindResource().getField("field1"));
-		assertEquals(2, request.getBindResource().getField("field2"));
+		assertEquals("data", request.getBindResource().getProperty("field1"));
+		assertEquals(2, request.getBindResource().getProperty("field2"));
 
 		assertEquals(1, request.getParameters().get("parameter1"));
 		assertEquals("foo", request.getParameters().get("parameter2"));
@@ -50,8 +50,8 @@ public class CreateServiceInstanceBindingRequestTest {
 		assertNull(request.getAppGuid());
 		assertNull(request.getBindResource().getAppGuid());
 		assertEquals("http://test.example.com", request.getBindResource().getRoute());
-		assertEquals("data", request.getBindResource().getField("field1"));
-		assertEquals(2, request.getBindResource().getField("field2"));
+		assertEquals("data", request.getBindResource().getProperty("field1"));
+		assertEquals(2, request.getBindResource().getProperty("field2"));
 
 		assertEquals(KUBERNETES_PLATFORM, request.getContext().getPlatform());
 		assertThat(request.getContext(), instanceOf(KubernetesContext.class));
