@@ -1,0 +1,31 @@
+description = "Spring Cloud Service Broker Starter"
+
+buildscript {
+	ext {
+		springBootVersion = "1.5.8.RELEASE"
+	}
+
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'org.springframework.boot'
+
+bootRepackage {
+	enabled = false
+}
+
+dependencies {
+	compile project(":spring-cloud-open-service-broker")
+	compile("org.springframework.boot:spring-boot-starter-web")
+	compile("org.springframework.boot:spring-boot-starter-security")
+
+	testCompile project(path: ":spring-cloud-open-service-broker", configuration: 'testOutput')
+	testCompile("org.springframework.boot:spring-boot-starter-test")
+	testCompile("org.mockito:mockito-core:${mockitoVersion}")
+	testCompile("org.hamcrest:hamcrest-library:${hamcrestVersion}")
+}
