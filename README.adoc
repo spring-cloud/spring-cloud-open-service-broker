@@ -23,13 +23,13 @@ Maven example:
         ...
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-cloudfoundry-service-broker</artifactId>
+            <artifactId>spring-cloud-starter-service-broker-webmvc</artifactId>
             <version>${springCloudServiceBrokerVersion}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-cloudfoundry-service-broker</artifactId>
+            <artifactId>spring-cloud-open-service-broker</artifactId>
             <version>${springCloudServiceBrokerVersion}</version>
             <classifier>tests</classifier>
             <scope>test</scope>
@@ -41,8 +41,8 @@ Gradle example:
 
     dependencies {
         ...
-        compile("org.springframework.cloud:spring-cloud-cloudfoundry-service-broker:${springCloudServiceBrokerVersion}")
-        testCompile(group: "org.springframework.cloud", name: "spring-cloud-cloudfoundry-service-broker", version: "${springCloudServiceBrokerVersion}", classifier: "tests")
+        compile("org.springframework.cloud:spring-cloud-starter-service-broker-webmvc:${springCloudServiceBrokerVersion}")
+        testCompile(group: "org.springframework.cloud", name: "spring-cloud-open-service-broker", version: "${springCloudServiceBrokerVersion}", classifier: "tests")
         ...
     }        
 
@@ -52,8 +52,7 @@ The framework provides default implementations of most of the components needed 
 
 To start, use the `@EnableAutoConfiguration` or `@SpringBootApplication` annotation on the broker's main application class:
 
-    @ComponentScan
-    @EnableAutoConfiguration
+    @SpringBootApplication
     public class Application {
         public static void main(String[] args) {
             SpringApplication.run(Application.class, args);
