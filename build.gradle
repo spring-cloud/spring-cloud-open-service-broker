@@ -22,6 +22,8 @@ apply plugin: 'propdeps-eclipse'
 
 apply from: "${rootProject.projectDir}/publish-maven.gradle"
 
+compileJava.dependsOn(processResources)
+
 if (project.hasProperty('platformVersion')) {
     apply plugin: 'spring-io'
 
@@ -44,7 +46,7 @@ group = "org.springframework.cloud"
 description = "Spring Cloud - Cloud Foundry Service Broker"
 
 ext {
-    springBootVersion = '1.2.7.RELEASE'
+    springBootVersion = '1.3.6.RELEASE'
     hibernateValidatorVersion = '5.1.0.Final'
     jsonPathVersion = '0.9.1'
 
@@ -70,6 +72,7 @@ dependencies {
 
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
     testCompile("com.jayway.jsonpath:json-path:${jsonPathVersion}")
+    optional "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
 }
 
 task testsJar(type: Jar) {

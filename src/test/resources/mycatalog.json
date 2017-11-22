@@ -1,0 +1,48 @@
+{
+  "services": [
+    {
+      "id": "demo-broker",
+      "name": "p-demo",
+      "description": "A demo service broker",
+      "bindable": true,
+      "plan_updateable": true,
+      "plans": [
+        {
+          "id": "free",
+          "name": "free",
+          "description": "free plan",
+          "metadata": {
+            "costs": [
+              {
+                "amount": {
+                  "USD": 0
+                },
+                "unit": "MONTHLY"
+              }
+            ],
+            "bullets": [
+              "fake",
+              "foo",
+              "bar"
+            ]
+          },
+          "free": true
+        }
+      ],
+      "tags": [
+        "tag A",
+        "tag B",
+        "tag C"
+      ],
+      "metadata": {
+        "longDescription": "This is a Fake Service",
+        "documentationUrl": "http://docs.gopivotal.com/pivotalcf/",
+        "providerDisplayName": "pivotal",
+        "displayName": "Fake",
+        "imageUrl": "https://www.cloudfoundry.org/wp-content/uploads/2015/10/CF_rabbit_Blacksmith_rgb_trans_back-269x300.png"
+      },
+      "requires": [],
+      "dashboard_client": null
+    }
+  ]
+}
