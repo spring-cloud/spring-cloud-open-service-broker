@@ -24,7 +24,7 @@ def customizePom(pom, gradleProject) {
 			description = gradleProject.description
 			url = 'http://projects.spring.io/spring-cloud'
 			organization {
-				name = 'Spring IO'
+				name = 'Pivotal Software, Inc.'
 				url = 'https://spring.io'
 			}
 			licenses {
@@ -56,4 +56,3 @@ def customizePom(pom, gradleProject) {
 		}
 	}
 }
-
