@@ -30,8 +30,12 @@ dependencies {
 	compile("commons-beanutils:commons-beanutils:1.9.3")
 	compile("org.slf4j:slf4j-api:1.7.25")
 	provided("org.projectlombok:lombok:1.16.6")
-	testCompile("org.springframework:spring-test")
-	testCompile("junit:junit:${junitVersion}")
+	testCompile("org.springframework:spring-test") {
+		exclude group:"commons-logging", module:"commons-logging"
+	}
+	testCompile("junit:junit:${junitVersion}") {
+		exclude group:"org.hamcrest", module:"hamcrest-core"
+	}
 	testCompile("org.hamcrest:hamcrest-library:${hamcrestVersion}")
 	testCompile("org.mockito:mockito-core:${mockitoVersion}")
 	testCompile("com.jayway.jsonpath:json-path:${jsonPathVersion}")
