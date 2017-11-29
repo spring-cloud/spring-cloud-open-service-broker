@@ -29,7 +29,7 @@ buildscript {
 
 ext {
 	springVersion = "5.0.2.RELEASE"
-	springBootVersion = "1.5.8.RELEASE"
+	springBootVersion = "2.0.0.BUILD-SNAPSHOT"
 	springSecurityVersion = "4.2.3.RELEASE"
 	junitVersion = "4.12"
 	mockitoVersion = "2.7.22"
@@ -84,7 +84,7 @@ subprojects {
 	[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 
 	repositories {
-		maven { url "https://repo.spring.io/libs-release" }
+		maven { url "https://repo.spring.io/libs-snapshot" }
 	}
 
 	task testsJar(type: Jar) {

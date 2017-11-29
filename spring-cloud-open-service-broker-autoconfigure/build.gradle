@@ -24,10 +24,11 @@ dependencyManagement {
 
 dependencies {
 	compile project(":spring-cloud-open-service-broker")
+	compile("org.springframework.boot:spring-boot-starter")
 	compile("org.springframework.boot:spring-boot-starter-security")
 	optional("org.springframework.boot:spring-boot-starter-web")
 	testCompile project(path: ":spring-cloud-open-service-broker", configuration: "testOutput")
 	testCompile("org.springframework.boot:spring-boot-starter-test")
-	testCompile("org.mockito:mockito-core:${mockitoVersion}")
-	testCompile("org.hamcrest:hamcrest-library:${hamcrestVersion}")
+	testCompile("org.mockito:mockito-core")
+	testCompile("org.hamcrest:hamcrest-library")
 }

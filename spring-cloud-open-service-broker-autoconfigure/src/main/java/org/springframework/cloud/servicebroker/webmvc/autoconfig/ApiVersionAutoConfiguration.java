@@ -21,7 +21,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.cloud.servicebroker.model.Catalog;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.cloud.servicebroker.webmvc.interceptor.ApiVersionInterceptor;
