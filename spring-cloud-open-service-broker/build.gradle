@@ -16,17 +16,21 @@
 
 description = "Spring Cloud Open Service Broker"
 
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework:spring-framework-bom:${springVersion}"
+	}
+}
+
 dependencies {
-	compile("org.springframework:spring-web:${springVersion}")
+	compile("org.springframework:spring-web")
 	compile("org.springframework.security:spring-security-core:${springSecurityVersion}")
 	compile("com.fasterxml.jackson.core:jackson-databind:2.8.10")
 	compile("org.hibernate:hibernate-validator:5.3.5.Final")
 	compile("commons-beanutils:commons-beanutils:1.9.3")
 	compile("org.slf4j:slf4j-api:1.7.25")
 	provided("org.projectlombok:lombok:1.16.6")
-
-	testCompile("org.springframework:spring-test:${springVersion}")
-
+	testCompile("org.springframework:spring-test")
 	testCompile("junit:junit:${junitVersion}")
 	testCompile("org.hamcrest:hamcrest-library:${hamcrestVersion}")
 	testCompile("org.mockito:mockito-core:${mockitoVersion}")
