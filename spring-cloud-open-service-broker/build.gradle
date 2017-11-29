@@ -25,7 +25,7 @@ dependencyManagement {
 dependencies {
 	compile("org.springframework:spring-web")
 	compile("org.springframework.security:spring-security-core:${springSecurityVersion}")
-	compile("com.fasterxml.jackson.core:jackson-databind:2.8.10")
+	compile("com.fasterxml.jackson.core:jackson-databind:2.9.2")
 	compile("org.hibernate:hibernate-validator:5.3.5.Final")
 	compile("commons-beanutils:commons-beanutils:1.9.3")
 	compile("org.slf4j:slf4j-api:1.7.25")
