@@ -18,7 +18,6 @@ apply plugin: "base"
 
 buildscript {
 	repositories {
-		mavenCentral()
 		maven { url "http://repo.spring.io/plugins-release" }
 	}
 	dependencies {
@@ -85,7 +84,7 @@ subprojects {
 	[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 
 	repositories {
-		mavenCentral()
+		maven { url "https://repo.spring.io/libs-release" }
 	}
 
 	task testsJar(type: Jar) {
