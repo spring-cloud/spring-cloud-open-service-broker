@@ -1,4 +1,4 @@
-apply plugin: 'maven'
+apply plugin: "maven"
 
 install {
 	repositories.mavenInstaller {
@@ -10,7 +10,7 @@ def customizePom(pom, gradleProject) {
 	pom.whenConfigured { generatedPom ->
 		// eliminate test-scoped dependencies (no need in maven central poms)
 		generatedPom.dependencies.removeAll { dep ->
-			dep.scope == 'test'
+			dep.scope == "test"
 		}
 
 		// Ensure consistent ordering of dependencies to ease comparison with older poms
@@ -22,35 +22,35 @@ def customizePom(pom, gradleProject) {
 		generatedPom.project {
 			name = gradleProject.description
 			description = gradleProject.description
-			url = 'http://projects.spring.io/spring-cloud'
+			url = "http://projects.spring.io/spring-cloud"
 			organization {
-				name = 'Pivotal Software, Inc.'
-				url = 'https://spring.io'
+				name = "Pivotal Software, Inc."
+				url = "https://spring.io"
 			}
 			licenses {
 				license {
-					name 'The Apache Software License, Version 2.0'
-					url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-					distribution 'repo'
+					name "The Apache Software License, Version 2.0"
+					url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+					distribution "repo"
 				}
 			}
 
 			scm {
-				url = 'https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker'
-				connection = 'scm:git:https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker.git'
-				developerConnection = 'scm:git:https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker.git'
+				url = "https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker"
+				connection = "scm:git:https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker.git"
+				developerConnection = "scm:git:https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker.git"
 			}
 
 			issueManagement {
-				system = 'GitHub'
-				url = 'https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker/issues'
+				system = "GitHub"
+				url = "https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker/issues"
 			}
 
 			developers {
 				developer {
-					id = 'sfrederick'
-					name = 'Scott Frederick'
-					email = 'sfrederick@pivotal.io'
+					id = "sfrederick"
+					name = "Scott Frederick"
+					email = "sfrederick@pivotal.io"
 				}
 			}
 		}

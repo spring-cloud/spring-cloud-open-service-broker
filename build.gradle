@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-apply plugin: 'base'
+apply plugin: "base"
 
 buildscript {
 	repositories {
 		mavenCentral()
-		maven { url 'http://repo.spring.io/plugins-release' }
+		maven { url "http://repo.spring.io/plugins-release" }
 	}
 	dependencies {
 		classpath("io.spring.gradle:propdeps-plugin:0.0.10.RELEASE")
@@ -29,17 +29,17 @@ buildscript {
 }
 
 ext {
-	springVersion = '4.3.12.RELEASE'
-	springBootVersion = '1.5.8.RELEASE'
-	springSecurityVersion = '4.2.3.RELEASE'
+	springVersion = "4.3.12.RELEASE"
+	springBootVersion = "1.5.8.RELEASE"
+	springSecurityVersion = "4.2.3.RELEASE"
 	junitVersion = "4.12"
 	mockitoVersion = "2.7.22"
 	hamcrestVersion = "1.3"
 	jsonPathVersion = "2.4.0"
 
 	javadocLinks = [
-			'http://docs.oracle.com/javase/8/docs/api/',
-			'http://docs.spring.io/spring/docs/current/javadoc-api/',
+			"http://docs.oracle.com/javase/8/docs/api/",
+			"http://docs.spring.io/spring/docs/current/javadoc-api/",
 	] as String[]
 }
 
@@ -48,20 +48,20 @@ description = "Spring Cloud Service Broker"
 allprojects {
 	group = "org.springframework.cloud"
 
-	apply plugin: 'java'
-	apply plugin: 'eclipse'
-	apply plugin: 'idea'
-	apply plugin: 'maven'
-	apply plugin: 'propdeps'
-	apply plugin: 'propdeps-maven'
-	apply plugin: 'propdeps-idea'
-	apply plugin: 'propdeps-eclipse'
-	apply plugin: 'io.spring.dependency-management'
+	apply plugin: "java"
+	apply plugin: "eclipse"
+	apply plugin: "idea"
+	apply plugin: "maven"
+	apply plugin: "propdeps"
+	apply plugin: "propdeps-maven"
+	apply plugin: "propdeps-idea"
+	apply plugin: "propdeps-eclipse"
+	apply plugin: "io.spring.dependency-management"
 
 	apply from: "${rootProject.projectDir}/publish-maven.gradle"
 
-	if (project.hasProperty('platformVersion')) {
-		apply plugin: 'spring-io'
+	if (project.hasProperty("platformVersion")) {
+		apply plugin: "spring-io"
 
 		// necessary to resolve the Spring IO versions (which may include snapshots)
 		repositories {
@@ -82,14 +82,14 @@ allprojects {
 subprojects {
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
-	[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+	[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 
 	repositories {
 		mavenCentral()
 	}
 
 	task testsJar(type: Jar) {
-		classifier = 'tests'
+		classifier = "tests"
 		from sourceSets.test.output
 	}
 
@@ -100,12 +100,12 @@ subprojects {
 
 configure(rootProject) {
 	task sourcesJar(type: Jar, dependsOn: classes) {
-		classifier = 'sources'
+		classifier = "sources"
 		from sourceSets.main.allSource
 	}
 
 	task javadocJar(type: Jar, dependsOn: javadoc) {
-		classifier = 'javadoc'
+		classifier = "javadoc"
 		from javadoc
 	}
 
@@ -132,13 +132,13 @@ configure(rootProject) {
 	}
 
 	task docsZip(type: Zip) {
-		group = 'Distribution'
-		classifier = 'docs'
+		group = "Distribution"
+		classifier = "docs"
 		description = "Builds -${classifier} archive containing api and reference " +
 				"for deployment."
 
 		from(api) {
-			into 'api'
+			into "api"
 		}
 	}
 
@@ -149,11 +149,11 @@ configure(rootProject) {
 	}
 
 	task dist(dependsOn: assemble) {
-		group = 'Distribution'
-		description = 'Builds -dist and -docs distribution archives.'
+		group = "Distribution"
+		description = "Builds -dist and -docs distribution archives."
 	}
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '4.3.1'
+	gradleVersion = "4.3.1"
 }
