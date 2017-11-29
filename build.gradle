@@ -28,7 +28,7 @@ buildscript {
 }
 
 ext {
-	springVersion = "4.3.12.RELEASE"
+	springVersion = "5.0.2.RELEASE"
 	springBootVersion = "1.5.8.RELEASE"
 	springSecurityVersion = "4.2.3.RELEASE"
 	junitVersion = "4.12"
