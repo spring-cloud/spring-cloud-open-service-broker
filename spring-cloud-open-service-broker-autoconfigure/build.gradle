@@ -16,19 +16,10 @@
 
 description = "Spring Cloud Service Broker Auto-Configuration"
 
-buildscript {
-	repositories {
-		mavenCentral()
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
 	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
-}
-
-apply plugin: 'org.springframework.boot'
-
-bootRepackage {
-	enabled = false
 }
 
 dependencies {
