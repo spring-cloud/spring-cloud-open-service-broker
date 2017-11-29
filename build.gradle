@@ -30,11 +30,6 @@ buildscript {
 ext {
 	springVersion = "5.0.2.RELEASE"
 	springBootVersion = "2.0.0.BUILD-SNAPSHOT"
-	springSecurityVersion = "4.2.3.RELEASE"
-	junitVersion = "4.12"
-	mockitoVersion = "2.12.0"
-	hamcrestVersion = "1.3"
-	jsonPathVersion = "2.4.0"
 
 	javadocLinks = [
 			"http://docs.oracle.com/javase/8/docs/api/",
