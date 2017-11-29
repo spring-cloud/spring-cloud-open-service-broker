@@ -1,7 +1,7 @@
 rootProject.name = 'spring-cloud-service-broker'
 
 include ':spring-cloud-open-service-broker'
-include ':spring-cloud-starter-service-broker-webmvc'
+include ':spring-cloud-open-service-broker-autoconfigure'
 
 project(':spring-cloud-open-service-broker').projectDir = "$rootDir/spring-cloud-open-service-broker" as File
-project(':spring-cloud-starter-service-broker-webmvc').projectDir = "$rootDir/spring-cloud-starter-service-broker-webmvc" as File
+project(':spring-cloud-open-service-broker-autoconfigure').projectDir = "$rootDir/spring-cloud-open-service-broker-autoconfigure" as File
