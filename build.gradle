@@ -29,7 +29,7 @@ buildscript {
 
 ext {
 	springVersion = "5.0.2.RELEASE"
-	springBootVersion = "2.0.0.BUILD-SNAPSHOT"
+	springBootVersion = "2.0.0.M7"
 
 	javadocLinks = [
 			"http://docs.oracle.com/javase/8/docs/api/",
@@ -103,7 +103,7 @@ subprojects {
 	]
 
 	repositories {
-		maven { url "https://repo.spring.io/libs-snapshot" }
+		maven { url "https://repo.spring.io/libs-milestone" }
 	}
 
 	task testsJar(type: Jar) {
