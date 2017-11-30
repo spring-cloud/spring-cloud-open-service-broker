@@ -78,6 +78,30 @@ subprojects {
 	targetCompatibility = 1.8
 	[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 
+	[compileJava, compileTestJava]*.options*.compilerArgs = [
+			"-Xlint:serial",
+			"-Xlint:varargs",
+			"-Xlint:cast",
+			"-Xlint:classfile",
+			"-Xlint:dep-ann",
+			"-Xlint:divzero",
+			"-Xlint:empty",
+			"-Xlint:finally",
+			"-Xlint:overrides",
+			"-Xlint:path",
+			"-Xlint:processing",
+			"-Xlint:static",
+			"-Xlint:try",
+			"-Xlint:fallthrough",
+			"-Xlint:rawtypes",
+			"-Xlint:deprecation",
+			"-Xlint:unchecked",
+			"-Xlint:-options"
+
+			// TODO: enable when other warnings are resolved
+			// "-Werror"
+	]
+
 	repositories {
 		maven { url "https://repo.spring.io/libs-snapshot" }
 	}
