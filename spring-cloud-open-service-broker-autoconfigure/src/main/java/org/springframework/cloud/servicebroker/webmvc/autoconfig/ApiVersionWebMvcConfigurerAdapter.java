@@ -17,17 +17,16 @@
 package org.springframework.cloud.servicebroker.webmvc.autoconfig;
 
 import org.springframework.cloud.servicebroker.webmvc.interceptor.ApiVersionInterceptor;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * {@link WebMvcConfigurerAdapter} that configures checking for an appropriate service broker API version.
+ * {@link WebMvcConfigurer} that configures checking for an appropriate service broker API version.
  *
  * @author Scott Frederick
  * @author Benjamin Ihrig
  */
-public class ApiVersionWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter {
+public class ApiVersionWebMvcConfigurerAdapter implements WebMvcConfigurer {
 	private static final String V2_API_PATH_PATTERN = "/v2/**";
 
 	private final ApiVersionInterceptor apiVersionInterceptor;
