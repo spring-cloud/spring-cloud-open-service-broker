@@ -89,14 +89,14 @@ subprojects {
 			"-Xlint:finally",
 			"-Xlint:overrides",
 			"-Xlint:path",
-			"-Xlint:processing",
+			"-Xlint:-processing",
 			"-Xlint:static",
 			"-Xlint:try",
 			"-Xlint:fallthrough",
 			"-Xlint:rawtypes",
 			"-Xlint:deprecation",
 			"-Xlint:unchecked",
-			"-Xlint:-options"
+			"-Xlint:options"
 
 			// TODO: enable when other warnings are resolved
 			// "-Werror"
