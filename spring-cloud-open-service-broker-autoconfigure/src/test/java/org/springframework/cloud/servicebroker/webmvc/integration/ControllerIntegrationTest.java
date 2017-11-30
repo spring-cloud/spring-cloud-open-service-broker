@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.springframework.cloud.servicebroker.model.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.security.crypto.codec.Base64;
+import org.springframework.util.Base64Utils;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -41,7 +41,7 @@ public abstract class ControllerIntegrationTest {
 	protected String buildOriginatingIdentityHeader() throws JsonProcessingException {
 		ObjectMapper mapper = Jackson2ObjectMapperBuilder.json().build();
 		String properties = mapper.writeValueAsString(ORIGINATING_IDENTITY_PROPERTIES);
-		String encodedProperties = new String(Base64.encode(properties.getBytes()));
+		String encodedProperties = new String(Base64Utils.encode(properties.getBytes()));
 		return ORIGINATING_IDENTITY_PLATFORM + " " + encodedProperties;
 	}
 }

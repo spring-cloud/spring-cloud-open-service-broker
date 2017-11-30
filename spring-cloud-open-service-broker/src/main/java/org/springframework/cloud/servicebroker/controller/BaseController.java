@@ -1,8 +1,12 @@
 package org.springframework.cloud.servicebroker.controller;
 
+import java.io.IOException;
+import java.util.Map;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
@@ -17,14 +21,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.security.crypto.codec.Base64;
+import org.springframework.util.Base64Utils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import java.io.IOException;
-import java.util.Map;
 
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 
@@ -71,7 +72,7 @@ public class BaseController {
 
 		String encodedProperties;
 		try {
-			encodedProperties = new String(Base64.decode(parts[1].getBytes()));
+			encodedProperties = new String(Base64Utils.decode(parts[1].getBytes()));
 		} catch (Exception e) {
 			throw new HttpMessageNotReadableException("Error decoding JSON properties from "
 					+ ORIGINATING_IDENTITY_HEADER + " header in request", e);
