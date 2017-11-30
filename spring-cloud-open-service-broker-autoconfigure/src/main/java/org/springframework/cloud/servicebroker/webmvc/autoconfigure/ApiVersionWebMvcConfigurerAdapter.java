@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.webmvc.autoconfig;
+package org.springframework.cloud.servicebroker.webmvc.autoconfigure;
 
 import org.springframework.cloud.servicebroker.webmvc.interceptor.ApiVersionInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
