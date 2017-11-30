@@ -4,9 +4,13 @@
 .springBeans
 .gradle
 build
+target
 bin
+out
+*.iml
+*.ipr
+*.iws
+*.sw?
+.idea
 .rest-shell.log
 spring-shell.log
-/target/
-*.iml
-.idea/
