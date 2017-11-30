@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * create their own class to represent service instances and persist them as necessary. The will remain in the project
  * for a time as a convenience, but it should no longer be used by implementing brokers.
  */
+@Deprecated
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class ServiceInstance {
 

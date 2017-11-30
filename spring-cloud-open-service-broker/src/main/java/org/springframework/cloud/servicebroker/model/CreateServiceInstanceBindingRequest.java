@@ -48,6 +48,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 * @deprecated The <code>bindResource</code> field will contain references to the resource being bound, and should
 	 * be used instead of this field.
 	 */
+	@Deprecated
 	@JsonSerialize
 	@JsonProperty("app_guid")
 	private final String appGuid;
@@ -175,6 +176,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 * @return the app GUID
 	 * @deprecated use {@link #bindResource} directly
 	 */
+	@Deprecated
 	public String getBoundAppGuid() {
 		if (bindResource == null) {
 			return null;
@@ -188,6 +190,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 * @return the route URL
 	 * @deprecated use {@link #bindResource} directly
 	 */
+	@Deprecated
 	public String getBoundRoute() {
 		if (bindResource == null) {
 			return null;

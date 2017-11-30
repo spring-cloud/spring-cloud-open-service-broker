@@ -1,5 +1,7 @@
 package org.springframework.cloud.servicebroker.model;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,8 +10,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
-
-import java.util.Map;
 
 /**
  * Details of a request to create a new service instance.
@@ -45,6 +45,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 *
 	 * @deprecated use {@link #context}
 	 */
+	@Deprecated
 	@NotEmpty
 	@JsonSerialize
 	@JsonProperty("organization_guid")
@@ -55,6 +56,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 *
 	 * @deprecated use {@link #context}
 	 */
+	@Deprecated
 	@NotEmpty
 	@JsonSerialize
 	@JsonProperty("space_guid")
