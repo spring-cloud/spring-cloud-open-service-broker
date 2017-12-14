@@ -56,6 +56,7 @@ public class CatalogControllerIntegrationTest {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void catalogIsRetrievedCorrectly() throws Exception {
 		when(catalogService.getCatalog()).thenReturn(getCatalog());
 
