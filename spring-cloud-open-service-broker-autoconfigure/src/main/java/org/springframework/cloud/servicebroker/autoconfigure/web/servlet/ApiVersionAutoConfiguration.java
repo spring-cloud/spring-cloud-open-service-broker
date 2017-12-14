@@ -37,10 +37,11 @@ import org.springframework.context.annotation.Configuration;
  * @author Scott Frederick
  */
 @Configuration
-@ConditionalOnWebApplication
-@ConditionalOnBean({ Catalog.class, ServiceInstanceService.class })
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+@ConditionalOnBean({Catalog.class, ServiceInstanceService.class})
 @AutoConfigureAfter(WebMvcAutoConfiguration.class)
 public class ApiVersionAutoConfiguration {
+
 	@Bean
 	@ConditionalOnMissingBean(BrokerApiVersion.class)
 	public BrokerApiVersion serviceBrokerApiVersion() {
@@ -55,7 +56,7 @@ public class ApiVersionAutoConfiguration {
 	@Bean
 	public ApiVersionWebMvcConfigurerAdapter serviceBrokerWebMvcConfigurerAdapter(
 			ApiVersionInterceptor apiVersionInterceptor) {
-		return new ApiVersionWebMvcConfigurerAdapter(
-				apiVersionInterceptor);
+		return new ApiVersionWebMvcConfigurerAdapter(apiVersionInterceptor);
 	}
+
 }
