@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
+package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerAutoConfiguration;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
@@ -35,14 +35,13 @@ import org.springframework.context.annotation.Configuration;
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for the service broker REST API endpoints.
  *
- * @author Benjamin Ihrig
  * @author Roy Clarkson
  */
 @Configuration
 @ConditionalOnBean({CatalogService.class, ServiceInstanceService.class, ServiceInstanceBindingService.class})
-@AutoConfigureAfter({WebMvcAutoConfiguration.class, ServiceBrokerAutoConfiguration.class})
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-public class ServiceBrokerWebMvcAutoConfiguration {
+@AutoConfigureAfter({WebFluxAutoConfiguration.class, ServiceBrokerAutoConfiguration.class})
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+public class ServiceBrokerWebFluxAutoConfiguration {
 
 	private CatalogService catalogService;
 
@@ -50,7 +49,7 @@ public class ServiceBrokerWebMvcAutoConfiguration {
 
 	private ServiceInstanceBindingService serviceInstanceBindingService;
 
-	protected ServiceBrokerWebMvcAutoConfiguration(
+	protected ServiceBrokerWebFluxAutoConfiguration(
 			CatalogService catalogService, ServiceInstanceService serviceInstanceService,
 			ServiceInstanceBindingService serviceInstanceBindingService) {
 		this.catalogService = catalogService;
