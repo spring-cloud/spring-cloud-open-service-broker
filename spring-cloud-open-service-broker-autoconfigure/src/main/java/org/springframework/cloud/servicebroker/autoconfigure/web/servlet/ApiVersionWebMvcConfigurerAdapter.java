@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.webmvc.autoconfigure;
+package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
-import org.springframework.cloud.servicebroker.webmvc.interceptor.ApiVersionInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -27,16 +26,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author Benjamin Ihrig
  */
 public class ApiVersionWebMvcConfigurerAdapter implements WebMvcConfigurer {
+
 	private static final String V2_API_PATH_PATTERN = "/v2/**";
 
-	private final ApiVersionInterceptor apiVersionInterceptor;
+	private ApiVersionInterceptor apiVersionInterceptor;
 
-	ApiVersionWebMvcConfigurerAdapter(ApiVersionInterceptor apiVersionInterceptor) {
+	protected ApiVersionWebMvcConfigurerAdapter(ApiVersionInterceptor apiVersionInterceptor) {
 		this.apiVersionInterceptor = apiVersionInterceptor;
 	}
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(apiVersionInterceptor).addPathPatterns(V2_API_PATH_PATTERN);
+		registry.addInterceptor(this.apiVersionInterceptor).addPathPatterns(V2_API_PATH_PATTERN);
 	}
+
 }

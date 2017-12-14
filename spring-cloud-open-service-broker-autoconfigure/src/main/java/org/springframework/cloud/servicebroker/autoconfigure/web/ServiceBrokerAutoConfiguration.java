@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.webmvc.autoconfigure;
+package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.cloud.servicebroker.model.Catalog;
 import org.springframework.cloud.servicebroker.service.BeanCatalogService;
 import org.springframework.cloud.servicebroker.service.CatalogService;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.cloud.servicebroker.service.NonBindableServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
@@ -33,23 +31,30 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for the service broker implementation beans.
- *
+ * <p>
  * Provides a default {@link CatalogService} bean if a {@link Catalog} bean is provided.
- *
+ * <p>
  * Provides a {@link NonBindableServiceInstanceBindingService} if a {@link ServiceInstanceBindingService}
  * is not provided, indicating that the service broker provides no bindable services.
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 @Configuration
-@ConditionalOnWebApplication
-@ConditionalOnBean({ Catalog.class, ServiceInstanceService.class })
-@AutoConfigureAfter(WebMvcAutoConfiguration.class)
+@ConditionalOnBean({Catalog.class, ServiceInstanceService.class})
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.ANY)
 public class ServiceBrokerAutoConfiguration {
+
+	private Catalog catalog;
+
+	protected ServiceBrokerAutoConfiguration(Catalog catalog) {
+		this.catalog = catalog;
+	}
+
 	@Bean
 	@ConditionalOnMissingBean(CatalogService.class)
-	public CatalogService beanCatalogService(Catalog catalog) {
-		return new BeanCatalogService(catalog);
+	public CatalogService beanCatalogService() {
+		return new BeanCatalogService(this.catalog);
 	}
 
 	@Bean
@@ -57,4 +62,5 @@ public class ServiceBrokerAutoConfiguration {
 	public ServiceInstanceBindingService nonBindableServiceInstanceBindingService() {
 		return new NonBindableServiceInstanceBindingService();
 	}
+
 }

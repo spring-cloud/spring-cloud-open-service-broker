@@ -1,10 +1,10 @@
-package org.springframework.cloud.servicebroker.webmvc.integration;
+package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.mockito.junit.MockitoJUnitRunner;
+
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 import org.springframework.cloud.servicebroker.service.NonBindableServiceInstanceBindingService;

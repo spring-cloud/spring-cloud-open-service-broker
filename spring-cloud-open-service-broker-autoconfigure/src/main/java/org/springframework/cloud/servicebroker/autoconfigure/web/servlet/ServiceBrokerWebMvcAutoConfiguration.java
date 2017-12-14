@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.webmvc.autoconfigure;
+package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
+import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerAutoConfiguration;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceController;
@@ -34,29 +36,41 @@ import org.springframework.context.annotation.Configuration;
  * {@link EnableAutoConfiguration Auto-configuration} for the service broker REST API endpoints.
  *
  * @author Benjamin Ihrig
+ * @author Roy Clarkson
  */
 @Configuration
-@ConditionalOnWebApplication
-@ConditionalOnBean({ Catalog.class, ServiceInstanceService.class })
-@AutoConfigureAfter(ServiceBrokerAutoConfiguration.class)
+@ConditionalOnBean({Catalog.class, ServiceInstanceService.class})
+@AutoConfigureAfter({WebMvcAutoConfiguration.class, ServiceBrokerAutoConfiguration.class})
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class ServiceBrokerWebMvcAutoConfiguration {
 
-	@Bean
-	public CatalogController catalogController(CatalogService catalogService) {
-		return new CatalogController(catalogService);
-	}
+	private CatalogService catalogService;
 
-	@Bean
-	public ServiceInstanceController serviceInstanceController(
-			CatalogService catalogService,
-			ServiceInstanceService serviceInstanceService) {
-		return new ServiceInstanceController(catalogService, serviceInstanceService);
-	}
+	private ServiceInstanceService serviceInstanceService;
 
-	@Bean
-	public ServiceInstanceBindingController serviceInstanceBindingController(
-			CatalogService catalogService,
+	private ServiceInstanceBindingService serviceInstanceBindingService;
+
+	protected ServiceBrokerWebMvcAutoConfiguration(
+			CatalogService catalogService, ServiceInstanceService serviceInstanceService,
 			ServiceInstanceBindingService serviceInstanceBindingService) {
-		return new ServiceInstanceBindingController(catalogService, serviceInstanceBindingService);
+		this.catalogService = catalogService;
+		this.serviceInstanceService = serviceInstanceService;
+		this.serviceInstanceBindingService = serviceInstanceBindingService;
 	}
+
+	@Bean
+	public CatalogController catalogController() {
+		return new CatalogController(this.catalogService);
+	}
+
+	@Bean
+	public ServiceInstanceController serviceInstanceController() {
+		return new ServiceInstanceController(this.catalogService, this.serviceInstanceService);
+	}
+
+	@Bean
+	public ServiceInstanceBindingController serviceInstanceBindingController() {
+		return new ServiceInstanceBindingController(this.catalogService, this.serviceInstanceBindingService);
+	}
+
 }

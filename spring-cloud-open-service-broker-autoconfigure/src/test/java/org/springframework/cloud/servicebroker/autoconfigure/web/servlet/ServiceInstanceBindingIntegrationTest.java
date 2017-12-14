@@ -1,4 +1,4 @@
-package org.springframework.cloud.servicebroker.webmvc.integration;
+package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
 import org.junit.Before;
 
