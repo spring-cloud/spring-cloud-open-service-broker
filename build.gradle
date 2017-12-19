@@ -114,6 +114,10 @@ subprojects {
 	artifacts {
 		archives testsJar
 	}
+
+	test {
+		reports.junitXml.enabled = true
+	}
 }
 
 configure(rootProject) {
