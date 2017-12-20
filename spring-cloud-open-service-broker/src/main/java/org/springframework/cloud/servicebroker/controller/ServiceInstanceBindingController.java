@@ -16,11 +16,7 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
-import java.util.Map;
-import javax.validation.Valid;
-
-import lombok.extern.slf4j.Slf4j;
-
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
@@ -41,6 +37,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import java.util.Map;
+
+import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 
@@ -48,11 +48,12 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
  * See: http://docs.cloudfoundry.org/services/api.html
  *
  * @author sgreenberg@pivotal.io
+ * @author Scott Frederick
  */
 @RestController
-@Slf4j
 public class ServiceInstanceBindingController extends BaseController {
-
+	private static final Logger log = getLogger(ServiceInstanceBindingController.class);
+	
 	private ServiceInstanceBindingService serviceInstanceBindingService;
 
 	@Autowired
@@ -101,11 +102,15 @@ public class ServiceInstanceBindingController extends BaseController {
 															   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 															   @RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
 		DeleteServiceInstanceBindingRequest request =
-				new DeleteServiceInstanceBindingRequest(serviceInstanceId, bindingId, serviceDefinitionId, planId,
-						getServiceDefinition(serviceDefinitionId))
-				.withCfInstanceId(pathVariables.get("cfInstanceId"))
-				.withApiInfoLocation(apiInfoLocation)
-				.withOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
+				new DeleteServiceInstanceBindingRequest()
+						.withServiceInstanceId(serviceInstanceId)
+						.withBindingId(bindingId)
+						.withServiceDefinitionId(serviceDefinitionId)
+						.withPlanId(planId)
+						.withServiceDefinition(getServiceDefinition(serviceDefinitionId))
+						.withCfInstanceId(pathVariables.get("cfInstanceId"))
+						.withApiInfoLocation(apiInfoLocation)
+						.withOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
 
 		log.debug("Deleting a service instance binding: request={}", request);
 

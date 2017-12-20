@@ -16,52 +16,54 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import java.util.Objects;
 
 /**
  * Details of a request to get the state of the last operation on a service instance.
  *
  * @author Scott Frederick
  */
-@Getter
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
 public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	/**
 	 * The Cloud Controller GUID of the service instance to get the status of.
 	 */
-	private final String serviceInstanceId;
+	private transient String serviceInstanceId;
 
 	/**
 	 * The ID of the service to deprovision, from the broker catalog.
 	 */
-	private final String serviceDefinitionId;
+	private transient String serviceDefinitionId;
 
 	/**
 	 * The ID of the plan to deprovision within the service, from the broker catalog.
 	 */
-	private final String planId;
+	private transient String planId;
 
 	/**
 	 * The field optionally returned by the service broker on async provision, update, deprovision responses.
 	 * Represents any state the service broker responded with as a URL encoded string. Can be <code>null</code>
 	 * to indicate that an operation state is not provided.
 	 */
-	protected String operation;
+	protected transient String operation;
 
-	public GetLastServiceOperationRequest(String instanceId) {
-		this.serviceInstanceId = instanceId;
-		this.serviceDefinitionId = null;
-		this.planId = null;
+	public GetLastServiceOperationRequest withServiceInstanceId(String serviceInstanceId) {
+		this.serviceInstanceId = serviceInstanceId;
+		return this;
 	}
 
-	public GetLastServiceOperationRequest(String instanceId, String serviceId, String planId, String operation) {
-		this.serviceInstanceId = instanceId;
-		this.serviceDefinitionId = serviceId;
+	public GetLastServiceOperationRequest withServiceDefinitionId(String serviceDefinitionId) {
+		this.serviceDefinitionId = serviceDefinitionId;
+		return this;
+	}
+
+	public GetLastServiceOperationRequest withPlanId(String planId) {
 		this.planId = planId;
+		return this;
+	}
+
+	public GetLastServiceOperationRequest withOperation(String operation) {
 		this.operation = operation;
+		return this;
 	}
 
 	public GetLastServiceOperationRequest withCfInstanceId(String cfInstanceId) {
@@ -77,5 +79,48 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	public GetLastServiceOperationRequest withOriginatingIdentity(Context originatingIdentity) {
 		this.originatingIdentity = originatingIdentity;
 		return this;
+	}
+
+	public String getServiceInstanceId() {
+		return this.serviceInstanceId;
+	}
+
+	public String getServiceDefinitionId() {
+		return this.serviceDefinitionId;
+	}
+
+	public String getPlanId() {
+		return this.planId;
+	}
+
+	public String getOperation() {
+		return this.operation;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof GetLastServiceOperationRequest)) return false;
+		if (!super.equals(o)) return false;
+		GetLastServiceOperationRequest that = (GetLastServiceOperationRequest) o;
+		return Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
+				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
+				Objects.equals(planId, that.planId) &&
+				Objects.equals(operation, that.operation);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), serviceInstanceId, serviceDefinitionId, planId, operation);
+	}
+
+	@Override
+	public String toString() {
+		return "GetLastServiceOperationRequest{" +
+				"serviceInstanceId='" + serviceInstanceId + '\'' +
+				", serviceDefinitionId='" + serviceDefinitionId + '\'' +
+				", planId='" + planId + '\'' +
+				", operation='" + operation + '\'' +
+				'}';
 	}
 }

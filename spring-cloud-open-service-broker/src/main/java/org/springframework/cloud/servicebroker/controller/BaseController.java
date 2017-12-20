@@ -16,13 +16,9 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
-import java.io.IOException;
-import java.util.Map;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
-
+import org.slf4j.Logger;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
@@ -43,6 +39,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.io.IOException;
+import java.util.Map;
+
+import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 
 /**
@@ -51,8 +51,8 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  */
-@Slf4j
 public class BaseController {
+	private static final Logger log = getLogger(BaseController.class);
 
 	protected CatalogService catalogService;
 
@@ -102,7 +102,10 @@ public class BaseController {
 					+ ORIGINATING_IDENTITY_HEADER + " header in request", e);
 		}
 
-		return new Context(platform, properties);
+		return Context.builder()
+				.platform(platform)
+				.properties(properties)
+				.build();
 	}
 
 	private Map<String, Object> readJsonFromString(String value) throws java.io.IOException {

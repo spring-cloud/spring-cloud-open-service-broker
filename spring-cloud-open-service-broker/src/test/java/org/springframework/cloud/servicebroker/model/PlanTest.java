@@ -7,8 +7,8 @@ import static org.junit.Assert.assertEquals;
 public class PlanTest {
 
 	@Test
-	public void servicePlanIsFreeByDefault() throws Exception {
-		final Plan plan = new Plan();
-		assertEquals(Boolean.TRUE, plan.isFree());
+	public void servicePlanIsFreeByDefault() {
+		final Plan plan = Plan.builder().build();
+		assertEquals(true, plan.isFree());
 	}
 }

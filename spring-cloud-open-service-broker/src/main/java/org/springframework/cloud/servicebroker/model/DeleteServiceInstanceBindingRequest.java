@@ -16,9 +16,7 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import java.util.Objects;
 
 /**
  *  Details of a request to delete a service instance binding.
@@ -26,33 +24,50 @@ import lombok.ToString;
  * @author krujos
  * @author Scott Frederick
  */
-@Getter
-@ToString(callSuper = true, exclude = {"serviceDefinition"})
-@EqualsAndHashCode(callSuper = true)
 public class DeleteServiceInstanceBindingRequest extends ServiceBrokerRequest {
 
 	/**
 	 * The Cloud Controller GUID of the service instance to being unbound.
 	 */
-	private final String serviceInstanceId;
+	private transient String serviceInstanceId;
 
 	/**
 	 * The Cloud Controller GUID of the service binding being deleted.
 	 */
-	private final String bindingId;
+	private transient String bindingId;
 
-	private final String serviceDefinitionId;
-	private final String planId;
-	private transient final ServiceDefinition serviceDefinition;
+	private transient String serviceDefinitionId;
 
-	public DeleteServiceInstanceBindingRequest(String serviceInstanceId, String bindingId,
-											   String serviceDefinitionId, String planId,
-											   ServiceDefinition serviceDefinition) {
+	private transient String planId;
+
+	private transient ServiceDefinition serviceDefinition;
+
+	public DeleteServiceInstanceBindingRequest() {
+	}
+
+	public DeleteServiceInstanceBindingRequest withServiceInstanceId(String serviceInstanceId) {
 		this.serviceInstanceId = serviceInstanceId;
+		return this;
+	}
+
+	public DeleteServiceInstanceBindingRequest withBindingId(String bindingId) {
 		this.bindingId = bindingId;
+		return this;
+	}
+
+	public DeleteServiceInstanceBindingRequest withServiceDefinitionId(String serviceDefinitionId) {
 		this.serviceDefinitionId = serviceDefinitionId;
+		return this;
+	}
+
+	public DeleteServiceInstanceBindingRequest withPlanId(String planId) {
 		this.planId = planId;
+		return this;
+	}
+
+	public DeleteServiceInstanceBindingRequest withServiceDefinition(ServiceDefinition serviceDefinition) {
 		this.serviceDefinition = serviceDefinition;
+		return this;
 	}
 
 	public DeleteServiceInstanceBindingRequest withCfInstanceId(String cfInstanceId) {
@@ -69,4 +84,54 @@ public class DeleteServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		this.originatingIdentity = originatingIdentity;
 		return this;
 	}
+
+	public String getServiceInstanceId() {
+		return this.serviceInstanceId;
+	}
+
+	public String getBindingId() {
+		return this.bindingId;
+	}
+
+	public String getServiceDefinitionId() {
+		return this.serviceDefinitionId;
+	}
+
+	public String getPlanId() {
+		return this.planId;
+	}
+
+	public ServiceDefinition getServiceDefinition() {
+		return this.serviceDefinition;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof DeleteServiceInstanceBindingRequest)) return false;
+		if (!super.equals(o)) return false;
+		DeleteServiceInstanceBindingRequest that = (DeleteServiceInstanceBindingRequest) o;
+		return Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
+				Objects.equals(bindingId, that.bindingId) &&
+				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
+				Objects.equals(planId, that.planId);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), serviceInstanceId, bindingId,
+				serviceDefinitionId, planId);
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() +
+				"DeleteServiceInstanceBindingRequest{" +
+				"serviceInstanceId='" + serviceInstanceId + '\'' +
+				", bindingId='" + bindingId + '\'' +
+				", serviceDefinitionId='" + serviceDefinitionId + '\'' +
+				", planId='" + planId + '\'' +
+				'}';
+	}
+
 }

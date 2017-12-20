@@ -16,13 +16,15 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.servicebroker.model.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * See: http://docs.cloudfoundry.org/services/api.html
@@ -31,8 +33,9 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Scott Frederick
  */
 @RestController
-@Slf4j
 public class CatalogController extends BaseController {
+	private static final Logger log = getLogger(CatalogController.class);
+
 	@Autowired
 	public CatalogController(CatalogService service) {
 		super(service);

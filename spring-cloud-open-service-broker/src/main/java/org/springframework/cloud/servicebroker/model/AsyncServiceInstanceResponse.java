@@ -19,18 +19,14 @@ package org.springframework.cloud.servicebroker.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+
+import java.util.Objects;
 
 /**
  * Details of a response that support asynchronous behavior.
  *
  * @author Scott Frederick
  */
-@Getter
-@ToString
-@EqualsAndHashCode
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class AsyncServiceInstanceResponse {
 	/**
@@ -39,8 +35,7 @@ public abstract class AsyncServiceInstanceResponse {
 	 * asynchronously.
 	 */
 	@JsonIgnore
-	protected boolean async = false;
-
+	protected transient boolean async;
 
 	/**
 	 * For async responses, service brokers can return operation state as a string. This field will be provided back to
@@ -48,5 +43,41 @@ public abstract class AsyncServiceInstanceResponse {
 	 * that an operation state is not provided.
 	 */
 	@JsonSerialize
-	protected String operation;
+	protected transient String operation;
+
+	protected AsyncServiceInstanceResponse(boolean async, String operation) {
+		this.async = async;
+		this.operation = operation;
+	}
+
+	public boolean isAsync() {
+		return this.async;
+	}
+
+	public String getOperation() {
+		return this.operation;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof AsyncServiceInstanceResponse)) return false;
+		AsyncServiceInstanceResponse that = (AsyncServiceInstanceResponse) o;
+		return async == that.async &&
+				Objects.equals(operation, that.operation);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(async, operation);
+	}
+
+	@Override
+	public String toString() {
+		return "AsyncServiceInstanceResponse{" +
+				"async=" + async +
+				", operation='" + operation + '\'' +
+				'}';
+	}
+
 }

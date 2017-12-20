@@ -16,18 +16,19 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import java.util.List;
-import java.util.Map;
-
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * A service offered by this broker.
@@ -35,9 +36,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  */
-@Getter
-@ToString
-@EqualsAndHashCode
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServiceDefinition {
@@ -48,7 +46,7 @@ public class ServiceDefinition {
 	@NotEmpty
 	@JsonSerialize
 	@JsonProperty("id")
-	private String id;
+	private final String id;
 
 	/**
 	 * A CLI-friendly name of the service that will appear in the catalog. The value should be all lowercase,
@@ -57,7 +55,7 @@ public class ServiceDefinition {
 	@NotEmpty
 	@JsonSerialize
 	@JsonProperty("name")
-	private String name;
+	private final String name;
 
 	/**
 	 * A user-friendly short description of the service that will appear in the catalog.
@@ -65,14 +63,14 @@ public class ServiceDefinition {
 	@NotEmpty
 	@JsonSerialize
 	@JsonProperty("description")
-	private String description;
+	private final String description;
 
 	/**
 	 * Indicates whether the service can be bound to applications.
 	 */
 	@JsonSerialize
 	@JsonProperty("bindable")
-	private boolean bindable;
+	private final boolean bindable;
 
 	/**
 	 * Indicates whether the service supports requests to update instances to use a different plan from the one
@@ -80,7 +78,8 @@ public class ServiceDefinition {
 	 */
 	@JsonSerialize
 	@JsonProperty("plan_updateable")
-	private boolean planUpdateable;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private final Boolean planUpdateable;
 
 	/**
 	 * A list of plans for this service.
@@ -88,21 +87,21 @@ public class ServiceDefinition {
 	@NotEmpty
 	@JsonSerialize(nullsUsing = EmptyListSerializer.class)
 	@JsonProperty("plans")
-	private List<Plan> plans;
+	private final List<Plan> plans;
 
 	/**
 	 * A list of tags to aid in categorizing and classifying services with similar characteristics.
 	 */
 	@JsonSerialize(nullsUsing = EmptyListSerializer.class)
 	@JsonProperty("tags")
-	private List<String> tags;
+	private final List<String> tags;
 
 	/**
 	 * A map of metadata to further describe a service offering.
 	 */
 	@JsonSerialize(nullsUsing = EmptyMapSerializer.class)
 	@JsonProperty("metadata")
-	private Map<String, Object> metadata;
+	private final Map<String, Object> metadata;
 
 	/**
 	 * A list of permissions that the user would have to give the service, if they provision it. See
@@ -110,34 +109,185 @@ public class ServiceDefinition {
 	 */
 	@JsonSerialize(nullsUsing = EmptyListSerializer.class)
 	@JsonProperty("requires")
-	private List<String> requires;
+	private final List<String> requires;
 
 	/**
 	 * Data necessary to activate the Dashboard SSO feature for this service.
 	 */
 	@JsonSerialize
 	@JsonProperty("dashboard_client")
-	private DashboardClient dashboardClient;
+	private final DashboardClient dashboardClient;
 
-	public ServiceDefinition() {
-	}
-
-	public ServiceDefinition(String id, String name, String description, boolean bindable, List<Plan> plans) {
+	private ServiceDefinition(String id, String name, String description, boolean bindable, Boolean planUpdateable,
+							 List<Plan> plans, List<String> tags, Map<String, Object> metadata, List<String> requires,
+							 DashboardClient dashboardClient) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.bindable = bindable;
 		this.plans = plans;
-	}
-
-	public ServiceDefinition(String id, String name, String description, boolean bindable, boolean planUpdateable,
-							 List<Plan> plans, List<String> tags, Map<String, Object> metadata, List<String> requires,
-							 DashboardClient dashboardClient) {
-		this(id, name, description, bindable, plans);
 		this.tags = tags;
 		this.metadata = metadata;
 		this.requires = requires;
 		this.planUpdateable = planUpdateable;
 		this.dashboardClient = dashboardClient;
+	}
+
+	public String getId() {
+		return this.id;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public String getDescription() {
+		return this.description;
+	}
+
+	public boolean isBindable() {
+		return this.bindable;
+	}
+
+	public boolean isPlanUpdateable() {
+		return this.planUpdateable == null ? false : this.planUpdateable;
+	}
+
+	public List<Plan> getPlans() {
+		return this.plans;
+	}
+
+	public List<String> getTags() {
+		return this.tags;
+	}
+
+	public Map<String, Object> getMetadata() {
+		return this.metadata;
+	}
+
+	public List<String> getRequires() {
+		return this.requires;
+	}
+
+	public DashboardClient getDashboardClient() {
+		return this.dashboardClient;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ServiceDefinition)) return false;
+		ServiceDefinition that = (ServiceDefinition) o;
+		return bindable == that.bindable &&
+				planUpdateable == that.planUpdateable &&
+				Objects.equals(id, that.id) &&
+				Objects.equals(name, that.name) &&
+				Objects.equals(description, that.description) &&
+				Objects.equals(plans, that.plans) &&
+				Objects.equals(tags, that.tags) &&
+				Objects.equals(metadata, that.metadata) &&
+				Objects.equals(requires, that.requires) &&
+				Objects.equals(dashboardClient, that.dashboardClient);
+	}
+
+	public static ServiceDefinitionBuilder builder() {
+		return new ServiceDefinitionBuilder();
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, description, bindable, planUpdateable,
+				plans, tags, metadata, requires, dashboardClient);
+	}
+
+	@Override
+	public String toString() {
+		return "ServiceDefinition{" +
+				"id='" + id + '\'' +
+				", name='" + name + '\'' +
+				", description='" + description + '\'' +
+				", bindable=" + bindable +
+				", planUpdateable=" + planUpdateable +
+				", plans=" + plans +
+				", tags=" + tags +
+				", metadata=" + metadata +
+				", requires=" + requires +
+				", dashboardClient=" + dashboardClient +
+				'}';
+	}
+
+	public static class ServiceDefinitionBuilder {
+		private String id;
+		private String name;
+		private String description;
+		private boolean bindable;
+		private Boolean planUpdateable;
+		private List<Plan> plans = new ArrayList<>();
+		private List<String> tags = new ArrayList<>();
+		private Map<String, Object> metadata = new HashMap<>();
+		private List<String> requires = new ArrayList<>();
+		private DashboardClient dashboardClient;
+
+		ServiceDefinitionBuilder() {
+		}
+
+		public ServiceDefinitionBuilder id(String id) {
+			this.id = id;
+			return this;
+		}
+
+		public ServiceDefinitionBuilder name(String name) {
+			this.name = name;
+			return this;
+		}
+
+		public ServiceDefinitionBuilder description(String description) {
+			this.description = description;
+			return this;
+		}
+
+		public ServiceDefinitionBuilder bindable(boolean bindable) {
+			this.bindable = bindable;
+			return this;
+		}
+
+		public ServiceDefinitionBuilder planUpdateable(boolean planUpdateable) {
+			this.planUpdateable = planUpdateable;
+			return this;
+		}
+
+		public ServiceDefinitionBuilder plans(Plan... plans) {
+			Collections.addAll(this.plans, plans);
+			return this;
+		}
+
+		public ServiceDefinitionBuilder tags(String... tags) {
+			Collections.addAll(this.tags, tags);
+			return this;
+		}
+
+		public ServiceDefinitionBuilder metadata(Map<String, Object> metadata) {
+			this.metadata.putAll(metadata);
+			return this;
+		}
+
+		public ServiceDefinitionBuilder metadata(String key, Object value) {
+			this.metadata.put(key, value);
+			return this;
+		}
+
+		public ServiceDefinitionBuilder requires(String... requires) {
+			Collections.addAll(this.requires, requires);
+			return this;
+		}
+
+		public ServiceDefinitionBuilder dashboardClient(DashboardClient dashboardClient) {
+			this.dashboardClient = dashboardClient;
+			return this;
+		}
+
+		public ServiceDefinition build() {
+			return new ServiceDefinition(id, name, description, bindable, planUpdateable, plans, tags, metadata, requires, dashboardClient);
+		}
 	}
 }

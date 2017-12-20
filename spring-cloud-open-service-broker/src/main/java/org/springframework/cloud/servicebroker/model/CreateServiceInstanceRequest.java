@@ -16,16 +16,15 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Details of a request to create a new service instance.
@@ -33,9 +32,6 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  */
-@Getter
-@ToString(callSuper = true, exclude = {"serviceDefinition"})
-@EqualsAndHashCode(callSuper = true)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 @SuppressWarnings({"deprecation", "DeprecatedIsStillUsed"})
 public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
@@ -62,7 +58,6 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @deprecated use {@link #context}
 	 */
 	@Deprecated
-	@NotEmpty
 	@JsonSerialize
 	@JsonProperty("organization_guid")
 	private final String organizationGuid;
@@ -73,7 +68,6 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @deprecated use {@link #context}
 	 */
 	@Deprecated
-	@NotEmpty
 	@JsonSerialize
 	@JsonProperty("space_guid")
 	private final String spaceGuid;
@@ -93,7 +87,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@JsonIgnore
 	private transient ServiceDefinition serviceDefinition;
 
-	public CreateServiceInstanceRequest() {
+	private CreateServiceInstanceRequest() {
 		super(null, null);
 		this.serviceDefinitionId = null;
 		this.planId = null;
@@ -101,21 +95,16 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		this.spaceGuid = null;
 	}
 
-	public CreateServiceInstanceRequest(String serviceDefinitionId, String planId,
-										String organizationGuid, String spaceGuid,
-										Context context,
-										Map<String, Object> parameters) {
+	private CreateServiceInstanceRequest(String serviceDefinitionId, String planId,
+										Map<String, Object> parameters, Context context) {
 		super(parameters, context);
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
-		this.organizationGuid = organizationGuid;
-		this.spaceGuid = spaceGuid;
-	}
 
-	public CreateServiceInstanceRequest(String serviceDefinitionId, String planId,
-										String organizationGuid, String spaceGuid,
-										Map<String, Object> parameters) {
-		this(serviceDefinitionId, planId, organizationGuid, spaceGuid, null, parameters);
+		// deprecated fields - they should remain in the model for marshalling but test harnesses
+		// should not use them
+		this.organizationGuid = null;
+		this.spaceGuid = null;
 	}
 
 	public CreateServiceInstanceRequest withServiceDefinition(ServiceDefinition serviceDefinition) {
@@ -146,5 +135,104 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	public CreateServiceInstanceRequest withOriginatingIdentity(Context originatingIdentity) {
 		this.originatingIdentity = originatingIdentity;
 		return this;
+	}
+
+	public String getServiceDefinitionId() {
+		return this.serviceDefinitionId;
+	}
+
+	public String getPlanId() {
+		return this.planId;
+	}
+
+	@Deprecated
+	public String getOrganizationGuid() {
+		return this.organizationGuid;
+	}
+
+	@Deprecated
+	public String getSpaceGuid() {
+		return this.spaceGuid;
+	}
+
+	public String getServiceInstanceId() {
+		return this.serviceInstanceId;
+	}
+
+	public ServiceDefinition getServiceDefinition() {
+		return this.serviceDefinition;
+	}
+
+	public static CreateServiceInstanceRequestBuilder builder() {
+		return new CreateServiceInstanceRequestBuilder();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof CreateServiceInstanceRequest)) return false;
+		if (!super.equals(o)) return false;
+		CreateServiceInstanceRequest that = (CreateServiceInstanceRequest) o;
+		return Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
+				Objects.equals(planId, that.planId) &&
+				Objects.equals(organizationGuid, that.organizationGuid) &&
+				Objects.equals(spaceGuid, that.spaceGuid) &&
+				Objects.equals(serviceInstanceId, that.serviceInstanceId);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), serviceDefinitionId, planId, organizationGuid, spaceGuid);
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() +
+				"CreateServiceInstanceRequest{" +
+				"serviceDefinitionId='" + serviceDefinitionId + '\'' +
+				", planId='" + planId + '\'' +
+				", organizationGuid='" + organizationGuid + '\'' +
+				", spaceGuid='" + spaceGuid + '\'' +
+				", serviceInstanceId='" + serviceInstanceId + '\'' +
+				'}';
+	}
+
+	public static class CreateServiceInstanceRequestBuilder {
+		private String serviceDefinitionId;
+		private String planId;
+		private Context context;
+		private Map<String, Object> parameters = new HashMap<>();
+
+		CreateServiceInstanceRequestBuilder() {
+		}
+
+		public CreateServiceInstanceRequestBuilder serviceDefinitionId(String serviceDefinitionId) {
+			this.serviceDefinitionId = serviceDefinitionId;
+			return this;
+		}
+
+		public CreateServiceInstanceRequestBuilder planId(String planId) {
+			this.planId = planId;
+			return this;
+		}
+
+		public CreateServiceInstanceRequestBuilder parameters(Map<String, Object> parameters) {
+			this.parameters.putAll(parameters);
+			return this;
+		}
+
+		public CreateServiceInstanceRequestBuilder parameters(String key, Object value) {
+			this.parameters.put(key, value);
+			return this;
+		}
+
+		public CreateServiceInstanceRequestBuilder context(Context context) {
+			this.context = context;
+			return this;
+		}
+
+		public CreateServiceInstanceRequest build() {
+			return new CreateServiceInstanceRequest(serviceDefinitionId, planId, parameters, context);
+		}
 	}
 }

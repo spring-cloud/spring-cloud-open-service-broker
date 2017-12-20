@@ -16,19 +16,13 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 
-@Getter
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 public class SharedVolumeDevice extends VolumeDevice {
 	@JsonSerialize
 	@JsonProperty("volume_id")
@@ -37,4 +31,70 @@ public class SharedVolumeDevice extends VolumeDevice {
 	@JsonSerialize
 	@JsonProperty("mount_config")
 	private Map<String, Object> mountConfig;
+
+	private SharedVolumeDevice(String volumeId, Map<String, Object> mountConfig) {
+		this.volumeId = volumeId;
+		this.mountConfig = mountConfig;
+	}
+
+	public String getVolumeId() {
+		return this.volumeId;
+	}
+
+	public Map<String, Object> getMountConfig() {
+		return this.mountConfig;
+	}
+
+	public static SharedVolumeDeviceBuilder builder() {
+		return new SharedVolumeDeviceBuilder();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof SharedVolumeDevice)) return false;
+		SharedVolumeDevice that = (SharedVolumeDevice) o;
+		return Objects.equals(volumeId, that.volumeId) &&
+				Objects.equals(mountConfig, that.mountConfig);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(volumeId, mountConfig);
+	}
+
+	@Override
+	public String toString() {
+		return "SharedVolumeDevice{" +
+				"volumeId='" + volumeId + '\'' +
+				", mountConfig=" + mountConfig +
+				'}';
+	}
+
+	public static class SharedVolumeDeviceBuilder {
+		private String volumeId;
+		private Map<String, Object> mountConfig = new HashMap<>();
+
+		SharedVolumeDeviceBuilder() {
+		}
+
+		public SharedVolumeDeviceBuilder volumeId(String volumeId) {
+			this.volumeId = volumeId;
+			return this;
+		}
+
+		public SharedVolumeDeviceBuilder mountConfig(Map<String, Object> mountConfig) {
+			this.mountConfig.putAll(mountConfig);
+			return this;
+		}
+
+		public SharedVolumeDeviceBuilder mountConfig(String key, Object value) {
+			this.mountConfig.put(key, value);
+			return this;
+		}
+
+		public SharedVolumeDevice build() {
+			return new SharedVolumeDevice(volumeId, mountConfig);
+		}
+	}
 }

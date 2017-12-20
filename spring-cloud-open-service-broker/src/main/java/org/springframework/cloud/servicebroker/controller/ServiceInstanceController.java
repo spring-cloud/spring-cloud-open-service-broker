@@ -16,7 +16,8 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
@@ -33,7 +34,6 @@ import org.springframework.cloud.servicebroker.model.UpdateServiceInstanceReques
 import org.springframework.cloud.servicebroker.model.UpdateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -46,9 +46,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-
 import java.util.Map;
 
+import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.cloud.servicebroker.model.AsyncServiceInstanceRequest.ASYNC_REQUEST_PARAMETER;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
@@ -60,8 +60,8 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
  * @author Scott Frederick
  */
 @RestController
-@Slf4j
 public class ServiceInstanceController extends BaseController {
+	private static final Logger log = getLogger(ServiceInstanceController.class);
 
 	private ServiceInstanceService service;
 
@@ -121,7 +121,11 @@ public class ServiceInstanceController extends BaseController {
 															 @RequestParam(value = "operation", required = false) String operation,
 															 @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 															 @RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-		GetLastServiceOperationRequest request = new GetLastServiceOperationRequest(serviceInstanceId, serviceDefinitionId, planId, operation)
+		GetLastServiceOperationRequest request = new GetLastServiceOperationRequest()
+				.withServiceDefinitionId(serviceDefinitionId)
+				.withServiceInstanceId(serviceInstanceId)
+				.withPlanId(planId)
+				.withOperation(operation)
 				.withCfInstanceId(pathVariables.get("cfInstanceId"))
 				.withApiInfoLocation(apiInfoLocation)
 				.withOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
@@ -149,8 +153,11 @@ public class ServiceInstanceController extends BaseController {
 												   @RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 												   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 												   @RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-		DeleteServiceInstanceRequest request =
-				new DeleteServiceInstanceRequest(serviceInstanceId, serviceDefinitionId, planId, getServiceDefinition(serviceDefinitionId))
+		DeleteServiceInstanceRequest request = new DeleteServiceInstanceRequest()
+				.withServiceInstanceId(serviceInstanceId)
+				.withServiceDefinitionId(serviceDefinitionId)
+				.withPlanId(planId)
+				.withServiceDefinition(getServiceDefinition(serviceDefinitionId))
 				.withAsyncAccepted(acceptsIncomplete)
 				.withCfInstanceId(pathVariables.get("cfInstanceId"))
 				.withApiInfoLocation(apiInfoLocation)

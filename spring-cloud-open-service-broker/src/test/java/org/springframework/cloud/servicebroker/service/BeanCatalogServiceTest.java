@@ -3,9 +3,6 @@ package org.springframework.cloud.servicebroker.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.springframework.cloud.servicebroker.model.Catalog;
 import org.springframework.cloud.servicebroker.model.ServiceDefinition;
 import org.junit.Before;
@@ -21,9 +18,15 @@ public class BeanCatalogServiceTest {
 
 	@Before
 	public void setup() {
-		serviceDefinition = new ServiceDefinition(SVC_DEF_ID, "Name", "Description", true, null);
-		List<ServiceDefinition> defs = Collections.singletonList(serviceDefinition);
-		catalog = new Catalog(defs);
+		serviceDefinition = ServiceDefinition.builder()
+				.id(SVC_DEF_ID)
+				.name("Name")
+				.description("Description")
+				.bindable(true)
+				.build();
+		catalog = Catalog.builder()
+				.serviceDefinitions(serviceDefinition)
+				.build();
 		service = new BeanCatalogService(catalog);
 	}
 

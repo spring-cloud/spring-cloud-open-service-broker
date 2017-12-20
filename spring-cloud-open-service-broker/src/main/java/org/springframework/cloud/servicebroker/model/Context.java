@@ -16,16 +16,15 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM;
 import static org.springframework.cloud.servicebroker.model.KubernetesContext.KUBERNETES_PLATFORM;
@@ -37,8 +36,6 @@ import static org.springframework.cloud.servicebroker.model.KubernetesContext.KU
  *
  * @author Scott Frederick
  */
-@ToString
-@EqualsAndHashCode
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY,
 		property = "platform", visible = true, defaultImpl = Context.class)
 @JsonSubTypes({
@@ -49,25 +46,30 @@ public class Context {
 	/**
 	 * The name of the platform making the request.
 	 */
-	@Getter
 	@JsonProperty("platform")
-	private String platform;
+	private final String platform;
 
-	private Map<String, Object> properties = new HashMap<>();
+	@JsonAnySetter
+	private final Map<String, Object> properties = new HashMap<>();
 
-	public Context() {
+	protected Context() {
+		this.platform = null;
 	}
 
-	public Context(String platform, Map<String, Object> properties) {
+	protected Context(String platform, Map<String, Object> properties) {
 		this.platform = platform;
 		if (properties != null) {
 			this.properties.putAll(properties);
 		}
 	}
 
-	@JsonAnySetter
-	private void setProperty(String key, Object value) {
-		properties.put(key, value);
+	public String getPlatform() {
+		return this.platform;
+	}
+
+	@JsonAnyGetter
+	public Map<String, Object> getProperties() {
+		return this.properties;
 	}
 
 	/**
@@ -77,6 +79,81 @@ public class Context {
 	 * @return the value of the field, or {@literal null} if the key is not present in the request
 	 */
 	public Object getProperty(String key) {
-		return properties.get(key);
+		return this.properties.get(key);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Context)) return false;
+		Context context = (Context) o;
+		return Objects.equals(platform, context.platform) &&
+				Objects.equals(properties, context.properties);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(platform, properties);
+	}
+
+	@Override
+	public String toString() {
+		return "Context{" +
+				"platform='" + platform + '\'' +
+				", properties=" + properties +
+				'}';
+	}
+
+	public static ContextBuilder builder() {
+		return new ContextBuilder();
+	}
+
+	protected static abstract class ContextBaseBuilder<R extends Context, B extends ContextBaseBuilder<R, B>> {
+		private final B thisObj;
+
+		protected String platform;
+		protected Map<String, Object> properties = new HashMap<>();
+
+		protected ContextBaseBuilder() {
+			this.thisObj = createBuilder();
+		}
+
+		/**
+		 * Provide the concrete builder.
+		 *
+		 * @return the builder
+		 */
+		protected abstract B createBuilder();
+
+		public B platform(String platform) {
+			this.platform = platform;
+			return thisObj;
+		}
+
+		public B properties(Map<String, Object> properties) {
+			this.properties.putAll(properties);
+			return thisObj;
+		}
+
+		public B property(String key, Object value) {
+			this.properties.put(key, value);
+			return thisObj;
+		}
+
+		public abstract R build();
+	}
+
+	public static class ContextBuilder extends ContextBaseBuilder<Context, ContextBuilder> {
+		ContextBuilder() {
+		}
+
+		@Override
+		protected ContextBuilder createBuilder() {
+			return this;
+		}
+
+		public Context build() {
+			return new Context(platform, properties);
+		}
 	}
 }

@@ -19,18 +19,14 @@ package org.springframework.cloud.servicebroker.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+
+import java.util.Objects;
 
 /**
  * Details of a response to a request to create a new service instance binding for a route.
  *
  * @author Scott Frederick
  */
-@Getter
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
 public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInstanceBindingResponse {
 	/**
 	 * A URL to which Cloud Foundry should proxy requests for the bound route. Can be <code>null</code>.
@@ -38,15 +34,62 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 	@JsonSerialize
 	@JsonProperty("route_service_url")
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private String routeServiceUrl;
+	private final String routeServiceUrl;
 
-	public CreateServiceInstanceRouteBindingResponse withRouteServiceUrl(final String routeServiceUrl) {
+	private CreateServiceInstanceRouteBindingResponse(boolean bindingExisted, String routeServiceUrl) {
+		super(bindingExisted);
 		this.routeServiceUrl = routeServiceUrl;
-		return this;
 	}
 
-	public CreateServiceInstanceRouteBindingResponse withBindingExisted(final boolean bindingExisted) {
-		this.bindingExisted = bindingExisted;
-		return this;
+	public String getRouteServiceUrl() {
+		return this.routeServiceUrl;
+	}
+
+	public static CreateServiceInstanceRouteBindingResponseBuilder builder() {
+		return new CreateServiceInstanceRouteBindingResponseBuilder();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof CreateServiceInstanceRouteBindingResponse)) return false;
+		if (!super.equals(o)) return false;
+		CreateServiceInstanceRouteBindingResponse that = (CreateServiceInstanceRouteBindingResponse) o;
+		return Objects.equals(routeServiceUrl, that.routeServiceUrl);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), routeServiceUrl);
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() +
+				"CreateServiceInstanceRouteBindingResponse{" +
+				"routeServiceUrl='" + routeServiceUrl + '\'' +
+				'}';
+	}
+
+	public static class CreateServiceInstanceRouteBindingResponseBuilder {
+		private String routeServiceUrl;
+		private boolean bindingExisted;
+
+		CreateServiceInstanceRouteBindingResponseBuilder() {
+		}
+
+		public CreateServiceInstanceRouteBindingResponseBuilder routeServiceUrl(String routeServiceUrl) {
+			this.routeServiceUrl = routeServiceUrl;
+			return this;
+		}
+
+		public CreateServiceInstanceRouteBindingResponseBuilder bindingExisted(boolean bindingExisted) {
+			this.bindingExisted = bindingExisted;
+			return this;
+		}
+
+		public CreateServiceInstanceRouteBindingResponse build() {
+			return new CreateServiceInstanceRouteBindingResponse(bindingExisted, routeServiceUrl);
+		}
 	}
 }

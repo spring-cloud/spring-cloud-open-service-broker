@@ -21,9 +21,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+
+import java.util.Objects;
 
 /**
  * Service binding JSON Schemas.
@@ -31,9 +30,6 @@ import lombok.ToString;
  * @author sgunaratne@pivotal.io
  * @author Sam Gunaratne
  */
-@Getter
-@ToString
-@EqualsAndHashCode
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServiceBindingSchema {
@@ -46,11 +42,55 @@ public class ServiceBindingSchema {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private MethodSchema createMethodSchema;
 
-	public ServiceBindingSchema() {
+	private ServiceBindingSchema() {
 		createMethodSchema = null;
 	}
 
-	public ServiceBindingSchema(MethodSchema createMethodSchema) {
+	private ServiceBindingSchema(MethodSchema createMethodSchema) {
 		this.createMethodSchema = createMethodSchema;
+	}
+
+	public static ServiceBindingSchemaBuilder builder() {
+		return new ServiceBindingSchemaBuilder();
+	}
+
+	public MethodSchema getCreateMethodSchema() {
+		return this.createMethodSchema;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ServiceBindingSchema)) return false;
+		ServiceBindingSchema that = (ServiceBindingSchema) o;
+		return Objects.equals(createMethodSchema, that.createMethodSchema);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(createMethodSchema);
+	}
+
+	@Override
+	public String toString() {
+		return "ServiceBindingSchema{" +
+				"createMethodSchema=" + createMethodSchema +
+				'}';
+	}
+
+	public static class ServiceBindingSchemaBuilder {
+		private MethodSchema createMethodSchema;
+
+		ServiceBindingSchemaBuilder() {
+		}
+
+		public ServiceBindingSchema.ServiceBindingSchemaBuilder createMethodSchema(MethodSchema createMethodSchema) {
+			this.createMethodSchema = createMethodSchema;
+			return this;
+		}
+
+		public ServiceBindingSchema build() {
+			return new ServiceBindingSchema(createMethodSchema);
+		}
 	}
 }

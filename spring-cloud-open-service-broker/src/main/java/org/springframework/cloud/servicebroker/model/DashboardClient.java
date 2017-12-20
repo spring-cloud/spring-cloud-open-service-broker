@@ -20,13 +20,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 
-@Getter
-@ToString
-@EqualsAndHashCode
+import java.util.Objects;
+
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DashboardClient {
@@ -38,28 +34,93 @@ public class DashboardClient {
 	 */
 	@JsonSerialize
 	@JsonProperty("id")
-	private String id;
+	private final String id;
 
 	/**
 	 * The client secret for the dashboard OAuth2 client.
 	 */
 	@JsonSerialize
 	@JsonProperty("secret")
-	private String secret;
+	private final String secret;
 
 	/**
 	 * A domain for the service dashboard that will be whitelisted by the UAA to enable dashboard SSO.
 	 */
 	@JsonSerialize
 	@JsonProperty("redirect_uri")
-	private String redirectUri;
+	private final String redirectUri;
 
-	public DashboardClient() {
-	}
-
-	public DashboardClient(String id, String secret, String redirectUri) {
+	private DashboardClient(String id, String secret, String redirectUri) {
 		this.id = id;
 		this.secret = secret;
 		this.redirectUri = redirectUri;
+	}
+
+	public String getId() {
+		return this.id;
+	}
+
+	public String getSecret() {
+		return this.secret;
+	}
+
+	public String getRedirectUri() {
+		return this.redirectUri;
+	}
+
+	public static DashboardClientBuilder builder() {
+		return new DashboardClientBuilder();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof DashboardClient)) return false;
+		DashboardClient that = (DashboardClient) o;
+		return Objects.equals(id, that.id) &&
+				Objects.equals(secret, that.secret) &&
+				Objects.equals(redirectUri, that.redirectUri);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, secret, redirectUri);
+	}
+
+	@Override
+	public String toString() {
+		return "DashboardClient{" +
+				"id='" + id + '\'' +
+				", secret='" + secret + '\'' +
+				", redirectUri='" + redirectUri + '\'' +
+				'}';
+	}
+
+	public static class DashboardClientBuilder {
+		private String id;
+		private String secret;
+		private String redirectUri;
+
+		DashboardClientBuilder() {
+		}
+
+		public DashboardClient.DashboardClientBuilder id(String id) {
+			this.id = id;
+			return this;
+		}
+
+		public DashboardClient.DashboardClientBuilder secret(String secret) {
+			this.secret = secret;
+			return this;
+		}
+
+		public DashboardClient.DashboardClientBuilder redirectUri(String redirectUri) {
+			this.redirectUri = redirectUri;
+			return this;
+		}
+
+		public DashboardClient build() {
+			return new DashboardClient(id, secret, redirectUri);
+		}
 	}
 }

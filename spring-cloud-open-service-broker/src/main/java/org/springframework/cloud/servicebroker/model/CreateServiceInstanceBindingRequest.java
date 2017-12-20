@@ -16,18 +16,16 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import java.util.Map;
-
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
-import org.apache.commons.beanutils.BeanUtils;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.apache.commons.beanutils.BeanUtils;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Details of a request to bind to a service instance binding.
@@ -35,9 +33,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  */
-@Getter
-@ToString(callSuper = true, exclude = {"serviceDefinition"})
-@EqualsAndHashCode(callSuper = true)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 @SuppressWarnings({"deprecation", "DeprecatedIsStillUsed"})
 public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
@@ -111,7 +106,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	@JsonIgnore
 	private transient ServiceDefinition serviceDefinition;
 
-	public CreateServiceInstanceBindingRequest() {
+	private CreateServiceInstanceBindingRequest() {
 		serviceDefinitionId = null;
 		planId = null;
 		appGuid = null;
@@ -120,30 +115,15 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		parameters = null;
 	}
 
-	public CreateServiceInstanceBindingRequest(String serviceDefinitionId, String planId,
-											   BindResource bindResource, Context context,
-											   Map<String, Object> parameters) {
+	private CreateServiceInstanceBindingRequest(String serviceDefinitionId, String planId,
+											   BindResource bindResource, Map<String, Object> parameters,
+											   Context context) {
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
 		this.parameters = parameters;
 		this.bindResource = bindResource;
-		if (bindResource != null) {
-			this.appGuid = bindResource.getAppGuid();
-		} else {
-			this.appGuid = null;
-		}
+		this.appGuid = (bindResource == null ? null : bindResource.getAppGuid());
 		this.context = context;
-	}
-
-	public CreateServiceInstanceBindingRequest(String serviceDefinitionId, String planId,
-											   String appGuid, Map<String, Object> bindResource,
-											   Map<String, Object> parameters) {
-		this(serviceDefinitionId, planId, new BindResource(appGuid, null, bindResource), null, parameters);
-	}
-
-	public CreateServiceInstanceBindingRequest(String serviceDefinitionId, String planId,
-											   String appGuid, Map<String, Object> bindResource) {
-		this(serviceDefinitionId, planId, appGuid, bindResource, null);
 	}
 
 	public <T> T getParameters(Class<T> cls) {
@@ -194,10 +174,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 */
 	@Deprecated
 	public String getBoundAppGuid() {
-		if (bindResource == null) {
-			return null;
-		}
-		return bindResource.getAppGuid();
+		return (bindResource == null ? null : bindResource.getAppGuid());
 	}
 
 	/**
@@ -208,9 +185,130 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 */
 	@Deprecated
 	public String getBoundRoute() {
-		if (bindResource == null) {
-			return null;
+		return (bindResource == null ? null : bindResource.getRoute());
+	}
+
+	public String getServiceDefinitionId() {
+		return this.serviceDefinitionId;
+	}
+
+	public String getPlanId() {
+		return this.planId;
+	}
+
+	@Deprecated
+	public String getAppGuid() {
+		return this.appGuid;
+	}
+
+	public BindResource getBindResource() {
+		return this.bindResource;
+	}
+
+	public Map<String, Object> getParameters() {
+		return this.parameters;
+	}
+
+	public Context getContext() {
+		return this.context;
+	}
+
+	public String getServiceInstanceId() {
+		return this.serviceInstanceId;
+	}
+
+	public String getBindingId() {
+		return this.bindingId;
+	}
+
+	public ServiceDefinition getServiceDefinition() {
+		return this.serviceDefinition;
+	}
+
+	public static CreateServiceInstanceBindingRequestBuilder builder() {
+		return new CreateServiceInstanceBindingRequestBuilder();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof CreateServiceInstanceBindingRequest)) return false;
+		if (!super.equals(o)) return false;
+		CreateServiceInstanceBindingRequest that = (CreateServiceInstanceBindingRequest) o;
+		return Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
+				Objects.equals(planId, that.planId) &&
+				Objects.equals(appGuid, that.appGuid) &&
+				Objects.equals(bindResource, that.bindResource) &&
+				Objects.equals(parameters, that.parameters) &&
+				Objects.equals(context, that.context) &&
+				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
+				Objects.equals(bindingId, that.bindingId);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), serviceDefinitionId, planId, appGuid,
+				bindResource, parameters, context);
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() +
+				"CreateServiceInstanceBindingRequest{" +
+				"serviceDefinitionId='" + serviceDefinitionId + '\'' +
+				", planId='" + planId + '\'' +
+				", appGuid='" + appGuid + '\'' +
+				", bindResource=" + bindResource +
+				", parameters=" + parameters +
+				", context=" + context +
+				", serviceInstanceId='" + serviceInstanceId + '\'' +
+				", bindingId='" + bindingId + '\'' +
+				'}';
+	}
+
+	public static class CreateServiceInstanceBindingRequestBuilder {
+		private String serviceDefinitionId;
+		private String planId;
+		private BindResource bindResource;
+		private Map<String, Object> parameters = new HashMap<>();
+		private Context context;
+
+		CreateServiceInstanceBindingRequestBuilder() {
 		}
-		return bindResource.getRoute();
+
+		public CreateServiceInstanceBindingRequestBuilder serviceDefinitionId(String serviceDefinitionId) {
+			this.serviceDefinitionId = serviceDefinitionId;
+			return this;
+		}
+
+		public CreateServiceInstanceBindingRequestBuilder planId(String planId) {
+			this.planId = planId;
+			return this;
+		}
+
+		public CreateServiceInstanceBindingRequestBuilder bindResource(BindResource bindResource) {
+			this.bindResource = bindResource;
+			return this;
+		}
+
+		public CreateServiceInstanceBindingRequestBuilder parameters(Map<String, Object> parameters) {
+			this.parameters.putAll(parameters);
+			return this;
+		}
+
+		public CreateServiceInstanceBindingRequestBuilder parameters(String key, Object value) {
+			this.parameters.put(key, value);
+			return this;
+		}
+
+		public CreateServiceInstanceBindingRequestBuilder context(Context context) {
+			this.context = context;
+			return this;
+		}
+
+		public CreateServiceInstanceBindingRequest build() {
+			return new CreateServiceInstanceBindingRequest(serviceDefinitionId, planId, bindResource,
+					parameters, context);
+		}
 	}
 }

@@ -19,7 +19,7 @@ import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindin
 import org.springframework.cloud.servicebroker.model.SharedVolumeDevice;
 import org.springframework.cloud.servicebroker.model.VolumeMount;
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
-import org.springframework.cloud.servicebroker.model.fixture.ServiceInstanceBindingFixture;
+import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture.ServiceInstanceBindingFixture;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -30,6 +30,7 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -60,14 +61,20 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 	@Test
 	public void createBindingToAppSucceeds() throws Exception {
-		CreateServiceInstanceAppBindingResponse createResponse = ServiceInstanceBindingFixture.buildCreateAppBindingResponse();
+		CreateServiceInstanceAppBindingResponse createResponse =
+				ServiceInstanceBindingFixture.buildCreateAppBindingResponse(false);
+
+		createRequest
+				.withCfInstanceId(CF_INSTANCE_ID)
+				.withApiInfoLocation(API_INFO_LOCATION)
+				.withOriginatingIdentity(buildOriginatingIdentity());
 
 		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(createRequest)))
 				.thenReturn(createResponse);
 
 		setupCatalogService(createRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(createRequest, false))
+		mockMvc.perform(put(buildCreateUrl(true))
 				.content(DataFixture.toJson(createRequest))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
@@ -81,7 +88,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.andExpect(jsonPath("$.route_service_url").doesNotExist());
 
 		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
-		assertNull(actualRequest.getCfInstanceId());
+		assertEquals(CF_INSTANCE_ID, actualRequest.getCfInstanceId());
 		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
 		assertEquals(ORIGINATING_IDENTITY_PLATFORM, actualRequest.getOriginatingIdentity().getPlatform());
 		assertEquals(ORIGINATING_USER_VALUE, actualRequest.getOriginatingIdentity().getProperty(ORIGINATING_USER_KEY));
@@ -89,46 +96,17 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	}
 
 	@Test
-	public void createBindingToAppWithCfInstanceIdSucceeds() throws Exception {
-		CreateServiceInstanceAppBindingResponse createResponse = ServiceInstanceBindingFixture.buildCreateAppBindingResponse();
-
-		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(createRequest)))
-				.thenReturn(createResponse);
-
-		setupCatalogService(createRequest.getServiceDefinitionId());
-
-		mockMvc.perform(put(buildUrl(createRequest, true))
-				.content(DataFixture.toJson(createRequest))
-				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
-				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.credentials.uri", is(createResponse.getCredentials().get("uri"))))
-				.andExpect(jsonPath("$.credentials.username", is(createResponse.getCredentials().get("username"))))
-				.andExpect(jsonPath("$.credentials.password", is(createResponse.getCredentials().get("password"))))
-				.andExpect(jsonPath("$.syslog_drain_url").doesNotExist())
-				.andExpect(jsonPath("$.route_service_url").doesNotExist());
-
-		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
-		assertEquals(CF_INSTANCE_ID, actualRequest.getCfInstanceId());
-		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
-		assertNull(actualRequest.getOriginatingIdentity());
-	}
-
-	@Test
 	public void createBindingToAppWithExistingSucceeds() throws Exception {
 		CreateServiceInstanceAppBindingResponse createResponse =
-				ServiceInstanceBindingFixture.buildCreateAppBindingResponse()
-				.withBindingExisted(true);
+				ServiceInstanceBindingFixture.buildCreateAppBindingResponse(true);
 
 		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(createRequest)))
 				.thenReturn(createResponse);
 
 		setupCatalogService(createRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(createRequest, false))
+		mockMvc.perform(put(buildCreateUrl(false))
 				.content(DataFixture.toJson(createRequest))
-				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
@@ -143,15 +121,14 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	@Test
 	public void createBindingToRouteSucceeds() throws Exception {
 		CreateServiceInstanceBindingRequest request = ServiceInstanceBindingFixture.buildCreateRouteBindingRequest();
-		CreateServiceInstanceRouteBindingResponse response = ServiceInstanceBindingFixture.buildCreateBindingResponseForRoute();
+		CreateServiceInstanceRouteBindingResponse response = ServiceInstanceBindingFixture.buildCreateBindingResponseForRoute(false);
 		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(request)))
 				.thenReturn(response);
 
 		setupCatalogService(request.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(request, false))
+		mockMvc.perform(put(buildCreateUrl(false))
 				.content(DataFixture.toJson(request))
-				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
@@ -165,16 +142,14 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	public void createBindingToRouteWithExistingSucceeds() throws Exception {
 		CreateServiceInstanceBindingRequest request = ServiceInstanceBindingFixture.buildCreateRouteBindingRequest();
 		CreateServiceInstanceRouteBindingResponse response =
-				ServiceInstanceBindingFixture.buildCreateBindingResponseForRoute()
-				.withBindingExisted(true);
+				ServiceInstanceBindingFixture.buildCreateBindingResponseForRoute(true);
 		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(request)))
 				.thenReturn(response);
 
 		setupCatalogService(request.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(request, false))
+		mockMvc.perform(put(buildCreateUrl(false))
 				.content(DataFixture.toJson(request))
-				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
@@ -186,15 +161,15 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 	@Test
 	public void createBindingWithSyslogDrainUrlSucceeds() throws Exception {
-		CreateServiceInstanceAppBindingResponse response = ServiceInstanceBindingFixture.buildCreateAppBindingResponseWithSyslog();
+		CreateServiceInstanceAppBindingResponse response =
+				ServiceInstanceBindingFixture.buildCreateAppBindingResponseWithSyslog();
 		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(createRequest)))
 			.thenReturn(response);
 
 		setupCatalogService(createRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(createRequest, false))
+		mockMvc.perform(put(buildCreateUrl(false))
 				.content(DataFixture.toJson(createRequest))
-				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
@@ -208,7 +183,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 	@Test
 	public void createBindingWithVolumeSucceeds() throws Exception {
-		CreateServiceInstanceBindingRequest request = ServiceInstanceBindingFixture.buildCreateAppBindingRequest();
+		CreateServiceInstanceBindingRequest request = createRequest;
 		CreateServiceInstanceAppBindingResponse response = ServiceInstanceBindingFixture.buildCreateAppBindingResponseWithVolumeMount();
 		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(request)))
 				.thenReturn(response);
@@ -217,9 +192,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		setupCatalogService(request.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(request, false))
+		mockMvc.perform(put(buildCreateUrl(false))
 				.content(DataFixture.toJson(request))
-				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
@@ -240,9 +214,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		setupCatalogService(createRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(createRequest, false))
+		mockMvc.perform(put(buildCreateUrl(false))
 				.content(DataFixture.toJson(createRequest))
-				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
@@ -251,7 +224,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 	@Test
 	public void createBindingWithUnknownServiceDefinitionIdSucceeds() throws Exception {
-		CreateServiceInstanceAppBindingResponse createResponse = ServiceInstanceBindingFixture.buildCreateAppBindingResponse();
+		CreateServiceInstanceAppBindingResponse createResponse =
+				ServiceInstanceBindingFixture.buildCreateAppBindingResponse(false);
 
 		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(createRequest)))
 				.thenReturn(createResponse);
@@ -259,9 +233,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		when(catalogService.getServiceDefinition(eq(createRequest.getServiceDefinitionId())))
 				.thenReturn(null);
 
-		mockMvc.perform(put(buildUrl(createRequest, false))
+		mockMvc.perform(put(buildCreateUrl(false))
 				.content(DataFixture.toJson(createRequest))
-				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated());
@@ -274,9 +247,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		setupCatalogService(createRequest.getServiceDefinitionId());
 
-		mockMvc.perform(put(buildUrl(createRequest, false))
+		mockMvc.perform(put(buildCreateUrl(false))
 				.content(DataFixture.toJson(createRequest))
-				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isConflict())
@@ -289,9 +261,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		String body = DataFixture.toJson(createRequest);
 		body = body.replace("service_id", "foo");
 
-		mockMvc.perform(put(buildUrl(createRequest, false))
+		mockMvc.perform(put(buildCreateUrl(false))
 				.content(body)
-				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.description", containsString("serviceDefinitionId")));
@@ -301,9 +272,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	public void createBindingWithMissingFieldsFails() throws Exception {
 		String body = "{}";
 
-		mockMvc.perform(put(buildUrl(createRequest, false))
+		mockMvc.perform(put(buildCreateUrl(false))
 				.content(body)
-				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
@@ -313,19 +283,24 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 	@Test
 	public void deleteBindingSucceeds() throws Exception {
-		setupCatalogService(deleteRequest.getServiceDefinitionId());
+		setupCatalogService(serviceDefinition.getId());
 
-		mockMvc.perform(delete(buildUrl(deleteRequest, false))
+		mockMvc.perform(delete(buildDeleteUrl(true))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", is("{}")));
 
+		deleteRequest
+				.withCfInstanceId(CF_INSTANCE_ID)
+				.withApiInfoLocation(API_INFO_LOCATION)
+				.withOriginatingIdentity(buildOriginatingIdentity());
+
 		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(eq(deleteRequest));
 
 		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
-		assertNull(actualRequest.getCfInstanceId());
+		assertEquals(CF_INSTANCE_ID, actualRequest.getCfInstanceId());
 		assertEquals(API_INFO_LOCATION, actualRequest.getApiInfoLocation());
 		assertEquals(ORIGINATING_IDENTITY_PLATFORM, actualRequest.getOriginatingIdentity().getPlatform());
 		assertEquals(ORIGINATING_USER_VALUE, actualRequest.getOriginatingIdentity().getProperty(ORIGINATING_USER_KEY));
@@ -333,29 +308,13 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	}
 
 	@Test
-	public void deleteBindingWithCfInstanceIdSucceeds() throws Exception {
-		setupCatalogService(deleteRequest.getServiceDefinitionId());
-
-		mockMvc.perform(delete(buildUrl(deleteRequest, true))
-				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$", is("{}")));
-
-		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
-		assertEquals(CF_INSTANCE_ID, actualRequest.getCfInstanceId());
-		assertNull(actualRequest.getOriginatingIdentity());
-	}
-
-	@Test
 	public void deleteBindingWithUnknownInstanceIdFails() throws Exception {
 		doThrow(new ServiceInstanceDoesNotExistException(deleteRequest.getServiceInstanceId()))
-				.when(serviceInstanceBindingService).deleteServiceInstanceBinding(eq(deleteRequest));
+				.when(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 
-		setupCatalogService(deleteRequest.getServiceDefinitionId());
+		setupCatalogService(serviceDefinition.getId());
 
-		mockMvc.perform(delete(buildUrl(deleteRequest, false))
-				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+		mockMvc.perform(delete(buildDeleteUrl(false))
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.description", containsString(deleteRequest.getServiceInstanceId())));
@@ -366,10 +325,9 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		doThrow(new ServiceInstanceBindingDoesNotExistException(deleteRequest.getBindingId()))
 				.when(serviceInstanceBindingService).deleteServiceInstanceBinding(eq(deleteRequest));
 
-		setupCatalogService(deleteRequest.getServiceDefinitionId());
+		setupCatalogService(serviceDefinition.getId());
 
-		mockMvc.perform(delete(buildUrl(deleteRequest, false))
-				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+		mockMvc.perform(delete(buildDeleteUrl(false))
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isGone())
 				.andExpect(jsonPath("$", is("{}")));
@@ -377,11 +335,10 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 	@Test
 	public void deleteBindingWithUnknownServiceDefinitionIdSucceeds() throws Exception {
-		when(catalogService.getServiceDefinition(eq(deleteRequest.getServiceDefinitionId())))
+		when(catalogService.getServiceDefinition(eq(serviceDefinition.getId())))
 				.thenReturn(null);
 
-		mockMvc.perform(delete(buildUrl(deleteRequest, false))
-				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+		mockMvc.perform(delete(buildDeleteUrl(false))
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}

@@ -16,54 +16,42 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 
-@ToString
-@EqualsAndHashCode
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 public class BindResource {
 	/**
 	 * The GUID of an application associated with the binding. May be provided for credentials bindings.
 	 */
-	@Getter
 	@JsonProperty("app_guid")
 	private final String appGuid;
 
 	/**
 	 * The URL of an application to be intermediated. May be provided for route services bindings.
 	 */
-	@Getter
 	@JsonProperty
 	private final String route;
 
-	private Map<String, Object> properties = new HashMap<>();
+	@JsonProperty
+	@JsonAnySetter
+	private final Map<String, Object> properties = new HashMap<>();
 
-	public BindResource() {
+	private BindResource() {
 		this.appGuid = null;
 		this.route = null;
 	}
 
-	public BindResource(String appGuid, String route, Map<String, Object> properties) {
+	private BindResource(String appGuid, String route, Map<String, Object> properties) {
 		this.appGuid = appGuid;
 		this.route = route;
 		if (properties != null) {
 			this.properties.putAll(properties);
 		}
-	}
-
-	public BindResource(Map<String, Object> properties) {
-		this(null, null, properties);
-	}
-
-	@JsonAnySetter
-	private void setProperty(String key, Object value) {
-		properties.put(key, value);
 	}
 
 	/**
@@ -73,6 +61,80 @@ public class BindResource {
 	 * @return the value of the field, or {@literal null} if the key is not present in the request
 	 */
 	public Object getProperty(String key) {
-		return properties.get(key);
+		return this.properties.get(key);
+	}
+
+	@JsonAnyGetter
+	public Map<String, Object> getProperties() {
+		return this.properties;
+	}
+
+	public String getAppGuid() {
+		return this.appGuid;
+	}
+
+	public String getRoute() {
+		return this.route;
+	}
+
+	public static BindResourceBuilder builder() {
+		return new BindResourceBuilder();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof BindResource)) return false;
+		BindResource that = (BindResource) o;
+		return Objects.equals(appGuid, that.appGuid) &&
+				Objects.equals(route, that.route) &&
+				Objects.equals(properties, that.properties);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(appGuid, route, properties);
+	}
+
+	@Override
+	public String toString() {
+		return "BindResource{" +
+				"appGuid='" + appGuid + '\'' +
+				", route='" + route + '\'' +
+				", properties=" + properties +
+				'}';
+	}
+
+	public static class BindResourceBuilder {
+		private String appGuid;
+		private String route;
+		private Map<String, Object> parameters = new HashMap<>();
+
+		BindResourceBuilder() {
+		}
+
+		public BindResourceBuilder appGuid(String appGuid) {
+			this.appGuid = appGuid;
+			return this;
+		}
+
+		public BindResourceBuilder route(String route) {
+			this.route = route;
+			return this;
+		}
+
+		public BindResourceBuilder parameters(Map<String, Object> parameters) {
+			this.parameters.putAll(parameters);
+			return this;
+		}
+
+		public BindResourceBuilder parameters(String key, Object value) {
+			this.parameters.put(key, value);
+			return this;
+		}
+
+		public BindResource build() {
+			return new BindResource(appGuid, route, parameters);
+		}
 	}
 }

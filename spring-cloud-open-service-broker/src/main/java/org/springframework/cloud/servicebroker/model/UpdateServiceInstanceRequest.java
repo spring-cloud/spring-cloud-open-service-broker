@@ -16,24 +16,22 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import java.util.Map;
-
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Details of a request to update a service instance.
  *
  * @author Scott Frederick
  */
-@Getter
-@ToString(callSuper = true, exclude = {"serviceDefinition"})
-@EqualsAndHashCode(callSuper = true)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
@@ -74,34 +72,20 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@JsonIgnore
 	private transient ServiceDefinition serviceDefinition;
 
-	public UpdateServiceInstanceRequest() {
+	private UpdateServiceInstanceRequest() {
 		super(null, null);
 		this.serviceDefinitionId = null;
 		this.planId = null;
 		this.previousValues = null;
 	}
 
-	public UpdateServiceInstanceRequest(String serviceDefinitionId, String planId,
-										Map<String, Object> parameters, PreviousValues previousValues,
+	private UpdateServiceInstanceRequest(String serviceDefinitionId, String planId,
+										PreviousValues previousValues, Map<String, Object> parameters,
 										Context context) {
 		super(parameters, context);
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
 		this.previousValues = previousValues;
-	}
-
-	public UpdateServiceInstanceRequest(String serviceDefinitionId, String planId,
-										Map<String, Object> parameters, PreviousValues previousValues) {
-		this(serviceDefinitionId, planId, parameters, previousValues, null);
-	}
-
-	public UpdateServiceInstanceRequest(String serviceDefinitionId, String planId,
-										Map<String, Object> parameters) {
-		this(serviceDefinitionId, planId, parameters, null);
-	}
-
-	public UpdateServiceInstanceRequest(String serviceDefinitionId, String planId) {
-		this(serviceDefinitionId, planId, null);
 	}
 
 	public UpdateServiceInstanceRequest withServiceInstanceId(String serviceInstanceId) {
@@ -134,12 +118,61 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		return this;
 	}
 
+	public String getServiceDefinitionId() {
+		return this.serviceDefinitionId;
+	}
+
+	public String getPlanId() {
+		return this.planId;
+	}
+
+	public PreviousValues getPreviousValues() {
+		return this.previousValues;
+	}
+
+	public String getServiceInstanceId() {
+		return this.serviceInstanceId;
+	}
+
+	public ServiceDefinition getServiceDefinition() {
+		return this.serviceDefinition;
+	}
+
+	public static UpdateServiceInstanceRequestBuilder builder() {
+		return new UpdateServiceInstanceRequestBuilder();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof UpdateServiceInstanceRequest)) return false;
+		if (!super.equals(o)) return false;
+		UpdateServiceInstanceRequest that = (UpdateServiceInstanceRequest) o;
+		return Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
+				Objects.equals(planId, that.planId) &&
+				Objects.equals(previousValues, that.previousValues) &&
+				Objects.equals(serviceInstanceId, that.serviceInstanceId);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), serviceDefinitionId, planId, previousValues, serviceInstanceId);
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() +
+				"UpdateServiceInstanceRequest{" +
+				"serviceDefinitionId='" + serviceDefinitionId + '\'' +
+				", planId='" + planId + '\'' +
+				", previousValues=" + previousValues +
+				", serviceInstanceId='" + serviceInstanceId + '\'' +
+				'}';
+	}
+
 	/**
 	 * Information about the service instance prior to the update request.
 	 */
-	@Getter
-	@ToString
-	@EqualsAndHashCode
 	public static class PreviousValues {
 		/**
 		 * The ID of the service instance plan prior to the update request.
@@ -155,6 +188,75 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 		public PreviousValues(String planId) {
 			this.planId = planId;
+		}
+
+		public String getPlanId() {
+			return this.planId;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (!(o instanceof PreviousValues)) return false;
+			PreviousValues that = (PreviousValues) o;
+			return Objects.equals(planId, that.planId);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(planId);
+		}
+
+		@Override
+		public String toString() {
+			return "PreviousValues{" +
+					"planId='" + planId + '\'' +
+					'}';
+		}
+	}
+
+	public static class UpdateServiceInstanceRequestBuilder {
+		private String serviceDefinitionId;
+		private String planId;
+		private PreviousValues previousValues;
+		private Map<String, Object> parameters = new HashMap<>();
+		private Context context;
+
+		UpdateServiceInstanceRequestBuilder() {
+		}
+
+		public UpdateServiceInstanceRequestBuilder serviceDefinitionId(String serviceDefinitionId) {
+			this.serviceDefinitionId = serviceDefinitionId;
+			return this;
+		}
+
+		public UpdateServiceInstanceRequestBuilder planId(String planId) {
+			this.planId = planId;
+			return this;
+		}
+
+		public UpdateServiceInstanceRequestBuilder previousValues(PreviousValues previousValues) {
+			this.previousValues = previousValues;
+			return this;
+		}
+
+		public UpdateServiceInstanceRequestBuilder parameters(Map<String, Object> parameters) {
+			this.parameters.putAll(parameters);
+			return this;
+		}
+
+		public UpdateServiceInstanceRequestBuilder parameters(String key, Object value) {
+			this.parameters.put(key, value);
+			return this;
+		}
+
+		public UpdateServiceInstanceRequestBuilder context(Context context) {
+			this.context = context;
+			return this;
+		}
+
+		public UpdateServiceInstanceRequest build() {
+			return new UpdateServiceInstanceRequest(serviceDefinitionId, planId, previousValues, parameters, context);
 		}
 	}
 }

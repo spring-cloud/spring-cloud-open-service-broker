@@ -16,27 +16,24 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import java.util.List;
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Details of a response to a request to create a new service instance binding for an application.
  *
  * @author sgreenberg@pivotal.io
- * @author <A href="mailto:josh@joshlong.com">Josh Long</A>
+ * @author Josh Long
  * @author Scott Frederick
  */
-@Getter
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
 public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstanceBindingResponse {
 
 	/**
@@ -45,7 +42,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	@JsonSerialize
 	@JsonProperty("credentials")
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private Map<String, Object> credentials;
+	private final Map<String, Object> credentials;
 
 	/**
 	 * The URL to which Cloud Foundry should drain logs for the bound application. Can be <code>null</code> to
@@ -54,32 +51,118 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	@JsonSerialize
 	@JsonProperty("syslog_drain_url")
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private String syslogDrainUrl;
+	private final String syslogDrainUrl;
 
 	/**
 	 * The details of the volume mounts available to applications.
 	 */
 	@JsonProperty("volume_mounts")
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private List<VolumeMount> volumeMounts;
+	private final List<VolumeMount> volumeMounts;
 
-	public CreateServiceInstanceAppBindingResponse withCredentials(final Map<String, Object> credentials) {
+	private CreateServiceInstanceAppBindingResponse(boolean bindingExisted, Map<String, Object> credentials,
+											String syslogDrainUrl, List<VolumeMount> volumeMounts) {
+		super(bindingExisted);
 		this.credentials = credentials;
-		return this;
-	}
-
-	public CreateServiceInstanceAppBindingResponse withSyslogDrainUrl(final String syslogDrainUrl) {
 		this.syslogDrainUrl = syslogDrainUrl;
-		return this;
-	}
-
-	public CreateServiceInstanceAppBindingResponse withVolumeMounts(final List<VolumeMount> volumeMounts) {
 		this.volumeMounts = volumeMounts;
-		return this;
 	}
 
-	public CreateServiceInstanceAppBindingResponse withBindingExisted(final boolean bindingExisted) {
-		this.bindingExisted = bindingExisted;
-		return this;
+	public Map<String, Object> getCredentials() {
+		return this.credentials;
+	}
+
+	public String getSyslogDrainUrl() {
+		return this.syslogDrainUrl;
+	}
+
+	public List<VolumeMount> getVolumeMounts() {
+		return this.volumeMounts;
+	}
+
+	public static CreateServiceInstanceAppBindingResponseBuilder builder() {
+		return new CreateServiceInstanceAppBindingResponseBuilder();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof CreateServiceInstanceAppBindingResponse)) return false;
+		if (!super.equals(o)) return false;
+		CreateServiceInstanceAppBindingResponse that = (CreateServiceInstanceAppBindingResponse) o;
+		return Objects.equals(credentials, that.credentials) &&
+				Objects.equals(syslogDrainUrl, that.syslogDrainUrl) &&
+				Objects.equals(volumeMounts, that.volumeMounts);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), credentials, syslogDrainUrl, volumeMounts);
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() +
+				"CreateServiceInstanceAppBindingResponse{" +
+				"credentials=" + credentials +
+				", syslogDrainUrl='" + syslogDrainUrl + '\'' +
+				", volumeMounts=" + volumeMounts +
+				'}';
+	}
+
+	public static class CreateServiceInstanceAppBindingResponseBuilder {
+		private Map<String, Object> credentials;
+		private String syslogDrainUrl;
+		private List<VolumeMount> volumeMounts;
+		private boolean bindingExisted;
+
+		CreateServiceInstanceAppBindingResponseBuilder() {
+		}
+
+		public CreateServiceInstanceAppBindingResponseBuilder credentials(Map<String, Object> credentials) {
+			if (this.credentials == null) {
+				this.credentials = new HashMap<>();
+			}
+			this.credentials.putAll(credentials);
+			return this;
+		}
+
+		public CreateServiceInstanceAppBindingResponseBuilder credentials(String key, Object value) {
+			if (this.credentials == null) {
+				this.credentials = new HashMap<>();
+			}
+			this.credentials.put(key, value);
+			return this;
+		}
+
+		public CreateServiceInstanceAppBindingResponseBuilder syslogDrainUrl(String syslogDrainUrl) {
+			this.syslogDrainUrl = syslogDrainUrl;
+			return this;
+		}
+
+		public CreateServiceInstanceAppBindingResponseBuilder volumeMounts(List<VolumeMount> volumeMounts) {
+			if (this.volumeMounts == null) {
+				this.volumeMounts = new ArrayList<>();
+			}
+			this.volumeMounts.addAll(volumeMounts);
+			return this;
+		}
+
+		public CreateServiceInstanceAppBindingResponseBuilder volumeMounts(VolumeMount... volumeMounts) {
+			if (this.volumeMounts == null) {
+				this.volumeMounts = new ArrayList<>();
+			}
+			Collections.addAll(this.volumeMounts, volumeMounts);
+			return this;
+		}
+
+		public CreateServiceInstanceAppBindingResponseBuilder bindingExisted(boolean bindingExisted) {
+			this.bindingExisted = bindingExisted;
+			return this;
+		}
+
+		public CreateServiceInstanceAppBindingResponse build() {
+			return new CreateServiceInstanceAppBindingResponse(bindingExisted, credentials, syslogDrainUrl, volumeMounts);
+		}
 	}
 }

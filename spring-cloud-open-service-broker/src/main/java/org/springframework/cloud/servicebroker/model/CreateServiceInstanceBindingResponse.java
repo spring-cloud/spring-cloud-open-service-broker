@@ -19,18 +19,14 @@ package org.springframework.cloud.servicebroker.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+
+import java.util.Objects;
 
 /**
  * Details of a response to a service instance binding create request.
  *
  * @author Scott Frederick
  */
-@Getter
-@ToString
-@EqualsAndHashCode
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateServiceInstanceBindingResponse {
@@ -39,5 +35,34 @@ public class CreateServiceInstanceBindingResponse {
 	 * requested service instance binding, <code>false</code> to indicate that the binding was created as new
 	 */
 	@JsonIgnore
-	protected boolean bindingExisted;
+	protected final boolean bindingExisted;
+
+	protected CreateServiceInstanceBindingResponse(boolean bindingExisted) {
+		this.bindingExisted = bindingExisted;
+	}
+
+	public boolean isBindingExisted() {
+		return this.bindingExisted;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof CreateServiceInstanceBindingResponse)) return false;
+		CreateServiceInstanceBindingResponse that = (CreateServiceInstanceBindingResponse) o;
+		return bindingExisted == that.bindingExisted;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(bindingExisted);
+	}
+
+	@Override
+	public String toString() {
+		return "CreateServiceInstanceBindingResponse{" +
+				"bindingExisted=" + bindingExisted +
+				'}';
+	}
+
 }

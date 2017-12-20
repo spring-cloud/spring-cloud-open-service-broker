@@ -16,53 +16,57 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import java.util.Objects;
 
 /**
  * Details of a request to delete a service instance.
  *
  * @author krujos
+ * @author Scott Frederick
  */
-@Getter
-@ToString(callSuper = true, exclude = {"serviceDefinition"})
-@EqualsAndHashCode(callSuper = true)
 public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 	/**
 	 * The Cloud Controller GUID of the service instance to deprovision.
 	 */
-	private final String serviceInstanceId;
+	private transient String serviceInstanceId;
 
 	/**
 	 * The ID of the service to deprovision, from the broker catalog.
 	 */
-	private final String serviceDefinitionId;
+	private transient String serviceDefinitionId;
 
 	/**
 	 * The ID of the plan to deprovision within the service, from the broker catalog.
 	 */
-	private final String planId;
+	private transient String planId;
 
 	/**
 	 * The {@link ServiceDefinition} of the service to deprovision. This is resolved from the
 	 * <code>serviceDefinitionId</code> as a convenience to the broker.
 	 */
-	private transient final ServiceDefinition serviceDefinition;
+	private transient ServiceDefinition serviceDefinition;
 
-	public DeleteServiceInstanceRequest(String instanceId, String serviceId,
-										String planId, ServiceDefinition serviceDefinition,
-										boolean asyncAccepted) {
-		this.serviceInstanceId = instanceId;
-		this.serviceDefinitionId = serviceId;
-		this.planId = planId;
-		this.serviceDefinition = serviceDefinition;
-		this.asyncAccepted = asyncAccepted;
+	public DeleteServiceInstanceRequest() {
 	}
 
-	public DeleteServiceInstanceRequest(String instanceId, String serviceId,
-										String planId, ServiceDefinition serviceDefinition) {
-		this(instanceId, serviceId, planId, serviceDefinition, false);
+	public DeleteServiceInstanceRequest withServiceInstanceId(String serviceInstanceId) {
+		this.serviceInstanceId = serviceInstanceId;
+		return this;
+	}
+
+	public DeleteServiceInstanceRequest withServiceDefinitionId(String serviceDefinitionId) {
+		this.serviceDefinitionId = serviceDefinitionId;
+		return this;
+	}
+
+	public DeleteServiceInstanceRequest withPlanId(String planId) {
+		this.planId = planId;
+		return this;
+	}
+
+	public DeleteServiceInstanceRequest withServiceDefinition(ServiceDefinition serviceDefinition) {
+		this.serviceDefinition = serviceDefinition;
+		return this;
 	}
 
 	public DeleteServiceInstanceRequest withAsyncAccepted(boolean asyncAccepted) {
@@ -83,5 +87,47 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 	public DeleteServiceInstanceRequest withOriginatingIdentity(Context originatingIdentity) {
 		this.originatingIdentity = originatingIdentity;
 		return this;
+	}
+
+	public String getServiceInstanceId() {
+		return this.serviceInstanceId;
+	}
+
+	public String getServiceDefinitionId() {
+		return this.serviceDefinitionId;
+	}
+
+	public String getPlanId() {
+		return this.planId;
+	}
+
+	public ServiceDefinition getServiceDefinition() {
+		return this.serviceDefinition;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof DeleteServiceInstanceRequest)) return false;
+		if (!super.equals(o)) return false;
+		DeleteServiceInstanceRequest that = (DeleteServiceInstanceRequest) o;
+		return Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
+				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
+				Objects.equals(planId, that.planId);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), serviceInstanceId, serviceDefinitionId, planId);
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() +
+				"DeleteServiceInstanceRequest{" +
+				"serviceInstanceId='" + serviceInstanceId + '\'' +
+				", serviceDefinitionId='" + serviceDefinitionId + '\'' +
+				", planId='" + planId + '\'' +
+				'}';
 	}
 }

@@ -1,0 +1,15 @@
+{
+	"service_id": "test-service-id",
+	"plan_id": "test-plan-id",
+	"bind_resource": {
+		"app_guid": "test-app-guid"
+	},
+	"app_guid": "test-app-guid",
+	"context": {
+		"platform": "kubernetes",
+		"namespace": "test-namespace",
+		"space_guid": "test-space-guid",
+		"field1": "data",
+		"field2": 2
+	}
+}

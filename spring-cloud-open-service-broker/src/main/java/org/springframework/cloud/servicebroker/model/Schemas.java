@@ -21,9 +21,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+
+import java.util.Objects;
 
 /**
  * JSON Schemas available for a Plan.
@@ -31,9 +30,6 @@ import lombok.ToString;
  * @author sgunaratne@pivotal.io
  * @author Sam Gunaratne
  */
-@Getter
-@ToString
-@EqualsAndHashCode
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Schemas {
@@ -44,7 +40,7 @@ public class Schemas {
 	@JsonSerialize
 	@JsonProperty("service_instance")
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private ServiceInstanceSchema serviceInstanceSchema;
+	private final ServiceInstanceSchema serviceInstanceSchema;
 
 	/**
 	 * The schemas available on a service binding.
@@ -52,16 +48,67 @@ public class Schemas {
 	@JsonSerialize
 	@JsonProperty("service_binding")
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private ServiceBindingSchema serviceBindingSchema;
+	private final ServiceBindingSchema serviceBindingSchema;
 
-	public Schemas() {
-		serviceInstanceSchema = null;
-        serviceBindingSchema = null;
-    }
-
-	public Schemas(ServiceInstanceSchema serviceInstanceSchema,
+	private Schemas(ServiceInstanceSchema serviceInstanceSchema,
 			ServiceBindingSchema serviceBindingSchema) {
 		this.serviceInstanceSchema = serviceInstanceSchema;
 		this.serviceBindingSchema = serviceBindingSchema;
+	}
+
+	public ServiceInstanceSchema getServiceInstanceSchema() {
+		return this.serviceInstanceSchema;
+	}
+
+	public ServiceBindingSchema getServiceBindingSchema() {
+		return this.serviceBindingSchema;
+	}
+
+	public static SchemasBuilder builder() {
+		return new SchemasBuilder();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Schemas)) return false;
+		Schemas schemas = (Schemas) o;
+		return Objects.equals(serviceInstanceSchema, schemas.serviceInstanceSchema) &&
+				Objects.equals(serviceBindingSchema, schemas.serviceBindingSchema);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(serviceInstanceSchema, serviceBindingSchema);
+	}
+
+	@Override
+	public String toString() {
+		return "Schemas{" +
+				"serviceInstanceSchema=" + serviceInstanceSchema +
+				", serviceBindingSchema=" + serviceBindingSchema +
+				'}';
+	}
+
+	public static class SchemasBuilder {
+		private ServiceInstanceSchema serviceInstanceSchema;
+		private ServiceBindingSchema serviceBindingSchema;
+
+		SchemasBuilder() {
+		}
+
+		public SchemasBuilder serviceInstanceSchema(ServiceInstanceSchema serviceInstanceSchema) {
+			this.serviceInstanceSchema = serviceInstanceSchema;
+			return this;
+		}
+
+		public SchemasBuilder serviceBindingSchema(ServiceBindingSchema serviceBindingSchema) {
+			this.serviceBindingSchema = serviceBindingSchema;
+			return this;
+		}
+
+		public Schemas build() {
+			return new Schemas(serviceInstanceSchema, serviceBindingSchema);
+		}
 	}
 }

@@ -7,7 +7,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mockito.Mock;
 
-import org.springframework.cloud.servicebroker.model.fixture.ServiceFixture;
+import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture.ServiceFixture;
+import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.Base64Utils;
@@ -40,5 +41,13 @@ public abstract class ControllerIntegrationTest {
 		String properties = mapper.writeValueAsString(propMap);
 		String encodedProperties = new String(Base64Utils.encode(properties.getBytes()));
 		return ORIGINATING_IDENTITY_PLATFORM + " " + encodedProperties;
+	}
+
+	protected Context buildOriginatingIdentity() {
+		return Context.builder()
+				.platform(ORIGINATING_IDENTITY_PLATFORM)
+				.property(ORIGINATING_USER_KEY, ORIGINATING_USER_VALUE)
+				.property(ORIGINATING_EMAIL_KEY, ORIGINATING_EMAIL_VALUE)
+				.build();
 	}
 }

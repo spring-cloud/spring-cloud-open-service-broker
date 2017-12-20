@@ -8,9 +8,7 @@
 	},
 	"app_guid": "test-app-guid",
 	"context": {
-		"platform": "cloudfoundry",
-		"organization_guid": "test-organization-guid",
-		"space_guid": "test-space-guid",
+		"platform": "sample-platform",
 		"field1": "data",
 		"field2": 2
 	},

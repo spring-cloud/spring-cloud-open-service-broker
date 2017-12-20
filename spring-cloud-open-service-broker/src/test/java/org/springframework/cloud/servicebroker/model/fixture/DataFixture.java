@@ -15,6 +15,11 @@ public class DataFixture {
 		return mapper.writeValueAsString(object);
 	}
 
+	public static <T> T fromJson(String json, Class<T> contentType) throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.readerFor(contentType).readValue(json);
+	}
+
 	public static <T> T readTestDataFile(String filename, Class<T> contentType) {
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();

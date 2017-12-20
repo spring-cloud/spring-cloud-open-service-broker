@@ -17,18 +17,14 @@
 package org.springframework.cloud.servicebroker.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+
+import java.util.Objects;
 
 /**
  * Used to send errors back to the cloud controller.
  *
  * @author sgreenberg@pivotal.io
  */
-@Getter
-@ToString
-@EqualsAndHashCode
 public class ErrorMessage {
 	@JsonProperty("description")
 	private final String message;
@@ -36,4 +32,29 @@ public class ErrorMessage {
 	public ErrorMessage(String message) {
 		this.message = message;
 	}
+
+	public String getMessage() {
+		return this.message;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ErrorMessage)) return false;
+		ErrorMessage that = (ErrorMessage) o;
+		return Objects.equals(message, that.message);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(message);
+	}
+
+	@Override
+	public String toString() {
+		return "ErrorMessage{" +
+				"message='" + message + '\'' +
+				'}';
+	}
+
 }

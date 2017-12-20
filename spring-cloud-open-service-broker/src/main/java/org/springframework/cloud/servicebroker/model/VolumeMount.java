@@ -21,18 +21,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+
+import java.util.Objects;
 
 /**
  * Details of a volume mount in a binding response.
  */
-@Getter
-@ToString
-@EqualsAndHashCode
-@AllArgsConstructor
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VolumeMount {
@@ -75,31 +69,131 @@ public class VolumeMount {
 	 * The name of the volume driver plugin which manages the device.
 	 */
 	@JsonSerialize
-	private String driver;
+	private final String driver;
 
 	/**
 	 * The directory to mount inside the application container.
 	 */
 	@JsonSerialize
 	@JsonProperty("container_dir")
-	private String containerDir;
+	private final String containerDir;
 
 	/**
 	 * Indicates whether the volume can be mounted in read-only or read-write mode.
 	 */
 	@JsonSerialize(using = ToStringSerializer.class)
-	private Mode mode;
+	private final Mode mode;
 
 	/**
 	 * The type of the volume device to mount.
 	 */
 	@JsonSerialize(using = ToStringSerializer.class)
 	@JsonProperty("device_type")
-	private DeviceType deviceType;
+	private final DeviceType deviceType;
 
 	/**
 	 * Details of the volume device to mount, specific to the device type.
 	 */
 	@JsonSerialize
-	private VolumeDevice device;
+	private final VolumeDevice device;
+
+	private VolumeMount(String driver, String containerDir, Mode mode, DeviceType deviceType, VolumeDevice device) {
+		this.driver = driver;
+		this.containerDir = containerDir;
+		this.mode = mode;
+		this.deviceType = deviceType;
+		this.device = device;
+	}
+
+	public String getDriver() {
+		return this.driver;
+	}
+
+	public String getContainerDir() {
+		return this.containerDir;
+	}
+
+	public Mode getMode() {
+		return this.mode;
+	}
+
+	public DeviceType getDeviceType() {
+		return this.deviceType;
+	}
+
+	public VolumeDevice getDevice() {
+		return this.device;
+	}
+
+	public static VolumeMountBuilder builder() {
+		return new VolumeMountBuilder();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof VolumeMount)) return false;
+		VolumeMount that = (VolumeMount) o;
+		return Objects.equals(driver, that.driver) &&
+				Objects.equals(containerDir, that.containerDir) &&
+				mode == that.mode &&
+				deviceType == that.deviceType &&
+				Objects.equals(device, that.device);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(driver, containerDir, mode, deviceType, device);
+	}
+
+	@Override
+	public String toString() {
+		return "VolumeMount{" +
+				"driver='" + driver + '\'' +
+				", containerDir='" + containerDir + '\'' +
+				", mode=" + mode +
+				", deviceType=" + deviceType +
+				", device=" + device +
+				'}';
+	}
+
+	public static class VolumeMountBuilder {
+		private String driver;
+		private String containerDir;
+		private Mode mode;
+		private DeviceType deviceType;
+		private VolumeDevice device;
+
+		VolumeMountBuilder() {
+		}
+
+		public VolumeMountBuilder driver(String driver) {
+			this.driver = driver;
+			return this;
+		}
+
+		public VolumeMountBuilder containerDir(String containerDir) {
+			this.containerDir = containerDir;
+			return this;
+		}
+
+		public VolumeMountBuilder mode(Mode mode) {
+			this.mode = mode;
+			return this;
+		}
+
+		public VolumeMountBuilder deviceType(DeviceType deviceType) {
+			this.deviceType = deviceType;
+			return this;
+		}
+
+		public VolumeMountBuilder device(VolumeDevice device) {
+			this.device = device;
+			return this;
+		}
+
+		public VolumeMount build() {
+			return new VolumeMount(driver, containerDir, mode, deviceType, device);
+		}
+	}
 }

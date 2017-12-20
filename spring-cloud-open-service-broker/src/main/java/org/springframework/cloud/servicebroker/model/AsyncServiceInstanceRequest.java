@@ -16,18 +16,15 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Objects;
 
 /**
  * Details of a request that supports asynchronous behavior.
  *
  * @author Scott Frederick
  */
-@Getter
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
 public abstract class AsyncServiceInstanceRequest extends ServiceBrokerRequest {
 	public final static String ASYNC_REQUEST_PARAMETER = "accepts_incomplete";
 
@@ -36,8 +33,36 @@ public abstract class AsyncServiceInstanceRequest extends ServiceBrokerRequest {
 	 * <code>false</code> value indicates that clients do not allow asynchronous processing of requests, a
 	 * <code>true</code> value indicates that clients do allow asynchronous processing.
 	 */
-	protected boolean asyncAccepted;
+	@JsonIgnore
+	protected transient boolean asyncAccepted;
 
-	public AsyncServiceInstanceRequest() {
+	protected AsyncServiceInstanceRequest() {
 	}
+
+	public boolean isAsyncAccepted() {
+		return this.asyncAccepted;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof AsyncServiceInstanceRequest)) return false;
+		if (!super.equals(o)) return false;
+		AsyncServiceInstanceRequest that = (AsyncServiceInstanceRequest) o;
+		return asyncAccepted == that.asyncAccepted;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), asyncAccepted);
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() +
+				"AsyncServiceInstanceRequest{" +
+				"asyncAccepted=" + asyncAccepted +
+				'}';
+	}
+
 }

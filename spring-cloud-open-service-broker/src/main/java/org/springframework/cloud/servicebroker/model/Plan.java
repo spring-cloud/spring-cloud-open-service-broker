@@ -16,20 +16,17 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import java.util.Map;
-
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * A service plan available for a ServiceDefinition
@@ -37,9 +34,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  */
-@Getter
-@ToString
-@EqualsAndHashCode
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Plan {
@@ -51,7 +45,7 @@ public class Plan {
 	@NotEmpty
 	@JsonSerialize
 	@JsonProperty("id")
-	private String id;
+	private final String id;
 
 	/**
 	 * A CLI-friendly name of the plan that will appear in the catalog. The value should be all lowercase,
@@ -60,7 +54,7 @@ public class Plan {
 	@NotEmpty
 	@JsonSerialize
 	@JsonProperty("name")
-	private String name;
+	private final String name;
 
 	/**
 	 * A user-friendly short description of the plan that will appear in the catalog.
@@ -68,14 +62,14 @@ public class Plan {
 	@NotEmpty
 	@JsonSerialize
 	@JsonProperty("description")
-	private String description;
+	private final String description;
 
 	/**
 	 * A map of metadata to further describe a service plan.
 	 */
 	@JsonSerialize(nullsUsing = EmptyMapSerializer.class)
 	@JsonProperty("metadata")
-	private Map<String, Object> metadata;
+	private final Map<String, Object> metadata;
 
 	/**
 	 * The schemas for this plan.
@@ -83,56 +77,152 @@ public class Plan {
 	@JsonSerialize
 	@JsonProperty("schemas")
 	@JsonInclude(Include.NON_NULL)
-	private Schemas schemas;
+	private final Schemas schemas;
 
 	/**
 	 * Indicates whether the service with this plan can be bound to applications. This is an optional field. If the
 	 * value is <code>null</code>, the field will be omitted from the serialized JSON.
 	 */
-	@Getter(AccessLevel.NONE)
 	@JsonSerialize
 	@JsonProperty("bindable")
 	@JsonInclude(Include.NON_NULL)
-	private Boolean bindable;
+	private final Boolean bindable;
 
 	/**
 	 * Indicates whether the plan can be limited by the non_basic_services_allowed field in a Cloud Foundry Quota.
 	 */
 	@JsonSerialize
 	@JsonProperty("free")
-	private boolean free = true;
+	private final Boolean free;
 
-	public Plan() {
-	}
-
-	public Plan(String id, String name, String description) {
+	private Plan(String id, String name, String description, Map<String, Object> metadata, Boolean free, Boolean bindable, Schemas schemas) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
-	}
-
-	public Plan(String id, String name, String description, Map<String, Object> metadata) {
-		this(id, name, description);
 		this.metadata = metadata;
-	}
-
-	public Plan(String id, String name, String description, Map<String, Object> metadata, boolean free) {
-		this(id, name, description, metadata);
 		this.free = free;
-	}
-
-	public Plan(String id, String name, String description, Map<String, Object> metadata, boolean free, boolean bindable) {
-		this(id, name, description, metadata, free);
 		this.bindable = bindable;
-	}
-
-	public Plan(String id, String name, String description, Map<String, Object> metadata, boolean free, boolean bindable, Schemas schemas) {
-		this(id, name, description, metadata, free, bindable);
 		this.schemas = schemas;
 	}
 
-
 	public Boolean isBindable() {
 		return bindable;
+	}
+
+	public String getId() {
+		return this.id;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public String getDescription() {
+		return this.description;
+	}
+
+	public Map<String, Object> getMetadata() {
+		return this.metadata;
+	}
+
+	public Schemas getSchemas() {
+		return this.schemas;
+	}
+
+	public Boolean isFree() {
+		return this.free;
+	}
+
+	public static PlanBuilder builder() {
+		return new PlanBuilder();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Plan)) return false;
+		Plan plan = (Plan) o;
+		return free == plan.free &&
+				Objects.equals(id, plan.id) &&
+				Objects.equals(name, plan.name) &&
+				Objects.equals(description, plan.description) &&
+				Objects.equals(metadata, plan.metadata) &&
+				Objects.equals(schemas, plan.schemas) &&
+				Objects.equals(bindable, plan.bindable);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, description, metadata, schemas, bindable, free);
+	}
+
+	@Override
+	public String toString() {
+		return "Plan{" +
+				"id='" + id + '\'' +
+				", name='" + name + '\'' +
+				", description='" + description + '\'' +
+				", metadata=" + metadata +
+				", schemas=" + schemas +
+				", bindable=" + bindable +
+				", free=" + free +
+				'}';
+	}
+
+	public static class PlanBuilder {
+		private String id;
+		private String name;
+		private String description;
+		private Map<String, Object> metadata = new HashMap<>();
+		private Boolean free = true;
+		private Boolean bindable;
+		private Schemas schemas;
+
+		PlanBuilder() {
+		}
+
+		public PlanBuilder id(String id) {
+			this.id = id;
+			return this;
+		}
+
+		public PlanBuilder name(String name) {
+			this.name = name;
+			return this;
+		}
+
+		public PlanBuilder description(String description) {
+			this.description = description;
+			return this;
+		}
+
+		public PlanBuilder metadata(Map<String, Object> metadata) {
+			this.metadata.putAll(metadata);
+			return this;
+		}
+
+		public PlanBuilder metadata(String key, Object value) {
+			this.metadata.put(key, value);
+			return this;
+		}
+
+		public PlanBuilder free(boolean free) {
+			this.free = free;
+			return this;
+		}
+
+		public PlanBuilder bindable(boolean bindable) {
+			this.bindable = bindable;
+			return this;
+		}
+
+		public PlanBuilder schemas(Schemas schemas) {
+			this.schemas = schemas;
+			return this;
+		}
+
+		public Plan build() {
+			return new Plan(id, name, description, metadata, free, bindable, schemas);
+		}
 	}
 }

@@ -16,17 +16,16 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * The catalog of services offered by the service broker.
@@ -34,9 +33,6 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  */
-@Getter
-@ToString
-@EqualsAndHashCode
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Catalog {
@@ -49,11 +45,56 @@ public class Catalog {
 	@JsonProperty("services")
 	private final List<ServiceDefinition> serviceDefinitions;
 
-	public Catalog() {
-		this.serviceDefinitions = new ArrayList<>();
+	private Catalog(List<ServiceDefinition> serviceDefinitions) {
+		this.serviceDefinitions = serviceDefinitions;
 	}
 
-	public Catalog(List<ServiceDefinition> serviceDefinitions) {
-		this.serviceDefinitions = serviceDefinitions;
+	public List<ServiceDefinition> getServiceDefinitions() {
+		return this.serviceDefinitions;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Catalog)) return false;
+		Catalog catalog = (Catalog) o;
+		return Objects.equals(serviceDefinitions, catalog.serviceDefinitions);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(serviceDefinitions);
+	}
+
+	@Override
+	public String toString() {
+		return "Catalog{" +
+				"serviceDefinitions=" + serviceDefinitions +
+				'}';
+	}
+
+	public static CatalogBuilder builder() {
+		return new CatalogBuilder();
+	}
+
+	public static class CatalogBuilder {
+		private List<ServiceDefinition> serviceDefinitions = new ArrayList<>();
+
+		CatalogBuilder() {
+		}
+
+		public CatalogBuilder serviceDefinitions(List<ServiceDefinition> serviceDefinitions) {
+			this.serviceDefinitions.addAll(serviceDefinitions);
+			return this;
+		}
+
+		public CatalogBuilder serviceDefinitions(ServiceDefinition... serviceDefinitions) {
+			Collections.addAll(this.serviceDefinitions, serviceDefinitions);
+			return this;
+		}
+
+		public Catalog build() {
+			return new Catalog(serviceDefinitions);
+		}
 	}
 }

@@ -17,18 +17,14 @@
 package org.springframework.cloud.servicebroker.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+
+import java.util.Objects;
 
 /**
  * Details common to all service broker requests.
  *
  * @author Scott Frederick
  */
-@Getter
-@ToString
-@EqualsAndHashCode
 public abstract class ServiceBrokerRequest {
 	public final static String API_INFO_LOCATION_HEADER = "X-Api-Info-Location";
 	public final static String ORIGINATING_IDENTITY_HEADER = "X-Broker-API-Originating-Identity";
@@ -53,10 +49,46 @@ public abstract class ServiceBrokerRequest {
 	@JsonIgnore
 	protected transient Context originatingIdentity;
 
-
-	public ServiceBrokerRequest() {
+	protected ServiceBrokerRequest() {
 		this.cfInstanceId = null;
 		this.apiInfoLocation = null;
 		this.originatingIdentity = null;
 	}
+
+	public String getCfInstanceId() {
+		return this.cfInstanceId;
+	}
+
+	public String getApiInfoLocation() {
+		return this.apiInfoLocation;
+	}
+
+	public Context getOriginatingIdentity() {
+		return this.originatingIdentity;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ServiceBrokerRequest)) return false;
+		ServiceBrokerRequest that = (ServiceBrokerRequest) o;
+		return Objects.equals(cfInstanceId, that.cfInstanceId) &&
+				Objects.equals(apiInfoLocation, that.apiInfoLocation) &&
+				Objects.equals(originatingIdentity, that.originatingIdentity);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(cfInstanceId, apiInfoLocation, originatingIdentity);
+	}
+
+	@Override
+	public String toString() {
+		return "ServiceBrokerRequest{" +
+				"cfInstanceId='" + cfInstanceId + '\'' +
+				", apiInfoLocation='" + apiInfoLocation + '\'' +
+				", originatingIdentity=" + originatingIdentity +
+				'}';
+	}
+
 }

@@ -16,23 +16,18 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 import org.apache.commons.beanutils.BeanUtils;
+
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Details of a request that supports arbitrary parameters and asynchronous behavior.
  *
  * @author Scott Frederick
  */
-@Getter
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
 public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServiceInstanceRequest {
 	/**
 	 * Parameters passed by the user in the form of a JSON structure. The service broker is responsible
@@ -49,7 +44,7 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	@JsonProperty("context")
 	private final Context context;
 
-	public AsyncParameterizedServiceInstanceRequest(Map<String, Object> parameters, Context context) {
+	protected AsyncParameterizedServiceInstanceRequest(Map<String, Object> parameters, Context context) {
 		this.parameters = parameters;
 		this.context = context;
 	}
@@ -62,5 +57,37 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Error mapping parameters to class of type " + cls.getName(), e);
 		}
+	}
+
+	public Map<String, Object> getParameters() {
+		return this.parameters;
+	}
+
+	public Context getContext() {
+		return this.context;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof AsyncParameterizedServiceInstanceRequest)) return false;
+		if (!super.equals(o)) return false;
+		AsyncParameterizedServiceInstanceRequest that = (AsyncParameterizedServiceInstanceRequest) o;
+		return Objects.equals(parameters, that.parameters) &&
+				Objects.equals(context, that.context);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), parameters, context);
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() +
+				"AsyncParameterizedServiceInstanceRequest{" +
+				"context=" + context +
+				", asyncAccepted=" + asyncAccepted +
+				'}';
 	}
 }

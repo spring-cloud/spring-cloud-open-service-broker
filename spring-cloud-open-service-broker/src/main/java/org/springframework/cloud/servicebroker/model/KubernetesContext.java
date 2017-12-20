@@ -17,19 +17,15 @@
 package org.springframework.cloud.servicebroker.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import java.util.Objects;
 
 /**
  * Kubernetes specific contextual information under which the service instance is to be provisioned or updated.
  *
  * @author Scott Frederick
  */
-@Getter
-@ToString
-@EqualsAndHashCode(callSuper = true)
 public final class KubernetesContext extends Context {
 	public static final String KUBERNETES_PLATFORM = "kubernetes";
 
@@ -40,11 +36,37 @@ public final class KubernetesContext extends Context {
 	@JsonSerialize
 	private final String namespace;
 
-	public KubernetesContext() {
+	private KubernetesContext() {
 		this.namespace = null;
 	}
 
-	public KubernetesContext(String namespace) {
+	private KubernetesContext(String namespace) {
 		this.namespace = namespace;
+	}
+
+	public String getNamespace() {
+		return this.namespace;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof KubernetesContext)) return false;
+		if (!super.equals(o)) return false;
+		KubernetesContext that = (KubernetesContext) o;
+		return Objects.equals(namespace, that.namespace);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), namespace);
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() +
+				"KubernetesContext{" +
+				"namespace='" + namespace + '\'' +
+				'}';
 	}
 }

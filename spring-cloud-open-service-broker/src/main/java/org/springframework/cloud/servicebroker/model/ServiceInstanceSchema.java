@@ -21,19 +21,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+
+import java.util.Objects;
 
 /**
  * Service instance JSON Schemas.
  *
- * @author sgunaratne@pivotal.io
  * @author Sam Gunaratne
  */
-@Getter
-@ToString
-@EqualsAndHashCode
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServiceInstanceSchema {
@@ -54,14 +49,70 @@ public class ServiceInstanceSchema {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private MethodSchema updateMethodSchema;
 
-	public ServiceInstanceSchema() {
+	private ServiceInstanceSchema() {
 		createMethodSchema = null;
 		updateMethodSchema = null;
 	}
 
-	public ServiceInstanceSchema(MethodSchema createMethodSchema,
+	private ServiceInstanceSchema(MethodSchema createMethodSchema,
 			MethodSchema updateMethodSchema) {
 		this.createMethodSchema = createMethodSchema;
 		this.updateMethodSchema = updateMethodSchema;
+	}
+
+	public MethodSchema getCreateMethodSchema() {
+		return this.createMethodSchema;
+	}
+
+	public MethodSchema getUpdateMethodSchema() {
+		return this.updateMethodSchema;
+	}
+
+	public static ServiceInstanceSchemaBuilder builder() {
+		return new ServiceInstanceSchemaBuilder();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ServiceInstanceSchema)) return false;
+		ServiceInstanceSchema that = (ServiceInstanceSchema) o;
+		return Objects.equals(createMethodSchema, that.createMethodSchema) &&
+				Objects.equals(updateMethodSchema, that.updateMethodSchema);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(createMethodSchema, updateMethodSchema);
+	}
+
+	@Override
+	public String toString() {
+		return "ServiceInstanceSchema{" +
+				"createMethodSchema=" + createMethodSchema +
+				", updateMethodSchema=" + updateMethodSchema +
+				'}';
+	}
+
+	public static class ServiceInstanceSchemaBuilder {
+		private MethodSchema createMethodSchema;
+		private MethodSchema updateMethodSchema;
+
+		ServiceInstanceSchemaBuilder() {
+		}
+
+		public ServiceInstanceSchemaBuilder createMethodSchema(MethodSchema createMethodSchema) {
+			this.createMethodSchema = createMethodSchema;
+			return this;
+		}
+
+		public ServiceInstanceSchemaBuilder updateMethodSchema(MethodSchema updateMethodSchema) {
+			this.updateMethodSchema = updateMethodSchema;
+			return this;
+		}
+
+		public ServiceInstanceSchema build() {
+			return new ServiceInstanceSchema(createMethodSchema, updateMethodSchema);
+		}
 	}
 }

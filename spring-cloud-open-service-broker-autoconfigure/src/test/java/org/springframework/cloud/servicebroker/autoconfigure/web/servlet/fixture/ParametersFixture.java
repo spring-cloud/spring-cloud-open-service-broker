@@ -1,4 +1,4 @@
-package org.springframework.cloud.servicebroker.model.fixture;
+package org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture;
 
 import java.util.HashMap;
 import java.util.Map;
