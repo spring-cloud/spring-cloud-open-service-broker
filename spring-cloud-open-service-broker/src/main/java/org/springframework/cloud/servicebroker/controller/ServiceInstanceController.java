@@ -36,12 +36,14 @@ import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -71,10 +73,10 @@ public class ServiceInstanceController extends BaseController {
 		this.service = serviceInstanceService;
 	}
 
-	@RequestMapping(value = {
+	@PutMapping(value = {
 			"/{cfInstanceId}/v2/service_instances/{instanceId}",
 			"/v2/service_instances/{instanceId}"
-	}, method = RequestMethod.PUT)
+	})
 	public ResponseEntity<?> createServiceInstance(@PathVariable Map<String, String> pathVariables,
 												   @PathVariable("instanceId") String serviceInstanceId,
 												   @RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
@@ -108,10 +110,10 @@ public class ServiceInstanceController extends BaseController {
 		}
 	}
 
-	@RequestMapping(value = {
+	@GetMapping(value = {
 			"/{cfInstanceId}/v2/service_instances/{instanceId}/last_operation",
 			"/v2/service_instances/{instanceId}/last_operation"
-	}, method = RequestMethod.GET)
+	})
 	public ResponseEntity<?> getServiceInstanceLastOperation(@PathVariable Map<String, String> pathVariables,
 															 @PathVariable("instanceId") String serviceInstanceId,
 															 @RequestParam("service_id") String serviceDefinitionId,
@@ -138,10 +140,10 @@ public class ServiceInstanceController extends BaseController {
 		return new ResponseEntity<>(response, isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK);
 	}
 
-	@RequestMapping(value = {
+	@DeleteMapping(value = {
 			"/{cfInstanceId}/v2/service_instances/{instanceId}",
 			"/v2/service_instances/{instanceId}"
-	}, method = RequestMethod.DELETE)
+	})
 	public ResponseEntity<?> deleteServiceInstance(@PathVariable Map<String, String> pathVariables,
 												   @PathVariable("instanceId") String serviceInstanceId,
 												   @RequestParam("service_id") String serviceDefinitionId,
@@ -172,10 +174,10 @@ public class ServiceInstanceController extends BaseController {
 		}
 	}
 
-	@RequestMapping(value = {
+	@PatchMapping(value = {
 			"/{cfInstanceId}/v2/service_instances/{instanceId}",
 			"/v2/service_instances/{instanceId}"
-	}, method = RequestMethod.PATCH)
+	})
 	public ResponseEntity<?> updateServiceInstance(@PathVariable Map<String, String> pathVariables,
 												   @PathVariable("instanceId") String serviceInstanceId,
 												   @RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,

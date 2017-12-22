@@ -28,12 +28,12 @@ import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -63,10 +63,10 @@ public class ServiceInstanceBindingController extends BaseController {
 		this.serviceInstanceBindingService = serviceInstanceBindingService;
 	}
 
-	@RequestMapping(value = {
+	@PutMapping(value = {
 			"/{cfInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
 			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
-	}, method = RequestMethod.PUT)
+	})
 	public ResponseEntity<?> createServiceInstanceBinding(@PathVariable Map<String, String> pathVariables,
 														  @PathVariable("instanceId") String serviceInstanceId,
 														  @PathVariable("bindingId") String bindingId,
@@ -88,10 +88,10 @@ public class ServiceInstanceBindingController extends BaseController {
 		return new ResponseEntity<>(response, response.isBindingExisted() ? HttpStatus.OK : HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = {
+	@DeleteMapping(value = {
 			"/{cfInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
 			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
-	}, method = RequestMethod.DELETE)
+	})
 	public ResponseEntity<String> deleteServiceInstanceBinding(@PathVariable Map<String, String> pathVariables,
 															   @PathVariable("instanceId") String serviceInstanceId,
 															   @PathVariable("bindingId") String bindingId,
