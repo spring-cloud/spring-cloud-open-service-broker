@@ -49,44 +49,20 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 	public DeleteServiceInstanceRequest() {
 	}
 
-	public DeleteServiceInstanceRequest withServiceInstanceId(String serviceInstanceId) {
+	public void setServiceInstanceId(String serviceInstanceId) {
 		this.serviceInstanceId = serviceInstanceId;
-		return this;
 	}
 
-	public DeleteServiceInstanceRequest withServiceDefinitionId(String serviceDefinitionId) {
+	public void setServiceDefinitionId(String serviceDefinitionId) {
 		this.serviceDefinitionId = serviceDefinitionId;
-		return this;
 	}
 
-	public DeleteServiceInstanceRequest withPlanId(String planId) {
+	public void setPlanId(String planId) {
 		this.planId = planId;
-		return this;
 	}
 
-	public DeleteServiceInstanceRequest withServiceDefinition(ServiceDefinition serviceDefinition) {
+	public void setServiceDefinition(ServiceDefinition serviceDefinition) {
 		this.serviceDefinition = serviceDefinition;
-		return this;
-	}
-
-	public DeleteServiceInstanceRequest withAsyncAccepted(boolean asyncAccepted) {
-		this.asyncAccepted = asyncAccepted;
-		return this;
-	}
-
-	public DeleteServiceInstanceRequest withCfInstanceId(String cfInstanceId) {
-		this.cfInstanceId = cfInstanceId;
-		return this;
-	}
-
-	public DeleteServiceInstanceRequest withApiInfoLocation(String apiInfoLocation) {
-		this.apiInfoLocation = apiInfoLocation;
-		return this;
-	}
-
-	public DeleteServiceInstanceRequest withOriginatingIdentity(Context originatingIdentity) {
-		this.originatingIdentity = originatingIdentity;
-		return this;
 	}
 
 	public String getServiceInstanceId() {

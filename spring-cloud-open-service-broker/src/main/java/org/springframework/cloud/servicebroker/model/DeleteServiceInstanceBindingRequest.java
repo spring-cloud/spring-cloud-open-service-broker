@@ -45,64 +45,44 @@ public class DeleteServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	public DeleteServiceInstanceBindingRequest() {
 	}
 
-	public DeleteServiceInstanceBindingRequest withServiceInstanceId(String serviceInstanceId) {
-		this.serviceInstanceId = serviceInstanceId;
-		return this;
-	}
-
-	public DeleteServiceInstanceBindingRequest withBindingId(String bindingId) {
-		this.bindingId = bindingId;
-		return this;
-	}
-
-	public DeleteServiceInstanceBindingRequest withServiceDefinitionId(String serviceDefinitionId) {
-		this.serviceDefinitionId = serviceDefinitionId;
-		return this;
-	}
-
-	public DeleteServiceInstanceBindingRequest withPlanId(String planId) {
-		this.planId = planId;
-		return this;
-	}
-
-	public DeleteServiceInstanceBindingRequest withServiceDefinition(ServiceDefinition serviceDefinition) {
-		this.serviceDefinition = serviceDefinition;
-		return this;
-	}
-
-	public DeleteServiceInstanceBindingRequest withCfInstanceId(String cfInstanceId) {
-		this.cfInstanceId = cfInstanceId;
-		return this;
-	}
-
-	public DeleteServiceInstanceBindingRequest withApiInfoLocation(String apiInfoLocation) {
-		this.apiInfoLocation = apiInfoLocation;
-		return this;
-	}
-
-	public DeleteServiceInstanceBindingRequest withOriginatingIdentity(Context originatingIdentity) {
-		this.originatingIdentity = originatingIdentity;
-		return this;
-	}
-
 	public String getServiceInstanceId() {
 		return this.serviceInstanceId;
+	}
+
+	public void setServiceInstanceId(String serviceInstanceId) {
+		this.serviceInstanceId = serviceInstanceId;
 	}
 
 	public String getBindingId() {
 		return this.bindingId;
 	}
 
+	public void setBindingId(String bindingId) {
+		this.bindingId = bindingId;
+	}
+
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
+	}
+
+	public void setServiceDefinitionId(String serviceDefinitionId) {
+		this.serviceDefinitionId = serviceDefinitionId;
 	}
 
 	public String getPlanId() {
 		return this.planId;
 	}
 
+	public void setPlanId(String planId) {
+		this.planId = planId;
+	}
+
 	public ServiceDefinition getServiceDefinition() {
 		return this.serviceDefinition;
+	}
+
+	public void setServiceDefinition(ServiceDefinition serviceDefinition) {
+		this.serviceDefinition = serviceDefinition;
 	}
 
 	@Override

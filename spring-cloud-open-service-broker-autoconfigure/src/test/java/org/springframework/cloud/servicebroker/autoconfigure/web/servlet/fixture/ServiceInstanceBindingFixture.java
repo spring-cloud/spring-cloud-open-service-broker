@@ -21,7 +21,7 @@ public class ServiceInstanceBindingFixture {
 	public static final String ROUTE = "http://route.example.com";
 
 	public static CreateServiceInstanceBindingRequest buildCreateAppBindingRequest() {
-		return CreateServiceInstanceBindingRequest.builder()
+		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId(ServiceFixture.getSimpleService().getId())
 				.planId(PlanFixture.getPlanOne().getId())
 				.bindResource(BindResource.builder()
@@ -29,13 +29,16 @@ public class ServiceInstanceBindingFixture {
 						.build())
 				.context(ContextFixture.getContext())
 				.parameters(ParametersFixture.getParameters())
-				.build()
-				.withBindingId(SERVICE_INSTANCE_BINDING_ID)
-				.withServiceInstanceId(SERVICE_INSTANCE_ID);
+				.build();
+
+		request.setBindingId(SERVICE_INSTANCE_BINDING_ID);
+		request.setServiceInstanceId(SERVICE_INSTANCE_ID);
+
+		return request;
 	}
 
 	public static CreateServiceInstanceBindingRequest buildCreateRouteBindingRequest() {
-		return CreateServiceInstanceBindingRequest.builder()
+		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId(ServiceFixture.getSimpleService().getId())
 				.planId(PlanFixture.getPlanOne().getId())
 				.bindResource(BindResource.builder()
@@ -43,9 +46,12 @@ public class ServiceInstanceBindingFixture {
 						.build())
 				.context(ContextFixture.getContext())
 				.parameters(ParametersFixture.getParameters())
-				.build()
-				.withBindingId(SERVICE_INSTANCE_BINDING_ID)
-				.withServiceInstanceId(SERVICE_INSTANCE_ID);
+				.build();
+
+		request.setBindingId(SERVICE_INSTANCE_BINDING_ID);
+		request.setServiceInstanceId(SERVICE_INSTANCE_ID);
+
+		return request;
 	}
 
 	public static CreateServiceInstanceAppBindingResponse buildCreateAppBindingResponse(boolean existed) {
@@ -86,12 +92,13 @@ public class ServiceInstanceBindingFixture {
 
 	public static DeleteServiceInstanceBindingRequest buildDeleteServiceInstanceBindingRequest() {
 		ServiceDefinition serviceDefinition = ServiceFixture.getSimpleService();
-		return new DeleteServiceInstanceBindingRequest()
-				.withServiceDefinitionId(serviceDefinition.getId())
-				.withPlanId(serviceDefinition.getPlans().get(0).getId())
-				.withServiceInstanceId(SERVICE_INSTANCE_ID)
-				.withBindingId(SERVICE_INSTANCE_BINDING_ID)
-				.withServiceDefinition(serviceDefinition);
+		DeleteServiceInstanceBindingRequest request = new DeleteServiceInstanceBindingRequest();
+		request.setServiceDefinitionId(serviceDefinition.getId());
+		request.setPlanId(serviceDefinition.getPlans().get(0).getId());
+		request.setServiceInstanceId(SERVICE_INSTANCE_ID);
+		request.setBindingId(SERVICE_INSTANCE_BINDING_ID);
+		request.setServiceDefinition(serviceDefinition);
+		return request;
 	}
 
 	private static Map<String,Object> getCredentials() {

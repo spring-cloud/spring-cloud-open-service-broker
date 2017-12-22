@@ -43,6 +43,10 @@ public abstract class AsyncServiceInstanceRequest extends ServiceBrokerRequest {
 		return this.asyncAccepted;
 	}
 
+	public void setAsyncAccepted(boolean asyncAccepted) {
+		this.asyncAccepted = asyncAccepted;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

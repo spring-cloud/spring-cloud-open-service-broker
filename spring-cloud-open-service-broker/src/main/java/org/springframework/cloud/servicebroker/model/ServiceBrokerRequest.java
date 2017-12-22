@@ -59,12 +59,24 @@ public abstract class ServiceBrokerRequest {
 		return this.cfInstanceId;
 	}
 
+	public void setCfInstanceId(String cfInstanceId) {
+		this.cfInstanceId = cfInstanceId;
+	}
+
 	public String getApiInfoLocation() {
 		return this.apiInfoLocation;
 	}
 
+	public void setApiInfoLocation(String apiInfoLocation) {
+		this.apiInfoLocation = apiInfoLocation;
+	}
+
 	public Context getOriginatingIdentity() {
 		return this.originatingIdentity;
+	}
+
+	public void setOriginatingIdentity(Context originatingIdentity) {
+		this.originatingIdentity = originatingIdentity;
 	}
 
 	@Override

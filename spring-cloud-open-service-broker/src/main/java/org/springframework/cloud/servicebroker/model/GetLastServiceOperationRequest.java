@@ -46,55 +46,36 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	 */
 	protected transient String operation;
 
-	public GetLastServiceOperationRequest withServiceInstanceId(String serviceInstanceId) {
-		this.serviceInstanceId = serviceInstanceId;
-		return this;
-	}
-
-	public GetLastServiceOperationRequest withServiceDefinitionId(String serviceDefinitionId) {
-		this.serviceDefinitionId = serviceDefinitionId;
-		return this;
-	}
-
-	public GetLastServiceOperationRequest withPlanId(String planId) {
-		this.planId = planId;
-		return this;
-	}
-
-	public GetLastServiceOperationRequest withOperation(String operation) {
-		this.operation = operation;
-		return this;
-	}
-
-	public GetLastServiceOperationRequest withCfInstanceId(String cfInstanceId) {
-		this.cfInstanceId = cfInstanceId;
-		return this;
-	}
-
-	public GetLastServiceOperationRequest withApiInfoLocation(String apiInfoLocation) {
-		this.apiInfoLocation = apiInfoLocation;
-		return this;
-	}
-
-	public GetLastServiceOperationRequest withOriginatingIdentity(Context originatingIdentity) {
-		this.originatingIdentity = originatingIdentity;
-		return this;
-	}
-
 	public String getServiceInstanceId() {
 		return this.serviceInstanceId;
+	}
+
+	public void setServiceInstanceId(String serviceInstanceId) {
+		this.serviceInstanceId = serviceInstanceId;
 	}
 
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}
 
+	public void setServiceDefinitionId(String serviceDefinitionId) {
+		this.serviceDefinitionId = serviceDefinitionId;
+	}
+
 	public String getPlanId() {
 		return this.planId;
 	}
 
+	public void setPlanId(String planId) {
+		this.planId = planId;
+	}
+
 	public String getOperation() {
 		return this.operation;
+	}
+
+	public void setOperation(String operation) {
+		this.operation = operation;
 	}
 
 	@Override

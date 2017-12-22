@@ -136,36 +136,6 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		}
 	}
 
-	public CreateServiceInstanceBindingRequest withServiceDefinition(final ServiceDefinition serviceDefinition) {
-		this.serviceDefinition = serviceDefinition;
-		return this;
-	}
-
-	public CreateServiceInstanceBindingRequest withServiceInstanceId(final String serviceInstanceId) {
-		this.serviceInstanceId = serviceInstanceId;
-		return this;
-	}
-
-	public CreateServiceInstanceBindingRequest withBindingId(final String bindingId) {
-		this.bindingId = bindingId;
-		return this;
-	}
-
-	public CreateServiceInstanceBindingRequest withCfInstanceId(String cfInstanceId) {
-		this.cfInstanceId = cfInstanceId;
-		return this;
-	}
-
-	public CreateServiceInstanceBindingRequest withApiInfoLocation(String apiInfoLocation) {
-		this.apiInfoLocation = apiInfoLocation;
-		return this;
-	}
-
-	public CreateServiceInstanceBindingRequest withOriginatingIdentity(Context originatingIdentity) {
-		this.originatingIdentity = originatingIdentity;
-		return this;
-	}
-
 	/**
 	 * Get the GUID of the application associated with the binding.
 	 *
@@ -217,12 +187,24 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		return this.serviceInstanceId;
 	}
 
+	public void setServiceInstanceId(final String serviceInstanceId) {
+		this.serviceInstanceId = serviceInstanceId;
+	}
+
 	public String getBindingId() {
 		return this.bindingId;
 	}
 
+	public void setBindingId(final String bindingId) {
+		this.bindingId = bindingId;
+	}
+
 	public ServiceDefinition getServiceDefinition() {
 		return this.serviceDefinition;
+	}
+
+	public void setServiceDefinition(final ServiceDefinition serviceDefinition) {
+		this.serviceDefinition = serviceDefinition;
 	}
 
 	public static CreateServiceInstanceBindingRequestBuilder builder() {

@@ -88,36 +88,6 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		this.previousValues = previousValues;
 	}
 
-	public UpdateServiceInstanceRequest withServiceInstanceId(String serviceInstanceId) {
-		this.serviceInstanceId = serviceInstanceId;
-		return this;
-	}
-
-	public UpdateServiceInstanceRequest withServiceDefinition(ServiceDefinition serviceDefinition) {
-		this.serviceDefinition = serviceDefinition;
-		return this;
-	}
-
-	public UpdateServiceInstanceRequest withAsyncAccepted(boolean asyncAccepted) {
-		this.asyncAccepted = asyncAccepted;
-		return this;
-	}
-
-	public UpdateServiceInstanceRequest withCfInstanceId(String cfInstanceId) {
-		this.cfInstanceId = cfInstanceId;
-		return this;
-	}
-
-	public UpdateServiceInstanceRequest withApiInfoLocation(String apiInfoLocation) {
-		this.apiInfoLocation = apiInfoLocation;
-		return this;
-	}
-
-	public UpdateServiceInstanceRequest withOriginatingIdentity(Context originatingIdentity) {
-		this.originatingIdentity = originatingIdentity;
-		return this;
-	}
-
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}
@@ -134,8 +104,16 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		return this.serviceInstanceId;
 	}
 
+	public void setServiceInstanceId(String serviceInstanceId) {
+		this.serviceInstanceId = serviceInstanceId;
+	}
+
 	public ServiceDefinition getServiceDefinition() {
 		return this.serviceDefinition;
+	}
+
+	public void setServiceDefinition(ServiceDefinition serviceDefinition) {
+		this.serviceDefinition = serviceDefinition;
 	}
 
 	public static UpdateServiceInstanceRequestBuilder builder() {

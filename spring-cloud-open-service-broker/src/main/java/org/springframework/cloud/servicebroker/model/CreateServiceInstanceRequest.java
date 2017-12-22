@@ -107,36 +107,6 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		this.spaceGuid = null;
 	}
 
-	public CreateServiceInstanceRequest withServiceDefinition(ServiceDefinition serviceDefinition) {
-		this.serviceDefinition = serviceDefinition;
-		return this;
-	}
-
-	public CreateServiceInstanceRequest withCfInstanceId(String cfInstanceId) {
-		this.cfInstanceId = cfInstanceId;
-		return this;
-	}
-
-	public CreateServiceInstanceRequest withServiceInstanceId(final String serviceInstanceId) {
-		this.serviceInstanceId = serviceInstanceId;
-		return this;
-	}
-
-	public CreateServiceInstanceRequest withAsyncAccepted(boolean asyncAccepted) {
-		this.asyncAccepted = asyncAccepted;
-		return this;
-	}
-
-	public CreateServiceInstanceRequest withApiInfoLocation(String apiInfoLocation) {
-		this.apiInfoLocation = apiInfoLocation;
-		return this;
-	}
-
-	public CreateServiceInstanceRequest withOriginatingIdentity(Context originatingIdentity) {
-		this.originatingIdentity = originatingIdentity;
-		return this;
-	}
-
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}
@@ -159,8 +129,16 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		return this.serviceInstanceId;
 	}
 
+	public void setServiceInstanceId(final String serviceInstanceId) {
+		this.serviceInstanceId = serviceInstanceId;
+	}
+
 	public ServiceDefinition getServiceDefinition() {
 		return this.serviceDefinition;
+	}
+
+	public void setServiceDefinition(ServiceDefinition serviceDefinition) {
+		this.serviceDefinition = serviceDefinition;
 	}
 
 	public static CreateServiceInstanceRequestBuilder builder() {

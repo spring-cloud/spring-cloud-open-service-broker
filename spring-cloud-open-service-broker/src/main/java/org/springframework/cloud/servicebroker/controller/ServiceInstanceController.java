@@ -83,12 +83,10 @@ public class ServiceInstanceController extends BaseController {
 												   @Valid @RequestBody CreateServiceInstanceRequest request) {
 		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(request.getServiceDefinitionId());
 
-		request.withServiceInstanceId(serviceInstanceId)
-				.withServiceDefinition(serviceDefinition)
-				.withAsyncAccepted(acceptsIncomplete)
-				.withCfInstanceId(pathVariables.get("cfInstanceId"))
-				.withApiInfoLocation(apiInfoLocation)
-				.withOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
+		request.setServiceInstanceId(serviceInstanceId);
+		request.setServiceDefinition(serviceDefinition);
+		setCommonRequestFields(request, pathVariables.get("cfInstanceId"), apiInfoLocation,
+				originatingIdentityString, acceptsIncomplete);
 
 		log.debug("Creating a service instance: request={}", request);
 
@@ -121,14 +119,12 @@ public class ServiceInstanceController extends BaseController {
 															 @RequestParam(value = "operation", required = false) String operation,
 															 @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 															 @RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-		GetLastServiceOperationRequest request = new GetLastServiceOperationRequest()
-				.withServiceDefinitionId(serviceDefinitionId)
-				.withServiceInstanceId(serviceInstanceId)
-				.withPlanId(planId)
-				.withOperation(operation)
-				.withCfInstanceId(pathVariables.get("cfInstanceId"))
-				.withApiInfoLocation(apiInfoLocation)
-				.withOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
+		GetLastServiceOperationRequest request = new GetLastServiceOperationRequest();
+		request.setServiceDefinitionId(serviceDefinitionId);
+		request.setServiceInstanceId(serviceInstanceId);
+		request.setPlanId(planId);
+		request.setOperation(operation);
+		setCommonRequestFields(request, pathVariables.get("cfInstanceId"), apiInfoLocation, originatingIdentityString);
 
 		log.debug("Getting service instance status: request={}", request);
 
@@ -153,15 +149,13 @@ public class ServiceInstanceController extends BaseController {
 												   @RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 												   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 												   @RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-		DeleteServiceInstanceRequest request = new DeleteServiceInstanceRequest()
-				.withServiceInstanceId(serviceInstanceId)
-				.withServiceDefinitionId(serviceDefinitionId)
-				.withPlanId(planId)
-				.withServiceDefinition(getServiceDefinition(serviceDefinitionId))
-				.withAsyncAccepted(acceptsIncomplete)
-				.withCfInstanceId(pathVariables.get("cfInstanceId"))
-				.withApiInfoLocation(apiInfoLocation)
-				.withOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
+		DeleteServiceInstanceRequest request = new DeleteServiceInstanceRequest();
+		request.setServiceInstanceId(serviceInstanceId);
+		request.setServiceDefinitionId(serviceDefinitionId);
+		request.setPlanId(planId);
+		request.setServiceDefinition(getServiceDefinition(serviceDefinitionId));
+		setCommonRequestFields(request, pathVariables.get("cfInstanceId"), apiInfoLocation,
+				originatingIdentityString, acceptsIncomplete);
 
 		log.debug("Deleting a service instance: request={}", request);
 
@@ -190,12 +184,10 @@ public class ServiceInstanceController extends BaseController {
 												   @Valid @RequestBody UpdateServiceInstanceRequest request) {
 		ServiceDefinition serviceDefinition = getServiceDefinition(request.getServiceDefinitionId());
 
-		request.withServiceInstanceId(serviceInstanceId)
-				.withServiceDefinition(serviceDefinition)
-				.withAsyncAccepted(acceptsIncomplete)
-				.withCfInstanceId(pathVariables.get("cfInstanceId"))
-				.withApiInfoLocation(apiInfoLocation)
-				.withOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
+		request.setServiceInstanceId(serviceInstanceId);
+		request.setServiceDefinition(serviceDefinition);
+		setCommonRequestFields(request, pathVariables.get("cfInstanceId"), apiInfoLocation,
+				originatingIdentityString, acceptsIncomplete);
 
 		log.debug("Updating a service instance: request={}", request);
 

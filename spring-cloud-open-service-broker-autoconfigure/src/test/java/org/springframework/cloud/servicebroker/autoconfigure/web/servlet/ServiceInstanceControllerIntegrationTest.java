@@ -120,10 +120,9 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void createServiceInstanceSucceeds() throws Exception {
-		syncCreateRequest
-				.withApiInfoLocation(API_INFO_LOCATION)
-				.withOriginatingIdentity(buildOriginatingIdentity())
-				.withCfInstanceId(CF_INSTANCE_ID);
+		syncCreateRequest.setApiInfoLocation(API_INFO_LOCATION);
+		syncCreateRequest.setOriginatingIdentity(buildOriginatingIdentity());
+		syncCreateRequest.setCfInstanceId(CF_INSTANCE_ID);
 
 		when(serviceInstanceService.createServiceInstance(eq(syncCreateRequest)))
 				.thenReturn(syncCreateResponse);
@@ -311,10 +310,9 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void deleteServiceInstanceSucceeds() throws Exception {
-		syncDeleteRequest
-				.withApiInfoLocation(API_INFO_LOCATION)
-				.withOriginatingIdentity(buildOriginatingIdentity())
-				.withCfInstanceId(CF_INSTANCE_ID);
+		syncDeleteRequest.setApiInfoLocation(API_INFO_LOCATION);
+		syncDeleteRequest.setOriginatingIdentity(buildOriginatingIdentity());
+		syncDeleteRequest.setCfInstanceId(CF_INSTANCE_ID);
 
 		when(serviceInstanceService.deleteServiceInstance(eq(syncDeleteRequest)))
 				.thenReturn(syncDeleteResponse);
@@ -398,10 +396,9 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void updateServiceInstanceSucceeds() throws Exception {
-		syncUpdateRequest
-				.withApiInfoLocation(API_INFO_LOCATION)
-				.withOriginatingIdentity(buildOriginatingIdentity())
-				.withCfInstanceId(CF_INSTANCE_ID);
+		syncUpdateRequest.setApiInfoLocation(API_INFO_LOCATION);
+		syncUpdateRequest.setOriginatingIdentity(buildOriginatingIdentity());
+		syncUpdateRequest.setCfInstanceId(CF_INSTANCE_ID);
 
 		when(serviceInstanceService.updateServiceInstance(eq(syncUpdateRequest)))
 				.thenReturn(syncUpdateResponse);
@@ -528,10 +525,9 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void lastOperationHasSucceededStatus() throws Exception {
-		lastOperationRequest
-				.withApiInfoLocation(API_INFO_LOCATION)
-				.withOriginatingIdentity(buildOriginatingIdentity())
-				.withCfInstanceId(CF_INSTANCE_ID);
+		lastOperationRequest.setApiInfoLocation(API_INFO_LOCATION);
+		lastOperationRequest.setOriginatingIdentity(buildOriginatingIdentity());
+		lastOperationRequest.setCfInstanceId(CF_INSTANCE_ID);
 
 		GetLastServiceOperationResponse response = GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.SUCCEEDED)
@@ -633,14 +629,17 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 	public CreateServiceInstanceRequest buildCreateServiceInstanceRequest(boolean acceptsIncomplete) {
 		ServiceDefinition service = ServiceFixture.getSimpleService();
 		Context context = ContextFixture.getContext();
-		return CreateServiceInstanceRequest.builder()
+		CreateServiceInstanceRequest request = CreateServiceInstanceRequest.builder()
 				.serviceDefinitionId(service.getId())
 				.planId(service.getPlans().get(0).getId())
 				.parameters(ParametersFixture.getParameters())
 				.context(context)
-				.build()
-				.withServiceInstanceId("service-instance-id")
-				.withAsyncAccepted(acceptsIncomplete);
+				.build();
+
+		request.setServiceInstanceId("service-instance-id");
+		request.setAsyncAccepted(acceptsIncomplete);
+
+		return request;
 	}
 
 	public CreateServiceInstanceResponse buildCreateServiceInstanceResponse(boolean async, boolean instanceExisted) {
@@ -656,12 +655,13 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	public DeleteServiceInstanceRequest buildDeleteServiceInstanceRequest(boolean acceptsIncomplete) {
 		ServiceDefinition service = ServiceFixture.getSimpleService();
-		return new DeleteServiceInstanceRequest()
-				.withServiceInstanceId("service-instance-id")
-				.withServiceDefinitionId(service.getId())
-				.withPlanId(service.getPlans().get(0).getId())
-				.withServiceDefinition(service)
-				.withAsyncAccepted(acceptsIncomplete);
+		DeleteServiceInstanceRequest request = new DeleteServiceInstanceRequest();
+		request.setServiceInstanceId("service-instance-id");
+		request.setServiceDefinitionId(service.getId());
+		request.setPlanId(service.getPlans().get(0).getId());
+		request.setServiceDefinition(service);
+		request.setAsyncAccepted(acceptsIncomplete);
+		return request;
 	}
 
 	public DeleteServiceInstanceResponse buildDeleteServiceInstanceResponse(boolean async) {
@@ -675,15 +675,18 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	public UpdateServiceInstanceRequest buildUpdateServiceInstanceRequest(boolean acceptsIncomplete) {
 		ServiceDefinition service = ServiceFixture.getSimpleService();
-		return UpdateServiceInstanceRequest.builder()
+		UpdateServiceInstanceRequest request = UpdateServiceInstanceRequest.builder()
 				.serviceDefinitionId(service.getId())
 				.planId(service.getPlans().get(1).getId())
 				.previousValues(new UpdateServiceInstanceRequest.PreviousValues(service.getPlans().get(0).getId()))
 				.parameters(ParametersFixture.getParameters())
 				.context(ContextFixture.getContext())
-				.build()
-				.withServiceInstanceId("service-instance-id")
-				.withAsyncAccepted(acceptsIncomplete);
+				.build();
+
+		request.setServiceInstanceId("service-instance-id");
+		request.setAsyncAccepted(acceptsIncomplete);
+
+		return request;
 	}
 
 	public UpdateServiceInstanceResponse buildUpdateServiceInstanceResponse(boolean async) {
@@ -697,11 +700,12 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	public GetLastServiceOperationRequest buildGetLastOperationRequest() {
 		ServiceDefinition service = ServiceFixture.getSimpleService();
-		return new GetLastServiceOperationRequest()
-				.withServiceInstanceId("service-instance-id")
-				.withServiceDefinitionId(service.getId())
-				.withPlanId(service.getPlans().get(0).getId())
-				.withOperation("task_10");
+		GetLastServiceOperationRequest request = new GetLastServiceOperationRequest();
+		request.setServiceInstanceId("service-instance-id");
+		request.setServiceDefinitionId(service.getId());
+		request.setPlanId(service.getPlans().get(0).getId());
+		request.setOperation("task_10");
+		return request;
 	}
 
 	private CreateServiceInstanceRequest verifyCreateServiceInstance() {

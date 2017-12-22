@@ -25,8 +25,10 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidPar
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.AsyncRequiredErrorMessage;
+import org.springframework.cloud.servicebroker.model.AsyncServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.ErrorMessage;
+import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.HttpStatus;
@@ -60,6 +62,20 @@ public class BaseController {
 		this.catalogService = catalogService;
 	}
 
+	protected void setCommonRequestFields(ServiceBrokerRequest request, String cfInstanceId,
+										  String apiInfoLocation, String originatingIdentityString) {
+		request.setCfInstanceId(cfInstanceId);
+		request.setApiInfoLocation(apiInfoLocation);
+		request.setOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
+	}
+
+	protected void setCommonRequestFields(AsyncServiceInstanceRequest request, String cfInstanceId,
+										  String apiInfoLocation, String originatingIdentityString,
+										  boolean asyncAccepted) {
+		setCommonRequestFields(request, cfInstanceId, apiInfoLocation, originatingIdentityString);
+		request.setAsyncAccepted(asyncAccepted);
+	}
+
 	protected ServiceDefinition getRequiredServiceDefinition(String serviceDefinitionId) {
 		ServiceDefinition serviceDefinition = getServiceDefinition(serviceDefinitionId);
 		if (serviceDefinition == null) {
@@ -72,7 +88,7 @@ public class BaseController {
 		return catalogService.getServiceDefinition(serviceDefinitionId);
 	}
 
-	protected Context parseOriginatingIdentity(String originatingIdentityString) {
+	private Context parseOriginatingIdentity(String originatingIdentityString) {
 		if (originatingIdentityString == null) {
 			return null;
 		}

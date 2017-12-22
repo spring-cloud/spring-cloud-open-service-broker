@@ -29,7 +29,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
@@ -64,10 +63,9 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		CreateServiceInstanceAppBindingResponse createResponse =
 				ServiceInstanceBindingFixture.buildCreateAppBindingResponse(false);
 
-		createRequest
-				.withCfInstanceId(CF_INSTANCE_ID)
-				.withApiInfoLocation(API_INFO_LOCATION)
-				.withOriginatingIdentity(buildOriginatingIdentity());
+		createRequest.setCfInstanceId(CF_INSTANCE_ID);
+		createRequest.setApiInfoLocation(API_INFO_LOCATION);
+		createRequest.setOriginatingIdentity(buildOriginatingIdentity());
 
 		when(serviceInstanceBindingService.createServiceInstanceBinding(eq(createRequest)))
 				.thenReturn(createResponse);
@@ -292,10 +290,9 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", is("{}")));
 
-		deleteRequest
-				.withCfInstanceId(CF_INSTANCE_ID)
-				.withApiInfoLocation(API_INFO_LOCATION)
-				.withOriginatingIdentity(buildOriginatingIdentity());
+		deleteRequest.setCfInstanceId(CF_INSTANCE_ID);
+		deleteRequest.setApiInfoLocation(API_INFO_LOCATION);
+		deleteRequest.setOriginatingIdentity(buildOriginatingIdentity());
 
 		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(eq(deleteRequest));
 
