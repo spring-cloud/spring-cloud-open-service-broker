@@ -16,8 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.Map;
@@ -28,6 +28,7 @@ import java.util.Objects;
  *
  * @author Scott Frederick
  */
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public final class CloudFoundryContext extends Context {
 	public static final String CLOUD_FOUNDRY_PLATFORM = "cloudfoundry";
 
@@ -35,16 +36,12 @@ public final class CloudFoundryContext extends Context {
 	 * The Cloud Controller GUID of the organization for which the operation is requested.
 	 */
 	@NotEmpty
-	@JsonSerialize
-	@JsonProperty("organization_guid")
 	private final String organizationGuid;
 
 	/**
 	 * The Cloud Controller GUID of the space for which the operation is requested.
 	 */
 	@NotEmpty
-	@JsonSerialize
-	@JsonProperty("space_guid")
 	private final String spaceGuid;
 
 	private CloudFoundryContext() {

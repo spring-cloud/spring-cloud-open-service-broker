@@ -16,8 +16,6 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.Map;
@@ -33,15 +31,11 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 * Parameters passed by the user in the form of a JSON structure. The service broker is responsible
 	 * for validating the contents of the parameters for correctness or applicability.
 	 */
-	@JsonSerialize
-	@JsonProperty("parameters")
 	protected final Map<String, Object> parameters;
 
 	/**
 	 * Platform specific contextual information under which the service instance is to be provisioned or updated.
 	 */
-	@JsonSerialize
-	@JsonProperty("context")
 	private final Context context;
 
 	protected AsyncParameterizedServiceInstanceRequest(Map<String, Object> parameters, Context context) {

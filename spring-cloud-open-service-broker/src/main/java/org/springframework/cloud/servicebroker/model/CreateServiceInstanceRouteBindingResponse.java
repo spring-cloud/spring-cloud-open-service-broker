@@ -16,10 +16,6 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import java.util.Objects;
 
 /**
@@ -31,9 +27,6 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 	/**
 	 * A URL to which Cloud Foundry should proxy requests for the bound route. Can be <code>null</code>.
 	 */
-	@JsonSerialize
-	@JsonProperty("route_service_url")
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private final String routeServiceUrl;
 
 	private CreateServiceInstanceRouteBindingResponse(boolean bindingExisted, String routeServiceUrl) {

@@ -16,10 +16,6 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -39,25 +35,17 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	/**
 	 * A free-form hash of credentials that the bound application can use to access the service.
 	 */
-	@JsonSerialize
-	@JsonProperty("credentials")
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private final Map<String, Object> credentials;
 
 	/**
 	 * The URL to which Cloud Foundry should drain logs for the bound application. Can be <code>null</code> to
 	 * indicate that the service binding does not support syslog drains.
 	 */
-	@JsonSerialize
-	@JsonProperty("syslog_drain_url")
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private final String syslogDrainUrl;
 
 	/**
 	 * The details of the volume mounts available to applications.
 	 */
-	@JsonProperty("volume_mounts")
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private final List<VolumeMount> volumeMounts;
 
 	private CreateServiceInstanceAppBindingResponse(boolean bindingExisted, Map<String, Object> credentials,

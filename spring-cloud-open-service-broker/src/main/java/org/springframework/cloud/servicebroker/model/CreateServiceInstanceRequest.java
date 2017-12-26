@@ -16,10 +16,7 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.HashMap;
@@ -32,7 +29,6 @@ import java.util.Objects;
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  */
-@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 @SuppressWarnings({"deprecation", "DeprecatedIsStillUsed"})
 public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
 
@@ -40,7 +36,6 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * The ID of the service to provision, from the broker catalog.
 	 */
 	@NotEmpty
-	@JsonSerialize
 	@JsonProperty("service_id")
 	private final String serviceDefinitionId;
 
@@ -48,8 +43,6 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * The ID of the plan to provision within the service, from the broker catalog.
 	 */
 	@NotEmpty
-	@JsonSerialize
-	@JsonProperty("plan_id")
 	private final String planId;
 
 	/**
@@ -58,8 +51,6 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @deprecated use {@link #context}
 	 */
 	@Deprecated
-	@JsonSerialize
-	@JsonProperty("organization_guid")
 	private final String organizationGuid;
 
 	/**
@@ -68,8 +59,6 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @deprecated use {@link #context}
 	 */
 	@Deprecated
-	@JsonSerialize
-	@JsonProperty("space_guid")
 	private final String spaceGuid;
 
 	/**
@@ -77,14 +66,12 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * requests for the same service instance (e.g. bind and deprovision), so the broker must use it to
 	 * correlate any resource it creates.
 	 */
-	@JsonIgnore
 	private transient String serviceInstanceId;
 
 	/**
 	 * The {@link ServiceDefinition} of the service to provision. This is resolved from the
 	 * <code>serviceDefinitionId</code> as a convenience to the broker.
 	 */
-	@JsonIgnore
 	private transient ServiceDefinition serviceDefinition;
 
 	private CreateServiceInstanceRequest() {

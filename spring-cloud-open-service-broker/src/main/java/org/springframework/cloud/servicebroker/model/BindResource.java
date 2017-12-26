@@ -18,26 +18,25 @@ package org.springframework.cloud.servicebroker.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class BindResource {
 	/**
 	 * The GUID of an application associated with the binding. May be provided for credentials bindings.
 	 */
-	@JsonProperty("app_guid")
 	private final String appGuid;
 
 	/**
 	 * The URL of an application to be intermediated. May be provided for route services bindings.
 	 */
-	@JsonProperty
 	private final String route;
 
-	@JsonProperty
 	@JsonAnySetter
 	private final Map<String, Object> properties = new HashMap<>();
 

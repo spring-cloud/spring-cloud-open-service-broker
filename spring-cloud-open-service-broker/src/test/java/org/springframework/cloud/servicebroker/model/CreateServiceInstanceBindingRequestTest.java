@@ -127,8 +127,6 @@ public class CreateServiceInstanceBindingRequestTest {
 						.build())
 				.build();
 
-//		assertEquals("", toJson(request));
-
 		CreateServiceInstanceBindingRequest fromJson =
 				fromJson(toJson(request), CreateServiceInstanceBindingRequest.class);
 		

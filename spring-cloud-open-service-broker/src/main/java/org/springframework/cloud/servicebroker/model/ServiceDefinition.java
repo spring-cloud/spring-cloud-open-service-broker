@@ -16,10 +16,9 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -36,16 +35,14 @@ import java.util.Objects;
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  */
-@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceDefinition {
 	/**
 	 * An identifier used to correlate this service in future requests to the catalog. This must be unique within
 	 * a Cloud Foundry deployment. Using a GUID is recommended.
 	 */
 	@NotEmpty
-	@JsonSerialize
-	@JsonProperty("id")
 	private final String id;
 
 	/**
@@ -53,32 +50,23 @@ public class ServiceDefinition {
 	 * with no spaces.
 	 */
 	@NotEmpty
-	@JsonSerialize
-	@JsonProperty("name")
 	private final String name;
 
 	/**
 	 * A user-friendly short description of the service that will appear in the catalog.
 	 */
 	@NotEmpty
-	@JsonSerialize
-	@JsonProperty("description")
 	private final String description;
 
 	/**
 	 * Indicates whether the service can be bound to applications.
 	 */
-	@JsonSerialize
-	@JsonProperty("bindable")
 	private final boolean bindable;
 
 	/**
 	 * Indicates whether the service supports requests to update instances to use a different plan from the one
 	 * used to provision a service instance.
 	 */
-	@JsonSerialize
-	@JsonProperty("plan_updateable")
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private final Boolean planUpdateable;
 
 	/**
@@ -86,21 +74,18 @@ public class ServiceDefinition {
 	 */
 	@NotEmpty
 	@JsonSerialize(nullsUsing = EmptyListSerializer.class)
-	@JsonProperty("plans")
 	private final List<Plan> plans;
 
 	/**
 	 * A list of tags to aid in categorizing and classifying services with similar characteristics.
 	 */
 	@JsonSerialize(nullsUsing = EmptyListSerializer.class)
-	@JsonProperty("tags")
 	private final List<String> tags;
 
 	/**
 	 * A map of metadata to further describe a service offering.
 	 */
 	@JsonSerialize(nullsUsing = EmptyMapSerializer.class)
-	@JsonProperty("metadata")
 	private final Map<String, Object> metadata;
 
 	/**
@@ -108,14 +93,11 @@ public class ServiceDefinition {
 	 * {@link ServiceDefinitionRequires} for supported permissions.
 	 */
 	@JsonSerialize(nullsUsing = EmptyListSerializer.class)
-	@JsonProperty("requires")
 	private final List<String> requires;
 
 	/**
 	 * Data necessary to activate the Dashboard SSO feature for this service.
 	 */
-	@JsonSerialize
-	@JsonProperty("dashboard_client")
 	private final DashboardClient dashboardClient;
 
 	private ServiceDefinition(String id, String name, String description, boolean bindable, Boolean planUpdateable,

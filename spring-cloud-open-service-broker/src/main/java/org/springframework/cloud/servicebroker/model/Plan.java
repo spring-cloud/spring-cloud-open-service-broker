@@ -16,11 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -34,8 +31,7 @@ import java.util.Objects;
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  */
-@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class Plan {
 
 	/**
@@ -43,8 +39,6 @@ public class Plan {
 	 * a Cloud Foundry deployment. Using a GUID is recommended.
 	 */
 	@NotEmpty
-	@JsonSerialize
-	@JsonProperty("id")
 	private final String id;
 
 	/**
@@ -52,47 +46,34 @@ public class Plan {
 	 * with no spaces.
 	 */
 	@NotEmpty
-	@JsonSerialize
-	@JsonProperty("name")
 	private final String name;
 
 	/**
 	 * A user-friendly short description of the plan that will appear in the catalog.
 	 */
 	@NotEmpty
-	@JsonSerialize
-	@JsonProperty("description")
 	private final String description;
 
 	/**
 	 * A map of metadata to further describe a service plan.
 	 */
 	@JsonSerialize(nullsUsing = EmptyMapSerializer.class)
-	@JsonProperty("metadata")
 	private final Map<String, Object> metadata;
 
 	/**
 	 * The schemas for this plan.
 	 */
-	@JsonSerialize
-	@JsonProperty("schemas")
-	@JsonInclude(Include.NON_NULL)
 	private final Schemas schemas;
 
 	/**
 	 * Indicates whether the service with this plan can be bound to applications. This is an optional field. If the
 	 * value is <code>null</code>, the field will be omitted from the serialized JSON.
 	 */
-	@JsonSerialize
-	@JsonProperty("bindable")
-	@JsonInclude(Include.NON_NULL)
 	private final Boolean bindable;
 
 	/**
 	 * Indicates whether the plan can be limited by the non_basic_services_allowed field in a Cloud Foundry Quota.
 	 */
-	@JsonSerialize
-	@JsonProperty("free")
 	private final Boolean free;
 
 	private Plan(String id, String name, String description, Map<String, Object> metadata, Boolean free, Boolean bindable, Schemas schemas) {

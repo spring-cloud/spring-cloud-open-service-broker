@@ -16,8 +16,6 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  * An error returned when a broker requires an asynchronous request.
  *
@@ -36,7 +34,6 @@ public class AsyncRequiredErrorMessage extends ErrorMessage {
 		super(description);
 	}
 
-	@JsonProperty("error")
 	public String getError() {
 		return ASYNC_REQUIRED_ERROR;
 	}

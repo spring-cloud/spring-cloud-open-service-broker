@@ -16,10 +16,9 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.util.Objects;
 
@@ -28,14 +27,12 @@ import java.util.Objects;
  *
  * @author Scott Frederick
  */
-@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse {
 	/**
 	 * The URL of a web-based management user interface for the service instance. Can be <code>null</code> to indicate
 	 * that a management dashboard is not provided.
 	 */
-	@JsonSerialize
-	@JsonProperty("dashboard_url")
 	private final String dashboardUrl;
 
 	/**

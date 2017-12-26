@@ -16,9 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
@@ -27,8 +26,7 @@ import java.util.Objects;
 /**
  * Details of a volume mount in a binding response.
  */
-@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class VolumeMount {
 	public enum Mode {
 		READ_ONLY("r"),
@@ -68,14 +66,11 @@ public class VolumeMount {
 	/**
 	 * The name of the volume driver plugin which manages the device.
 	 */
-	@JsonSerialize
 	private final String driver;
 
 	/**
 	 * The directory to mount inside the application container.
 	 */
-	@JsonSerialize
-	@JsonProperty("container_dir")
 	private final String containerDir;
 
 	/**
@@ -88,13 +83,11 @@ public class VolumeMount {
 	 * The type of the volume device to mount.
 	 */
 	@JsonSerialize(using = ToStringSerializer.class)
-	@JsonProperty("device_type")
 	private final DeviceType deviceType;
 
 	/**
 	 * Details of the volume device to mount, specific to the device type.
 	 */
-	@JsonSerialize
 	private final VolumeDevice device;
 
 	private VolumeMount(String driver, String containerDir, Mode mode, DeviceType deviceType, VolumeDevice device) {

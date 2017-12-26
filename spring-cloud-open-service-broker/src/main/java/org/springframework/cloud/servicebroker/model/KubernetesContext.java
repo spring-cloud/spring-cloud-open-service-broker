@@ -16,7 +16,6 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.Objects;
@@ -33,7 +32,6 @@ public final class KubernetesContext extends Context {
 	 * The Kubernetes namespace for which the operation is requested.
 	 */
 	@NotEmpty
-	@JsonSerialize
 	private final String namespace;
 
 	private KubernetesContext() {

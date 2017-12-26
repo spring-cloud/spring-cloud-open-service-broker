@@ -16,7 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.util.Objects;
 
@@ -25,6 +26,7 @@ import java.util.Objects;
  *
  * @author Scott Frederick
  */
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public abstract class ServiceBrokerRequest {
 	public final static String API_INFO_LOCATION_HEADER = "X-Api-Info-Location";
 	public final static String ORIGINATING_IDENTITY_HEADER = "X-Broker-API-Originating-Identity";
@@ -34,19 +36,16 @@ public abstract class ServiceBrokerRequest {
 	 * to multiple instances. Will be <code>null</code> if the service broker is not registered with an instance ID
 	 * in the registered URL.
 	 */
-	@JsonIgnore
 	protected transient String cfInstanceId;
 
 	/**
 	 * The API info endpoint of the platform instance making the call to the service broker.
 	 */
-	@JsonIgnore
 	protected transient String apiInfoLocation;
 
 	/**
 	 * The identity of the of the user that initiated the request from the platform.
 	 */
-	@JsonIgnore
 	protected transient Context originatingIdentity;
 
 	protected ServiceBrokerRequest() {

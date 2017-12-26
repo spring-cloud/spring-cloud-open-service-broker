@@ -16,15 +16,12 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.util.Objects;
 
-@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class DashboardClient {
 
 	/**
@@ -32,22 +29,16 @@ public class DashboardClient {
 	 * Cloud Foundry UAA deployment. If the name is already in use, Cloud Foundry will return an error to the
 	 * operator when the service is registered.
 	 */
-	@JsonSerialize
-	@JsonProperty("id")
 	private final String id;
 
 	/**
 	 * The client secret for the dashboard OAuth2 client.
 	 */
-	@JsonSerialize
-	@JsonProperty("secret")
 	private final String secret;
 
 	/**
 	 * A domain for the service dashboard that will be whitelisted by the UAA to enable dashboard SSO.
 	 */
-	@JsonSerialize
-	@JsonProperty("redirect_uri")
 	private final String redirectUri;
 
 	private DashboardClient(String id, String secret, String redirectUri) {

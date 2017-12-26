@@ -18,7 +18,6 @@ package org.springframework.cloud.servicebroker.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Objects;
 
@@ -35,15 +34,14 @@ public abstract class AsyncServiceInstanceResponse {
 	 * asynchronously.
 	 */
 	@JsonIgnore
-	protected transient boolean async;
+	protected final boolean async;
 
 	/**
 	 * For async responses, service brokers can return operation state as a string. This field will be provided back to
 	 * the service broker on last_operation requests as a URL encoded query param. Can be <code>null</code> to indicate
 	 * that an operation state is not provided.
 	 */
-	@JsonSerialize
-	protected transient String operation;
+	protected final String operation;
 
 	protected AsyncServiceInstanceResponse(boolean async, String operation) {
 		this.async = async;

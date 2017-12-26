@@ -16,11 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.HashMap;
@@ -32,15 +29,12 @@ import java.util.Objects;
  *
  * @author Scott Frederick
  */
-@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
 
 	/**
 	 * The ID of the service to update, from the broker catalog.
 	 */
 	@NotEmpty
-	@JsonSerialize
 	@JsonProperty("service_id")
 	private final String serviceDefinitionId;
 
@@ -48,15 +42,11 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * The ID of the plan to update within the service, from the broker catalog.
 	 */
 	@NotEmpty
-	@JsonSerialize
-	@JsonProperty("plan_id")
 	private final String planId;
 
 	/**
 	 * Information about the service instance prior to the update request.
 	 */
-	@JsonSerialize
-	@JsonProperty("previous_values")
 	private final PreviousValues previousValues;
 
 	/**
@@ -156,8 +146,6 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 * The ID of the service instance plan prior to the update request.
 		 */
 		@NotEmpty
-		@JsonSerialize
-		@JsonProperty("plan_id")
 		private final String planId;
 
 		public PreviousValues() {

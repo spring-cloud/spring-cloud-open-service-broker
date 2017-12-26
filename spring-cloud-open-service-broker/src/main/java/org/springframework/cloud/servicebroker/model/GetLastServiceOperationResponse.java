@@ -17,6 +17,7 @@
 package org.springframework.cloud.servicebroker.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
@@ -39,13 +40,13 @@ public class GetLastServiceOperationResponse {
 	 * A user-facing message displayed to the Cloud Controller API client. Can be used to tell the user details
 	 * about the status of the operation. Can be <code>null</code>.
 	 */
-	@JsonSerialize
 	private final String description;
 
 	/**
 	 * Should be set to <code>true</code> in response to a request for the status of an asynchronous delete request,
 	 * and <code>false</code> otherwise.
 	 */
+	@JsonIgnore
 	private final boolean deleteOperation;
 
 	private GetLastServiceOperationResponse(OperationState state, String description, boolean deleteOperation) {

@@ -16,8 +16,6 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Objects;
 
 /**
@@ -33,7 +31,6 @@ public abstract class AsyncServiceInstanceRequest extends ServiceBrokerRequest {
 	 * <code>false</code> value indicates that clients do not allow asynchronous processing of requests, a
 	 * <code>true</code> value indicates that clients do allow asynchronous processing.
 	 */
-	@JsonIgnore
 	protected transient boolean asyncAccepted;
 
 	protected AsyncServiceInstanceRequest() {

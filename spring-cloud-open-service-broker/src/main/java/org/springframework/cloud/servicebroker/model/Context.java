@@ -18,7 +18,6 @@ package org.springframework.cloud.servicebroker.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -46,7 +45,6 @@ public class Context {
 	/**
 	 * The name of the platform making the request.
 	 */
-	@JsonProperty("platform")
 	private final String platform;
 
 	@JsonAnySetter

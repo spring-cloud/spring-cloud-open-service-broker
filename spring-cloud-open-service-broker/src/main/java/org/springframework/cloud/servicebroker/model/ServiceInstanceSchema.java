@@ -16,11 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Objects;
 
@@ -29,25 +26,20 @@ import java.util.Objects;
  *
  * @author Sam Gunaratne
  */
-@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceInstanceSchema {
 
 	/**
 	 * The JSON schema for configuration parameters when creating a service instance.
 	 */
-	@JsonSerialize
 	@JsonProperty("create")
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private MethodSchema createMethodSchema;
+	private final MethodSchema createMethodSchema;
 
 	/**
 	 * The JSON schema for configuration parameters when updating a service instance.
 	 */
-	@JsonSerialize
 	@JsonProperty("update")
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private MethodSchema updateMethodSchema;
+	private final MethodSchema updateMethodSchema;
 
 	private ServiceInstanceSchema() {
 		createMethodSchema = null;

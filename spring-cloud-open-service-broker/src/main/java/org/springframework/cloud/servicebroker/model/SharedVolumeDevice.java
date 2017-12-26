@@ -16,20 +16,17 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class SharedVolumeDevice extends VolumeDevice {
-	@JsonSerialize
-	@JsonProperty("volume_id")
 	private String volumeId;
 
-	@JsonSerialize
-	@JsonProperty("mount_config")
 	private Map<String, Object> mountConfig;
 
 	private SharedVolumeDevice(String volumeId, Map<String, Object> mountConfig) {
