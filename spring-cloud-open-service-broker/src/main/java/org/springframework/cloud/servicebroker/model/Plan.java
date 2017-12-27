@@ -18,7 +18,6 @@ package org.springframework.cloud.servicebroker.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.HashMap;
@@ -57,7 +56,6 @@ public class Plan {
 	/**
 	 * A map of metadata to further describe a service plan.
 	 */
-	@JsonSerialize(nullsUsing = EmptyMapSerializer.class)
 	private final Map<String, Object> metadata;
 
 	/**
@@ -154,7 +152,7 @@ public class Plan {
 		private String id;
 		private String name;
 		private String description;
-		private Map<String, Object> metadata = new HashMap<>();
+		private Map<String, Object> metadata;
 		private Boolean free = true;
 		private Boolean bindable;
 		private Schemas schemas;
@@ -178,11 +176,17 @@ public class Plan {
 		}
 
 		public PlanBuilder metadata(Map<String, Object> metadata) {
+			if (this.metadata == null) {
+				this.metadata = new HashMap<>();
+			}
 			this.metadata.putAll(metadata);
 			return this;
 		}
 
 		public PlanBuilder metadata(String key, Object value) {
+			if (this.metadata == null) {
+				this.metadata = new HashMap<>();
+			}
 			this.metadata.put(key, value);
 			return this;
 		}

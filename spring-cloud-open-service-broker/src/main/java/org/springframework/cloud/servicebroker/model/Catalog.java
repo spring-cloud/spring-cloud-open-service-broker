@@ -17,7 +17,6 @@
 package org.springframework.cloud.servicebroker.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ public class Catalog {
 	 * A list of service offerings provided by the service broker.
 	 */
 	@NotEmpty
-	@JsonSerialize(nullsUsing = EmptyListSerializer.class)
 	@JsonProperty("services")
 	private final List<ServiceDefinition> serviceDefinitions;
 

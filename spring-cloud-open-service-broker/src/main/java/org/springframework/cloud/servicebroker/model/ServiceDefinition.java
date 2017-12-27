@@ -19,15 +19,16 @@ package org.springframework.cloud.servicebroker.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * A service offered by this broker.
@@ -73,26 +74,22 @@ public class ServiceDefinition {
 	 * A list of plans for this service.
 	 */
 	@NotEmpty
-	@JsonSerialize(nullsUsing = EmptyListSerializer.class)
 	private final List<Plan> plans;
 
 	/**
 	 * A list of tags to aid in categorizing and classifying services with similar characteristics.
 	 */
-	@JsonSerialize(nullsUsing = EmptyListSerializer.class)
 	private final List<String> tags;
 
 	/**
 	 * A map of metadata to further describe a service offering.
 	 */
-	@JsonSerialize(nullsUsing = EmptyMapSerializer.class)
 	private final Map<String, Object> metadata;
 
 	/**
 	 * A list of permissions that the user would have to give the service, if they provision it. See
 	 * {@link ServiceDefinitionRequires} for supported permissions.
 	 */
-	@JsonSerialize(nullsUsing = EmptyListSerializer.class)
 	private final List<String> requires;
 
 	/**
@@ -205,9 +202,9 @@ public class ServiceDefinition {
 		private boolean bindable;
 		private Boolean planUpdateable;
 		private List<Plan> plans = new ArrayList<>();
-		private List<String> tags = new ArrayList<>();
-		private Map<String, Object> metadata = new HashMap<>();
-		private List<String> requires = new ArrayList<>();
+		private List<String> tags;
+		private Map<String, Object> metadata;
+		private List<String> requires;
 		private DashboardClient dashboardClient;
 
 		ServiceDefinitionBuilder() {
@@ -244,22 +241,44 @@ public class ServiceDefinition {
 		}
 
 		public ServiceDefinitionBuilder tags(String... tags) {
+			if (this.tags == null) {
+				this.tags = new ArrayList<>();
+			}
 			Collections.addAll(this.tags, tags);
 			return this;
 		}
 
 		public ServiceDefinitionBuilder metadata(Map<String, Object> metadata) {
+			if (this.metadata == null) {
+				this.metadata = new HashMap<>();
+			}
 			this.metadata.putAll(metadata);
 			return this;
 		}
 
 		public ServiceDefinitionBuilder metadata(String key, Object value) {
+			if (this.metadata == null) {
+				this.metadata = new HashMap<>();
+			}
 			this.metadata.put(key, value);
 			return this;
 		}
 
 		public ServiceDefinitionBuilder requires(String... requires) {
+			if (this.requires == null) {
+				this.requires = new ArrayList<>();
+			}
 			Collections.addAll(this.requires, requires);
+			return this;
+		}
+
+		public ServiceDefinitionBuilder requires(ServiceDefinitionRequires... requires) {
+			if (this.requires == null) {
+				this.requires = new ArrayList<>();
+			}
+			this.requires.addAll(Arrays.stream(requires)
+					.map(ServiceDefinitionRequires::toString)
+					.collect(Collectors.toList()));
 			return this;
 		}
 
@@ -269,7 +288,8 @@ public class ServiceDefinition {
 		}
 
 		public ServiceDefinition build() {
-			return new ServiceDefinition(id, name, description, bindable, planUpdateable, plans, tags, metadata, requires, dashboardClient);
+			return new ServiceDefinition(id, name, description, bindable, planUpdateable,
+					plans, tags, metadata, requires, dashboardClient);
 		}
 	}
 }

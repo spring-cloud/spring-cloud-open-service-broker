@@ -17,14 +17,66 @@
 package org.springframework.cloud.servicebroker.model;
 
 import org.junit.Test;
+import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 
-import static org.junit.Assert.assertEquals;
+import java.io.IOException;
+
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.withoutJsonPath;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.junit.Assert.assertThat;
 
 public class PlanTest {
 
 	@Test
-	public void servicePlanIsFreeByDefault() {
-		final Plan plan = Plan.builder().build();
-		assertEquals(true, plan.isFree());
+	public void planWithDefaults() throws IOException {
+		Plan plan = Plan.builder()
+				.id("plan-id-one")
+				.name("plan-one")
+				.description("Plan One")
+				.build();
+
+		String json = DataFixture.toJson(plan);
+
+		assertThat(json, isJson(allOf(
+				withJsonPath("$.id", equalTo("plan-id-one")),
+				withJsonPath("$.name", equalTo("plan-one")),
+				withJsonPath("$.description", equalTo("Plan One")),
+				withJsonPath("$.free", equalTo(true)),
+				withoutJsonPath("$.bindable"),
+				withoutJsonPath("$.metadata"),
+				withoutJsonPath("$.schemas")
+		)));
+	}
+
+	@Test
+	public void planWithAllFields() throws IOException {
+		Plan plan = Plan.builder()
+				.id("plan-id-one")
+				.name("plan-one")
+				.description("Plan One")
+				.free(false)
+				.bindable(true)
+				.metadata("field1", "value1")
+				.metadata("field2", "value2")
+				.schemas(Schemas.builder().build())
+				.build();
+
+		String json = DataFixture.toJson(plan);
+
+		assertThat(json, isJson(allOf(
+				withJsonPath("$.id", equalTo("plan-id-one")),
+				withJsonPath("$.name", equalTo("plan-one")),
+				withJsonPath("$.description", equalTo("Plan One")),
+				withJsonPath("$.free", equalTo(false)),
+				withJsonPath("$.metadata",
+						allOf(hasEntry("field1", "value1"),
+								hasEntry("field2", "value2"))),
+				withJsonPath("$.bindable", equalTo(true)),
+				withJsonPath("$.schemas")
+		)));
 	}
 }
