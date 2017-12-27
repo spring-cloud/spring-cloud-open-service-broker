@@ -16,7 +16,6 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
-import java.util.Collections;
 import java.util.Map;
 
 import org.junit.Before;
@@ -78,9 +77,9 @@ public class CatalogControllerIntegrationTest {
 		ServiceDefinition service = ServiceFixture.getSimpleService();
 		Plan[] plans = PlanFixture.getAllPlans();
 
-		Map<String, Object> createServiceInstanceSchema = plans[1].getSchemas().getServiceInstanceSchema().getCreateMethodSchema().getConfigParametersSchema();
-		Map<String, Object> updateServiceInstanceSchema = plans[1].getSchemas().getServiceInstanceSchema().getUpdateMethodSchema().getConfigParametersSchema();
-		Map<String, Object> createServiceBindingSchema = plans[1].getSchemas().getServiceBindingSchema().getCreateMethodSchema().getConfigParametersSchema();
+		Map<String, Object> createServiceInstanceSchema = plans[1].getSchemas().getServiceInstanceSchema().getCreateMethodSchema().getParameters();
+		Map<String, Object> updateServiceInstanceSchema = plans[1].getSchemas().getServiceInstanceSchema().getUpdateMethodSchema().getParameters();
+		Map<String, Object> createServiceBindingSchema = plans[1].getSchemas().getServiceBindingSchema().getCreateMethodSchema().getParameters();
 
 		this.mockMvc.perform(get("/v2/catalog")
 				.accept(MediaType.APPLICATION_JSON))

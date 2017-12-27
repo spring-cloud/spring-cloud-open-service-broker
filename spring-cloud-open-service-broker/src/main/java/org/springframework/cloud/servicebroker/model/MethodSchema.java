@@ -17,7 +17,6 @@
 package org.springframework.cloud.servicebroker.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,15 +33,14 @@ public class MethodSchema {
 	/**
 	 * A map of JSON schema for configuration parameters.
 	 */
-	@JsonProperty("parameters")
-	private final Map<String, Object> configParametersSchema;
+	private final Map<String, Object> parameters;
 
-	private MethodSchema(Map<String, Object> configParametersSchema) {
-		this.configParametersSchema = configParametersSchema;
+	private MethodSchema(Map<String, Object> parameters) {
+		this.parameters = parameters;
 	}
 
-	public Map<String, Object> getConfigParametersSchema() {
-		return this.configParametersSchema;
+	public Map<String, Object> getParameters() {
+		return this.parameters;
 	}
 
 	public static MethodSchemaBuilder builder() {
@@ -54,39 +52,39 @@ public class MethodSchema {
 		if (this == o) return true;
 		if (!(o instanceof MethodSchema)) return false;
 		MethodSchema that = (MethodSchema) o;
-		return Objects.equals(configParametersSchema, that.configParametersSchema);
+		return Objects.equals(parameters, that.parameters);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(configParametersSchema);
+		return Objects.hash(parameters);
 	}
 
 	@Override
 	public String toString() {
 		return "MethodSchema{" +
-				"configParametersSchema=" + configParametersSchema +
+				"parameters=" + parameters +
 				'}';
 	}
 
 	public static class MethodSchemaBuilder {
-		private Map<String, Object> configParametersSchema = new HashMap<>();
+		private Map<String, Object> parameters = new HashMap<>();
 
 		MethodSchemaBuilder() {
 		}
 
-		public MethodSchema.MethodSchemaBuilder configParametersSchema(Map<String, Object> configParametersSchema) {
-			this.configParametersSchema.putAll(configParametersSchema);
+		public MethodSchema.MethodSchemaBuilder parameters(Map<String, Object> parameters) {
+			this.parameters.putAll(parameters);
 			return this;
 		}
 
-		public MethodSchema.MethodSchemaBuilder configParametersSchema(String key, Object value) {
-			this.configParametersSchema.put(key, value);
+		public MethodSchema.MethodSchemaBuilder parameters(String key, Object value) {
+			this.parameters.put(key, value);
 			return this;
 		}
 
 		public MethodSchema build() {
-			return new MethodSchema(configParametersSchema);
+			return new MethodSchema(parameters);
 		}
 	}
 }
