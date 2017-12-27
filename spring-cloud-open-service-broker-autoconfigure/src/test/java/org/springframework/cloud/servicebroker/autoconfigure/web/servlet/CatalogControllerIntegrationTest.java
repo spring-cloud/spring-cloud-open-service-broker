@@ -142,6 +142,7 @@ public class CatalogControllerIntegrationTest {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void catalogIsRetrievedCorrectlyWithCfInstanceId() throws Exception {
 		when(catalogService.getCatalog()).thenReturn(getCatalog());
 
@@ -163,7 +164,7 @@ public class CatalogControllerIntegrationTest {
 				.andExpect(jsonPath("$.services[*].plans[*].id", containsInAnyOrder(plans[0].getId(), plans[1].getId())))
 				.andExpect(jsonPath("$.services[*].plans[*].name", containsInAnyOrder(plans[0].getName(), plans[1].getName())))
 				.andExpect(jsonPath("$.services[*].plans[*].description", containsInAnyOrder(plans[0].getDescription(), plans[1].getDescription())))
-				.andExpect(jsonPath("$.services[*].plans[*].metadata", contains(plans[1].getMetadata())))
+				.andExpect(jsonPath("$.services[*].plans[1].metadata", contains(plans[1].getMetadata())))
 				.andExpect(jsonPath("$.services[*].plans[*].free", containsInAnyOrder(plans[0].isFree(), plans[1].isFree())));
 	}
 }

@@ -32,6 +32,7 @@ import static org.junit.Assert.assertThat;
 public class PlanTest {
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void planWithDefaults() throws IOException {
 		Plan plan = Plan.builder()
 				.id("plan-id-one")
@@ -53,6 +54,7 @@ public class PlanTest {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void planWithAllFields() throws IOException {
 		Plan plan = Plan.builder()
 				.id("plan-id-one")
