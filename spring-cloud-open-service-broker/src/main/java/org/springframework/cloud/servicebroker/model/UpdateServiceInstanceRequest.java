@@ -18,6 +18,8 @@ package org.springframework.cloud.servicebroker.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.HashMap;
@@ -141,6 +143,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	/**
 	 * Information about the service instance prior to the update request.
 	 */
+	@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 	public static class PreviousValues {
 		/**
 		 * The ID of the service instance plan prior to the update request.

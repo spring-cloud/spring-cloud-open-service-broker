@@ -33,7 +33,7 @@ public class PlanTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void planWithDefaults() throws IOException {
+	public void planWithDefaultsIsSerializedToJson() throws IOException {
 		Plan plan = Plan.builder()
 				.id("plan-id-one")
 				.name("plan-one")
@@ -55,7 +55,7 @@ public class PlanTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void planWithAllFields() throws IOException {
+	public void planWithAllFieldsIsSerializedToJson() throws IOException {
 		Plan plan = Plan.builder()
 				.id("plan-id-one")
 				.name("plan-one")

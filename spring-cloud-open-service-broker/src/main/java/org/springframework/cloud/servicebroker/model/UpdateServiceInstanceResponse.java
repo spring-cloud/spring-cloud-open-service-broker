@@ -28,7 +28,8 @@ public class UpdateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 
 	@Override
 	public String toString() {
-		return "UpdateServiceInstanceResponse{" +
+		return super.toString() +
+				"UpdateServiceInstanceResponse{" +
 				'}';
 	}
 

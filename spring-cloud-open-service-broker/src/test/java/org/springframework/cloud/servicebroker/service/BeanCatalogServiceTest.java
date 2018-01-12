@@ -40,9 +40,11 @@ public class BeanCatalogServiceTest {
 				.description("Description")
 				.bindable(true)
 				.build();
+
 		catalog = Catalog.builder()
 				.serviceDefinitions(serviceDefinition)
 				.build();
+
 		service = new BeanCatalogService(catalog);
 	}
 

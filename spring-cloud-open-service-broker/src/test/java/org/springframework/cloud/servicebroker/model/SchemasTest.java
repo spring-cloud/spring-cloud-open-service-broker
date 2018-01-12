@@ -33,7 +33,7 @@ import static org.junit.Assert.assertThat;
 
 public class SchemasTest {
 	@Test
-	public void noSchemas() throws IOException {
+	public void noSchemasIsSerializedToJson() throws IOException {
 		Schemas schemas = Schemas.builder().build();
 		String json = DataFixture.toJson(schemas);
 
@@ -44,7 +44,7 @@ public class SchemasTest {
 	}
 	
 	@Test
-	public void emptySchemas() throws IOException {
+	public void emptySchemasIsSerializedToJson() throws IOException {
 		Schemas schemas = Schemas.builder()
 				.serviceInstanceSchema(ServiceInstanceSchema.builder().build())
 				.serviceBindingSchema(ServiceBindingSchema.builder().build())
@@ -62,7 +62,7 @@ public class SchemasTest {
 
 	@Test
 	@SuppressWarnings("serial")
-	public void allSchemaFields() throws IOException {
+	public void allSchemaFieldsIsSerializedToJson() throws IOException {
 		Map<String, Object> schemaProperties = new HashMap<String, Object>() {{
 			put("properties", new HashMap<String, Object>() {{
 				put("billing-account", new HashMap<String, String>() {{

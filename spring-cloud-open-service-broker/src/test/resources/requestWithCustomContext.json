@@ -1,0 +1,7 @@
+{
+	"context": {
+		"platform": "test-platform",
+		"field1": "data",
+		"field2": 2
+	}
+}

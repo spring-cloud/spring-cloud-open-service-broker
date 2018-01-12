@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.lang.Nullable;
 
 import static org.junit.Assert.fail;
 
@@ -42,7 +43,7 @@ public class DataFixture {
 			return objectMapper.readValue(getTestDataFileReader(filename), contentType);
 		} catch (IOException e) {
 			fail("Error reading test JSON file: " + e);
-			return null;
+			throw new IllegalStateException();
 		}
 	}
 

@@ -38,7 +38,7 @@ import static org.springframework.cloud.servicebroker.model.ServiceDefinitionReq
 public class ServiceDefinitionTest {
 	@Test
 	@SuppressWarnings("unchecked")
-	public void serviceDefinitionWithDefaults() throws IOException {
+	public void serviceDefinitionWithDefaultsIsSerializedToJson() throws IOException {
 		ServiceDefinition serviceDefinition = ServiceDefinition.builder()
 				.id("service-definition-id-one")
 				.name("service-definition-one")
@@ -63,7 +63,7 @@ public class ServiceDefinitionTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void serviceDefinitionWithAllFields() throws IOException {
+	public void serviceDefinitionWithAllFieldsIsSerializedToJson() throws IOException {
 		ServiceDefinition serviceDefinition = ServiceDefinition.builder()
 				.id("service-definition-id-one")
 				.name("service-definition-one")

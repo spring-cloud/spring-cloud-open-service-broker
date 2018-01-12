@@ -1,6 +1,4 @@
 {
-	"service_id": "test-service-id",
-	"plan_id": "test-plan-id",
 	"context": {
 		"platform": "kubernetes",
 		"namespace": "test-namespace",
@@ -8,8 +6,5 @@
 		"field2": 2
 	},
 	"parameters": {
-		"parameter1": 1,
-		"parameter2": "foo",
-		"parameter3": true
 	}
 }
