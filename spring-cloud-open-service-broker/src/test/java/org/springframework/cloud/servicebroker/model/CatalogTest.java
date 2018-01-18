@@ -19,7 +19,8 @@ package org.springframework.cloud.servicebroker.model;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 
-import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
@@ -30,7 +31,7 @@ import static org.junit.Assert.assertThat;
 
 public class CatalogTest {
 	@Test
-	public void emptyCatalogIsSerializedToJson() throws IOException {
+	public void emptyCatalogIsSerializedToJson() throws Exception {
 		Catalog catalog = Catalog.builder().build();
 		String json = DataFixture.toJson(catalog);
 
@@ -39,7 +40,14 @@ public class CatalogTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void catalogWithServicesIsSerializedToJson() throws IOException {
+	public void catalogWithServicesIsSerializedToJson() throws Exception {
+		List<ServiceDefinition> serviceDefinitions = Collections.singletonList(ServiceDefinition.builder()
+				.id("service-definition-id-two")
+				.name("service-definition-two")
+				.description("Service Definition Two")
+				.plans(Plan.builder().build())
+				.build());
+
 		Catalog catalog = Catalog.builder()
 				.serviceDefinitions(
 						ServiceDefinition.builder()
@@ -47,14 +55,10 @@ public class CatalogTest {
 								.name("service-definition-one")
 								.description("Service Definition One")
 								.plans(Plan.builder().build())
-								.build(),
-						ServiceDefinition.builder()
-								.id("service-definition-id-two")
-								.name("service-definition-two")
-								.description("Service Definition Two")
-								.plans(Plan.builder().build())
 								.build())
+				.serviceDefinitions(serviceDefinitions)
 				.build();
+
 		String json = DataFixture.toJson(catalog);
 
 		assertThat(json, isJson(allOf(

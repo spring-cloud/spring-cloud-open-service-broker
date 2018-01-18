@@ -152,6 +152,10 @@ public class ServiceDefinition {
 		return this.dashboardClient;
 	}
 
+	public static ServiceDefinitionBuilder builder() {
+		return new ServiceDefinitionBuilder();
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -167,10 +171,6 @@ public class ServiceDefinition {
 				Objects.equals(metadata, that.metadata) &&
 				Objects.equals(requires, that.requires) &&
 				Objects.equals(dashboardClient, that.dashboardClient);
-	}
-
-	public static ServiceDefinitionBuilder builder() {
-		return new ServiceDefinitionBuilder();
 	}
 
 	@Override

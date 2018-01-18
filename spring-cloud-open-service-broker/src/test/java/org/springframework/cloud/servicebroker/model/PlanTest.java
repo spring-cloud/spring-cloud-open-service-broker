@@ -19,11 +19,13 @@ package org.springframework.cloud.servicebroker.model;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withoutJsonPath;
+import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
@@ -33,7 +35,7 @@ public class PlanTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void planWithDefaultsIsSerializedToJson() throws IOException {
+	public void planWithDefaultsIsSerializedToJson() throws Exception {
 		Plan plan = Plan.builder()
 				.id("plan-id-one")
 				.name("plan-one")
@@ -55,7 +57,12 @@ public class PlanTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void planWithAllFieldsIsSerializedToJson() throws IOException {
+	public void planWithAllFieldsIsSerializedToJson() throws Exception {
+		Map<String, Object> metadata = new HashMap<String, Object>() {{
+			put("field3", "value3");
+			put("field4", "value4");
+		}};
+
 		Plan plan = Plan.builder()
 				.id("plan-id-one")
 				.name("plan-one")
@@ -64,6 +71,7 @@ public class PlanTest {
 				.bindable(true)
 				.metadata("field1", "value1")
 				.metadata("field2", "value2")
+				.metadata(metadata)
 				.schemas(Schemas.builder().build())
 				.build();
 
@@ -74,9 +82,12 @@ public class PlanTest {
 				withJsonPath("$.name", equalTo("plan-one")),
 				withJsonPath("$.description", equalTo("Plan One")),
 				withJsonPath("$.free", equalTo(false)),
+				withJsonPath("$.metadata", aMapWithSize(4)),
 				withJsonPath("$.metadata",
 						allOf(hasEntry("field1", "value1"),
-								hasEntry("field2", "value2"))),
+								hasEntry("field2", "value2"),
+								hasEntry("field3", "value3"),
+								hasEntry("field4", "value4"))),
 				withJsonPath("$.bindable", equalTo(true)),
 				withJsonPath("$.schemas")
 		)));

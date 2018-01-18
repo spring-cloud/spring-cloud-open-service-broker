@@ -17,6 +17,8 @@
 package org.springframework.cloud.servicebroker.model;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -25,6 +27,7 @@ import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withoutJsonPath;
+import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
@@ -64,6 +67,11 @@ public class ServiceDefinitionTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void serviceDefinitionWithAllFieldsIsSerializedToJson() throws IOException {
+		Map<String, Object> metadata = new HashMap<String, Object>() {{
+			put("field3", "value3");
+			put("field4", "value4");
+		}};
+
 		ServiceDefinition serviceDefinition = ServiceDefinition.builder()
 				.id("service-definition-id-one")
 				.name("service-definition-one")
@@ -73,9 +81,11 @@ public class ServiceDefinitionTest {
 				.tags("tag1", "tag2")
 				.metadata("field1", "value1")
 				.metadata("field2", "value2")
+				.metadata(metadata)
 				.requires(SERVICE_REQUIRES_ROUTE_FORWARDING,
 						SERVICE_REQUIRES_SYSLOG_DRAIN,
 						SERVICE_REQUIRES_VOLUME_MOUNT)
+				.requires("another_requires")
 				.planUpdateable(true)
 				.dashboardClient(DashboardClient.builder()
 						.id("dashboard-id")
@@ -96,10 +106,14 @@ public class ServiceDefinitionTest {
 				withJsonPath("$.requires[*]",
 						contains(SERVICE_REQUIRES_ROUTE_FORWARDING.toString(),
 								SERVICE_REQUIRES_SYSLOG_DRAIN.toString(),
-								SERVICE_REQUIRES_VOLUME_MOUNT.toString())),
+								SERVICE_REQUIRES_VOLUME_MOUNT.toString(),
+								"another_requires")),
+				withJsonPath("$.metadata", aMapWithSize(4)),
 				withJsonPath("$.metadata",
 						allOf(hasEntry("field1", "value1"),
-								hasEntry("field2", "value2"))),
+								hasEntry("field2", "value2"),
+								hasEntry("field3", "value3"),
+								hasEntry("field4", "value4"))),
 				withJsonPath("$.dashboard_client.id", equalTo("dashboard-id")),
 				withJsonPath("$.dashboard_client.secret", equalTo("dashboard-secret")),
 				withJsonPath("$.dashboard_client.redirect_uri", equalTo("https://redirect.example.com"))
