@@ -172,25 +172,31 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof CreateServiceInstanceBindingRequest)) return false;
 		if (!super.equals(o)) return false;
 		CreateServiceInstanceBindingRequest that = (CreateServiceInstanceBindingRequest) o;
-		return Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
+		return that.canEqual(this) &&
+				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
 				Objects.equals(planId, that.planId) &&
+				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
+				Objects.equals(bindingId, that.bindingId) &&
 				Objects.equals(appGuid, that.appGuid) &&
 				Objects.equals(bindResource, that.bindResource) &&
 				Objects.equals(parameters, that.parameters) &&
-				Objects.equals(context, that.context) &&
-				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
-				Objects.equals(bindingId, that.bindingId);
+				Objects.equals(context, that.context);
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(super.hashCode(), serviceDefinitionId, planId, appGuid,
-				bindResource, parameters, context);
+	public final boolean canEqual(Object other) {
+		return (other instanceof CreateServiceInstanceBindingRequest);
+	}
+
+	@Override
+	public final int hashCode() {
+		return Objects.hash(super.hashCode(), serviceDefinitionId, serviceInstanceId, planId, bindingId,
+				appGuid, bindResource, parameters, context);
 	}
 
 	@Override

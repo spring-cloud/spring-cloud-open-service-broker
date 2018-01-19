@@ -50,7 +50,13 @@ public abstract class AsyncServiceInstanceRequest extends ServiceBrokerRequest {
 		if (!(o instanceof AsyncServiceInstanceRequest)) return false;
 		if (!super.equals(o)) return false;
 		AsyncServiceInstanceRequest that = (AsyncServiceInstanceRequest) o;
-		return asyncAccepted == that.asyncAccepted;
+		return that.canEqual(this) &&
+				asyncAccepted == that.asyncAccepted;
+	}
+
+	@Override
+	public boolean canEqual(Object other) {
+		return (other instanceof AsyncServiceInstanceRequest);
 	}
 
 	@Override

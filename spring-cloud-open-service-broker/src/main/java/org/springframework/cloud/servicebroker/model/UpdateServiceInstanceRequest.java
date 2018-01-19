@@ -113,19 +113,25 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof UpdateServiceInstanceRequest)) return false;
 		if (!super.equals(o)) return false;
 		UpdateServiceInstanceRequest that = (UpdateServiceInstanceRequest) o;
-		return Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
+		return that.canEqual(this) &&
+				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
 				Objects.equals(planId, that.planId) &&
 				Objects.equals(previousValues, that.previousValues) &&
 				Objects.equals(serviceInstanceId, that.serviceInstanceId);
 	}
 
 	@Override
-	public int hashCode() {
+	public final boolean canEqual(Object other) {
+		return (other instanceof UpdateServiceInstanceRequest);
+	}
+
+	@Override
+	public final int hashCode() {
 		return Objects.hash(super.hashCode(), serviceDefinitionId, planId, previousValues, serviceInstanceId);
 	}
 

@@ -117,11 +117,11 @@ public class Plan {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof Plan)) return false;
 		Plan plan = (Plan) o;
-		return free == plan.free &&
+		return Objects.equals(free, plan.free) &&
 				Objects.equals(id, plan.id) &&
 				Objects.equals(name, plan.name) &&
 				Objects.equals(description, plan.description) &&
@@ -131,7 +131,7 @@ public class Plan {
 	}
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return Objects.hash(id, name, description, metadata, schemas, bindable, free);
 	}
 

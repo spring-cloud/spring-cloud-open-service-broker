@@ -25,9 +25,9 @@ import java.util.Objects;
 
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class SharedVolumeDevice extends VolumeDevice {
-	private String volumeId;
+	private final String volumeId;
 
-	private Map<String, Object> mountConfig;
+	private final Map<String, Object> mountConfig;
 
 	private SharedVolumeDevice(String volumeId, Map<String, Object> mountConfig) {
 		this.volumeId = volumeId;
@@ -47,7 +47,7 @@ public class SharedVolumeDevice extends VolumeDevice {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof SharedVolumeDevice)) return false;
 		SharedVolumeDevice that = (SharedVolumeDevice) o;
@@ -56,7 +56,7 @@ public class SharedVolumeDevice extends VolumeDevice {
 	}
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return Objects.hash(volumeId, mountConfig);
 	}
 

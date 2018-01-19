@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 
@@ -67,5 +68,13 @@ public class CreateServiceInstanceResponseTest {
 				withJsonPath("$.operation", equalTo("in progress")),
 				withJsonPath("$.dashboard_url", equalTo("http://dashboard.example.com"))
 		)));
+	}
+
+	@Test
+	public void equalsAndHashCode() {
+		EqualsVerifier
+				.forClass(CreateServiceInstanceResponse.class)
+				.withRedefinedSuperclass()
+				.verify();
 	}
 }

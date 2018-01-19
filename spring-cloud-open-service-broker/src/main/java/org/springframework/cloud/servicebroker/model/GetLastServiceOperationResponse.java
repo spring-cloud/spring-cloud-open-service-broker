@@ -72,7 +72,7 @@ public class GetLastServiceOperationResponse {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof GetLastServiceOperationResponse)) return false;
 		GetLastServiceOperationResponse that = (GetLastServiceOperationResponse) o;
@@ -82,7 +82,7 @@ public class GetLastServiceOperationResponse {
 	}
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return Objects.hash(state, description, deleteOperation);
 	}
 

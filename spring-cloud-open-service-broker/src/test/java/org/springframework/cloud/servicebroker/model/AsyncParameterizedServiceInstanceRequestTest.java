@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 
@@ -82,5 +84,17 @@ public class AsyncParameterizedServiceInstanceRequestTest {
 		assertThat(request.getContext().getProperty("field2"), equalTo(2));
 
 		assertThat(request.getParameters(), nullValue());
+	}
+
+	@Test
+	public void equalsAndHashCode() {
+		EqualsVerifier
+				.forClass(AsyncParameterizedServiceInstanceRequest.class)
+				.withRedefinedSuperclass()
+				.withRedefinedSubclass(CreateServiceInstanceRequest.class)
+				.withRedefinedSubclass(UpdateServiceInstanceRequest.class)
+				.suppress(Warning.NONFINAL_FIELDS)
+				.suppress(Warning.TRANSIENT_FIELDS)
+				.verify();
 	}
 }

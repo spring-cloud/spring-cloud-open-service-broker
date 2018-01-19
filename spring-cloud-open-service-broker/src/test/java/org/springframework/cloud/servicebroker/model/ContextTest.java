@@ -17,6 +17,7 @@
 package org.springframework.cloud.servicebroker.model;
 
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -57,5 +58,14 @@ public class ContextTest {
 		assertThat(context.getProperty("property2"), equalTo("value2"));
 		assertThat(context.getProperty("property3"), equalTo("value3"));
 		assertThat(context.getProperty("property4"), equalTo(true));
+	}
+
+	@Test
+	public void equalsAndHashCode() {
+		EqualsVerifier
+				.forClass(Context.class)
+				.withRedefinedSubclass(CloudFoundryContext.class)
+				.withRedefinedSubclass(KubernetesContext.class)
+				.verify();
 	}
 }

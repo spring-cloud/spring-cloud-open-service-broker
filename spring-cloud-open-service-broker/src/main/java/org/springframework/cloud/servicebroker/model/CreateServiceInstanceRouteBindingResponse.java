@@ -43,7 +43,7 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof CreateServiceInstanceRouteBindingResponse)) return false;
 		if (!super.equals(o)) return false;
@@ -52,7 +52,12 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 	}
 
 	@Override
-	public int hashCode() {
+	public final boolean canEqual(Object other) {
+		return (other instanceof CreateServiceInstanceRouteBindingResponse);
+	}
+
+	@Override
+	public final int hashCode() {
 		return Objects.hash(super.hashCode(), routeServiceUrl);
 	}
 

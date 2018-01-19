@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
@@ -33,6 +34,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.springframework.cloud.servicebroker.model.ServiceDefinitionRequires.SERVICE_REQUIRES_ROUTE_FORWARDING;
 import static org.springframework.cloud.servicebroker.model.ServiceDefinitionRequires.SERVICE_REQUIRES_SYSLOG_DRAIN;
@@ -87,11 +89,7 @@ public class ServiceDefinitionTest {
 						SERVICE_REQUIRES_VOLUME_MOUNT)
 				.requires("another_requires")
 				.planUpdateable(true)
-				.dashboardClient(DashboardClient.builder()
-						.id("dashboard-id")
-						.secret("dashboard-secret")
-						.redirectUri("https://redirect.example.com")
-						.build())
+				.dashboardClient(DashboardClient.builder().build())
 				.build();
 		String json = DataFixture.toJson(serviceDefinition);
 
@@ -114,9 +112,15 @@ public class ServiceDefinitionTest {
 								hasEntry("field2", "value2"),
 								hasEntry("field3", "value3"),
 								hasEntry("field4", "value4"))),
-				withJsonPath("$.dashboard_client.id", equalTo("dashboard-id")),
-				withJsonPath("$.dashboard_client.secret", equalTo("dashboard-secret")),
-				withJsonPath("$.dashboard_client.redirect_uri", equalTo("https://redirect.example.com"))
+				withJsonPath("$.dashboard_client", notNullValue())
 		)));
 	}
+
+	@Test
+	public void equalsAndHashCode() {
+		EqualsVerifier
+				.forClass(ServiceDefinition.class)
+				.verify();
+	}
+
 }

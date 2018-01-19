@@ -64,7 +64,7 @@ public class DashboardClient {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof DashboardClient)) return false;
 		DashboardClient that = (DashboardClient) o;
@@ -74,7 +74,7 @@ public class DashboardClient {
 	}
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return Objects.hash(id, secret, redirectUri);
 	}
 

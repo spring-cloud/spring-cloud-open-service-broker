@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 
@@ -140,6 +142,16 @@ public class CreateServiceInstanceBindingRequestTest {
 				fromJson(toJson(request), CreateServiceInstanceBindingRequest.class);
 		
 		assertEquals(request, fromJson);
+	}
+
+	@Test
+	public void equalsAndHashCode() {
+		EqualsVerifier
+				.forClass(CreateServiceInstanceBindingRequest.class)
+				.withRedefinedSuperclass()
+				.suppress(Warning.NONFINAL_FIELDS)
+				.suppress(Warning.TRANSIENT_FIELDS)
+				.verify();
 	}
 
 	public static class Parameters {

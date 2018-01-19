@@ -61,8 +61,13 @@ public abstract class AsyncServiceInstanceResponse {
 		if (this == o) return true;
 		if (!(o instanceof AsyncServiceInstanceResponse)) return false;
 		AsyncServiceInstanceResponse that = (AsyncServiceInstanceResponse) o;
-		return async == that.async &&
+		return that.canEqual(this) &&
+				async == that.async &&
 				Objects.equals(operation, that.operation);
+	}
+
+	public boolean canEqual(Object other) {
+		return (other instanceof AsyncServiceInstanceResponse);
 	}
 
 	@Override

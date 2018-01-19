@@ -84,9 +84,14 @@ public class Context {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof Context)) return false;
-		Context context = (Context) o;
-		return Objects.equals(platform, context.platform) &&
-				Objects.equals(properties, context.properties);
+		Context that = (Context) o;
+		return that.canEqual(this) &&
+				Objects.equals(platform, that.platform) &&
+				Objects.equals(properties, that.properties);
+	}
+
+	public boolean canEqual(Object other) {
+		return (other instanceof Context);
 	}
 
 	@Override

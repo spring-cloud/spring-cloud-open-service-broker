@@ -27,46 +27,51 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-public class CreateServiceInstanceRouteBindingResponseTest {
-
+public class DashboardClientTest {
 	@Test
-	public void responseWithDefaultsIsBuilt() {
-		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
+	public void dashboardClientIsBuiltWithDefaults() {
+		DashboardClient client = DashboardClient.builder()
 				.build();
 
-		assertThat(response.isBindingExisted(), equalTo(false));
-		assertThat(response.getRouteServiceUrl(), nullValue());
+		assertThat(client.getId(), nullValue());
+		assertThat(client.getSecret(), nullValue());
+		assertThat(client.getRedirectUri(), nullValue());
 	}
 
 	@Test
-	public void responseWithValuesIsBuilt() {
-		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
-				.bindingExisted(true)
-				.routeServiceUrl("https://routes.example.com")
+	public void dashboardClientIsBuiltWithAllValues() {
+		DashboardClient client = DashboardClient.builder()
+				.id("client-id")
+				.secret("client-secret")
+				.redirectUri("https://token.example.com")
 				.build();
 
-		assertThat(response.isBindingExisted(), equalTo(true));
-		assertThat(response.getRouteServiceUrl(), equalTo("https://routes.example.com"));
+		assertThat(client.getId(), equalTo("client-id"));
+		assertThat(client.getSecret(), equalTo("client-secret"));
+		assertThat(client.getRedirectUri(), equalTo("https://token.example.com"));
 	}
 
 	@Test
-	public void responseIsSerializedToJson() throws Exception {
-		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
-				.routeServiceUrl("https://routes.example.com")
+	public void dashboardClientIsSerializedToJson() throws Exception {
+		DashboardClient client = DashboardClient.builder()
+				.id("client-id")
+				.secret("client-secret")
+				.redirectUri("https://token.example.com")
 				.build();
 
-		String json = DataFixture.toJson(response);
+		String json = DataFixture.toJson(client);
 
 		assertThat(json, isJson(allOf(
-				withJsonPath("$.route_service_url", equalTo("https://routes.example.com"))
+				withJsonPath("$.id", equalTo("client-id")),
+				withJsonPath("$.secret", equalTo("client-secret")),
+				withJsonPath("$.redirect_uri", equalTo("https://token.example.com"))
 		)));
 	}
 
 	@Test
 	public void equalsAndHashCode() {
 		EqualsVerifier
-				.forClass(CreateServiceInstanceRouteBindingResponse.class)
-				.withRedefinedSuperclass()
+				.forClass(DashboardClient.class)
 				.verify();
 	}
 }

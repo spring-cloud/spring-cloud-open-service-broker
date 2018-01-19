@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
@@ -78,5 +79,12 @@ public class GetLastServiceOperationResponseTest {
 				withJsonPath("$.state", equalTo(stateString)),
 				withJsonPath("$.description", equalTo("description"))
 		)));
+	}
+
+	@Test
+	public void equalsAndHashCode() {
+		EqualsVerifier
+				.forClass(GetLastServiceOperationResponse.class)
+				.verify();
 	}
 }

@@ -73,18 +73,24 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof CreateServiceInstanceAppBindingResponse)) return false;
 		if (!super.equals(o)) return false;
 		CreateServiceInstanceAppBindingResponse that = (CreateServiceInstanceAppBindingResponse) o;
-		return Objects.equals(credentials, that.credentials) &&
+		return that.canEqual(this) &&
+				Objects.equals(credentials, that.credentials) &&
 				Objects.equals(syslogDrainUrl, that.syslogDrainUrl) &&
 				Objects.equals(volumeMounts, that.volumeMounts);
 	}
 
 	@Override
-	public int hashCode() {
+	public final boolean canEqual(Object other) {
+		return (other instanceof CreateServiceInstanceAppBindingResponse);
+	}
+
+	@Override
+	public final int hashCode() {
 		return Objects.hash(super.hashCode(), credentials, syslogDrainUrl, volumeMounts);
 	}
 

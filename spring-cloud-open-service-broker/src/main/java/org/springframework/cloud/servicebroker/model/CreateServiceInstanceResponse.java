@@ -61,17 +61,23 @@ public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof CreateServiceInstanceResponse)) return false;
 		if (!super.equals(o)) return false;
 		CreateServiceInstanceResponse that = (CreateServiceInstanceResponse) o;
-		return instanceExisted == that.instanceExisted &&
+		return that.canEqual(this) &&
+				instanceExisted == that.instanceExisted &&
 				Objects.equals(dashboardUrl, that.dashboardUrl);
 	}
 
 	@Override
-	public int hashCode() {
+	public boolean canEqual(Object other) {
+		return (other instanceof CreateServiceInstanceResponse);
+	}
+
+	@Override
+	public final int hashCode() {
 		return Objects.hash(super.hashCode(), dashboardUrl, instanceExisted);
 	}
 

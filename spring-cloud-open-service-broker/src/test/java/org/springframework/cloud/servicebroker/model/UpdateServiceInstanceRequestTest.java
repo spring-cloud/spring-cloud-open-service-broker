@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.UpdateServiceInstanceRequest.PreviousValues;
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
@@ -89,5 +91,15 @@ public class UpdateServiceInstanceRequestTest {
 		assertThat(request.getServiceDefinitionId(), equalTo("test-service-id"));
 		assertThat(request.getPlanId(), equalTo("test-plan-id"));
 		assertThat(request.getPreviousValues().getPlanId(), equalTo("previous-plan-id"));
+	}
+
+	@Test
+	public void equalsAndHashCode() {
+		EqualsVerifier
+				.forClass(UpdateServiceInstanceRequest.class)
+				.withRedefinedSuperclass()
+				.suppress(Warning.NONFINAL_FIELDS)
+				.suppress(Warning.TRANSIENT_FIELDS)
+				.verify();
 	}
 }

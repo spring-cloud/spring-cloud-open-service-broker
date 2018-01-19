@@ -157,12 +157,12 @@ public class ServiceDefinition {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof ServiceDefinition)) return false;
 		ServiceDefinition that = (ServiceDefinition) o;
 		return bindable == that.bindable &&
-				planUpdateable == that.planUpdateable &&
+				Objects.equals(planUpdateable, that.planUpdateable) &&
 				Objects.equals(id, that.id) &&
 				Objects.equals(name, that.name) &&
 				Objects.equals(description, that.description) &&
@@ -174,7 +174,7 @@ public class ServiceDefinition {
 	}
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return Objects.hash(id, name, description, bindable, planUpdateable,
 				plans, tags, metadata, requires, dashboardClient);
 	}

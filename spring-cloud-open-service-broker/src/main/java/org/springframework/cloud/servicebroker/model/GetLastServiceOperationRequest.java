@@ -79,7 +79,7 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof GetLastServiceOperationRequest)) return false;
 		if (!super.equals(o)) return false;
@@ -91,7 +91,12 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	}
 
 	@Override
-	public int hashCode() {
+	public final boolean canEqual(Object other) {
+		return (other instanceof GetLastServiceOperationRequest);
+	}
+
+	@Override
+	public final int hashCode() {
 		return Objects.hash(super.hashCode(), serviceInstanceId, serviceDefinitionId, planId, operation);
 	}
 

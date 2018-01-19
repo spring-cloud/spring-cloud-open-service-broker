@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 
@@ -72,5 +73,12 @@ public class BindResourceTest {
 		assertThat(bindResource.getProperty("property1"), equalTo(1));
 		assertThat(bindResource.getProperty("property2"), equalTo("value2"));
 		assertThat(bindResource.getProperty("property3"), equalTo(true));
+	}
+
+	@Test
+	public void equalsAndHashCode() {
+		EqualsVerifier
+				.forClass(BindResource.class)
+				.verify();
 	}
 }

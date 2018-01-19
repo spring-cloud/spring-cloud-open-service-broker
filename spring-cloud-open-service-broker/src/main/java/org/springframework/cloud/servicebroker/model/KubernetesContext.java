@@ -47,7 +47,7 @@ public final class KubernetesContext extends Context {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof KubernetesContext)) return false;
 		if (!super.equals(o)) return false;
@@ -56,7 +56,12 @@ public final class KubernetesContext extends Context {
 	}
 
 	@Override
-	public int hashCode() {
+	public final boolean canEqual(Object other) {
+		return (other instanceof KubernetesContext);
+	}
+
+	@Override
+	public final int hashCode() {
 		return Objects.hash(super.hashCode(), namespace);
 	}
 

@@ -82,18 +82,24 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof DeleteServiceInstanceRequest)) return false;
 		if (!super.equals(o)) return false;
 		DeleteServiceInstanceRequest that = (DeleteServiceInstanceRequest) o;
-		return Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
+		return that.canEqual(this) &&
+				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
 				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
 				Objects.equals(planId, that.planId);
 	}
 
 	@Override
-	public int hashCode() {
+	public final boolean canEqual(Object other) {
+		return (other instanceof DeleteServiceInstanceRequest);
+	}
+
+	@Override
+	public final int hashCode() {
 		return Objects.hash(super.hashCode(), serviceInstanceId, serviceDefinitionId, planId);
 	}
 

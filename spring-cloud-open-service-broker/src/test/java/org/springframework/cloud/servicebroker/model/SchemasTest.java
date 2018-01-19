@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 
@@ -114,4 +115,10 @@ public class SchemasTest {
 		)));
 	}
 
+	@Test
+	public void equalsAndHashCode() {
+		EqualsVerifier
+				.forClass(Schemas.class)
+				.verify();
+	}
 }

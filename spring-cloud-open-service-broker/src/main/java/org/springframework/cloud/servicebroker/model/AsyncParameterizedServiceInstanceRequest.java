@@ -67,8 +67,14 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 		if (!(o instanceof AsyncParameterizedServiceInstanceRequest)) return false;
 		if (!super.equals(o)) return false;
 		AsyncParameterizedServiceInstanceRequest that = (AsyncParameterizedServiceInstanceRequest) o;
-		return Objects.equals(parameters, that.parameters) &&
+		return that.canEqual(this) &&
+				Objects.equals(parameters, that.parameters) &&
 				Objects.equals(context, that.context);
+	}
+
+	@Override
+	public boolean canEqual(Object other) {
+		return (other instanceof AsyncParameterizedServiceInstanceRequest);
 	}
 
 	@Override

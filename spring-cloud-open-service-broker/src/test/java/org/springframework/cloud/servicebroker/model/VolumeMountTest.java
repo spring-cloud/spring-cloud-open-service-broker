@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 
@@ -106,5 +107,12 @@ public class VolumeMountTest {
 				withJsonPath("$.device.mount_config.config1", equalTo("value1")),
 				withJsonPath("$.device.mount_config.config2", equalTo(2))
 		)));
+	}
+
+	@Test
+	public void equalsAndHashCode() {
+		EqualsVerifier
+				.forClass(VolumeMount.class)
+				.verify();
 	}
 }

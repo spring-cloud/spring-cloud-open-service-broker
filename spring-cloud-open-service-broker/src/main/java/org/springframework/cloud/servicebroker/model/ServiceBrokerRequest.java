@@ -83,9 +83,14 @@ public abstract class ServiceBrokerRequest {
 		if (this == o) return true;
 		if (!(o instanceof ServiceBrokerRequest)) return false;
 		ServiceBrokerRequest that = (ServiceBrokerRequest) o;
-		return Objects.equals(cfInstanceId, that.cfInstanceId) &&
+		return that.canEqual(this) &&
+				Objects.equals(cfInstanceId, that.cfInstanceId) &&
 				Objects.equals(apiInfoLocation, that.apiInfoLocation) &&
 				Objects.equals(originatingIdentity, that.originatingIdentity);
+	}
+
+	public boolean canEqual(Object other) {
+		return (other instanceof ServiceBrokerRequest);
 	}
 
 	@Override

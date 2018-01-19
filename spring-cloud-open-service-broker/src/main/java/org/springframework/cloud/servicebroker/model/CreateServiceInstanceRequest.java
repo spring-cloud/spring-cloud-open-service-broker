@@ -133,12 +133,13 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof CreateServiceInstanceRequest)) return false;
 		if (!super.equals(o)) return false;
 		CreateServiceInstanceRequest that = (CreateServiceInstanceRequest) o;
-		return Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
+		return that.canEqual(this) &&
+				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
 				Objects.equals(planId, that.planId) &&
 				Objects.equals(organizationGuid, that.organizationGuid) &&
 				Objects.equals(spaceGuid, that.spaceGuid) &&
@@ -146,8 +147,14 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(super.hashCode(), serviceDefinitionId, planId, organizationGuid, spaceGuid);
+	public boolean canEqual(Object other) {
+		return (other instanceof CreateServiceInstanceRequest);
+	}
+
+	@Override
+	public final int hashCode() {
+		return Objects.hash(super.hashCode(), serviceDefinitionId, planId,
+				organizationGuid, spaceGuid, serviceInstanceId);
 	}
 
 	@Override

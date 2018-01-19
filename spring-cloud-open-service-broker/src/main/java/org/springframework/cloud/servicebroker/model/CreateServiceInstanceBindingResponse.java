@@ -51,7 +51,12 @@ public class CreateServiceInstanceBindingResponse {
 		if (this == o) return true;
 		if (!(o instanceof CreateServiceInstanceBindingResponse)) return false;
 		CreateServiceInstanceBindingResponse that = (CreateServiceInstanceBindingResponse) o;
-		return bindingExisted == that.bindingExisted;
+		return that.canEqual(this) &&
+				bindingExisted == that.bindingExisted;
+	}
+
+	public boolean canEqual(Object other) {
+		return (other instanceof CreateServiceInstanceBindingResponse);
 	}
 
 	@Override
