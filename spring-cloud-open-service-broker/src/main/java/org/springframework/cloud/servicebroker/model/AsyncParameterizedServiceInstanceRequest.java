@@ -86,8 +86,8 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	public String toString() {
 		return super.toString() +
 				"AsyncParameterizedServiceInstanceRequest{" +
-				"context=" + context +
-				", asyncAccepted=" + asyncAccepted +
+				"parameters=" + parameters +
+				", context=" + context +
 				'}';
 	}
 }

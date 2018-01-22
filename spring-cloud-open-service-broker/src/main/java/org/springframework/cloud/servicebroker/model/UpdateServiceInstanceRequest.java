@@ -122,7 +122,8 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
 				Objects.equals(planId, that.planId) &&
 				Objects.equals(previousValues, that.previousValues) &&
-				Objects.equals(serviceInstanceId, that.serviceInstanceId);
+				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
+				Objects.equals(serviceDefinition, that.serviceDefinition);
 	}
 
 	@Override
@@ -132,7 +133,8 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(super.hashCode(), serviceDefinitionId, planId, previousValues, serviceInstanceId);
+		return Objects.hash(super.hashCode(), serviceDefinitionId, planId, previousValues,
+				serviceInstanceId, serviceDefinition);
 	}
 
 	@Override

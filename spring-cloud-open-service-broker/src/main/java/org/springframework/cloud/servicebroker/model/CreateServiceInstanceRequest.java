@@ -143,7 +143,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 				Objects.equals(planId, that.planId) &&
 				Objects.equals(organizationGuid, that.organizationGuid) &&
 				Objects.equals(spaceGuid, that.spaceGuid) &&
-				Objects.equals(serviceInstanceId, that.serviceInstanceId);
+				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
+				Objects.equals(serviceDefinition, that.serviceDefinition);
 	}
 
 	@Override
@@ -154,7 +155,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@Override
 	public final int hashCode() {
 		return Objects.hash(super.hashCode(), serviceDefinitionId, planId,
-				organizationGuid, spaceGuid, serviceInstanceId);
+				organizationGuid, spaceGuid, serviceInstanceId, serviceDefinition);
 	}
 
 	@Override

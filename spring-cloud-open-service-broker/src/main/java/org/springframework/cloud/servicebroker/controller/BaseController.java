@@ -157,11 +157,11 @@ public class BaseController {
 	public ResponseEntity<ErrorMessage> handleException(MethodArgumentNotValidException ex) {
 		log.debug("Unprocessable request received: ", ex);
 		BindingResult result = ex.getBindingResult();
-		String message = "Missing required fields:";
+		StringBuilder message = new StringBuilder("Missing required fields:");
 		for (FieldError error : result.getFieldErrors()) {
-			message += " " + error.getField();
+			message.append(" ").append(error.getField());
 		}
-		return getErrorResponse(message, HttpStatus.UNPROCESSABLE_ENTITY);
+		return getErrorResponse(message.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceBrokerAsyncRequiredException.class)

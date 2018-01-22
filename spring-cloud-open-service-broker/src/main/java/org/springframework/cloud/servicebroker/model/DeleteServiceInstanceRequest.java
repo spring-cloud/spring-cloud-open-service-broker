@@ -90,7 +90,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 		return that.canEqual(this) &&
 				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
 				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
-				Objects.equals(planId, that.planId);
+				Objects.equals(planId, that.planId) &&
+				Objects.equals(serviceDefinition, that.serviceDefinition);
 	}
 
 	@Override
@@ -100,7 +101,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(super.hashCode(), serviceInstanceId, serviceDefinitionId, planId);
+		return Objects.hash(super.hashCode(), serviceInstanceId,
+				serviceDefinitionId, planId, serviceDefinition);
 	}
 
 	@Override
