@@ -27,7 +27,7 @@ public class ServiceBrokerApiVersionException extends RuntimeException {
 	public ServiceBrokerApiVersionException(String expectedVersion, String providedVersion) {
 		super("The provided service broker API version is not supported: "
 				+ "expected version=" + expectedVersion
-				+ ", provided version = " + providedVersion);
+				+ ", provided version=" + providedVersion);
 	}
 
 }

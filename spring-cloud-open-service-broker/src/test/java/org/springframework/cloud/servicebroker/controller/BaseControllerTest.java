@@ -1,0 +1,191 @@
+/*
+ * Copyright 2002-2018 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.springframework.cloud.servicebroker.controller;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
+import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
+import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
+import org.springframework.cloud.servicebroker.model.AsyncRequiredErrorMessage;
+import org.springframework.cloud.servicebroker.model.ErrorMessage;
+import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.MapBindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
+import java.util.Base64;
+import java.util.HashMap;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
+import static org.springframework.cloud.servicebroker.model.AsyncRequiredErrorMessage.ASYNC_REQUIRED_ERROR;
+
+public class BaseControllerTest {
+	private BaseController controller;
+
+	@Before
+	public void setUp() {
+		controller = new BaseController(null);
+	}
+
+	@Test(expected = HttpMessageNotReadableException.class)
+	public void originatingIdentityWithNoPropertiesThrowsException() {
+		ServiceBrokerRequest request = new ServiceBrokerRequest() {
+		};
+
+		TestBaseController controller = new TestBaseController(request);
+
+		controller.testOriginatingIdentity("platform");
+	}
+
+	@Test(expected = HttpMessageNotReadableException.class)
+	public void originatingIdentityWithNonEncodedPropertiesThrowsException() {
+		ServiceBrokerRequest request = new ServiceBrokerRequest() {
+		};
+
+		TestBaseController controller = new TestBaseController(request);
+
+		controller.testOriginatingIdentity("platform some-properties");
+	}
+
+	@Test(expected = HttpMessageNotReadableException.class)
+	public void originatingIdentityWithNonJsonPropertiesThrowsException() {
+		ServiceBrokerRequest request = new ServiceBrokerRequest() {
+		};
+
+		TestBaseController controller = new TestBaseController(request);
+
+		String encodedProperties = Base64.getEncoder().encodeToString("some-properties".getBytes());
+
+		controller.testOriginatingIdentity("platform " + encodedProperties);
+	}
+
+	@Test
+	public void serviceBrokerApiVersionExceptionGivesExpectedStatus() {
+		ServiceBrokerApiVersionException exception =
+				new ServiceBrokerApiVersionException("expected-version", "actual-version");
+
+		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
+
+		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.PRECONDITION_FAILED));
+		assertThat(responseEntity.getBody().getMessage(), containsString("expected version=expected-version"));
+		assertThat(responseEntity.getBody().getMessage(), containsString("provided version=actual-version"));
+	}
+
+	@Test
+	public void serviceInstanceDoesNotExistExceptionGivesExpectedStatus() {
+		ServiceInstanceDoesNotExistException exception =
+				new ServiceInstanceDoesNotExistException("service-instance-id");
+
+		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
+
+		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.UNPROCESSABLE_ENTITY));
+		assertThat(responseEntity.getBody().getMessage(), containsString("id=service-instance-id"));
+	}
+
+	@Test
+	public void serviceDefinitionDoesNotExistExceptionGivesExpectedStatus() {
+		ServiceDefinitionDoesNotExistException exception =
+				new ServiceDefinitionDoesNotExistException("service-definition-id");
+
+		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
+
+		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.UNPROCESSABLE_ENTITY));
+		assertThat(responseEntity.getBody().getMessage(), containsString("id=service-definition-id"));
+	}
+
+	@Test
+	public void serviceBrokerAsyncRequiredExceptionGivesExpectedStatus() {
+		ServiceBrokerAsyncRequiredException exception =
+				new ServiceBrokerAsyncRequiredException("test message");
+
+		ResponseEntity<AsyncRequiredErrorMessage> responseEntity = controller.handleException(exception);
+
+		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.UNPROCESSABLE_ENTITY));
+		assertThat(responseEntity.getBody().getMessage(), containsString("test message"));
+		assertThat(responseEntity.getBody().getError(), equalTo(ASYNC_REQUIRED_ERROR));
+	}
+
+	@Test
+	public void serviceBrokerInvalidParametersExceptionGivesExpectedStatus() {
+		ServiceBrokerInvalidParametersException exception =
+				new ServiceBrokerInvalidParametersException("test message");
+
+		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
+
+		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.UNPROCESSABLE_ENTITY));
+		assertThat(responseEntity.getBody().getMessage(), containsString("test message"));
+	}
+
+	@Test
+	public void httpMessageNotReadableExceptionGivesExpectedStatus() {
+		HttpMessageNotReadableException exception =
+				new HttpMessageNotReadableException("test message");
+
+		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
+
+		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.UNPROCESSABLE_ENTITY));
+		assertThat(responseEntity.getBody().getMessage(), containsString("test message"));
+	}
+
+	@Test
+	public void unknownExceptionGivesExpectedStatus() {
+		Exception exception = new Exception("test message");
+
+		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
+
+		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.INTERNAL_SERVER_ERROR));
+		assertThat(responseEntity.getBody().getMessage(), containsString("test message"));
+	}
+
+	@Test
+	public void methodArgumentNotValidExceptionGivesExpectedStatus() {
+		BindingResult bindingResult = new MapBindingResult(new HashMap<>(), "objectName");
+		bindingResult.addError(new FieldError("objectName", "field1", "message"));
+		bindingResult.addError(new FieldError("objectName", "field2", "message"));
+
+		MethodArgumentNotValidException exception =
+				new MethodArgumentNotValidException(null, bindingResult);
+
+		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
+
+		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.UNPROCESSABLE_ENTITY));
+		assertThat(responseEntity.getBody().getMessage(), containsString("field1"));
+		assertThat(responseEntity.getBody().getMessage(), containsString("field2"));
+	}
+
+	private static class TestBaseController extends BaseController {
+		private final ServiceBrokerRequest request;
+
+		public TestBaseController(ServiceBrokerRequest request) {
+			super(null);
+			this.request = request;
+		}
+
+		public void testOriginatingIdentity(String originatingIdentityString) {
+			setCommonRequestFields(request, "platform-instance-id", "api-info-location", originatingIdentityString);
+		}
+	}
+}

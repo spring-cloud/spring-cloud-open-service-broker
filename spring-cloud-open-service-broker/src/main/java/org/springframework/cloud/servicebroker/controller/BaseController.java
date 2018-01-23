@@ -183,7 +183,7 @@ public class BaseController {
 		return getErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	public ResponseEntity<ErrorMessage> getErrorResponse(String message, HttpStatus status) {
+	protected ResponseEntity<ErrorMessage> getErrorResponse(String message, HttpStatus status) {
 		return new ResponseEntity<>(new ErrorMessage(message), status);
 	}
 }

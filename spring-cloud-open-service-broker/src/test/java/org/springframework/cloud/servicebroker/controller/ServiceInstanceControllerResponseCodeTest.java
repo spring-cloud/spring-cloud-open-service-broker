@@ -266,13 +266,13 @@ public class ServiceInstanceControllerResponseCodeTest {
 	@Test
 	public void serviceInstanceExistsExceptionGivesExpectedStatus() {
 		ServiceInstanceExistsException exception =
-				new ServiceInstanceExistsException("service-instance-id", "test exception");
+				new ServiceInstanceExistsException("service-instance-id", "service-definition-id");
 
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
 		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.CONFLICT));
-		assertThat(responseEntity.getBody().getMessage(), containsString("service-instance-id"));
-		assertThat(responseEntity.getBody().getMessage(), containsString("test exception"));
+		assertThat(responseEntity.getBody().getMessage(), containsString("serviceInstanceId=service-instance-id"));
+		assertThat(responseEntity.getBody().getMessage(), containsString("serviceDefinitionId=service-definition-id"));
 	}
 
 	@Test
