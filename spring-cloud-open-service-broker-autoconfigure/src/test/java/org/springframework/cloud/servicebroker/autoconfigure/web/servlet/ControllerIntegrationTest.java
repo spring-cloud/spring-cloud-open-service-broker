@@ -25,6 +25,7 @@ import org.mockito.Mock;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.model.Context;
+import org.springframework.cloud.servicebroker.model.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.Base64Utils;
@@ -47,6 +48,11 @@ public abstract class ControllerIntegrationTest {
 	protected void setupCatalogService(String serviceDefinitionId) {
 		when(catalogService.getServiceDefinition(eq(serviceDefinitionId)))
 				.thenReturn(ServiceFixture.getSimpleService());
+	}
+
+	protected void setupCatalogService(String serviceDefinitionId, ServiceDefinition serviceDefinition) {
+		when(catalogService.getServiceDefinition(eq(serviceDefinitionId)))
+				.thenReturn(serviceDefinition);
 	}
 
 	protected String buildOriginatingIdentityHeader() throws JsonProcessingException {

@@ -16,8 +16,6 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -51,13 +49,13 @@ public class ApiVersionInterceptorTest {
 	}
 
 	@Test
-	public void noBrokerApiVersionConfigured() throws IOException, ServletException, ServiceBrokerApiVersionException {
+	public void noBrokerApiVersionConfigured() {
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(null);
 		assertTrue(interceptor.preHandle(request, response, null));
 	}
 
 	@Test
-	public void anyVersionAccepted() throws IOException, ServletException, ServiceBrokerApiVersionException {
+	public void anyVersionAccepted() {
 		String header = "header";
 		String version = BrokerApiVersion.API_VERSION_ANY;
 		when(brokerApiVersion.getBrokerApiVersionHeader()).thenReturn(header);
@@ -70,7 +68,7 @@ public class ApiVersionInterceptorTest {
 	}
 
 	@Test
-	public void versionsMatch() throws IOException, ServletException, ServiceBrokerApiVersionException {
+	public void versionsMatch() {
 		String header = "header";
 		String version = "version";
 		when(brokerApiVersion.getBrokerApiVersionHeader()).thenReturn(header);
@@ -83,7 +81,7 @@ public class ApiVersionInterceptorTest {
 	}
 
 	@Test(expected = ServiceBrokerApiVersionException.class)
-	public void versionMismatch() throws IOException, ServletException, ServiceBrokerApiVersionException {
+	public void versionMismatch() {
 		String header = "header";
 		String version = "version";
 		String notVersion = "not_version";

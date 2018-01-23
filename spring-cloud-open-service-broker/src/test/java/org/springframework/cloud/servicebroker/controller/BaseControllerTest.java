@@ -26,6 +26,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotE
 import org.springframework.cloud.servicebroker.model.AsyncRequiredErrorMessage;
 import org.springframework.cloud.servicebroker.model.ErrorMessage;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
+import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -34,6 +35,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.MapBindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import java.lang.reflect.Method;
 import java.util.Base64;
 import java.util.HashMap;
 
@@ -161,13 +163,16 @@ public class BaseControllerTest {
 	}
 
 	@Test
-	public void methodArgumentNotValidExceptionGivesExpectedStatus() {
+	public void methodArgumentNotValidExceptionGivesExpectedStatus() throws Exception {
 		BindingResult bindingResult = new MapBindingResult(new HashMap<>(), "objectName");
 		bindingResult.addError(new FieldError("objectName", "field1", "message"));
 		bindingResult.addError(new FieldError("objectName", "field2", "message"));
 
+		Method method = this.getClass().getMethod("setUp", null);
+		MethodParameter parameter = new MethodParameter(method, -1);
+		
 		MethodArgumentNotValidException exception =
-				new MethodArgumentNotValidException(null, bindingResult);
+				new MethodArgumentNotValidException(parameter, bindingResult);
 
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 

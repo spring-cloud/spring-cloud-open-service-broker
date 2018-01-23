@@ -21,20 +21,30 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.lang.Nullable;
 
 import static org.junit.Assert.fail;
 
 public class DataFixture {
-	public static String toJson(Object object) throws IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		return mapper.writeValueAsString(object);
+	public static String toJson(Object object) {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			return mapper.writeValueAsString(object);
+		} catch (JsonProcessingException e) {
+			fail("Error creating JSON string from object: " + e);
+			throw new IllegalStateException();
+		}
 	}
 
-	public static <T> T fromJson(String json, Class<T> contentType) throws IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		return mapper.readerFor(contentType).readValue(json);
+	public static <T> T fromJson(String json, Class<T> contentType) {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			return mapper.readerFor(contentType).readValue(json);
+		} catch (IOException e) {
+			fail("Error creating object from JSON: " + e);
+			throw new IllegalStateException();
+		}
 	}
 
 	public static <T> T readTestDataFile(String filename, Class<T> contentType) {
