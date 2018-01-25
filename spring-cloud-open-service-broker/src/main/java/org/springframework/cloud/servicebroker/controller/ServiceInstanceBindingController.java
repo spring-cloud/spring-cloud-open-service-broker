@@ -75,7 +75,7 @@ public class ServiceInstanceBindingController extends BaseController {
 														  @Valid @RequestBody CreateServiceInstanceBindingRequest request) {
 		request.setServiceInstanceId(serviceInstanceId);
 		request.setBindingId(bindingId);
-		request.setServiceDefinition(getServiceDefinition(request.getServiceDefinitionId()));
+		request.setServiceDefinition(getRequiredServiceDefinition(request.getServiceDefinitionId()));
 		setCommonRequestFields(request, pathVariables.get("cfInstanceId"), apiInfoLocation, originatingIdentityString);
 
 		log.debug("Creating a service instance binding: request={}", request);

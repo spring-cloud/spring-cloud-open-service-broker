@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
@@ -28,8 +29,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
 import org.springframework.cloud.servicebroker.model.Catalog;
 import org.springframework.cloud.servicebroker.model.Plan;
+import org.springframework.cloud.servicebroker.model.Schemas;
 import org.springframework.cloud.servicebroker.model.ServiceDefinition;
-import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture.PlanFixture;
 import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.MediaType;
@@ -60,14 +61,17 @@ public class CatalogControllerIntegrationTest {
 
 	@Mock
 	private CatalogService catalogService;
+	private ServiceDefinition serviceDefinition;
 
 	@Before
 	public void setup() {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
 
+		serviceDefinition = ServiceFixture.getSimpleService();
+
 		Catalog catalog = Catalog.builder()
-				.serviceDefinitions(ServiceFixture.getSimpleService())
+				.serviceDefinitions(serviceDefinition)
 				.build();
 
 		when(catalogService.getCatalog()).thenReturn(catalog);
@@ -93,35 +97,35 @@ public class CatalogControllerIntegrationTest {
 
 	@SuppressWarnings("unchecked")
 	private void assertResult(ResultActions result) throws Exception {
-		ServiceDefinition service = ServiceFixture.getSimpleService();
-		Plan[] plans = PlanFixture.getAllPlans();
+		List<Plan> plans = serviceDefinition.getPlans();
+		Schemas schemas = plans.get(1).getSchemas();
 
-		Map<String, Object> createServiceInstanceSchema = plans[1].getSchemas().getServiceInstanceSchema().getCreateMethodSchema().getParameters();
-		Map<String, Object> updateServiceInstanceSchema = plans[1].getSchemas().getServiceInstanceSchema().getUpdateMethodSchema().getParameters();
-		Map<String, Object> createServiceBindingSchema = plans[1].getSchemas().getServiceBindingSchema().getCreateMethodSchema().getParameters();
+		Map<String, Object> createServiceInstanceSchema = schemas.getServiceInstanceSchema().getCreateMethodSchema().getParameters();
+		Map<String, Object> updateServiceInstanceSchema = schemas.getServiceInstanceSchema().getUpdateMethodSchema().getParameters();
+		Map<String, Object> createServiceBindingSchema = schemas.getServiceBindingSchema().getCreateMethodSchema().getParameters();
 
 		result
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.services", hasSize(1)))
-				.andExpect(jsonPath("$.services[*].id", contains(service.getId())))
-				.andExpect(jsonPath("$.services[*].name", contains(service.getName())))
-				.andExpect(jsonPath("$.services[*].description", contains(service.getDescription())))
-				.andExpect(jsonPath("$.services[*].bindable", contains(service.isBindable())))
-				.andExpect(jsonPath("$.services[*].plan_updateable", contains(service.isPlanUpdateable())))
+				.andExpect(jsonPath("$.services[*].id", contains(serviceDefinition.getId())))
+				.andExpect(jsonPath("$.services[*].name", contains(serviceDefinition.getName())))
+				.andExpect(jsonPath("$.services[*].description", contains(serviceDefinition.getDescription())))
+				.andExpect(jsonPath("$.services[*].bindable", contains(serviceDefinition.isBindable())))
+				.andExpect(jsonPath("$.services[*].plan_updateable", contains(serviceDefinition.isPlanUpdateable())))
 				.andExpect(jsonPath("$.services[*].requires[*]", containsInAnyOrder(
 						SERVICE_REQUIRES_SYSLOG_DRAIN.toString(),
 						SERVICE_REQUIRES_ROUTE_FORWARDING.toString())
 				))
 				.andExpect(jsonPath("$.services[*].plans[*]", hasSize(2)))
-				.andExpect(jsonPath("$.services[*].plans[*].id", containsInAnyOrder(plans[0].getId(), plans[1].getId())))
-				.andExpect(jsonPath("$.services[*].plans[*].name", containsInAnyOrder(plans[0].getName(), plans[1].getName())))
-				.andExpect(jsonPath("$.services[*].plans[*].description", containsInAnyOrder(plans[0].getDescription(), plans[1].getDescription())))
-				.andExpect(jsonPath("$.services[*].plans[*].metadata", contains(plans[1].getMetadata())))
+				.andExpect(jsonPath("$.services[*].plans[*].id", containsInAnyOrder(plans.get(0).getId(), plans.get(1).getId())))
+				.andExpect(jsonPath("$.services[*].plans[*].name", containsInAnyOrder(plans.get(0).getName(), plans.get(1).getName())))
+				.andExpect(jsonPath("$.services[*].plans[*].description", containsInAnyOrder(plans.get(0).getDescription(), plans.get(1).getDescription())))
+				.andExpect(jsonPath("$.services[*].plans[*].metadata", contains(plans.get(1).getMetadata())))
 				.andExpect(jsonPath("$.services[*].plans[*].bindable", hasSize(1)))
-				.andExpect(jsonPath("$.services[*].plans[*].bindable", contains(plans[1].isBindable())))
-				.andExpect(jsonPath("$.services[*].plans[*].free", containsInAnyOrder(plans[0].isFree(), plans[1].isFree())))
+				.andExpect(jsonPath("$.services[*].plans[*].bindable", contains(plans.get(1).isBindable())))
+				.andExpect(jsonPath("$.services[*].plans[*].free", containsInAnyOrder(plans.get(0).isFree(), plans.get(1).isFree())))
 				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_instance.create.parameters", contains(createServiceInstanceSchema)))
 				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_instance.update.parameters", contains(updateServiceInstanceSchema)))
 				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_binding.create.parameters", contains(createServiceBindingSchema)));

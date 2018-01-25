@@ -19,24 +19,18 @@ package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 import org.junit.Before;
 
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
-import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
-import org.springframework.cloud.servicebroker.model.ServiceDefinition;
-import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture.ServiceFixture;
-import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture.ServiceInstanceBindingFixture;
+import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import static org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture.ServiceInstanceBindingFixture.SERVICE_INSTANCE_BINDING_ID;
-import static org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture.ServiceInstanceBindingFixture.SERVICE_INSTANCE_ID;
-
 public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIntegrationTest {
+	public static final String SERVICE_INSTANCE_BINDING_ID = "service-instance-binding-id";
+	
 	protected static final String SERVICE_INSTANCES_ROOT_PATH = "/v2/service_instances/";
 
 	protected UriComponentsBuilder uriBuilder;
 	protected UriComponentsBuilder cfInstanceIdUriBuilder;
 
-	protected CreateServiceInstanceBindingRequest createRequest;
-	protected DeleteServiceInstanceBindingRequest deleteRequest;
-	protected ServiceDefinition serviceDefinition;
+	protected String createRequestBody;
 
 	@Before
 	public void setupBase() {
@@ -45,11 +39,12 @@ public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIn
 		cfInstanceIdUriBuilder = UriComponentsBuilder.fromPath("/").path(CF_INSTANCE_ID).path(SERVICE_INSTANCES_ROOT_PATH)
 				.pathSegment(SERVICE_INSTANCE_ID, "service_bindings", SERVICE_INSTANCE_BINDING_ID);
 
-		serviceDefinition = ServiceFixture.getSimpleService();
+		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder()
+				.serviceDefinitionId(serviceDefinition.getId())
+				.planId("standard")
+				.build();
 
-		createRequest = ServiceInstanceBindingFixture.buildCreateAppBindingRequest();
-
-		deleteRequest = ServiceInstanceBindingFixture.buildDeleteServiceInstanceBindingRequest();
+		createRequestBody = DataFixture.toJson(request);
 	}
 
 	protected String buildCreateUrl(Boolean withCfInstanceId) {

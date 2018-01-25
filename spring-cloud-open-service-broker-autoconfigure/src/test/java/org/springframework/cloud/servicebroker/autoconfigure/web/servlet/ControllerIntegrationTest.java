@@ -21,15 +21,21 @@ import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
 import org.mockito.Mock;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.model.Context;
+import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.Base64Utils;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -41,17 +47,28 @@ public abstract class ControllerIntegrationTest {
 	protected static final String ORIGINATING_EMAIL_KEY = "email";
 	protected static final String ORIGINATING_EMAIL_VALUE = "user@example.com";
 	protected static final String CF_INSTANCE_ID = "cf-abc";
+	protected static final String SERVICE_INSTANCE_ID = "service-instance-one-id";
 
 	@Mock
 	protected CatalogService catalogService;
 
-	protected void setupCatalogService(String serviceDefinitionId) {
-		when(catalogService.getServiceDefinition(eq(serviceDefinitionId)))
-				.thenReturn(ServiceFixture.getSimpleService());
+	protected ServiceDefinition serviceDefinition;
+
+	@Before
+	public void setUpControllerIntegrationTest() {
+		serviceDefinition = ServiceFixture.getSimpleService();
+
+		when(catalogService.getServiceDefinition(eq(serviceDefinition.getId())))
+				.thenReturn(serviceDefinition);
 	}
 
-	protected void setupCatalogService(String serviceDefinitionId, ServiceDefinition serviceDefinition) {
-		when(catalogService.getServiceDefinition(eq(serviceDefinitionId)))
+	protected void setupCatalogService() {
+		when(catalogService.getServiceDefinition(eq(this.serviceDefinition.getId())))
+				.thenReturn(this.serviceDefinition);
+	}
+
+	protected void setupCatalogService(ServiceDefinition serviceDefinition) {
+		when(catalogService.getServiceDefinition(eq(serviceDefinition.getId())))
 				.thenReturn(serviceDefinition);
 	}
 
@@ -65,11 +82,20 @@ public abstract class ControllerIntegrationTest {
 		return ORIGINATING_IDENTITY_PLATFORM + " " + encodedProperties;
 	}
 
-	protected Context buildOriginatingIdentity() {
-		return Context.builder()
-				.platform(ORIGINATING_IDENTITY_PLATFORM)
-				.property(ORIGINATING_USER_KEY, ORIGINATING_USER_VALUE)
-				.property(ORIGINATING_EMAIL_KEY, ORIGINATING_EMAIL_VALUE)
-				.build();
+	protected void assertHeaderValuesSet(ServiceBrokerRequest actualRequest) {
+		assertThat(actualRequest.getCfInstanceId(), equalTo(CF_INSTANCE_ID));
+		assertThat(actualRequest.getApiInfoLocation(), equalTo(API_INFO_LOCATION));
+
+		assertThat(actualRequest.getOriginatingIdentity(), notNullValue());
+		Context identity = actualRequest.getOriginatingIdentity();
+		assertThat(identity.getPlatform(), equalTo(ORIGINATING_IDENTITY_PLATFORM));
+		assertThat(identity.getProperty(ORIGINATING_USER_KEY), equalTo(ORIGINATING_USER_VALUE));
+		assertThat(identity.getProperty(ORIGINATING_EMAIL_KEY), equalTo(ORIGINATING_EMAIL_VALUE));
+	}
+
+	protected void assertHeaderValuesNotSet(ServiceBrokerRequest actualRequest) {
+		assertNull(actualRequest.getApiInfoLocation());
+		assertNull(actualRequest.getCfInstanceId());
+		assertNull(actualRequest.getOriginatingIdentity());
 	}
 }

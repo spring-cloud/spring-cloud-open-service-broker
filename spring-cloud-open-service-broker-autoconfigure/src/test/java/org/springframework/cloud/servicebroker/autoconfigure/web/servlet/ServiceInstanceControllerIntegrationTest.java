@@ -25,7 +25,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceController;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
@@ -33,7 +32,6 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotE
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.AsyncRequiredErrorMessage;
-import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceRequest;
@@ -41,8 +39,6 @@ import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceRespon
 import org.springframework.cloud.servicebroker.model.GetLastServiceOperationRequest;
 import org.springframework.cloud.servicebroker.model.GetLastServiceOperationResponse;
 import org.springframework.cloud.servicebroker.model.OperationState;
-import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
-import org.springframework.cloud.servicebroker.model.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.UpdateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
@@ -55,10 +51,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -77,8 +71,6 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	private static final String SERVICE_INSTANCES_ROOT_PATH = "/v2/service_instances/";
 
-	private static final String SERVICE_INSTANCE_ID = "service-instance-id";
-
 	private MockMvc mockMvc;
 
 	@InjectMocks
@@ -86,8 +78,6 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Mock
 	private ServiceInstanceService serviceInstanceService;
-
-	private ServiceDefinition serviceDefinition;
 
 	private UriComponentsBuilder uriBuilder;
 	private UriComponentsBuilder cfInstanceIdUriBuilder;
@@ -104,8 +94,6 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		uriBuilder = UriComponentsBuilder.fromPath(SERVICE_INSTANCES_ROOT_PATH);
 		cfInstanceIdUriBuilder = UriComponentsBuilder.fromPath("/").path(CF_INSTANCE_ID).path(SERVICE_INSTANCES_ROOT_PATH);
 
-		serviceDefinition = ServiceFixture.getSimpleService();
-
 		createRequestBody = DataFixture.toJson(CreateServiceInstanceRequest.builder()
 				.serviceDefinitionId(serviceDefinition.getId())
 				.planId("standard")
@@ -119,7 +107,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void createServiceInstanceWithAsyncAndHeadersSucceeds() throws Exception {
-		setupCatalogService(serviceDefinition.getId(), serviceDefinition);
+		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
 				.async(true)
@@ -140,7 +128,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void createServiceInstanceWithoutAsyncAndHeadersSucceeds() throws Exception {
-		setupCatalogService(serviceDefinition.getId(), serviceDefinition);
+		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
 				.build());
@@ -158,7 +146,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void createServiceInstanceWithExistingInstanceSucceeds() throws Exception {
-		setupCatalogService(serviceDefinition.getId(), serviceDefinition);
+		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
 				.instanceExisted(true)
@@ -173,7 +161,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void createServiceInstanceWithUnknownServiceDefinitionIdFails() throws Exception {
-		setupCatalogService(serviceDefinition.getId(), null);
+		setupCatalogService(null);
 
 		mockMvc.perform(put(buildCreateUpdateUrl())
 				.content(createRequestBody)
@@ -185,7 +173,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void createDuplicateServiceInstanceIdFails() throws Exception {
-		setupCatalogService(serviceDefinition.getId(), serviceDefinition);
+		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceInstanceExistsException(SERVICE_INSTANCE_ID, serviceDefinition.getId()));
 
@@ -199,7 +187,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void createServiceInstanceWithAsyncRequiredFails() throws Exception {
-		setupCatalogService(serviceDefinition.getId(), serviceDefinition);
+		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceBrokerAsyncRequiredException("async required description"));
 
@@ -214,7 +202,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void createServiceInstanceWithInvalidParametersFails() throws Exception {
-		setupCatalogService(serviceDefinition.getId(), serviceDefinition);
+		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceBrokerInvalidParametersException("invalid parameters description"));
 
@@ -257,7 +245,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void deleteServiceInstanceWithAsyncAndHeadersSucceeds() throws Exception {
-		setupCatalogService(serviceDefinition.getId(), serviceDefinition);
+		setupCatalogService();
 
 		setupServiceInstanceService(DeleteServiceInstanceResponse.builder()
 				.async(true)
@@ -278,7 +266,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void deleteServiceInstanceWithoutAsyncAndHeadersSucceeds() throws Exception {
-		setupCatalogService(serviceDefinition.getId(), serviceDefinition);
+		setupCatalogService();
 
 		setupServiceInstanceService(DeleteServiceInstanceResponse.builder()
 				.build());
@@ -295,7 +283,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void deleteServiceInstanceWithUnknownIdFails() throws Exception {
-		setupCatalogService(serviceDefinition.getId(), serviceDefinition);
+		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID));
 
@@ -307,7 +295,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void deleteServiceInstanceWithUnknownServiceDefinitionIdFails() throws Exception {
-		setupCatalogService(serviceDefinition.getId(), null);
+		setupCatalogService(null);
 
 		mockMvc.perform(delete(buildDeleteUrl())
 				.accept(MediaType.APPLICATION_JSON))
@@ -317,7 +305,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void updateServiceInstanceWithAsyncAndHeadersSucceeds() throws Exception {
-		setupCatalogService(serviceDefinition.getId(), serviceDefinition);
+		setupCatalogService();
 
 		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
 				.async(true)
@@ -340,7 +328,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void updateServiceInstanceWithoutSyncAndHeadersSucceeds() throws Exception {
-		setupCatalogService(serviceDefinition.getId(), serviceDefinition);
+		setupCatalogService();
 
 		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
 				.build());
@@ -359,7 +347,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void updateServiceInstanceWithUnknownServiceDefinitionIdFails() throws Exception {
-		setupCatalogService(serviceDefinition.getId(), null);
+		setupCatalogService(null);
 
 		mockMvc.perform(patch(buildCreateUpdateUrl())
 				.content(updateRequestBody)
@@ -372,7 +360,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void updateServiceInstanceWithUnsupportedOperationFails() throws Exception {
-		setupCatalogService(serviceDefinition.getId(), serviceDefinition);
+		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceInstanceUpdateNotSupportedException("description"));
 
@@ -536,22 +524,5 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		ArgumentCaptor<GetLastServiceOperationRequest> argumentCaptor = ArgumentCaptor.forClass(GetLastServiceOperationRequest.class);
 		Mockito.verify(serviceInstanceService).getLastOperation(argumentCaptor.capture());
 		return argumentCaptor.getValue();
-	}
-
-	private void assertHeaderValuesSet(ServiceBrokerRequest actualRequest) {
-		assertThat(actualRequest.getCfInstanceId(), equalTo(CF_INSTANCE_ID));
-		assertThat(actualRequest.getApiInfoLocation(), equalTo(API_INFO_LOCATION));
-
-		assertThat(actualRequest.getOriginatingIdentity(), notNullValue());
-		Context identity = actualRequest.getOriginatingIdentity();
-		assertThat(identity.getPlatform(), equalTo(ORIGINATING_IDENTITY_PLATFORM));
-		assertThat(identity.getProperty(ORIGINATING_USER_KEY), equalTo(ORIGINATING_USER_VALUE));
-		assertThat(identity.getProperty(ORIGINATING_EMAIL_KEY), equalTo(ORIGINATING_EMAIL_VALUE));
-	}
-
-	private void assertHeaderValuesNotSet(ServiceBrokerRequest actualRequest) {
-		assertNull(actualRequest.getApiInfoLocation());
-		assertNull(actualRequest.getCfInstanceId());
-		assertNull(actualRequest.getOriginatingIdentity());
 	}
 }

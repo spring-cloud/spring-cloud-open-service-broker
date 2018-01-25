@@ -16,8 +16,13 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture;
 
+import org.springframework.cloud.servicebroker.model.MethodSchema;
+import org.springframework.cloud.servicebroker.model.Plan;
+import org.springframework.cloud.servicebroker.model.Schemas;
+import org.springframework.cloud.servicebroker.model.ServiceBindingSchema;
 import org.springframework.cloud.servicebroker.model.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.ServiceDefinitionRequires;
+import org.springframework.cloud.servicebroker.model.ServiceInstanceSchema;
 
 public class ServiceFixture {
 
@@ -27,9 +32,49 @@ public class ServiceFixture {
 				.name("Service One")
 				.description("Description for Service One")
 				.bindable(true)
-				.plans(PlanFixture.getAllPlans())
+				.plans(getPlanOne(), getPlanTwo())
 				.requires(ServiceDefinitionRequires.SERVICE_REQUIRES_SYSLOG_DRAIN.toString(),
 						ServiceDefinitionRequires.SERVICE_REQUIRES_ROUTE_FORWARDING.toString())
+				.build();
+	}
+
+	private static Plan getPlanOne() {
+		return Plan.builder()
+				.id("plan-one-id")
+				.name("Plan One")
+				.description("Description for Plan One")
+				.build();
+	}
+
+	private static Plan getPlanTwo() {
+		Schemas schemas = Schemas.builder()
+				.serviceInstanceSchema(ServiceInstanceSchema.builder()
+						.createMethodSchema(MethodSchema.builder()
+								.parameters("$schema", "http://example.com/service/create/schema")
+								.parameters("type", "object")
+								.build())
+						.updateMethodSchema(MethodSchema.builder()
+								.parameters("$schema", "http://example.com/service/update/schema")
+								.parameters("type", "object")
+								.build())
+						.build())
+				.serviceBindingSchema(ServiceBindingSchema.builder()
+						.createMethodSchema(MethodSchema.builder()
+								.parameters("$schema", "http://example.com/binding/create/schema")
+								.parameters("type", "object")
+								.build())
+						.build())
+				.build();
+
+		return Plan.builder()
+				.id("plan-two-id")
+				.name("Plan Two")
+				.description("Description for Plan Two")
+				.metadata("key1", "value1")
+				.metadata("key2", "value2")
+				.bindable(false)
+				.free(true)
+				.schemas(schemas)
 				.build();
 	}
 }

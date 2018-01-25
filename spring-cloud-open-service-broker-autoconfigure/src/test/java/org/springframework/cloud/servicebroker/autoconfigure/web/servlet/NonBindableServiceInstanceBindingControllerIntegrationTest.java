@@ -22,7 +22,6 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 import org.springframework.cloud.servicebroker.service.NonBindableServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.http.MediaType;
@@ -48,13 +47,13 @@ public class NonBindableServiceInstanceBindingControllerIntegrationTest extends 
 		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
 
-		setupCatalogService(serviceDefinition.getId());
+		setupCatalogService();
 	}
 
 	@Test
 	public void createBindingToAppFails() throws Exception {
 		mockMvc.perform(put(buildCreateUrl(false))
-				.content(DataFixture.toJson(createRequest))
+				.content(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
