@@ -46,12 +46,12 @@ public class NonBindableServiceInstanceBindingControllerIntegrationTest extends 
 
 		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
-
-		setupCatalogService();
 	}
 
 	@Test
 	public void createBindingToAppFails() throws Exception {
+		setupCatalogService();
+
 		mockMvc.perform(put(buildCreateUrl(false))
 				.content(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)

@@ -57,18 +57,15 @@ public abstract class ControllerIntegrationTest {
 	@Before
 	public void setUpControllerIntegrationTest() {
 		serviceDefinition = ServiceFixture.getSimpleService();
+	}
 
+	protected void setupCatalogService() {
 		when(catalogService.getServiceDefinition(eq(serviceDefinition.getId())))
 				.thenReturn(serviceDefinition);
 	}
 
-	protected void setupCatalogService() {
-		when(catalogService.getServiceDefinition(eq(this.serviceDefinition.getId())))
-				.thenReturn(this.serviceDefinition);
-	}
-
 	protected void setupCatalogService(ServiceDefinition serviceDefinition) {
-		when(catalogService.getServiceDefinition(eq(serviceDefinition.getId())))
+		when(catalogService.getServiceDefinition(eq(this.serviceDefinition.getId())))
 				.thenReturn(serviceDefinition);
 	}
 
