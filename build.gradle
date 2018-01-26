@@ -45,6 +45,7 @@ allprojects {
 	apply plugin: "java"
 	apply plugin: "eclipse"
 	apply plugin: "idea"
+	apply plugin: "jacoco"
 	apply plugin: "maven"
 	apply plugin: "propdeps"
 	apply plugin: "propdeps-maven"
@@ -53,6 +54,10 @@ allprojects {
 	apply plugin: "io.spring.dependency-management"
 
 	apply from: "${rootProject.projectDir}/publish-maven.gradle"
+
+	repositories {
+		mavenCentral()
+	}
 
 	if (project.hasProperty("platformVersion")) {
 		apply plugin: "spring-io"
@@ -174,6 +179,25 @@ configure(rootProject) {
 		group = "Distribution"
 		description = "Builds -dist and -docs distribution archives."
 	}
+}
+
+task codeCoverageReport(type: JacocoReport) {
+	executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+	subprojects.each {
+		sourceSets it.sourceSets.main
+	}
+
+	reports {
+		xml.enabled true
+		xml.destination "${buildDir}/reports/jacoco/report.xml"
+		html.enabled false
+		csv.enabled false
+	}
+}
+
+codeCoverageReport.dependsOn {
+	subprojects*.test
 }
 
 task wrapper(type: Wrapper) {
