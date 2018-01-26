@@ -1,5 +1,5 @@
 image::https://circleci.com/gh/spring-cloud/spring-cloud-cloudfoundry-service-broker.svg?style=svg["CircleCI", link="https://circleci.com/gh/spring-cloud/spring-cloud-cloudfoundry-service-broker"]
-image::https://codecov.io/gh/spring-cloud/spring-cloud-cloudfoundry-service-broker/branch/master/graph/badge.svg["Codecov", link="https://codecov.io/gh/spring-cloud/cloudfoundry-service-broker/branch/master"]
+image::https://codecov.io/gh/spring-cloud/spring-cloud-cloudfoundry-service-broker/branch/master/graph/badge.svg["Codecov", link="https://codecov.io/gh/spring-cloud/spring-cloud-cloudfoundry-service-broker/branch/master"]
 
 = Overview
 
