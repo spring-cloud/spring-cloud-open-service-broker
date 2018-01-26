@@ -53,21 +53,21 @@ public class GetLastServiceOperationResponseTest {
 	}
 
 	@Test
-	public void responseWithSuccessIsSerializedToJson() throws Exception {
+	public void responseWithSuccessIsSerializedToJson() {
 		responseWithStateIsSerializedToJson(OperationState.SUCCEEDED, "succeeded");
 	}
 
 	@Test
-	public void responseWithFailureIsSerializedToJson() throws Exception {
+	public void responseWithFailureIsSerializedToJson() {
 		responseWithStateIsSerializedToJson(OperationState.FAILED, "failed");
 	}
 
 	@Test
-	public void responseWithInProgressIsSerializedToJson() throws Exception {
+	public void responseWithInProgressIsSerializedToJson() {
 		responseWithStateIsSerializedToJson(OperationState.IN_PROGRESS, "in progress");
 	}
 
-	private void responseWithStateIsSerializedToJson(OperationState stateValue, String stateString) throws Exception {
+	private void responseWithStateIsSerializedToJson(OperationState stateValue, String stateString) {
 		GetLastServiceOperationResponse response = GetLastServiceOperationResponse.builder()
 				.operationState(stateValue)
 				.description("description")

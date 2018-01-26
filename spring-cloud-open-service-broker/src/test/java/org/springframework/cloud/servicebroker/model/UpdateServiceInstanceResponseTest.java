@@ -47,7 +47,7 @@ public class UpdateServiceInstanceResponseTest {
 	}
 
 	@Test
-	public void responseIsSerializedToJson() throws Exception {
+	public void responseIsSerializedToJson() {
 		UpdateServiceInstanceResponse response = UpdateServiceInstanceResponse.builder()
 				.operation("in progress")
 				.build();

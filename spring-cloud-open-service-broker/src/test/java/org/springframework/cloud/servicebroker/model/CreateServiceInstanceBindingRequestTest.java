@@ -21,7 +21,6 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -119,7 +118,7 @@ public class CreateServiceInstanceBindingRequestTest {
 	}
 
 	@Test
-	public void requestMatchesWithJsonRoundTrip() throws IOException {
+	public void requestMatchesWithJsonRoundTrip() {
 		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId("definition-id")
 				.planId("plan-id")

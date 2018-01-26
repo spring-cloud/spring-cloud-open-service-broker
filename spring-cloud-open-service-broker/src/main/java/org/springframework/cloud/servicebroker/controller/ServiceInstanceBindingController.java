@@ -67,12 +67,13 @@ public class ServiceInstanceBindingController extends BaseController {
 			"/{cfInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
 			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
 	})
-	public ResponseEntity<?> createServiceInstanceBinding(@PathVariable Map<String, String> pathVariables,
-														  @PathVariable("instanceId") String serviceInstanceId,
-														  @PathVariable("bindingId") String bindingId,
-														  @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-														  @RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
-														  @Valid @RequestBody CreateServiceInstanceBindingRequest request) {
+	public ResponseEntity<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(
+			@PathVariable Map<String, String> pathVariables,
+			@PathVariable("instanceId") String serviceInstanceId,
+			@PathVariable("bindingId") String bindingId,
+			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+			@RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
+			@Valid @RequestBody CreateServiceInstanceBindingRequest request) {
 		request.setServiceInstanceId(serviceInstanceId);
 		request.setBindingId(bindingId);
 		request.setServiceDefinition(getRequiredServiceDefinition(request.getServiceDefinitionId()));
@@ -85,7 +86,14 @@ public class ServiceInstanceBindingController extends BaseController {
 		log.debug("Creating a service instance binding succeeded: serviceInstanceId={}, bindingId={}, response={}",
 				serviceInstanceId, bindingId, response);
 
-		return new ResponseEntity<>(response, response.isBindingExisted() ? HttpStatus.OK : HttpStatus.CREATED);
+		return new ResponseEntity<>(response, getCreateResponseCode(response));
+	}
+
+	private HttpStatus getCreateResponseCode(CreateServiceInstanceBindingResponse response) {
+		if (response != null && response.isBindingExisted()) {
+			return  HttpStatus.OK;
+		}
+		return HttpStatus.CREATED;
 	}
 
 	@DeleteMapping(value = {

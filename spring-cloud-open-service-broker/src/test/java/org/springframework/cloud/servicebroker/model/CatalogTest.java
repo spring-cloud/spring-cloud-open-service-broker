@@ -32,7 +32,7 @@ import static org.junit.Assert.assertThat;
 
 public class CatalogTest {
 	@Test
-	public void emptyCatalogIsSerializedToJson() throws Exception {
+	public void emptyCatalogIsSerializedToJson() {
 		Catalog catalog = Catalog.builder().build();
 		String json = DataFixture.toJson(catalog);
 
@@ -41,7 +41,7 @@ public class CatalogTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void catalogWithServicesIsSerializedToJson() throws Exception {
+	public void catalogWithServicesIsSerializedToJson() {
 		List<ServiceDefinition> serviceDefinitions = Collections.singletonList(ServiceDefinition.builder()
 				.id("service-definition-id-two")
 				.name("service-definition-two")

@@ -52,7 +52,7 @@ public class DashboardClientTest {
 	}
 
 	@Test
-	public void dashboardClientIsSerializedToJson() throws Exception {
+	public void dashboardClientIsSerializedToJson() {
 		DashboardClient client = DashboardClient.builder()
 				.id("client-id")
 				.secret("client-secret")

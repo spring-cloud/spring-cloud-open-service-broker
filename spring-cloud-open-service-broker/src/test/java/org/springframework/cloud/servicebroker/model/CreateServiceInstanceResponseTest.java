@@ -56,7 +56,7 @@ public class CreateServiceInstanceResponseTest {
 	}
 
 	@Test
-	public void responseIsSerializedToJson() throws Exception {
+	public void responseIsSerializedToJson() {
 		CreateServiceInstanceResponse response = CreateServiceInstanceResponse.builder()
 				.operation("in progress")
 				.dashboardUrl("http://dashboard.example.com")

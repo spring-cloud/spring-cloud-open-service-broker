@@ -85,7 +85,7 @@ public class CreateServiceInstanceAppBindingResponseTest {
 	}
 
 	@Test
-	public void responseIsSerializedToJson() throws Exception {
+	public void responseIsSerializedToJson() {
 		CreateServiceInstanceAppBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
 				.credentials("credential1", "value1")
 				.credentials("credential2", 2)

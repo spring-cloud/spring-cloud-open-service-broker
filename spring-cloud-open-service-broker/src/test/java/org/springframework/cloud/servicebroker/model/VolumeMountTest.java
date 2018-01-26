@@ -82,7 +82,7 @@ public class VolumeMountTest {
 	}
 
 	@Test
-	public void volumeMountIsSerializedToJson() throws Exception {
+	public void volumeMountIsSerializedToJson() {
 		VolumeMount mount = VolumeMount.builder()
 				.driver("test-driver")
 				.containerDir("/data/images")

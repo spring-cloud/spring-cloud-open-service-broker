@@ -20,7 +20,6 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +33,7 @@ import static org.junit.Assert.assertThat;
 
 public class SchemasTest {
 	@Test
-	public void noSchemasIsSerializedToJson() throws IOException {
+	public void noSchemasIsSerializedToJson() {
 		Schemas schemas = Schemas.builder().build();
 		String json = DataFixture.toJson(schemas);
 
@@ -45,7 +44,7 @@ public class SchemasTest {
 	}
 	
 	@Test
-	public void emptySchemasIsSerializedToJson() throws IOException {
+	public void emptySchemasIsSerializedToJson() {
 		Schemas schemas = Schemas.builder()
 				.serviceInstanceSchema(ServiceInstanceSchema.builder().build())
 				.serviceBindingSchema(ServiceBindingSchema.builder().build())
@@ -63,7 +62,7 @@ public class SchemasTest {
 
 	@Test
 	@SuppressWarnings("serial")
-	public void allSchemaFieldsIsSerializedToJson() throws IOException {
+	public void allSchemaFieldsIsSerializedToJson() {
 		Map<String, Object> schemaProperties = new HashMap<String, Object>() {{
 			put("properties", new HashMap<String, Object>() {{
 				put("billing-account", new HashMap<String, String>() {{

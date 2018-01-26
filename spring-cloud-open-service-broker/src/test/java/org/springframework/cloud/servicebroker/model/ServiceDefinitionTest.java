@@ -16,7 +16,6 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +42,7 @@ import static org.springframework.cloud.servicebroker.model.ServiceDefinitionReq
 public class ServiceDefinitionTest {
 	@Test
 	@SuppressWarnings("unchecked")
-	public void serviceDefinitionWithDefaultsIsSerializedToJson() throws IOException {
+	public void serviceDefinitionWithDefaultsIsSerializedToJson() {
 		ServiceDefinition serviceDefinition = ServiceDefinition.builder()
 				.id("service-definition-id-one")
 				.name("service-definition-one")
@@ -68,7 +67,7 @@ public class ServiceDefinitionTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void serviceDefinitionWithAllFieldsIsSerializedToJson() throws IOException {
+	public void serviceDefinitionWithAllFieldsIsSerializedToJson() {
 		Map<String, Object> metadata = new HashMap<String, Object>() {{
 			put("field3", "value3");
 			put("field4", "value4");

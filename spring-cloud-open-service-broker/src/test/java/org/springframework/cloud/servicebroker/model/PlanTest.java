@@ -36,7 +36,7 @@ public class PlanTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void planWithDefaultsIsSerializedToJson() throws Exception {
+	public void planWithDefaultsIsSerializedToJson() {
 		Plan plan = Plan.builder()
 				.id("plan-id-one")
 				.name("plan-one")
@@ -58,7 +58,7 @@ public class PlanTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void planWithAllFieldsIsSerializedToJson() throws Exception {
+	public void planWithAllFieldsIsSerializedToJson() {
 		Map<String, Object> metadata = new HashMap<String, Object>() {{
 			put("field3", "value3");
 			put("field4", "value4");
