@@ -168,7 +168,7 @@ public class BaseControllerTest {
 		bindingResult.addError(new FieldError("objectName", "field1", "message"));
 		bindingResult.addError(new FieldError("objectName", "field2", "message"));
 
-		Method method = this.getClass().getMethod("setUp", null);
+		Method method = this.getClass().getMethod("setUp", (Class<?>[]) null);
 		MethodParameter parameter = new MethodParameter(method, -1);
 		
 		MethodArgumentNotValidException exception =

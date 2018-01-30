@@ -48,6 +48,7 @@ public class VolumeMountTest {
 	}
 
 	@Test
+	@SuppressWarnings("serial")
 	public void volumeMountIsBuiltWithAllValues() {
 		Map<String, Object> config = new HashMap<String, Object>() {{
 			put("config3", "value3");
@@ -82,6 +83,7 @@ public class VolumeMountTest {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void volumeMountIsSerializedToJson() {
 		VolumeMount mount = VolumeMount.builder()
 				.driver("test-driver")

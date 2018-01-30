@@ -66,7 +66,7 @@ public class ServiceDefinitionTest {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "serial"})
 	public void serviceDefinitionWithAllFieldsIsSerializedToJson() {
 		Map<String, Object> metadata = new HashMap<String, Object>() {{
 			put("field3", "value3");

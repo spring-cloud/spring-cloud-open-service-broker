@@ -53,6 +53,7 @@ public class CreateServiceInstanceBindingRequestTest {
 	}
 
 	@Test
+	@SuppressWarnings("serial")
 	public void requestWithAllValuesIsBuilt() {
 		BindResource bindResource = BindResource.builder().build();
 		Context context = Context.builder().build();
@@ -60,7 +61,6 @@ public class CreateServiceInstanceBindingRequestTest {
 			put("field4", "value4");
 			put("field5", "value5");
 		}};
-
 
 		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId("service-definition-id")

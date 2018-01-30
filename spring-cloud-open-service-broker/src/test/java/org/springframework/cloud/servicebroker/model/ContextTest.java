@@ -39,6 +39,7 @@ public class ContextTest {
 	}
 
 	@Test
+	@SuppressWarnings("serial")
 	public void contextIsBuildWithAllValues() {
 		Map<String, Object> properties = new HashMap<String, Object>() {{
 			put("property3", "value3");

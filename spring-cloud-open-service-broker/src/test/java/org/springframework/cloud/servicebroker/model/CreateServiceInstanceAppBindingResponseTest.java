@@ -47,6 +47,7 @@ public class CreateServiceInstanceAppBindingResponseTest {
 	}
 
 	@Test
+	@SuppressWarnings("serial")
 	public void responseWithDiscreteValuesIsBuilt() {
 		Map<String, Object> credentials = new HashMap<String, Object>() {{
 			put("credential4", "value4");

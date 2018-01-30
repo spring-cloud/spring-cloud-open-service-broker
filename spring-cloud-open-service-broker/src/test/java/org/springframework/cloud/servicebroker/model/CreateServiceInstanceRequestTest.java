@@ -47,6 +47,7 @@ public class CreateServiceInstanceRequestTest {
 	}
 
 	@Test
+	@SuppressWarnings("serial")
 	public void requestWithAllValuesIsBuilt() {
 		Map<String, Object> parameters = new HashMap<String, Object>() {{
 			put("field4", "value4");
@@ -78,6 +79,7 @@ public class CreateServiceInstanceRequestTest {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void requestIsDeserializedFromJson() {
 		CreateServiceInstanceRequest request =
 				DataFixture.readTestDataFile("createRequest.json",

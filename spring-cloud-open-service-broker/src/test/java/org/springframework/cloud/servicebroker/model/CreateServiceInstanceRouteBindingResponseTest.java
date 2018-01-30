@@ -50,7 +50,8 @@ public class CreateServiceInstanceRouteBindingResponseTest {
 	}
 
 	@Test
-	public void responseIsSerializedToJson() throws Exception {
+	@SuppressWarnings("unchecked")
+	public void responseIsSerializedToJson() {
 		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
 				.routeServiceUrl("https://routes.example.com")
 				.build();

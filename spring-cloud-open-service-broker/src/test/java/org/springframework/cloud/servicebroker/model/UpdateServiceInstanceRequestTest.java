@@ -49,6 +49,7 @@ public class UpdateServiceInstanceRequestTest {
 	}
 
 	@Test
+	@SuppressWarnings("serial")
 	public void requestWithAllValuesIsBuilt() {
 		Map<String, Object> parameters = new HashMap<String, Object>() {{
 			put("field4", "value4");

@@ -40,6 +40,7 @@ public class BindResourceTest {
 	}
 
 	@Test
+	@SuppressWarnings("serial")
 	public void bindResourceIsBuiltWithAllValues() {
 		Map<String, Object> parameters = new HashMap<String, Object>() {{
 			put("parameter3", "value3");

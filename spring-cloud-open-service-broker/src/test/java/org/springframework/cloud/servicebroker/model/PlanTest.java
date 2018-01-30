@@ -57,7 +57,7 @@ public class PlanTest {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "serial"})
 	public void planWithAllFieldsIsSerializedToJson() {
 		Map<String, Object> metadata = new HashMap<String, Object>() {{
 			put("field3", "value3");
