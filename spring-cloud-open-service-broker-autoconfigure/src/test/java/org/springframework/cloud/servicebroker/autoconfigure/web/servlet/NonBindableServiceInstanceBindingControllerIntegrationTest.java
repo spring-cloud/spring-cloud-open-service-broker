@@ -39,7 +39,7 @@ public class NonBindableServiceInstanceBindingControllerIntegrationTest extends 
 	private MockMvc mockMvc;
 
 	@Before
-	public void setup() {
+	public void setUp() {
 		ServiceInstanceBindingService serviceInstanceBindingService = new NonBindableServiceInstanceBindingService();
 		ServiceInstanceBindingController controller =
 				new ServiceInstanceBindingController(catalogService, serviceInstanceBindingService);

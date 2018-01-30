@@ -39,7 +39,7 @@ public class ApiVersionInterceptorTest {
 	private HttpServletResponse response;
 
 	@Before
-	public void setup() {
+	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 	}
 

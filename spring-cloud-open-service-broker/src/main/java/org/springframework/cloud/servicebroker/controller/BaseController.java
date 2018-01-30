@@ -124,7 +124,7 @@ public class BaseController {
 				.build();
 	}
 
-	private Map<String, Object> readJsonFromString(String value) throws java.io.IOException {
+	private Map<String, Object> readJsonFromString(String value) throws IOException {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
 		return objectMapper.readValue(value, new TypeReference<Map<String,Object>>() {});
 	}

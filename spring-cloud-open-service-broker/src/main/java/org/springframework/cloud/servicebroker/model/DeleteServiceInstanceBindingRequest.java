@@ -42,9 +42,6 @@ public class DeleteServiceInstanceBindingRequest extends ServiceBrokerRequest {
 
 	private transient ServiceDefinition serviceDefinition;
 
-	public DeleteServiceInstanceBindingRequest() {
-	}
-
 	public String getServiceInstanceId() {
 		return this.serviceInstanceId;
 	}

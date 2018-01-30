@@ -64,7 +64,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	private ServiceInstanceBindingService serviceInstanceBindingService;
 
 	@Before
-	public void setup() {
+	public void setUp() {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
 	}

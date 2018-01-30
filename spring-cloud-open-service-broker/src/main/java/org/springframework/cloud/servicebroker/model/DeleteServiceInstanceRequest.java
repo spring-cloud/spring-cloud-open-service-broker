@@ -46,9 +46,6 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 	 */
 	private transient ServiceDefinition serviceDefinition;
 
-	public DeleteServiceInstanceRequest() {
-	}
-
 	public void setServiceInstanceId(String serviceInstanceId) {
 		this.serviceInstanceId = serviceInstanceId;
 	}

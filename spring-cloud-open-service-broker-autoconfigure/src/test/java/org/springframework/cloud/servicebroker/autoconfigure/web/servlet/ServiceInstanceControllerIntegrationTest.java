@@ -86,7 +86,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 	private String updateRequestBody;
 
 	@Before
-	public void setup() {
+	public void setUp() {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter())
 				.build();

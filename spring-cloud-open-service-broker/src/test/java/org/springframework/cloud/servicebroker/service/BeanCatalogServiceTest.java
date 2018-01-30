@@ -33,7 +33,7 @@ public class BeanCatalogServiceTest {
 	private static final String SVC_DEF_ID = "svc-def-id";
 
 	@Before
-	public void setup() {
+	public void setUp() {
 		serviceDefinition = ServiceDefinition.builder()
 				.id(SVC_DEF_ID)
 				.name("Name")
