@@ -34,4 +34,5 @@ dependencies {
 	testCompile("org.springframework.boot:spring-boot-starter-test")
 	testCompile("org.mockito:mockito-core")
 	testCompile("org.hamcrest:java-hamcrest:2.0.0.0")
+	testCompile("org.apache.commons:commons-lang3")
 }

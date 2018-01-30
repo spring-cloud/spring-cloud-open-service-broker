@@ -28,8 +28,6 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersion
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ApiVersionInterceptorTest {
@@ -40,9 +38,6 @@ public class ApiVersionInterceptorTest {
 	@Mock
 	private HttpServletResponse response;
 
-	@Mock
-	private BrokerApiVersion brokerApiVersion;
-
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
@@ -50,49 +45,35 @@ public class ApiVersionInterceptorTest {
 
 	@Test
 	public void noBrokerApiVersionConfigured() {
-		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(null);
+		ApiVersionInterceptor interceptor = new ApiVersionInterceptor();
 		assertTrue(interceptor.preHandle(request, response, null));
 	}
 
 	@Test
 	public void anyVersionAccepted() {
-		String header = "header";
-		String version = BrokerApiVersion.API_VERSION_ANY;
-		when(brokerApiVersion.getBrokerApiVersionHeader()).thenReturn(header);
-		when(brokerApiVersion.getApiVersion()).thenReturn(version);
-		when(request.getHeader(header)).thenReturn("version");
+		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", BrokerApiVersion.API_VERSION_ANY);
+		when(request.getHeader("header")).thenReturn("9.9");
 
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(brokerApiVersion);
 		assertTrue(interceptor.preHandle(request, response, null));
-		verify(brokerApiVersion, atLeastOnce()).getApiVersion();
 	}
 
 	@Test
 	public void versionsMatch() {
-		String header = "header";
-		String version = "version";
-		when(brokerApiVersion.getBrokerApiVersionHeader()).thenReturn(header);
-		when(brokerApiVersion.getApiVersion()).thenReturn(version);
-		when(request.getHeader(header)).thenReturn(version);
+		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", "9.9");
+		when(request.getHeader("header")).thenReturn("9.9");
 
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(brokerApiVersion);
 		assertTrue(interceptor.preHandle(request, response, null));
-		verify(brokerApiVersion, atLeastOnce()).getApiVersion();
 	}
 
 	@Test(expected = ServiceBrokerApiVersionException.class)
 	public void versionMismatch() {
-		String header = "header";
-		String version = "version";
-		String notVersion = "not_version";
-		when(brokerApiVersion.getBrokerApiVersionHeader()).thenReturn(header);
-		when(brokerApiVersion.getApiVersion()).thenReturn(version);
-		when(request.getHeader(header)).thenReturn(notVersion);
+		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", "9.9");
+		when(request.getHeader("header")).thenReturn("8.8");
 
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(brokerApiVersion);
 		interceptor.preHandle(request, response, null);
-		verify(brokerApiVersion).getBrokerApiVersionHeader();
-		verify(brokerApiVersion).getApiVersion();
 	}
 
 }
