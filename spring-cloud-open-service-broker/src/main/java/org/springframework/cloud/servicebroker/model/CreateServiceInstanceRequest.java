@@ -74,7 +74,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 */
 	private transient ServiceDefinition serviceDefinition;
 
-	private CreateServiceInstanceRequest() {
+	CreateServiceInstanceRequest() {
 		super(null, null);
 		this.serviceDefinitionId = null;
 		this.planId = null;
@@ -82,7 +82,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		this.spaceGuid = null;
 	}
 
-	private CreateServiceInstanceRequest(String serviceDefinitionId, String planId,
+	CreateServiceInstanceRequest(String serviceDefinitionId, String planId,
 										Map<String, Object> parameters, Context context) {
 		super(parameters, context);
 		this.serviceDefinitionId = serviceDefinitionId;
@@ -174,7 +174,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		private String serviceDefinitionId;
 		private String planId;
 		private Context context;
-		private Map<String, Object> parameters = new HashMap<>();
+		private final Map<String, Object> parameters = new HashMap<>();
 
 		CreateServiceInstanceRequestBuilder() {
 		}

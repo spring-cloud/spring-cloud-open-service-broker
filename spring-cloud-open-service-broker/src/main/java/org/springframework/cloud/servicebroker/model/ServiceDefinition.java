@@ -97,7 +97,7 @@ public class ServiceDefinition {
 	 */
 	private final DashboardClient dashboardClient;
 
-	private ServiceDefinition(String id, String name, String description, boolean bindable, Boolean planUpdateable,
+	ServiceDefinition(String id, String name, String description, boolean bindable, Boolean planUpdateable,
 							 List<Plan> plans, List<String> tags, Map<String, Object> metadata, List<String> requires,
 							 DashboardClient dashboardClient) {
 		this.id = id;
@@ -129,7 +129,7 @@ public class ServiceDefinition {
 	}
 
 	public boolean isPlanUpdateable() {
-		return this.planUpdateable == null ? false : this.planUpdateable;
+		return this.planUpdateable != null && this.planUpdateable;
 	}
 
 	public List<Plan> getPlans() {
@@ -201,7 +201,7 @@ public class ServiceDefinition {
 		private String description;
 		private boolean bindable;
 		private Boolean planUpdateable;
-		private List<Plan> plans = new ArrayList<>();
+		private final List<Plan> plans = new ArrayList<>();
 		private List<String> tags;
 		private Map<String, Object> metadata;
 		private List<String> requires;

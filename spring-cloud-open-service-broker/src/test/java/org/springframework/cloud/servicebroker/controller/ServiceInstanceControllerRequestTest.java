@@ -170,7 +170,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 	}
 
 	private static class VerifyingService implements ServiceInstanceService {
-		private ServiceBrokerRequest expectedRequest;
+		private final ServiceBrokerRequest expectedRequest;
 
 		public VerifyingService(ServiceBrokerRequest expectedRequest) {
 			this.expectedRequest = expectedRequest;

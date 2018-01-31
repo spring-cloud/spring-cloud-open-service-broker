@@ -34,7 +34,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 @RestController
 public class CatalogController extends BaseController {
-	private static final Logger log = getLogger(CatalogController.class);
+	private static final Logger LOGGER = getLogger(CatalogController.class);
 
 	@Autowired
 	public CatalogController(CatalogService service) {
@@ -43,7 +43,7 @@ public class CatalogController extends BaseController {
 
 	@RequestMapping(value = {"/v2/catalog", "{cfInstanceId}/v2/catalog"}, method = RequestMethod.GET)
 	public Catalog getCatalog() {
-		log.debug("Retrieving catalog");
+		LOGGER.debug("Retrieving catalog");
 		return catalogService.getCatalog();
 	}
 }

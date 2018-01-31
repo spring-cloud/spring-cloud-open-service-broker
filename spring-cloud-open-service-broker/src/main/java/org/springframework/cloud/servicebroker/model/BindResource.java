@@ -40,12 +40,12 @@ public class BindResource {
 	@JsonAnySetter
 	private final Map<String, Object> properties = new HashMap<>();
 
-	private BindResource() {
+	BindResource() {
 		this.appGuid = null;
 		this.route = null;
 	}
 
-	private BindResource(String appGuid, String route, Map<String, Object> properties) {
+	BindResource(String appGuid, String route, Map<String, Object> properties) {
 		this.appGuid = appGuid;
 		this.route = route;
 		if (properties != null) {
@@ -107,7 +107,7 @@ public class BindResource {
 	public static class BindResourceBuilder {
 		private String appGuid;
 		private String route;
-		private Map<String, Object> parameters = new HashMap<>();
+		private final Map<String, Object> parameters = new HashMap<>();
 
 		BindResourceBuilder() {
 		}

@@ -42,7 +42,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 	@JsonIgnore
 	private final boolean instanceExisted;
 
-	private CreateServiceInstanceResponse(boolean async, String operation, String dashboardUrl, boolean instanceExisted) {
+	CreateServiceInstanceResponse(boolean async, String operation, String dashboardUrl, boolean instanceExisted) {
 		super(async, operation);
 		this.dashboardUrl = dashboardUrl;
 		this.instanceExisted = instanceExisted;

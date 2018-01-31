@@ -163,7 +163,7 @@ public class BaseControllerTest {
 	}
 
 	@Test
-	public void methodArgumentNotValidExceptionGivesExpectedStatus() throws Exception {
+	public void methodArgumentNotValidExceptionGivesExpectedStatus() throws NoSuchMethodException {
 		BindingResult bindingResult = new MapBindingResult(new HashMap<>(), "objectName");
 		bindingResult.addError(new FieldError("objectName", "field1", "message"));
 		bindingResult.addError(new FieldError("objectName", "field2", "message"));

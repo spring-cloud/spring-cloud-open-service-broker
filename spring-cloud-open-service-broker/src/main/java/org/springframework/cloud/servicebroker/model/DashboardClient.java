@@ -41,7 +41,7 @@ public class DashboardClient {
 	 */
 	private final String redirectUri;
 
-	private DashboardClient(String id, String secret, String redirectUri) {
+	DashboardClient(String id, String secret, String redirectUri) {
 		this.id = id;
 		this.secret = secret;
 		this.redirectUri = redirectUri;

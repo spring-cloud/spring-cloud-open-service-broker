@@ -90,7 +90,7 @@ public class VolumeMount {
 	 */
 	private final VolumeDevice device;
 
-	private VolumeMount(String driver, String containerDir, Mode mode, DeviceType deviceType, VolumeDevice device) {
+	VolumeMount(String driver, String containerDir, Mode mode, DeviceType deviceType, VolumeDevice device) {
 		this.driver = driver;
 		this.containerDir = containerDir;
 		this.mode = mode;

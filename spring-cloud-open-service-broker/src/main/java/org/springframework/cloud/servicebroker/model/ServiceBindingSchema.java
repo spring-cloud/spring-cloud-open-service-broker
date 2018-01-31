@@ -36,11 +36,11 @@ public class ServiceBindingSchema {
 	@JsonProperty("create")
 	private final MethodSchema createMethodSchema;
 
-	private ServiceBindingSchema() {
+	ServiceBindingSchema() {
 		createMethodSchema = null;
 	}
 
-	private ServiceBindingSchema(MethodSchema createMethodSchema) {
+	ServiceBindingSchema(MethodSchema createMethodSchema) {
 		this.createMethodSchema = createMethodSchema;
 	}
 

@@ -82,7 +82,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 	}
 
 	private class VerifyingService implements ServiceInstanceBindingService {
-		private ServiceBrokerRequest expectedRequest;
+		private final ServiceBrokerRequest expectedRequest;
 
 		public VerifyingService(ServiceBrokerRequest expectedRequest) {
 			this.expectedRequest = expectedRequest;

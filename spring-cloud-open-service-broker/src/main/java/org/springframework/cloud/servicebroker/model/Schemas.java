@@ -42,7 +42,7 @@ public class Schemas {
 	@JsonProperty("service_binding")
 	private final ServiceBindingSchema serviceBindingSchema;
 
-	private Schemas(ServiceInstanceSchema serviceInstanceSchema,
+	Schemas(ServiceInstanceSchema serviceInstanceSchema,
 			ServiceBindingSchema serviceBindingSchema) {
 		this.serviceInstanceSchema = serviceInstanceSchema;
 		this.serviceBindingSchema = serviceBindingSchema;

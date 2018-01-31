@@ -64,14 +64,14 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@JsonIgnore
 	private transient ServiceDefinition serviceDefinition;
 
-	private UpdateServiceInstanceRequest() {
+	UpdateServiceInstanceRequest() {
 		super(null, null);
 		this.serviceDefinitionId = null;
 		this.planId = null;
 		this.previousValues = null;
 	}
 
-	private UpdateServiceInstanceRequest(String serviceDefinitionId, String planId,
+	UpdateServiceInstanceRequest(String serviceDefinitionId, String planId,
 										PreviousValues previousValues, Map<String, Object> parameters,
 										Context context) {
 		super(parameters, context);
@@ -196,7 +196,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		private String serviceDefinitionId;
 		private String planId;
 		private PreviousValues previousValues;
-		private Map<String, Object> parameters = new HashMap<>();
+		private final Map<String, Object> parameters = new HashMap<>();
 		private Context context;
 
 		UpdateServiceInstanceRequestBuilder() {

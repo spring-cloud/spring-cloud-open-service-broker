@@ -49,7 +49,7 @@ public class GetLastServiceOperationResponse {
 	@JsonIgnore
 	private final boolean deleteOperation;
 
-	private GetLastServiceOperationResponse(OperationState state, String description, boolean deleteOperation) {
+	GetLastServiceOperationResponse(OperationState state, String description, boolean deleteOperation) {
 		this.state = state;
 		this.description = description;
 		this.deleteOperation = deleteOperation;

@@ -24,7 +24,10 @@ import org.springframework.cloud.servicebroker.model.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.ServiceDefinitionRequires;
 import org.springframework.cloud.servicebroker.model.ServiceInstanceSchema;
 
-public class ServiceFixture {
+public final class ServiceFixture {
+
+	private ServiceFixture() {
+	}
 
 	public static ServiceDefinition getSimpleService() {
 		return ServiceDefinition.builder()

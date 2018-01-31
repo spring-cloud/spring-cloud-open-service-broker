@@ -29,7 +29,7 @@ public class ApiVersionWebMvcConfigurerAdapter implements WebMvcConfigurer {
 
 	private static final String V2_API_PATH_PATTERN = "/v2/**";
 
-	private ApiVersionInterceptor apiVersionInterceptor;
+	private final ApiVersionInterceptor apiVersionInterceptor;
 
 	protected ApiVersionWebMvcConfigurerAdapter(ApiVersionInterceptor apiVersionInterceptor) {
 		this.apiVersionInterceptor = apiVersionInterceptor;

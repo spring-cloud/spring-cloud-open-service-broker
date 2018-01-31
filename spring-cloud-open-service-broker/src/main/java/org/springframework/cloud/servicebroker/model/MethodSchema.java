@@ -35,7 +35,7 @@ public class MethodSchema {
 	 */
 	private final Map<String, Object> parameters;
 
-	private MethodSchema(Map<String, Object> parameters) {
+	MethodSchema(Map<String, Object> parameters) {
 		this.parameters = parameters;
 	}
 
@@ -68,7 +68,7 @@ public class MethodSchema {
 	}
 
 	public static class MethodSchemaBuilder {
-		private Map<String, Object> parameters = new HashMap<>();
+		private final Map<String, Object> parameters = new HashMap<>();
 
 		MethodSchemaBuilder() {
 		}

@@ -48,7 +48,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	 */
 	private final List<VolumeMount> volumeMounts;
 
-	private CreateServiceInstanceAppBindingResponse(boolean bindingExisted, Map<String, Object> credentials,
+	CreateServiceInstanceAppBindingResponse(boolean bindingExisted, Map<String, Object> credentials,
 											String syslogDrainUrl, List<VolumeMount> volumeMounts) {
 		super(bindingExisted);
 		this.credentials = credentials;

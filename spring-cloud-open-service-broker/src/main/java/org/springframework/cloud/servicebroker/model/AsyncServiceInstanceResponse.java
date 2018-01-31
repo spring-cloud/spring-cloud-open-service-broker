@@ -27,7 +27,7 @@ import java.util.Objects;
  * @author Scott Frederick
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public abstract class AsyncServiceInstanceResponse {
+public class AsyncServiceInstanceResponse {
 	/**
 	 * Indicates whether the request to the service broker is complete. A <code>false</code> value indicates that the
 	 * request was completed, a <code>true</code> value indicates that the broker is processing the request

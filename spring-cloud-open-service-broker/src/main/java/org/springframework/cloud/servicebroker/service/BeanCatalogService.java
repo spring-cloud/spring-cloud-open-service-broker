@@ -30,8 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class BeanCatalogService implements CatalogService {
 
-	private Catalog catalog;
-	private Map<String,ServiceDefinition> serviceDefs = new HashMap<String,ServiceDefinition>();
+	private final Catalog catalog;
+	private final Map<String,ServiceDefinition> serviceDefs = new HashMap<>();
 
 	@Autowired
 	public BeanCatalogService(Catalog catalog) {

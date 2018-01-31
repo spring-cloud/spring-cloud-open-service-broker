@@ -42,11 +42,11 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 public class ServiceBrokerWebFluxAutoConfiguration {
 
-	private CatalogService catalogService;
+	private final CatalogService catalogService;
 
-	private ServiceInstanceService serviceInstanceService;
+	private final ServiceInstanceService serviceInstanceService;
 
-	private ServiceInstanceBindingService serviceInstanceBindingService;
+	private final ServiceInstanceBindingService serviceInstanceBindingService;
 
 	protected ServiceBrokerWebFluxAutoConfiguration(
 			CatalogService catalogService, ServiceInstanceService serviceInstanceService,

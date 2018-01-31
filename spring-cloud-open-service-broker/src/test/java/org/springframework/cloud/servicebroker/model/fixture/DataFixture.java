@@ -26,14 +26,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.junit.Assert.fail;
 
-public class DataFixture {
+public final class DataFixture {
+	private DataFixture() {
+	}
+
 	public static String toJson(Object object) {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			return mapper.writeValueAsString(object);
 		} catch (JsonProcessingException e) {
 			fail("Error creating JSON string from object: " + e);
-			throw new IllegalStateException();
+			throw new IllegalStateException(e);
 		}
 	}
 
@@ -43,7 +46,7 @@ public class DataFixture {
 			return mapper.readerFor(contentType).readValue(json);
 		} catch (IOException e) {
 			fail("Error creating object from JSON: " + e);
-			throw new IllegalStateException();
+			throw new IllegalStateException(e);
 		}
 	}
 
@@ -53,7 +56,7 @@ public class DataFixture {
 			return objectMapper.readValue(getTestDataFileReader(filename), contentType);
 		} catch (IOException e) {
 			fail("Error reading test JSON file: " + e);
-			throw new IllegalStateException();
+			throw new IllegalStateException(e);
 		}
 	}
 

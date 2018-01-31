@@ -52,12 +52,12 @@ import static org.mockito.Mockito.when;
 
 @RunWith(Theories.class)
 public class ServiceInstanceBindingControllerResponseCodeTest {
-	private CatalogService catalogService = mock(CatalogService.class);
+	private final CatalogService catalogService = mock(CatalogService.class);
+	private final ServiceInstanceBindingService bindingService = mock(ServiceInstanceBindingService.class);
 
-	private ServiceInstanceBindingService bindingService = mock(ServiceInstanceBindingService.class);
+	private final Map<String, String> pathVariables = Collections.emptyMap();
+
 	private ServiceInstanceBindingController controller;
-
-	private Map<String, String> pathVariables = Collections.emptyMap();
 
 	@DataPoints("createResponsesWithExpectedStatus")
 	public static List<CreateResponseAndExpectedStatus> createDataPoints() {
@@ -141,8 +141,8 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 	}
 
 	public static class CreateResponseAndExpectedStatus {
-		private CreateServiceInstanceBindingResponse response;
-		private HttpStatus expectedStatus;
+		protected final CreateServiceInstanceBindingResponse response;
+		protected final HttpStatus expectedStatus;
 
 		public CreateResponseAndExpectedStatus(CreateServiceInstanceBindingResponse response, HttpStatus expectedStatus) {
 			this.response = response;

@@ -44,6 +44,7 @@ public class ApiVersionInterceptorIntegrationTest {
 	private CatalogController controller;
 
 	@Mock
+	@SuppressWarnings("unused")
 	private CatalogService catalogService;
 
 	@Test

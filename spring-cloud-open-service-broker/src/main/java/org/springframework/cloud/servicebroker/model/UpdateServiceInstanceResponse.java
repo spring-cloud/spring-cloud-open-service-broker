@@ -22,7 +22,7 @@ package org.springframework.cloud.servicebroker.model;
  * @author Scott Frederick
  */
 public class UpdateServiceInstanceResponse extends AsyncServiceInstanceResponse {
-	private UpdateServiceInstanceResponse(boolean async, String operation) {
+	UpdateServiceInstanceResponse(boolean async, String operation) {
 		super(async, operation);
 	}
 

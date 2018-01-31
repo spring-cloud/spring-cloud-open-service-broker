@@ -65,7 +65,7 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	@Override
-	public final boolean equals(Object o) {
+	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof CloudFoundryContext)) return false;
 		if (!super.equals(o)) return false;
@@ -76,12 +76,12 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	@Override
-	public final boolean canEqual(Object other) {
+	public boolean canEqual(Object other) {
 		return (other instanceof CloudFoundryContext);
 	}
 
 	@Override
-	public final int hashCode() {
+	public int hashCode() {
 		return Objects.hash(super.hashCode(), organizationGuid, spaceGuid);
 	}
 

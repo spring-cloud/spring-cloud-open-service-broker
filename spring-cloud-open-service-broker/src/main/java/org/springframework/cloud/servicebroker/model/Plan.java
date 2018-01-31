@@ -74,7 +74,7 @@ public class Plan {
 	 */
 	private final Boolean free;
 
-	private Plan(String id, String name, String description, Map<String, Object> metadata, Boolean free, Boolean bindable, Schemas schemas) {
+	Plan(String id, String name, String description, Map<String, Object> metadata, Boolean free, Boolean bindable, Schemas schemas) {
 		this.id = id;
 		this.name = name;
 		this.description = description;

@@ -42,7 +42,12 @@ import java.util.Map;
 
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
+import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.BINDING_ID_PATH_VARIABLE;
+import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
+import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.PLAN_ID_PARAMETER;
+import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE;
+import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.SERVICE_ID_PARAMETER;
 
 /**
  * See: http://docs.cloudfoundry.org/services/api.html
@@ -52,9 +57,9 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
  */
 @RestController
 public class ServiceInstanceBindingController extends BaseController {
-	private static final Logger log = getLogger(ServiceInstanceBindingController.class);
-	
-	private ServiceInstanceBindingService serviceInstanceBindingService;
+	private static final Logger LOGGER = getLogger(ServiceInstanceBindingController.class);
+
+	private final ServiceInstanceBindingService serviceInstanceBindingService;
 
 	@Autowired
 	public ServiceInstanceBindingController(CatalogService catalogService,
@@ -69,21 +74,21 @@ public class ServiceInstanceBindingController extends BaseController {
 	})
 	public ResponseEntity<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(
 			@PathVariable Map<String, String> pathVariables,
-			@PathVariable("instanceId") String serviceInstanceId,
-			@PathVariable("bindingId") String bindingId,
+			@PathVariable(INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
+			@PathVariable(BINDING_ID_PATH_VARIABLE) String bindingId,
 			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody CreateServiceInstanceBindingRequest request) {
 		request.setServiceInstanceId(serviceInstanceId);
 		request.setBindingId(bindingId);
 		request.setServiceDefinition(getRequiredServiceDefinition(request.getServiceDefinitionId()));
-		setCommonRequestFields(request, pathVariables.get("cfInstanceId"), apiInfoLocation, originatingIdentityString);
+		setCommonRequestFields(request, pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation, originatingIdentityString);
 
-		log.debug("Creating a service instance binding: request={}", request);
+		LOGGER.debug("Creating a service instance binding: request={}", request);
 
 		CreateServiceInstanceBindingResponse response = serviceInstanceBindingService.createServiceInstanceBinding(request);
 
-		log.debug("Creating a service instance binding succeeded: serviceInstanceId={}, bindingId={}, response={}",
+		LOGGER.debug("Creating a service instance binding succeeded: serviceInstanceId={}, bindingId={}, response={}",
 				serviceInstanceId, bindingId, response);
 
 		return new ResponseEntity<>(response, getCreateResponseCode(response));
@@ -101,10 +106,10 @@ public class ServiceInstanceBindingController extends BaseController {
 			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
 	})
 	public ResponseEntity<String> deleteServiceInstanceBinding(@PathVariable Map<String, String> pathVariables,
-															   @PathVariable("instanceId") String serviceInstanceId,
-															   @PathVariable("bindingId") String bindingId,
-															   @RequestParam("service_id") String serviceDefinitionId,
-															   @RequestParam("plan_id") String planId,
+															   @PathVariable(INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
+															   @PathVariable(BINDING_ID_PATH_VARIABLE) String bindingId,
+															   @RequestParam(SERVICE_ID_PARAMETER) String serviceDefinitionId,
+															   @RequestParam(PLAN_ID_PARAMETER) String planId,
 															   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 															   @RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
 		DeleteServiceInstanceBindingRequest request = new DeleteServiceInstanceBindingRequest();
@@ -113,25 +118,25 @@ public class ServiceInstanceBindingController extends BaseController {
 		request.setServiceDefinitionId(serviceDefinitionId);
 		request.setPlanId(planId);
 		request.setServiceDefinition(getServiceDefinition(serviceDefinitionId));
-		setCommonRequestFields(request, pathVariables.get("cfInstanceId"), apiInfoLocation, originatingIdentityString);
+		setCommonRequestFields(request, pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation, originatingIdentityString);
 
-		log.debug("Deleting a service instance binding: request={}", request);
+		LOGGER.debug("Deleting a service instance binding: request={}", request);
 
 		try {
 			serviceInstanceBindingService.deleteServiceInstanceBinding(request);
 		} catch (ServiceInstanceBindingDoesNotExistException e) {
-			log.debug("Service instance binding does not exist: ", e);
+			LOGGER.debug("Service instance binding does not exist: ", e);
 			return new ResponseEntity<>("{}", HttpStatus.GONE);
 		}
 
-		log.debug("Deleting a service instance binding succeeded: bindingId={}", bindingId);
+		LOGGER.debug("Deleting a service instance binding succeeded: bindingId={}", bindingId);
 
 		return new ResponseEntity<>("{}", HttpStatus.OK);
 	}
 
 	@ExceptionHandler(ServiceInstanceBindingExistsException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceBindingExistsException ex) {
-		log.debug("Service instance binding already exists: ", ex);
+		LOGGER.debug("Service instance binding already exists: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
 	}
 }

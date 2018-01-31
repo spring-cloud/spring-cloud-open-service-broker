@@ -29,7 +29,7 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 	 */
 	private final String routeServiceUrl;
 
-	private CreateServiceInstanceRouteBindingResponse(boolean bindingExisted, String routeServiceUrl) {
+	CreateServiceInstanceRouteBindingResponse(boolean bindingExisted, String routeServiceUrl) {
 		super(bindingExisted);
 		this.routeServiceUrl = routeServiceUrl;
 	}

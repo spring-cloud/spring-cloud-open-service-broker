@@ -29,7 +29,7 @@ public class SharedVolumeDevice extends VolumeDevice {
 
 	private final Map<String, Object> mountConfig;
 
-	private SharedVolumeDevice(String volumeId, Map<String, Object> mountConfig) {
+	SharedVolumeDevice(String volumeId, Map<String, Object> mountConfig) {
 		this.volumeId = volumeId;
 		this.mountConfig = mountConfig;
 	}
@@ -70,7 +70,7 @@ public class SharedVolumeDevice extends VolumeDevice {
 
 	public static class SharedVolumeDeviceBuilder {
 		private String volumeId;
-		private Map<String, Object> mountConfig = new HashMap<>();
+		private final Map<String, Object> mountConfig = new HashMap<>();
 
 		SharedVolumeDeviceBuilder() {
 		}

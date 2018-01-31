@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -88,7 +89,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 */
 	private transient ServiceDefinition serviceDefinition;
 
-	private CreateServiceInstanceBindingRequest() {
+	CreateServiceInstanceBindingRequest() {
 		serviceDefinitionId = null;
 		planId = null;
 		appGuid = null;
@@ -97,7 +98,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		parameters = null;
 	}
 
-	private CreateServiceInstanceBindingRequest(String serviceDefinitionId, String planId,
+	CreateServiceInstanceBindingRequest(String serviceDefinitionId, String planId,
 												BindResource bindResource, Map<String, Object> parameters,
 												Context context) {
 		this.serviceDefinitionId = serviceDefinitionId;
@@ -113,8 +114,8 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 			T bean = cls.newInstance();
 			BeanUtils.populate(bean, parameters);
 			return bean;
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Error mapping parameters to class of type " + cls.getName());
+		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+			throw new IllegalArgumentException("Error mapping parameters to class of type " + cls.getName(), e);
 		}
 	}
 
@@ -218,7 +219,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		private String serviceDefinitionId;
 		private String planId;
 		private BindResource bindResource;
-		private Map<String, Object> parameters = new HashMap<>();
+		private final Map<String, Object> parameters = new HashMap<>();
 		private Context context;
 
 		CreateServiceInstanceBindingRequestBuilder() {

@@ -18,6 +18,7 @@ package org.springframework.cloud.servicebroker.model;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Objects;
 
@@ -48,7 +49,7 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 			T bean = cls.newInstance();
 			BeanUtils.populate(bean, parameters);
 			return bean;
-		} catch (Exception e) {
+		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
 			throw new IllegalArgumentException("Error mapping parameters to class of type " + cls.getName(), e);
 		}
 	}

@@ -54,7 +54,7 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
  * @author Scott Frederick
  */
 public class BaseController {
-	private static final Logger log = getLogger(BaseController.class);
+	private static final Logger LOGGER = getLogger(BaseController.class);
 
 	protected CatalogService catalogService;
 
@@ -100,12 +100,10 @@ public class BaseController {
 					+ ORIGINATING_IDENTITY_HEADER + " header in request");
 		}
 
-		String platform = parts[0];
-
 		String encodedProperties;
 		try {
 			encodedProperties = new String(Base64Utils.decode(parts[1].getBytes()));
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
 			throw new HttpMessageNotReadableException("Error decoding JSON properties from "
 					+ ORIGINATING_IDENTITY_HEADER + " header in request", e);
 		}
@@ -117,6 +115,8 @@ public class BaseController {
 			throw new HttpMessageNotReadableException("Error parsing JSON properties from "
 					+ ORIGINATING_IDENTITY_HEADER + " header in request", e);
 		}
+
+		String platform = parts[0];
 
 		return Context.builder()
 				.platform(platform)
@@ -131,55 +131,55 @@ public class BaseController {
 
 	@ExceptionHandler(ServiceBrokerApiVersionException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerApiVersionException ex) {
-		log.debug("Unsupported service broker API version: ", ex);
+		LOGGER.debug("Unsupported service broker API version: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.PRECONDITION_FAILED);
 	}
 
 	@ExceptionHandler(ServiceInstanceDoesNotExistException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceDoesNotExistException ex) {
-		log.debug("Service instance does not exist: ", ex);
+		LOGGER.debug("Service instance does not exist: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceDefinitionDoesNotExistException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceDefinitionDoesNotExistException ex) {
-		log.debug("Service definition does not exist: ", ex);
+		LOGGER.debug("Service definition does not exist: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<ErrorMessage> handleException(HttpMessageNotReadableException ex) {
-		log.debug("Unprocessable request received: ", ex);
+		LOGGER.debug("Unprocessable request received: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorMessage> handleException(MethodArgumentNotValidException ex) {
-		log.debug("Unprocessable request received: ", ex);
+		LOGGER.debug("Unprocessable request received: ", ex);
 		BindingResult result = ex.getBindingResult();
 		StringBuilder message = new StringBuilder("Missing required fields:");
 		for (FieldError error : result.getFieldErrors()) {
-			message.append(" ").append(error.getField());
+			message.append(' ').append(error.getField());
 		}
 		return getErrorResponse(message.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceBrokerAsyncRequiredException.class)
 	public ResponseEntity<AsyncRequiredErrorMessage> handleException(ServiceBrokerAsyncRequiredException ex) {
-		log.debug("Broker requires async support: ", ex);
+		LOGGER.debug("Broker requires async support: ", ex);
 		return new ResponseEntity<>(
 				new AsyncRequiredErrorMessage(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceBrokerInvalidParametersException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerInvalidParametersException ex) {
-		log.debug("Invalid parameters received: ", ex);
+		LOGGER.debug("Invalid parameters received: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorMessage> handleException(Exception ex) {
-		log.debug("Unknown exception handled: ", ex);
+		LOGGER.debug("Unknown exception handled: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 

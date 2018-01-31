@@ -58,13 +58,12 @@ import static org.mockito.Mockito.when;
 @RunWith(Theories.class)
 public class ServiceInstanceControllerResponseCodeTest {
 
-	private CatalogService catalogService = mock(CatalogService.class);
+	private final CatalogService catalogService = mock(CatalogService.class);
+	private final ServiceInstanceService serviceInstanceService = mock(ServiceInstanceService.class);
 
-	private ServiceInstanceService serviceInstanceService = mock(ServiceInstanceService.class);
+	private final Map<String, String> pathVariables = Collections.emptyMap();
 
 	private ServiceInstanceController controller;
-
-	private Map<String, String> pathVariables = Collections.emptyMap();
 
 	@DataPoints("createResponsesWithExpectedStatus")
 	public static List<CreateResponseAndExpectedStatus> createDataPoints() {

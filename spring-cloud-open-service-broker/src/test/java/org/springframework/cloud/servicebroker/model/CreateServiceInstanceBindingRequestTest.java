@@ -114,7 +114,7 @@ public class CreateServiceInstanceBindingRequestTest {
 
 		assertEquals(1, request.getParameters().get("parameter1"));
 		assertEquals("foo", request.getParameters().get("parameter2"));
-		assertEquals(true, request.getParameters().get("parameter3"));
+		assertThat(request.getParameters().get("parameter3"), equalTo(true));
 	}
 
 	@Test

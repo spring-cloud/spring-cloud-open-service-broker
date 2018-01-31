@@ -27,9 +27,14 @@ import java.util.Objects;
  * @author Scott Frederick
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public abstract class ServiceBrokerRequest {
+public class ServiceBrokerRequest {
 	public final static String API_INFO_LOCATION_HEADER = "X-Api-Info-Location";
 	public final static String ORIGINATING_IDENTITY_HEADER = "X-Broker-API-Originating-Identity";
+	public static final String INSTANCE_ID_PATH_VARIABLE = "instanceId";
+	public static final String BINDING_ID_PATH_VARIABLE = "bindingId";
+	public static final String SERVICE_ID_PARAMETER = "service_id";
+	public static final String PLAN_ID_PARAMETER = "plan_id";
+	public static final String PLATFORM_INSTANCE_ID_VARIABLE = "cfInstanceId";
 
 	/**
 	 * The ID used to identify the platform instance when the service broker is registered

@@ -43,11 +43,11 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class ServiceBrokerWebMvcAutoConfiguration {
 
-	private CatalogService catalogService;
+	private final CatalogService catalogService;
 
-	private ServiceInstanceService serviceInstanceService;
+	private final ServiceInstanceService serviceInstanceService;
 
-	private ServiceInstanceBindingService serviceInstanceBindingService;
+	private final ServiceInstanceBindingService serviceInstanceBindingService;
 
 	protected ServiceBrokerWebMvcAutoConfiguration(
 			CatalogService catalogService, ServiceInstanceService serviceInstanceService,

@@ -39,7 +39,7 @@ public class Catalog {
 	@JsonProperty("services")
 	private final List<ServiceDefinition> serviceDefinitions;
 
-	private Catalog(List<ServiceDefinition> serviceDefinitions) {
+	Catalog(List<ServiceDefinition> serviceDefinitions) {
 		this.serviceDefinitions = serviceDefinitions;
 	}
 
@@ -72,7 +72,7 @@ public class Catalog {
 	}
 
 	public static class CatalogBuilder {
-		private List<ServiceDefinition> serviceDefinitions = new ArrayList<>();
+		private final List<ServiceDefinition> serviceDefinitions = new ArrayList<>();
 
 		CatalogBuilder() {
 		}
