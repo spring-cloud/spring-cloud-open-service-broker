@@ -29,7 +29,7 @@ buildscript {
 
 ext {
 	springVersion = "5.0.2.RELEASE"
-	springBootVersion = "2.0.0.M7"
+	springBootVersion = "2.0.0.RC1"
 
 	javadocLinks = [
 			"http://docs.oracle.com/javase/8/docs/api/",
