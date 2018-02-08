@@ -24,12 +24,14 @@ buildscript {
 		classpath("io.spring.gradle:propdeps-plugin:0.0.10.RELEASE")
 		classpath("io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE")
 		classpath("io.spring.gradle:spring-io-plugin:0.0.8.RELEASE")
+		classpath("org.springframework.cloud:spring-cloud-contract-gradle-plugin:1.2.2.RELEASE")
 	}
 }
 
 ext {
 	springVersion = "5.0.2.RELEASE"
 	springBootVersion = "2.0.0.RC1"
+	springCloudContractVersion = "1.2.2.RELEASE"
 
 	javadocLinks = [
 			"http://docs.oracle.com/javase/8/docs/api/",
