@@ -20,9 +20,9 @@ import org.junit.Before;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
 import org.springframework.cloud.servicebroker.model.Catalog;
-import org.springframework.cloud.servicebroker.model.Plan;
 import org.springframework.cloud.servicebroker.model.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 
@@ -35,22 +35,10 @@ public class CatalogBase {
 
 	@Before
 	public void setup() {
+		ServiceDefinition serviceDefinition = ServiceFixture.getSimpleService();
 		Catalog catalog = Catalog.builder()
-				.serviceDefinitions(
-						ServiceDefinition.builder()
-								.id("service-definition-id-one")
-								.name("service-definition-one")
-								.description("Service Definition One")
-								.plans(Plan.builder().build())
-								.build(),
-						ServiceDefinition.builder()
-								.id("service-definition-id-two")
-								.name("service-definition-two")
-								.description("Service Definition Two")
-								.plans(Plan.builder().build())
-								.build())
+				.serviceDefinitions(serviceDefinition)
 				.build();
-
 		MockitoAnnotations.initMocks(this);
 		when(this.catalogService.getCatalog()).thenReturn(catalog);
 		RestAssuredMockMvc.standaloneSetup(new CatalogController(this.catalogService));

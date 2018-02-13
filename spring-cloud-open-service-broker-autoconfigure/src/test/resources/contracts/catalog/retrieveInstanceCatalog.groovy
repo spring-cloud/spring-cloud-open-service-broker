@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package contracts
+package catalog
 
 org.springframework.cloud.contract.spec.Contract.make {
 	request {
 		method 'GET'
-		url '/v2/catalog'
+		url '/123/v2/catalog'
 		headers {
 			contentType('application/json')
 		}
