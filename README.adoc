@@ -6,7 +6,7 @@ image::https://api.codacy.com/project/badge/Grade/6fb04712acd14a898ecf504d545d14
 
 This project provides a framework for building a http://projects.spring.io/spring-boot/[Spring Boot] project to quickly implement a http://docs.cloudfoundry.org/services/overview.html[service broker] for http://www.cloudfoundry.org[Cloud Foundry].
 
-This project replaces https://github.com/cloudfoundry-community/spring-boot-cf-service-broker[Spring Boot CF Service Broker]. 
+This project replaces https://github.com/cloudfoundry-community/spring-boot-cf-service-broker[Spring Boot CF Service Broker].
 
 == Compatibility
 
@@ -18,9 +18,9 @@ See the http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#get
 
 A sample https://github.com/spring-cloud-samples/cloudfoundry-service-broker[MongoDB service broker] project is available.
 
-Add dependencies to your project's build file. 
+Add dependencies to your project's build file.
 
-Maven example: 
+Maven example:
 
     <dependencies>
         ...
@@ -40,14 +40,14 @@ Maven example:
         ...
     </dependencies>
 
-Gradle example: 
+Gradle example:
 
     dependencies {
         ...
         compile("org.springframework.cloud:spring-cloud-starter-service-broker-webmvc:${springCloudServiceBrokerVersion}")
         testCompile(group: "org.springframework.cloud", name: "spring-cloud-open-service-broker", version: "${springCloudServiceBrokerVersion}", classifier: "tests")
         ...
-    }        
+    }
 
 == Configuring the broker
 
@@ -68,15 +68,15 @@ This will trigger the inclusion of the default configuration.
 
 The Cloud Foundry service broker API has three main endpoint groupings: catalog management, service instance provisioning/deprovisioning, and service instance binding/unbinding. The broker will need to provide one Spring bean to provide the necessary functionality for each endpoint grouping.
 
-For catalog management, the framework provides a default implementation that requires the broker to just provide an implementation of a link:src/main/java/org/springframework/cloud/servicebroker/model/Catalog.java[`Catalog` bean]. There is an example of this approach in the https://github.com/spring-cloud-samples/cloudfoundry-service-broker/blob/master/src/main/java/org/springframework/cloud/servicebroker/mongodb/config/CatalogConfig.java[MongoDB sample broker]. To override this default, provide your own bean that implements the link:src/main/java/org/springframework/cloud/servicebroker/service/CatalogService.java[`CatalogService`] interface.
+For catalog management, the framework provides a default implementation that requires the broker to just provide an implementation of a link:spring-cloud-open-service-broker/src/main/java/org/springframework/cloud/servicebroker/model/Catalog.java[`Catalog` bean]. There is an example of this approach in the https://github.com/spring-cloud-samples/cloudfoundry-service-broker/blob/master/src/main/java/org/springframework/cloud/servicebroker/mongodb/config/CatalogConfig.java[MongoDB sample broker]. To override this default, provide your own bean that implements the link:spring-cloud-open-service-broker/src/main/java/org/springframework/cloud/servicebroker/service/CatalogService.java[`CatalogService`] interface.
 
-For service instance provisioning/deprovisioning, provide a Spring bean that implements the link:src/main/java/org/springframework/cloud/servicebroker/service/ServiceInstanceService.java[`ServiceInstanceService`] interface. There is no default implementation provided.
+For service instance provisioning/deprovisioning, provide a Spring bean that implements the link:spring-cloud-open-service-broker/src/main/java/org/springframework/cloud/servicebroker/service/ServiceInstanceService.java[`ServiceInstanceService`] interface. There is no default implementation provided.
 
-For service instance binding/unbinding, provide a Spring bean that implements the link:src/main/java/org/springframework/cloud/servicebroker/service/ServiceInstanceBindingService.java[`ServiceInstanceBindingService`] interface. If the service broker does not provide any bindable services, this bean can be omitted and a default implementation will be provided.
+For service instance binding/unbinding, provide a Spring bean that implements the link:spring-cloud-open-service-broker/src/main/java/org/springframework/cloud/servicebroker/service/ServiceInstanceBindingService.java[`ServiceInstanceBindingService`] interface. If the service broker does not provide any bindable services, this bean can be omitted and a default implementation will be provided.
 
 === Security
 
-The project includes the https://github.com/spring-projects/spring-boot/tree/master/spring-boot-starters/spring-boot-starter-security[`spring-boot-starter-security`] project.  See the http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-security[Spring Boot Security documentation] for configuration options.
+The project includes the https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-starters/spring-boot-starter-security[`spring-boot-starter-security`] project.  See the http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-security[Spring Boot Security documentation] for configuration options.
 
 The default behavior creates a user called `user` with a generated password that is logged as an `INFO` message during app startup.  For example:
 
