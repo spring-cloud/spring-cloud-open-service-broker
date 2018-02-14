@@ -137,7 +137,7 @@ configure(rootProject) {
 		from javadoc
 	}
 
-	task api(type: Javadoc) {
+	task apidocs(type: Javadoc) {
 		group = "Documentation"
 		description = "Generates aggregated Javadoc API documentation."
 		title = "${rootProject.description} ${version} API"
@@ -156,7 +156,7 @@ configure(rootProject) {
 		})
 
 		maxMemory = "1024m"
-		destinationDir = new File(buildDir, "api")
+		destinationDir = new File(buildDir, "apidocs")
 	}
 
 	task docsZip(type: Zip) {
@@ -165,8 +165,8 @@ configure(rootProject) {
 		description = "Builds -${classifier} archive containing api and reference " +
 				"for deployment."
 
-		from(api) {
-			into "api"
+		from(apidocs) {
+			into "apidocs"
 		}
 	}
 
