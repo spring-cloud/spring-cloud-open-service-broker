@@ -11,7 +11,9 @@ This project was formerly named Spring Cloud - Cloud Foundry Service Broker. Vie
 
 == Compatibility
 
-* https://github.com/openservicebrokerapi/servicebroker/[Open Service Broker API]: 2.13
+* https://projects.spring.io/spring-framework/[Spring Framework] 5.x
+* https://projects.spring.io/spring-boot/[Spring Boot] 2.x
+* https://github.com/openservicebrokerapi/servicebroker/[Open Service Broker API] 2.13
 
 == Getting Started
 
