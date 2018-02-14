@@ -4,56 +4,68 @@ image::https://api.codacy.com/project/badge/Grade/6fb04712acd14a898ecf504d545d14
 
 = Overview
 
-This project provides a framework for building a http://projects.spring.io/spring-boot/[Spring Boot] project to quickly implement a http://docs.cloudfoundry.org/services/overview.html[service broker] for http://www.cloudfoundry.org[Cloud Foundry].
+Spring Cloud Open Service Broker is a framework for building https://projects.spring.io/spring-boot/[Spring Boot] applications that implement the https://www.openservicebrokerapi.org/[Open Service Broker API].
 
-This project replaces https://github.com/cloudfoundry-community/spring-boot-cf-service-broker[Spring Boot CF Service Broker].
+[NOTE]
+This project was formerly named Spring Cloud - Cloud Foundry Service Broker. View the https://github.com/spring-cloud/spring-cloud-open-service-broker/tree/1.0.x[1.0.x] branch of this repository for information on using the released versions of the project with artifacts using that name. The `master` branch of the repository is currently in active development leading to a `2.0.0` release. 
 
 == Compatibility
 
-* http://docs.cloudfoundry.org/services/api.html[Service Broker API]: 2.13
+* https://github.com/openservicebrokerapi/servicebroker/[Open Service Broker API]: 2.13
 
 == Getting Started
 
 See the http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#getting-started-first-application[Spring Boot documentation] for getting started building a Spring Boot application.
 
-A sample https://github.com/spring-cloud-samples/cloudfoundry-service-broker[MongoDB service broker] project is available.
+Most service broker applications will implement API or web UI endpoints beyond the Open Service Broker API endpoints. These additional endpoints might provide information about the application, provide a dashboard UI, or provide controls over application behavior. Developer can choose to implement these additional endpoints using https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html[Spring MVC] or https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html[Spring WebFlux].
 
-Add dependencies to your project's build file.
+This choice does not affect the behavior of the Open Service Broker API endpoints, but the auto-configuration of the project depends on which Spring web framework the service broker application uses.
 
-Maven example:
+Two Spring Boot starter dependencies are provided, reflecting the choice of Spring web framework.
+
+=== Maven dependencies
+
+To use Spring Cloud Open Service Broker in a *Spring MVC* application, add the `webmvc` starter:
 
     <dependencies>
-        ...
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-service-broker-webmvc</artifactId>
-            <version>${springCloudServiceBrokerVersion}</version>
+            <artifactId>spring-cloud-starter-open-service-broker-webmvc</artifactId>
+            <version>${version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-open-service-broker</artifactId>
-            <version>${springCloudServiceBrokerVersion}</version>
-            <classifier>tests</classifier>
-            <scope>test</scope>
-        </dependency>
-        ...
     </dependencies>
 
-Gradle example:
+To use Spring Cloud Open Service Broker in a *Spring WebFlux* application, add the `webflux` starter:
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-open-service-broker-webflux</artifactId>
+            <version>${version}</version>
+        </dependency>
+    </dependencies>
+
+=== Gradle dependencies
+
+To use Spring Cloud Open Service Broker in a *Spring MVC* application, add the `webmvc` starter:
 
     dependencies {
-        ...
-        compile("org.springframework.cloud:spring-cloud-starter-service-broker-webmvc:${springCloudServiceBrokerVersion}")
-        testCompile(group: "org.springframework.cloud", name: "spring-cloud-open-service-broker", version: "${springCloudServiceBrokerVersion}", classifier: "tests")
-        ...
+        compile("org.springframework.cloud:spring-cloud-starter-open-service-broker-webmvc:${version}")
     }
 
-== Configuring the broker
+To use Spring Cloud Open Service Broker in a *Spring WebFlux* application, add the `webflux` starter:
+
+    dependencies {
+        compile("org.springframework.cloud:spring-cloud-starter-open-service-broker-webflux:${version}")
+    }
+
+== Implementing a service broker
+
+=== Configuring the broker
 
 The framework provides default implementations of most of the components needed to implement a service broker. In Spring Boot fashion, you can override the default behavior by providing your own implementation of Spring beans, and the framework will back away from its defaults.
 
-To start, use the `@EnableAutoConfiguration` or `@SpringBootApplication` annotation on the broker's main application class:
+To start, use the `@SpringBootApplication` annotation on the broker's main application class:
 
     @SpringBootApplication
     public class Application {
@@ -66,28 +78,13 @@ This will trigger the inclusion of the default configuration.
 
 === Service beans
 
-The Cloud Foundry service broker API has three main endpoint groupings: catalog management, service instance provisioning/deprovisioning, and service instance binding/unbinding. The broker will need to provide one Spring bean to provide the necessary functionality for each endpoint grouping.
+The Open Service Broker API has three main endpoint groupings: catalog management, service instance provisioning/deprovisioning, and service instance binding/unbinding. The broker will need to provide one Spring bean to provide the necessary functionality for each endpoint grouping.
 
-For catalog management, the framework provides a default implementation that requires the broker to just provide an implementation of a link:spring-cloud-open-service-broker/src/main/java/org/springframework/cloud/servicebroker/model/Catalog.java[`Catalog` bean]. There is an example of this approach in the https://github.com/spring-cloud-samples/cloudfoundry-service-broker/blob/master/src/main/java/org/springframework/cloud/servicebroker/mongodb/config/CatalogConfig.java[MongoDB sample broker]. To override this default, provide your own bean that implements the link:spring-cloud-open-service-broker/src/main/java/org/springframework/cloud/servicebroker/service/CatalogService.java[`CatalogService`] interface.
+For catalog management, the framework provides a default implementation that requires the broker to just provide an implementation of a link:spring-cloud-open-service-broker/src/main/java/org/springframework/cloud/servicebroker/model/Catalog.java[`Catalog` bean]. To override this default, provide your own bean that implements the link:spring-cloud-open-service-broker/src/main/java/org/springframework/cloud/servicebroker/service/CatalogService.java[`CatalogService`] interface.
 
 For service instance provisioning/deprovisioning, provide a Spring bean that implements the link:spring-cloud-open-service-broker/src/main/java/org/springframework/cloud/servicebroker/service/ServiceInstanceService.java[`ServiceInstanceService`] interface. There is no default implementation provided.
 
 For service instance binding/unbinding, provide a Spring bean that implements the link:spring-cloud-open-service-broker/src/main/java/org/springframework/cloud/servicebroker/service/ServiceInstanceBindingService.java[`ServiceInstanceBindingService`] interface. If the service broker does not provide any bindable services, this bean can be omitted and a default implementation will be provided.
-
-=== Security
-
-The project includes the https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-starters/spring-boot-starter-security[`spring-boot-starter-security`] project.  See the http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-security[Spring Boot Security documentation] for configuration options.
-
-The default behavior creates a user called `user` with a generated password that is logged as an `INFO` message during app startup.  For example:
-
-    2014-04-16T10:08:52.54-0600 [App/0]   OUT Using default password for application endpoints: 7c2969c1-d9c7-47e9-9c9e-2cd94a7b6cf1
-
-If you are deploying your service broker to Cloud Foundry as an app, be aware the password is re-generated every time you push the application.  Therefore, you need to run `cf update-service-broker` with the new password after each push.
-
-To see the generated password in the application logs on Cloud Foundry, use one of the following commands:
-
-    $ cf logs <broker-app-name>
-    $ cf logs --recent <broker-app-name>
 
 === API version verification
 
@@ -98,11 +95,9 @@ By default, the framework will verify the version of the service broker API for 
         return new BrokerApiVersion();
     }
 
-== Deploying your broker
+== Build
 
-Follow the http://docs.cloudfoundry.org/services/managing-service-brokers.html[documentation] to register the broker to Cloud Foundry.
-
-=== Build
+This project requires Java 8 at a minimum. 
 
 The project is built with Gradle. The https://docs.gradle.org/current/userguide/gradle_wrapper.html[Gradle wrapper] allows you to build the project on multiple platforms and even if you do not have Gradle installed; run it in place of the `gradle` command (as `./gradlew`) from the root of the main project directory.
 
@@ -110,4 +105,57 @@ The project is built with Gradle. The https://docs.gradle.org/current/userguide/
 
     ./gradlew build
 
+== Working with the code
+If you don't have an IDE preference we would recommend that you use
+http://www.springsource.com/developer/sts[Spring Tools Suite] or
+http://eclipse.org[Eclipse] when working with the code. We use the
+http://eclipse.org/m2e/[m2eclipse] eclipse plugin for maven support. Other IDEs and tools
+should also work without issue as long as they use Maven 3.3.3 or better.
+
+== Contributing
+
+Spring Cloud is released under the non-restrictive Apache 2.0 license,
+and follows a very standard Github development process, using Github
+tracker for issues and merging pull requests into master. If you want
+to contribute even something trivial please do not hesitate, but
+follow the guidelines below.
+
+=== Sign the Contributor License Agreement
+Before we accept a non-trivial patch or pull request we will need you to sign the
+https://cla.pivotal.io/sign/spring[Contributor License Agreement].
+Signing the contributor's agreement does not grant anyone commit rights to the main
+repository, but it does mean that we can accept your contributions, and you will get an
+author credit if we do.  Active contributors might be asked to join the core team, and
+given the ability to merge pull requests.
+
+=== Code of Conduct
+This project adheres to the Contributor Covenant link:/CODE_OF_CONDUCT.adoc[code of
+conduct]. By participating, you  are expected to uphold this code. Please report
+unacceptable behavior to spring-code-of-conduct@pivotal.io.
+
+=== Code Conventions and Housekeeping
+None of these is essential for a pull request, but they will all help.  They can also be
+added after the original pull request but before a merge.
+
+* Use the Spring Framework code format conventions. If you use Eclipse
+  you can import formatter settings using the
+  `eclipse-code-formatter.xml` file from the
+  https://raw.githubusercontent.com/spring-cloud/spring-cloud-build/master/spring-cloud-dependencies-parent/eclipse-code-formatter.xml[Spring
+  Cloud Build] project. If using IntelliJ, you can use the
+  http://plugins.jetbrains.com/plugin/6546[Eclipse Code Formatter
+  Plugin] to import the same file.
+* Make sure all new `.java` files to have a simple Javadoc class comment with at least an
+  `@author` tag identifying you, and preferably at least a paragraph on what the class is
+  for.
+* Add the ASF license header comment to all new `.java` files (copy from existing files
+  in the project)
+* Add yourself as an `@author` to the .java files that you modify substantially (more
+  than cosmetic changes).
+* Add some Javadocs and, if you change the namespace, some XSD doc elements.
+* A few unit tests would help a lot as well -- someone has to do it.
+* If no-one else is using your branch, please rebase it against the current master (or
+  other target branch in the main project).
+* When writing a commit message please follow http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html[these conventions],
+  if you are fixing an existing issue please add `Fixes gh-XXXX` at the end of the commit
+  message (where XXXX is the issue number).
 
