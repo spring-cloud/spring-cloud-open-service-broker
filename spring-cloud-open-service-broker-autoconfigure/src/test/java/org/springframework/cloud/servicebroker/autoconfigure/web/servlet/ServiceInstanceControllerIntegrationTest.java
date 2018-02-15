@@ -79,9 +79,6 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 	@Mock
 	private ServiceInstanceService serviceInstanceService;
 
-	private UriComponentsBuilder uriBuilder;
-	private UriComponentsBuilder cfInstanceIdUriBuilder;
-
 	private String createRequestBody;
 	private String updateRequestBody;
 
@@ -90,9 +87,6 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter())
 				.build();
-
-		uriBuilder = UriComponentsBuilder.fromPath(SERVICE_INSTANCES_ROOT_PATH);
-		cfInstanceIdUriBuilder = UriComponentsBuilder.fromPath("/").path(CF_INSTANCE_ID).path(SERVICE_INSTANCES_ROOT_PATH);
 
 		createRequestBody = DataFixture.toJson(CreateServiceInstanceRequest.builder()
 				.serviceDefinitionId(serviceDefinition.getId())
@@ -112,7 +106,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.async(true)
 				.build());
 
-		mockMvc.perform(put(buildCreateUpdateUrl(true, true))
+		mockMvc.perform(put(buildCreateUpdateUrl(CF_INSTANCE_ID, true))
 				.content(createRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
@@ -123,6 +117,27 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted(), equalTo(true));
 		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	public void createServiceInstanceWithEmptyPlatformInstanceIdSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
+				.async(true)
+				.build());
+
+		// force a condition where the cfInstanceId segment is present but empty
+		// e.g. http://test.example.com//v2/service_instances/[guid]
+		String url = "http://test.example.com/" + buildCreateUpdateUrl();
+		mockMvc.perform(put(url)
+				.content(createRequestBody)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isAccepted());
+
+		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
+		assertHeaderValuesNotSet(actualRequest);
 	}
 
 	@Test
@@ -251,7 +266,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.operation("working")
 				.build());
 
-		mockMvc.perform(delete(buildDeleteUrl(true, true))
+		mockMvc.perform(delete(buildDeleteUrl(CF_INSTANCE_ID, true))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON))
@@ -311,7 +326,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.operation("working")
 				.build());
 
-		mockMvc.perform(patch(buildCreateUpdateUrl(true, true))
+		mockMvc.perform(patch(buildCreateUpdateUrl(CF_INSTANCE_ID, true))
 				.content(updateRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
@@ -379,7 +394,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.description("working on it")
 				.build());
 
-		mockMvc.perform(get(buildLastOperationUrl(false)))
+		mockMvc.perform(get(buildLastOperationUrl()))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.state", is(OperationState.IN_PROGRESS.toString())))
 				.andExpect(jsonPath("$.description", is("working on it")));
@@ -395,7 +410,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.description("all good")
 				.build());
 
-		mockMvc.perform(get(buildLastOperationUrl(true))
+		mockMvc.perform(get(buildLastOperationUrl(CF_INSTANCE_ID))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader()))
 				.andExpect(status().isOk())
@@ -414,7 +429,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.deleteOperation(true)
 				.build());
 
-		mockMvc.perform(get(buildLastOperationUrl(false)))
+		mockMvc.perform(get(buildLastOperationUrl()))
 				.andExpect(status().isGone())
 				.andExpect(jsonPath("$.state", is(OperationState.SUCCEEDED.toString())))
 				.andExpect(jsonPath("$.description", is("all gone")));
@@ -427,7 +442,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.description("not so good")
 				.build());
 
-		mockMvc.perform(get(buildLastOperationUrl(false)))
+		mockMvc.perform(get(buildLastOperationUrl()))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.state", is(OperationState.FAILED.toString())))
 				.andExpect(jsonPath("$.description", is("not so good")));
@@ -469,34 +484,44 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 	}
 
 	private String buildCreateUpdateUrl() {
-		return buildCreateUpdateUrl(false, false);
+		return buildCreateUpdateUrl(null, false);
 	}
 
-	private String buildCreateUpdateUrl(Boolean withCfInstanceId, boolean asyncAccepted) {
-		UriComponentsBuilder builder = withCfInstanceId ? cfInstanceIdUriBuilder : uriBuilder;
-		return builder.path(SERVICE_INSTANCE_ID)
+	private String buildCreateUpdateUrl(String cfInstanceId, boolean asyncAccepted) {
+		return buildBaseUrl(cfInstanceId)
+				.path(SERVICE_INSTANCE_ID)
 				.queryParam("accepts_incomplete", asyncAccepted)
 				.toUriString();
 	}
 
 	private String buildDeleteUrl() {
-		return buildDeleteUrl(false, false);
+		return buildDeleteUrl(null, false);
 	}
 
-	private String buildDeleteUrl(boolean withCfInstanceId, boolean asyncAccepted) {
-		UriComponentsBuilder builder = withCfInstanceId ? cfInstanceIdUriBuilder : uriBuilder;
-		return builder.path(SERVICE_INSTANCE_ID)
+	private String buildDeleteUrl(String cfInstanceId, boolean asyncAccepted) {
+		return buildBaseUrl(cfInstanceId)
+				.path(SERVICE_INSTANCE_ID)
 				.queryParam("service_id", serviceDefinition.getId())
 				.queryParam("plan_id", "standard")
 				.queryParam("accepts_incomplete", asyncAccepted)
 				.toUriString();
 	}
 
-	private String buildLastOperationUrl(Boolean withCfInstanceId) {
-		UriComponentsBuilder builder = withCfInstanceId ? cfInstanceIdUriBuilder : uriBuilder;
-		return builder.pathSegment(SERVICE_INSTANCE_ID, "last_operation")
+	private String buildLastOperationUrl() {
+		return buildLastOperationUrl(null);
+	}
+
+	private String buildLastOperationUrl(String cfInstanceId) {
+		return buildBaseUrl(cfInstanceId)
+				.pathSegment(SERVICE_INSTANCE_ID, "last_operation")
 				.queryParam("operation", "working")
 				.toUriString();
+	}
+
+	private UriComponentsBuilder buildBaseUrl(String cfInstanceId) {
+		return UriComponentsBuilder.fromPath("//")
+				.path(cfInstanceId)
+				.path(SERVICE_INSTANCES_ROOT_PATH);
 	}
 
 	private CreateServiceInstanceRequest verifyCreateServiceInstance() {

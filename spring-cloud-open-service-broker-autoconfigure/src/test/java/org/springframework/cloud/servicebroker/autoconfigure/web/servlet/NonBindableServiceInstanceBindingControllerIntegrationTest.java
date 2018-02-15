@@ -52,7 +52,7 @@ public class NonBindableServiceInstanceBindingControllerIntegrationTest extends 
 	public void createBindingToAppFails() throws Exception {
 		setupCatalogService();
 
-		mockMvc.perform(put(buildCreateUrl(false))
+		mockMvc.perform(put(buildCreateUrl())
 				.content(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -61,7 +61,7 @@ public class NonBindableServiceInstanceBindingControllerIntegrationTest extends 
 
 	@Test
 	public void deleteBindingFails() throws Exception {
-		mockMvc.perform(delete(buildDeleteUrl(false))
+		mockMvc.perform(delete(buildDeleteUrl())
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());
 	}

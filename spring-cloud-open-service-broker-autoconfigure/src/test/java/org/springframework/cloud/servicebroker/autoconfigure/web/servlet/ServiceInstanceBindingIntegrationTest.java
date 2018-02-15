@@ -27,18 +27,10 @@ public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIn
 	
 	protected static final String SERVICE_INSTANCES_ROOT_PATH = "/v2/service_instances/";
 
-	protected UriComponentsBuilder uriBuilder;
-	protected UriComponentsBuilder cfInstanceIdUriBuilder;
-
 	protected String createRequestBody;
 
 	@Before
 	public void setupBase() {
-		uriBuilder = UriComponentsBuilder.fromPath(SERVICE_INSTANCES_ROOT_PATH)
-				.pathSegment(SERVICE_INSTANCE_ID, "service_bindings", SERVICE_INSTANCE_BINDING_ID);
-		cfInstanceIdUriBuilder = UriComponentsBuilder.fromPath("/").path(CF_INSTANCE_ID).path(SERVICE_INSTANCES_ROOT_PATH)
-				.pathSegment(SERVICE_INSTANCE_ID, "service_bindings", SERVICE_INSTANCE_BINDING_ID);
-
 		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId(serviceDefinition.getId())
 				.planId("standard")
@@ -47,16 +39,29 @@ public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIn
 		createRequestBody = DataFixture.toJson(request);
 	}
 
-	protected String buildCreateUrl(Boolean withCfInstanceId) {
-		UriComponentsBuilder builder = withCfInstanceId ? cfInstanceIdUriBuilder : uriBuilder;
-		return builder.toUriString();
+	protected String buildCreateUrl() {
+		return buildCreateUrl(null);
 	}
 
-	protected String buildDeleteUrl(Boolean withCfInstanceId) {
-		UriComponentsBuilder builder = withCfInstanceId ? cfInstanceIdUriBuilder : uriBuilder;
-		return builder
+	protected String buildCreateUrl(String cfInstanceId) {
+		return buildBaseUrl(cfInstanceId).toUriString();
+	}
+
+	protected String buildDeleteUrl() {
+		return buildDeleteUrl(null);
+	}
+
+	protected String buildDeleteUrl(String cfInstanceId) {
+		return buildBaseUrl(cfInstanceId)
 				.queryParam("service_id", serviceDefinition.getId())
 				.queryParam("plan_id", serviceDefinition.getPlans().get(0).getId())
 				.toUriString();
+	}
+
+	private UriComponentsBuilder buildBaseUrl(String cfInstanceId) {
+		return UriComponentsBuilder.fromPath("/")
+				.pathSegment(cfInstanceId)
+				.path(SERVICE_INSTANCES_ROOT_PATH)
+				.pathSegment(SERVICE_INSTANCE_ID, "service_bindings", SERVICE_INSTANCE_BINDING_ID);
 	}
 }

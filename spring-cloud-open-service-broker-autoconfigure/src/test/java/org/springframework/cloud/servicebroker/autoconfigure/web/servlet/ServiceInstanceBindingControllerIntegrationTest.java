@@ -77,7 +77,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.bindingExisted(false)
 				.build());
 
-		mockMvc.perform(put(buildCreateUrl(true))
+		mockMvc.perform(put(buildCreateUrl(CF_INSTANCE_ID))
 				.content(createRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
@@ -97,7 +97,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.bindingExisted(true)
 				.build());
 
-		mockMvc.perform(put(buildCreateUrl(false))
+		mockMvc.perform(put(buildCreateUrl())
 				.content(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -115,7 +115,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.bindingExisted(false)
 				.build());
 
-		mockMvc.perform(put(buildCreateUrl(false))
+		mockMvc.perform(put(buildCreateUrl())
 				.content(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -130,7 +130,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.bindingExisted(true)
 				.build());
 
-		mockMvc.perform(put(buildCreateUrl(false))
+		mockMvc.perform(put(buildCreateUrl())
 				.content(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -144,7 +144,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		setupServiceInstanceBindingService(
 				new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID));
 
-		mockMvc.perform(put(buildCreateUrl(false))
+		mockMvc.perform(put(buildCreateUrl())
 				.content(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -156,7 +156,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	public void createBindingWithUnknownServiceDefinitionIdSucceeds() throws Exception {
 		setupCatalogService(null);
 
-		mockMvc.perform(put(buildCreateUrl(false))
+		mockMvc.perform(put(buildCreateUrl())
 				.content(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -171,7 +171,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 		setupServiceInstanceBindingService(
 				new ServiceInstanceBindingExistsException(SERVICE_INSTANCE_ID, SERVICE_INSTANCE_BINDING_ID));
 
-		mockMvc.perform(put(buildCreateUrl(false))
+		mockMvc.perform(put(buildCreateUrl())
 				.content(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -184,7 +184,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	public void createBindingWithInvalidFieldsFails() throws Exception {
 		String body = createRequestBody.replace("service_id", "foo");
 
-		mockMvc.perform(put(buildCreateUrl(false))
+		mockMvc.perform(put(buildCreateUrl())
 				.content(body)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
@@ -195,7 +195,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	public void createBindingWithMissingFieldsFails() throws Exception {
 		String body = "{}";
 
-		mockMvc.perform(put(buildCreateUrl(false))
+		mockMvc.perform(put(buildCreateUrl())
 				.content(body)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
@@ -208,7 +208,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	public void deleteBindingSucceeds() throws Exception {
 		setupCatalogService();
 
-		mockMvc.perform(delete(buildDeleteUrl(true))
+		mockMvc.perform(delete(buildDeleteUrl(CF_INSTANCE_ID))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.contentType(MediaType.APPLICATION_JSON))
@@ -227,7 +227,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		setupServiceInstanceService(new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID));
 
-		mockMvc.perform(delete(buildDeleteUrl(false))
+		mockMvc.perform(delete(buildDeleteUrl())
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.description", containsString(SERVICE_INSTANCE_ID)));
@@ -239,7 +239,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 
 		setupServiceInstanceService(new ServiceInstanceBindingDoesNotExistException(SERVICE_INSTANCE_BINDING_ID));
 
-		mockMvc.perform(delete(buildDeleteUrl(false))
+		mockMvc.perform(delete(buildDeleteUrl())
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isGone())
 				.andExpect(jsonPath("$", is("{}")));
@@ -249,7 +249,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	public void deleteBindingWithUnknownServiceDefinitionIdSucceeds() throws Exception {
 		setupCatalogService(null);
 
-		mockMvc.perform(delete(buildDeleteUrl(false))
+		mockMvc.perform(delete(buildDeleteUrl())
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
