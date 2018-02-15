@@ -43,24 +43,24 @@ public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIn
 		return buildCreateUrl(null);
 	}
 
-	protected String buildCreateUrl(String cfInstanceId) {
-		return buildBaseUrl(cfInstanceId).toUriString();
+	protected String buildCreateUrl(String platformInstanceId) {
+		return buildBaseUrl(platformInstanceId).toUriString();
 	}
 
 	protected String buildDeleteUrl() {
 		return buildDeleteUrl(null);
 	}
 
-	protected String buildDeleteUrl(String cfInstanceId) {
-		return buildBaseUrl(cfInstanceId)
+	protected String buildDeleteUrl(String platformInstanceId) {
+		return buildBaseUrl(platformInstanceId)
 				.queryParam("service_id", serviceDefinition.getId())
 				.queryParam("plan_id", serviceDefinition.getPlans().get(0).getId())
 				.toUriString();
 	}
 
-	private UriComponentsBuilder buildBaseUrl(String cfInstanceId) {
+	private UriComponentsBuilder buildBaseUrl(String platformInstanceId) {
 		return UriComponentsBuilder.fromPath("/")
-				.pathSegment(cfInstanceId)
+				.pathSegment(platformInstanceId)
 				.path(SERVICE_INSTANCES_ROOT_PATH)
 				.pathSegment(SERVICE_INSTANCE_ID, "service_bindings", SERVICE_INSTANCE_BINDING_ID);
 	}

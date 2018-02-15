@@ -40,13 +40,13 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 public abstract class ControllerIntegrationTest {
-	protected static final String API_INFO_LOCATION = "https://api.cf.example.com";
+	protected static final String API_INFO_LOCATION = "https://api.platform.example.com";
 	protected static final String ORIGINATING_IDENTITY_PLATFORM = "test-platform";
 	protected static final String ORIGINATING_USER_KEY = "user_id";
 	protected static final String ORIGINATING_USER_VALUE = "user_id";
 	protected static final String ORIGINATING_EMAIL_KEY = "email";
 	protected static final String ORIGINATING_EMAIL_VALUE = "user@example.com";
-	protected static final String CF_INSTANCE_ID = "cf-abc";
+	protected static final String PLATFORM_INSTANCE_ID = "platform-abc";
 	protected static final String SERVICE_INSTANCE_ID = "service-instance-one-id";
 
 	@Mock
@@ -80,7 +80,7 @@ public abstract class ControllerIntegrationTest {
 	}
 
 	protected void assertHeaderValuesSet(ServiceBrokerRequest actualRequest) {
-		assertThat(actualRequest.getCfInstanceId(), equalTo(CF_INSTANCE_ID));
+		assertThat(actualRequest.getPlatformInstanceId(), equalTo(PLATFORM_INSTANCE_ID));
 		assertThat(actualRequest.getApiInfoLocation(), equalTo(API_INFO_LOCATION));
 
 		assertThat(actualRequest.getOriginatingIdentity(), notNullValue());
@@ -92,7 +92,7 @@ public abstract class ControllerIntegrationTest {
 
 	protected void assertHeaderValuesNotSet(ServiceBrokerRequest actualRequest) {
 		assertNull(actualRequest.getApiInfoLocation());
-		assertNull(actualRequest.getCfInstanceId());
+		assertNull(actualRequest.getPlatformInstanceId());
 		assertNull(actualRequest.getOriginatingIdentity());
 	}
 }

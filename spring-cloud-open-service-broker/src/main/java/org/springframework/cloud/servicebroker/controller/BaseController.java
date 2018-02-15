@@ -62,17 +62,17 @@ public class BaseController {
 		this.catalogService = catalogService;
 	}
 
-	protected void setCommonRequestFields(ServiceBrokerRequest request, String cfInstanceId,
+	protected void setCommonRequestFields(ServiceBrokerRequest request, String platformInstanceId,
 										  String apiInfoLocation, String originatingIdentityString) {
-		request.setCfInstanceId(cfInstanceId);
+		request.setPlatformInstanceId(platformInstanceId);
 		request.setApiInfoLocation(apiInfoLocation);
 		request.setOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
 	}
 
-	protected void setCommonRequestFields(AsyncServiceInstanceRequest request, String cfInstanceId,
+	protected void setCommonRequestFields(AsyncServiceInstanceRequest request, String platformInstanceId,
 										  String apiInfoLocation, String originatingIdentityString,
 										  boolean asyncAccepted) {
-		setCommonRequestFields(request, cfInstanceId, apiInfoLocation, originatingIdentityString);
+		setCommonRequestFields(request, platformInstanceId, apiInfoLocation, originatingIdentityString);
 		request.setAsyncAccepted(asyncAccepted);
 	}
 

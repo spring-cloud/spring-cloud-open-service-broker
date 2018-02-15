@@ -43,7 +43,7 @@ public abstract class ControllerRequestTest {
 	protected Context identityContext;
 	protected Context requestContext;
 	
-	protected Map<String, String> pathVariables = Collections.singletonMap("cfInstanceId", "platform-instance-id");
+	protected Map<String, String> pathVariables = Collections.singletonMap("platformInstanceId", "platform-instance-id");
 
 	@Before
 	public void setUpControllerRequestTest() {

@@ -42,7 +42,7 @@ public class CreateServiceInstanceRequestTest {
 		assertThat(request.getContext(), nullValue());
 		assertThat(request.getParameters(), aMapWithSize(0));
 		assertThat(request.getApiInfoLocation(), nullValue());
-		assertThat(request.getCfInstanceId(), nullValue());
+		assertThat(request.getPlatformInstanceId(), nullValue());
 		assertThat(request.getOriginatingIdentity(), nullValue());
 	}
 

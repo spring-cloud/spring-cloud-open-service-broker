@@ -87,7 +87,7 @@ public class CatalogControllerIntegrationTest {
 	}
 
 	@Test
-	public void catalogIsRetrievedWithCfInstanceId() throws Exception {
+	public void catalogIsRetrievedWithPlatformInstanceId() throws Exception {
 
 		ResultActions result = this.mockMvc.perform(get("/123/v2/catalog")
 				.accept(MediaType.APPLICATION_JSON));

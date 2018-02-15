@@ -69,7 +69,7 @@ public class ServiceInstanceBindingController extends BaseController {
 	}
 
 	@PutMapping(value = {
-			"/{cfInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
+			"/{platformInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
 			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
 	})
 	public ResponseEntity<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(
@@ -102,7 +102,7 @@ public class ServiceInstanceBindingController extends BaseController {
 	}
 
 	@DeleteMapping(value = {
-			"/{cfInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
+			"/{platformInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
 			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
 	})
 	public ResponseEntity<String> deleteServiceInstanceBinding(@PathVariable Map<String, String> pathVariables,

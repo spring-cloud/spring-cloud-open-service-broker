@@ -79,7 +79,7 @@ public class ServiceInstanceController extends BaseController {
 	}
 
 	@PutMapping(value = {
-			"/{cfInstanceId}/v2/service_instances/{instanceId}",
+			"/{platformInstanceId}/v2/service_instances/{instanceId}",
 			"/v2/service_instances/{instanceId}"
 	})
 	public ResponseEntity<CreateServiceInstanceResponse> createServiceInstance(
@@ -118,7 +118,7 @@ public class ServiceInstanceController extends BaseController {
 	}
 
 	@GetMapping(value = {
-			"/{cfInstanceId}/v2/service_instances/{instanceId}/last_operation",
+			"/{platformInstanceId}/v2/service_instances/{instanceId}/last_operation",
 			"/v2/service_instances/{instanceId}/last_operation"
 	})
 	public ResponseEntity<GetLastServiceOperationResponse> getServiceInstanceLastOperation(
@@ -149,7 +149,7 @@ public class ServiceInstanceController extends BaseController {
 	}
 
 	@DeleteMapping(value = {
-			"/{cfInstanceId}/v2/service_instances/{instanceId}",
+			"/{platformInstanceId}/v2/service_instances/{instanceId}",
 			"/v2/service_instances/{instanceId}"
 	})
 	public ResponseEntity<DeleteServiceInstanceResponse> deleteServiceInstance(
@@ -186,7 +186,7 @@ public class ServiceInstanceController extends BaseController {
 	}
 
 	@PatchMapping(value = {
-			"/{cfInstanceId}/v2/service_instances/{instanceId}",
+			"/{platformInstanceId}/v2/service_instances/{instanceId}",
 			"/v2/service_instances/{instanceId}"
 	})
 	public ResponseEntity<UpdateServiceInstanceResponse> updateServiceInstance(

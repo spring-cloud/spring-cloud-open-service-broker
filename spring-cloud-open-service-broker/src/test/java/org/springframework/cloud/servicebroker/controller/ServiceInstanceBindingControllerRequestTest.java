@@ -36,7 +36,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 		CreateServiceInstanceBindingRequest expectedRequest = buildCreateRequest();
 		expectedRequest.setServiceInstanceId("service-instance-id");
 		expectedRequest.setBindingId("binding-id");
-		expectedRequest.setCfInstanceId("platform-instance-id");
+		expectedRequest.setPlatformInstanceId("platform-instance-id");
 		expectedRequest.setApiInfoLocation("api-info-location");
 		expectedRequest.setOriginatingIdentity(identityContext);
 		expectedRequest.setServiceDefinition(serviceDefinition);
@@ -65,7 +65,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 		expectedRequest.setPlanId("plan-id");
 		expectedRequest.setBindingId("binding-id");
 		expectedRequest.setServiceInstanceId("service-instance-id");
-		expectedRequest.setCfInstanceId("platform-instance-id");
+		expectedRequest.setPlatformInstanceId("platform-instance-id");
 		expectedRequest.setApiInfoLocation("api-info-location");
 		expectedRequest.setOriginatingIdentity(identityContext);
 		expectedRequest.setServiceDefinition(serviceDefinition);

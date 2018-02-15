@@ -77,7 +77,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.bindingExisted(false)
 				.build());
 
-		mockMvc.perform(put(buildCreateUrl(CF_INSTANCE_ID))
+		mockMvc.perform(put(buildCreateUrl(PLATFORM_INSTANCE_ID))
 				.content(createRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
@@ -208,7 +208,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	public void deleteBindingSucceeds() throws Exception {
 		setupCatalogService();
 
-		mockMvc.perform(delete(buildDeleteUrl(CF_INSTANCE_ID))
+		mockMvc.perform(delete(buildDeleteUrl(PLATFORM_INSTANCE_ID))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.contentType(MediaType.APPLICATION_JSON))

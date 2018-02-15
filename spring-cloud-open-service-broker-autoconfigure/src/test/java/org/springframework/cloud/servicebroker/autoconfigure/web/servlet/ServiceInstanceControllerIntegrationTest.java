@@ -106,7 +106,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.async(true)
 				.build());
 
-		mockMvc.perform(put(buildCreateUpdateUrl(CF_INSTANCE_ID, true))
+		mockMvc.perform(put(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
 				.content(createRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
@@ -127,7 +127,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.async(true)
 				.build());
 
-		// force a condition where the cfInstanceId segment is present but empty
+		// force a condition where the platformInstanceId segment is present but empty
 		// e.g. http://test.example.com//v2/service_instances/[guid]
 		String url = "http://test.example.com/" + buildCreateUpdateUrl();
 		mockMvc.perform(put(url)
@@ -266,7 +266,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.operation("working")
 				.build());
 
-		mockMvc.perform(delete(buildDeleteUrl(CF_INSTANCE_ID, true))
+		mockMvc.perform(delete(buildDeleteUrl(PLATFORM_INSTANCE_ID, true))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON))
@@ -326,7 +326,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.operation("working")
 				.build());
 
-		mockMvc.perform(patch(buildCreateUpdateUrl(CF_INSTANCE_ID, true))
+		mockMvc.perform(patch(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
 				.content(updateRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
@@ -410,7 +410,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.description("all good")
 				.build());
 
-		mockMvc.perform(get(buildLastOperationUrl(CF_INSTANCE_ID))
+		mockMvc.perform(get(buildLastOperationUrl(PLATFORM_INSTANCE_ID))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader()))
 				.andExpect(status().isOk())
@@ -487,8 +487,8 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		return buildCreateUpdateUrl(null, false);
 	}
 
-	private String buildCreateUpdateUrl(String cfInstanceId, boolean asyncAccepted) {
-		return buildBaseUrl(cfInstanceId)
+	private String buildCreateUpdateUrl(String platformInstanceId, boolean asyncAccepted) {
+		return buildBaseUrl(platformInstanceId)
 				.path(SERVICE_INSTANCE_ID)
 				.queryParam("accepts_incomplete", asyncAccepted)
 				.toUriString();
@@ -498,8 +498,8 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		return buildDeleteUrl(null, false);
 	}
 
-	private String buildDeleteUrl(String cfInstanceId, boolean asyncAccepted) {
-		return buildBaseUrl(cfInstanceId)
+	private String buildDeleteUrl(String platformInstanceId, boolean asyncAccepted) {
+		return buildBaseUrl(platformInstanceId)
 				.path(SERVICE_INSTANCE_ID)
 				.queryParam("service_id", serviceDefinition.getId())
 				.queryParam("plan_id", "standard")
@@ -511,16 +511,16 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		return buildLastOperationUrl(null);
 	}
 
-	private String buildLastOperationUrl(String cfInstanceId) {
-		return buildBaseUrl(cfInstanceId)
+	private String buildLastOperationUrl(String platformInstanceId) {
+		return buildBaseUrl(platformInstanceId)
 				.pathSegment(SERVICE_INSTANCE_ID, "last_operation")
 				.queryParam("operation", "working")
 				.toUriString();
 	}
 
-	private UriComponentsBuilder buildBaseUrl(String cfInstanceId) {
+	private UriComponentsBuilder buildBaseUrl(String platformInstanceId) {
 		return UriComponentsBuilder.fromPath("//")
-				.path(cfInstanceId)
+				.path(platformInstanceId)
 				.path(SERVICE_INSTANCES_ROOT_PATH);
 	}
 

@@ -41,7 +41,7 @@ public class CatalogController extends BaseController {
 		super(service);
 	}
 
-	@RequestMapping(value = {"/v2/catalog", "{cfInstanceId}/v2/catalog"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/v2/catalog", "{platformInstanceId}/v2/catalog"}, method = RequestMethod.GET)
 	public Catalog getCatalog() {
 		LOGGER.debug("Retrieving catalog");
 		return catalogService.getCatalog();

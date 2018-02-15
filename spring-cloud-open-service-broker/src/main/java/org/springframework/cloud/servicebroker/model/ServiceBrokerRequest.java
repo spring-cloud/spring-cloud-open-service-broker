@@ -34,14 +34,14 @@ public class ServiceBrokerRequest {
 	public static final String BINDING_ID_PATH_VARIABLE = "bindingId";
 	public static final String SERVICE_ID_PARAMETER = "service_id";
 	public static final String PLAN_ID_PARAMETER = "plan_id";
-	public static final String PLATFORM_INSTANCE_ID_VARIABLE = "cfInstanceId";
+	public static final String PLATFORM_INSTANCE_ID_VARIABLE = "platformInstanceId";
 
 	/**
 	 * The ID used to identify the platform instance when the service broker is registered
 	 * to multiple instances. Will be <code>null</code> if the service broker is not registered with an instance ID
 	 * in the registered URL.
 	 */
-	protected transient String cfInstanceId;
+	protected transient String platformInstanceId;
 
 	/**
 	 * The API info endpoint of the platform instance making the call to the service broker.
@@ -54,17 +54,17 @@ public class ServiceBrokerRequest {
 	protected transient Context originatingIdentity;
 
 	protected ServiceBrokerRequest() {
-		this.cfInstanceId = null;
+		this.platformInstanceId = null;
 		this.apiInfoLocation = null;
 		this.originatingIdentity = null;
 	}
 
-	public String getCfInstanceId() {
-		return this.cfInstanceId;
+	public String getPlatformInstanceId() {
+		return this.platformInstanceId;
 	}
 
-	public void setCfInstanceId(String cfInstanceId) {
-		this.cfInstanceId = cfInstanceId;
+	public void setPlatformInstanceId(String platformInstanceId) {
+		this.platformInstanceId = platformInstanceId;
 	}
 
 	public String getApiInfoLocation() {
@@ -89,7 +89,7 @@ public class ServiceBrokerRequest {
 		if (!(o instanceof ServiceBrokerRequest)) return false;
 		ServiceBrokerRequest that = (ServiceBrokerRequest) o;
 		return that.canEqual(this) &&
-				Objects.equals(cfInstanceId, that.cfInstanceId) &&
+				Objects.equals(platformInstanceId, that.platformInstanceId) &&
 				Objects.equals(apiInfoLocation, that.apiInfoLocation) &&
 				Objects.equals(originatingIdentity, that.originatingIdentity);
 	}
@@ -100,13 +100,13 @@ public class ServiceBrokerRequest {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cfInstanceId, apiInfoLocation, originatingIdentity);
+		return Objects.hash(platformInstanceId, apiInfoLocation, originatingIdentity);
 	}
 
 	@Override
 	public String toString() {
 		return "ServiceBrokerRequest{" +
-				"cfInstanceId='" + cfInstanceId + '\'' +
+				"platformInstanceId='" + platformInstanceId + '\'' +
 				", apiInfoLocation='" + apiInfoLocation + '\'' +
 				", originatingIdentity=" + originatingIdentity +
 				'}';

@@ -44,7 +44,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 		CreateServiceInstanceRequest expectedRequest = buildCreateRequest();
 		expectedRequest.setAsyncAccepted(true);
 		expectedRequest.setServiceInstanceId("service-instance-id");
-		expectedRequest.setCfInstanceId("platform-instance-id");
+		expectedRequest.setPlatformInstanceId("platform-instance-id");
 		expectedRequest.setApiInfoLocation("api-info-location");
 		expectedRequest.setOriginatingIdentity(identityContext);
 		expectedRequest.setServiceDefinition(serviceDefinition);
@@ -84,7 +84,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 		expectedRequest.setServiceDefinitionId("service-definition-id");
 		expectedRequest.setPlanId("plan-id");
 		expectedRequest.setOperation("operation");
-		expectedRequest.setCfInstanceId("platform-instance-id");
+		expectedRequest.setPlatformInstanceId("platform-instance-id");
 		expectedRequest.setApiInfoLocation("api-info-location");
 		expectedRequest.setOriginatingIdentity(identityContext);
 
@@ -102,7 +102,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 		expectedRequest.setServiceInstanceId("service-instance-id");
 		expectedRequest.setServiceDefinitionId("service-definition-id");
 		expectedRequest.setPlanId("plan-id");
-		expectedRequest.setCfInstanceId("platform-instance-id");
+		expectedRequest.setPlatformInstanceId("platform-instance-id");
 		expectedRequest.setApiInfoLocation("api-info-location");
 		expectedRequest.setOriginatingIdentity(identityContext);
 		expectedRequest.setServiceDefinition(serviceDefinition);
@@ -127,7 +127,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 		UpdateServiceInstanceRequest expectedRequest = buildUpdateRequest();
 		expectedRequest.setAsyncAccepted(true);
 		expectedRequest.setServiceInstanceId("service-instance-id");
-		expectedRequest.setCfInstanceId("platform-instance-id");
+		expectedRequest.setPlatformInstanceId("platform-instance-id");
 		expectedRequest.setApiInfoLocation("api-info-location");
 		expectedRequest.setOriginatingIdentity(identityContext);
 		expectedRequest.setServiceDefinition(serviceDefinition);
