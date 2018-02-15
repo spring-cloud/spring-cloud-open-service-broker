@@ -43,7 +43,6 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	/**
 	 * The ID of the plan to update within the service, from the broker catalog.
 	 */
-	@NotEmpty
 	private final String planId;
 
 	/**

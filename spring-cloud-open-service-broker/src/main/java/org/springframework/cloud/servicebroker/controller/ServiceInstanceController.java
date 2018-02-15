@@ -124,8 +124,8 @@ public class ServiceInstanceController extends BaseController {
 	public ResponseEntity<GetLastServiceOperationResponse> getServiceInstanceLastOperation(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-			@RequestParam(SERVICE_ID_PARAMETER) String serviceDefinitionId,
-			@RequestParam(PLAN_ID_PARAMETER) String planId,
+			@RequestParam(value = SERVICE_ID_PARAMETER, required = false) String serviceDefinitionId,
+			@RequestParam(value = PLAN_ID_PARAMETER, required = false) String planId,
 			@RequestParam(value = "operation", required = false) String operation,
 			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {

@@ -101,7 +101,6 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 		updateRequestBody = DataFixture.toJson(UpdateServiceInstanceRequest.builder()
 				.serviceDefinitionId(serviceDefinition.getId())
-				.planId("standard")
 				.build());
 	}
 
@@ -496,8 +495,6 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 	private String buildLastOperationUrl(Boolean withCfInstanceId) {
 		UriComponentsBuilder builder = withCfInstanceId ? cfInstanceIdUriBuilder : uriBuilder;
 		return builder.pathSegment(SERVICE_INSTANCE_ID, "last_operation")
-				.queryParam("service_id", serviceDefinition.getId())
-				.queryParam("plan_id", "standard")
 				.queryParam("operation", "working")
 				.toUriString();
 	}

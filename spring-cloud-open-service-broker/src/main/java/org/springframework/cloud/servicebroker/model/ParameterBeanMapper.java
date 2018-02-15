@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * Utilities for mapping parameter maps to Java beans.
  *
- * @author sfrederick
+ * @author Scott Frederick
  */
 public final class ParameterBeanMapper {
 	/**
