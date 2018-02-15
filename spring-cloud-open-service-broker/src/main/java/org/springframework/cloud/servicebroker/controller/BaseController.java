@@ -88,7 +88,7 @@ public class BaseController {
 		return catalogService.getServiceDefinition(serviceDefinitionId);
 	}
 
-	private Context parseOriginatingIdentity(String originatingIdentityString) {
+	protected Context parseOriginatingIdentity(String originatingIdentityString) {
 		if (originatingIdentityString == null) {
 			return null;
 		}

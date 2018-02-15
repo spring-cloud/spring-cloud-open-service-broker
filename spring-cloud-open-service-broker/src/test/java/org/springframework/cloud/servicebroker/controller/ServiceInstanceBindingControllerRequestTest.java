@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.controller;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.BindResource;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest.CreateServiceInstanceBindingRequestBuilder;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
@@ -31,15 +32,16 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 
 	@Test
 	public void createServiceBindingParametersAreMappedToRequest() {
-		CreateServiceInstanceBindingRequest parsedRequest = buildCreateRequest();
+		CreateServiceInstanceBindingRequest parsedRequest = buildCreateRequest().build();
 
-		CreateServiceInstanceBindingRequest expectedRequest = buildCreateRequest();
-		expectedRequest.setServiceInstanceId("service-instance-id");
-		expectedRequest.setBindingId("binding-id");
-		expectedRequest.setPlatformInstanceId("platform-instance-id");
-		expectedRequest.setApiInfoLocation("api-info-location");
-		expectedRequest.setOriginatingIdentity(identityContext);
-		expectedRequest.setServiceDefinition(serviceDefinition);
+		CreateServiceInstanceBindingRequest expectedRequest = buildCreateRequest()
+				.serviceInstanceId("service-instance-id")
+				.bindingId("binding-id")
+				.serviceDefinition(serviceDefinition)
+				.platformInstanceId("platform-instance-id")
+				.apiInfoLocation("api-info-location")
+				.originatingIdentity(identityContext)
+				.build();
 
 		ServiceInstanceBindingController controller = createControllerUnderTest(expectedRequest);
 
@@ -47,28 +49,28 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 				"api-info-location", encodeOriginatingIdentity(identityContext), parsedRequest);
 	}
 
-	private CreateServiceInstanceBindingRequest buildCreateRequest() {
+	private CreateServiceInstanceBindingRequestBuilder buildCreateRequest() {
 		return CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId(serviceDefinition.getId())
 				.planId("plan-id")
 				.bindResource(BindResource.builder().build())
 				.parameters("create-param-1", "value1")
 				.parameters("create-param-2", "value2")
-				.context(requestContext)
-				.build();
+				.context(requestContext);
 	}
 
 	@Test
 	public void deleteServiceBindingParametersAreMappedToRequest() {
-		DeleteServiceInstanceBindingRequest expectedRequest = new DeleteServiceInstanceBindingRequest();
-		expectedRequest.setServiceDefinitionId(serviceDefinition.getId());
-		expectedRequest.setPlanId("plan-id");
-		expectedRequest.setBindingId("binding-id");
-		expectedRequest.setServiceInstanceId("service-instance-id");
-		expectedRequest.setPlatformInstanceId("platform-instance-id");
-		expectedRequest.setApiInfoLocation("api-info-location");
-		expectedRequest.setOriginatingIdentity(identityContext);
-		expectedRequest.setServiceDefinition(serviceDefinition);
+		DeleteServiceInstanceBindingRequest expectedRequest = DeleteServiceInstanceBindingRequest.builder()
+				.serviceInstanceId("service-instance-id")
+				.serviceDefinitionId(serviceDefinition.getId())
+				.planId("plan-id")
+				.bindingId("binding-id")
+				.platformInstanceId("platform-instance-id")
+				.apiInfoLocation("api-info-location")
+				.originatingIdentity(identityContext)
+				.serviceDefinition(serviceDefinition)
+				.build();
 
 		ServiceInstanceBindingController controller = createControllerUnderTest(expectedRequest);
 

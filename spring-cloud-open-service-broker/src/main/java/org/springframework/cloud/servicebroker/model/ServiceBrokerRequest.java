@@ -53,10 +53,13 @@ public class ServiceBrokerRequest {
 	 */
 	protected transient Context originatingIdentity;
 
-	protected ServiceBrokerRequest() {
-		this.platformInstanceId = null;
-		this.apiInfoLocation = null;
-		this.originatingIdentity = null;
+	public ServiceBrokerRequest() {
+	}
+
+	protected ServiceBrokerRequest(String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
+		this.platformInstanceId = platformInstanceId;
+		this.apiInfoLocation = apiInfoLocation;
+		this.originatingIdentity = originatingIdentity;
 	}
 
 	public String getPlatformInstanceId() {

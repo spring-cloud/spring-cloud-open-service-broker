@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceRequest;
+import org.springframework.cloud.servicebroker.model.CreateServiceInstanceRequest.CreateServiceInstanceRequestBuilder;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceResponse;
@@ -29,6 +30,7 @@ import org.springframework.cloud.servicebroker.model.OperationState;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.UpdateServiceInstanceRequest.PreviousValues;
+import org.springframework.cloud.servicebroker.model.UpdateServiceInstanceRequest.UpdateServiceInstanceRequestBuilder;
 import org.springframework.cloud.servicebroker.model.UpdateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 
@@ -39,15 +41,16 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 	@Test
 	public void createServiceInstanceParametersAreMappedToRequest() {
-		CreateServiceInstanceRequest parsedRequest = buildCreateRequest();
+		CreateServiceInstanceRequest parsedRequest = buildCreateRequest().build();
 
-		CreateServiceInstanceRequest expectedRequest = buildCreateRequest();
-		expectedRequest.setAsyncAccepted(true);
-		expectedRequest.setServiceInstanceId("service-instance-id");
-		expectedRequest.setPlatformInstanceId("platform-instance-id");
-		expectedRequest.setApiInfoLocation("api-info-location");
-		expectedRequest.setOriginatingIdentity(identityContext);
-		expectedRequest.setServiceDefinition(serviceDefinition);
+		CreateServiceInstanceRequest expectedRequest = buildCreateRequest()
+				.asyncAccepted(true)
+				.serviceInstanceId("service-instance-id")
+				.platformInstanceId("platform-instance-id")
+				.apiInfoLocation("api-info-location")
+				.originatingIdentity(identityContext)
+				.serviceDefinition(serviceDefinition)
+				.build();
 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
@@ -55,14 +58,13 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 				"api-info-location", encodeOriginatingIdentity(identityContext), parsedRequest);
 	}
 
-	private CreateServiceInstanceRequest buildCreateRequest() {
+	private CreateServiceInstanceRequestBuilder buildCreateRequest() {
 		return CreateServiceInstanceRequest.builder()
 				.serviceDefinitionId("service-definition-id")
 				.planId("plan-id")
 				.parameters("create-param-1", "value1")
 				.parameters("create-param-2", "value2")
-				.context(requestContext)
-				.build();
+				.context(requestContext);
 	}
 
 	@Test(expected = ServiceDefinitionDoesNotExistException.class)
@@ -79,14 +81,15 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 	@Test
 	public void getServiceInstanceLastOperationParametersAreMappedToRequest() {
-		GetLastServiceOperationRequest expectedRequest = new GetLastServiceOperationRequest();
-		expectedRequest.setServiceInstanceId("service-instance-id");
-		expectedRequest.setServiceDefinitionId("service-definition-id");
-		expectedRequest.setPlanId("plan-id");
-		expectedRequest.setOperation("operation");
-		expectedRequest.setPlatformInstanceId("platform-instance-id");
-		expectedRequest.setApiInfoLocation("api-info-location");
-		expectedRequest.setOriginatingIdentity(identityContext);
+		GetLastServiceOperationRequest expectedRequest = GetLastServiceOperationRequest.builder()
+				.serviceInstanceId("service-instance-id")
+				.serviceDefinitionId("service-definition-id")
+				.planId("plan-id")
+				.operation("operation")
+				.platformInstanceId("platform-instance-id")
+				.apiInfoLocation("api-info-location")
+				.originatingIdentity(identityContext)
+				.build();
 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
@@ -97,15 +100,16 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 	@Test
 	public void deleteServiceInstanceParametersAreMappedToRequest() {
-		DeleteServiceInstanceRequest expectedRequest = new DeleteServiceInstanceRequest();
-		expectedRequest.setAsyncAccepted(true);
-		expectedRequest.setServiceInstanceId("service-instance-id");
-		expectedRequest.setServiceDefinitionId("service-definition-id");
-		expectedRequest.setPlanId("plan-id");
-		expectedRequest.setPlatformInstanceId("platform-instance-id");
-		expectedRequest.setApiInfoLocation("api-info-location");
-		expectedRequest.setOriginatingIdentity(identityContext);
-		expectedRequest.setServiceDefinition(serviceDefinition);
+		DeleteServiceInstanceRequest expectedRequest = DeleteServiceInstanceRequest.builder()
+				.asyncAccepted(true)
+				.serviceInstanceId("service-instance-id")
+				.serviceDefinitionId("service-definition-id")
+				.planId("plan-id")
+				.platformInstanceId("platform-instance-id")
+				.apiInfoLocation("api-info-location")
+				.originatingIdentity(identityContext)
+				.serviceDefinition(serviceDefinition)
+				.build();
 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
@@ -122,15 +126,16 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 	@Test
 	public void updateServiceInstanceParametersAreMappedToRequest() {
-		UpdateServiceInstanceRequest parsedRequest = buildUpdateRequest();
+		UpdateServiceInstanceRequest parsedRequest = buildUpdateRequest().build();
 
-		UpdateServiceInstanceRequest expectedRequest = buildUpdateRequest();
-		expectedRequest.setAsyncAccepted(true);
-		expectedRequest.setServiceInstanceId("service-instance-id");
-		expectedRequest.setPlatformInstanceId("platform-instance-id");
-		expectedRequest.setApiInfoLocation("api-info-location");
-		expectedRequest.setOriginatingIdentity(identityContext);
-		expectedRequest.setServiceDefinition(serviceDefinition);
+		UpdateServiceInstanceRequest expectedRequest = buildUpdateRequest()
+				.asyncAccepted(true)
+				.serviceInstanceId("service-instance-id")
+				.platformInstanceId("platform-instance-id")
+				.apiInfoLocation("api-info-location")
+				.originatingIdentity(identityContext)
+				.serviceDefinition(serviceDefinition)
+				.build();
 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
@@ -138,15 +143,14 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 				"api-info-location", encodeOriginatingIdentity(identityContext), parsedRequest);
 	}
 
-	private UpdateServiceInstanceRequest buildUpdateRequest() {
+	private UpdateServiceInstanceRequestBuilder buildUpdateRequest() {
 		return UpdateServiceInstanceRequest.builder()
 				.serviceDefinitionId("service-definition-id")
 				.planId("plan-id")
 				.previousValues(new PreviousValues("previous-plan-id"))
 				.parameters("create-param-1", "value1")
 				.parameters("create-param-2", "value2")
-				.context(requestContext)
-				.build();
+				.context(requestContext);
 	}
 
 	@Test(expected = ServiceDefinitionDoesNotExistException.class)

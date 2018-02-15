@@ -129,12 +129,15 @@ public class ServiceInstanceController extends BaseController {
 			@RequestParam(value = "operation", required = false) String operation,
 			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-		GetLastServiceOperationRequest request = new GetLastServiceOperationRequest();
-		request.setServiceDefinitionId(serviceDefinitionId);
-		request.setServiceInstanceId(serviceInstanceId);
-		request.setPlanId(planId);
-		request.setOperation(operation);
-		setCommonRequestFields(request, pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation, originatingIdentityString);
+		GetLastServiceOperationRequest request = GetLastServiceOperationRequest.builder()
+				.serviceDefinitionId(serviceDefinitionId)
+				.serviceInstanceId(serviceInstanceId)
+				.planId(planId)
+				.operation(operation)
+				.platformInstanceId(pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE))
+				.apiInfoLocation(apiInfoLocation)
+				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+				.build();
 
 		LOGGER.debug("Getting service instance status: request={}", request);
 
@@ -162,13 +165,16 @@ public class ServiceInstanceController extends BaseController {
 			@RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
 		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(serviceDefinitionId);
 
-		DeleteServiceInstanceRequest request = new DeleteServiceInstanceRequest();
-		request.setServiceInstanceId(serviceInstanceId);
-		request.setServiceDefinitionId(serviceDefinitionId);
-		request.setPlanId(planId);
-		request.setServiceDefinition(serviceDefinition);
-		setCommonRequestFields(request, pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
-				originatingIdentityString, acceptsIncomplete);
+		DeleteServiceInstanceRequest request = DeleteServiceInstanceRequest.builder()
+				.serviceInstanceId(serviceInstanceId)
+				.serviceDefinitionId(serviceDefinitionId)
+				.planId(planId)
+				.serviceDefinition(serviceDefinition)
+				.asyncAccepted(acceptsIncomplete)
+				.platformInstanceId(pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE))
+				.apiInfoLocation(apiInfoLocation)
+				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+				.build();
 
 		LOGGER.debug("Deleting a service instance: request={}", request);
 

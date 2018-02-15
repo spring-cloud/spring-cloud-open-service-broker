@@ -112,13 +112,16 @@ public class ServiceInstanceBindingController extends BaseController {
 															   @RequestParam(PLAN_ID_PARAMETER) String planId,
 															   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 															   @RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-		DeleteServiceInstanceBindingRequest request = new DeleteServiceInstanceBindingRequest();
-		request.setServiceInstanceId(serviceInstanceId);
-		request.setBindingId(bindingId);
-		request.setServiceDefinitionId(serviceDefinitionId);
-		request.setPlanId(planId);
-		request.setServiceDefinition(getServiceDefinition(serviceDefinitionId));
-		setCommonRequestFields(request, pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation, originatingIdentityString);
+		DeleteServiceInstanceBindingRequest request = DeleteServiceInstanceBindingRequest.builder()
+				.serviceInstanceId(serviceInstanceId)
+				.bindingId(bindingId)
+				.serviceDefinitionId(serviceDefinitionId)
+				.planId(planId)
+				.serviceDefinition(getServiceDefinition(serviceDefinitionId))
+				.platformInstanceId(pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE))
+				.apiInfoLocation(apiInfoLocation)
+				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+				.build();
 
 		LOGGER.debug("Deleting a service instance binding: request={}", request);
 

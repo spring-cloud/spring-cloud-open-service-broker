@@ -87,6 +87,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 */
 	private transient ServiceDefinition serviceDefinition;
 
+	@SuppressWarnings("unused")
 	CreateServiceInstanceBindingRequest() {
 		serviceDefinitionId = null;
 		planId = null;
@@ -96,11 +97,17 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		parameters = null;
 	}
 
-	CreateServiceInstanceBindingRequest(String serviceDefinitionId, String planId,
-												BindResource bindResource, Map<String, Object> parameters,
-												Context context) {
+	CreateServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
+										String bindingId, ServiceDefinition serviceDefinition,
+										BindResource bindResource,
+										Map<String, Object> parameters, Context context,
+										String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
+		super(platformInstanceId, apiInfoLocation, originatingIdentity);
+		this.serviceInstanceId = serviceInstanceId;
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
+		this.bindingId = bindingId;
+		this.serviceDefinition = serviceDefinition;
 		this.parameters = parameters;
 		this.bindResource = bindResource;
 		this.appGuid = (bindResource == null ? null : bindResource.getAppGuid());
@@ -208,13 +215,24 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	}
 
 	public static class CreateServiceInstanceBindingRequestBuilder {
+		private String serviceInstanceId;
 		private String serviceDefinitionId;
 		private String planId;
+		private String bindingId;
+		private ServiceDefinition serviceDefinition;
 		private BindResource bindResource;
 		private final Map<String, Object> parameters = new HashMap<>();
 		private Context context;
+		private String platformInstanceId;
+		private String apiInfoLocation;
+		private Context originatingIdentity;
 
 		CreateServiceInstanceBindingRequestBuilder() {
+		}
+
+		public CreateServiceInstanceBindingRequestBuilder serviceInstanceId(String serviceInstanceId) {
+			this.serviceInstanceId = serviceInstanceId;
+			return this;
 		}
 
 		public CreateServiceInstanceBindingRequestBuilder serviceDefinitionId(String serviceDefinitionId) {
@@ -224,6 +242,16 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 
 		public CreateServiceInstanceBindingRequestBuilder planId(String planId) {
 			this.planId = planId;
+			return this;
+		}
+
+		public CreateServiceInstanceBindingRequestBuilder bindingId(String bindingId) {
+			this.bindingId = bindingId;
+			return this;
+		}
+
+		public CreateServiceInstanceBindingRequestBuilder serviceDefinition(ServiceDefinition serviceDefinition) {
+			this.serviceDefinition = serviceDefinition;
 			return this;
 		}
 
@@ -247,9 +275,25 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 			return this;
 		}
 
+		public CreateServiceInstanceBindingRequestBuilder platformInstanceId(String platformInstanceId) {
+			this.platformInstanceId = platformInstanceId;
+			return this;
+		}
+
+		public CreateServiceInstanceBindingRequestBuilder apiInfoLocation(String apiInfoLocation) {
+			this.apiInfoLocation = apiInfoLocation;
+			return this;
+		}
+
+		public CreateServiceInstanceBindingRequestBuilder originatingIdentity(Context originatingIdentity) {
+			this.originatingIdentity = originatingIdentity;
+			return this;
+		}
+
 		public CreateServiceInstanceBindingRequest build() {
-			return new CreateServiceInstanceBindingRequest(serviceDefinitionId, planId, bindResource,
-					parameters, context);
+			return new CreateServiceInstanceBindingRequest(serviceInstanceId, serviceDefinitionId, planId,
+					bindingId, serviceDefinition, bindResource, parameters, context,
+					platformInstanceId, apiInfoLocation, originatingIdentity);
 		}
 	}
 }

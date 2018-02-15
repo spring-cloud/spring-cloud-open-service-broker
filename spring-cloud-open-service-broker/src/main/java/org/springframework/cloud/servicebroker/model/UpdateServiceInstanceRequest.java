@@ -63,19 +63,23 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@JsonIgnore
 	private transient ServiceDefinition serviceDefinition;
 
+	@SuppressWarnings("unused")
 	UpdateServiceInstanceRequest() {
-		super(null, null);
 		this.serviceDefinitionId = null;
 		this.planId = null;
 		this.previousValues = null;
 	}
 
-	UpdateServiceInstanceRequest(String serviceDefinitionId, String planId,
-										PreviousValues previousValues, Map<String, Object> parameters,
-										Context context) {
-		super(parameters, context);
+	UpdateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
+								 ServiceDefinition serviceDefinition,
+								 PreviousValues previousValues, Map<String, Object> parameters,
+								 Context context, boolean asyncAccepted,
+								 String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
+		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.serviceDefinitionId = serviceDefinitionId;
+		this.serviceInstanceId = serviceInstanceId;
 		this.planId = planId;
+		this.serviceDefinition = serviceDefinition;
 		this.previousValues = previousValues;
 	}
 
@@ -192,11 +196,17 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	public static class UpdateServiceInstanceRequestBuilder {
+		private String serviceInstanceId;
 		private String serviceDefinitionId;
 		private String planId;
+		private ServiceDefinition serviceDefinition;
 		private PreviousValues previousValues;
 		private final Map<String, Object> parameters = new HashMap<>();
 		private Context context;
+		private boolean asyncAccepted;
+		private String platformInstanceId;
+		private String apiInfoLocation;
+		private Context originatingIdentity;
 
 		UpdateServiceInstanceRequestBuilder() {
 		}
@@ -206,8 +216,18 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 			return this;
 		}
 
+		public UpdateServiceInstanceRequestBuilder serviceInstanceId(String serviceInstanceId) {
+			this.serviceInstanceId = serviceInstanceId;
+			return this;
+		}
+
 		public UpdateServiceInstanceRequestBuilder planId(String planId) {
 			this.planId = planId;
+			return this;
+		}
+
+		public UpdateServiceInstanceRequestBuilder serviceDefinition(ServiceDefinition serviceDefinition) {
+			this.serviceDefinition = serviceDefinition;
 			return this;
 		}
 
@@ -231,8 +251,30 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 			return this;
 		}
 
+		public UpdateServiceInstanceRequestBuilder asyncAccepted(boolean asyncAccepted) {
+			this.asyncAccepted = asyncAccepted;
+			return this;
+		}
+
+		public UpdateServiceInstanceRequestBuilder platformInstanceId(String platformInstanceId) {
+			this.platformInstanceId = platformInstanceId;
+			return this;
+		}
+
+		public UpdateServiceInstanceRequestBuilder apiInfoLocation(String apiInfoLocation) {
+			this.apiInfoLocation = apiInfoLocation;
+			return this;
+		}
+
+		public UpdateServiceInstanceRequestBuilder originatingIdentity(Context originatingIdentity) {
+			this.originatingIdentity = originatingIdentity;
+			return this;
+		}
+
 		public UpdateServiceInstanceRequest build() {
-			return new UpdateServiceInstanceRequest(serviceDefinitionId, planId, previousValues, parameters, context);
+			return new UpdateServiceInstanceRequest(serviceDefinitionId, serviceInstanceId, planId,
+					serviceDefinition, previousValues, parameters, context, asyncAccepted,
+					platformInstanceId, apiInfoLocation, originatingIdentity);
 		}
 	}
 }

@@ -46,19 +46,14 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 	 */
 	private transient ServiceDefinition serviceDefinition;
 
-	public void setServiceInstanceId(String serviceInstanceId) {
+	DeleteServiceInstanceRequest(String serviceInstanceId, String serviceDefinitionId,
+								 String planId, ServiceDefinition serviceDefinition,
+								 boolean asyncAccepted, String platformInstanceId,
+								 String apiInfoLocation, Context originatingIdentity) {
+		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.serviceInstanceId = serviceInstanceId;
-	}
-
-	public void setServiceDefinitionId(String serviceDefinitionId) {
 		this.serviceDefinitionId = serviceDefinitionId;
-	}
-
-	public void setPlanId(String planId) {
 		this.planId = planId;
-	}
-
-	public void setServiceDefinition(ServiceDefinition serviceDefinition) {
 		this.serviceDefinition = serviceDefinition;
 	}
 
@@ -74,8 +69,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 		return this.planId;
 	}
 
-	public ServiceDefinition getServiceDefinition() {
-		return this.serviceDefinition;
+	public static DeleteServiceInstanceRequestBuilder builder() {
+		return new DeleteServiceInstanceRequestBuilder();
 	}
 
 	@Override
@@ -111,4 +106,65 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 				", planId='" + planId + '\'' +
 				'}';
 	}
+
+	public static class DeleteServiceInstanceRequestBuilder {
+		private String serviceInstanceId;
+		private String serviceDefinitionId;
+		private ServiceDefinition serviceDefinition;
+		private String planId;
+		private boolean asyncAccepted;
+		private String platformInstanceId;
+		private String apiInfoLocation;
+		private Context originatingIdentity;
+
+		DeleteServiceInstanceRequestBuilder() {
+		}
+
+		public DeleteServiceInstanceRequestBuilder serviceInstanceId(String serviceInstanceId) {
+			this.serviceInstanceId = serviceInstanceId;
+			return this;
+		}
+
+		public DeleteServiceInstanceRequestBuilder serviceDefinitionId(String serviceDefinitionId) {
+			this.serviceDefinitionId = serviceDefinitionId;
+			return this;
+		}
+
+		public DeleteServiceInstanceRequestBuilder serviceDefinition(ServiceDefinition serviceDefinition) {
+			this.serviceDefinition = serviceDefinition;
+			return this;
+		}
+
+		public DeleteServiceInstanceRequestBuilder planId(String planId) {
+			this.planId = planId;
+			return this;
+		}
+
+		public DeleteServiceInstanceRequestBuilder asyncAccepted(boolean asyncAccepted) {
+			this.asyncAccepted = asyncAccepted;
+			return this;
+		}
+
+		public DeleteServiceInstanceRequestBuilder platformInstanceId(String platformInstanceId) {
+			this.platformInstanceId = platformInstanceId;
+			return this;
+		}
+
+		public DeleteServiceInstanceRequestBuilder apiInfoLocation(String apiInfoLocation) {
+			this.apiInfoLocation = apiInfoLocation;
+			return this;
+		}
+
+		public DeleteServiceInstanceRequestBuilder originatingIdentity(Context originatingIdentity) {
+			this.originatingIdentity = originatingIdentity;
+			return this;
+		}
+
+		public DeleteServiceInstanceRequest build() {
+			return new DeleteServiceInstanceRequest(serviceInstanceId, serviceDefinitionId, planId,
+					serviceDefinition, asyncAccepted,
+					platformInstanceId, apiInfoLocation, originatingIdentity);
+		}
+	}
+
 }

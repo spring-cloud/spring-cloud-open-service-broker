@@ -36,7 +36,15 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 */
 	private final Context context;
 
-	protected AsyncParameterizedServiceInstanceRequest(Map<String, Object> parameters, Context context) {
+	protected AsyncParameterizedServiceInstanceRequest() {
+		this.parameters = null;
+		this.context = null;
+	}
+
+	protected AsyncParameterizedServiceInstanceRequest(Map<String, Object> parameters, Context context,
+													   boolean asyncAccepted, String platformInstanceId,
+													   String apiInfoLocation, Context originatingIdentity) {
+		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.parameters = parameters;
 		this.context = context;
 	}

@@ -36,6 +36,12 @@ public abstract class AsyncServiceInstanceRequest extends ServiceBrokerRequest {
 	protected AsyncServiceInstanceRequest() {
 	}
 
+	protected AsyncServiceInstanceRequest(boolean asyncAccepted, String platformInstanceId,
+										  String apiInfoLocation, Context originatingIdentity) {
+		super(platformInstanceId, apiInfoLocation, originatingIdentity);
+		this.asyncAccepted = asyncAccepted;
+	}
+
 	public boolean isAsyncAccepted() {
 		return this.asyncAccepted;
 	}

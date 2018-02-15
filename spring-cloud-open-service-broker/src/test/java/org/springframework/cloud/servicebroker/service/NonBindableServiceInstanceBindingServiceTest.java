@@ -37,6 +37,6 @@ public class NonBindableServiceInstanceBindingServiceTest {
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void deleteServiceInstanceBinding() {
-		service.deleteServiceInstanceBinding(new DeleteServiceInstanceBindingRequest());
+		service.deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest.builder().build());
 	}
 }

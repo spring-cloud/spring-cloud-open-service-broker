@@ -46,36 +46,35 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	 */
 	protected transient String operation;
 
-	public String getServiceInstanceId() {
-		return this.serviceInstanceId;
+	GetLastServiceOperationRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
+										  String operation,
+										  String platformInstanceId, String apiInfoLocation,
+										  Context originatingIdentity) {
+		super(platformInstanceId, apiInfoLocation, originatingIdentity);
+		this.serviceInstanceId = serviceInstanceId;
+		this.serviceDefinitionId = serviceDefinitionId;
+		this.planId = planId;
+		this.operation = operation;
 	}
 
-	public void setServiceInstanceId(String serviceInstanceId) {
-		this.serviceInstanceId = serviceInstanceId;
+	public String getServiceInstanceId() {
+		return this.serviceInstanceId;
 	}
 
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}
 
-	public void setServiceDefinitionId(String serviceDefinitionId) {
-		this.serviceDefinitionId = serviceDefinitionId;
-	}
-
 	public String getPlanId() {
 		return this.planId;
-	}
-
-	public void setPlanId(String planId) {
-		this.planId = planId;
 	}
 
 	public String getOperation() {
 		return this.operation;
 	}
 
-	public void setOperation(String operation) {
-		this.operation = operation;
+	public static GetLastServiceOperationRequestBuilder builder() {
+		return new GetLastServiceOperationRequestBuilder();
 	}
 
 	@Override
@@ -109,4 +108,59 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 				", operation='" + operation + '\'' +
 				'}';
 	}
+
+	public static class GetLastServiceOperationRequestBuilder {
+		private String serviceInstanceId;
+		private String serviceDefinitionId;
+		private String planId;
+		private String operation;
+		private String platformInstanceId;
+		private String apiInfoLocation;
+		private Context originatingIdentity;
+
+		GetLastServiceOperationRequestBuilder() {
+		}
+
+		public GetLastServiceOperationRequestBuilder serviceInstanceId(String serviceInstanceId) {
+			this.serviceInstanceId = serviceInstanceId;
+			return this;
+		}
+
+		public GetLastServiceOperationRequestBuilder serviceDefinitionId(String serviceDefinitionId) {
+			this.serviceDefinitionId = serviceDefinitionId;
+			return this;
+		}
+
+		public GetLastServiceOperationRequestBuilder planId(String planId) {
+			this.planId = planId;
+			return this;
+		}
+
+		public GetLastServiceOperationRequestBuilder operation(String operation) {
+			this.operation = operation;
+			return this;
+		}
+
+		public GetLastServiceOperationRequestBuilder platformInstanceId(String platformInstanceId) {
+			this.platformInstanceId = platformInstanceId;
+			return this;
+		}
+
+		public GetLastServiceOperationRequestBuilder apiInfoLocation(String apiInfoLocation) {
+			this.apiInfoLocation = apiInfoLocation;
+			return this;
+		}
+
+		public GetLastServiceOperationRequestBuilder originatingIdentity(Context originatingIdentity) {
+			this.originatingIdentity = originatingIdentity;
+			return this;
+		}
+
+		public GetLastServiceOperationRequest build() {
+			return new GetLastServiceOperationRequest(serviceInstanceId, serviceDefinitionId, planId,
+					operation,
+					platformInstanceId, apiInfoLocation, originatingIdentity);
+		}
+	}
+
 }

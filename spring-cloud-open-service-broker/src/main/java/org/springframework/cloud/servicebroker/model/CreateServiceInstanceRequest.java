@@ -74,19 +74,23 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 */
 	private transient ServiceDefinition serviceDefinition;
 
+	@SuppressWarnings("unused")
 	CreateServiceInstanceRequest() {
-		super(null, null);
 		this.serviceDefinitionId = null;
 		this.planId = null;
 		this.organizationGuid = null;
 		this.spaceGuid = null;
 	}
 
-	CreateServiceInstanceRequest(String serviceDefinitionId, String planId,
-										Map<String, Object> parameters, Context context) {
-		super(parameters, context);
+	CreateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
+								ServiceDefinition serviceDefinition,
+								Map<String, Object> parameters, Context context, boolean asyncAccepted,
+								String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
+		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.serviceDefinitionId = serviceDefinitionId;
+		this.serviceInstanceId = serviceInstanceId;
 		this.planId = planId;
+		this.serviceDefinition = serviceDefinition;
 
 		// deprecated fields - they should remain in the model for marshalling but test harnesses
 		// should not use them
@@ -171,16 +175,32 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	public static class CreateServiceInstanceRequestBuilder {
+		private String serviceInstanceId;
 		private String serviceDefinitionId;
 		private String planId;
+		private ServiceDefinition serviceDefinition;
 		private Context context;
 		private final Map<String, Object> parameters = new HashMap<>();
+		private boolean asyncAccepted;
+		private String platformInstanceId;
+		private String apiInfoLocation;
+		private Context originatingIdentity;
 
 		CreateServiceInstanceRequestBuilder() {
 		}
 
+		public CreateServiceInstanceRequestBuilder serviceInstanceId(String serviceInstanceId) {
+			this.serviceInstanceId = serviceInstanceId;
+			return this;
+		}
+
 		public CreateServiceInstanceRequestBuilder serviceDefinitionId(String serviceDefinitionId) {
 			this.serviceDefinitionId = serviceDefinitionId;
+			return this;
+		}
+
+		public CreateServiceInstanceRequestBuilder serviceDefinition(ServiceDefinition serviceDefinition) {
+			this.serviceDefinition = serviceDefinition;
 			return this;
 		}
 
@@ -204,8 +224,30 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 			return this;
 		}
 
+		public CreateServiceInstanceRequestBuilder asyncAccepted(boolean asyncAccepted) {
+			this.asyncAccepted = asyncAccepted;
+			return this;
+		}
+
+		public CreateServiceInstanceRequestBuilder platformInstanceId(String platformInstanceId) {
+			this.platformInstanceId = platformInstanceId;
+			return this;
+		}
+
+		public CreateServiceInstanceRequestBuilder apiInfoLocation(String apiInfoLocation) {
+			this.apiInfoLocation = apiInfoLocation;
+			return this;
+		}
+
+		public CreateServiceInstanceRequestBuilder originatingIdentity(Context originatingIdentity) {
+			this.originatingIdentity = originatingIdentity;
+			return this;
+		}
+
 		public CreateServiceInstanceRequest build() {
-			return new CreateServiceInstanceRequest(serviceDefinitionId, planId, parameters, context);
+			return new CreateServiceInstanceRequest(serviceDefinitionId, serviceInstanceId, planId,
+					serviceDefinition, parameters, context, asyncAccepted,
+					platformInstanceId, apiInfoLocation, originatingIdentity);
 		}
 	}
 }
