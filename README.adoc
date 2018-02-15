@@ -19,9 +19,9 @@ This project was formerly named Spring Cloud - Cloud Foundry Service Broker. Vie
 
 See the http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#getting-started-first-application[Spring Boot documentation] for getting started building a Spring Boot application.
 
-Most service broker applications will implement API or web UI endpoints beyond the Open Service Broker API endpoints. These additional endpoints might provide information about the application, provide a dashboard UI, or provide controls over application behavior. Developer can choose to implement these additional endpoints using https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html[Spring MVC] or https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html[Spring WebFlux].
+Most service broker applications will implement API or web UI endpoints beyond the Open Service Broker API endpoints. These additional endpoints might provide information about the application, provide a dashboard UI, or provide controls over application behavior. Developers can choose to implement these additional endpoints using https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html[Spring MVC] or https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html[Spring WebFlux].
 
-This choice does not affect the behavior of the Open Service Broker API endpoints, but the auto-configuration of the project depends on which Spring web framework the service broker application uses.
+The choice of Spring web framework does not affect the behavior of the Open Service Broker API endpoints, but the auto-configuration of the project depends on which web framework the service broker application uses.
 
 Two Spring Boot starter dependencies are provided, reflecting the choice of Spring web framework.
 
@@ -63,11 +63,11 @@ To use Spring Cloud Open Service Broker in a *Spring WebFlux* application, add t
 
 == Implementing a service broker
 
-=== Configuring the broker
+=== Configuring the service broker
 
 The framework provides default implementations of most of the components needed to implement a service broker. In Spring Boot fashion, you can override the default behavior by providing your own implementation of Spring beans, and the framework will back away from its defaults.
 
-To start, use the `@SpringBootApplication` annotation on the broker's main application class:
+To start, use the `@SpringBootApplication` annotation on the service broker's main application class:
 
     @SpringBootApplication
     public class Application {
@@ -80,9 +80,9 @@ This will trigger the inclusion of the default configuration.
 
 === Service beans
 
-The Open Service Broker API has three main endpoint groupings: catalog management, service instance provisioning/deprovisioning, and service instance binding/unbinding. The broker will need to provide one Spring bean to provide the necessary functionality for each endpoint grouping.
+The Open Service Broker API has three main endpoint groupings: catalog management, service instance provisioning/deprovisioning, and service instance binding/unbinding. The service broker will need to provide one Spring bean to provide the necessary functionality for each endpoint grouping.
 
-For catalog management, the framework provides a default implementation that requires the broker to just provide an implementation of a link:spring-cloud-open-service-broker/src/main/java/org/springframework/cloud/servicebroker/model/Catalog.java[`Catalog` bean]. To override this default, provide your own bean that implements the link:spring-cloud-open-service-broker/src/main/java/org/springframework/cloud/servicebroker/service/CatalogService.java[`CatalogService`] interface.
+For catalog management, the framework provides a default implementation that requires the service broker to just provide an implementation of a link:spring-cloud-open-service-broker/src/main/java/org/springframework/cloud/servicebroker/model/Catalog.java[`Catalog` bean]. To override this default, provide your own bean that implements the link:spring-cloud-open-service-broker/src/main/java/org/springframework/cloud/servicebroker/service/CatalogService.java[`CatalogService`] interface.
 
 For service instance provisioning/deprovisioning, provide a Spring bean that implements the link:spring-cloud-open-service-broker/src/main/java/org/springframework/cloud/servicebroker/service/ServiceInstanceService.java[`ServiceInstanceService`] interface. There is no default implementation provided.
 
