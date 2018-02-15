@@ -17,10 +17,8 @@
 package org.springframework.cloud.servicebroker.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -110,13 +108,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	}
 
 	public <T> T getParameters(Class<T> cls) {
-		try {
-			T bean = cls.newInstance();
-			BeanUtils.populate(bean, parameters);
-			return bean;
-		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-			throw new IllegalArgumentException("Error mapping parameters to class of type " + cls.getName(), e);
-		}
+		return ParameterBeanMapper.mapParametersToBean(parameters, cls);
 	}
 
 	public String getServiceDefinitionId() {
