@@ -130,13 +130,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	}
 
 	public <T> T getParameters(Class<T> cls) {
-		try {
-			T bean = cls.newInstance();
-			BeanUtils.populate(bean, parameters);
-			return bean;
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Error mapping parameters to class of type " + cls.getName());
-		}
+		return ParameterBeanMapper.mapParametersToBean(parameters, cls);
 	}
 
 	public CreateServiceInstanceBindingRequest withServiceDefinition(final ServiceDefinition serviceDefinition) {
