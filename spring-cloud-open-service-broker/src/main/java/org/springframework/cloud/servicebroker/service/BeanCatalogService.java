@@ -19,8 +19,8 @@ package org.springframework.cloud.servicebroker.service;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.cloud.servicebroker.model.Catalog;
-import org.springframework.cloud.servicebroker.model.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.catalog.Catalog;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

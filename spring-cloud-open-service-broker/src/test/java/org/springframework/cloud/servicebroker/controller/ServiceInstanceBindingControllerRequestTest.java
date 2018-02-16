@@ -17,11 +17,11 @@
 package org.springframework.cloud.servicebroker.controller;
 
 import org.junit.Test;
-import org.springframework.cloud.servicebroker.model.BindResource;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest.CreateServiceInstanceBindingRequestBuilder;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingResponse;
-import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.BindResource;
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest.CreateServiceInstanceBindingRequestBuilder;
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 

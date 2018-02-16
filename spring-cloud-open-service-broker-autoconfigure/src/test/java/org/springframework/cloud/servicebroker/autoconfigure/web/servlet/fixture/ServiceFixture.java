@@ -16,13 +16,13 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture;
 
-import org.springframework.cloud.servicebroker.model.MethodSchema;
-import org.springframework.cloud.servicebroker.model.Plan;
-import org.springframework.cloud.servicebroker.model.Schemas;
-import org.springframework.cloud.servicebroker.model.ServiceBindingSchema;
-import org.springframework.cloud.servicebroker.model.ServiceDefinition;
-import org.springframework.cloud.servicebroker.model.ServiceDefinitionRequires;
-import org.springframework.cloud.servicebroker.model.ServiceInstanceSchema;
+import org.springframework.cloud.servicebroker.model.catalog.MethodSchema;
+import org.springframework.cloud.servicebroker.model.catalog.Plan;
+import org.springframework.cloud.servicebroker.model.catalog.Schemas;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceBindingSchema;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceInstanceSchema;
 
 public final class ServiceFixture {
 

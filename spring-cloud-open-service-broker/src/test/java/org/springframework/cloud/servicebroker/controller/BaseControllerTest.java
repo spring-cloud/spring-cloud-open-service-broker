@@ -23,8 +23,8 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequi
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
-import org.springframework.cloud.servicebroker.model.AsyncRequiredErrorMessage;
-import org.springframework.cloud.servicebroker.model.ErrorMessage;
+import org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage;
+import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
@@ -42,7 +42,7 @@ import java.util.HashMap;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.springframework.cloud.servicebroker.model.AsyncRequiredErrorMessage.ASYNC_REQUIRED_ERROR;
+import static org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage.ASYNC_REQUIRED_ERROR;
 
 public class BaseControllerTest {
 	private BaseController controller;

@@ -28,11 +28,11 @@ import org.springframework.cloud.servicebroker.controller.ServiceInstanceBinding
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceAppBindingResponse;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingResponse;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceRouteBindingResponse;
-import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceAppBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceRouteBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;

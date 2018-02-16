@@ -18,7 +18,7 @@ package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
 import org.junit.Before;
 
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
 import org.springframework.web.util.UriComponentsBuilder;
 

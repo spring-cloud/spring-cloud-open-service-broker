@@ -19,8 +19,8 @@ package org.springframework.cloud.servicebroker.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import org.springframework.cloud.servicebroker.model.Catalog;
-import org.springframework.cloud.servicebroker.model.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.catalog.Catalog;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.junit.Before;
 import org.junit.Test;
 

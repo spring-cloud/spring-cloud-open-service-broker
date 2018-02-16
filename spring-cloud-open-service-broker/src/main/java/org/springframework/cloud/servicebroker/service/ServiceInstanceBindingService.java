@@ -20,9 +20,9 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingResponse;
-import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 
 /**
  * This interface is implemented by service brokers to process requests to create and delete service instance bindings.

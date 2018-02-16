@@ -22,8 +22,8 @@ import org.mockito.MockitoAnnotations;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
-import org.springframework.cloud.servicebroker.model.Catalog;
-import org.springframework.cloud.servicebroker.model.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.catalog.Catalog;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 
 import static org.mockito.Mockito.when;

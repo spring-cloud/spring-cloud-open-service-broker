@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.model;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
+import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceRequest;
 
 public class ServiceBrokerRequestTest {
 	@Test

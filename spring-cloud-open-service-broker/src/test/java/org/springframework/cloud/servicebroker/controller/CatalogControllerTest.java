@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.cloud.servicebroker.model.Catalog;
+import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 
 import static org.hamcrest.Matchers.equalTo;

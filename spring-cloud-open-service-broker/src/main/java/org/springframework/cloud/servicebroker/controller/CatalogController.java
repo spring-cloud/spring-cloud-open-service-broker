@@ -18,7 +18,7 @@ package org.springframework.cloud.servicebroker.controller;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.servicebroker.model.Catalog;
+import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

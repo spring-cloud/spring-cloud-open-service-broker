@@ -20,14 +20,14 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequi
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceRequest;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceResponse;
-import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceRequest;
-import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceResponse;
-import org.springframework.cloud.servicebroker.model.GetLastServiceOperationRequest;
-import org.springframework.cloud.servicebroker.model.GetLastServiceOperationResponse;
-import org.springframework.cloud.servicebroker.model.UpdateServiceInstanceRequest;
-import org.springframework.cloud.servicebroker.model.UpdateServiceInstanceResponse;
+import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
+import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
+import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceRequest;
+import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceResponse;
+import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationRequest;
+import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationResponse;
+import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
+import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
 
 /**
  * This interface is implemented by service brokers to process requests related to provisioning, updating,

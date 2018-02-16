@@ -16,9 +16,9 @@
 
 package org.springframework.cloud.servicebroker.service;
 
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingResponse;
-import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 
 /**
  * Default implementation of ServiceInstanceBindingService for service brokers that do not support bindable services.

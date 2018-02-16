@@ -16,8 +16,8 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
-import org.springframework.cloud.servicebroker.model.Catalog;
-import org.springframework.cloud.servicebroker.model.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.catalog.Catalog;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 
 public class TestCatalogService implements CatalogService {

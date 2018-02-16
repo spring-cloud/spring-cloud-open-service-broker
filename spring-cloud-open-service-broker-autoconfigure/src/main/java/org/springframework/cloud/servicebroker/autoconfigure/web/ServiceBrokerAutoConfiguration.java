@@ -19,7 +19,7 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.cloud.servicebroker.model.Catalog;
+import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.BeanCatalogService;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.NonBindableServiceInstanceBindingService;

@@ -18,8 +18,8 @@ package org.springframework.cloud.servicebroker.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
-import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 
 public class NonBindableServiceInstanceBindingServiceTest {
 

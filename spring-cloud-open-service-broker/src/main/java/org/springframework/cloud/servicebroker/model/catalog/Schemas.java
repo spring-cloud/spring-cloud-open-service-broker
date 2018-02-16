@@ -1,0 +1,106 @@
+/*
+ * Copyright 2002-2018 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.springframework.cloud.servicebroker.model.catalog;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
+
+/**
+ * JSON Schemas available for a Plan.
+ *
+ * @author sgunaratne@pivotal.io
+ * @author Sam Gunaratne
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Schemas {
+
+	/**
+	 * The schemas available on a service instance.
+	 */
+	@JsonProperty("service_instance")
+	private final ServiceInstanceSchema serviceInstanceSchema;
+
+	/**
+	 * The schemas available on a service binding.
+	 */
+	@JsonProperty("service_binding")
+	private final ServiceBindingSchema serviceBindingSchema;
+
+	Schemas(ServiceInstanceSchema serviceInstanceSchema,
+			ServiceBindingSchema serviceBindingSchema) {
+		this.serviceInstanceSchema = serviceInstanceSchema;
+		this.serviceBindingSchema = serviceBindingSchema;
+	}
+
+	public ServiceInstanceSchema getServiceInstanceSchema() {
+		return this.serviceInstanceSchema;
+	}
+
+	public ServiceBindingSchema getServiceBindingSchema() {
+		return this.serviceBindingSchema;
+	}
+
+	public static SchemasBuilder builder() {
+		return new SchemasBuilder();
+	}
+
+	@Override
+	public final boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Schemas)) return false;
+		Schemas schemas = (Schemas) o;
+		return Objects.equals(serviceInstanceSchema, schemas.serviceInstanceSchema) &&
+				Objects.equals(serviceBindingSchema, schemas.serviceBindingSchema);
+	}
+
+	@Override
+	public final int hashCode() {
+		return Objects.hash(serviceInstanceSchema, serviceBindingSchema);
+	}
+
+	@Override
+	public String toString() {
+		return "Schemas{" +
+				"serviceInstanceSchema=" + serviceInstanceSchema +
+				", serviceBindingSchema=" + serviceBindingSchema +
+				'}';
+	}
+
+	public static class SchemasBuilder {
+		private ServiceInstanceSchema serviceInstanceSchema;
+		private ServiceBindingSchema serviceBindingSchema;
+
+		SchemasBuilder() {
+		}
+
+		public SchemasBuilder serviceInstanceSchema(ServiceInstanceSchema serviceInstanceSchema) {
+			this.serviceInstanceSchema = serviceInstanceSchema;
+			return this;
+		}
+
+		public SchemasBuilder serviceBindingSchema(ServiceBindingSchema serviceBindingSchema) {
+			this.serviceBindingSchema = serviceBindingSchema;
+			return this;
+		}
+
+		public Schemas build() {
+			return new Schemas(serviceInstanceSchema, serviceBindingSchema);
+		}
+	}
+}

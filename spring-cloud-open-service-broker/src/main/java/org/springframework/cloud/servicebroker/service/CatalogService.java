@@ -16,8 +16,8 @@
 
 package org.springframework.cloud.servicebroker.service;
 
-import org.springframework.cloud.servicebroker.model.Catalog;
-import org.springframework.cloud.servicebroker.model.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.catalog.Catalog;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 /**
  * This interface is implemented by service brokers to process requests to retrieve the service catalog.

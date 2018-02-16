@@ -27,7 +27,7 @@ import org.mockito.Mock;
 import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
-import org.springframework.cloud.servicebroker.model.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.Base64Utils;

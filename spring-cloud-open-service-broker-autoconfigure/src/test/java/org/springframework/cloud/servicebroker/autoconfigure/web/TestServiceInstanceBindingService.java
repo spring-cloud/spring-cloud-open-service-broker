@@ -16,9 +16,9 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
-import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingResponse;
-import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 
 public class TestServiceInstanceBindingService implements ServiceInstanceBindingService {

@@ -24,12 +24,12 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequi
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
-import org.springframework.cloud.servicebroker.model.AsyncRequiredErrorMessage;
-import org.springframework.cloud.servicebroker.model.AsyncServiceInstanceRequest;
+import org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage;
+import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.Context;
-import org.springframework.cloud.servicebroker.model.ErrorMessage;
+import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
-import org.springframework.cloud.servicebroker.model.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
