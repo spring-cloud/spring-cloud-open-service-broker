@@ -49,7 +49,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	private final String planId;
 
 	/**
-	 * The Cloud Controller GUID of the application the service instance will be bound to. Will be provided when
+	 * The GUID of the application the service instance will be bound to. Will be provided when
 	 * users bind applications to service instances, or <code>null</code> if an application is not being bound.
 	 *
 	 * @deprecated The <code>bindResource</code> field will contain references to the resource being bound, and should
@@ -75,12 +75,12 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	private final Context context;
 
 	/**
-	 * The Cloud Controller GUID of the service instance to being bound.
+	 * The GUID of the service instance being bound.
 	 */
 	private transient String serviceInstanceId;
 
 	/**
-	 * The Cloud Controller GUID of the service binding being created. This ID will be used for future
+	 * The GUID of the service binding being created. This ID will be used for future
 	 * requests for the same service instance binding, so the broker must use it to correlate any resource it creates.
 	 */
 	private transient String bindingId;

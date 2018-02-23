@@ -25,7 +25,7 @@ import java.util.Objects;
  */
 public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInstanceBindingResponse {
 	/**
-	 * A URL to which Cloud Foundry should proxy requests for the bound route. Can be <code>null</code>.
+	 * A URL to which the platform should proxy requests for the bound route. Can be <code>null</code>.
 	 */
 	private final String routeServiceUrl;
 

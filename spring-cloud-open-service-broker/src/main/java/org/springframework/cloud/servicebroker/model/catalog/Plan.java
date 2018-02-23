@@ -35,7 +35,7 @@ public class Plan {
 
 	/**
 	 * An identifier used to correlate this plan in future requests to the catalog. This must be unique within
-	 * a Cloud Foundry deployment. Using a GUID is recommended.
+	 * the platform. Using a GUID is recommended.
 	 */
 	@NotEmpty
 	private final String id;
@@ -70,7 +70,7 @@ public class Plan {
 	private final Boolean bindable;
 
 	/**
-	 * Indicates whether the plan can be limited by the non_basic_services_allowed field in a Cloud Foundry Quota.
+	 * Indicates whether the plan can be limited by the non_basic_services_allowed field in a platform quota.
 	 */
 	private final Boolean free;
 

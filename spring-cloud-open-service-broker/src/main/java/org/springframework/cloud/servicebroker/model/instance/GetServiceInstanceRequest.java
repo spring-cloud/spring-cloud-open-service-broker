@@ -28,7 +28,7 @@ import java.util.Objects;
  */
 public class GetServiceInstanceRequest  extends ServiceBrokerRequest {
 	/**
-	 * The Cloud Controller GUID of the service instance to retrieve.
+	 * The GUID of the service instance to retrieve.
 	 */
 	private transient String serviceInstanceId;
 

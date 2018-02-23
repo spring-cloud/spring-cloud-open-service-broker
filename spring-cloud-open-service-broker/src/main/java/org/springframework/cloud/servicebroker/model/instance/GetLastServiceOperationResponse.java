@@ -37,7 +37,7 @@ public class GetLastServiceOperationResponse {
 	private final OperationState state;
 
 	/**
-	 * A user-facing message displayed to the Cloud Controller API client. Can be used to tell the user details
+	 * A user-facing message displayed to the API client. Can be used to tell the user details
 	 * about the status of the operation. Can be <code>null</code>.
 	 */
 	private final String description;

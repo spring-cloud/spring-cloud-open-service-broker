@@ -29,7 +29,7 @@ import java.util.Objects;
  * @author Scott Frederick
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class CreateServiceInstanceBindingResponse {
 	/**
 	 * <code>true</code> to indicated that the service instance binding already existed with the same parameters as the

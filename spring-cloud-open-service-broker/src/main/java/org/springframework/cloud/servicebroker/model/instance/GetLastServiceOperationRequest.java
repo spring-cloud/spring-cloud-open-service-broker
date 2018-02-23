@@ -28,7 +28,7 @@ import java.util.Objects;
  */
 public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	/**
-	 * The Cloud Controller GUID of the service instance to get the status of.
+	 * The GUID of the service instance to get the status of.
 	 */
 	private transient String serviceInstanceId;
 

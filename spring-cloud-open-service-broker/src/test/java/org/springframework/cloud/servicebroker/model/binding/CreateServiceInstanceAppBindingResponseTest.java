@@ -27,6 +27,7 @@ import java.util.Map;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.withoutJsonPath;
 import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
@@ -41,13 +42,21 @@ public class CreateServiceInstanceAppBindingResponseTest {
 				.build();
 
 		assertThat(response.isBindingExisted(), equalTo(false));
-		assertThat(response.getCredentials(), nullValue());
+		assertThat(response.getCredentials(), aMapWithSize(0));
 		assertThat(response.getSyslogDrainUrl(), nullValue());
-		assertThat(response.getVolumeMounts(), nullValue());
+		assertThat(response.getVolumeMounts(), hasSize(0));
+
+		String json = DataFixture.toJson(response);
+
+		assertThat(json, isJson(allOf(
+				withoutJsonPath("$.credentials"),
+				withoutJsonPath("$.syslog_drain_url"),
+				withoutJsonPath("$.volume_mounts")
+		)));
 	}
 
 	@Test
-	@SuppressWarnings("serial")
+	@SuppressWarnings({"serial", "unchecked"})
 	public void responseWithDiscreteValuesIsBuilt() {
 		Map<String, Object> credentials = new HashMap<String, Object>() {{
 			put("credential4", "value4");
@@ -83,28 +92,18 @@ public class CreateServiceInstanceAppBindingResponseTest {
 		assertThat(response.getSyslogDrainUrl(), equalTo("https://logs.example.com"));
 		
 		assertThat(response.getVolumeMounts(), hasSize(4));
-	}
-
-	@Test
-	public void responseIsSerializedToJson() {
-		CreateServiceInstanceAppBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
-				.credentials("credential1", "value1")
-				.credentials("credential2", 2)
-				.credentials("credential3", true)
-				.syslogDrainUrl("https://logs.example.com")
-				.volumeMounts(VolumeMount.builder().build())
-				.volumeMounts(VolumeMount.builder().build())
-				.build();
 
 		String json = DataFixture.toJson(response);
 
 		assertThat(json, isJson(allOf(
-				withJsonPath("$.credentials", aMapWithSize(3)),
+				withJsonPath("$.credentials", aMapWithSize(5)),
 				withJsonPath("$.credentials.credential1", equalTo("value1")),
 				withJsonPath("$.credentials.credential2", equalTo(2)),
 				withJsonPath("$.credentials.credential3", equalTo(true)),
+				withJsonPath("$.credentials.credential4", equalTo("value4")),
+				withJsonPath("$.credentials.credential5", equalTo("value5")),
 				withJsonPath("$.syslog_drain_url", equalTo("https://logs.example.com")),
-				withJsonPath("$.volume_mounts", hasSize(2))
+				withJsonPath("$.volume_mounts", hasSize(4))
 		)));
 	}
 

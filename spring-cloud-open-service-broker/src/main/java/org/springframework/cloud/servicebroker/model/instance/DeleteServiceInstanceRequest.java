@@ -29,7 +29,7 @@ import java.util.Objects;
  */
 public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 	/**
-	 * The Cloud Controller GUID of the service instance to deprovision.
+	 * The GUID of the service instance to deprovision.
 	 */
 	private transient String serviceInstanceId;
 

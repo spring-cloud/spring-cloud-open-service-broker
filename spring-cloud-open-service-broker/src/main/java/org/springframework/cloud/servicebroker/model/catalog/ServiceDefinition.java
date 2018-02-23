@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 public class ServiceDefinition {
 	/**
 	 * An identifier used to correlate this service in future requests to the catalog. This must be unique within
-	 * a Cloud Foundry deployment. Using a GUID is recommended.
+	 * the platform. Using a GUID is recommended.
 	 */
 	@NotEmpty
 	private final String id;

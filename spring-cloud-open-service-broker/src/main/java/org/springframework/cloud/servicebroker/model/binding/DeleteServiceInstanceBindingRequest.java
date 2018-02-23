@@ -31,12 +31,12 @@ import java.util.Objects;
 public class DeleteServiceInstanceBindingRequest extends ServiceBrokerRequest {
 
 	/**
-	 * The Cloud Controller GUID of the service instance to being unbound.
+	 * The GUID of the service instance to being unbound.
 	 */
 	private transient String serviceInstanceId;
 
 	/**
-	 * The Cloud Controller GUID of the service binding being deleted.
+	 * The GUID of the service binding being deleted.
 	 */
 	private transient String bindingId;
 

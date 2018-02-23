@@ -53,7 +53,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	private final PreviousValues previousValues;
 
 	/**
-	 * The Cloud Controller GUID of the service instance to update.
+	 * The GUID of the service instance to update.
 	 */
 	@JsonIgnore
 	private transient String serviceInstanceId;

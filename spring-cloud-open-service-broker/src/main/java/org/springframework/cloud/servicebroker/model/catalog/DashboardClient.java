@@ -25,8 +25,8 @@ import java.util.Objects;
 public class DashboardClient {
 
 	/**
-	 * The client ID of the dashboard OAuth2 client that the service intends to use. The name must be unique within a
-	 * Cloud Foundry UAA deployment. If the name is already in use, Cloud Foundry will return an error to the
+	 * The client ID of the dashboard OAuth2 client that the service intends to use. The name must be unique within the
+	 * platform. If the name is already in use, the platform will return an error to the
 	 * operator when the service is registered.
 	 */
 	private final String id;

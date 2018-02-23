@@ -38,7 +38,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	private final Map<String, Object> credentials;
 
 	/**
-	 * The URL to which Cloud Foundry should drain logs for the bound application. Can be <code>null</code> to
+	 * The URL to which the platform should drain logs for the bound application. Can be <code>null</code> to
 	 * indicate that the service binding does not support syslog drains.
 	 */
 	private final String syslogDrainUrl;
@@ -105,26 +105,20 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	}
 
 	public static class CreateServiceInstanceAppBindingResponseBuilder {
-		private Map<String, Object> credentials;
+		private Map<String, Object> credentials = new HashMap<>();
 		private String syslogDrainUrl;
-		private List<VolumeMount> volumeMounts;
+		private List<VolumeMount> volumeMounts = new ArrayList<>();
 		private boolean bindingExisted;
 
 		CreateServiceInstanceAppBindingResponseBuilder() {
 		}
 
 		public CreateServiceInstanceAppBindingResponseBuilder credentials(Map<String, Object> credentials) {
-			if (this.credentials == null) {
-				this.credentials = new HashMap<>();
-			}
 			this.credentials.putAll(credentials);
 			return this;
 		}
 
 		public CreateServiceInstanceAppBindingResponseBuilder credentials(String key, Object value) {
-			if (this.credentials == null) {
-				this.credentials = new HashMap<>();
-			}
 			this.credentials.put(key, value);
 			return this;
 		}
@@ -135,17 +129,11 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		public CreateServiceInstanceAppBindingResponseBuilder volumeMounts(List<VolumeMount> volumeMounts) {
-			if (this.volumeMounts == null) {
-				this.volumeMounts = new ArrayList<>();
-			}
 			this.volumeMounts.addAll(volumeMounts);
 			return this;
 		}
 
 		public CreateServiceInstanceAppBindingResponseBuilder volumeMounts(VolumeMount... volumeMounts) {
-			if (this.volumeMounts == null) {
-				this.volumeMounts = new ArrayList<>();
-			}
 			Collections.addAll(this.volumeMounts, volumeMounts);
 			return this;
 		}

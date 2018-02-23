@@ -48,7 +48,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	private final String planId;
 
 	/**
-	 * The Cloud Controller GUID of the organization under which the service is to be provisioned.
+	 * The GUID of the organization under which the service is to be provisioned.
 	 *
 	 * @deprecated use {@link #context}
 	 */
@@ -56,7 +56,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	private final String organizationGuid;
 
 	/**
-	 * The Cloud Controller GUID of the space under which the service is to be provisioned.
+	 * The GUID of the space under which the service is to be provisioned.
 	 *
 	 * @deprecated use {@link #context}
 	 */
@@ -64,7 +64,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	private final String spaceGuid;
 
 	/**
-	 * The Cloud Controller GUID of the service instance to provision. This ID will be used for future
+	 * The GUID of the service instance to provision. This ID will be used for future
 	 * requests for the same service instance (e.g. bind and deprovision), so the broker must use it to
 	 * correlate any resource it creates.
 	 */
