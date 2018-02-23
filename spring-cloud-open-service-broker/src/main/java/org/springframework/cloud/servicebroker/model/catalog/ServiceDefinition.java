@@ -71,6 +71,16 @@ public class ServiceDefinition {
 	private final Boolean planUpdateable;
 
 	/**
+	 * Indicates whether the service broker supports retrieving service instances.
+	 */
+	private final boolean instancesRetrievable;
+
+	/**
+	 * Indicates whether the service broker supports retrieving service bindings.
+	 */
+	private final boolean bindingsRetrievable;
+
+	/**
 	 * A list of plans for this service.
 	 */
 	@NotEmpty
@@ -98,17 +108,20 @@ public class ServiceDefinition {
 	private final DashboardClient dashboardClient;
 
 	ServiceDefinition(String id, String name, String description, boolean bindable, Boolean planUpdateable,
+							 boolean instancesRetrievable, boolean bindingsRetrievable,
 							 List<Plan> plans, List<String> tags, Map<String, Object> metadata, List<String> requires,
 							 DashboardClient dashboardClient) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.bindable = bindable;
+		this.planUpdateable = planUpdateable;
+		this.instancesRetrievable = instancesRetrievable;
+		this.bindingsRetrievable = bindingsRetrievable;
 		this.plans = plans;
 		this.tags = tags;
 		this.metadata = metadata;
 		this.requires = requires;
-		this.planUpdateable = planUpdateable;
 		this.dashboardClient = dashboardClient;
 	}
 
@@ -130,6 +143,14 @@ public class ServiceDefinition {
 
 	public boolean isPlanUpdateable() {
 		return this.planUpdateable != null && this.planUpdateable;
+	}
+
+	public boolean isInstancesRetrievable() {
+		return instancesRetrievable;
+	}
+
+	public boolean isBindingsRetrievable() {
+		return bindingsRetrievable;
 	}
 
 	public List<Plan> getPlans() {
@@ -163,6 +184,8 @@ public class ServiceDefinition {
 		ServiceDefinition that = (ServiceDefinition) o;
 		return bindable == that.bindable &&
 				Objects.equals(planUpdateable, that.planUpdateable) &&
+				instancesRetrievable == that.instancesRetrievable &&
+				bindingsRetrievable == that.bindingsRetrievable &&
 				Objects.equals(id, that.id) &&
 				Objects.equals(name, that.name) &&
 				Objects.equals(description, that.description) &&
@@ -176,6 +199,7 @@ public class ServiceDefinition {
 	@Override
 	public final int hashCode() {
 		return Objects.hash(id, name, description, bindable, planUpdateable,
+				instancesRetrievable, bindingsRetrievable,
 				plans, tags, metadata, requires, dashboardClient);
 	}
 
@@ -187,6 +211,8 @@ public class ServiceDefinition {
 				", description='" + description + '\'' +
 				", bindable=" + bindable +
 				", planUpdateable=" + planUpdateable +
+				", instancesRetrievable=" + instancesRetrievable +
+				", bindingsRetrievable=" + bindingsRetrievable +
 				", plans=" + plans +
 				", tags=" + tags +
 				", metadata=" + metadata +
@@ -200,7 +226,9 @@ public class ServiceDefinition {
 		private String name;
 		private String description;
 		private boolean bindable;
-		private Boolean planUpdateable;
+		private boolean planUpdateable;
+		private boolean instancesRetrievable;
+		private boolean bindingsRetrievable;
 		private final List<Plan> plans = new ArrayList<>();
 		private List<String> tags;
 		private Map<String, Object> metadata;
@@ -232,6 +260,16 @@ public class ServiceDefinition {
 
 		public ServiceDefinitionBuilder planUpdateable(boolean planUpdateable) {
 			this.planUpdateable = planUpdateable;
+			return this;
+		}
+
+		public ServiceDefinitionBuilder instancesRetrievable(boolean instancesRetrievable) {
+			this.instancesRetrievable = instancesRetrievable;
+			return this;
+		}
+
+		public ServiceDefinitionBuilder bindingsRetrievable(boolean bindingsRetrievable) {
+			this.bindingsRetrievable = bindingsRetrievable;
 			return this;
 		}
 
@@ -289,6 +327,7 @@ public class ServiceDefinition {
 
 		public ServiceDefinition build() {
 			return new ServiceDefinition(id, name, description, bindable, planUpdateable,
+					instancesRetrievable, bindingsRetrievable,
 					plans, tags, metadata, requires, dashboardClient);
 		}
 	}

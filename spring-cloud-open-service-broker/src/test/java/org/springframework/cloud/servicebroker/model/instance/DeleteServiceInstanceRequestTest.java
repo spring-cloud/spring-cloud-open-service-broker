@@ -19,8 +19,55 @@ package org.springframework.cloud.servicebroker.model.instance;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
+import org.springframework.cloud.servicebroker.model.Context;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 public class DeleteServiceInstanceRequestTest {
+	@Test
+	public void requestWithDefaultsIsBuilt() {
+		DeleteServiceInstanceRequest request = DeleteServiceInstanceRequest.builder()
+				.build();
+
+		assertThat(request.getServiceDefinitionId(), nullValue());
+		assertThat(request.getServiceInstanceId(), nullValue());
+		assertThat(request.getPlanId(), nullValue());
+		assertThat(request.getServiceDefinition(), nullValue());
+		assertThat(request.isAsyncAccepted(), equalTo(false));
+		assertThat(request.getApiInfoLocation(), nullValue());
+		assertThat(request.getPlatformInstanceId(), nullValue());
+		assertThat(request.getOriginatingIdentity(), nullValue());
+	}
+
+	@Test
+	@SuppressWarnings("serial")
+	public void requestWithAllValuesIsBuilt() {
+		Context originatingIdentity = Context.builder()
+				.platform("test-platform")
+				.build();
+
+		DeleteServiceInstanceRequest request = DeleteServiceInstanceRequest.builder()
+				.serviceInstanceId("service-instance-id")
+				.serviceDefinitionId("service-definition-id")
+				.planId("plan-id")
+				.asyncAccepted(true)
+				.platformInstanceId("platform-instance-id")
+				.apiInfoLocation("https://api.example.com")
+				.originatingIdentity(originatingIdentity)
+				.build();
+
+		assertThat(request.getServiceInstanceId(), equalTo("service-instance-id"));
+		assertThat(request.getServiceDefinitionId(), equalTo("service-definition-id"));
+		assertThat(request.getPlanId(), equalTo("plan-id"));
+		assertThat(request.isAsyncAccepted(), equalTo(true));
+
+		assertThat(request.getPlatformInstanceId(), equalTo("platform-instance-id"));
+		assertThat(request.getApiInfoLocation(), equalTo("https://api.example.com"));
+		assertThat(request.getOriginatingIdentity(), equalTo(originatingIdentity));
+	}
+
 	@Test
 	public void equalsAndHashCode() {
 		EqualsVerifier

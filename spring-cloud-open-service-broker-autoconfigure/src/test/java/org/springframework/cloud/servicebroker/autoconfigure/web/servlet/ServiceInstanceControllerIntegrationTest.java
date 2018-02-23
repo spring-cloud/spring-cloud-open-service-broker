@@ -30,6 +30,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequi
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
+import org.springframework.cloud.servicebroker.exception.ServiceInstanceOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
@@ -38,6 +39,8 @@ import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInsta
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationRequest;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationResponse;
+import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceRequest;
+import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
@@ -258,6 +261,35 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 	}
 
 	@Test
+	public void getServiceInstanceSucceeds() throws Exception {
+		setupServiceInstanceService(GetServiceInstanceResponse.builder()
+			.build());
+
+		mockMvc.perform(get(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+
+		GetServiceInstanceRequest actualRequest = verifyGetServiceInstance();
+		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	public void getServiceInstanceWithOperationInProgressFails() throws Exception {
+		setupServiceInstanceService(new ServiceInstanceOperationInProgressException("still working"));
+
+		mockMvc.perform(get(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound())
+				.andExpect(jsonPath("$.description", containsString("still working")));
+	}
+
+	@Test
 	public void deleteServiceInstanceWithAsyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
@@ -458,6 +490,15 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.thenThrow(exception);
 	}
 
+	private void setupServiceInstanceService(GetServiceInstanceResponse response) {
+		when(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
+				.thenReturn(response);
+	}
+
+	private void setupServiceInstanceService(ServiceInstanceOperationInProgressException exception) {
+		when(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
+				.thenThrow(exception);
+	}
 	private void setupServiceInstanceService(DeleteServiceInstanceResponse response) {
 		when(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
 				.thenReturn(response);
@@ -527,6 +568,12 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 	private CreateServiceInstanceRequest verifyCreateServiceInstance() {
 		ArgumentCaptor<CreateServiceInstanceRequest> argumentCaptor = ArgumentCaptor.forClass(CreateServiceInstanceRequest.class);
 		Mockito.verify(serviceInstanceService).createServiceInstance(argumentCaptor.capture());
+		return argumentCaptor.getValue();
+	}
+
+	private GetServiceInstanceRequest verifyGetServiceInstance() {
+		ArgumentCaptor<GetServiceInstanceRequest> argumentCaptor = ArgumentCaptor.forClass(GetServiceInstanceRequest.class);
+		Mockito.verify(serviceInstanceService).getServiceInstance(argumentCaptor.capture());
 		return argumentCaptor.getValue();
 	}
 

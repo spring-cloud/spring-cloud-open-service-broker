@@ -104,7 +104,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 
 	@Override
 	public String toString() {
-		return "GetLastServiceOperationRequest{" +
+		return super.toString() +
+				"GetLastServiceOperationRequest{" +
 				"serviceInstanceId='" + serviceInstanceId + '\'' +
 				", serviceDefinitionId='" + serviceDefinitionId + '\'' +
 				", planId='" + planId + '\'' +

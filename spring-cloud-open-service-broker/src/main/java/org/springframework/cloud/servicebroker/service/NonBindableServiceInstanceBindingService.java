@@ -41,6 +41,6 @@ public class NonBindableServiceInstanceBindingService implements ServiceInstance
 	private UnsupportedOperationException nonBindableException() {
 		return new UnsupportedOperationException("This service broker does not support bindable services. " +
 				"The service broker should set 'bindable: false' in the service catalog for all service offerings, " +
-				"or provide an implementation of this service.");
+				"or provide an implementation of this API.");
 	}
 }

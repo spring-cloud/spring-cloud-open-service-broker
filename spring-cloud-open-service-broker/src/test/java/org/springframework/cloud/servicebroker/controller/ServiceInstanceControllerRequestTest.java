@@ -26,6 +26,8 @@ import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInsta
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationRequest;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationResponse;
+import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceRequest;
+import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
@@ -77,6 +79,21 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		controller.createServiceInstance(pathVariables, null, false,
 				null, null, createRequest);
+	}
+
+	@Test
+	public void getServiceInstanceParametersAreMappedToRequest() {
+		GetServiceInstanceRequest expectedRequest = GetServiceInstanceRequest.builder()
+				.serviceInstanceId("service-instance-id")
+				.platformInstanceId("platform-instance-id")
+				.apiInfoLocation("api-info-location")
+				.originatingIdentity(identityContext)
+				.build();
+
+		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
+
+		controller.getServiceInstance(pathVariables, "service-instance-id",
+				"api-info-location", encodeOriginatingIdentity(identityContext));
 	}
 
 	@Test
@@ -182,6 +199,12 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		@Override
 		public CreateServiceInstanceResponse createServiceInstance(CreateServiceInstanceRequest request) {
+			assertThat(request, equalTo(expectedRequest));
+			return null;
+		}
+
+		@Override
+		public GetServiceInstanceResponse getServiceInstance(GetServiceInstanceRequest request) {
 			assertThat(request, equalTo(expectedRequest));
 			return null;
 		}

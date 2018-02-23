@@ -42,6 +42,7 @@ public class CreateServiceInstanceRequestTest {
 		assertThat(request.getServiceDefinition(), nullValue());
 		assertThat(request.getContext(), nullValue());
 		assertThat(request.getParameters(), aMapWithSize(0));
+		assertThat(request.isAsyncAccepted(), equalTo(false));
 		assertThat(request.getApiInfoLocation(), nullValue());
 		assertThat(request.getPlatformInstanceId(), nullValue());
 		assertThat(request.getOriginatingIdentity(), nullValue());
@@ -56,7 +57,12 @@ public class CreateServiceInstanceRequestTest {
 		}};
 		Context context = Context.builder().build();
 
+		Context originatingIdentity = Context.builder()
+				.platform("test-platform")
+				.build();
+
 		CreateServiceInstanceRequest request = CreateServiceInstanceRequest.builder()
+				.serviceInstanceId("service-instance-id")
 				.serviceDefinitionId("service-definition-id")
 				.planId("plan-id")
 				.context(context)
@@ -64,8 +70,13 @@ public class CreateServiceInstanceRequestTest {
 				.parameters("field2", 2)
 				.parameters("field3", true)
 				.parameters(parameters)
+				.asyncAccepted(true)
+				.platformInstanceId("platform-instance-id")
+				.apiInfoLocation("https://api.example.com")
+				.originatingIdentity(originatingIdentity)
 				.build();
 
+		assertThat(request.getServiceInstanceId(), equalTo("service-instance-id"));
 		assertThat(request.getServiceDefinitionId(), equalTo("service-definition-id"));
 		assertThat(request.getPlanId(), equalTo("plan-id"));
 
@@ -77,6 +88,11 @@ public class CreateServiceInstanceRequestTest {
 		assertThat(request.getParameters().get("field5"), equalTo("value5"));
 
 		assertThat(request.getContext(), equalTo(context));
+		assertThat(request.isAsyncAccepted(), equalTo(true));
+
+		assertThat(request.getPlatformInstanceId(), equalTo("platform-instance-id"));
+		assertThat(request.getApiInfoLocation(), equalTo("https://api.example.com"));
+		assertThat(request.getOriginatingIdentity(), equalTo(originatingIdentity));
 	}
 
 	@Test

@@ -72,6 +72,10 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 		return this.planId;
 	}
 
+	public ServiceDefinition getServiceDefinition() {
+		return this.serviceDefinition;
+	}
+
 	public static DeleteServiceInstanceRequestBuilder builder() {
 		return new DeleteServiceInstanceRequestBuilder();
 	}

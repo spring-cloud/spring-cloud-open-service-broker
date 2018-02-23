@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.service;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
+import org.springframework.cloud.servicebroker.exception.ServiceInstanceOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
@@ -26,6 +27,8 @@ import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInsta
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationRequest;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationResponse;
+import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceRequest;
+import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
 
@@ -48,6 +51,20 @@ public interface ServiceInstanceService {
 	 */
 	CreateServiceInstanceResponse createServiceInstance(CreateServiceInstanceRequest request);
 
+	/**
+	 * Get the details of a service instance.
+	 *
+	 * @param request containing the details of the request
+	 * @return the details of the completed request
+	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
+	 * @throws ServiceInstanceOperationInProgressException if a an operation is in progress for the service instance
+	 */
+	default GetServiceInstanceResponse getServiceInstance(GetServiceInstanceRequest request) {
+		throw new UnsupportedOperationException("This service broker does not support retrieving service instances. " +
+				"The service broker should set 'instances_retrievable:false' in the service catalog, " +
+				"or provide an implementation of this API.");
+	}
+	
 	/**
 	 * Get the status of the last requested operation for a service instance.
 	 *

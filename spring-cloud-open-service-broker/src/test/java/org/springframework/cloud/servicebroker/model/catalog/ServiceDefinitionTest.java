@@ -79,6 +79,8 @@ public class ServiceDefinitionTest {
 				.description("Service Definition One")
 				.plans(Plan.builder().build())
 				.bindable(true)
+				.instancesRetrievable(true)
+				.bindingsRetrievable(true)
 				.tags("tag1", "tag2")
 				.metadata("field1", "value1")
 				.metadata("field2", "value2")
@@ -99,6 +101,8 @@ public class ServiceDefinitionTest {
 				withJsonPath("$.plans", hasSize(1)),
 				withJsonPath("$.bindable", equalTo(true)),
 				withJsonPath("$.plan_updateable", equalTo(true)),
+				withJsonPath("$.instances_retrievable", equalTo(true)),
+				withJsonPath("$.bindings_retrievable", equalTo(true)),
 				withJsonPath("$.tags[*]", contains("tag1", "tag2")),
 				withJsonPath("$.requires[*]",
 						contains(SERVICE_REQUIRES_ROUTE_FORWARDING.toString(),

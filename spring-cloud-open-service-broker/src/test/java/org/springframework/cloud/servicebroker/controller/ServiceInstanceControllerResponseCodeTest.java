@@ -24,6 +24,7 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
+import org.springframework.cloud.servicebroker.exception.ServiceInstanceOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
@@ -33,6 +34,8 @@ import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInsta
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationRequest;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationResponse;
+import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceRequest;
+import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
@@ -101,6 +104,23 @@ public class ServiceInstanceControllerResponseCodeTest {
 								.instanceExisted(true)
 								.build(),
 						HttpStatus.ACCEPTED
+				)
+		);
+	}
+
+	@DataPoints("getResponsesWithExpectedStatus")
+	public static List<GetResponseAndExpectedStatus> getDataPoints() {
+		return Arrays.asList(
+				new GetResponseAndExpectedStatus(
+						null,
+						HttpStatus.OK
+				),
+				new GetResponseAndExpectedStatus(
+						GetServiceInstanceResponse.builder()
+								.serviceDefinitionId("service-definition-id")
+								.planId("plan-id")
+								.build(),
+						HttpStatus.OK
 				)
 		);
 	}
@@ -210,6 +230,18 @@ public class ServiceInstanceControllerResponseCodeTest {
 	}
 
 	@Theory
+	public void getServiceInstanceWithResponseGivesExpectedStatus(GetResponseAndExpectedStatus data) {
+		when(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
+						.thenReturn(data.response);
+
+		ResponseEntity<GetServiceInstanceResponse> responseEntity = controller
+				.getServiceInstance(pathVariables, null, null, null);
+
+		assertThat(responseEntity.getStatusCode(), equalTo(data.expectedStatus));
+		assertThat(responseEntity.getBody(), equalTo(data.response));
+	}
+
+	@Theory
 	public void deleteServiceInstanceWithResponseGivesExpectedStatus(DeleteResponseAndExpectedStatus data) {
 		when(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
 				.thenReturn(data.response);
@@ -285,6 +317,17 @@ public class ServiceInstanceControllerResponseCodeTest {
 		assertThat(responseEntity.getBody().getMessage(), containsString("test exception"));
 	}
 
+	@Test
+	public void serviceInstanceOperationInProgressExceptionGivesExpectedStatus() {
+		ServiceInstanceOperationInProgressException exception =
+				new ServiceInstanceOperationInProgressException("still working");
+
+		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
+
+		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.NOT_FOUND));
+		assertThat(responseEntity.getBody().getMessage(), containsString("still working"));
+	}
+
 	public static class AsyncResponseAndExpectedStatus<T extends AsyncServiceInstanceResponse> {
 		public final T response;
 		public final HttpStatus expectedStatus;
@@ -324,6 +367,17 @@ public class ServiceInstanceControllerResponseCodeTest {
 					", expectedStatus=" + expectedStatus;
 		}
 
+	}
+
+	public static class GetResponseAndExpectedStatus {
+		public final GetServiceInstanceResponse response;
+		public final HttpStatus expectedStatus;
+
+		public GetResponseAndExpectedStatus(GetServiceInstanceResponse response,
+											HttpStatus expectedStatus) {
+			this.response = response;
+			this.expectedStatus = expectedStatus;
+		}
 	}
 
 	public static class UpdateResponseAndExpectedStatus

@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
+import org.springframework.cloud.servicebroker.exception.ServiceInstanceOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
@@ -29,6 +30,8 @@ import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInsta
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationRequest;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationResponse;
+import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceRequest;
+import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
@@ -118,6 +121,32 @@ public class ServiceInstanceController extends BaseController {
 	}
 
 	@GetMapping(value = {
+			"/{platformInstanceId}/v2/service_instances/{instanceId}",
+			"/v2/service_instances/{instanceId}"
+	})
+	public ResponseEntity<GetServiceInstanceResponse> getServiceInstance(
+			@PathVariable Map<String, String> pathVariables,
+			@PathVariable(INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
+			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+			@RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
+		GetServiceInstanceRequest request = GetServiceInstanceRequest.builder()
+				.serviceInstanceId(serviceInstanceId)
+				.platformInstanceId(pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE))
+				.apiInfoLocation(apiInfoLocation)
+				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+				.build();
+
+		LOGGER.debug("Getting service instance: request={}", request);
+
+		GetServiceInstanceResponse response = service.getServiceInstance(request);
+
+		LOGGER.debug("Getting service instance succeeded: serviceInstanceId={}, response={}",
+				serviceInstanceId, response);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@GetMapping(value = {
 			"/{platformInstanceId}/v2/service_instances/{instanceId}/last_operation",
 			"/v2/service_instances/{instanceId}/last_operation"
 	})
@@ -139,11 +168,11 @@ public class ServiceInstanceController extends BaseController {
 				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
 				.build();
 
-		LOGGER.debug("Getting service instance status: request={}", request);
+		LOGGER.debug("Getting service instance last operation: request={}", request);
 
 		GetLastServiceOperationResponse response = service.getLastOperation(request);
 
-		LOGGER.debug("Getting service instance status succeeded: serviceInstanceId={}, response={}",
+		LOGGER.debug("Getting service instance last operation succeeded: serviceInstanceId={}, response={}",
 				serviceInstanceId, response);
 
 		boolean isSuccessfulDelete = response.getState().equals(OperationState.SUCCEEDED) && response.isDeleteOperation();
@@ -236,5 +265,11 @@ public class ServiceInstanceController extends BaseController {
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceUpdateNotSupportedException ex) {
 		LOGGER.debug("Service instance update not supported: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+
+	@ExceptionHandler(ServiceInstanceOperationInProgressException.class)
+	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceOperationInProgressException ex) {
+		LOGGER.debug("Service instance operation in progress: ", ex);
+		return getErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
 	}
 }
