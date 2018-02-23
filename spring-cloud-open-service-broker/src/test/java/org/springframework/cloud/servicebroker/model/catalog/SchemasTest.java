@@ -29,6 +29,7 @@ import static com.jayway.jsonpath.matchers.JsonPathMatchers.withoutJsonPath;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class SchemasTest {
@@ -41,6 +42,9 @@ public class SchemasTest {
 				withoutJsonPath("$.service_instance"),
 				withoutJsonPath("$.service_binding")
 		)));
+
+		assertThat(schemas.getServiceInstanceSchema(), nullValue());
+		assertThat(schemas.getServiceBindingSchema(), nullValue());
 	}
 	
 	@Test
@@ -49,6 +53,11 @@ public class SchemasTest {
 				.serviceInstanceSchema(ServiceInstanceSchema.builder().build())
 				.serviceBindingSchema(ServiceBindingSchema.builder().build())
 				.build();
+
+		assertThat(schemas.getServiceInstanceSchema().getCreateMethodSchema(), nullValue());
+		assertThat(schemas.getServiceInstanceSchema().getUpdateMethodSchema(), nullValue());
+		assertThat(schemas.getServiceBindingSchema().getCreateMethodSchema(), nullValue());
+
 		String json = DataFixture.toJson(schemas);
 
 		assertThat(json, isJson(allOf(
@@ -91,6 +100,22 @@ public class SchemasTest {
 								.build())
 						.build())
 				.build();
+
+		assertThat(schemas.getServiceInstanceSchema().getCreateMethodSchema().getParameters()
+				.get("$schema"), equalTo("http://example.com/service/create/schema"));
+		assertThat(schemas.getServiceInstanceSchema().getCreateMethodSchema().getParameters()
+				.get("type"), equalTo("object"));
+
+		assertThat(schemas.getServiceInstanceSchema().getUpdateMethodSchema().getParameters()
+				.get("$schema"), equalTo("http://example.com/service/update/schema"));
+		assertThat(schemas.getServiceInstanceSchema().getUpdateMethodSchema().getParameters()
+				.get("type"), equalTo("object"));
+
+		assertThat(schemas.getServiceBindingSchema().getCreateMethodSchema().getParameters()
+				.get("$schema"), equalTo("http://example.com/binding/create/schema"));
+		assertThat(schemas.getServiceBindingSchema().getCreateMethodSchema().getParameters()
+				.get("type"), equalTo("object"));
+
 		String json = DataFixture.toJson(schemas);
 
 		assertThat(json, isJson(allOf(

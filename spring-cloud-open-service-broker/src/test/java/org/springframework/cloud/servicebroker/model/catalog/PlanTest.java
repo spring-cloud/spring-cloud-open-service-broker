@@ -30,6 +30,8 @@ import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class PlanTest {
@@ -42,6 +44,14 @@ public class PlanTest {
 				.name("plan-one")
 				.description("Plan One")
 				.build();
+
+		assertThat(plan.getId(), equalTo("plan-id-one"));
+		assertThat(plan.getName(), equalTo("plan-one"));
+		assertThat(plan.getDescription(), equalTo("Plan One"));
+		assertThat(plan.isFree(), equalTo(true));
+		assertThat(plan.isBindable(), nullValue());
+		assertThat(plan.getMetadata(), nullValue());
+		assertThat(plan.getSchemas(), nullValue());
 
 		String json = DataFixture.toJson(plan);
 
@@ -76,6 +86,19 @@ public class PlanTest {
 				.schemas(Schemas.builder().build())
 				.build();
 
+		assertThat(plan.getId(), equalTo("plan-id-one"));
+		assertThat(plan.getName(), equalTo("plan-one"));
+		assertThat(plan.getDescription(), equalTo("Plan One"));
+		assertThat(plan.isFree(), equalTo(false));
+		assertThat(plan.isBindable(), equalTo(true));
+		assertThat(plan.getMetadata(), aMapWithSize(4));
+		assertThat(plan.getMetadata(), allOf(
+				hasEntry("field1", "value1"),
+				hasEntry("field2", "value2"),
+				hasEntry("field3", "value3"),
+				hasEntry("field4", "value4")));
+		assertThat(plan.getSchemas(), notNullValue());
+
 		String json = DataFixture.toJson(plan);
 
 		assertThat(json, isJson(allOf(
@@ -83,13 +106,13 @@ public class PlanTest {
 				withJsonPath("$.name", equalTo("plan-one")),
 				withJsonPath("$.description", equalTo("Plan One")),
 				withJsonPath("$.free", equalTo(false)),
+				withJsonPath("$.bindable", equalTo(true)),
 				withJsonPath("$.metadata", aMapWithSize(4)),
 				withJsonPath("$.metadata",
 						allOf(hasEntry("field1", "value1"),
 								hasEntry("field2", "value2"),
 								hasEntry("field3", "value3"),
 								hasEntry("field4", "value4"))),
-				withJsonPath("$.bindable", equalTo(true)),
 				withJsonPath("$.schemas")
 		)));
 	}

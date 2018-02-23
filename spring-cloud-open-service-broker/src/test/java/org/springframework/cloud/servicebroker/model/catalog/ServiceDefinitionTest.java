@@ -34,6 +34,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_ROUTE_FORWARDING;
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_SYSLOG_DRAIN;
@@ -49,6 +50,18 @@ public class ServiceDefinitionTest {
 				.description("Service Definition One")
 				.plans(Plan.builder().build())
 				.build();
+
+		assertThat(serviceDefinition.getId(), equalTo("service-definition-id-one"));
+		assertThat(serviceDefinition.getName(), equalTo("service-definition-one"));
+		assertThat(serviceDefinition.getDescription(), equalTo("Service Definition One"));
+		assertThat(serviceDefinition.getPlans(), hasSize(1));
+		assertThat(serviceDefinition.isBindable(), equalTo(false));
+		assertThat(serviceDefinition.isPlanUpdateable(), equalTo(false));
+		assertThat(serviceDefinition.getTags(), nullValue());
+		assertThat(serviceDefinition.getRequires(), nullValue());
+		assertThat(serviceDefinition.getMetadata(), nullValue());
+		assertThat(serviceDefinition.getDashboardClient(), nullValue());
+
 		String json = DataFixture.toJson(serviceDefinition);
 
 		assertThat(json, isJson(allOf(
@@ -92,6 +105,26 @@ public class ServiceDefinitionTest {
 				.planUpdateable(true)
 				.dashboardClient(DashboardClient.builder().build())
 				.build();
+
+		assertThat(serviceDefinition.getId(), equalTo("service-definition-id-one"));
+		assertThat(serviceDefinition.getName(), equalTo("service-definition-one"));
+		assertThat(serviceDefinition.getDescription(), equalTo("Service Definition One"));
+		assertThat(serviceDefinition.getPlans(), hasSize(1));
+		assertThat(serviceDefinition.isBindable(), equalTo(true));
+		assertThat(serviceDefinition.isPlanUpdateable(), equalTo(true));
+		assertThat(serviceDefinition.getTags(), contains("tag1", "tag2"));
+		assertThat(serviceDefinition.getRequires(),
+				contains(SERVICE_REQUIRES_ROUTE_FORWARDING.toString(),
+						SERVICE_REQUIRES_SYSLOG_DRAIN.toString(),
+						SERVICE_REQUIRES_VOLUME_MOUNT.toString(),
+						"another_requires"));
+		assertThat(serviceDefinition.getMetadata(), allOf(
+				hasEntry("field1", "value1"),
+				hasEntry("field2", "value2"),
+				hasEntry("field3", "value3"),
+				hasEntry("field4", "value4")));
+		assertThat(serviceDefinition.getDashboardClient(), notNullValue());
+
 		String json = DataFixture.toJson(serviceDefinition);
 
 		assertThat(json, isJson(allOf(

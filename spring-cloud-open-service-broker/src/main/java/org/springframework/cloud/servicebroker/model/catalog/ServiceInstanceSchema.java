@@ -41,11 +41,6 @@ public class ServiceInstanceSchema {
 	@JsonProperty("update")
 	private final MethodSchema updateMethodSchema;
 
-	ServiceInstanceSchema() {
-		createMethodSchema = null;
-		updateMethodSchema = null;
-	}
-
 	ServiceInstanceSchema(MethodSchema createMethodSchema,
 			MethodSchema updateMethodSchema) {
 		this.createMethodSchema = createMethodSchema;

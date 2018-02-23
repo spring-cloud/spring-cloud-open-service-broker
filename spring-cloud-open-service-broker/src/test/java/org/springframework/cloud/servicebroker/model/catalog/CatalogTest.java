@@ -34,8 +34,10 @@ public class CatalogTest {
 	@Test
 	public void emptyCatalogIsSerializedToJson() {
 		Catalog catalog = Catalog.builder().build();
-		String json = DataFixture.toJson(catalog);
 
+		assertThat(catalog.getServiceDefinitions(), hasSize(0));
+
+		String json = DataFixture.toJson(catalog);
 		assertThat(json, isJson(withJsonPath("$.services", hasSize(0))));
 	}
 
@@ -59,6 +61,15 @@ public class CatalogTest {
 								.build())
 				.serviceDefinitions(serviceDefinitions)
 				.build();
+
+		List<ServiceDefinition> actualDefinitions = catalog.getServiceDefinitions();
+		assertThat(actualDefinitions.get(0).getId(), equalTo("service-definition-id-one"));
+		assertThat(actualDefinitions.get(0).getName(), equalTo("service-definition-one"));
+		assertThat(actualDefinitions.get(0).getDescription(), equalTo("Service Definition One"));
+
+		assertThat(actualDefinitions.get(1).getId(), equalTo("service-definition-id-two"));
+		assertThat(actualDefinitions.get(1).getName(), equalTo("service-definition-two"));
+		assertThat(actualDefinitions.get(1).getDescription(), equalTo("Service Definition Two"));
 
 		String json = DataFixture.toJson(catalog);
 
