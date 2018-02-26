@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.model.fixture;
+package org.springframework.cloud.servicebroker;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,11 +23,16 @@ import java.io.Reader;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
+import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 
 import static org.junit.Assert.fail;
 
-public final class DataFixture {
-	private DataFixture() {
+public final class JsonUtils {
+	private JsonUtils() {
 	}
 
 	public static String toJson(Object object) {
@@ -38,6 +43,15 @@ public final class DataFixture {
 			fail("Error creating JSON string from object: " + e);
 			throw new IllegalStateException(e);
 		}
+	}
+
+	public static DocumentContext toJsonPath(Object object) {
+		Configuration configuration = Configuration.builder()
+				.jsonProvider(new JacksonJsonProvider())
+				.mappingProvider(new JacksonMappingProvider())
+				.build();
+
+		return JsonPath.parse(toJson(object), configuration);
 	}
 
 	public static <T> T fromJson(String json, Class<T> contentType) {
@@ -61,7 +75,6 @@ public final class DataFixture {
 	}
 
 	private static Reader getTestDataFileReader(String fileName) {
-		return new BufferedReader(new InputStreamReader(DataFixture.class.getResourceAsStream("/" + fileName)));
+		return new BufferedReader(new InputStreamReader(JsonUtils.class.getResourceAsStream("/" + fileName)));
 	}
-
 }

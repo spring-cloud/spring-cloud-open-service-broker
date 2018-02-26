@@ -21,16 +21,11 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.KubernetesContext;
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import java.util.Map;
 
-import static org.hamcrest.Matchers.aMapWithSize;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM;
 import static org.springframework.cloud.servicebroker.model.KubernetesContext.KUBERNETES_PLATFORM;
 
@@ -38,54 +33,54 @@ public class AsyncParameterizedServiceInstanceRequestTest {
 	@Test
 	public void requestWithCloudFoundryContextIsDeserializedFromJson() {
 		AsyncParameterizedServiceInstanceRequest request =
-				DataFixture.readTestDataFile("requestWithParametersAndCloudFoundryContext.json",
+				JsonUtils.readTestDataFile("requestWithParametersAndCloudFoundryContext.json",
 						CreateServiceInstanceRequest.class);
 
-		assertEquals(CLOUD_FOUNDRY_PLATFORM, request.getContext().getPlatform());
-		assertThat(request.getContext(), instanceOf(CloudFoundryContext.class));
+		assertThat(request.getContext().getPlatform()).isEqualTo(CLOUD_FOUNDRY_PLATFORM);
+		assertThat(request.getContext()).isInstanceOf(CloudFoundryContext.class);
 
 		CloudFoundryContext context = (CloudFoundryContext) request.getContext();
-		assertThat(context.getOrganizationGuid(), equalTo("test-organization-guid"));
-		assertThat(context.getSpaceGuid(), equalTo("test-space-guid"));
-		assertThat(context.getProperty("field1"), equalTo("data"));
-		assertThat(context.getProperty("field2"), equalTo(2));
+		assertThat(context.getOrganizationGuid()).isEqualTo("test-organization-guid");
+		assertThat(context.getSpaceGuid()).isEqualTo("test-space-guid");
+		assertThat(context.getProperty("field1")).isEqualTo("data");
+		assertThat(context.getProperty("field2")).isEqualTo(2);
 
 		Map<String, Object> parameters = request.getParameters();
-		assertThat(parameters, aMapWithSize(3));
-		assertThat(parameters.get("parameter1"), equalTo(1));
-		assertThat(parameters.get("parameter2"), equalTo("foo"));
-		assertThat(parameters.get("parameter3"), equalTo(true));
+		assertThat(parameters).hasSize(3);
+		assertThat(parameters.get("parameter1")).isEqualTo(1);
+		assertThat(parameters.get("parameter2")).isEqualTo("foo");
+		assertThat(parameters.get("parameter3")).isEqualTo(true);
 	}
 
 	@Test
 	public void requestWithKubernetesContextIsDeserializedFromJson() {
 		AsyncParameterizedServiceInstanceRequest request =
-				DataFixture.readTestDataFile("requestWithEmptyParametersAndKubernetesContext.json",
+				JsonUtils.readTestDataFile("requestWithEmptyParametersAndKubernetesContext.json",
 						CreateServiceInstanceRequest.class);
 
-		assertEquals(KUBERNETES_PLATFORM, request.getContext().getPlatform());
-		assertThat(request.getContext(), instanceOf(KubernetesContext.class));
+		assertThat(request.getContext().getPlatform()).isEqualTo(KUBERNETES_PLATFORM);
+		assertThat(request.getContext()).isInstanceOf(KubernetesContext.class);
 
 		KubernetesContext context = (KubernetesContext) request.getContext();
-		assertThat(context.getNamespace(), equalTo("test-namespace"));
-		assertThat(context.getProperty("field1"), equalTo("data"));
-		assertThat(context.getProperty("field2"), equalTo(2));
+		assertThat(context.getNamespace()).isEqualTo("test-namespace");
+		assertThat(context.getProperty("field1")).isEqualTo("data");
+		assertThat(context.getProperty("field2")).isEqualTo(2);
 
-		assertThat(request.getParameters(), aMapWithSize(0));
+		assertThat(request.getParameters()).hasSize(0);
 	}
 
 	@Test
 	public void requestWithUnknownContextIsDeserializedFromJson() {
 		AsyncParameterizedServiceInstanceRequest request =
-				DataFixture.readTestDataFile("requestWithCustomContext.json",
+				JsonUtils.readTestDataFile("requestWithCustomContext.json",
 						CreateServiceInstanceRequest.class);
 
-		assertThat(request.getContext().getPlatform(), equalTo("test-platform"));
+		assertThat(request.getContext().getPlatform()).isEqualTo("test-platform");
 
-		assertThat(request.getContext().getProperty("field1"), equalTo("data"));
-		assertThat(request.getContext().getProperty("field2"), equalTo(2));
+		assertThat(request.getContext().getProperty("field1")).isEqualTo("data");
+		assertThat(request.getContext().getProperty("field2")).isEqualTo(2);
 
-		assertThat(request.getParameters(), nullValue());
+		assertThat(request.getParameters()).isNull();
 	}
 
 	@Test

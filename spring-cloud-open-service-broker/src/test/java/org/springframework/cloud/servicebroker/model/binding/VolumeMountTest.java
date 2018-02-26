@@ -16,23 +16,18 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static org.hamcrest.Matchers.aMapWithSize;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 import static org.springframework.cloud.servicebroker.model.binding.VolumeMount.DeviceType.SHARED;
 import static org.springframework.cloud.servicebroker.model.binding.VolumeMount.Mode.READ_ONLY;
-import static org.springframework.cloud.servicebroker.model.binding.VolumeMount.Mode.READ_WRITE;
 
 public class VolumeMountTest {
 	@Test
@@ -40,11 +35,19 @@ public class VolumeMountTest {
 		VolumeMount mount = VolumeMount.builder()
 				.build();
 
-		assertThat(mount.getDriver(), nullValue());
-		assertThat(mount.getContainerDir(), nullValue());
-		assertThat(mount.getMode(), nullValue());
-		assertThat(mount.getDeviceType(), nullValue());
-		assertThat(mount.getDevice(), nullValue());
+		assertThat(mount.getDriver()).isNull();
+		assertThat(mount.getContainerDir()).isNull();
+		assertThat(mount.getMode()).isNull();
+		assertThat(mount.getDeviceType()).isNull();
+		assertThat(mount.getDevice()).isNull();
+
+		DocumentContext json = JsonUtils.toJsonPath(mount);
+
+		assertThat(json).hasNoPath("$.driver");
+		assertThat(json).hasNoPath("$.container_dir");
+		assertThat(json).hasNoPath("$.mode");
+		assertThat(json).hasNoPath("$.device_type");
+		assertThat(json).hasNoPath("$.device");
 	}
 
 	@Test
@@ -68,47 +71,30 @@ public class VolumeMountTest {
 						.build())
 				.build();
 
-		assertThat(mount.getDriver(), equalTo("test-driver"));
-		assertThat(mount.getContainerDir(), equalTo("/data/images"));
-		assertThat(mount.getMode(), equalTo(READ_ONLY));
-		assertThat(mount.getDeviceType(), equalTo(SHARED));
+		assertThat(mount.getDriver()).isEqualTo("test-driver");
+		assertThat(mount.getContainerDir()).isEqualTo("/data/images");
+		assertThat(mount.getMode()).isEqualTo(READ_ONLY);
+		assertThat(mount.getDeviceType()).isEqualTo(SHARED);
 
 		SharedVolumeDevice device = (SharedVolumeDevice) mount.getDevice();
-		assertThat(device.getVolumeId(), equalTo("volume-id"));
-		assertThat(device.getMountConfig(), aMapWithSize(4));
-		assertThat(device.getMountConfig().get("config1"), equalTo("value1"));
-		assertThat(device.getMountConfig().get("config2"), equalTo(2));
-		assertThat(device.getMountConfig().get("config3"), equalTo("value3"));
-		assertThat(device.getMountConfig().get("config4"), equalTo(true));
-	}
+		assertThat(device.getVolumeId()).isEqualTo("volume-id");
+		assertThat(device.getMountConfig()).hasSize(4);
+		assertThat(device.getMountConfig().get("config1")).isEqualTo("value1");
+		assertThat(device.getMountConfig().get("config2")).isEqualTo(2);
+		assertThat(device.getMountConfig().get("config3")).isEqualTo("value3");
+		assertThat(device.getMountConfig().get("config4")).isEqualTo(true);
 
-	@Test
-	@SuppressWarnings("unchecked")
-	public void volumeMountIsSerializedToJson() {
-		VolumeMount mount = VolumeMount.builder()
-				.driver("test-driver")
-				.containerDir("/data/images")
-				.mode(READ_WRITE)
-				.deviceType(SHARED)
-				.device(SharedVolumeDevice.builder()
-						.volumeId("volume-id")
-						.mountConfig("config1", "value1")
-						.mountConfig("config2", 2)
-						.build())
-				.build();
+		DocumentContext json = JsonUtils.toJsonPath(mount);
 
-		String json = DataFixture.toJson(mount);
-
-		assertThat(json, isJson(allOf(
-				withJsonPath("$.driver", equalTo("test-driver")),
-				withJsonPath("$.container_dir", equalTo("/data/images")),
-				withJsonPath("$.mode", equalTo("rw")),
-				withJsonPath("$.device_type", equalTo("shared")),
-				withJsonPath("$.device.volume_id", equalTo("volume-id")),
-				withJsonPath("$.device.mount_config", aMapWithSize(2)),
-				withJsonPath("$.device.mount_config.config1", equalTo("value1")),
-				withJsonPath("$.device.mount_config.config2", equalTo(2))
-		)));
+		assertThat(json).hasPath("$.driver").isEqualTo("test-driver");
+		assertThat(json).hasPath("$.container_dir").isEqualTo("/data/images");
+		assertThat(json).hasPath("$.mode").isEqualTo("r");
+		assertThat(json).hasPath("$.device_type").isEqualTo("shared");
+		assertThat(json).hasPath("$.device.volume_id").isEqualTo("volume-id");
+		assertThat(json).hasPath("$.device.mount_config.config1").isEqualTo("value1");
+		assertThat(json).hasPath("$.device.mount_config.config2").isEqualTo(2);
+		assertThat(json).hasPath("$.device.mount_config.config3").isEqualTo("value3");
+		assertThat(json).hasPath("$.device.mount_config.config4").isEqualTo(true);
 	}
 
 	@Test

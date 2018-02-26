@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -27,6 +28,7 @@ import java.util.Objects;
  * Details of a volume mount in a binding response.
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class VolumeMount {
 	public enum Mode {
 		READ_ONLY("r"),

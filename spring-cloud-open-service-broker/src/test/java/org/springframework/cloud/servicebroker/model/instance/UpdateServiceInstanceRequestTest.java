@@ -21,15 +21,12 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest.PreviousValues;
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.aMapWithSize;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UpdateServiceInstanceRequestTest {
 	@Test
@@ -37,17 +34,17 @@ public class UpdateServiceInstanceRequestTest {
 		UpdateServiceInstanceRequest request = UpdateServiceInstanceRequest.builder()
 				.build();
 
-		assertThat(request.getServiceDefinitionId(), nullValue());
-		assertThat(request.getServiceInstanceId(), nullValue());
-		assertThat(request.getPlanId(), nullValue());
-		assertThat(request.getServiceDefinition(), nullValue());
-		assertThat(request.getContext(), nullValue());
-		assertThat(request.getParameters(), aMapWithSize(0));
-		assertThat(request.isAsyncAccepted(), equalTo(false));
-		assertThat(request.getPreviousValues(), nullValue());
-		assertThat(request.getApiInfoLocation(), nullValue());
-		assertThat(request.getPlatformInstanceId(), nullValue());
-		assertThat(request.getOriginatingIdentity(), nullValue());
+		assertThat(request.getServiceDefinitionId()).isNull();
+		assertThat(request.getServiceInstanceId()).isNull();
+		assertThat(request.getPlanId()).isNull();
+		assertThat(request.getServiceDefinition()).isNull();
+		assertThat(request.getContext()).isNull();
+		assertThat(request.getParameters()).hasSize(0);
+		assertThat(request.isAsyncAccepted()).isEqualTo(false);
+		assertThat(request.getPreviousValues()).isNull();
+		assertThat(request.getApiInfoLocation()).isNull();
+		assertThat(request.getPlatformInstanceId()).isNull();
+		assertThat(request.getOriginatingIdentity()).isNull();
 	}
 
 	@Test
@@ -79,36 +76,36 @@ public class UpdateServiceInstanceRequestTest {
 				.originatingIdentity(originatingIdentity)
 				.build();
 
-		assertThat(request.getServiceInstanceId(), equalTo("service-instance-id"));
-		assertThat(request.getServiceDefinitionId(), equalTo("service-definition-id"));
-		assertThat(request.getPlanId(), equalTo("plan-id"));
+		assertThat(request.getServiceInstanceId()).isEqualTo("service-instance-id");
+		assertThat(request.getServiceDefinitionId()).isEqualTo("service-definition-id");
+		assertThat(request.getPlanId()).isEqualTo("plan-id");
 
-		assertThat(request.getPreviousValues().getPlanId(), equalTo("previous-plan-id"));
+		assertThat(request.getPreviousValues().getPlanId()).isEqualTo("previous-plan-id");
 
-		assertThat(request.getParameters(), aMapWithSize(5));
-		assertThat(request.getParameters().get("field1"), equalTo("value1"));
-		assertThat(request.getParameters().get("field2"), equalTo(2));
-		assertThat(request.getParameters().get("field3"), equalTo(true));
-		assertThat(request.getParameters().get("field4"), equalTo("value4"));
-		assertThat(request.getParameters().get("field5"), equalTo("value5"));
+		assertThat(request.getParameters()).hasSize(5);
+		assertThat(request.getParameters().get("field1")).isEqualTo("value1");
+		assertThat(request.getParameters().get("field2")).isEqualTo(2);
+		assertThat(request.getParameters().get("field3")).isEqualTo(true);
+		assertThat(request.getParameters().get("field4")).isEqualTo("value4");
+		assertThat(request.getParameters().get("field5")).isEqualTo("value5");
 
-		assertThat(request.getContext(), equalTo(context));
-		assertThat(request.isAsyncAccepted(), equalTo(true));
+		assertThat(request.getContext()).isEqualTo(context);
+		assertThat(request.isAsyncAccepted()).isEqualTo(true);
 
-		assertThat(request.getPlatformInstanceId(), equalTo("platform-instance-id"));
-		assertThat(request.getApiInfoLocation(), equalTo("https://api.example.com"));
-		assertThat(request.getOriginatingIdentity(), equalTo(originatingIdentity));
+		assertThat(request.getPlatformInstanceId()).isEqualTo("platform-instance-id");
+		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.example.com");
+		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);
 	}
 
 	@Test
 	public void requestIsDeserializedFromJson() {
 		UpdateServiceInstanceRequest request =
-				DataFixture.readTestDataFile("updateRequest.json",
+				JsonUtils.readTestDataFile("updateRequest.json",
 						UpdateServiceInstanceRequest.class);
 
-		assertThat(request.getServiceDefinitionId(), equalTo("test-service-id"));
-		assertThat(request.getPlanId(), equalTo("test-plan-id"));
-		assertThat(request.getPreviousValues().getPlanId(), equalTo("previous-plan-id"));
+		assertThat(request.getServiceDefinitionId()).isEqualTo("test-service-id");
+		assertThat(request.getPlanId()).isEqualTo("test-plan-id");
+		assertThat(request.getPreviousValues().getPlanId()).isEqualTo("previous-plan-id");
 	}
 
 	@Test

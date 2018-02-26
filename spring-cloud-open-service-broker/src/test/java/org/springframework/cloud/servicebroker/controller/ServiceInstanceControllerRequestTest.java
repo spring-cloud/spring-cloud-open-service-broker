@@ -36,8 +36,7 @@ import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInsta
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ServiceInstanceControllerRequestTest extends ControllerRequestTest {
 
@@ -199,19 +198,19 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		@Override
 		public CreateServiceInstanceResponse createServiceInstance(CreateServiceInstanceRequest request) {
-			assertThat(request, equalTo(expectedRequest));
+			assertThat(request).isEqualTo(expectedRequest);
 			return null;
 		}
 
 		@Override
 		public GetServiceInstanceResponse getServiceInstance(GetServiceInstanceRequest request) {
-			assertThat(request, equalTo(expectedRequest));
+			assertThat(request).isEqualTo(expectedRequest);
 			return null;
 		}
 
 		@Override
 		public GetLastServiceOperationResponse getLastOperation(GetLastServiceOperationRequest request) {
-			assertThat(request, equalTo(expectedRequest));
+			assertThat(request).isEqualTo(expectedRequest);
 			return GetLastServiceOperationResponse.builder()
 					.operationState(OperationState.SUCCEEDED)
 					.build();
@@ -219,13 +218,13 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		@Override
 		public DeleteServiceInstanceResponse deleteServiceInstance(DeleteServiceInstanceRequest request) {
-			assertThat(request, equalTo(expectedRequest));
+			assertThat(request).isEqualTo(expectedRequest);
 			return null;
 		}
 
 		@Override
 		public UpdateServiceInstanceResponse updateServiceInstance(UpdateServiceInstanceRequest request) {
-			assertThat(request, equalTo(expectedRequest));
+			assertThat(request).isEqualTo(expectedRequest);
 			return null;
 		}
 	}

@@ -16,14 +16,12 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import com.jayway.jsonpath.DocumentContext;
 import org.junit.Test;
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class UpdateServiceInstanceResponseTest {
 	@Test
@@ -31,8 +29,12 @@ public class UpdateServiceInstanceResponseTest {
 		UpdateServiceInstanceResponse response = UpdateServiceInstanceResponse.builder()
 				.build();
 
-		assertThat(response.isAsync(), equalTo(false));
-		assertThat(response.getOperation(), nullValue());
+		assertThat(response.isAsync()).isEqualTo(false);
+		assertThat(response.getOperation()).isNull();
+
+		DocumentContext json = JsonUtils.toJsonPath(response);
+
+		assertThat(json).hasNoPath("$.operation");
 	}
 
 	@Test
@@ -42,20 +44,11 @@ public class UpdateServiceInstanceResponseTest {
 				.operation("in progress")
 				.build();
 
-		assertThat(response.isAsync(), equalTo(true));
-		assertThat(response.getOperation(), equalTo("in progress"));
-	}
+		assertThat(response.isAsync()).isEqualTo(true);
+		assertThat(response.getOperation()).isEqualTo("in progress");
 
-	@Test
-	public void responseIsSerializedToJson() {
-		UpdateServiceInstanceResponse response = UpdateServiceInstanceResponse.builder()
-				.operation("in progress")
-				.build();
+		DocumentContext json = JsonUtils.toJsonPath(response);
 
-		String json = DataFixture.toJson(response);
-
-		assertThat(json, isJson(
-				withJsonPath("$.operation", equalTo("in progress"))
-		));
+		assertThat(json).hasPath("$.operation").isEqualTo("in progress");
 	}
 }

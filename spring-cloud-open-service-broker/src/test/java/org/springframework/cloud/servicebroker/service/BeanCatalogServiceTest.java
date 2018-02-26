@@ -16,8 +16,7 @@
 
 package org.springframework.cloud.servicebroker.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
@@ -50,17 +49,17 @@ public class BeanCatalogServiceTest {
 
 	@Test
 	public void catalogIsReturnedSuccessfully() {
-		assertEquals(catalog, service.getCatalog());
+		assertThat(service.getCatalog()).isEqualTo(catalog);
 	}
 
 	@Test
 	public void serviceDefinitionIsFound() {
-		assertEquals(serviceDefinition, service.getServiceDefinition(SVC_DEF_ID));
+		assertThat(service.getServiceDefinition(SVC_DEF_ID)).isEqualTo(serviceDefinition);
 	}
 
 	@Test
 	public void serviceDefinitionIsNotFound() {
-		assertNull(service.getServiceDefinition("NOT_THERE"));
+		assertThat(service.getServiceDefinition("NOT_THERE")).isNull();
 	}
 
 }

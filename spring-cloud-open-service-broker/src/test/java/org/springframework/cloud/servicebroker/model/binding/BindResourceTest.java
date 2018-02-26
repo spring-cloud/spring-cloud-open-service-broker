@@ -18,15 +18,12 @@ package org.springframework.cloud.servicebroker.model.binding;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.aMapWithSize;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class BindResourceTest {
 	@Test
@@ -34,9 +31,9 @@ public class BindResourceTest {
 		BindResource bindResource = BindResource.builder()
 				.build();
 
-		assertThat(bindResource.getAppGuid(), nullValue());
-		assertThat(bindResource.getRoute(), nullValue());
-		assertThat(bindResource.getProperties(), aMapWithSize(0));
+		assertThat(bindResource.getAppGuid()).isNull();
+		assertThat(bindResource.getRoute()).isNull();
+		assertThat(bindResource.getProperties()).isEmpty();
 	}
 
 	@Test
@@ -55,25 +52,25 @@ public class BindResourceTest {
 				.parameters(parameters)
 				.build();
 
-		assertThat(bindResource.getAppGuid(), equalTo("app-guid"));
-		assertThat(bindResource.getRoute(), equalTo("route"));
-		assertThat(bindResource.getProperties(), aMapWithSize(4));
-		assertThat(bindResource.getProperties().get("parameter1"), equalTo("value1"));
-		assertThat(bindResource.getProperties().get("parameter2"), equalTo(2));
-		assertThat(bindResource.getProperties().get("parameter3"), equalTo("value3"));
-		assertThat(bindResource.getProperties().get("parameter4"), equalTo(true));
+		assertThat(bindResource.getAppGuid()).isEqualTo("app-guid");
+		assertThat(bindResource.getRoute()).isEqualTo("route");
+		assertThat(bindResource.getProperties()).hasSize(4);
+		assertThat(bindResource.getProperties().get("parameter1")).isEqualTo("value1");
+		assertThat(bindResource.getProperties().get("parameter2")).isEqualTo(2);
+		assertThat(bindResource.getProperties().get("parameter3")).isEqualTo("value3");
+		assertThat(bindResource.getProperties().get("parameter4")).isEqualTo(true);
 	}
 
 	@Test
 	public void bindResourceIsDeserializedFromJson() {
-		BindResource bindResource = DataFixture.readTestDataFile("bindResource.json", BindResource.class);
+		BindResource bindResource = JsonUtils.readTestDataFile("bindResource.json", BindResource.class);
 
-		assertThat(bindResource.getAppGuid(), equalTo("test-app-guid"));
-		assertThat(bindResource.getRoute(), equalTo("http://test.example.com"));
-		assertThat(bindResource.getProperties(), aMapWithSize(3));
-		assertThat(bindResource.getProperty("property1"), equalTo(1));
-		assertThat(bindResource.getProperty("property2"), equalTo("value2"));
-		assertThat(bindResource.getProperty("property3"), equalTo(true));
+		assertThat(bindResource.getAppGuid()).isEqualTo("test-app-guid");
+		assertThat(bindResource.getRoute()).isEqualTo("http://test.example.com");
+		assertThat(bindResource.getProperties()).hasSize(3);
+		assertThat(bindResource.getProperty("property1")).isEqualTo(1);
+		assertThat(bindResource.getProperty("property2")).isEqualTo("value2");
+		assertThat(bindResource.getProperty("property3")).isEqualTo(true);
 	}
 
 	@Test

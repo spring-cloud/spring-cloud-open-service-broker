@@ -18,6 +18,7 @@ package org.springframework.cloud.servicebroker.model.instance;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
@@ -29,6 +30,7 @@ import java.util.Objects;
  * @author Scott Frederick
  */
 @JsonAutoDetect
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetLastServiceOperationResponse {
 	/**
 	 * The current state of the asynchronous request.

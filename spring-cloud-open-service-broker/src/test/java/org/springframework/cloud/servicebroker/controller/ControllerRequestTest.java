@@ -23,7 +23,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 
 import java.util.Base64;
@@ -72,7 +72,7 @@ public abstract class ControllerRequestTest {
 
 	protected String encodeOriginatingIdentity(Context context) {
 		Map<String, Object> properties = context.getProperties();
-		String propertiesJson = DataFixture.toJson(properties);
+		String propertiesJson = JsonUtils.toJson(properties);
 
 		return context.getPlatform() +
 				" " +

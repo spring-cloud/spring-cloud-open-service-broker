@@ -40,9 +40,7 @@ import java.lang.reflect.Method;
 import java.util.Base64;
 import java.util.HashMap;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage.ASYNC_REQUIRED_ERROR;
 
 public class BaseControllerTest {
@@ -92,9 +90,9 @@ public class BaseControllerTest {
 
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.PRECONDITION_FAILED));
-		assertThat(responseEntity.getBody().getMessage(), containsString("expected version=expected-version"));
-		assertThat(responseEntity.getBody().getMessage(), containsString("provided version=actual-version"));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.PRECONDITION_FAILED);
+		assertThat(responseEntity.getBody().getMessage()).contains("expected version=expected-version");
+		assertThat(responseEntity.getBody().getMessage()).contains("provided version=actual-version");
 	}
 
 	@Test
@@ -104,8 +102,8 @@ public class BaseControllerTest {
 
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.UNPROCESSABLE_ENTITY));
-		assertThat(responseEntity.getBody().getMessage(), containsString("id=service-instance-id"));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(responseEntity.getBody().getMessage()).contains("id=service-instance-id");
 	}
 
 	@Test
@@ -115,8 +113,8 @@ public class BaseControllerTest {
 
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.UNPROCESSABLE_ENTITY));
-		assertThat(responseEntity.getBody().getMessage(), containsString("id=service-definition-id"));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(responseEntity.getBody().getMessage()).contains("id=service-definition-id");
 	}
 
 	@Test
@@ -126,9 +124,9 @@ public class BaseControllerTest {
 
 		ResponseEntity<AsyncRequiredErrorMessage> responseEntity = controller.handleException(exception);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.UNPROCESSABLE_ENTITY));
-		assertThat(responseEntity.getBody().getMessage(), containsString("test message"));
-		assertThat(responseEntity.getBody().getError(), equalTo(ASYNC_REQUIRED_ERROR));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(responseEntity.getBody().getMessage()).contains("test message");
+		assertThat(responseEntity.getBody().getError()).isEqualTo(ASYNC_REQUIRED_ERROR);
 	}
 
 	@Test
@@ -138,8 +136,8 @@ public class BaseControllerTest {
 
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.UNPROCESSABLE_ENTITY));
-		assertThat(responseEntity.getBody().getMessage(), containsString("test message"));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(responseEntity.getBody().getMessage()).contains("test message");
 	}
 
 	@Test
@@ -149,8 +147,8 @@ public class BaseControllerTest {
 
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.UNPROCESSABLE_ENTITY));
-		assertThat(responseEntity.getBody().getMessage(), containsString("test message"));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(responseEntity.getBody().getMessage()).contains("test message");
 	}
 
 	@Test
@@ -160,8 +158,8 @@ public class BaseControllerTest {
 
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.NOT_FOUND));
-		assertThat(responseEntity.getBody().getMessage(), containsString("still working"));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		assertThat(responseEntity.getBody().getMessage()).contains("still working");
 	}
 
 	@Test
@@ -170,8 +168,8 @@ public class BaseControllerTest {
 
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.INTERNAL_SERVER_ERROR));
-		assertThat(responseEntity.getBody().getMessage(), containsString("test message"));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+		assertThat(responseEntity.getBody().getMessage()).contains("test message");
 	}
 
 	@Test
@@ -188,9 +186,9 @@ public class BaseControllerTest {
 
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.UNPROCESSABLE_ENTITY));
-		assertThat(responseEntity.getBody().getMessage(), containsString("field1"));
-		assertThat(responseEntity.getBody().getMessage(), containsString("field2"));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(responseEntity.getBody().getMessage()).contains("field1");
+		assertThat(responseEntity.getBody().getMessage()).contains("field2");
 	}
 
 	private static class TestBaseController extends BaseController {

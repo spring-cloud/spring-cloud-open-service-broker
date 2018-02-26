@@ -22,9 +22,7 @@ import org.junit.Test;
 
 import org.springframework.cloud.servicebroker.model.Context;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GetServiceInstanceBindingRequestTest {
 	@Test
@@ -32,11 +30,11 @@ public class GetServiceInstanceBindingRequestTest {
 		GetServiceInstanceBindingRequest request = GetServiceInstanceBindingRequest.builder()
 				.build();
 
-		assertThat(request.getServiceInstanceId(), nullValue());
-		assertThat(request.getBindingId(), nullValue());
-		assertThat(request.getApiInfoLocation(), nullValue());
-		assertThat(request.getPlatformInstanceId(), nullValue());
-		assertThat(request.getOriginatingIdentity(), nullValue());
+		assertThat(request.getServiceInstanceId()).isNull();
+		assertThat(request.getBindingId()).isNull();
+		assertThat(request.getApiInfoLocation()).isNull();
+		assertThat(request.getPlatformInstanceId()).isNull();
+		assertThat(request.getOriginatingIdentity()).isNull();
 	}
 
 	@Test
@@ -53,12 +51,12 @@ public class GetServiceInstanceBindingRequestTest {
 				.originatingIdentity(originatingIdentity)
 				.build();
 
-		assertThat(request.getServiceInstanceId(), equalTo("service-instance-id"));
-		assertThat(request.getBindingId(), equalTo("binding-id"));
+		assertThat(request.getServiceInstanceId()).isEqualTo("service-instance-id");
+		assertThat(request.getBindingId()).isEqualTo("binding-id");
 
-		assertThat(request.getPlatformInstanceId(), equalTo("platform-instance-id"));
-		assertThat(request.getApiInfoLocation(), equalTo("https://api.example.com"));
-		assertThat(request.getOriginatingIdentity(), equalTo(originatingIdentity));
+		assertThat(request.getPlatformInstanceId()).isEqualTo("platform-instance-id");
+		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.example.com");
+		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);
 	}
 
 	@Test

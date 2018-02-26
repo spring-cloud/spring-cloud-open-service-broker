@@ -16,43 +16,36 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withoutJsonPath;
-import static org.hamcrest.Matchers.aMapWithSize;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
+
 
 public class GetServiceInstanceRouteBindingResponseTest {
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void responseWithDefaultsIsBuilt() {
 		GetServiceInstanceRouteBindingResponse response = GetServiceInstanceRouteBindingResponse.builder()
 				.build();
 
-		assertThat(response.getRouteServiceUrl(), nullValue());
+		assertThat(response.getRouteServiceUrl()).isNull();
 
-		String json = DataFixture.toJson(response);
+		DocumentContext json = JsonUtils.toJsonPath(response);
 
-		assertThat(json, isJson(allOf(
-				withoutJsonPath("$.parameters"),
-				withoutJsonPath("$.route_service_url")
-		)));
+		assertThat(json).hasNoPath("$.parameters");
+		assertThat(json).hasNoPath("$.route_service_url");
 	}
 
 	@Test
-	@SuppressWarnings({"unchecked", "serial"})
+	@SuppressWarnings("serial")
 	public void responseWithValuesIsBuilt() {
 		Map<String, Object> parameters = new HashMap<String, Object>() {{
 			put("field4", "value4");
@@ -67,26 +60,24 @@ public class GetServiceInstanceRouteBindingResponseTest {
 				.routeServiceUrl("https://routes.example.com")
 				.build();
 
-		assertThat(response.getParameters(), aMapWithSize(5));
-		assertThat(response.getParameters().get("field1"), equalTo("value1"));
-		assertThat(response.getParameters().get("field2"), equalTo(2));
-		assertThat(response.getParameters().get("field3"), equalTo(true));
-		assertThat(response.getParameters().get("field4"), equalTo("value4"));
-		assertThat(response.getParameters().get("field5"), equalTo("value5"));
+		assertThat(response.getParameters()).hasSize(5);
+		assertThat(response.getParameters().get("field1")).isEqualTo("value1");
+		assertThat(response.getParameters().get("field2")).isEqualTo(2);
+		assertThat(response.getParameters().get("field3")).isEqualTo(true);
+		assertThat(response.getParameters().get("field4")).isEqualTo("value4");
+		assertThat(response.getParameters().get("field5")).isEqualTo("value5");
 
-		assertThat(response.getRouteServiceUrl(), equalTo("https://routes.example.com"));
+		assertThat(response.getRouteServiceUrl()).isEqualTo("https://routes.example.com");
 
-		String json = DataFixture.toJson(response);
+		DocumentContext json = JsonUtils.toJsonPath(response);
 
-		assertThat(json, isJson(allOf(
-				withJsonPath("$.parameters", aMapWithSize(5)),
-				withJsonPath("$.parameters.field1", equalTo("value1")),
-				withJsonPath("$.parameters.field2", equalTo(2)),
-				withJsonPath("$.parameters.field3", equalTo(true)),
-				withJsonPath("$.parameters.field4", equalTo("value4")),
-				withJsonPath("$.parameters.field5", equalTo("value5")),
-				withJsonPath("$.route_service_url", equalTo("https://routes.example.com"))
-		)));
+		assertThat(json).hasPath("$.parameters.field1").isEqualTo("value1");
+		assertThat(json).hasPath("$.parameters.field2").isEqualTo(2);
+		assertThat(json).hasPath("$.parameters.field3").isEqualTo(true);
+		assertThat(json).hasPath("$.parameters.field4").isEqualTo("value4");
+		assertThat(json).hasPath("$.parameters.field5").isEqualTo("value5");
+
+		assertThat(json).hasPath("$.route_service_url").isEqualTo("https://routes.example.com");
 	}
 
 	@Test

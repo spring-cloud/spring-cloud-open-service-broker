@@ -20,19 +20,14 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.Context;
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.aMapWithSize;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.springframework.cloud.servicebroker.model.fixture.DataFixture.fromJson;
-import static org.springframework.cloud.servicebroker.model.fixture.DataFixture.toJson;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.JsonUtils.fromJson;
+import static org.springframework.cloud.servicebroker.JsonUtils.toJson;
 
 @SuppressWarnings({"deprecation", "DeprecatedIsStillUsed"})
 public class CreateServiceInstanceBindingRequestTest {
@@ -40,17 +35,17 @@ public class CreateServiceInstanceBindingRequestTest {
 	public void requestWithDefaultsIsBuilt() {
 		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder().build();
 
-		assertThat(request.getServiceDefinitionId(), nullValue());
-		assertThat(request.getServiceDefinition(), nullValue());
-		assertThat(request.getPlanId(), nullValue());
-		assertThat(request.getServiceInstanceId(), nullValue());
-		assertThat(request.getBindResource(), nullValue());
-		assertThat(request.getContext(), nullValue());
-		assertThat(request.getBindingId(), nullValue());
-		assertThat(request.getParameters(), aMapWithSize(0));
-		assertThat(request.getApiInfoLocation(), nullValue());
-		assertThat(request.getPlatformInstanceId(), nullValue());
-		assertThat(request.getOriginatingIdentity(), nullValue());
+		assertThat(request.getServiceDefinitionId()).isNull();
+		assertThat(request.getServiceDefinition()).isNull();
+		assertThat(request.getPlanId()).isNull();
+		assertThat(request.getServiceInstanceId()).isNull();
+		assertThat(request.getBindResource()).isNull();
+		assertThat(request.getContext()).isNull();
+		assertThat(request.getBindingId()).isNull();
+		assertThat(request.getParameters()).hasSize(0);
+		assertThat(request.getApiInfoLocation()).isNull();
+		assertThat(request.getPlatformInstanceId()).isNull();
+		assertThat(request.getOriginatingIdentity()).isNull();
 	}
 
 	@Test
@@ -81,52 +76,52 @@ public class CreateServiceInstanceBindingRequestTest {
 				.originatingIdentity(originatingIdentity)
 				.build();
 
-		assertThat(request.getServiceDefinitionId(), equalTo("service-definition-id"));
-		assertThat(request.getServiceDefinition(), nullValue());
-		assertThat(request.getPlanId(), equalTo("plan-id"));
+		assertThat(request.getServiceDefinitionId()).isEqualTo("service-definition-id");
+		assertThat(request.getServiceDefinition()).isNull();
+		assertThat(request.getPlanId()).isEqualTo("plan-id");
 
-		assertThat(request.getParameters(), aMapWithSize(5));
-		assertThat(request.getParameters().get("field1"), equalTo("value1"));
-		assertThat(request.getParameters().get("field2"), equalTo(2));
-		assertThat(request.getParameters().get("field3"), equalTo(true));
-		assertThat(request.getParameters().get("field4"), equalTo("value4"));
-		assertThat(request.getParameters().get("field5"), equalTo("value5"));
+		assertThat(request.getParameters()).hasSize(5);
+		assertThat(request.getParameters().get("field1")).isEqualTo("value1");
+		assertThat(request.getParameters().get("field2")).isEqualTo(2);
+		assertThat(request.getParameters().get("field3")).isEqualTo(true);
+		assertThat(request.getParameters().get("field4")).isEqualTo("value4");
+		assertThat(request.getParameters().get("field5")).isEqualTo("value5");
 
 		Parameters boundParameters = request.getParameters(Parameters.class);
-		assertThat(boundParameters.getField1(), equalTo("value1"));
-		assertThat(boundParameters.getField2(), equalTo(2));
-		assertThat(boundParameters.getField3(), equalTo(true));
+		assertThat(boundParameters.getField1()).isEqualTo("value1");
+		assertThat(boundParameters.getField2()).isEqualTo(2);
+		assertThat(boundParameters.getField3()).isEqualTo(true);
 
-		assertThat(request.getBindResource(), equalTo(bindResource));
+		assertThat(request.getBindResource()).isEqualTo(bindResource);
 
-		assertThat(request.getContext(), equalTo(context));
+		assertThat(request.getContext()).isEqualTo(context);
 
-		assertThat(request.getPlatformInstanceId(), equalTo("platform-instance-id"));
-		assertThat(request.getApiInfoLocation(), equalTo("https://api.example.com"));
-		assertThat(request.getOriginatingIdentity(), equalTo(originatingIdentity));
+		assertThat(request.getPlatformInstanceId()).isEqualTo("platform-instance-id");
+		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.example.com");
+		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);
 	}
 
 	@Test
 	public void requestIsDeserializedFromJson() {
 		CreateServiceInstanceBindingRequest request =
-				DataFixture.readTestDataFile("bindRequest.json", CreateServiceInstanceBindingRequest.class);
+				JsonUtils.readTestDataFile("bindRequest.json", CreateServiceInstanceBindingRequest.class);
 
-		assertEquals("test-service-id", request.getServiceDefinitionId());
-		assertEquals("test-plan-id", request.getPlanId());
-		assertEquals("test-app-guid", request.getAppGuid());
+		assertThat(request.getServiceDefinitionId()).isEqualTo("test-service-id");
+		assertThat(request.getPlanId()).isEqualTo("test-plan-id");
+		assertThat(request.getAppGuid()).isEqualTo("test-app-guid");
 
 		Context context = request.getContext();
-		assertEquals("sample-platform", context.getPlatform());
-		assertThat(context, instanceOf(Context.class));
-		assertEquals("data", context.getProperty("field1"));
-		assertEquals(2, context.getProperty("field2"));
+		assertThat(context.getPlatform()).isEqualTo("sample-platform");
+		assertThat(context).isInstanceOf(Context.class);
+		assertThat(context.getProperty("field1")).isEqualTo("data");
+		assertThat(context.getProperty("field2")).isEqualTo(2);
 
-		assertEquals("data", request.getBindResource().getProperty("field1"));
-		assertEquals(2, request.getBindResource().getProperty("field2"));
+		assertThat(request.getBindResource().getProperty("field1")).isEqualTo("data");
+		assertThat(request.getBindResource().getProperty("field2")).isEqualTo(2);
 
-		assertEquals(1, request.getParameters().get("parameter1"));
-		assertEquals("foo", request.getParameters().get("parameter2"));
-		assertThat(request.getParameters().get("parameter3"), equalTo(true));
+		assertThat(request.getParameters().get("parameter1")).isEqualTo(1);
+		assertThat(request.getParameters().get("parameter2")).isEqualTo("foo");
+		assertThat(request.getParameters().get("parameter3")).isEqualTo(true);
 	}
 
 	@Test
@@ -152,7 +147,7 @@ public class CreateServiceInstanceBindingRequestTest {
 		CreateServiceInstanceBindingRequest fromJson =
 				fromJson(toJson(request), CreateServiceInstanceBindingRequest.class);
 		
-		assertEquals(request, fromJson);
+		assertThat(fromJson).isEqualTo(request);
 	}
 
 	@Test

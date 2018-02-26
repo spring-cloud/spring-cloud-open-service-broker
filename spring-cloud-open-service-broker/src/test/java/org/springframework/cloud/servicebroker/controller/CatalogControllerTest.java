@@ -24,8 +24,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -49,6 +48,6 @@ public class CatalogControllerTest {
 
 		Catalog actualCatalog = controller.getCatalog();
 
-		assertThat(actualCatalog, equalTo(expectedCatalog));
+		assertThat(actualCatalog).isEqualTo(expectedCatalog);
 	}
 }

@@ -16,52 +16,42 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withoutJsonPath;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class CreateServiceInstanceRouteBindingResponseTest {
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void responseWithDefaultsIsBuilt() {
 		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
 				.build();
 
-		assertThat(response.isBindingExisted(), equalTo(false));
-		assertThat(response.getRouteServiceUrl(), nullValue());
+		assertThat(response.isBindingExisted()).isEqualTo(false);
+		assertThat(response.getRouteServiceUrl()).isNull();
 
-		String json = DataFixture.toJson(response);
+		DocumentContext json = JsonUtils.toJsonPath(response);
 
-		assertThat(json, isJson(allOf(
-				withoutJsonPath("$.route_service_url")
-		)));
+		assertThat(json).hasNoPath("$.route_service_url");
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void responseWithValuesIsBuilt() {
 		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
 				.bindingExisted(true)
 				.routeServiceUrl("https://routes.example.com")
 				.build();
 
-		assertThat(response.isBindingExisted(), equalTo(true));
-		assertThat(response.getRouteServiceUrl(), equalTo("https://routes.example.com"));
+		assertThat(response.isBindingExisted()).isEqualTo(true);
+		assertThat(response.getRouteServiceUrl()).isEqualTo("https://routes.example.com");
 
-		String json = DataFixture.toJson(response);
+		DocumentContext json = JsonUtils.toJsonPath(response);
 
-		assertThat(json, isJson(allOf(
-				withJsonPath("$.route_service_url", equalTo("https://routes.example.com"))
-		)));
+		assertThat(json).hasPath("$.route_service_url").isEqualTo("https://routes.example.com");
 	}
 
 	@Test

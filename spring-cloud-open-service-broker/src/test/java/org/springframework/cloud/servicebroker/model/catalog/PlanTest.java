@@ -16,28 +16,21 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withoutJsonPath;
-import static org.hamcrest.Matchers.aMapWithSize;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.MapEntry.entry;
+import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class PlanTest {
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void planWithDefaultsIsSerializedToJson() {
 		Plan plan = Plan.builder()
 				.id("plan-id-one")
@@ -45,29 +38,27 @@ public class PlanTest {
 				.description("Plan One")
 				.build();
 
-		assertThat(plan.getId(), equalTo("plan-id-one"));
-		assertThat(plan.getName(), equalTo("plan-one"));
-		assertThat(plan.getDescription(), equalTo("Plan One"));
-		assertThat(plan.isFree(), equalTo(true));
-		assertThat(plan.isBindable(), nullValue());
-		assertThat(plan.getMetadata(), nullValue());
-		assertThat(plan.getSchemas(), nullValue());
+		assertThat(plan.getId()).isEqualTo("plan-id-one");
+		assertThat(plan.getName()).isEqualTo("plan-one");
+		assertThat(plan.getDescription()).isEqualTo("Plan One");
+		assertThat(plan.isFree()).isEqualTo(true);
+		assertThat(plan.isBindable()).isNull();
+		assertThat(plan.getMetadata()).isNull();
+		assertThat(plan.getSchemas()).isNull();
 
-		String json = DataFixture.toJson(plan);
+		DocumentContext json = JsonUtils.toJsonPath(plan);
 
-		assertThat(json, isJson(allOf(
-				withJsonPath("$.id", equalTo("plan-id-one")),
-				withJsonPath("$.name", equalTo("plan-one")),
-				withJsonPath("$.description", equalTo("Plan One")),
-				withJsonPath("$.free", equalTo(true)),
-				withoutJsonPath("$.bindable"),
-				withoutJsonPath("$.metadata"),
-				withoutJsonPath("$.schemas")
-		)));
+		assertThat(json).hasPath("$.id").isEqualTo("plan-id-one");
+		assertThat(json).hasPath("$.name").isEqualTo("plan-one");
+		assertThat(json).hasPath("$.description").isEqualTo("Plan One");
+		assertThat(json).hasPath("$.free").isEqualTo(true);
+		assertThat(json).hasNoPath("$.bindable");
+		assertThat(json).hasNoPath("$.metadata");
+		assertThat(json).hasNoPath("$.schemas");
 	}
 
 	@Test
-	@SuppressWarnings({"unchecked", "serial"})
+	@SuppressWarnings("serial")
 	public void planWithAllFieldsIsSerializedToJson() {
 		Map<String, Object> metadata = new HashMap<String, Object>() {{
 			put("field3", "value3");
@@ -86,35 +77,34 @@ public class PlanTest {
 				.schemas(Schemas.builder().build())
 				.build();
 
-		assertThat(plan.getId(), equalTo("plan-id-one"));
-		assertThat(plan.getName(), equalTo("plan-one"));
-		assertThat(plan.getDescription(), equalTo("Plan One"));
-		assertThat(plan.isFree(), equalTo(false));
-		assertThat(plan.isBindable(), equalTo(true));
-		assertThat(plan.getMetadata(), aMapWithSize(4));
-		assertThat(plan.getMetadata(), allOf(
-				hasEntry("field1", "value1"),
-				hasEntry("field2", "value2"),
-				hasEntry("field3", "value3"),
-				hasEntry("field4", "value4")));
-		assertThat(plan.getSchemas(), notNullValue());
+		assertThat(plan.getId()).isEqualTo("plan-id-one");
+		assertThat(plan.getName()).isEqualTo("plan-one");
+		assertThat(plan.getDescription()).isEqualTo("Plan One");
+		assertThat(plan.isFree()).isEqualTo(false);
+		assertThat(plan.isBindable()).isEqualTo(true);
+		assertThat(plan.getMetadata()).hasSize(4);
+		assertThat(plan.getMetadata()).contains(
+				entry("field1", "value1"),
+				entry("field2", "value2"),
+				entry("field3", "value3"),
+				entry("field4", "value4")
+		);
+		assertThat(plan.getSchemas()).isNotNull();
 
-		String json = DataFixture.toJson(plan);
+		DocumentContext json = JsonUtils.toJsonPath(plan);
 
-		assertThat(json, isJson(allOf(
-				withJsonPath("$.id", equalTo("plan-id-one")),
-				withJsonPath("$.name", equalTo("plan-one")),
-				withJsonPath("$.description", equalTo("Plan One")),
-				withJsonPath("$.free", equalTo(false)),
-				withJsonPath("$.bindable", equalTo(true)),
-				withJsonPath("$.metadata", aMapWithSize(4)),
-				withJsonPath("$.metadata",
-						allOf(hasEntry("field1", "value1"),
-								hasEntry("field2", "value2"),
-								hasEntry("field3", "value3"),
-								hasEntry("field4", "value4"))),
-				withJsonPath("$.schemas")
-		)));
+		assertThat(json).hasPath("$.id").isEqualTo("plan-id-one");
+		assertThat(json).hasPath("$.name").isEqualTo("plan-one");
+		assertThat(json).hasPath("$.description").isEqualTo("Plan One");
+		assertThat(json).hasPath("$.free").isEqualTo(false);
+		assertThat(json).hasPath("$.bindable").isEqualTo(true);
+		assertThat(json).hasMapAtPath("$.metadata").contains(
+				entry("field1", "value1"),
+				entry("field2", "value2"),
+				entry("field3", "value3"),
+				entry("field4", "value4")
+		);
+		assertThat(json).hasPath("$.schemas");
 	}
 
 	@Test

@@ -43,9 +43,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
@@ -120,8 +118,8 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 				.createServiceInstanceBinding(pathVariables, null, null, null, null,
 						createRequest);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(data.expectedStatus));
-		assertThat(responseEntity.getBody(), equalTo(data.response));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
+		assertThat(responseEntity.getBody()).isEqualTo(data.response);
 	}
 
 	@Theory
@@ -132,8 +130,8 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		ResponseEntity<GetServiceInstanceBindingResponse> responseEntity = controller
 				.getServiceInstanceBinding(pathVariables, null, null, null, null);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(data.expectedStatus));
-		assertThat(responseEntity.getBody(), equalTo(data.response));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
+		assertThat(responseEntity.getBody()).isEqualTo(data.response);
 	}
 
 	@Test
@@ -141,8 +139,8 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		ResponseEntity<String> responseEntity = controller
 				.deleteServiceInstanceBinding(pathVariables, null, null, null, null, null, null);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.OK));
-		assertThat(responseEntity.getBody(), equalTo("{}"));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(responseEntity.getBody()).isEqualTo("{}");
 
 		verify(bindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 	}
@@ -155,8 +153,8 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		ResponseEntity<String> responseEntity = controller
 				.deleteServiceInstanceBinding(pathVariables, null, null, null, null, null, null);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.GONE));
-		assertThat(responseEntity.getBody(), equalTo("{}"));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
+		assertThat(responseEntity.getBody()).isEqualTo("{}");
 	}
 
 	@Test
@@ -164,9 +162,10 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		ResponseEntity<ErrorMessage> responseEntity = controller
 				.handleException(new ServiceInstanceBindingExistsException("service-instance-id", "binding-id"));
 
-		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.CONFLICT));
-		assertThat(responseEntity.getBody().getMessage(), containsString("serviceInstanceId=service-instance-id"));
-		assertThat(responseEntity.getBody().getMessage(), containsString("bindingId=binding-id"));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+		assertThat(responseEntity.getBody().getMessage())
+				.contains("serviceInstanceId=service-instance-id")
+				.contains("bindingId=binding-id");
 	}
 
 	public static class CreateResponseAndExpectedStatus {

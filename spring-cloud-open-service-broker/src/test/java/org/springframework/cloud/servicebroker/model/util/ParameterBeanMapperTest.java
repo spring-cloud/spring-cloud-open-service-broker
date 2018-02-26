@@ -21,9 +21,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ParameterBeanMapperTest {
 	@Test
@@ -37,10 +35,10 @@ public class ParameterBeanMapperTest {
 		}};
 		TestBean testBean = ParameterBeanMapper.mapParametersToBean(parameters, TestBean.class);
 
-		assertThat(testBean.getStringProperty(), equalTo("value1"));
-		assertThat(testBean.getIntProperty(), equalTo(2));
-		assertThat(testBean.getUnusedProperty(), nullValue());
-		assertThat(testBean.getNestedBean().getBooleanProperty(), equalTo(true));
+		assertThat(testBean.getStringProperty()).isEqualTo("value1");
+		assertThat(testBean.getIntProperty()).isEqualTo(2);
+		assertThat(testBean.getUnusedProperty()).isNull();
+		assertThat(testBean.getNestedBean().getBooleanProperty()).isEqualTo(true);
 	}
 
 	@SuppressWarnings("unused")

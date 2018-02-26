@@ -49,9 +49,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -224,8 +222,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 				.createServiceInstance(pathVariables, null, false, null, null,
 						createRequest);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(data.expectedStatus));
-		assertThat(responseEntity.getBody(), equalTo(data.response));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
+		assertThat(responseEntity.getBody()).isEqualTo(data.response);
 	}
 
 	@Theory
@@ -236,8 +234,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 		ResponseEntity<GetServiceInstanceResponse> responseEntity = controller
 				.getServiceInstance(pathVariables, null, null, null);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(data.expectedStatus));
-		assertThat(responseEntity.getBody(), equalTo(data.response));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
+		assertThat(responseEntity.getBody()).isEqualTo(data.response);
 	}
 
 	@Theory
@@ -248,8 +246,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 		ResponseEntity<DeleteServiceInstanceResponse> responseEntity = controller
 				.deleteServiceInstance(pathVariables, null, "service-definition-id", null, false, null, null);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(data.expectedStatus));
-		assertThat(responseEntity.getBody(), equalTo(data.response));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
+		assertThat(responseEntity.getBody()).isEqualTo(data.response);
 	}
 
 	@Test
@@ -260,8 +258,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 		ResponseEntity<DeleteServiceInstanceResponse> responseEntity = controller
 				.deleteServiceInstance(pathVariables, null, "service-definition-id", null, false, null, null);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.GONE));
-		assertThat(responseEntity.getBody(), equalTo(DeleteServiceInstanceResponse.builder().build()));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
+		assertThat(responseEntity.getBody()).isEqualTo(DeleteServiceInstanceResponse.builder().build());
 	}
 
 	@Theory
@@ -277,8 +275,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 				.updateServiceInstance(pathVariables, null, false, null, null,
 						updateRequest);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(data.expectedStatus));
-		assertThat(responseEntity.getBody(), equalTo(data.response));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
+		assertThat(responseEntity.getBody()).isEqualTo(data.response);
 	}
 
 	@Theory
@@ -289,8 +287,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 		ResponseEntity<GetLastServiceOperationResponse> responseEntity = controller
 				.getServiceInstanceLastOperation(pathVariables, null, null, null, null, null, null);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(data.expectedStatus));
-		assertThat(responseEntity.getBody(), equalTo(data.response));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
+		assertThat(responseEntity.getBody()).isEqualTo(data.response);
 	}
 
 	@Test
@@ -300,9 +298,9 @@ public class ServiceInstanceControllerResponseCodeTest {
 
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.CONFLICT));
-		assertThat(responseEntity.getBody().getMessage(), containsString("serviceInstanceId=service-instance-id"));
-		assertThat(responseEntity.getBody().getMessage(), containsString("serviceDefinitionId=service-definition-id"));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+		assertThat(responseEntity.getBody().getMessage()).contains("serviceInstanceId=service-instance-id");
+		assertThat(responseEntity.getBody().getMessage()).contains("serviceDefinitionId=service-definition-id");
 	}
 
 	@Test
@@ -312,8 +310,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
-		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.UNPROCESSABLE_ENTITY));
-		assertThat(responseEntity.getBody().getMessage(), containsString("test exception"));
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(responseEntity.getBody().getMessage()).contains("test exception");
 	}
 
 	public static class AsyncResponseAndExpectedStatus<T extends AsyncServiceInstanceResponse> {

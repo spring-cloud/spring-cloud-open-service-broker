@@ -44,7 +44,7 @@ import org.springframework.cloud.servicebroker.model.instance.GetServiceInstance
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -91,12 +91,12 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.setMessageConverters(new MappingJackson2HttpMessageConverter())
 				.build();
 
-		createRequestBody = DataFixture.toJson(CreateServiceInstanceRequest.builder()
+		createRequestBody = JsonUtils.toJson(CreateServiceInstanceRequest.builder()
 				.serviceDefinitionId(serviceDefinition.getId())
 				.planId("standard")
 				.build());
 
-		updateRequestBody = DataFixture.toJson(UpdateServiceInstanceRequest.builder()
+		updateRequestBody = JsonUtils.toJson(UpdateServiceInstanceRequest.builder()
 				.serviceDefinitionId(serviceDefinition.getId())
 				.build());
 	}

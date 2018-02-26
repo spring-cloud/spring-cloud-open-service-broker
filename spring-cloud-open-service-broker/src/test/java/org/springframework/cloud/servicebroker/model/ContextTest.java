@@ -23,10 +23,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.aMapWithSize;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ContextTest {
 	@Test
@@ -34,8 +31,8 @@ public class ContextTest {
 		Context context = Context.builder()
 				.build();
 
-		assertThat(context.getPlatform(), nullValue());
-		assertThat(context.getProperties(), aMapWithSize(0));
+		assertThat(context.getPlatform()).isNull();
+		assertThat(context.getProperties()).hasSize(0);
 	}
 
 	@Test
@@ -53,12 +50,12 @@ public class ContextTest {
 				.properties(properties)
 				.build();
 
-		assertThat(context.getPlatform(), equalTo("test-platform"));
-		assertThat(context.getProperties(), aMapWithSize(4));
-		assertThat(context.getProperty("property1"), equalTo(1));
-		assertThat(context.getProperty("property2"), equalTo("value2"));
-		assertThat(context.getProperty("property3"), equalTo("value3"));
-		assertThat(context.getProperty("property4"), equalTo(true));
+		assertThat(context.getPlatform()).isEqualTo("test-platform");
+		assertThat(context.getProperties()).hasSize(4);
+		assertThat(context.getProperty("property1")).isEqualTo(1);
+		assertThat(context.getProperty("property2")).isEqualTo("value2");
+		assertThat(context.getProperty("property3")).isEqualTo("value3");
+		assertThat(context.getProperty("property4")).isEqualTo(true);
 	}
 
 	@Test

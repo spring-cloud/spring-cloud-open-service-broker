@@ -16,35 +16,30 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withoutJsonPath;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.MapEntry.entry;
+import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class SchemasTest {
 	@Test
 	public void noSchemasIsSerializedToJson() {
 		Schemas schemas = Schemas.builder().build();
-		String json = DataFixture.toJson(schemas);
 
-		assertThat(json, isJson(allOf(
-				withoutJsonPath("$.service_instance"),
-				withoutJsonPath("$.service_binding")
-		)));
+		assertThat(schemas.getServiceInstanceSchema()).isNull();
+		assertThat(schemas.getServiceBindingSchema()).isNull();
 
-		assertThat(schemas.getServiceInstanceSchema(), nullValue());
-		assertThat(schemas.getServiceBindingSchema(), nullValue());
+		DocumentContext json = JsonUtils.toJsonPath(schemas);
+
+		assertThat(json).hasNoPath("$.service_instance");
+		assertThat(json).hasNoPath("$.service_binding");
 	}
 	
 	@Test
@@ -54,19 +49,17 @@ public class SchemasTest {
 				.serviceBindingSchema(ServiceBindingSchema.builder().build())
 				.build();
 
-		assertThat(schemas.getServiceInstanceSchema().getCreateMethodSchema(), nullValue());
-		assertThat(schemas.getServiceInstanceSchema().getUpdateMethodSchema(), nullValue());
-		assertThat(schemas.getServiceBindingSchema().getCreateMethodSchema(), nullValue());
+		assertThat(schemas.getServiceInstanceSchema().getCreateMethodSchema()).isNull();
+		assertThat(schemas.getServiceInstanceSchema().getUpdateMethodSchema()).isNull();
+		assertThat(schemas.getServiceBindingSchema().getCreateMethodSchema()).isNull();
 
-		String json = DataFixture.toJson(schemas);
+		DocumentContext json = JsonUtils.toJsonPath(schemas);
 
-		assertThat(json, isJson(allOf(
-				withJsonPath("$.service_instance"),
-				withoutJsonPath("$.service_instance.create"),
-				withoutJsonPath("$.service_instance.update"),
-				withJsonPath("$.service_binding"),
-				withoutJsonPath("$.service_binding.create")
-		)));
+		assertThat(json).hasPath("$.service_instance");
+		assertThat(json).hasNoPath("$.service_instance.create");
+		assertThat(json).hasNoPath("$.service_instance.update");
+		assertThat(json).hasPath("$.service_binding");
+		assertThat(json).hasNoPath("$.service_binding.create");
 	}
 
 	@Test
@@ -102,41 +95,39 @@ public class SchemasTest {
 				.build();
 
 		assertThat(schemas.getServiceInstanceSchema().getCreateMethodSchema().getParameters()
-				.get("$schema"), equalTo("http://example.com/service/create/schema"));
+				.get("$schema")).isEqualTo("http://example.com/service/create/schema");
 		assertThat(schemas.getServiceInstanceSchema().getCreateMethodSchema().getParameters()
-				.get("type"), equalTo("object"));
+				.get("type")).isEqualTo("object");
 
 		assertThat(schemas.getServiceInstanceSchema().getUpdateMethodSchema().getParameters()
-				.get("$schema"), equalTo("http://example.com/service/update/schema"));
+				.get("$schema")).isEqualTo("http://example.com/service/update/schema");
 		assertThat(schemas.getServiceInstanceSchema().getUpdateMethodSchema().getParameters()
-				.get("type"), equalTo("object"));
+				.get("type")).isEqualTo("object");
 
 		assertThat(schemas.getServiceBindingSchema().getCreateMethodSchema().getParameters()
-				.get("$schema"), equalTo("http://example.com/binding/create/schema"));
+				.get("$schema")).isEqualTo("http://example.com/binding/create/schema");
 		assertThat(schemas.getServiceBindingSchema().getCreateMethodSchema().getParameters()
-				.get("type"), equalTo("object"));
+				.get("type")).isEqualTo("object");
 
-		String json = DataFixture.toJson(schemas);
+		DocumentContext json = JsonUtils.toJsonPath(schemas);
 
-		assertThat(json, isJson(allOf(
-				withJsonPath("$.service_instance.create.parameters.$schema",
-						equalTo("http://example.com/service/create/schema")),
-				withJsonPath("$.service_instance.create.parameters.type",
-						equalTo("object")),
-				withJsonPath("$.service_instance.create.parameters.properties.billing-account.description",
-						equalTo("Billing account number.")),
-				withJsonPath("$.service_instance.create.parameters.properties.billing-account.type",
-						equalTo("string")),
+		assertThat(json).hasPath("$.service_instance.create.parameters.$schema")
+						.isEqualTo("http://example.com/service/create/schema");
+		assertThat(json).hasPath("$.service_instance.create.parameters.type")
+						.isEqualTo("object");
+		assertThat(json).hasPath("$.service_instance.create.parameters.properties.billing-account.description")
+						.isEqualTo("Billing account number.");
+		assertThat(json).hasPath("$.service_instance.create.parameters.properties.billing-account.type")
+						.isEqualTo("string");
 
-				withJsonPath("$.service_instance.update.parameters", allOf(
-						hasEntry("$schema", "http://example.com/service/update/schema"),
-						hasEntry("type", "object")
-				)),
-				withJsonPath("$.service_binding.create.parameters", allOf(
-						hasEntry("$schema", "http://example.com/binding/create/schema"),
-						hasEntry("type", "object")
-				))
-		)));
+		assertThat(json).hasMapAtPath("$.service_instance.update.parameters").contains(
+						entry("$schema", "http://example.com/service/update/schema"),
+						entry("type", "object")
+		);
+		assertThat(json).hasMapAtPath("$.service_binding.create.parameters").contains(
+						entry("$schema", "http://example.com/binding/create/schema"),
+						entry("type", "object")
+		);
 	}
 
 	@Test

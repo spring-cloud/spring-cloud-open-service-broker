@@ -19,7 +19,7 @@ package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 import org.junit.Before;
 
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIntegrationTest {
@@ -36,7 +36,7 @@ public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIn
 				.planId("standard")
 				.build();
 
-		createRequestBody = DataFixture.toJson(request);
+		createRequestBody = JsonUtils.toJson(request);
 	}
 
 	protected String buildCreateUrl() {

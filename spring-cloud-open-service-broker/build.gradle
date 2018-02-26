@@ -35,12 +35,10 @@ dependencies {
 	testCompile("org.springframework:spring-test") {
 		exclude group:"commons-logging", module:"commons-logging"
 	}
-	testCompile("junit:junit:4.12") {
-		exclude group:"org.hamcrest", module:"hamcrest-core"
-	}
-	testCompile("org.hamcrest:java-hamcrest:2.0.0.0")
+	testCompile("junit:junit:4.12")
+	testCompile("org.assertj:assertj-core:3.9.0")
 	testCompile("org.mockito:mockito-core:2.12.0")
-	testCompile("com.jayway.jsonpath:json-path-assert:2.4.0")
+	testCompile("com.jayway.jsonpath:json-path:2.4.0")
 	testCompile("nl.jqno.equalsverifier:equalsverifier:2.4.1")
 }
 

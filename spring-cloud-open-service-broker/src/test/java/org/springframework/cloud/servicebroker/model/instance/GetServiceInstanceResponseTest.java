@@ -16,21 +16,17 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static org.hamcrest.Matchers.aMapWithSize;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class GetServiceInstanceResponseTest {
 	@Test
@@ -38,10 +34,17 @@ public class GetServiceInstanceResponseTest {
 		GetServiceInstanceResponse response = GetServiceInstanceResponse.builder()
 				.build();
 
-		assertThat(response.getServiceDefinitionId(), nullValue());
-		assertThat(response.getPlanId(), nullValue());
-		assertThat(response.getDashboardUrl(), nullValue());
-		assertThat(response.getParameters(), aMapWithSize(0));
+		assertThat(response.getServiceDefinitionId()).isNull();
+		assertThat(response.getPlanId()).isNull();
+		assertThat(response.getDashboardUrl()).isNull();
+		assertThat(response.getParameters()).hasSize(0);
+
+		DocumentContext json = JsonUtils.toJsonPath(response);
+
+		assertThat(json).hasNoPath("$.service_id");
+		assertThat(json).hasNoPath("$.plan_id");
+		assertThat(json).hasNoPath("$.dashboard_url");
+		assertThat(json).hasMapAtPath("$.parameters").hasSize(0);
 	}
 
 	@Test
@@ -62,38 +65,27 @@ public class GetServiceInstanceResponseTest {
 				.parameters(parameters)
 				.build();
 
-		assertThat(response.getServiceDefinitionId(), equalTo("service-definition-id"));
-		assertThat(response.getPlanId(), equalTo("plan-id"));
-		assertThat(response.getDashboardUrl(), equalTo("https://dashboard.example.com"));
+		assertThat(response.getServiceDefinitionId()).isEqualTo("service-definition-id");
+		assertThat(response.getPlanId()).isEqualTo("plan-id");
+		assertThat(response.getDashboardUrl()).isEqualTo("https://dashboard.example.com");
 
-		assertThat(response.getParameters(), aMapWithSize(5));
-		assertThat(response.getParameters().get("field1"), equalTo("value1"));
-		assertThat(response.getParameters().get("field2"), equalTo(2));
-		assertThat(response.getParameters().get("field3"), equalTo(true));
-		assertThat(response.getParameters().get("field4"), equalTo("value4"));
-		assertThat(response.getParameters().get("field5"), equalTo("value5"));
-	}
+		assertThat(response.getParameters()).hasSize(5);
+		assertThat(response.getParameters().get("field1")).isEqualTo("value1");
+		assertThat(response.getParameters().get("field2")).isEqualTo(2);
+		assertThat(response.getParameters().get("field3")).isEqualTo(true);
+		assertThat(response.getParameters().get("field4")).isEqualTo("value4");
+		assertThat(response.getParameters().get("field5")).isEqualTo("value5");
 
-	@Test
-	@SuppressWarnings("unchecked")
-	public void responseIsSerializedToJson() {
-		GetServiceInstanceResponse response = GetServiceInstanceResponse.builder()
-				.serviceDefinitionId("service-definition-id")
-				.planId("plan-id")
-				.dashboardUrl("http://dashboard.example.com")
-				.parameters("field1", "value1")
-				.parameters("field2", 2)
-				.parameters("field3", true)
-				.build();
+		DocumentContext json = JsonUtils.toJsonPath(response);
 
-		String json = DataFixture.toJson(response);
-
-		assertThat(json, isJson(Matchers.allOf(
-				withJsonPath("$.service_id", equalTo("service-definition-id")),
-				withJsonPath("$.plan_id", equalTo("plan-id")),
-				withJsonPath("$.dashboard_url", equalTo("http://dashboard.example.com")),
-				withJsonPath("$.parameters", aMapWithSize(3))
-		)));
+		assertThat(json).hasPath("$.service_id").isEqualTo("service-definition-id");
+		assertThat(json).hasPath("$.plan_id").isEqualTo("plan-id");
+		assertThat(json).hasPath("$.dashboard_url").isEqualTo("https://dashboard.example.com");
+		assertThat(json).hasPath("$.parameters.field1").isEqualTo("value1");
+		assertThat(json).hasPath("$.parameters.field2").isEqualTo(2);
+		assertThat(json).hasPath("$.parameters.field3").isEqualTo(true);
+		assertThat(json).hasPath("$.parameters.field4").isEqualTo("value4");
+		assertThat(json).hasPath("$.parameters.field5").isEqualTo("value5");
 	}
 
 	@Test

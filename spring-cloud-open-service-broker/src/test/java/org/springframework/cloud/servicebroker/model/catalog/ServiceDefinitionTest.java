@@ -19,30 +19,21 @@ package org.springframework.cloud.servicebroker.model.catalog;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withoutJsonPath;
-import static org.hamcrest.Matchers.aMapWithSize;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.MapEntry.entry;
+import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_ROUTE_FORWARDING;
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_SYSLOG_DRAIN;
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_VOLUME_MOUNT;
 
 public class ServiceDefinitionTest {
 	@Test
-	@SuppressWarnings("unchecked")
 	public void serviceDefinitionWithDefaultsIsSerializedToJson() {
 		ServiceDefinition serviceDefinition = ServiceDefinition.builder()
 				.id("service-definition-id-one")
@@ -51,35 +42,33 @@ public class ServiceDefinitionTest {
 				.plans(Plan.builder().build())
 				.build();
 
-		assertThat(serviceDefinition.getId(), equalTo("service-definition-id-one"));
-		assertThat(serviceDefinition.getName(), equalTo("service-definition-one"));
-		assertThat(serviceDefinition.getDescription(), equalTo("Service Definition One"));
-		assertThat(serviceDefinition.getPlans(), hasSize(1));
-		assertThat(serviceDefinition.isBindable(), equalTo(false));
-		assertThat(serviceDefinition.isPlanUpdateable(), equalTo(false));
-		assertThat(serviceDefinition.getTags(), nullValue());
-		assertThat(serviceDefinition.getRequires(), nullValue());
-		assertThat(serviceDefinition.getMetadata(), nullValue());
-		assertThat(serviceDefinition.getDashboardClient(), nullValue());
+		assertThat(serviceDefinition.getId()).isEqualTo("service-definition-id-one");
+		assertThat(serviceDefinition.getName()).isEqualTo("service-definition-one");
+		assertThat(serviceDefinition.getDescription()).isEqualTo("Service Definition One");
+		assertThat(serviceDefinition.getPlans()).hasSize(1);
+		assertThat(serviceDefinition.isBindable()).isEqualTo(false);
+		assertThat(serviceDefinition.isPlanUpdateable()).isEqualTo(false);
+		assertThat(serviceDefinition.getTags()).isNull();
+		assertThat(serviceDefinition.getRequires()).isNull();
+		assertThat(serviceDefinition.getMetadata()).isNull();
+		assertThat(serviceDefinition.getDashboardClient()).isNull();
 
-		String json = DataFixture.toJson(serviceDefinition);
+		DocumentContext json = JsonUtils.toJsonPath(serviceDefinition);
 
-		assertThat(json, isJson(allOf(
-				withJsonPath("$.id", equalTo("service-definition-id-one")),
-				withJsonPath("$.name", equalTo("service-definition-one")),
-				withJsonPath("$.description", equalTo("Service Definition One")),
-				withJsonPath("$.plans", hasSize(1)),
-				withJsonPath("$.bindable", equalTo(false)),
-				withJsonPath("$.plan_updateable", equalTo(false)),
-				withoutJsonPath("$.tags"),
-				withoutJsonPath("$.requires"),
-				withoutJsonPath("$.metadata"),
-				withoutJsonPath("$.dashboard_client")
-		)));
+		assertThat(json).hasPath("$.id").isEqualTo("service-definition-id-one");
+		assertThat(json).hasPath("$.name").isEqualTo("service-definition-one");
+		assertThat(json).hasPath("$.description").isEqualTo("Service Definition One");
+		assertThat(json).hasListAtPath("$.plans").hasSize(1);
+		assertThat(json).hasPath("$.bindable").isEqualTo(false);
+		assertThat(json).hasPath("$.plan_updateable").isEqualTo(false);
+		assertThat(json).hasNoPath("$.tags");
+		assertThat(json).hasNoPath("$.requires");
+		assertThat(json).hasNoPath("$.metadata");
+		assertThat(json).hasNoPath("$.dashboard_client");
 	}
 
 	@Test
-	@SuppressWarnings({"unchecked", "serial"})
+	@SuppressWarnings("serial")
 	public void serviceDefinitionWithAllFieldsIsSerializedToJson() {
 		Map<String, Object> metadata = new HashMap<String, Object>() {{
 			put("field3", "value3");
@@ -106,50 +95,49 @@ public class ServiceDefinitionTest {
 				.dashboardClient(DashboardClient.builder().build())
 				.build();
 
-		assertThat(serviceDefinition.getId(), equalTo("service-definition-id-one"));
-		assertThat(serviceDefinition.getName(), equalTo("service-definition-one"));
-		assertThat(serviceDefinition.getDescription(), equalTo("Service Definition One"));
-		assertThat(serviceDefinition.getPlans(), hasSize(1));
-		assertThat(serviceDefinition.isBindable(), equalTo(true));
-		assertThat(serviceDefinition.isPlanUpdateable(), equalTo(true));
-		assertThat(serviceDefinition.getTags(), contains("tag1", "tag2"));
-		assertThat(serviceDefinition.getRequires(),
-				contains(SERVICE_REQUIRES_ROUTE_FORWARDING.toString(),
-						SERVICE_REQUIRES_SYSLOG_DRAIN.toString(),
-						SERVICE_REQUIRES_VOLUME_MOUNT.toString(),
-						"another_requires"));
-		assertThat(serviceDefinition.getMetadata(), allOf(
-				hasEntry("field1", "value1"),
-				hasEntry("field2", "value2"),
-				hasEntry("field3", "value3"),
-				hasEntry("field4", "value4")));
-		assertThat(serviceDefinition.getDashboardClient(), notNullValue());
+		assertThat(serviceDefinition.getId()).isEqualTo("service-definition-id-one");
+		assertThat(serviceDefinition.getName()).isEqualTo("service-definition-one");
+		assertThat(serviceDefinition.getDescription()).isEqualTo("Service Definition One");
+		assertThat(serviceDefinition.getPlans()).hasSize(1);
+		assertThat(serviceDefinition.isBindable()).isEqualTo(true);
+		assertThat(serviceDefinition.isPlanUpdateable()).isEqualTo(true);
+		assertThat(serviceDefinition.getTags()).contains("tag1", "tag2");
+		assertThat(serviceDefinition.getRequires()).contains(
+							SERVICE_REQUIRES_ROUTE_FORWARDING.toString(),
+							SERVICE_REQUIRES_SYSLOG_DRAIN.toString(),
+							SERVICE_REQUIRES_VOLUME_MOUNT.toString(),
+							"another_requires");
+		assertThat(serviceDefinition.getMetadata()).contains(
+							entry("field1", "value1"),
+							entry("field2", "value2"),
+							entry("field3", "value3"),
+							entry("field4", "value4"));
+		assertThat(serviceDefinition.getDashboardClient()).isNotNull();
 
-		String json = DataFixture.toJson(serviceDefinition);
+		DocumentContext json = JsonUtils.toJsonPath(serviceDefinition);
 
-		assertThat(json, isJson(allOf(
-				withJsonPath("$.id", equalTo("service-definition-id-one")),
-				withJsonPath("$.name", equalTo("service-definition-one")),
-				withJsonPath("$.description", equalTo("Service Definition One")),
-				withJsonPath("$.plans", hasSize(1)),
-				withJsonPath("$.bindable", equalTo(true)),
-				withJsonPath("$.plan_updateable", equalTo(true)),
-				withJsonPath("$.instances_retrievable", equalTo(true)),
-				withJsonPath("$.bindings_retrievable", equalTo(true)),
-				withJsonPath("$.tags[*]", contains("tag1", "tag2")),
-				withJsonPath("$.requires[*]",
-						contains(SERVICE_REQUIRES_ROUTE_FORWARDING.toString(),
+		assertThat(json).hasPath("$.id").isEqualTo("service-definition-id-one");
+		assertThat(json).hasPath("$.name").isEqualTo("service-definition-one");
+		assertThat(json).hasPath("$.description").isEqualTo("Service Definition One");
+		assertThat(json).hasListAtPath("$.plans").hasSize(1);
+		assertThat(json).hasPath("$.bindable").isEqualTo(true);
+		assertThat(json).hasPath("$.plan_updateable").isEqualTo(true);
+		assertThat(json).hasPath("$.plan_updateable").isEqualTo(true);
+
+		assertThat(json).hasPath("$.instances_retrievable").isEqualTo(true);
+		assertThat(json).hasPath("$.bindings_retrievable").isEqualTo(true);
+		assertThat(json).hasListAtPath("$.tags[*]").contains("tag1", "tag2");
+		assertThat(json).hasListAtPath("$.requires[*]").contains(
+								SERVICE_REQUIRES_ROUTE_FORWARDING.toString(),
 								SERVICE_REQUIRES_SYSLOG_DRAIN.toString(),
 								SERVICE_REQUIRES_VOLUME_MOUNT.toString(),
-								"another_requires")),
-				withJsonPath("$.metadata", aMapWithSize(4)),
-				withJsonPath("$.metadata",
-						allOf(hasEntry("field1", "value1"),
-								hasEntry("field2", "value2"),
-								hasEntry("field3", "value3"),
-								hasEntry("field4", "value4"))),
-				withJsonPath("$.dashboard_client", notNullValue())
-		)));
+								"another_requires");
+		assertThat(json).hasMapAtPath("$.metadata").contains(
+								entry("field1", "value1"),
+								entry("field2", "value2"),
+								entry("field3", "value3"),
+								entry("field4", "value4"));
+		assertThat(json).hasPath("$.dashboard_client");
 	}
 
 	@Test

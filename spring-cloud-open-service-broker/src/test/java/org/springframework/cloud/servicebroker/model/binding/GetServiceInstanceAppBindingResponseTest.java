@@ -21,20 +21,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withoutJsonPath;
-import static org.hamcrest.Matchers.aMapWithSize;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class GetServiceInstanceAppBindingResponseTest {
 	@Test
@@ -42,23 +36,21 @@ public class GetServiceInstanceAppBindingResponseTest {
 		GetServiceInstanceAppBindingResponse response = GetServiceInstanceAppBindingResponse.builder()
 				.build();
 
-		assertThat(response.getParameters(), aMapWithSize(0));
-		assertThat(response.getCredentials(), aMapWithSize(0));
-		assertThat(response.getSyslogDrainUrl(), nullValue());
-		assertThat(response.getVolumeMounts(), hasSize(0));
+		assertThat(response.getParameters()).hasSize(0);
+		assertThat(response.getCredentials()).hasSize(0);
+		assertThat(response.getSyslogDrainUrl()).isNull();
+		assertThat(response.getVolumeMounts()).hasSize(0);
 
-		String json = DataFixture.toJson(response);
+		DocumentContext json = JsonUtils.toJsonPath(response);
 
-		assertThat(json, isJson(allOf(
-				withoutJsonPath("$.parameters"),
-				withoutJsonPath("$.credentials"),
-				withoutJsonPath("$.syslog_drain_url"),
-				withoutJsonPath("$.volume_mounts")
-		)));
+		assertThat(json).hasNoPath("$.parameters");
+		assertThat(json).hasNoPath("$.credentials");
+		assertThat(json).hasNoPath("$.syslog_drain_url");
+		assertThat(json).hasNoPath("$.volume_mounts");
 	}
 
 	@Test
-	@SuppressWarnings({"serial", "unchecked"})
+	@SuppressWarnings("serial")
 	public void responseWithDiscreteValuesIsBuilt() {
 		Map<String, Object> parameters = new HashMap<String, Object>() {{
 			put("field4", "value4");
@@ -90,42 +82,41 @@ public class GetServiceInstanceAppBindingResponseTest {
 				.volumeMounts(volumeMounts)
 				.build();
 
-		assertThat(response.getParameters(), aMapWithSize(5));
-		assertThat(response.getParameters().get("field1"), equalTo("value1"));
-		assertThat(response.getParameters().get("field2"), equalTo(2));
-		assertThat(response.getParameters().get("field3"), equalTo(true));
-		assertThat(response.getParameters().get("field4"), equalTo("value4"));
-		assertThat(response.getParameters().get("field5"), equalTo("value5"));
+		assertThat(response.getParameters()).hasSize(5);
+		assertThat(response.getParameters().get("field1")).isEqualTo("value1");
+		assertThat(response.getParameters().get("field2")).isEqualTo(2);
+		assertThat(response.getParameters().get("field3")).isEqualTo(true);
+		assertThat(response.getParameters().get("field4")).isEqualTo("value4");
+		assertThat(response.getParameters().get("field5")).isEqualTo("value5");
 
-		assertThat(response.getCredentials(), aMapWithSize(5));
-		assertThat(response.getCredentials().get("credential1"), equalTo("value1"));
-		assertThat(response.getCredentials().get("credential2"), equalTo(2));
-		assertThat(response.getCredentials().get("credential3"), equalTo(true));
-		assertThat(response.getCredentials().get("credential4"), equalTo("value4"));
-		assertThat(response.getCredentials().get("credential5"), equalTo("value5"));
+		assertThat(response.getCredentials()).hasSize(5);
+		assertThat(response.getCredentials().get("credential1")).isEqualTo("value1");
+		assertThat(response.getCredentials().get("credential2")).isEqualTo(2);
+		assertThat(response.getCredentials().get("credential3")).isEqualTo(true);
+		assertThat(response.getCredentials().get("credential4")).isEqualTo("value4");
+		assertThat(response.getCredentials().get("credential5")).isEqualTo("value5");
 
-		assertThat(response.getSyslogDrainUrl(), equalTo("https://logs.example.com"));
+		assertThat(response.getSyslogDrainUrl()).isEqualTo("https://logs.example.com");
 		
-		assertThat(response.getVolumeMounts(), hasSize(4));
+		assertThat(response.getVolumeMounts()).hasSize(4);
 
-		String json = DataFixture.toJson(response);
+		DocumentContext json = JsonUtils.toJsonPath(response);
 
-		assertThat(json, isJson(allOf(
-				withJsonPath("$.parameters", aMapWithSize(5)),
-				withJsonPath("$.parameters.field1", equalTo("value1")),
-				withJsonPath("$.parameters.field2", equalTo(2)),
-				withJsonPath("$.parameters.field3", equalTo(true)),
-				withJsonPath("$.parameters.field4", equalTo("value4")),
-				withJsonPath("$.parameters.field5", equalTo("value5")),
-				withJsonPath("$.credentials", aMapWithSize(5)),
-				withJsonPath("$.credentials.credential1", equalTo("value1")),
-				withJsonPath("$.credentials.credential2", equalTo(2)),
-				withJsonPath("$.credentials.credential3", equalTo(true)),
-				withJsonPath("$.credentials.credential4", equalTo("value4")),
-				withJsonPath("$.credentials.credential5", equalTo("value5")),
-				withJsonPath("$.syslog_drain_url", equalTo("https://logs.example.com")),
-				withJsonPath("$.volume_mounts", hasSize(4))
-		)));
+		assertThat(json).hasPath("$.parameters.field1").isEqualTo("value1");
+		assertThat(json).hasPath("$.parameters.field2").isEqualTo(2);
+		assertThat(json).hasPath("$.parameters.field3").isEqualTo(true);
+		assertThat(json).hasPath("$.parameters.field4").isEqualTo("value4");
+		assertThat(json).hasPath("$.parameters.field5").isEqualTo("value5");
+
+		assertThat(json).hasPath("$.credentials.credential1").isEqualTo("value1");
+		assertThat(json).hasPath("$.credentials.credential2").isEqualTo(2);
+		assertThat(json).hasPath("$.credentials.credential3").isEqualTo(true);
+		assertThat(json).hasPath("$.credentials.credential4").isEqualTo("value4");
+		assertThat(json).hasPath("$.credentials.credential5").isEqualTo("value5");
+
+		assertThat(json).hasPath("$.syslog_drain_url").isEqualTo("https://logs.example.com");
+
+		assertThat(json).hasListAtPath("$.volume_mounts").hasSize(4);
 	}
 
 	@Test

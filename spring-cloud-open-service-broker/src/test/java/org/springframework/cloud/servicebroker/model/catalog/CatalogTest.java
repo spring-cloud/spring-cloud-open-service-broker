@@ -16,33 +16,30 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import java.util.Collections;
 import java.util.List;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class CatalogTest {
 	@Test
 	public void emptyCatalogIsSerializedToJson() {
 		Catalog catalog = Catalog.builder().build();
 
-		assertThat(catalog.getServiceDefinitions(), hasSize(0));
+		assertThat(catalog.getServiceDefinitions()).hasSize(0);
 
-		String json = DataFixture.toJson(catalog);
-		assertThat(json, isJson(withJsonPath("$.services", hasSize(0))));
+		DocumentContext json = JsonUtils.toJsonPath(catalog);
+
+		assertThat(json).hasListAtPath("$.services").hasSize(0);
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void catalogWithServicesIsSerializedToJson() {
 		List<ServiceDefinition> serviceDefinitions = Collections.singletonList(ServiceDefinition.builder()
 				.id("service-definition-id-two")
@@ -63,27 +60,25 @@ public class CatalogTest {
 				.build();
 
 		List<ServiceDefinition> actualDefinitions = catalog.getServiceDefinitions();
-		assertThat(actualDefinitions.get(0).getId(), equalTo("service-definition-id-one"));
-		assertThat(actualDefinitions.get(0).getName(), equalTo("service-definition-one"));
-		assertThat(actualDefinitions.get(0).getDescription(), equalTo("Service Definition One"));
+		assertThat(actualDefinitions.get(0).getId()).isEqualTo("service-definition-id-one");
+		assertThat(actualDefinitions.get(0).getName()).isEqualTo("service-definition-one");
+		assertThat(actualDefinitions.get(0).getDescription()).isEqualTo("Service Definition One");
 
-		assertThat(actualDefinitions.get(1).getId(), equalTo("service-definition-id-two"));
-		assertThat(actualDefinitions.get(1).getName(), equalTo("service-definition-two"));
-		assertThat(actualDefinitions.get(1).getDescription(), equalTo("Service Definition Two"));
+		assertThat(actualDefinitions.get(1).getId()).isEqualTo("service-definition-id-two");
+		assertThat(actualDefinitions.get(1).getName()).isEqualTo("service-definition-two");
+		assertThat(actualDefinitions.get(1).getDescription()).isEqualTo("Service Definition Two");
 
-		String json = DataFixture.toJson(catalog);
+		DocumentContext json = JsonUtils.toJsonPath(catalog);
 
-		assertThat(json, isJson(allOf(
-				withJsonPath("$.services", hasSize(2)),
-				
-				withJsonPath("$.services[0].id", equalTo("service-definition-id-one")),
-				withJsonPath("$.services[0].name", equalTo("service-definition-one")),
-				withJsonPath("$.services[0].description", equalTo("Service Definition One")),
+		assertThat(json).hasListAtPath("$.services").hasSize(2);
 
-				withJsonPath("$.services[1].id", equalTo("service-definition-id-two")),
-				withJsonPath("$.services[1].name", equalTo("service-definition-two")),
-				withJsonPath("$.services[1].description", equalTo("Service Definition Two"))
-		)));
+		assertThat(json).hasPath("$.services[0].id").isEqualTo("service-definition-id-one");
+		assertThat(json).hasPath("$.services[0].name").isEqualTo("service-definition-one");
+		assertThat(json).hasPath("$.services[0].description").isEqualTo("Service Definition One");
+
+		assertThat(json).hasPath("$.services[1].id").isEqualTo("service-definition-id-two");
+		assertThat(json).hasPath("$.services[1].name").isEqualTo("service-definition-two");
+		assertThat(json).hasPath("$.services[1].description").isEqualTo("Service Definition Two");
 	}
 
 	@Test

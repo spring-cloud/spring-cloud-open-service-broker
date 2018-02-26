@@ -21,9 +21,7 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.Context;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GetLastServiceOperationRequestTest {
 	@Test
@@ -31,13 +29,13 @@ public class GetLastServiceOperationRequestTest {
 		GetLastServiceOperationRequest request = GetLastServiceOperationRequest.builder()
 				.build();
 
-		assertThat(request.getServiceDefinitionId(), nullValue());
-		assertThat(request.getServiceInstanceId(), nullValue());
-		assertThat(request.getPlanId(), nullValue());
-		assertThat(request.getOperation(), nullValue());
-		assertThat(request.getApiInfoLocation(), nullValue());
-		assertThat(request.getPlatformInstanceId(), nullValue());
-		assertThat(request.getOriginatingIdentity(), nullValue());
+		assertThat(request.getServiceDefinitionId()).isNull();
+		assertThat(request.getServiceInstanceId()).isNull();
+		assertThat(request.getPlanId()).isNull();
+		assertThat(request.getOperation()).isNull();
+		assertThat(request.getApiInfoLocation()).isNull();
+		assertThat(request.getPlatformInstanceId()).isNull();
+		assertThat(request.getOriginatingIdentity()).isNull();
 	}
 
 	@Test
@@ -57,14 +55,14 @@ public class GetLastServiceOperationRequestTest {
 				.originatingIdentity(originatingIdentity)
 				.build();
 
-		assertThat(request.getServiceInstanceId(), equalTo("service-instance-id"));
-		assertThat(request.getServiceDefinitionId(), equalTo("service-definition-id"));
-		assertThat(request.getPlanId(), equalTo("plan-id"));
-		assertThat(request.getOperation(), equalTo("working"));
+		assertThat(request.getServiceInstanceId()).isEqualTo("service-instance-id");
+		assertThat(request.getServiceDefinitionId()).isEqualTo("service-definition-id");
+		assertThat(request.getPlanId()).isEqualTo("plan-id");
+		assertThat(request.getOperation()).isEqualTo("working");
 
-		assertThat(request.getPlatformInstanceId(), equalTo("platform-instance-id"));
-		assertThat(request.getApiInfoLocation(), equalTo("https://api.example.com"));
-		assertThat(request.getOriginatingIdentity(), equalTo(originatingIdentity));
+		assertThat(request.getPlatformInstanceId()).isEqualTo("platform-instance-id");
+		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.example.com");
+		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);
 	}
 
 	@Test

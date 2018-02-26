@@ -27,8 +27,7 @@ import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceB
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ServiceInstanceBindingControllerRequestTest extends ControllerRequestTest{
 
@@ -110,19 +109,19 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 
 		@Override
 		public CreateServiceInstanceBindingResponse createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
-			assertThat(request, equalTo(expectedRequest));
+			assertThat(request).isEqualTo(expectedRequest);
 			return null;
 		}
 
 		@Override
 		public GetServiceInstanceBindingResponse getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
-			assertThat(request, equalTo(expectedRequest));
+			assertThat(request).isEqualTo(expectedRequest);
 			return null;
 		}
 
 		@Override
 		public void deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
-			assertThat(request, equalTo(expectedRequest));
+			assertThat(request).isEqualTo(expectedRequest);
 		}
 	}
 }

@@ -16,17 +16,14 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.AllOf.allOf;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class GetLastServiceOperationResponseTest {
 	@Test
@@ -34,9 +31,14 @@ public class GetLastServiceOperationResponseTest {
 		GetLastServiceOperationResponse response = GetLastServiceOperationResponse.builder()
 				.build();
 
-		assertThat(response.getState(), nullValue());
-		assertThat(response.getDescription(), nullValue());
-		assertThat(response.isDeleteOperation(), equalTo(false));
+		assertThat(response.getState()).isNull();
+		assertThat(response.getDescription()).isNull();
+		assertThat(response.isDeleteOperation()).isEqualTo(false);
+
+		DocumentContext json = JsonUtils.toJsonPath(response);
+
+		assertThat(json).hasNoPath("$.state");
+		assertThat(json).hasNoPath("$.description");
 	}
 
 	@Test
@@ -47,9 +49,14 @@ public class GetLastServiceOperationResponseTest {
 				.deleteOperation(true)
 				.build();
 
-		assertThat(response.getState(), equalTo(OperationState.SUCCEEDED));
-		assertThat(response.getDescription(), equalTo("description"));
-		assertThat(response.isDeleteOperation(), equalTo(true));
+		assertThat(response.getState()).isEqualTo(OperationState.SUCCEEDED);
+		assertThat(response.getDescription()).isEqualTo("description");
+		assertThat(response.isDeleteOperation()).isEqualTo(true);
+
+		DocumentContext json = JsonUtils.toJsonPath(response);
+
+		assertThat(json).hasPath("$.state").isEqualTo(OperationState.SUCCEEDED.toString());
+		assertThat(json).hasPath("$.description").isEqualTo("description");
 	}
 
 	@Test
@@ -73,12 +80,10 @@ public class GetLastServiceOperationResponseTest {
 				.description("description")
 				.build();
 
-		String json = DataFixture.toJson(response);
+		DocumentContext json = JsonUtils.toJsonPath(response);
 
-		assertThat(json, isJson(allOf(
-				withJsonPath("$.state", equalTo(stateString)),
-				withJsonPath("$.description", equalTo("description"))
-		)));
+		assertThat(json).hasPath("$.state").isEqualTo(stateString);
+		assertThat(json).hasPath("$.description").isEqualTo("description");
 	}
 
 	@Test

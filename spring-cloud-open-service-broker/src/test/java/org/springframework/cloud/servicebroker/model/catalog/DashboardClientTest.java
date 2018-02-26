@@ -16,16 +16,13 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
-import org.springframework.cloud.servicebroker.model.fixture.DataFixture;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class DashboardClientTest {
 	@Test
@@ -33,9 +30,15 @@ public class DashboardClientTest {
 		DashboardClient client = DashboardClient.builder()
 				.build();
 
-		assertThat(client.getId(), nullValue());
-		assertThat(client.getSecret(), nullValue());
-		assertThat(client.getRedirectUri(), nullValue());
+		assertThat(client.getId()).isNull();
+		assertThat(client.getSecret()).isNull();
+		assertThat(client.getRedirectUri()).isNull();
+
+		DocumentContext json = JsonUtils.toJsonPath(client);
+
+		assertThat(json).hasNoPath("$.id");
+		assertThat(json).hasNoPath("$.secret");
+		assertThat(json).hasNoPath("$.redirect_uri");
 	}
 
 	@Test
@@ -46,26 +49,15 @@ public class DashboardClientTest {
 				.redirectUri("https://token.example.com")
 				.build();
 
-		assertThat(client.getId(), equalTo("client-id"));
-		assertThat(client.getSecret(), equalTo("client-secret"));
-		assertThat(client.getRedirectUri(), equalTo("https://token.example.com"));
-	}
+		assertThat(client.getId()).isEqualTo("client-id");
+		assertThat(client.getSecret()).isEqualTo("client-secret");
+		assertThat(client.getRedirectUri()).isEqualTo("https://token.example.com");
 
-	@Test
-	public void dashboardClientIsSerializedToJson() {
-		DashboardClient client = DashboardClient.builder()
-				.id("client-id")
-				.secret("client-secret")
-				.redirectUri("https://token.example.com")
-				.build();
+		DocumentContext json = JsonUtils.toJsonPath(client);
 
-		String json = DataFixture.toJson(client);
-
-		assertThat(json, isJson(allOf(
-				withJsonPath("$.id", equalTo("client-id")),
-				withJsonPath("$.secret", equalTo("client-secret")),
-				withJsonPath("$.redirect_uri", equalTo("https://token.example.com"))
-		)));
+		assertThat(json).hasPath("$.id").isEqualTo("client-id");
+		assertThat(json).hasPath("$.secret").isEqualTo("client-secret");
+		assertThat(json).hasPath("$.redirect_uri").isEqualTo("https://token.example.com");
 	}
 
 	@Test

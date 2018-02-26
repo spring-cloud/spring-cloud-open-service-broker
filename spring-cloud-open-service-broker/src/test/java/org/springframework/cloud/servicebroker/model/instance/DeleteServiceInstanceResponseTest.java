@@ -18,9 +18,7 @@ package org.springframework.cloud.servicebroker.model.instance;
 
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DeleteServiceInstanceResponseTest {
 	@Test
@@ -28,8 +26,8 @@ public class DeleteServiceInstanceResponseTest {
 		DeleteServiceInstanceResponse response = DeleteServiceInstanceResponse.builder()
 				.build();
 
-		assertThat(response.isAsync(), equalTo(false));
-		assertThat(response.getOperation(), nullValue());
+		assertThat(response.isAsync()).isEqualTo(false);
+		assertThat(response.getOperation()).isNull();
 	}
 
 	@Test
@@ -39,7 +37,7 @@ public class DeleteServiceInstanceResponseTest {
 				.operation("in progress")
 				.build();
 
-		assertThat(response.isAsync(), equalTo(true));
-		assertThat(response.getOperation(), equalTo("in progress"));
+		assertThat(response.isAsync()).isEqualTo(true);
+		assertThat(response.getOperation()).isEqualTo("in progress");
 	}
 }
