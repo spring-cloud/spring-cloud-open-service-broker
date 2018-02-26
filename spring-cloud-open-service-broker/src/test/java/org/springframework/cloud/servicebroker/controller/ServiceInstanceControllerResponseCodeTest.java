@@ -24,7 +24,6 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
-import org.springframework.cloud.servicebroker.exception.ServiceInstanceOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
@@ -315,17 +314,6 @@ public class ServiceInstanceControllerResponseCodeTest {
 
 		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.UNPROCESSABLE_ENTITY));
 		assertThat(responseEntity.getBody().getMessage(), containsString("test exception"));
-	}
-
-	@Test
-	public void serviceInstanceOperationInProgressExceptionGivesExpectedStatus() {
-		ServiceInstanceOperationInProgressException exception =
-				new ServiceInstanceOperationInProgressException("still working");
-
-		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
-
-		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.NOT_FOUND));
-		assertThat(responseEntity.getBody().getMessage(), containsString("still working"));
 	}
 
 	public static class AsyncResponseAndExpectedStatus<T extends AsyncServiceInstanceResponse> {

@@ -19,23 +19,21 @@ package org.springframework.cloud.servicebroker.model.binding;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
+
 import org.springframework.cloud.servicebroker.model.Context;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-public class DeleteServiceInstanceBindingRequestTest {
+public class GetServiceInstanceBindingRequestTest {
 	@Test
 	public void requestWithDefaultsIsBuilt() {
-		DeleteServiceInstanceBindingRequest request = DeleteServiceInstanceBindingRequest.builder()
+		GetServiceInstanceBindingRequest request = GetServiceInstanceBindingRequest.builder()
 				.build();
 
 		assertThat(request.getServiceInstanceId(), nullValue());
-		assertThat(request.getServiceDefinitionId(), nullValue());
-		assertThat(request.getPlanId(), nullValue());
 		assertThat(request.getBindingId(), nullValue());
-		assertThat(request.getServiceDefinition(), nullValue());
 		assertThat(request.getApiInfoLocation(), nullValue());
 		assertThat(request.getPlatformInstanceId(), nullValue());
 		assertThat(request.getOriginatingIdentity(), nullValue());
@@ -47,10 +45,8 @@ public class DeleteServiceInstanceBindingRequestTest {
 				.platform("test-platform")
 				.build();
 
-		DeleteServiceInstanceBindingRequest request = DeleteServiceInstanceBindingRequest.builder()
+		GetServiceInstanceBindingRequest request = GetServiceInstanceBindingRequest.builder()
 				.serviceInstanceId("service-instance-id")
-				.serviceDefinitionId("service-definition-id")
-				.planId("plan-id")
 				.bindingId("binding-id")
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("https://api.example.com")
@@ -58,8 +54,6 @@ public class DeleteServiceInstanceBindingRequestTest {
 				.build();
 
 		assertThat(request.getServiceInstanceId(), equalTo("service-instance-id"));
-		assertThat(request.getServiceDefinitionId(), equalTo("service-definition-id"));
-		assertThat(request.getPlanId(), equalTo("plan-id"));
 		assertThat(request.getBindingId(), equalTo("binding-id"));
 
 		assertThat(request.getPlatformInstanceId(), equalTo("platform-instance-id"));
@@ -70,7 +64,7 @@ public class DeleteServiceInstanceBindingRequestTest {
 	@Test
 	public void equalsAndHashCode() {
 		EqualsVerifier
-				.forClass(DeleteServiceInstanceBindingRequest.class)
+				.forClass(GetServiceInstanceBindingRequest.class)
 				.withRedefinedSuperclass()
 				.suppress(Warning.NONFINAL_FIELDS)
 				.suppress(Warning.TRANSIENT_FIELDS)

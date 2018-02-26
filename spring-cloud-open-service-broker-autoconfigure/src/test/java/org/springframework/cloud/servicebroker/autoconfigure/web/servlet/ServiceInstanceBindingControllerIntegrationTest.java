@@ -25,6 +25,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
@@ -33,6 +34,10 @@ import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceRouteBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceAppBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceRouteBindingResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -49,6 +54,7 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -141,8 +147,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	public void createBindingWithUnknownServiceInstanceIdFails() throws Exception {
 		setupCatalogService();
 
-		setupServiceInstanceBindingService(
-				new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID));
+		when(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
+				.thenThrow(new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID));
 
 		mockMvc.perform(put(buildCreateUrl())
 				.content(createRequestBody)
@@ -168,8 +174,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	public void createBindingWithDuplicateIdFails() throws Exception {
 		setupCatalogService();
 
-		setupServiceInstanceBindingService(
-				new ServiceInstanceBindingExistsException(SERVICE_INSTANCE_ID, SERVICE_INSTANCE_BINDING_ID));
+		when(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
+				.thenThrow(new ServiceInstanceBindingExistsException(SERVICE_INSTANCE_ID, SERVICE_INSTANCE_BINDING_ID));
 
 		mockMvc.perform(put(buildCreateUrl())
 				.content(createRequestBody)
@@ -205,6 +211,49 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	}
 
 	@Test
+	public void getBindingToAppSucceeds() throws Exception {
+		setupServiceInstanceBindingService(GetServiceInstanceAppBindingResponse.builder()
+				.build());
+
+		mockMvc.perform(get(buildCreateUrl(PLATFORM_INSTANCE_ID))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+
+		GetServiceInstanceBindingRequest actualRequest = verifyGetBinding();
+		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	public void getBindingToRouteSucceeds() throws Exception {
+		setupServiceInstanceBindingService(GetServiceInstanceRouteBindingResponse.builder()
+				.build());
+
+		mockMvc.perform(get(buildCreateUrl(PLATFORM_INSTANCE_ID))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+
+		GetServiceInstanceBindingRequest actualRequest = verifyGetBinding();
+		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	public void getBindingWithOperationInProgressFails() throws Exception {
+		when(serviceInstanceBindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
+				.thenThrow(new ServiceBrokerOperationInProgressException("still working"));
+
+		mockMvc.perform(get(buildCreateUrl())
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
 	public void deleteBindingSucceeds() throws Exception {
 		setupCatalogService();
 
@@ -225,7 +274,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	public void deleteBindingWithUnknownInstanceIdFails() throws Exception {
 		setupCatalogService();
 
-		setupServiceInstanceService(new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID));
+		doThrow(new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID))
+				.when(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 
 		mockMvc.perform(delete(buildDeleteUrl())
 				.contentType(MediaType.APPLICATION_JSON))
@@ -237,7 +287,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 	public void deleteBindingWithUnknownBindingIdFails() throws Exception {
 		setupCatalogService();
 
-		setupServiceInstanceService(new ServiceInstanceBindingDoesNotExistException(SERVICE_INSTANCE_BINDING_ID));
+		doThrow(new ServiceInstanceBindingDoesNotExistException(SERVICE_INSTANCE_BINDING_ID))
+				.when(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 
 		mockMvc.perform(delete(buildDeleteUrl())
 				.contentType(MediaType.APPLICATION_JSON))
@@ -259,19 +310,20 @@ public class ServiceInstanceBindingControllerIntegrationTest extends ServiceInst
 				.thenReturn(createResponse);
 	}
 
-	private void setupServiceInstanceBindingService(Exception exception) {
-		when(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
-				.thenThrow(exception);
-	}
-
-	private void setupServiceInstanceService(Exception exception) {
-		doThrow(exception)
-				.when(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
+	private void setupServiceInstanceBindingService(GetServiceInstanceBindingResponse getResponse) {
+		when(serviceInstanceBindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
+				.thenReturn(getResponse);
 	}
 
 	private CreateServiceInstanceBindingRequest verifyCreateBinding() {
 		ArgumentCaptor<CreateServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor.forClass(CreateServiceInstanceBindingRequest.class);
 		verify(serviceInstanceBindingService).createServiceInstanceBinding(argumentCaptor.capture());
+		return argumentCaptor.getValue();
+	}
+
+	private GetServiceInstanceBindingRequest verifyGetBinding() {
+		ArgumentCaptor<GetServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor.forClass(GetServiceInstanceBindingRequest.class);
+		verify(serviceInstanceBindingService).getServiceInstanceBinding(argumentCaptor.capture());
 		return argumentCaptor.getValue();
 	}
 

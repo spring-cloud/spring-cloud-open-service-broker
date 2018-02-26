@@ -20,7 +20,6 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
-import org.springframework.cloud.servicebroker.exception.ServiceInstanceOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
@@ -265,11 +264,5 @@ public class ServiceInstanceController extends BaseController {
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceUpdateNotSupportedException ex) {
 		LOGGER.debug("Service instance update not supported: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
-	}
-
-	@ExceptionHandler(ServiceInstanceOperationInProgressException.class)
-	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceOperationInProgressException ex) {
-		LOGGER.debug("Service instance operation in progress: ", ex);
-		return getErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
 	}
 }

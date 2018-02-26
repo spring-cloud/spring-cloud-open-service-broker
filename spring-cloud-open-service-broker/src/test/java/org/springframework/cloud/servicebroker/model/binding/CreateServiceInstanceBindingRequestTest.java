@@ -63,6 +63,10 @@ public class CreateServiceInstanceBindingRequestTest {
 			put("field5", "value5");
 		}};
 
+		Context originatingIdentity = Context.builder()
+				.platform("test-platform")
+				.build();
+
 		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId("service-definition-id")
 				.planId("plan-id")
@@ -72,6 +76,9 @@ public class CreateServiceInstanceBindingRequestTest {
 				.parameters(parameters)
 				.bindResource(bindResource)
 				.context(context)
+				.platformInstanceId("platform-instance-id")
+				.apiInfoLocation("https://api.example.com")
+				.originatingIdentity(originatingIdentity)
 				.build();
 
 		assertThat(request.getServiceDefinitionId(), equalTo("service-definition-id"));
@@ -93,6 +100,10 @@ public class CreateServiceInstanceBindingRequestTest {
 		assertThat(request.getBindResource(), equalTo(bindResource));
 
 		assertThat(request.getContext(), equalTo(context));
+
+		assertThat(request.getPlatformInstanceId(), equalTo("platform-instance-id"));
+		assertThat(request.getApiInfoLocation(), equalTo("https://api.example.com"));
+		assertThat(request.getOriginatingIdentity(), equalTo(originatingIdentity));
 	}
 
 	@Test

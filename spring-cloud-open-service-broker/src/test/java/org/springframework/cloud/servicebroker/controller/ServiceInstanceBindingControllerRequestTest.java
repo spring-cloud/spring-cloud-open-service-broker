@@ -23,6 +23,8 @@ import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -60,6 +62,22 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 	}
 
 	@Test
+	public void getServiceBindingParametersAreMappedToRequest() {
+		GetServiceInstanceBindingRequest expectedRequest = GetServiceInstanceBindingRequest.builder()
+				.serviceInstanceId("service-instance-id")
+				.bindingId("binding-id")
+				.platformInstanceId("platform-instance-id")
+				.apiInfoLocation("api-info-location")
+				.originatingIdentity(identityContext)
+				.build();
+
+		ServiceInstanceBindingController controller = createControllerUnderTest(expectedRequest);
+
+		controller.getServiceInstanceBinding(pathVariables, "service-instance-id", "binding-id",
+				"api-info-location", encodeOriginatingIdentity(identityContext));
+	}
+
+	@Test
 	public void deleteServiceBindingParametersAreMappedToRequest() {
 		DeleteServiceInstanceBindingRequest expectedRequest = DeleteServiceInstanceBindingRequest.builder()
 				.serviceInstanceId("service-instance-id")
@@ -92,6 +110,12 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 
 		@Override
 		public CreateServiceInstanceBindingResponse createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
+			assertThat(request, equalTo(expectedRequest));
+			return null;
+		}
+
+		@Override
+		public GetServiceInstanceBindingResponse getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
 			assertThat(request, equalTo(expectedRequest));
 			return null;
 		}

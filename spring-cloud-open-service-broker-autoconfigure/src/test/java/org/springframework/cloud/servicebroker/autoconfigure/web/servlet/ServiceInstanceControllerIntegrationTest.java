@@ -30,7 +30,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequi
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
-import org.springframework.cloud.servicebroker.exception.ServiceInstanceOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
@@ -278,7 +278,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 
 	@Test
 	public void getServiceInstanceWithOperationInProgressFails() throws Exception {
-		setupServiceInstanceService(new ServiceInstanceOperationInProgressException("still working"));
+		setupServiceInstanceService(new ServiceBrokerOperationInProgressException("still working"));
 
 		mockMvc.perform(get(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, false))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
@@ -495,7 +495,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.thenReturn(response);
 	}
 
-	private void setupServiceInstanceService(ServiceInstanceOperationInProgressException exception) {
+	private void setupServiceInstanceService(ServiceBrokerOperationInProgressException exception) {
 		when(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
 				.thenThrow(exception);
 	}

@@ -38,7 +38,7 @@ public class ErrorMessage {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof ErrorMessage)) return false;
 		ErrorMessage that = (ErrorMessage) o;
@@ -46,12 +46,12 @@ public class ErrorMessage {
 	}
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return Objects.hash(message);
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		return "ErrorMessage{" +
 				"message='" + message + '\'' +
 				'}';

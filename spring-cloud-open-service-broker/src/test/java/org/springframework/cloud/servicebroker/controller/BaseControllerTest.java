@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage;
@@ -150,6 +151,17 @@ public class BaseControllerTest {
 
 		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.UNPROCESSABLE_ENTITY));
 		assertThat(responseEntity.getBody().getMessage(), containsString("test message"));
+	}
+
+	@Test
+	public void operationInProgressExceptionGivesExpectedStatus() {
+		ServiceBrokerOperationInProgressException exception =
+				new ServiceBrokerOperationInProgressException("still working");
+
+		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
+
+		assertThat(responseEntity.getStatusCode(), equalTo(HttpStatus.NOT_FOUND));
+		assertThat(responseEntity.getBody().getMessage(), containsString("still working"));
 	}
 
 	@Test

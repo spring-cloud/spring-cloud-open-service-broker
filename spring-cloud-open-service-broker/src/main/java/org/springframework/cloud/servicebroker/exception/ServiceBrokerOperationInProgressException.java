@@ -17,17 +17,20 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a request is received for a service instance ID while an
- * operation on that service instance is in progress.
+ * Thrown to indicate that a request is received while an operation is in progress.
  *
  * @author Scott Frederick
  */
-public class ServiceInstanceOperationInProgressException extends RuntimeException {
+public class ServiceBrokerOperationInProgressException extends RuntimeException {
 
 	private static final long serialVersionUID = -1879753092397657116L;
 
-	public ServiceInstanceOperationInProgressException(String serviceInstanceId) {
-		super("Service instance operation is in progress: id=" + serviceInstanceId);
+	public ServiceBrokerOperationInProgressException() {
+		super("Service broker operation is in progress for the requested service instance or binding");
 	}
 
+	public ServiceBrokerOperationInProgressException(String operation) {
+		super("Service broker operation is in progress for the requested service instance or binding: " +
+				"operation=" + operation);
+	}
 }

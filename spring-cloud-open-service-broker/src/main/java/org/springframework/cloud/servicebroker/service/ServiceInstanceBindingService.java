@@ -17,12 +17,15 @@
 package org.springframework.cloud.servicebroker.service;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
 
 /**
  * This interface is implemented by service brokers to process requests to create and delete service instance bindings.
@@ -35,8 +38,8 @@ public interface ServiceInstanceBindingService {
 	/**
 	 * Create a new binding to a service instance.
 	 *
-	 * @param request containing parameters sent from Cloud Controller
-	 * @return a CreateServiceInstanceBindingResponse
+	 * @param request containing the details of the request
+	 * @return a {@link CreateServiceInstanceBindingResponse} on successful processing of the request
 	 * @throws ServiceInstanceBindingExistsException if a binding with the given ID is already known to the broker
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
 	 * @throws ServiceBrokerException on internal failure
@@ -44,9 +47,24 @@ public interface ServiceInstanceBindingService {
 	CreateServiceInstanceBindingResponse createServiceInstanceBinding(CreateServiceInstanceBindingRequest request);
 
 	/**
+	 * Get the details of a binding to a service instance.
+	 *
+	 * @param request containing the details of the request
+	 * @return a {@link GetServiceInstanceBindingResponse} on successful processing of the request
+	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
+	 * @throws ServiceInstanceBindingDoesNotExistException if a binding with the given ID is not known to the broker
+	 * @throws ServiceBrokerOperationInProgressException if a an operation is in progress for the service binding
+	 */
+	default GetServiceInstanceBindingResponse getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
+		throw new UnsupportedOperationException("This service broker does not support retrieving service bindings. " +
+				"The service broker should set 'bindings_retrievable:false' in the service catalog, " +
+				"or provide an implementation of this API.");
+	}
+
+	/**
 	 * Delete a service instance binding.
 	 *
-	 * @param request containing parameters sent from Cloud Controller
+	 * @param request containing the details of the request
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
 	 * @throws ServiceInstanceBindingDoesNotExistException if a binding with the given ID is not known to the broker
 	 */

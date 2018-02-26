@@ -23,6 +23,8 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingE
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
@@ -30,6 +32,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -101,17 +104,45 @@ public class ServiceInstanceBindingController extends BaseController {
 		return HttpStatus.CREATED;
 	}
 
+	@GetMapping(value = {
+			"/{platformInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
+			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
+	})
+	public ResponseEntity<GetServiceInstanceBindingResponse> getServiceInstanceBinding(
+			@PathVariable Map<String, String> pathVariables,
+			@PathVariable(INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
+			@PathVariable(BINDING_ID_PATH_VARIABLE) String bindingId,
+			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+			@RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
+		GetServiceInstanceBindingRequest request = GetServiceInstanceBindingRequest.builder()
+				.serviceInstanceId(serviceInstanceId)
+				.bindingId(bindingId)
+				.platformInstanceId(pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE))
+				.apiInfoLocation(apiInfoLocation)
+				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+				.build();
+
+		LOGGER.debug("Getting a service instance binding: request={}", request);
+
+		GetServiceInstanceBindingResponse response = serviceInstanceBindingService.getServiceInstanceBinding(request);
+
+		LOGGER.debug("Getting a service instance binding succeeded: bindingId={}", bindingId);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
 	@DeleteMapping(value = {
 			"/{platformInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
 			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
 	})
-	public ResponseEntity<String> deleteServiceInstanceBinding(@PathVariable Map<String, String> pathVariables,
-															   @PathVariable(INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-															   @PathVariable(BINDING_ID_PATH_VARIABLE) String bindingId,
-															   @RequestParam(SERVICE_ID_PARAMETER) String serviceDefinitionId,
-															   @RequestParam(PLAN_ID_PARAMETER) String planId,
-															   @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-															   @RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
+	public ResponseEntity<String> deleteServiceInstanceBinding(
+			@PathVariable Map<String, String> pathVariables,
+			@PathVariable(INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
+			@PathVariable(BINDING_ID_PATH_VARIABLE) String bindingId,
+			@RequestParam(SERVICE_ID_PARAMETER) String serviceDefinitionId,
+			@RequestParam(PLAN_ID_PARAMETER) String planId,
+			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+			@RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
 		DeleteServiceInstanceBindingRequest request = DeleteServiceInstanceBindingRequest.builder()
 				.serviceInstanceId(serviceInstanceId)
 				.bindingId(bindingId)

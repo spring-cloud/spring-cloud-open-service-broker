@@ -19,7 +19,7 @@ package org.springframework.cloud.servicebroker.service;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
-import org.springframework.cloud.servicebroker.exception.ServiceInstanceOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
@@ -45,7 +45,7 @@ public interface ServiceInstanceService {
 	 * Create (provision) a new service instance.
 	 *
 	 * @param request containing the details of the request
-	 * @return the details of the completed request
+	 * @return a {@link CreateServiceInstanceResponse} on successful processing of the request
 	 * @throws ServiceInstanceExistsException if a service instance with the given ID is already known to the broker
 	 * @throws ServiceBrokerAsyncRequiredException if the broker requires asynchronous processing of the request
 	 */
@@ -55,9 +55,9 @@ public interface ServiceInstanceService {
 	 * Get the details of a service instance.
 	 *
 	 * @param request containing the details of the request
-	 * @return the details of the completed request
+	 * @return a {@link GetServiceInstanceResponse} on successful processing of the request
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
-	 * @throws ServiceInstanceOperationInProgressException if a an operation is in progress for the service instance
+	 * @throws ServiceBrokerOperationInProgressException if a an operation is in progress for the service instance
 	 */
 	default GetServiceInstanceResponse getServiceInstance(GetServiceInstanceRequest request) {
 		throw new UnsupportedOperationException("This service broker does not support retrieving service instances. " +
@@ -69,7 +69,7 @@ public interface ServiceInstanceService {
 	 * Get the status of the last requested operation for a service instance.
 	 *
 	 * @param request containing the details of the request
-	 * @return the details of the completed request
+	 * @return a {@link GetLastServiceOperationResponse} on successful processing of the request
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
 	 */
 	GetLastServiceOperationResponse getLastOperation(GetLastServiceOperationRequest request);
@@ -78,7 +78,7 @@ public interface ServiceInstanceService {
 	 * Delete (deprovision) a service instance.
 	 *
 	 * @param request containing the details of the request
-	 * @return the details of the completed request
+	 * @return a {@link DeleteServiceInstanceResponse} on successful processing of the request
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
 	 * @throws ServiceBrokerAsyncRequiredException if the broker requires asynchronous processing of the request
 	 */
@@ -88,7 +88,7 @@ public interface ServiceInstanceService {
 	 * Update a service instance. Only modification of the service plan is supported.
 	 *
 	 * @param request containing the details of the request
-	 * @return the details of the completed request
+	 * @return an {@link UpdateServiceInstanceResponse} on successful processing of the request
 	 * @throws ServiceInstanceUpdateNotSupportedException if particular plan change is not supported
 	 *         or if the request can not currently be fulfilled due to the state of the instance
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker

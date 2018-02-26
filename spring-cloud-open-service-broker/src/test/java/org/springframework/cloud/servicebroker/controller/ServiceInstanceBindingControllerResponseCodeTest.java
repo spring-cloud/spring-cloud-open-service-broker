@@ -28,6 +28,9 @@ import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceAppBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
@@ -81,6 +84,21 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		);
 	}
 
+	@DataPoints("getResponsesWithExpectedStatus")
+	public static List<GetResponseAndExpectedStatus> getDataPoints() {
+		return Arrays.asList(
+				new GetResponseAndExpectedStatus(
+						null,
+						HttpStatus.OK
+				),
+				new GetResponseAndExpectedStatus(
+						GetServiceInstanceAppBindingResponse.builder()
+								.build(),
+						HttpStatus.OK
+				)
+		);
+	}
+
 	@Before
 	public void setUp() {
 		controller = new ServiceInstanceBindingController(catalogService, bindingService);
@@ -88,7 +106,6 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		when(catalogService.getServiceDefinition(anyString()))
 				.thenReturn(ServiceDefinition.builder().build());
 	}
-
 
 	@Theory
 	public void createServiceBindingWithResponseGivesExpectedStatus(CreateResponseAndExpectedStatus data) {
@@ -102,6 +119,18 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		ResponseEntity<CreateServiceInstanceBindingResponse> responseEntity = controller
 				.createServiceInstanceBinding(pathVariables, null, null, null, null,
 						createRequest);
+
+		assertThat(responseEntity.getStatusCode(), equalTo(data.expectedStatus));
+		assertThat(responseEntity.getBody(), equalTo(data.response));
+	}
+
+	@Theory
+	public void getServiceBindingWithResponseGivesExpectedStatus(GetResponseAndExpectedStatus data) {
+		when(bindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
+				.thenReturn(data.response);
+
+		ResponseEntity<GetServiceInstanceBindingResponse> responseEntity = controller
+				.getServiceInstanceBinding(pathVariables, null, null, null, null);
 
 		assertThat(responseEntity.getStatusCode(), equalTo(data.expectedStatus));
 		assertThat(responseEntity.getBody(), equalTo(data.response));
@@ -161,4 +190,13 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		}
 	}
 
+	public static class GetResponseAndExpectedStatus {
+		protected final GetServiceInstanceBindingResponse response;
+		protected final HttpStatus expectedStatus;
+
+		public GetResponseAndExpectedStatus(GetServiceInstanceBindingResponse response, HttpStatus expectedStatus) {
+			this.response = response;
+			this.expectedStatus = expectedStatus;
+		}
+	}
 }

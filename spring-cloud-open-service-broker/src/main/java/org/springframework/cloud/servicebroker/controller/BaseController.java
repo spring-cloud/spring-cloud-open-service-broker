@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage;
@@ -175,6 +176,12 @@ public class BaseController {
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerInvalidParametersException ex) {
 		LOGGER.debug("Invalid parameters received: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+
+	@ExceptionHandler(ServiceBrokerOperationInProgressException.class)
+	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerOperationInProgressException ex) {
+		LOGGER.debug("Service broker operation in progress: ", ex);
+		return getErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(Exception.class)
