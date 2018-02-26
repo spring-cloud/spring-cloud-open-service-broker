@@ -52,7 +52,7 @@ public class GetServiceInstanceRouteBindingResponseTest {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "serial"})
 	public void responseWithValuesIsBuilt() {
 		Map<String, Object> parameters = new HashMap<String, Object>() {{
 			put("field4", "value4");

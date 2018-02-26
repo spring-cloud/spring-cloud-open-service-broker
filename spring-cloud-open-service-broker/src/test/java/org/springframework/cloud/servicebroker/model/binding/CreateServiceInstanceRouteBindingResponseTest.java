@@ -47,6 +47,7 @@ public class CreateServiceInstanceRouteBindingResponseTest {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void responseWithValuesIsBuilt() {
 		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
 				.bindingExisted(true)
