@@ -52,11 +52,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
@@ -118,7 +118,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.andExpect(status().isAccepted());
 
 		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
-		assertThat(actualRequest.isAsyncAccepted(), equalTo(true));
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
 		assertHeaderValuesSet(actualRequest);
 	}
 
@@ -157,7 +157,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.andExpect(status().isCreated());
 
 		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
-		assertThat(actualRequest.isAsyncAccepted(), equalTo(false));
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
 		assertHeaderValuesNotSet(actualRequest);
 	}
 
@@ -306,7 +306,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.andExpect(jsonPath("$.operation", equalTo("working")));
 
 		DeleteServiceInstanceRequest actualRequest = verifyDeleteServiceInstance();
-		assertThat(actualRequest.isAsyncAccepted(), equalTo(true));
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
 		assertHeaderValuesSet(actualRequest);
 	}
 
@@ -323,7 +323,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.andExpect(content().string("{}"));
 
 		DeleteServiceInstanceRequest actualRequest = verifyDeleteServiceInstance();
-		assertThat(actualRequest.isAsyncAccepted(), equalTo(false));
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
 		assertHeaderValuesNotSet(actualRequest);
 	}
 
@@ -368,7 +368,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.andExpect(jsonPath("$.operation", equalTo("working")));
 
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
-		assertThat(actualRequest.isAsyncAccepted(), equalTo(true));
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
 		assertHeaderValuesSet(actualRequest);
 	}
 
@@ -387,7 +387,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.andExpect(content().string("{}"));
 
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
-		assertThat(actualRequest.isAsyncAccepted(), equalTo(false));
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
 		assertHeaderValuesNotSet(actualRequest);
 	}
 

@@ -32,10 +32,7 @@ import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.Base64Utils;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -80,19 +77,20 @@ public abstract class ControllerIntegrationTest {
 	}
 
 	protected void assertHeaderValuesSet(ServiceBrokerRequest actualRequest) {
-		assertThat(actualRequest.getPlatformInstanceId(), equalTo(PLATFORM_INSTANCE_ID));
-		assertThat(actualRequest.getApiInfoLocation(), equalTo(API_INFO_LOCATION));
+		assertThat(actualRequest.getPlatformInstanceId()).isEqualTo(PLATFORM_INSTANCE_ID);
+		assertThat(actualRequest.getApiInfoLocation()).isEqualTo(API_INFO_LOCATION);
 
-		assertThat(actualRequest.getOriginatingIdentity(), notNullValue());
+		assertThat(actualRequest.getOriginatingIdentity()).isNotNull();
+
 		Context identity = actualRequest.getOriginatingIdentity();
-		assertThat(identity.getPlatform(), equalTo(ORIGINATING_IDENTITY_PLATFORM));
-		assertThat(identity.getProperty(ORIGINATING_USER_KEY), equalTo(ORIGINATING_USER_VALUE));
-		assertThat(identity.getProperty(ORIGINATING_EMAIL_KEY), equalTo(ORIGINATING_EMAIL_VALUE));
+		assertThat(identity.getPlatform()).isEqualTo(ORIGINATING_IDENTITY_PLATFORM);
+		assertThat(identity.getProperty(ORIGINATING_USER_KEY)).isEqualTo(ORIGINATING_USER_VALUE);
+		assertThat(identity.getProperty(ORIGINATING_EMAIL_KEY)).isEqualTo(ORIGINATING_EMAIL_VALUE);
 	}
 
 	protected void assertHeaderValuesNotSet(ServiceBrokerRequest actualRequest) {
-		assertNull(actualRequest.getApiInfoLocation());
-		assertNull(actualRequest.getPlatformInstanceId());
-		assertNull(actualRequest.getOriginatingIdentity());
+		assertThat(actualRequest.getApiInfoLocation()).isNull();
+		assertThat(actualRequest.getPlatformInstanceId()).isNull();
+		assertThat(actualRequest.getOriginatingIdentity()).isNull();
 	}
 }
