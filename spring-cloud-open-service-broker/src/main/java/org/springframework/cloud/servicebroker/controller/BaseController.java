@@ -16,21 +16,25 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
+import java.io.IOException;
+import java.util.Map;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
+
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
-import org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage;
-import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.Context;
-import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage;
+import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
+import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,9 +45,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import java.io.IOException;
-import java.util.Map;
+import org.springframework.web.bind.support.WebExchangeBindException;
 
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
@@ -154,10 +156,20 @@ public class BaseController {
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
+	// Spring MVC throws this exception on binding errors
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorMessage> handleException(MethodArgumentNotValidException ex) {
+		return handleBindingException(ex, ex.getBindingResult());
+	}
+
+	// Spring WebFlux throws this exception on binding errors
+	@ExceptionHandler(WebExchangeBindException.class)
+	public ResponseEntity<ErrorMessage> handleException(WebExchangeBindException ex) {
+		return handleBindingException(ex, ex.getBindingResult());
+	}
+
+	private ResponseEntity<ErrorMessage> handleBindingException(Exception ex, final BindingResult result) {
 		LOGGER.debug("Unprocessable request received: ", ex);
-		BindingResult result = ex.getBindingResult();
 		StringBuilder message = new StringBuilder("Missing required fields:");
 		for (FieldError error : result.getFieldErrors()) {
 			message.append(' ').append(error.getField());

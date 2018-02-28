@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
+package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,19 +25,14 @@ import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceInstance
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.service.NonBindableServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NonBindableServiceInstanceBindingControllerIntegrationTest extends ServiceInstanceBindingIntegrationTest {
 
-	private MockMvc mockMvc;
+	private WebTestClient client;
 
 	@Before
 	public void setUp() {
@@ -45,26 +40,29 @@ public class NonBindableServiceInstanceBindingControllerIntegrationTest extends 
 		ServiceInstanceBindingController controller =
 				new ServiceInstanceBindingController(catalogService, serviceInstanceBindingService);
 
-		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
-				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
+		this.client = WebTestClient.bindToController(controller)
+				.build();
 	}
 
 	@Test
 	public void createBindingToAppFails() throws Exception {
 		setupCatalogService();
 
-		mockMvc.perform(put(buildCreateUrl())
-				.content(createRequestBody)
+		client.put().uri(buildCreateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isInternalServerError());
+				.exchange()
+				.expectStatus().is5xxServerError()
+				.expectStatus().isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@Test
 	public void deleteBindingFails() throws Exception {
-		mockMvc.perform(delete(buildDeleteUrl())
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isInternalServerError());
+		client.delete().uri(buildDeleteUrl())
+				.exchange()
+				.expectStatus().is5xxServerError()
+				.expectStatus().isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture;
+package org.springframework.cloud.servicebroker.autoconfigure.web.fixture;
 
 import org.springframework.cloud.servicebroker.model.catalog.MethodSchema;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;

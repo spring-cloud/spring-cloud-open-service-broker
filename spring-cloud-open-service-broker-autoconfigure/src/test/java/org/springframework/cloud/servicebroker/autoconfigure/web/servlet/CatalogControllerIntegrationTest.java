@@ -31,7 +31,7 @@ import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.Schemas;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture.ServiceFixture;
+import org.springframework.cloud.servicebroker.autoconfigure.web.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;

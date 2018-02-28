@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
+package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,34 +33,25 @@ import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceRouteBindingResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceInstanceBindingControllerIntegrationTest {
 
-	private MockMvc mockMvc;
+	private WebTestClient client;
 
 	@Before
 	public void setUp() {
-		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
-				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
+		this.client = WebTestClient.bindToController(this.controller).build();
 	}
 
 	@Test
@@ -71,13 +62,14 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.bindingExisted(false)
 				.build());
 
-		mockMvc.perform(put(buildCreateUrl(PLATFORM_INSTANCE_ID))
-				.content(createRequestBody)
+		client.put().uri(buildCreateUrl(PLATFORM_INSTANCE_ID))
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(createRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isCreated());
+				.exchange()
+				.expectStatus().isCreated();
 
 		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
 		assertHeaderValuesSet(actualRequest);
@@ -91,11 +83,12 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.bindingExisted(true)
 				.build());
 
-		mockMvc.perform(put(buildCreateUrl())
-				.content(createRequestBody)
+		client.put().uri(buildCreateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.exchange()
+				.expectStatus().isOk();
 
 		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
 		assertHeaderValuesNotSet(actualRequest);
@@ -109,11 +102,12 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.bindingExisted(false)
 				.build());
 
-		mockMvc.perform(put(buildCreateUrl())
-				.content(createRequestBody)
+		client.put().uri(buildCreateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isCreated());
+				.exchange()
+				.expectStatus().isCreated();
 	}
 
 	@Test
@@ -124,11 +118,12 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.bindingExisted(true)
 				.build());
 
-		mockMvc.perform(put(buildCreateUrl())
-				.content(createRequestBody)
+		client.put().uri(buildCreateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.exchange()
+				.expectStatus().isOk();
 	}
 
 	@Test
@@ -138,24 +133,32 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		when(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
 				.thenThrow(new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID));
 
-		mockMvc.perform(put(buildCreateUrl())
-				.content(createRequestBody)
+		client.put().uri(buildCreateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isUnprocessableEntity())
-				.andExpect(jsonPath("$.description", containsString(SERVICE_INSTANCE_ID)));
+				.exchange()
+				.expectStatus().is4xxClientError()
+				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectBody()
+				.jsonPath("$.description").isNotEmpty()
+				.consumeWith(result -> assertDescriptionContains(result, String.format("id=%s", SERVICE_INSTANCE_ID)));
 	}
-
+	
 	@Test
 	public void createBindingWithUnknownServiceDefinitionIdSucceeds() throws Exception {
 		setupCatalogService(null);
 
-		mockMvc.perform(put(buildCreateUrl())
-				.content(createRequestBody)
+		client.put().uri(buildCreateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isUnprocessableEntity())
-				.andExpect(jsonPath("$.description", containsString(serviceDefinition.getId())));
+				.exchange()
+				.expectStatus().is4xxClientError()
+				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectBody()
+				.jsonPath("$.description").isNotEmpty()
+				.consumeWith(result -> assertDescriptionContains(result, serviceDefinition.getId()));
 	}
 
 	@Test
@@ -165,37 +168,48 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		when(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
 				.thenThrow(new ServiceInstanceBindingExistsException(SERVICE_INSTANCE_ID, SERVICE_INSTANCE_BINDING_ID));
 
-		mockMvc.perform(put(buildCreateUrl())
-				.content(createRequestBody)
+		client.put().uri(buildCreateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isConflict())
-				.andExpect(jsonPath("$.description", containsString(SERVICE_INSTANCE_ID)))
-				.andExpect(jsonPath("$.description", containsString(SERVICE_INSTANCE_BINDING_ID)));
+				.exchange()
+				.expectStatus().is4xxClientError()
+				.expectStatus().isEqualTo(HttpStatus.CONFLICT)
+				.expectBody()
+				.jsonPath("$.description").isNotEmpty()
+				.consumeWith(result -> assertDescriptionContains(result, String.format("serviceInstanceId=%s, bindingId=%s", SERVICE_INSTANCE_ID, SERVICE_INSTANCE_BINDING_ID)));
 	}
 
 	@Test
 	public void createBindingWithInvalidFieldsFails() throws Exception {
 		String body = createRequestBody.replace("service_id", "foo");
 
-		mockMvc.perform(put(buildCreateUrl())
-				.content(body)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isUnprocessableEntity())
-				.andExpect(jsonPath("$.description", containsString("serviceDefinitionId")));
+		client.put().uri(buildCreateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(body)
+				.exchange()
+				.expectStatus().is4xxClientError()
+				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectBody()
+				.jsonPath("$.description").isNotEmpty()
+				.consumeWith(result -> assertDescriptionContains(result, "serviceDefinitionId"));
 	}
 
 	@Test
 	public void createBindingWithMissingFieldsFails() throws Exception {
 		String body = "{}";
 
-		mockMvc.perform(put(buildCreateUrl())
-				.content(body)
+		client.put().uri(buildCreateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(body)
 				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isUnprocessableEntity())
-				.andExpect(jsonPath("$.description", containsString("serviceDefinitionId")))
-				.andExpect(jsonPath("$.description", containsString("planId")));
+				.exchange()
+				.expectStatus().is4xxClientError()
+				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectBody()
+				.jsonPath("$.description").isNotEmpty()
+				.consumeWith(result -> assertDescriptionContains(result, "serviceDefinitionId"))
+				.consumeWith(result -> assertDescriptionContains(result, "planId"));
 	}
 
 	@Test
@@ -203,12 +217,12 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		setupServiceInstanceBindingService(GetServiceInstanceAppBindingResponse.builder()
 				.build());
 
-		mockMvc.perform(get(buildCreateUrl(PLATFORM_INSTANCE_ID))
+		client.get().uri(buildCreateUrl(PLATFORM_INSTANCE_ID))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.exchange()
+				.expectStatus().isOk();
 
 		GetServiceInstanceBindingRequest actualRequest = verifyGetBinding();
 		assertHeaderValuesSet(actualRequest);
@@ -219,12 +233,12 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		setupServiceInstanceBindingService(GetServiceInstanceRouteBindingResponse.builder()
 				.build());
 
-		mockMvc.perform(get(buildCreateUrl(PLATFORM_INSTANCE_ID))
+		client.get().uri(buildCreateUrl(PLATFORM_INSTANCE_ID))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.exchange()
+				.expectStatus().isOk();
 
 		GetServiceInstanceBindingRequest actualRequest = verifyGetBinding();
 		assertHeaderValuesSet(actualRequest);
@@ -235,22 +249,23 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		when(serviceInstanceBindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
 				.thenThrow(new ServiceBrokerOperationInProgressException("still working"));
 
-		mockMvc.perform(get(buildCreateUrl())
+		client.get().uri(buildCreateUrl())
 				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isNotFound());
+				.exchange()
+				.expectStatus().isNotFound();
 	}
 
 	@Test
 	public void deleteBindingSucceeds() throws Exception {
 		setupCatalogService();
 
-		mockMvc.perform(delete(buildDeleteUrl(PLATFORM_INSTANCE_ID))
+		client.delete().uri(buildDeleteUrl(PLATFORM_INSTANCE_ID))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$", is("{}")));
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody()
+				.json("{}");
 
 		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 
@@ -265,10 +280,13 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		doThrow(new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID))
 				.when(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 
-		mockMvc.perform(delete(buildDeleteUrl())
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isUnprocessableEntity())
-				.andExpect(jsonPath("$.description", containsString(SERVICE_INSTANCE_ID)));
+		client.delete().uri(buildDeleteUrl())
+				.exchange()
+				.expectStatus().is4xxClientError()
+				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectBody()
+				.jsonPath("$.description").isNotEmpty()
+				.consumeWith(result -> assertDescriptionContains(result, SERVICE_INSTANCE_ID));
 	}
 
 	@Test
@@ -278,19 +296,21 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		doThrow(new ServiceInstanceBindingDoesNotExistException(SERVICE_INSTANCE_BINDING_ID))
 				.when(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 
-		mockMvc.perform(delete(buildDeleteUrl())
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isGone())
-				.andExpect(jsonPath("$", is("{}")));
+		client.delete().uri(buildDeleteUrl())
+				.exchange()
+				.expectStatus().is4xxClientError()
+				.expectStatus().isEqualTo(HttpStatus.GONE)
+				.expectBody()
+				.json("{}");
 	}
 
 	@Test
 	public void deleteBindingWithUnknownServiceDefinitionIdSucceeds() throws Exception {
 		setupCatalogService(null);
 
-		mockMvc.perform(delete(buildDeleteUrl())
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+		client.delete().uri(buildDeleteUrl())
+				.exchange()
+				.expectStatus().isOk();
 	}
 
 }

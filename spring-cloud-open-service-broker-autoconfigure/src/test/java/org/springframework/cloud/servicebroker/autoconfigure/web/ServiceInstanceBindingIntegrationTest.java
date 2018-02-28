@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
+package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import org.junit.Before;
 
-import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.JsonUtils;
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.web.util.UriComponentsBuilder;
 
 public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIntegrationTest {

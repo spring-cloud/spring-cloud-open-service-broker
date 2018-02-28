@@ -16,17 +16,22 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
+import java.lang.reflect.Method;
+import java.util.Base64;
+import java.util.HashMap;
+
 import org.junit.Before;
 import org.junit.Test;
+
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
+import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
-import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,10 +40,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.MapBindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-
-import java.lang.reflect.Method;
-import java.util.Base64;
-import java.util.HashMap;
+import org.springframework.web.bind.support.WebExchangeBindException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage.ASYNC_REQUIRED_ERROR;
@@ -183,6 +185,25 @@ public class BaseControllerTest {
 		
 		MethodArgumentNotValidException exception =
 				new MethodArgumentNotValidException(parameter, bindingResult);
+
+		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(responseEntity.getBody().getMessage()).contains("field1");
+		assertThat(responseEntity.getBody().getMessage()).contains("field2");
+	}
+
+	@Test
+	public void webExchangeBindExceptionGivesExpectedStatus() throws NoSuchMethodException {
+		BindingResult bindingResult = new MapBindingResult(new HashMap<>(), "objectName");
+		bindingResult.addError(new FieldError("objectName", "field1", "message"));
+		bindingResult.addError(new FieldError("objectName", "field2", "message"));
+
+		Method method = this.getClass().getMethod("setUp", (Class<?>[]) null);
+		MethodParameter parameter = new MethodParameter(method, -1);
+
+		WebExchangeBindException exception =
+				new WebExchangeBindException(parameter, bindingResult);
 
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 

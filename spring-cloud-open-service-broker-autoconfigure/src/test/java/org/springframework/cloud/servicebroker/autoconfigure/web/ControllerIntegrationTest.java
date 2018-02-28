@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
+package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
 import org.mockito.Mock;
 
-import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.fixture.ServiceFixture;
+import org.springframework.cloud.servicebroker.autoconfigure.web.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.util.Base64Utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -93,4 +95,11 @@ public abstract class ControllerIntegrationTest {
 		assertThat(actualRequest.getPlatformInstanceId()).isNull();
 		assertThat(actualRequest.getOriginatingIdentity()).isNull();
 	}
+
+	protected void assertDescriptionContains(EntityExchangeResult<byte[]> result, String value) {
+		String responseBody = new String(result.getResponseBody());
+		String description = JsonPath.read(responseBody, "$.description");
+		assertThat(description).contains(value);
+	}
+
 }
