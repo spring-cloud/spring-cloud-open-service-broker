@@ -46,7 +46,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.aMapWithSize;
+import static org.hamcrest.Matchers.anEmptyMap;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
@@ -307,7 +307,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 		mockMvc.perform(delete(buildDeleteUrl())
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isGone())
-				.andExpect(jsonPath("$", aMapWithSize(0)));
+				.andExpect(jsonPath("$", anEmptyMap()));
 	}
 
 	@Test
