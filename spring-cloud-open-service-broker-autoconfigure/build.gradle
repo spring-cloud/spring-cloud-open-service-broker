@@ -43,6 +43,6 @@ dependencies {
 	testCompile("org.springframework.cloud:spring-cloud-starter-contract-verifier")
 	testCompile("org.mockito:mockito-core")
 	testCompile("org.hamcrest:java-hamcrest:2.0.0.0")
-	testCompile("org.assertj:assertj-core:3.9.0")
+	testCompile("org.assertj:assertj-core")
 	testCompile("org.apache.commons:commons-lang3")
 }
