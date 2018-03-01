@@ -29,8 +29,8 @@ buildscript {
 }
 
 ext {
-	springVersion = "5.0.2.RELEASE"
-	springBootVersion = "2.0.0.RC1"
+	springVersion = "5.0.4.RELEASE"
+	springBootVersion = "2.0.0.RELEASE"
 	springCloudContractVersion = "1.2.2.RELEASE"
 
 	javadocLinks = [
