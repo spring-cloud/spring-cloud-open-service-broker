@@ -24,7 +24,7 @@ import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionErrorMessage;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -71,7 +71,7 @@ public class ApiVersionWebFilter implements WebFilter {
 		if (p.matches(exchange.getRequest().getPath()) && version != null && !anyVersionAllowed()) {
 			String apiVersion = exchange.getRequest().getHeaders().getFirst(version.getBrokerApiVersionHeader());
 			if (!version.getApiVersion().equals(apiVersion)) {
-				String message = ServiceBrokerApiVersionException.formatMessage(version.getApiVersion(), apiVersion);
+				String message = ServiceBrokerApiVersionErrorMessage.from(version.getApiVersion(), apiVersion).toString();
 				ServerHttpResponse response = exchange.getResponse();
 				String json = null;
 				try {

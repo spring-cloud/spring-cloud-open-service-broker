@@ -16,16 +16,24 @@
 
 package org.springframework.cloud.servicebroker.exception;
 
-/**
- * Thrown to indicate that the version of the API supported by the broker doesn't match the version
- * in a request.
- */
-public class ServiceBrokerApiVersionException extends RuntimeException {
+public class ServiceBrokerApiVersionErrorMessage {
 
-	private static final long serialVersionUID = -6792404679608443775L;
+	private static final String MESSAGE_TEMPLATE = "The provided service broker API version is not supported: " +
+			"expected version=%s, provided version=%s";
 
-	public ServiceBrokerApiVersionException(String expectedVersion, String providedVersion) {
-		super(ServiceBrokerApiVersionErrorMessage.from(expectedVersion, providedVersion).toString());
+	private final String message;
+
+	public ServiceBrokerApiVersionErrorMessage(String expectedVersion, String providedVersion) {
+		this.message = String.format(MESSAGE_TEMPLATE, expectedVersion, providedVersion);
+	}
+
+	@Override
+	public String toString() {
+		return message;
+	}
+
+	public static ServiceBrokerApiVersionErrorMessage from(String expectedVersion, String providedVersion) {
+		return new ServiceBrokerApiVersionErrorMessage(expectedVersion, providedVersion);
 	}
 
 }
