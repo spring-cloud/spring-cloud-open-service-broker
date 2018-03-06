@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
+package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
@@ -32,14 +32,13 @@ import org.springframework.context.annotation.Configuration;
  * Configures support for any service broker API version if a version is not specifically
  * configured.
  *
- * @author Benjamin Ihrig
- * @author Scott Frederick
+ * @author Roy Clarkson
  */
 @Configuration
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-@ConditionalOnBean({ServiceInstanceService.class})
-@AutoConfigureAfter(WebMvcAutoConfiguration.class)
-public class ApiVersionAutoConfiguration {
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+@ConditionalOnBean(ServiceInstanceService.class)
+@AutoConfigureAfter(WebFluxAutoConfiguration.class)
+public class ApiVersionWebFluxAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean(BrokerApiVersion.class)
@@ -48,14 +47,8 @@ public class ApiVersionAutoConfiguration {
 	}
 
 	@Bean
-	public ApiVersionInterceptor serviceBrokerApiVersionInterceptor(BrokerApiVersion brokerApiVersion) {
-		return new ApiVersionInterceptor(brokerApiVersion);
-	}
-
-	@Bean
-	public ApiVersionWebMvcConfigurerAdapter serviceBrokerWebMvcConfigurerAdapter(
-			ApiVersionInterceptor apiVersionInterceptor) {
-		return new ApiVersionWebMvcConfigurerAdapter(apiVersionInterceptor);
+	public ApiVersionWebFilter apiVersionWebFilter(BrokerApiVersion brokerApiVersion) {
+		return new ApiVersionWebFilter(brokerApiVersion);
 	}
 
 }

@@ -24,10 +24,15 @@ public class ServiceBrokerApiVersionException extends RuntimeException {
 
 	private static final long serialVersionUID = -6792404679608443775L;
 
+	private static final String MESSAGE_TEMPLATE = "The provided service broker API version is not supported: " +
+			"expected version=%s, provided version=%s";
+
 	public ServiceBrokerApiVersionException(String expectedVersion, String providedVersion) {
-		super("The provided service broker API version is not supported: "
-				+ "expected version=" + expectedVersion
-				+ ", provided version=" + providedVersion);
+		super(formatMessage(expectedVersion, providedVersion));
+	}
+
+	public static String formatMessage(String expectedVersion, String providedVersion) {
+		return String.format(MESSAGE_TEMPLATE, expectedVersion, providedVersion);
 	}
 
 }

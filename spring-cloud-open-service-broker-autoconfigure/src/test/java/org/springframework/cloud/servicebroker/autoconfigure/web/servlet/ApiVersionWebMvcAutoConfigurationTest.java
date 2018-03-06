@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.model.BrokerApiVersion.API_VERSION_ANY;
 import static org.springframework.cloud.servicebroker.model.BrokerApiVersion.API_VERSION_CURRENT;
 
-public class ApiVersionAutoConfigurationTest {
+public class ApiVersionWebMvcAutoConfigurationTest {
 	@Test
 	public void apiVersionBeansAreNotCreatedWithNonWebConfiguration() {
 		nonWebApplicationContextRunner()
@@ -78,12 +78,12 @@ public class ApiVersionAutoConfigurationTest {
 
 	private WebApplicationContextRunner webApplicationContextRunner() {
 		return new WebApplicationContextRunner()
-				.withConfiguration(AutoConfigurations.of(ApiVersionAutoConfiguration.class));
+				.withConfiguration(AutoConfigurations.of(ApiVersionWebMvcAutoConfiguration.class));
 	}
 
 	private ApplicationContextRunner nonWebApplicationContextRunner() {
 		return new ApplicationContextRunner()
-				.withConfiguration(AutoConfigurations.of(ApiVersionAutoConfiguration.class));
+				.withConfiguration(AutoConfigurations.of(ApiVersionWebMvcAutoConfiguration.class));
 	}
 
 	@Configuration
