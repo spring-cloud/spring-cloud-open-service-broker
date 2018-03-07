@@ -5,7 +5,6 @@
       "name": "Service One",
       "description": "Description for Service One",
       "bindable": true,
-      "plan_updateable": false,
       "requires": [
         "syslog_drain",
         "route_forwarding"
