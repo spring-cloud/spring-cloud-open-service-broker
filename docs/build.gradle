@@ -1,0 +1,17 @@
+plugins {
+    id 'org.asciidoctor.convert'
+}
+
+apply plugin: 'org.asciidoctor.convert'
+
+asciidoctor {
+
+    attributes 'revnumber': project.version,
+            'branch-or-tag': project.version.endsWith('SNAPSHOT') ? 'master' : "v${project.version}",
+            'nofooter': true
+
+//    sources {
+//        include 'index.adoc'
+//    }
+
+}

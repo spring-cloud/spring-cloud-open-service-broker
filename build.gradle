@@ -25,6 +25,7 @@ buildscript {
 		classpath("io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE")
 		classpath("io.spring.gradle:spring-io-plugin:0.0.8.RELEASE")
 		classpath("org.springframework.cloud:spring-cloud-contract-gradle-plugin:1.2.2.RELEASE")
+		classpath("org.asciidoctor:asciidoctor-gradle-plugin:1.5.3")
 	}
 }
 
@@ -41,7 +42,7 @@ ext {
 
 description = "Spring Cloud Service Broker"
 
-allprojects {
+configure(allprojects - project(":docs")) {
 	group = "org.springframework.cloud"
 
 	apply plugin: "java"
@@ -81,7 +82,7 @@ allprojects {
 
 }
 
-subprojects {
+configure(subprojects - project(":docs")) {
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
 	[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
@@ -145,7 +146,7 @@ configure(rootProject) {
 		options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
 		options.author = true
 		options.header = rootProject.description
-		options.links(project.ext.javadocLinks)
+		options.links(javadocLinks)
 
 		source subprojects.collect { project ->
 			project.sourceSets.main.allJava
@@ -159,7 +160,7 @@ configure(rootProject) {
 		destinationDir = new File(buildDir, "apidocs")
 	}
 
-	task docsZip(type: Zip) {
+	task docsZip(type: Zip, dependsOn: [':docs:asciidoctor']) {
 		group = "Distribution"
 		classifier = "docs"
 		description = "Builds -${classifier} archive containing api and reference " +
@@ -168,12 +169,18 @@ configure(rootProject) {
 		from(apidocs) {
 			into "apidocs"
 		}
+		println project.tasks.findByPath(':docs:asciidoctor')
+		from(project.tasks.findByPath(':docs:asciidoctor')) {
+			into 'reference'
+		}
+
 	}
 
 	artifacts {
 		archives sourcesJar
 		archives javadocJar
 		archives docsZip
+
 	}
 
 	task dist(dependsOn: assemble) {
@@ -181,6 +188,7 @@ configure(rootProject) {
 		description = "Builds -dist and -docs distribution archives."
 	}
 }
+
 
 pmd {
 	ruleSetFiles = files("${project.rootDir}/config/pmdRuleSet.xml")

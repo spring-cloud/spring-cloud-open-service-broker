@@ -1,0 +1,3 @@
+[[advertising-services]]
+== Advertising a Service Catalog
+=== Example Service Catalog Bean
