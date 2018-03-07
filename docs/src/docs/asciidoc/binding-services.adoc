@@ -1,0 +1,3 @@
+[[binding-services]]
+== Creating a Service Binding
+=== Example Service Binding Bean

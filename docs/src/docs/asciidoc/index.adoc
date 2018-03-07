@@ -1,0 +1,26 @@
+= Spring Cloud Open Service Broker
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+
+:examples-dir: ../../test/java
+:scosb: https://github.com/spring-cloud/spring-cloud-open-service-broker[Spring Cloud Open Service Broker]
+:source: {github}/tree/{branch-or-tag}
+:osbapi: https://www.openservicebrokerapi.org/[Open Service Broker API]
+:springboot: https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/[Spring Boot]
+
+[[abstract]]
+
+Spring Cloud Open Service Broker is a framework for building {springboot} that implement the {osbapi}
+
+include::introduction.adoc[]
+include::getting-started.adoc[]
+include::advertising-services.adoc[]
+include::provisioning-services.adoc[]
+include::binding-services.adoc[]
+include::unbinding-services.adoc[]
+include::deprovisioning-services.adoc[]
+include::example-service-broker-deployment.adoc[]

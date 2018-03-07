@@ -1,0 +1,15 @@
+[[introduction]]
+== Introduction
+The {osbapi} defines an HTTP interface between the services marketplace of a platform and service brokers. Service Brokers
+are responsible for;
+
+* Advertising a catalog of their service offerings and plans
+* Acting on requests from the marketplace for
+  - provisioning (creating or updating) a service
+  - creating a binding between a service and client application
+  - unbinding or deleting a binding between a service and client application
+  - deprovisioning (deleting) a service
+
+Scaffolding for the broker side of the {osbapi} is implemented by the {scosb} project, by providing the required Spring MVC controllers,
+domain objects and configuration. Services authored using {springboot} and {scosb} can easily implement the endpoints
+by providing Spring beans that implement the https://docs.spring.io/spring-cloud-service-broker/docs/current/apidocs/[appropriate interface].
