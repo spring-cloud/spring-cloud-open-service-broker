@@ -23,9 +23,9 @@ dependencyManagement {
 }
 
 dependencies {
+	compile("org.springframework:spring-context")
 	optional("org.springframework:spring-web")
 	optional("org.springframework:spring-webflux")
-	compile("org.springframework.security:spring-security-core:5.0.3.RELEASE")
 
 	compile("com.fasterxml.jackson.core:jackson-databind:2.9.4")
 	compile("org.hibernate:hibernate-validator:5.3.5.Final")
