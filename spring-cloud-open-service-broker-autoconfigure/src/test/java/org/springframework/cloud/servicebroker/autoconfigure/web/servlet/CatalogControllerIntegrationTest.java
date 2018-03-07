@@ -88,7 +88,6 @@ public class CatalogControllerIntegrationTest {
 
 	@Test
 	public void catalogIsRetrievedWithPlatformInstanceId() throws Exception {
-
 		ResultActions result = this.mockMvc.perform(get("/123/v2/catalog")
 				.accept(MediaType.APPLICATION_JSON));
 
@@ -113,7 +112,6 @@ public class CatalogControllerIntegrationTest {
 				.andExpect(jsonPath("$.services[*].name", contains(serviceDefinition.getName())))
 				.andExpect(jsonPath("$.services[*].description", contains(serviceDefinition.getDescription())))
 				.andExpect(jsonPath("$.services[*].bindable", contains(serviceDefinition.isBindable())))
-				.andExpect(jsonPath("$.services[*].plan_updateable", contains(serviceDefinition.isPlanUpdateable())))
 				.andExpect(jsonPath("$.services[*].requires[*]", containsInAnyOrder(
 						SERVICE_REQUIRES_SYSLOG_DRAIN.toString(),
 						SERVICE_REQUIRES_ROUTE_FORWARDING.toString())

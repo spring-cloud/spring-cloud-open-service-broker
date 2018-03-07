@@ -73,12 +73,12 @@ public class ServiceDefinition {
 	/**
 	 * Indicates whether the service broker supports retrieving service instances.
 	 */
-	private final boolean instancesRetrievable;
+	private final Boolean instancesRetrievable;
 
 	/**
 	 * Indicates whether the service broker supports retrieving service bindings.
 	 */
-	private final boolean bindingsRetrievable;
+	private final Boolean bindingsRetrievable;
 
 	/**
 	 * A list of plans for this service.
@@ -108,7 +108,7 @@ public class ServiceDefinition {
 	private final DashboardClient dashboardClient;
 
 	ServiceDefinition(String id, String name, String description, boolean bindable, Boolean planUpdateable,
-							 boolean instancesRetrievable, boolean bindingsRetrievable,
+							 Boolean instancesRetrievable, Boolean bindingsRetrievable,
 							 List<Plan> plans, List<String> tags, Map<String, Object> metadata, List<String> requires,
 							 DashboardClient dashboardClient) {
 		this.id = id;
@@ -141,16 +141,16 @@ public class ServiceDefinition {
 		return this.bindable;
 	}
 
-	public boolean isPlanUpdateable() {
-		return this.planUpdateable != null && this.planUpdateable;
+	public Boolean isPlanUpdateable() {
+		return this.planUpdateable;
 	}
 
-	public boolean isInstancesRetrievable() {
-		return instancesRetrievable;
+	public Boolean isInstancesRetrievable() {
+		return this.instancesRetrievable;
 	}
 
-	public boolean isBindingsRetrievable() {
-		return bindingsRetrievable;
+	public Boolean isBindingsRetrievable() {
+		return this.bindingsRetrievable;
 	}
 
 	public List<Plan> getPlans() {
@@ -184,8 +184,8 @@ public class ServiceDefinition {
 		ServiceDefinition that = (ServiceDefinition) o;
 		return bindable == that.bindable &&
 				Objects.equals(planUpdateable, that.planUpdateable) &&
-				instancesRetrievable == that.instancesRetrievable &&
-				bindingsRetrievable == that.bindingsRetrievable &&
+				Objects.equals(instancesRetrievable, that.instancesRetrievable) &&
+				Objects.equals(bindingsRetrievable, that.bindingsRetrievable) &&
 				Objects.equals(id, that.id) &&
 				Objects.equals(name, that.name) &&
 				Objects.equals(description, that.description) &&
@@ -226,9 +226,9 @@ public class ServiceDefinition {
 		private String name;
 		private String description;
 		private boolean bindable;
-		private boolean planUpdateable;
-		private boolean instancesRetrievable;
-		private boolean bindingsRetrievable;
+		private Boolean planUpdateable;
+		private Boolean instancesRetrievable;
+		private Boolean bindingsRetrievable;
 		private final List<Plan> plans = new ArrayList<>();
 		private List<String> tags;
 		private Map<String, Object> metadata;

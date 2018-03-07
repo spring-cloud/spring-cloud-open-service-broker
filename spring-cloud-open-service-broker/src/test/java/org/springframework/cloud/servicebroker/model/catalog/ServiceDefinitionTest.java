@@ -47,7 +47,9 @@ public class ServiceDefinitionTest {
 		assertThat(serviceDefinition.getDescription()).isEqualTo("Service Definition One");
 		assertThat(serviceDefinition.getPlans()).hasSize(1);
 		assertThat(serviceDefinition.isBindable()).isEqualTo(false);
-		assertThat(serviceDefinition.isPlanUpdateable()).isEqualTo(false);
+		assertThat(serviceDefinition.isPlanUpdateable()).isNull();
+		assertThat(serviceDefinition.isInstancesRetrievable()).isNull();
+		assertThat(serviceDefinition.isBindingsRetrievable()).isNull();
 		assertThat(serviceDefinition.getTags()).isNull();
 		assertThat(serviceDefinition.getRequires()).isNull();
 		assertThat(serviceDefinition.getMetadata()).isNull();
@@ -60,11 +62,13 @@ public class ServiceDefinitionTest {
 		assertThat(json).hasPath("$.description").isEqualTo("Service Definition One");
 		assertThat(json).hasListAtPath("$.plans").hasSize(1);
 		assertThat(json).hasPath("$.bindable").isEqualTo(false);
-		assertThat(json).hasPath("$.plan_updateable").isEqualTo(false);
+		assertThat(json).hasNoPath("$.plan_updateable");
 		assertThat(json).hasNoPath("$.tags");
 		assertThat(json).hasNoPath("$.requires");
 		assertThat(json).hasNoPath("$.metadata");
 		assertThat(json).hasNoPath("$.dashboard_client");
+		assertThat(json).hasNoPath("$.instances_retrievable");
+		assertThat(json).hasNoPath("$.bindings_retrievable");
 	}
 
 	@Test
@@ -101,6 +105,8 @@ public class ServiceDefinitionTest {
 		assertThat(serviceDefinition.getPlans()).hasSize(1);
 		assertThat(serviceDefinition.isBindable()).isEqualTo(true);
 		assertThat(serviceDefinition.isPlanUpdateable()).isEqualTo(true);
+		assertThat(serviceDefinition.isInstancesRetrievable()).isEqualTo(true);
+		assertThat(serviceDefinition.isBindingsRetrievable()).isEqualTo(true);
 		assertThat(serviceDefinition.getTags()).contains("tag1", "tag2");
 		assertThat(serviceDefinition.getRequires()).contains(
 							SERVICE_REQUIRES_ROUTE_FORWARDING.toString(),

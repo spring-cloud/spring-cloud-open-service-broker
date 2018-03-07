@@ -67,12 +67,12 @@ public class CatalogControllerIntegrationTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void catalogIsRetrieved() throws Exception {
+	public void catalogIsRetrieved() {
 		assertCatalog("/v2/catalog");
 	}
 
 	@Test
-	public void catalogIsRetrievedWithPlatformInstanceId() throws Exception {
+	public void catalogIsRetrievedWithPlatformInstanceId() {
 		assertCatalog("/123/v2/catalog");
 	}
 
@@ -96,7 +96,9 @@ public class CatalogControllerIntegrationTest {
 				.jsonPath("$.services[0].name").isEqualTo(serviceDefinition.getName())
 				.jsonPath("$.services[0].description").isEqualTo(serviceDefinition.getDescription())
 				.jsonPath("$.services[0].bindable").isEqualTo(serviceDefinition.isBindable())
-				.jsonPath("$.services[0].plan_updateable").isEqualTo(serviceDefinition.isPlanUpdateable())
+				.jsonPath("$.services[0].plan_updateable").doesNotExist()
+				.jsonPath("$.services[0].instances_retrievable").doesNotExist()
+				.jsonPath("$.services[0].bindings_retrievable").doesNotExist()
 				.jsonPath("$.services[0].requires").isNotEmpty()
 				.jsonPath("$.services[0].requires").isArray()
 				.jsonPath("$.services[0].requires[0]").isEqualTo(SERVICE_REQUIRES_SYSLOG_DRAIN.toString())
