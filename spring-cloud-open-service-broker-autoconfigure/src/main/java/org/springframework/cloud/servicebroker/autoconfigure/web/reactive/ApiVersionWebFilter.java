@@ -20,7 +20,6 @@ import java.nio.charset.StandardCharsets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -81,11 +80,10 @@ public class ApiVersionWebFilter implements WebFilter {
 					json = "{}";
 				}
 				response.setStatusCode(HttpStatus.PRECONDITION_FAILED);
-				Flux<Publisher<DataBuffer>> responseBody =
+				Flux<DataBuffer> responseBody =
 						Flux.just(json)
-								.map(s -> toDataBuffer(s, response.bufferFactory()))
-								.map(Flux::just);
-				return response.writeAndFlushWith(responseBody);
+								.map(s -> toDataBuffer(s, response.bufferFactory()));
+				return response.writeWith(responseBody);
 			}
 		}
 		return chain.filter(exchange);
