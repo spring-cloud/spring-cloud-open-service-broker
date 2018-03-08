@@ -62,7 +62,7 @@ public interface ServiceInstanceService {
 	default GetServiceInstanceResponse getServiceInstance(GetServiceInstanceRequest request) {
 		throw new UnsupportedOperationException("This service broker does not support retrieving service instances. " +
 				"The service broker should set 'instances_retrievable:false' in the service catalog, " +
-				"or provide an implementation of this API.");
+				"or provide an implementation of the fetch instance API.");
 	}
 	
 	/**
@@ -72,7 +72,12 @@ public interface ServiceInstanceService {
 	 * @return a {@link GetLastServiceOperationResponse} on successful processing of the request
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
 	 */
-	GetLastServiceOperationResponse getLastOperation(GetLastServiceOperationRequest request);
+	default GetLastServiceOperationResponse getLastOperation(GetLastServiceOperationRequest request) {
+		throw new UnsupportedOperationException("This service broker does not support getting the status of " +
+				"an asynchronous operation. " +
+				"If the service broker returns '202 Accepted' in response to a provision, update, or deprovision" +
+				"request, it must also provide an implementation of the get last operation API.");
+	}
 
 	/**
 	 * Delete (deprovision) a service instance.
@@ -94,5 +99,9 @@ public interface ServiceInstanceService {
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
 	 * @throws ServiceBrokerAsyncRequiredException if the broker requires asynchronous processing of the request
 	 */
-	UpdateServiceInstanceResponse updateServiceInstance(UpdateServiceInstanceRequest request);
+	default UpdateServiceInstanceResponse updateServiceInstance(UpdateServiceInstanceRequest request) {
+		throw new UnsupportedOperationException("This service broker does not support updating service instances. " +
+				"The service broker should set 'plan_updateable:false' in the service catalog, " +
+				"or provide an implementation of the update instance API.");
+	}
 }

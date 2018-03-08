@@ -58,7 +58,7 @@ public interface ServiceInstanceBindingService {
 	default GetServiceInstanceBindingResponse getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
 		throw new UnsupportedOperationException("This service broker does not support retrieving service bindings. " +
 				"The service broker should set 'bindings_retrievable:false' in the service catalog, " +
-				"or provide an implementation of this API.");
+				"or provide an implementation of the fetch binding API.");
 	}
 
 	/**
