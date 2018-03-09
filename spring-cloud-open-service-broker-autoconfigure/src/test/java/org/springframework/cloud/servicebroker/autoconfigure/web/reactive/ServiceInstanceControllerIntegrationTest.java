@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
+import java.nio.charset.Charset;
 import java.util.Map;
 
 import com.jayway.jsonpath.JsonPath;
@@ -53,6 +54,8 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
 
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceControllerIntegrationTest {
+
+	private static final Charset UTF_8 = Charset.forName("UTF-8");
 
 	private WebTestClient client;
 
@@ -244,7 +247,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> {
-					String responseBody = new String(result.getResponseBody());
+					String responseBody = new String(result.getResponseBody(), UTF_8);
 					String description = JsonPath.read(responseBody, "$.description");
 					assertThat(description).contains("planId", "serviceDefinitionId");
 				});
@@ -336,7 +339,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.expectBody()
 				.jsonPath("$").isMap()
 				.consumeWith(result -> {
-					String responseBody = new String(result.getResponseBody());
+					String responseBody = new String(result.getResponseBody(), UTF_8);
 					Map<String, Object> map = JsonPath.read(responseBody, "$");
 					assertThat(map).isEmpty();
 				});

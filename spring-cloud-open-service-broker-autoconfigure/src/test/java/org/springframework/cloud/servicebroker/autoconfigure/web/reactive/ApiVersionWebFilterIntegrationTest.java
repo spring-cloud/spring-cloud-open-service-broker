@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
+import java.nio.charset.Charset;
+
 import com.jayway.jsonpath.JsonPath;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +37,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class ApiVersionWebFilterIntegrationTest {
 
-	private final static String CATALOG_PATH = "/v2/catalog";
+	private static final String CATALOG_PATH = "/v2/catalog";
+
+	private static final Charset UTF_8 = Charset.forName("UTF-8");
 
 	@InjectMocks
 	private CatalogController controller;
@@ -53,7 +57,7 @@ public class ApiVersionWebFilterIntegrationTest {
 				.expectStatus().isEqualTo(HttpStatus.PRECONDITION_FAILED)
 				.expectBody()
 				.consumeWith(result -> {
-					String responseBody = new String(result.getResponseBody());
+					String responseBody = new String(result.getResponseBody(), UTF_8);
 					String description = JsonPath.read(responseBody, "$.description");
 					assertThat(description).contains("expected-version");
 				});
@@ -69,7 +73,7 @@ public class ApiVersionWebFilterIntegrationTest {
 				.expectStatus().isEqualTo(HttpStatus.PRECONDITION_FAILED)
 				.expectBody()
 				.consumeWith(result -> {
-					String responseBody = new String(result.getResponseBody());
+					String responseBody = new String(result.getResponseBody(), UTF_8);
 					String description = JsonPath.read(responseBody, "$.description");
 					assertThat(description).contains("expected-version");
 					assertThat(description).contains("wrong-version");

@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -97,7 +98,7 @@ public abstract class ControllerIntegrationTest {
 	}
 
 	protected void assertDescriptionContains(EntityExchangeResult<byte[]> result, String value) {
-		String responseBody = new String(result.getResponseBody());
+		String responseBody = new String(result.getResponseBody(), Charset.forName("UTF-8"));
 		String description = JsonPath.read(responseBody, "$.description");
 		assertThat(description).contains(value);
 	}
