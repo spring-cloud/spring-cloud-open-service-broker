@@ -1,3 +1,0 @@
-[[deprovisioning-services]]
-== Deprovisioning a Service
-=== Example Service Deprovisioning Bean

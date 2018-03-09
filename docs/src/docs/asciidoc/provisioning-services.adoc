@@ -1,3 +1,0 @@
-[[provisioning-services]]
-== Provisioning a Service
-=== Example Service Provisioning Bean

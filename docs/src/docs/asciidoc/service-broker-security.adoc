@@ -1,0 +1,16 @@
+[[service-broker-security]]
+== Service Broker Security
+=== Securing the /v2/* Endpoints
+The {osbapi} mandates that the Service Broker endpoints must be secured.
+This is usually done with basic authentication but some platforms may support
+other mechanisms such OAuth 2.
+
+Broker endpoints can be secured using http://projects.spring.io/spring-security/[Spring Security].
+The following example shows how this might be achieved;
+
+=== Example Spring Security Configuration
+
+[source,java,%autofit]
+----
+include::{examplesdir}/ExampleSecurityConfig.java[]
+----

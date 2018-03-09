@@ -4,11 +4,26 @@ plugins {
 
 apply plugin: 'org.asciidoctor.convert'
 
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+    }
+}
+
+dependencies {
+    compile project(":spring-cloud-open-service-broker")
+    compile("org.springframework.boot:spring-boot-starter")
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-tomcat")
+
+}
+
 asciidoctor {
 
     attributes 'revnumber': project.version,
             'branch-or-tag': project.version.endsWith('SNAPSHOT') ? 'master' : "v${project.version}",
-            'nofooter': true
+            'nofooter': true,
+            'allow-uri-read': ''
 
 //    sources {
 //        include 'index.adoc'

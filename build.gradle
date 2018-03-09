@@ -42,7 +42,7 @@ ext {
 
 description = "Spring Cloud Service Broker"
 
-configure(allprojects - project(":docs")) {
+configure(allprojects) {
 	group = "org.springframework.cloud"
 
 	apply plugin: "java"
@@ -82,7 +82,7 @@ configure(allprojects - project(":docs")) {
 
 }
 
-configure(subprojects - project(":docs")) {
+configure(subprojects) {
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
 	[compileJava, compileTestJava]*.options*.encoding = "UTF-8"

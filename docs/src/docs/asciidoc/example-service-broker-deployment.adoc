@@ -1,5 +1,12 @@
 [[example-service-broker-deployment]]
 == Example Service Broker Application
+The https://github.com/spring-cloud-samples/bookstore-service-broker/blob/master/README.adoc[Bookstore Broker example project]
+implements a sample service broker that adheres to the
+{osbapi} using the {scosb} framework. It can be deployed to either Cloud Foundry or Kubernetes,
+and can be registered as a service broker to either platform.
+
 === Deploying Example to Cloud Foundry
+https://raw.githubusercontent.com/spring-cloud-samples/bookstore-service-broker/master/deploy/cloudfoundry/README.adoc
+
 === Deploying Example to Kubernetes
-=== Deploying Example to Docker
+https://raw.githubusercontent.com/spring-cloud-samples/bookstore-service-broker/master/deploy/kubernetes/README.adoc
