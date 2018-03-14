@@ -60,7 +60,7 @@ configure(allprojects) {
 	apply from: "${rootProject.projectDir}/publish-maven.gradle"
 
 	repositories {
-		mavenCentral()
+		maven { url "https://repo.spring.io/libs-milestone" }
 	}
 
 	if (project.hasProperty("platformVersion")) {
@@ -82,7 +82,8 @@ configure(allprojects) {
 
 }
 
-configure(subprojects) {
+configure(subprojects - [project(":spring-cloud-open-service-broker-starter-webmvc"),
+						 project(":spring-cloud-open-service-broker-starter-webflux")]) {
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
 	[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
@@ -106,11 +107,29 @@ configure(subprojects) {
 			"-Xlint:deprecation",
 			"-Xlint:unchecked",
 			"-Xlint:options",
-			 "-Werror"
+			"-Werror"
 	]
 
-	repositories {
-		maven { url "https://repo.spring.io/libs-milestone" }
+	javadoc {
+		description = "Generates project-level javadoc for use in -javadoc jar"
+
+		options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
+		options.author = true
+		options.header = project.name
+		options.use = true
+		options.links(javadocLinks)
+		options.addStringOption('Xdoclint:none', '-quiet')
+	}
+
+	task sourcesJar(type: Jar, dependsOn: classes) {
+		duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+		classifier = "sources"
+		from sourceSets.main.allSource
+	}
+
+	task javadocJar(type: Jar) {
+		classifier = "javadoc"
+		from javadoc
 	}
 
 	task testsJar(type: Jar) {
@@ -119,6 +138,8 @@ configure(subprojects) {
 	}
 
 	artifacts {
+		archives sourcesJar
+		archives javadocJar
 		archives testsJar
 	}
 
@@ -173,7 +194,6 @@ configure(rootProject) {
 		from(project.tasks.findByPath(':docs:asciidoctor')) {
 			into 'reference'
 		}
-
 	}
 
 	artifacts {
