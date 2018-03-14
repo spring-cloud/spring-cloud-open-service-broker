@@ -20,6 +20,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
@@ -37,6 +38,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnBean(ServiceInstanceService.class)
+@ConditionalOnProperty(prefix = "spring.cloud.openservicebroker", name = "apiVersionCheckEnabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter(WebFluxAutoConfiguration.class)
 public class ApiVersionWebFluxAutoConfiguration {
 

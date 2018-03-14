@@ -17,10 +17,12 @@
 package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
 import org.junit.Test;
+
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.cloud.servicebroker.autoconfigure.web.TestServiceInstanceService;
+import org.springframework.cloud.servicebroker.autoconfigure.web.reactive.ApiVersionWebFilter;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
@@ -73,6 +75,17 @@ public class ApiVersionWebMvcAutoConfigurationTest {
 							.hasFieldOrPropertyWithValue("apiVersion", API_VERSION_CURRENT);
 					assertThat(context).hasSingleBean(ApiVersionInterceptor.class);
 					assertThat(context).hasSingleBean(ApiVersionWebMvcConfigurerAdapter.class);
+				});
+	}
+
+	@Test
+	public void apiVersionCheckIsDisabled() {
+		webApplicationContextRunner()
+				.withUserConfiguration(ServicesConfiguration.class)
+				.withPropertyValues("spring.cloud.openservicebroker.apiVersionCheckEnabled=false")
+				.run((context) -> {
+					assertThat(context).doesNotHaveBean(BrokerApiVersion.class);
+					assertThat(context).doesNotHaveBean(ApiVersionWebFilter.class);
 				});
 	}
 

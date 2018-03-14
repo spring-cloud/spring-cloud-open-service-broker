@@ -74,6 +74,17 @@ public class ApiVersionWebFluxAutoConfigurationTest {
 				});
 	}
 
+	@Test
+	public void apiVersionCheckIsDisabled() {
+		webApplicationContextRunner()
+				.withUserConfiguration(ServicesConfiguration.class)
+				.withPropertyValues("spring.cloud.openservicebroker.apiVersionCheckEnabled=false")
+				.run((context) -> {
+					assertThat(context).doesNotHaveBean(BrokerApiVersion.class);
+					assertThat(context).doesNotHaveBean(ApiVersionWebFilter.class);
+				});
+	}
+
 	private ReactiveWebApplicationContextRunner webApplicationContextRunner() {
 		return new ReactiveWebApplicationContextRunner()
 				.withConfiguration(AutoConfigurations.of(ApiVersionWebFluxAutoConfiguration.class));
