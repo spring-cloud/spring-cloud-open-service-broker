@@ -31,13 +31,13 @@ dependencyManagement {
 }
 
 dependencies {
-	compile project(":spring-cloud-open-service-broker")
+	compile project(":spring-cloud-open-service-broker-core")
 	compile("org.springframework.boot:spring-boot-starter")
 	compile("org.springframework.boot:spring-boot-starter-security")
 	optional("org.springframework.boot:spring-boot-starter-web")
 	optional("org.springframework.boot:spring-boot-starter-webflux")
 
-	testCompile project(path: ":spring-cloud-open-service-broker", configuration: "testOutput")
+	testCompile project(path: ":spring-cloud-open-service-broker-core", configuration: "testOutput")
 
 	testCompile("org.springframework.boot:spring-boot-starter-test")
 	testCompile("org.springframework.cloud:spring-cloud-starter-contract-verifier")

@@ -11,7 +11,7 @@ dependencyManagement {
 }
 
 dependencies {
-    compile project(":spring-cloud-open-service-broker")
+    compile project(":spring-cloud-open-service-broker-core")
     compile("org.springframework.boot:spring-boot-starter")
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-tomcat")

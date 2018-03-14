@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-description = "Spring Cloud Open Service Broker"
+description = "Spring Cloud Open Service Broker Core"
 
 dependencyManagement {
 	imports {
