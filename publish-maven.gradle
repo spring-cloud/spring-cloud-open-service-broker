@@ -36,14 +36,14 @@ def customizePom(pom, gradleProject) {
 			}
 
 			scm {
-				url = "https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker"
-				connection = "scm:git:https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker.git"
-				developerConnection = "scm:git:https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker.git"
+				url = "https://github.com/spring-cloud/spring-cloud-open-service-broker"
+				connection = "scm:git:https://github.com/spring-cloud/spring-cloud-open-service-broker.git"
+				developerConnection = "scm:git:https://github.com/spring-cloud/spring-cloud-open-service-broker.git"
 			}
 
 			issueManagement {
 				system = "GitHub"
-				url = "https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker/issues"
+				url = "https://github.com/spring-cloud/spring-cloud-open-service-broker/issues"
 			}
 
 			developers {
@@ -51,6 +51,11 @@ def customizePom(pom, gradleProject) {
 					id = "sfrederick"
 					name = "Scott Frederick"
 					email = "sfrederick@pivotal.io"
+				}
+				developer {
+					id = "royclarkson"
+					name = "Roy Clarkson"
+					email = "rclarkson@pivotal.io"
 				}
 			}
 		}
