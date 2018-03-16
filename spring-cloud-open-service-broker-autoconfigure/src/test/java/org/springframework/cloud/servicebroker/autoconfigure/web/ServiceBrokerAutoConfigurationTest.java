@@ -17,6 +17,7 @@
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import org.junit.Test;
+
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
@@ -84,6 +85,35 @@ public class ServiceBrokerAutoConfigurationTest {
 				});
 	}
 
+	@Test
+	public void servicesAreCreatedFromCatalogProperties() {
+		this.contextRunner
+				.withUserConfiguration(NoCatalogBeanConfiguration.class)
+				.withPropertyValues(
+						"spring.cloud.openservicebroker.catalog.services[0].id=service-one-id",
+						"spring.cloud.openservicebroker.catalog.services[0].name=Service One",
+						"spring.cloud.openservicebroker.catalog.services[0].description=Description for Service One",
+						"spring.cloud.openservicebroker.catalog.services[0].plans[0].id=plan-one-id",
+						"spring.cloud.openservicebroker.catalog.services[0].plans[0].name=Plan One",
+						"spring.cloud.openservicebroker.catalog.services[0].plans[0].description=Description for Plan One")
+				.run((context) -> {
+					assertThat(context).hasSingleBean(Catalog.class);
+					assertThat(context.getBean(Catalog.class).getServiceDefinitions().get(0).getId()).isEqualTo("service-one-id");
+					
+					assertThat(context)
+							.getBean(CatalogService.class)
+							.isExactlyInstanceOf(BeanCatalogService.class);
+
+					assertThat(context)
+							.getBean(ServiceInstanceBindingService.class)
+							.isExactlyInstanceOf(NonBindableServiceInstanceBindingService.class);
+
+					assertThat(context)
+							.getBean(ServiceInstanceService.class)
+							.isExactlyInstanceOf(TestServiceInstanceService.class);
+				});
+	}
+
 	@Configuration
 	public static class CatalogBeanConfiguration {
 		@Bean
@@ -120,6 +150,14 @@ public class ServiceBrokerAutoConfigurationTest {
 		@Bean
 		public Catalog catalog() {
 			return Catalog.builder().build();
+		}
+	}
+
+	@Configuration
+	public static class NoCatalogBeanConfiguration {
+		@Bean
+		public ServiceInstanceService serviceInstanceService() {
+			return new TestServiceInstanceService();
 		}
 	}
 

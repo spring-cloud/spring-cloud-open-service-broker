@@ -34,6 +34,7 @@ dependencies {
 	compile project(":spring-cloud-open-service-broker-core")
 	compile("org.springframework.boot:spring-boot-starter")
 	compile("org.springframework.boot:spring-boot-starter-security")
+	compileOnly("org.springframework.boot:spring-boot-configuration-processor")
 	optional("org.springframework.boot:spring-boot-starter-web")
 	optional("org.springframework.boot:spring-boot-starter-webflux")
 
