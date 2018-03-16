@@ -19,6 +19,8 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.BeanCatalogService;
 import org.springframework.cloud.servicebroker.service.CatalogService;
@@ -41,7 +43,21 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnBean({ServiceInstanceService.class})
+@EnableConfigurationProperties(ServiceBrokerProperties.class)
 public class ServiceBrokerAutoConfiguration {
+
+	private final ServiceBrokerProperties serviceBrokerProperties;
+
+	public ServiceBrokerAutoConfiguration(ServiceBrokerProperties serviceBrokerProperties) {
+		this.serviceBrokerProperties = serviceBrokerProperties;
+	}
+
+	@Bean
+	@ConditionalOnMissingBean(Catalog.class)
+	@ConditionalOnProperty(prefix = "spring.cloud.openservicebroker.catalog.services[0]", name = "id")
+	public Catalog catalog() {
+		return this.serviceBrokerProperties.getCatalog().toModel();
+	}
 
 	@Bean
 	@ConditionalOnMissingBean(CatalogService.class)

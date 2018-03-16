@@ -16,11 +16,6 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,6 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * A service offered by this broker.
@@ -278,11 +278,24 @@ public class ServiceDefinition {
 			return this;
 		}
 
+		public ServiceDefinitionBuilder plans(List<Plan> plans) {
+			this.plans.addAll(plans);
+			return this;
+		}
+
 		public ServiceDefinitionBuilder tags(String... tags) {
 			if (this.tags == null) {
 				this.tags = new ArrayList<>();
 			}
 			Collections.addAll(this.tags, tags);
+			return this;
+		}
+
+		public ServiceDefinitionBuilder tags(List<String> tags) {
+			if (this.tags == null) {
+				this.tags = new ArrayList<>();
+			}
+			this.tags.addAll(tags);
 			return this;
 		}
 
@@ -307,6 +320,14 @@ public class ServiceDefinition {
 				this.requires = new ArrayList<>();
 			}
 			Collections.addAll(this.requires, requires);
+			return this;
+		}
+
+		public ServiceDefinitionBuilder requires(List<String> requires) {
+			if (this.requires == null) {
+				this.requires = new ArrayList<>();
+			}
+			this.requires.addAll(requires);
 			return this;
 		}
 
