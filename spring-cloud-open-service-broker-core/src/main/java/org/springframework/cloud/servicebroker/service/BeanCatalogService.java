@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * An implementation of the CatalogService that allows the Catalog to be specified as a Spring Bean.
@@ -33,7 +32,6 @@ public class BeanCatalogService implements CatalogService {
 	private final Catalog catalog;
 	private final Map<String,ServiceDefinition> serviceDefs = new HashMap<>();
 
-	@Autowired
 	public BeanCatalogService(Catalog catalog) {
 		this.catalog = catalog;
 		initializeMap();
