@@ -1,15 +1,15 @@
 [[introduction]]
 == Introduction
-The {osbapi} defines an HTTP interface between the services marketplace of a platform and service brokers. Service Brokers
-are responsible for;
+The {osbapi-href} defines an HTTP interface between the services marketplace of a platform and a service broker.
+
+Service brokers are responsible for:
 
 * Advertising a catalog of their service offerings and plans
-* Acting on requests from the marketplace for
-  - provisioning (creating or updating) a service
-  - creating a binding between a service and client application
-  - unbinding or deleting a binding between a service and client application
-  - deprovisioning (deleting) a service
+* Provisioning (creating or updating) service instances
+* Creating bindings between a service instance and a client application
+* Deleting bindings between a service instance and a client application
+* Deprovisioning (deleting) service instances
 
-Scaffolding for the broker side of the {osbapi} is implemented by the {scosb} project, by providing the required Spring MVC controllers,
-domain objects and configuration. Services authored using {springboot} and {scosb} can easily implement the endpoints
-by providing Spring beans that implement the https://docs.spring.io/spring-cloud-service-broker/docs/current/apidocs/[appropriate interface].
+The {scosb-href} project provides the scaffolding for an {osbapi-href}-compliant service broker by implementing the
+required Spring web controllers, domain objects and configuration. Service brokers authors can simply provide Spring
+beans that implement the {scosb-api-services}package-summary.html[appropriate interfaces].

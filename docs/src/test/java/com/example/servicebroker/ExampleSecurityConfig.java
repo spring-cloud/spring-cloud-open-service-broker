@@ -1,4 +1,4 @@
-package org.springframework.cloud.servicebroker.example;
+package com.example.servicebroker;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,6 @@ public class ExampleSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-				.csrf().disable()
 				.authorizeRequests()
 				.antMatchers("/v2/**").hasRole("ADMIN")
 				.and()
@@ -29,9 +28,10 @@ public class ExampleSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	private UserDetails adminUser() {
-		return User.withUsername("admin")
-				   .password("supersecret")
-				   .roles("ADMIN")
-				   .build();
+		return User
+				.withUsername("admin")
+				.password("supersecret")
+				.roles("ADMIN")
+				.build();
 	}
 }

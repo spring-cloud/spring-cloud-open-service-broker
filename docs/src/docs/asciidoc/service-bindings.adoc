@@ -1,0 +1,50 @@
+[[service-bindings]]
+== Service Bindings
+Service brokers can provide information to a consumer of a service instance via a {osbspec}#binding[service binding].
+Service bindings are often used to expose credentials for service instance resources to an application.
+
+An implementation of the {scosb-api-services}ServiceInstanceBindingService.html[`ServiceInstanceBindingService`]
+interface must be provided by the service broker if the `bindable` field is set to `true` for any plan in the
+service catalog. Otherwise, the binding methods of the service broker will not be called by the platform, and
+a default implementation of this interface can be used. Each method receives a single Java object parameter
+containing all details of the request from the platform, and returns a Java object value providing details of
+the operation to the platform.
+
+=== Service Binding Creation
+An implementation of the
+{scosb-api-services}ServiceInstanceBindingService.html#createServiceInstanceBinding-org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest-[createServiceInstanceBinding()]
+method must be provided by the service broker.
+
+Two types of bindings are supported:
+
+* App bindings can be used to provide credentials, log drains, and volume services to applications.
+* Route bindings can be used to provide routes for the platform to use when proxying requests.
+
+The response from this method allows one of two Java object types to be returned, reflecting the two types of
+bindings supported.
+
+Service brokers can generate one set of credentials for all binding requests, or provide unique credentials for each
+binding request.
+
+=== Service Binding Deletion
+An implementation of the
+{scosb-api-services}ServiceInstanceBindingService.html#deleteServiceInstanceBinding-org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest-[deleteServiceInstanceBinding()]
+method must be provided by the service broker.
+
+Any credentials provisioned in the create operation should be deprovisioned by the delete operation.
+
+=== Service Binding Retrieval
+An implementation of the
+{scosb-api-services}ServiceInstanceBindingService.html#getServiceInstanceBinding-org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest-[getServiceInstanceBinding()]
+method must be provided by the service broker if the `bindings_retrievable` field is set to `true` in the
+services catalog. Otherwise, this method will never be called by the platform and the default implementation
+in the interface can be used.
+
+Service brokers are responsible for maintaining any service binding state necessary to support the retrieval operation.
+
+=== Example Implementation
+
+[source,java,%autofit]
+----
+include::{examples-dir}/ExampleServiceBindingService.java[]
+----

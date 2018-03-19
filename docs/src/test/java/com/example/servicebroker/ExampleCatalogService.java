@@ -1,4 +1,4 @@
-package org.springframework.cloud.servicebroker.example;
+package com.example.servicebroker;
 
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
@@ -7,13 +7,12 @@ import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExampleCatalog implements CatalogService {
+public class ExampleCatalogService implements CatalogService {
 
 	@Override
 	public Catalog getCatalog() {
-
 		return Catalog.builder()
-		  .serviceDefinitions(getServiceDefinition("exampleservice1"))
+		  .serviceDefinitions(getServiceDefinition("example-service"))
 		  .build();
 	}
 
@@ -31,7 +30,7 @@ public class ExampleCatalog implements CatalogService {
 
 	private Plan getPlan() {
 		return Plan.builder()
-		   .id("simple-plan-1")
+		   .id("simple-plan")
 		   .name("standard")
 		   .description("A simple plan")
 		   .free(true)

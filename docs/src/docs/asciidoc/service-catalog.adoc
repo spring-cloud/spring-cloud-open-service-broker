@@ -1,0 +1,29 @@
+[[service-catalog]]
+== Advertising Services
+The {osbspec}#catalog-management[service broker catalog] provides a set of metadata describing the available services
+along with attributes such as cost and capabilities. The catalog is made available to the platform's services
+marketplace via the service broker `/v2/catalog` endpoint.
+
+The service broker can either provide a Spring bean of type
+{scosb-api}/org/springframework/cloud/servicebroker/model/catalog/Catalog.html[Catalog] or implement the service
+{scosb-api-services}CatalogService.html[CatalogService].
+
+=== Providing a Catalog Bean
+
+The simplest way to expose the service broker catalog is to create a Spring bean and contribute it to the Spring
+application context. This can be done in a Spring `@Configuration` class as in this example:
+
+[source,java,%autofit]
+----
+include::{examples-dir}/ExampleCatalogConfiguration.java[]
+----
+
+=== Implementing a Catalog Service
+
+A service broker can take more control over the catalog by implementing the `CatalogService` interface.
+This might be required if some details of the catalog metadata need to be read from the environment or from an external data source.
+
+[source,java,%autofit]
+----
+include::{examples-dir}/ExampleCatalogService.java[]
+----
