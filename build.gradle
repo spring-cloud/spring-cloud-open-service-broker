@@ -30,8 +30,12 @@ buildscript {
 }
 
 ext {
-	springVersion = "5.0.4.RELEASE"
-	springBootVersion = "2.0.0.RELEASE"
+	if (!project.hasProperty("springVersion")) {
+		ext.springVersion = "5.0.4.RELEASE"
+	}
+	if (!project.hasProperty("springBootVersion")) {
+		ext.springBootVersion = "2.0.0.RELEASE"
+	}
 	springCloudContractVersion = "1.2.2.RELEASE"
 
 	javadocLinks = [
@@ -61,6 +65,12 @@ configure(allprojects) {
 
 	repositories {
 		maven { url "https://repo.spring.io/libs-milestone" }
+	}
+
+	if (project.hasProperty("springVersion") || project.hasProperty("springBootVersion")) {
+		repositories {
+			maven { url "https://repo.spring.io/libs-snapshot" }
+		}
 	}
 
 	if (project.hasProperty("platformVersion")) {
