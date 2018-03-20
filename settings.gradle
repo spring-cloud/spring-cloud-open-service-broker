@@ -1,3 +1,5 @@
+rootProject.name = "spring-cloud-open-service-broker"
+
 include ":spring-cloud-open-service-broker-core"
 include ":spring-cloud-open-service-broker-autoconfigure"
 include ":spring-cloud-open-service-broker-starter-webmvc"
