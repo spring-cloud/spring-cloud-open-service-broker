@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    openservicebroker:
+      catalog:
+        services:
+        - description: Description for Service One
+          id: service-one-id
+          name: Service One
+          plans:
+          - description: Description for Plan One
+            id: plan-one-id
+            name: Plan One

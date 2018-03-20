@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,9 +25,12 @@ import org.junit.rules.ExpectedException;
 
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.env.YamlPropertySourceLoader;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.PropertySource;
+import org.springframework.core.io.Resource;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,6 +52,20 @@ public class ServiceBrokerPropertiesValidationTest {
 	public void bindMinimumValidProperties() {
 		this.context.register(ServiceBrokerPropertiesConfiguration.class);
 		TestPropertySourceUtils.addPropertiesFilesToEnvironment(this.context, "classpath:catalog-minimal.properties");
+		validateMinimumCatalog();
+	}
+
+	@Test
+	public void bindMinimumValidYaml() throws Exception {
+		this.context.register(ServiceBrokerPropertiesConfiguration.class);
+		Resource resource = context.getResource("classpath:catalog-minimal.yml");
+		YamlPropertySourceLoader sourceLoader = new YamlPropertySourceLoader();
+		List<PropertySource<?>> properties = sourceLoader.load("catalog", resource);
+		context.getEnvironment().getPropertySources().addFirst(properties.get(0));
+		validateMinimumCatalog();
+	}
+
+	private void validateMinimumCatalog() {
 		this.context.refresh();
 		ServiceBrokerProperties properties = this.context.getBean(ServiceBrokerProperties.class);
 		assertThat(properties.getCatalog()).isNotNull();
