@@ -36,10 +36,6 @@ class MethodSchema {
 		return this.parameters;
 	}
 
-	public void setParameters(Map<String, Object> parameters) {
-		this.parameters.putAll(parameters);
-	}
-
 	public org.springframework.cloud.servicebroker.model.catalog.MethodSchema toModel() {
 		return org.springframework.cloud.servicebroker.model.catalog.MethodSchema.builder()
 				.parameters(this.parameters)

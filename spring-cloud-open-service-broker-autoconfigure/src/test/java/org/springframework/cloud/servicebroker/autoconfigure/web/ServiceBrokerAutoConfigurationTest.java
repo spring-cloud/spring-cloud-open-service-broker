@@ -98,8 +98,15 @@ public class ServiceBrokerAutoConfigurationTest {
 						"spring.cloud.openservicebroker.catalog.services[0].plans[0].description=Description for Plan One")
 				.run((context) -> {
 					assertThat(context).hasSingleBean(Catalog.class);
-					assertThat(context.getBean(Catalog.class).getServiceDefinitions().get(0).getId()).isEqualTo("service-one-id");
-					
+					Catalog catalog = context.getBean(Catalog.class);
+					assertThat(catalog.getServiceDefinitions()).hasSize(1);
+					assertThat(catalog.getServiceDefinitions().get(0).getId()).isEqualTo("service-one-id");
+					assertThat(catalog.getServiceDefinitions().get(0).getName()).isEqualTo("Service One");
+					assertThat(catalog.getServiceDefinitions().get(0).getDescription()).isEqualTo("Description for Service One");
+					assertThat(catalog.getServiceDefinitions().get(0).getPlans()).hasSize(1);
+					assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(0).getId()).isEqualTo("plan-one-id");
+					assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(0).getName()).isEqualTo("Plan One");
+					assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
 					assertThat(context)
 							.getBean(CatalogService.class)
 							.isExactlyInstanceOf(BeanCatalogService.class);

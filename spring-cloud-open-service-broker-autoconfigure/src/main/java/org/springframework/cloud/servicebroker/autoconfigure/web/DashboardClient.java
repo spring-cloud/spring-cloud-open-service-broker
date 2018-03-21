@@ -41,7 +41,7 @@ class DashboardClient {
 	private String redirectUri;
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -49,7 +49,7 @@ class DashboardClient {
 	}
 
 	public String getSecret() {
-		return secret;
+		return this.secret;
 	}
 
 	public void setSecret(String secret) {
@@ -57,7 +57,7 @@ class DashboardClient {
 	}
 
 	public String getRedirectUri() {
-		return redirectUri;
+		return this.redirectUri;
 	}
 
 	public void setRedirectUri(String redirectUri) {

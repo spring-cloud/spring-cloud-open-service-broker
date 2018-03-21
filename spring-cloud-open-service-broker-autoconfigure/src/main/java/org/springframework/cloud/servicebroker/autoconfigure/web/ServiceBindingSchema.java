@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+
 /**
  * Service binding JSON Schemas.
  *
@@ -28,10 +30,11 @@ class ServiceBindingSchema {
 	/**
 	 * The JSON schema for configuration parameters when creating a service binding.
 	 */
+	@NestedConfigurationProperty
 	private MethodSchema create;
 
 	public MethodSchema getCreate() {
-		return create;
+		return this.create;
 	}
 
 	public void setCreate(MethodSchema create) {

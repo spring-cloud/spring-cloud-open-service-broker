@@ -69,9 +69,11 @@ public class ServiceBrokerPropertiesValidationTest {
 		this.context.refresh();
 		ServiceBrokerProperties properties = this.context.getBean(ServiceBrokerProperties.class);
 		assertThat(properties.getCatalog()).isNotNull();
+		assertThat(properties.getCatalog().getServices()).hasSize(1);
 		assertThat(properties.getCatalog().getServices().get(0).getId()).isEqualTo("service-one-id");
 		assertThat(properties.getCatalog().getServices().get(0).getName()).isEqualTo("Service One");
 		assertThat(properties.getCatalog().getServices().get(0).getDescription()).isEqualTo("Description for Service One");
+		assertThat(properties.getCatalog().getServices().get(0).getPlans()).hasSize(1);
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getId()).isEqualTo("plan-one-id");
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getName()).isEqualTo("Plan One");
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
@@ -93,6 +95,7 @@ public class ServiceBrokerPropertiesValidationTest {
 		this.context.refresh();
 		ServiceBrokerProperties properties = this.context.getBean(ServiceBrokerProperties.class);
 		assertThat(properties.getCatalog()).isNotNull();
+		assertThat(properties.getCatalog().getServices()).hasSize(2);
 		assertThat(properties.getCatalog().getServices().get(0).getId()).isEqualTo("service-one-id");
 		assertThat(properties.getCatalog().getServices().get(0).getName()).isEqualTo("Service One");
 		assertThat(properties.getCatalog().getServices().get(0).getDescription()).isEqualTo("Description for Service One");
@@ -106,6 +109,7 @@ public class ServiceBrokerPropertiesValidationTest {
 		assertThat(properties.getCatalog().getServices().get(0).getDashboardClient().getId()).isEqualTo("dashboard-id");
 		assertThat(properties.getCatalog().getServices().get(0).getDashboardClient().getSecret()).isEqualTo("dashboard-secret");
 		assertThat(properties.getCatalog().getServices().get(0).getDashboardClient().getRedirectUri()).isEqualTo("dashboard-redirect-uri");
+		assertThat(properties.getCatalog().getServices().get(0).getPlans()).hasSize(2);
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getId()).isEqualTo("plan-one-id");
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getName()).isEqualTo("Plan One");
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
@@ -124,6 +128,7 @@ public class ServiceBrokerPropertiesValidationTest {
 		assertThat(properties.getCatalog().getServices().get(1).getId()).isEqualTo("service-two-id");
 		assertThat(properties.getCatalog().getServices().get(1).getName()).isEqualTo("Service Two");
 		assertThat(properties.getCatalog().getServices().get(1).getDescription()).isEqualTo("Description for Service Two");
+		assertThat(properties.getCatalog().getServices().get(1).getPlans()).hasSize(1);
 		assertThat(properties.getCatalog().getServices().get(1).getPlans().get(0).getId()).isEqualTo("plan-one-id");
 		assertThat(properties.getCatalog().getServices().get(1).getPlans().get(0).getName()).isEqualTo("Plan One");
 		assertThat(properties.getCatalog().getServices().get(1).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");

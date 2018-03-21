@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+
 /**
  * JSON Schemas available for a Plan.
  *
@@ -28,15 +30,17 @@ class Schemas {
 	/**
 	 * The schemas available on a service instance.
 	 */
+	@NestedConfigurationProperty
 	private ServiceInstanceSchema serviceInstance;
 
 	/**
 	 * The schemas available on a service binding.
 	 */
+	@NestedConfigurationProperty
 	private ServiceBindingSchema serviceBinding;
 
 	public ServiceInstanceSchema getServiceInstance() {
-		return serviceInstance;
+		return this.serviceInstance;
 	}
 
 	public void setServiceInstance(ServiceInstanceSchema serviceInstance) {
@@ -44,7 +48,7 @@ class Schemas {
 	}
 
 	public ServiceBindingSchema getServiceBinding() {
-		return serviceBinding;
+		return this.serviceBinding;
 	}
 
 	public void setServiceBinding(ServiceBindingSchema serviceBinding) {

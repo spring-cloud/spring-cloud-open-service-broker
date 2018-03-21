@@ -20,6 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.NotEmpty;
+
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+
 /**
  * The catalog of services offered by the service broker.
  *
@@ -32,14 +36,12 @@ class Catalog {
 	/**
 	 * A list of service offerings provided by the service broker.
 	 */
+	@NestedConfigurationProperty
+	@NotEmpty
 	private List<ServiceDefinition> services = new ArrayList<>();
 
 	public List<ServiceDefinition> getServices() {
 		return this.services;
-	}
-
-	public void setServices(List<ServiceDefinition> services) {
-		this.services.addAll(services);
 	}
 
 	public org.springframework.cloud.servicebroker.model.catalog.Catalog toModel() {

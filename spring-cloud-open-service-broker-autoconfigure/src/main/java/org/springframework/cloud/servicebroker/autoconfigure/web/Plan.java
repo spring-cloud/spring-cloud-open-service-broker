@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * A service plan available for a ServiceDefinition
@@ -58,6 +59,7 @@ class Plan {
 	/**
 	 * The schemas for this plan.
 	 */
+	@NestedConfigurationProperty
 	private Schemas schemas;
 
 	/**
@@ -72,7 +74,7 @@ class Plan {
 	private Boolean free = false;
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -80,7 +82,7 @@ class Plan {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -88,7 +90,7 @@ class Plan {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -96,7 +98,7 @@ class Plan {
 	}
 
 	public Map<String, Object> getMetadata() {
-		return metadata;
+		return this.metadata;
 	}
 
 	public void setMetadata(Map<String, Object> metadata) {
@@ -104,7 +106,7 @@ class Plan {
 	}
 
 	public Schemas getSchemas() {
-		return schemas;
+		return this.schemas;
 	}
 
 	public void setSchemas(Schemas schemas) {
@@ -112,7 +114,7 @@ class Plan {
 	}
 
 	public Boolean isBindable() {
-		return bindable;
+		return this.bindable;
 	}
 
 	public void setBindable(Boolean bindable) {
@@ -120,7 +122,7 @@ class Plan {
 	}
 
 	public Boolean isFree() {
-		return free;
+		return this.free;
 	}
 
 	public void setFree(Boolean free) {

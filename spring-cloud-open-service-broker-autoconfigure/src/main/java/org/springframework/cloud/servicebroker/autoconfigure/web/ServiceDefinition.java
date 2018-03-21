@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires;
 
 /**
@@ -94,16 +95,18 @@ class ServiceDefinition {
 	/**
 	 * Data necessary to activate the Dashboard SSO feature for this service.
 	 */
+	@NestedConfigurationProperty
 	private DashboardClient dashboardClient;
 
 	/**
 	 * A list of plans for this service.
 	 */
+	@NestedConfigurationProperty
 	@NotEmpty
 	private final List<Plan> plans = new ArrayList<>();
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -111,7 +114,7 @@ class ServiceDefinition {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -119,7 +122,7 @@ class ServiceDefinition {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -127,7 +130,7 @@ class ServiceDefinition {
 	}
 
 	public Boolean isBindable() {
-		return bindable;
+		return this.bindable;
 	}
 
 	public void setBindable(Boolean bindable) {
@@ -135,7 +138,7 @@ class ServiceDefinition {
 	}
 
 	public Boolean isPlanUpdateable() {
-		return planUpdateable;
+		return this.planUpdateable;
 	}
 
 	public void setPlanUpdateable(Boolean planUpdateable) {
@@ -143,7 +146,7 @@ class ServiceDefinition {
 	}
 
 	public Boolean isInstancesRetrievable() {
-		return instancesRetrievable;
+		return this.instancesRetrievable;
 	}
 
 	public void setInstancesRetrievable(Boolean instancesRetrievable) {
@@ -151,7 +154,7 @@ class ServiceDefinition {
 	}
 
 	public Boolean isBindingsRetrievable() {
-		return bindingsRetrievable;
+		return this.bindingsRetrievable;
 	}
 
 	public void setBindingsRetrievable(Boolean bindingsRetrievable) {
@@ -159,31 +162,19 @@ class ServiceDefinition {
 	}
 
 	public List<String> getTags() {
-		return tags;
-	}
-
-	public void setTags(List<String> tags) {
-		this.tags.addAll(tags);
+		return this.tags;
 	}
 
 	public Map<String, Object> getMetadata() {
-		return metadata;
-	}
-
-	public void setMetadata(Map<String, Object> metadata) {
-		this.metadata.putAll(metadata);
+		return this.metadata;
 	}
 
 	public List<String> getRequires() {
-		return requires;
-	}
-
-	public void setRequires(List<String> requires) {
-		this.requires.addAll(requires);
+		return this.requires;
 	}
 
 	public DashboardClient getDashboardClient() {
-		return dashboardClient;
+		return this.dashboardClient;
 	}
 
 	public void setDashboardClient(DashboardClient dashboardClient) {
@@ -191,11 +182,7 @@ class ServiceDefinition {
 	}
 
 	public List<Plan> getPlans() {
-		return plans;
-	}
-
-	public void setPlans(List<Plan> plans) {
-		this.plans.addAll(plans);
+		return this.plans;
 	}
 
 	/**
