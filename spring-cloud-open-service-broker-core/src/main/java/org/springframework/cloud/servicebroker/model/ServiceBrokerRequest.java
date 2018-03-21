@@ -36,21 +36,10 @@ public class ServiceBrokerRequest {
 	public static final String PLAN_ID_PARAMETER = "plan_id";
 	public static final String PLATFORM_INSTANCE_ID_VARIABLE = "platformInstanceId";
 
-	/**
-	 * The ID used to identify the platform instance when the service broker is registered
-	 * to multiple instances. Will be <code>null</code> if the service broker is not registered with an instance ID
-	 * in the registered URL.
-	 */
 	protected transient String platformInstanceId;
 
-	/**
-	 * The API info endpoint of the platform instance making the call to the service broker.
-	 */
 	protected transient String apiInfoLocation;
 
-	/**
-	 * The identity of the of the user that initiated the request from the platform.
-	 */
 	protected transient Context originatingIdentity;
 
 	public ServiceBrokerRequest() {
@@ -62,26 +51,65 @@ public class ServiceBrokerRequest {
 		this.originatingIdentity = originatingIdentity;
 	}
 
+	/**
+	 * Get the ID used to identify the platform instance.
+	 *
+	 * This is useful when the service broker is registered to multiple instances of a platform.
+	 *
+	 * This value is set from any path element that precedes {@literal /v2} in the request from the platform.
+	 * Will be {@literal null} if the service broker is not registered with an instance ID in the registration URL.
+	 *
+	 * @return the platform instance ID, or {@literal null} if not provided
+	 */
 	public String getPlatformInstanceId() {
 		return this.platformInstanceId;
 	}
 
+	/**
+	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this
+	 * type and set all field values.
+	 */
 	public void setPlatformInstanceId(String platformInstanceId) {
 		this.platformInstanceId = platformInstanceId;
 	}
 
+	/**
+	 * Get the location of the API info endpoint of the platform instance.
+	 *
+	 * This endpoint can be used to retrieve additional information about the platform making the request on platforms
+	 * that support the header.
+	 *
+	 * This value is set from the {@literal X-Api-Info-Location} header in the request from the platform.
+	 *
+	 * @return the API info endpoint location, or {@literal null} if not provided
+	 */
 	public String getApiInfoLocation() {
 		return this.apiInfoLocation;
 	}
 
+	/**
+	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this
+	 * type and set all field values.
+	 */
 	public void setApiInfoLocation(String apiInfoLocation) {
 		this.apiInfoLocation = apiInfoLocation;
 	}
 
+	/**
+	 * Get the identity of the user that initiated the request from the platform.
+	 *
+	 * This value is set from the {@literal X-Broker-API-Originating-Identity} header in the request from the platform.
+	 *
+	 * @return the user identity, or {@literal null} if not provided
+	 */
 	public Context getOriginatingIdentity() {
 		return this.originatingIdentity;
 	}
 
+	/**
+	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this
+	 * type and set all field values.
+	 */
 	public void setOriginatingIdentity(Context originatingIdentity) {
 		this.originatingIdentity = originatingIdentity;
 	}

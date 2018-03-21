@@ -1,20 +1,20 @@
 plugins {
-    id 'org.asciidoctor.convert'
+	id 'org.asciidoctor.convert'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+	}
 }
 
 apply plugin: 'org.asciidoctor.convert'
 
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
-    }
-}
-
 dependencies {
-    compile project(":spring-cloud-open-service-broker-core")
-    compile("org.springframework.boot:spring-boot-starter")
-    compile("org.springframework.boot:spring-boot-starter-security")
-    compile("org.springframework.boot:spring-boot-starter-tomcat")
+	compile project(":spring-cloud-open-service-broker-core")
+	compile("org.springframework.boot:spring-boot-starter")
+	compile("org.springframework.boot:spring-boot-starter-security")
+	compile("org.springframework.boot:spring-boot-starter-tomcat")
 }
 
 asciidoctor {

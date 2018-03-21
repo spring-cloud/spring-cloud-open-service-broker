@@ -28,15 +28,8 @@ import java.util.Objects;
  * @author Scott Frederick
  */
 public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServiceInstanceRequest {
-	/**
-	 * Parameters passed by the user in the form of a JSON structure. The service broker is responsible
-	 * for validating the contents of the parameters for correctness or applicability.
-	 */
 	protected final Map<String, Object> parameters;
 
-	/**
-	 * Platform specific contextual information under which the service instance is to be provisioned or updated.
-	 */
 	private final Context context;
 
 	protected AsyncParameterizedServiceInstanceRequest() {
@@ -52,14 +45,52 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 		this.context = context;
 	}
 
-	public <T> T getParameters(Class<T> cls) {
-		return ParameterBeanMapper.mapParametersToBean(parameters, cls);
-	}
-
+	/**
+	 * Get any parameters passed by the user, with the user-supplied JSON structure converted to a {@literal Map}.
+	 *
+	 * <p>
+	 * This value is set from the {@literal parameters} field in the body of the request from the platform.
+	 *
+	 * <p>
+	 * The platform will pass the user-supplied JSON structure to the service broker as-is. The service broker is
+	 * responsible for validating the contents of the parameters for correctness or applicability.
+	 *
+	 * @return the instantiated and populated object
+	 */
 	public Map<String, Object> getParameters() {
 		return this.parameters;
 	}
 
+	/**
+	 * Get any parameters passed by the user, with the user-supplied JSON structure mapped to fields of the specified
+	 * object type.
+	 *
+	 * <p>
+	 * This value is set from the {@literal parameters} field in the body of the request from the platform.
+	 *
+	 * <p>
+	 * An object of the specified type will be instantiated, and value from the parameters JSON will be mapped
+	 * to the object using Java Bean mapping rules.
+	 *
+	 * <p>
+	 * The platform will pass the user-supplied JSON structure to the service broker as-is. The service broker is
+	 * responsible for validating the contents of the parameters for correctness or applicability.
+	 *
+	 * @param cls the type of object to map the parameter key/value pairs to
+	 * @return the instantiated and populated object
+	 */
+	public <T> T getParameters(Class<T> cls) {
+		return ParameterBeanMapper.mapParametersToBean(parameters, cls);
+	}
+
+	/**
+	 * Get the platform-specific contextual information for the service instance.
+	 *
+	 * <p>
+	 * This value is set from the {@literal context} field in the body of the request from the platform.
+	 *
+	 * @return the contextual information
+	 */
 	public Context getContext() {
 		return this.context;
 	}

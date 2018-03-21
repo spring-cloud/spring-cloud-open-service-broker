@@ -17,7 +17,9 @@
 package org.springframework.cloud.servicebroker.model.instance;
 
 /**
- * The list of acceptable states for a request that is being processed asynchronously.
+ * The list of acceptable states for an operation that is being processed asynchronously.
+ *
+ * @author Scott Frederick
  */
 public enum OperationState {
 	/**
@@ -41,10 +43,20 @@ public enum OperationState {
 		this.state = state;
 	}
 
+	/**
+	 * Get the {@literal String} value of an enumerated value.
+	 *
+	 * @return the {@literal String} value
+	 */
 	public String getValue() {
 		return state;
 	}
 
+	/**
+	 * Get the {@literal String} value of an enumerated value.
+	 *
+	 * @return the {@literal String} value
+	 */
 	@Override
 	public String toString() {
 		return state;

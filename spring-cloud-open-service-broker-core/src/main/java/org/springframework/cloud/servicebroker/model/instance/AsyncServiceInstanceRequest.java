@@ -22,18 +22,13 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import java.util.Objects;
 
 /**
- * Details of a request that supports asynchronous behavior.
+ * Details of a request that supports asynchronous operations.
  *
  * @author Scott Frederick
  */
 public abstract class AsyncServiceInstanceRequest extends ServiceBrokerRequest {
 	public final static String ASYNC_REQUEST_PARAMETER = "accepts_incomplete";
 
-	/**
-	 * Indicates whether clients of the service broker allow the broker to complete the request asynchronously. A
-	 * <code>false</code> value indicates that clients do not allow asynchronous processing of requests, a
-	 * <code>true</code> value indicates that clients do allow asynchronous processing.
-	 */
 	protected transient boolean asyncAccepted;
 
 	protected AsyncServiceInstanceRequest() {
@@ -45,10 +40,27 @@ public abstract class AsyncServiceInstanceRequest extends ServiceBrokerRequest {
 		this.asyncAccepted = asyncAccepted;
 	}
 
+	/**
+	 * Get the value indicating whether the platform allows the broker to complete the request
+	 * asynchronously.
+	 *
+	 * <p>
+	 * This value is set from the {@literal async_accepted} request parameter of the request from the platform.
+	 *
+	 * <p>
+	 * A <code>false</code> value indicates that clients do not allow asynchronous processing of requests, a
+	 * <code>true</code> value indicates that clients do allow asynchronous processing.
+	 *
+	 * @return the boolean value
+	 */
 	public boolean isAsyncAccepted() {
 		return this.asyncAccepted;
 	}
 
+	/**
+	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this
+	 * type and set all field values.
+	 */
 	public void setAsyncAccepted(boolean asyncAccepted) {
 		this.asyncAccepted = asyncAccepted;
 	}

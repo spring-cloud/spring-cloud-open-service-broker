@@ -27,27 +27,22 @@ import java.util.Objects;
 /**
  * Details of a response to a request to get the state of the last operation on a service instance.
  *
+ * <p>
+ * Objects of this type are constructed by the service broker application,
+ * and used to build the response to the platform.
+ *
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-1">Open Service Broker API specification</a>
+ * 
  * @author Scott Frederick
  */
 @JsonAutoDetect
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetLastServiceOperationResponse {
-	/**
-	 * The current state of the asynchronous request.
-	 */
 	@JsonSerialize(using = ToStringSerializer.class)
 	private final OperationState state;
 
-	/**
-	 * A user-facing message displayed to the API client. Can be used to tell the user details
-	 * about the status of the operation. Can be <code>null</code>.
-	 */
 	private final String description;
 
-	/**
-	 * Should be set to <code>true</code> in response to a request for the status of an asynchronous delete request,
-	 * and <code>false</code> otherwise.
-	 */
 	@JsonIgnore
 	private final boolean deleteOperation;
 
@@ -57,18 +52,38 @@ public class GetLastServiceOperationResponse {
 		this.deleteOperation = deleteOperation;
 	}
 
+	/**
+	 * Get the current state of an asynchronous operation.
+	 *
+	 * @return the operation state
+	 */
 	public OperationState getState() {
 		return this.state;
 	}
 
+	/**
+	 * Get the description of the current asynchronous operation.
+	 *
+	 * @return the description, or {@literal null} if not provided
+	 */
 	public String getDescription() {
 		return this.description;
 	}
 
+	/**
+	 * Get a boolean value indicating whether the current operation is a delete operation.
+	 *
+	 * @return the boolean value
+	 */
 	public boolean isDeleteOperation() {
 		return this.deleteOperation;
 	}
 
+	/**
+	 * Create a builder that provides a fluent API for constructing a {@literal GetLastServiceOperationResponse}.
+	 *
+	 * @return the builder
+	 */
 	public static GetLastServiceOperationResponseBuilder builder() {
 		return new GetLastServiceOperationResponseBuilder();
 	}
@@ -97,6 +112,9 @@ public class GetLastServiceOperationResponse {
 				'}';
 	}
 
+	/**
+	 * Provides a fluent API for constructing a {@literal GetLastServiceOperationResponse}.
+	 */
 	public static class GetLastServiceOperationResponseBuilder {
 		private OperationState state;
 		private String description;
@@ -105,21 +123,64 @@ public class GetLastServiceOperationResponse {
 		GetLastServiceOperationResponseBuilder() {
 		}
 
+		/**
+		 * Set the current state of the asynchronous operation.
+		 *
+		 * <p>
+		 * A value of {@link OperationState#IN_PROGRESS} will cause the platform to continue polling the service
+		 * broker for status. A value of {@link OperationState#SUCCEEDED} or {@link OperationState#FAILED} will
+		 * cause the platform to stop polling the service broker.
+		 *
+		 * <p>
+		 * This value will set the {@literal state} field in the body of the response to the platform.
+		 *
+		 * @param state the current state
+		 * @return the builder
+		 */
 		public GetLastServiceOperationResponseBuilder operationState(OperationState state) {
 			this.state = state;
 			return this;
 		}
 
+		/**
+		 * Set a user-facing description of the operation that the platform can display to the API client.
+		 * Can be {@literal null}.
+		 *
+		 * <p>
+		 * This value will set the {@literal description} field in the body of the response to the platform.
+		 *
+		 * @param description the description
+		 * @return the builder
+		 */
 		public GetLastServiceOperationResponseBuilder description(String description) {
 			this.description = description;
 			return this;
 		}
 
+		/**
+		 * Set a boolean value indicating whether the current asynchronous operation is a delete operation.
+		 * Should be set to <code>true</code> in response to a request for the status of an asynchronous
+		 * delete request, and <code>false</code> otherwise.
+		 *
+		 * <p>
+		 * This value is used to determine the HTTP response code to the platform. If the
+		 * {@link #operationState(OperationState)} is {@link OperationState#SUCCEEDED} and the value provided
+		 * here is {@literal true} will result in a response code {@literal 410 GONE}. Otherwise the response
+		 * code will be {@literal 200 OK}.
+		 *
+		 * @param deleteOperation the boolean value
+		 * @return the builder
+		 */
 		public GetLastServiceOperationResponseBuilder deleteOperation(boolean deleteOperation) {
 			this.deleteOperation = deleteOperation;
 			return this;
 		}
 
+		/**
+		 * Construct a {@literal GetLastServiceOperationResponse} from the provided values.
+		 *
+		 * @return the newly constructed {@literal GetLastServiceOperationResponse}
+		 */
 		public GetLastServiceOperationResponse build() {
 			return new GetLastServiceOperationResponse(state, description, deleteOperation);
 		}

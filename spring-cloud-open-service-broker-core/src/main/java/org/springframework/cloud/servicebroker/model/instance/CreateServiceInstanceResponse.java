@@ -25,20 +25,18 @@ import java.util.Objects;
 /**
  * Details of a response to a request to create a new service instance.
  *
+ * <p>
+ * Objects of this type are constructed by the service broker application,
+ * and used to build the response to the platform.
+ *
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-2">Open Service Broker API specification</a>
+ *
  * @author Scott Frederick
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse {
-	/**
-	 * The URL of a web-based management user interface for the service instance. Can be <code>null</code> to indicate
-	 * that a management dashboard is not provided.
-	 */
 	private final String dashboardUrl;
 
-	/**
-	 * <code>true</code> to indicated that the service instance already existed with the same parameters as the
-	 * requested service instance, <code>false</code> to indicate that the instance was created as new
-	 */
 	@JsonIgnore
 	private final boolean instanceExisted;
 
@@ -48,14 +46,30 @@ public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 		this.instanceExisted = instanceExisted;
 	}
 
+	/**
+	 * Get the URL of a web-based management user interface for the service instance.
+	 *
+	 * @return the dashboard URL, or {@literal null} if not provided
+	 */
 	public String getDashboardUrl() {
 		return this.dashboardUrl;
 	}
 
+	/**
+	 * Get the boolean value indicating whether the service instance already exists with the same parameters as the
+	 * requested service instance.
+	 *
+	 * @return the boolean value
+	 */
 	public boolean isInstanceExisted() {
 		return this.instanceExisted;
 	}
 
+	/**
+	 * Create a builder that provides a fluent API for constructing a {@literal CreateServiceInstanceResponse}.
+	 *
+	 * @return the builder
+	 */
 	public static CreateServiceInstanceResponseBuilder builder() {
 		return new CreateServiceInstanceResponseBuilder();
 	}
@@ -90,6 +104,9 @@ public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 				'}';
 	}
 
+	/**
+	 * Provides a fluent API for constructing a {@literal CreateServiceInstanceResponse}.
+	 */
 	public static class CreateServiceInstanceResponseBuilder {
 		private String dashboardUrl;
 		private boolean instanceExisted;
@@ -99,26 +116,81 @@ public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 		CreateServiceInstanceResponseBuilder() {
 		}
 
+		/**
+		 * Set the URL of a web-based management user interface provided by the service broker for the service
+		 * instance. Can be {@literal null} to indicate that a management dashboard is not provided.
+		 *
+		 * <p>
+		 * This value will set the {@literal dashboard_url} field in the body of the response to the platform.
+		 *
+		 * @param dashboardUrl the dashboard URL
+		 * @return the builder
+		 */
 		public CreateServiceInstanceResponseBuilder dashboardUrl(String dashboardUrl) {
 			this.dashboardUrl = dashboardUrl;
 			return this;
 		}
 
+		/**
+		 * Set a boolean value indicating whether the service instance already exists with the same parameters as the
+		 * requested service instance. A {@literal true} value indicates a service instance exists and no new resources
+		 * were created by the service broker, <code>false</code> indicates that new resources were created.
+		 *
+		 * <p>
+		 * This value will be used to determine the HTTP response code to the platform. If the service broker
+		 * indicates that it performed the operation synchronously, a {@literal true} value will result in a
+		 * response code {@literal 200 OK}, and a {@literal false} value will result in a response code
+		 * {@literal 201 CREATED}.
+		 *
+		 * @param instanceExisted {@literal true} to indicate that the instance exists, {@literal false} otherwise
+		 * @return the builder
+		 * @see #async(boolean) 
+		 */
 		public CreateServiceInstanceResponseBuilder instanceExisted(boolean instanceExisted) {
 			this.instanceExisted = instanceExisted;
 			return this;
 		}
 
+		/**
+		 * Set a boolean value indicating whether the requested operation is being performed synchronously or
+		 * asynchronously.
+		 *
+		 * <p>
+		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value
+		 * will result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be
+		 * determined by the value of {@link #instanceExisted(boolean)}.
+		 *
+		 * @param async {@literal true} to indicate that the operation is being performed asynchronously,
+		 * {@literal false} to indicate that the operation was completed
+		 * @return the builder
+		 * @see #instanceExisted(boolean)
+		 */
 		public CreateServiceInstanceResponseBuilder async(boolean async) {
 			this.async = async;
 			return this;
 		}
 
+		/**
+		 * Set a value to inform the user of the operation being performed in support of an asynchronous response.
+		 * This value will be passed back to the service broker in subsequent {@link GetLastServiceOperationRequest}
+		 * requests.
+		 *
+		 * <p>
+		 * This value will set the {@literal operation} field in the body of the response to the platform.
+		 *
+		 * @param operation the informational value
+		 * @return the builder
+		 */
 		public CreateServiceInstanceResponseBuilder operation(String operation) {
 			this.operation = operation;
 			return this;
 		}
 
+		/**
+		 * Construct a {@literal CreateServiceInstanceResponse} from the provided values.
+		 *
+		 * @return the newly constructed {@literal CreateServiceInstanceResponse}
+		 */
 		public CreateServiceInstanceResponse build() {
 			return new CreateServiceInstanceResponse(async, operation, dashboardUrl, instanceExisted);
 		}

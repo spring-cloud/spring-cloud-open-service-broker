@@ -28,19 +28,9 @@ import java.util.Objects;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AsyncServiceInstanceResponse {
-	/**
-	 * Indicates whether the request to the service broker is complete. A <code>false</code> value indicates that the
-	 * request was completed, a <code>true</code> value indicates that the broker is processing the request
-	 * asynchronously.
-	 */
 	@JsonIgnore
 	protected final boolean async;
 
-	/**
-	 * For async responses, service brokers can return operation state as a string. This field will be provided back to
-	 * the service broker on last_operation requests as a URL encoded query param. Can be <code>null</code> to indicate
-	 * that an operation state is not provided.
-	 */
 	protected final String operation;
 
 	protected AsyncServiceInstanceResponse(boolean async, String operation) {
@@ -48,10 +38,21 @@ public class AsyncServiceInstanceResponse {
 		this.operation = operation;
 	}
 
+	/**
+	 * Get a boolean value indicating whether the requested operation is being performed synchronously or
+	 * asynchronously.
+	 *
+	 * @return the boolean value
+	 */
 	public boolean isAsync() {
 		return this.async;
 	}
 
+	/**
+	 * Get a description of the operation being performed in support of an asynchronous response.
+	 *
+	 * @return the operation description
+	 */
 	public String getOperation() {
 		return this.operation;
 	}
