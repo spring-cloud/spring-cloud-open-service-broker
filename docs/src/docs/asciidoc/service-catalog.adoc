@@ -18,6 +18,24 @@ application context. This can be done in a Spring `@Configuration` class as in t
 include::{examples-dir}/ExampleCatalogConfiguration.java[]
 ----
 
+=== Configuring a Catalog in YAML
+
+A catalog may be configured with Spring Boot externalized configuration within a YAML file. The catalog is parsed and made available as a `Catalog` bean during auto-configuration.
+
+[source,yaml,%autofit]
+----
+include::{examples-dir}/catalog-minimal.yml[]
+----
+
+=== Configuring a Catalog in properties
+
+A catalog may be configured with Spring Boot externalized configuration within a Java properties file. The catalog is parsed and made available as a `Catalog` bean during auto-configuration.
+
+[source,properties,%autofit]
+----
+include::{examples-dir}/catalog-minimal.properties[]
+----
+
 === Implementing a Catalog Service
 
 A service broker can take more control over the catalog by implementing the `CatalogService` interface.
