@@ -16,12 +16,12 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import java.util.Map;
 import java.util.Objects;
+import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
  * Cloud Foundry specific contextual information under which the service instance is to be provisioned or updated.

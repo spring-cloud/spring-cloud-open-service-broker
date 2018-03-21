@@ -18,8 +18,8 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.validation.constraints.NotEmpty;
 
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * A service plan available for a ServiceDefinition

@@ -16,14 +16,15 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.cloud.servicebroker.model.Context;
-import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import org.springframework.cloud.servicebroker.model.Context;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 /**
  * Details of a request to create a new service instance.

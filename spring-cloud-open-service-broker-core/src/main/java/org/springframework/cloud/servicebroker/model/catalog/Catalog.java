@@ -16,13 +16,13 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The catalog of services offered by the service broker.

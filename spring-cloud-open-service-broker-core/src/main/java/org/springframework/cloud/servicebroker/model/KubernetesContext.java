@@ -16,9 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import java.util.Objects;
+import javax.validation.constraints.NotEmpty;
 
 /**
  * Kubernetes specific contextual information under which the service instance is to be provisioned or updated.

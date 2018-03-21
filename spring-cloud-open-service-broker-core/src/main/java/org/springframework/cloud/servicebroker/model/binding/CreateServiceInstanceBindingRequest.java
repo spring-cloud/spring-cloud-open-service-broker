@@ -16,16 +16,17 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.cloud.servicebroker.model.Context;
-import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapper;
-import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
-import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import org.springframework.cloud.servicebroker.model.Context;
+import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapper;
 
 /**
  * Details of a request to bind to a service instance binding.

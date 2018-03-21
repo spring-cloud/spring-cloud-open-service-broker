@@ -16,17 +16,18 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import javax.validation.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import org.hibernate.validator.constraints.NotEmpty;
+
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * Details of a request to update a service instance.

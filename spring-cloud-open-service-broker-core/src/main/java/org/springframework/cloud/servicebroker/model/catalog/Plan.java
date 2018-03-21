@@ -16,13 +16,13 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * A service plan available for a ServiceDefinition
