@@ -17,22 +17,23 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that parameters passed in a provision or update request are not understood.
+ * Thrown to indicate that parameters passed in a create or update request are not understood by the service broker.
  */
 public class ServiceBrokerInvalidParametersException extends RuntimeException {
 
 	private static final long serialVersionUID = 4719676639792071582L;
+	private static final String MESSAGE_PREFIX = "Service broker parameters are invalid";
 
 	public ServiceBrokerInvalidParametersException(String message) {
-		super(message);
+		super(MESSAGE_PREFIX + ": " + message);
 	}
 
 	public ServiceBrokerInvalidParametersException(String message, Throwable cause) {
-		super(message, cause);
+		super(MESSAGE_PREFIX + ": " + message, cause);
 	}
 
 	public ServiceBrokerInvalidParametersException(Throwable cause) {
-		super(cause);
+		super(MESSAGE_PREFIX, cause);
 	}
 
 }

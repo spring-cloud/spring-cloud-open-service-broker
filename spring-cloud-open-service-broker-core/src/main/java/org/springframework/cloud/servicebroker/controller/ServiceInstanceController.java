@@ -256,13 +256,13 @@ public class ServiceInstanceController extends BaseController {
 
 	@ExceptionHandler(ServiceInstanceExistsException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceExistsException ex) {
-		LOGGER.debug("Service instance already exists: ", ex);
+		LOGGER.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(ServiceInstanceUpdateNotSupportedException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceUpdateNotSupportedException ex) {
-		LOGGER.debug("Service instance update not supported: ", ex);
+		LOGGER.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 }

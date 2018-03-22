@@ -25,8 +25,10 @@ import org.junit.Test;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerUnavailableException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
@@ -55,30 +57,21 @@ public class BaseControllerTest {
 
 	@Test(expected = HttpMessageNotReadableException.class)
 	public void originatingIdentityWithNoPropertiesThrowsException() {
-		ServiceBrokerRequest request = new ServiceBrokerRequest() {
-		};
-
-		TestBaseController controller = new TestBaseController(request);
+		TestBaseController controller = new TestBaseController();
 
 		controller.testOriginatingIdentity("platform");
 	}
 
 	@Test(expected = HttpMessageNotReadableException.class)
 	public void originatingIdentityWithNonEncodedPropertiesThrowsException() {
-		ServiceBrokerRequest request = new ServiceBrokerRequest() {
-		};
-
-		TestBaseController controller = new TestBaseController(request);
+		TestBaseController controller = new TestBaseController();
 
 		controller.testOriginatingIdentity("platform some-properties");
 	}
 
 	@Test(expected = HttpMessageNotReadableException.class)
 	public void originatingIdentityWithNonJsonPropertiesThrowsException() {
-		ServiceBrokerRequest request = new ServiceBrokerRequest() {
-		};
-
-		TestBaseController controller = new TestBaseController(request);
+		TestBaseController controller = new TestBaseController();
 
 		String encodedProperties = Base64.getEncoder().encodeToString("some-properties".getBytes());
 
@@ -165,6 +158,26 @@ public class BaseControllerTest {
 	}
 
 	@Test
+	public void serviceBrokerUnavailableExceptionGivesExpectedStatus() {
+		ServiceBrokerUnavailableException exception = new ServiceBrokerUnavailableException("maintenance in progress");
+
+		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);
+		assertThat(responseEntity.getBody().getMessage()).contains("maintenance in progress");
+	}
+
+	@Test
+	public void serviceBrokerExceptionGivesExpectedStatus() {
+		ServiceBrokerException exception = new ServiceBrokerException("test message");
+
+		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+		assertThat(responseEntity.getBody().getMessage()).contains("test message");
+	}
+
+	@Test
 	public void unknownExceptionGivesExpectedStatus() {
 		Exception exception = new Exception("test message");
 
@@ -213,14 +226,14 @@ public class BaseControllerTest {
 	}
 
 	private static class TestBaseController extends BaseController {
-		private final ServiceBrokerRequest request;
-
-		public TestBaseController(ServiceBrokerRequest request) {
+		public TestBaseController() {
 			super(null);
-			this.request = request;
 		}
 
 		public void testOriginatingIdentity(String originatingIdentityString) {
+			ServiceBrokerRequest request = new ServiceBrokerRequest() {
+			};
+
 			setCommonRequestFields(request, "platform-instance-id", "api-info-location", originatingIdentityString);
 		}
 	}

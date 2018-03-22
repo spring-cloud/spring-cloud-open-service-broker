@@ -47,6 +47,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.anEmptyMap;
+import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
@@ -185,7 +186,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.error", is(AsyncRequiredErrorMessage.ASYNC_REQUIRED_ERROR)))
-				.andExpect(jsonPath("$.description", is("async required description")));
+				.andExpect(jsonPath("$.description", endsWith("async required description")));
 	}
 
 	@Test
@@ -199,7 +200,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
-				.andExpect(jsonPath("$.description", is("invalid parameters description")));
+				.andExpect(jsonPath("$.description", endsWith("invalid parameters description")));
 	}
 
 	@Test

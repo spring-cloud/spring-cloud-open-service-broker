@@ -87,7 +87,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceWithEmptyPlatformInstanceIdSucceeds() throws Exception {
+	public void createServiceInstanceWithEmptyPlatformInstanceIdSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
@@ -109,7 +109,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceWithoutAsyncAndHeadersSucceeds() throws Exception {
+	public void createServiceInstanceWithoutAsyncAndHeadersSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
@@ -128,7 +128,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceWithExistingInstanceSucceeds() throws Exception {
+	public void createServiceInstanceWithExistingInstanceSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
@@ -144,7 +144,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceWithUnknownServiceDefinitionIdFails() throws Exception {
+	public void createServiceInstanceWithUnknownServiceDefinitionIdFails() {
 		setupCatalogService(null);
 
 		client.put().uri(buildCreateUpdateUrl())
@@ -160,7 +160,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createDuplicateServiceInstanceIdFails() throws Exception {
+	public void createDuplicateServiceInstanceIdFails() {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceInstanceExistsException(SERVICE_INSTANCE_ID, serviceDefinition.getId()));
@@ -179,7 +179,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceWithAsyncRequiredFails() throws Exception {
+	public void createServiceInstanceWithAsyncRequiredFails() {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceBrokerAsyncRequiredException("async required description"));
@@ -193,11 +193,12 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
 				.expectBody()
 				.jsonPath("$.error").isEqualTo(AsyncRequiredErrorMessage.ASYNC_REQUIRED_ERROR)
-				.jsonPath("$.description").isEqualTo("async required description");
+				.jsonPath("$.description").isNotEmpty()
+				.consumeWith(result -> assertDescriptionContains(result, "async required description"));
 	}
 
 	@Test
-	public void createServiceInstanceWithInvalidParametersFails() throws Exception {
+	public void createServiceInstanceWithInvalidParametersFails() {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceBrokerInvalidParametersException("invalid parameters description"));
@@ -210,7 +211,8 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.expectStatus().is4xxClientError()
 				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
 				.expectBody()
-				.jsonPath("$.description").isEqualTo("invalid parameters description");
+				.jsonPath("$.description").isNotEmpty()
+				.consumeWith(result -> assertDescriptionContains(result, "invalid parameters description"));
 	}
 
 	@Test
@@ -307,7 +309,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void deleteServiceInstanceWithoutAsyncAndHeadersSucceeds() throws Exception {
+	public void deleteServiceInstanceWithoutAsyncAndHeadersSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceService(DeleteServiceInstanceResponse.builder()
@@ -326,7 +328,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void deleteServiceInstanceWithUnknownIdFails() throws Exception {
+	public void deleteServiceInstanceWithUnknownIdFails() {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID));
@@ -346,7 +348,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void deleteServiceInstanceWithUnknownServiceDefinitionIdFails() throws Exception {
+	public void deleteServiceInstanceWithUnknownServiceDefinitionIdFails() {
 		setupCatalogService(null);
 
 		client.delete().uri(buildDeleteUrl())
@@ -385,7 +387,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void updateServiceInstanceWithoutSyncAndHeadersSucceeds() throws Exception {
+	public void updateServiceInstanceWithoutSyncAndHeadersSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
@@ -406,7 +408,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void updateServiceInstanceWithUnknownServiceDefinitionIdFails() throws Exception {
+	public void updateServiceInstanceWithUnknownServiceDefinitionIdFails() {
 		setupCatalogService(null);
 
 		client.patch().uri(buildCreateUpdateUrl())
@@ -423,7 +425,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void updateServiceInstanceWithUnsupportedOperationFails() throws Exception {
+	public void updateServiceInstanceWithUnsupportedOperationFails() {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceInstanceUpdateNotSupportedException("description"));
@@ -442,7 +444,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void lastOperationHasInProgressStatus() throws Exception {
+	public void lastOperationHasInProgressStatus() {
 		setupServiceInstanceService(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.IN_PROGRESS)
 				.description("working on it")
@@ -480,7 +482,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void lastOperationHasSucceededStatusWithDeletionComplete() throws Exception {
+	public void lastOperationHasSucceededStatusWithDeletionComplete() {
 		setupServiceInstanceService(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.SUCCEEDED)
 				.description("all gone")
@@ -497,7 +499,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void lastOperationHasFailedStatus() throws Exception {
+	public void lastOperationHasFailedStatus() {
 		setupServiceInstanceService(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.FAILED)
 				.description("not so good")

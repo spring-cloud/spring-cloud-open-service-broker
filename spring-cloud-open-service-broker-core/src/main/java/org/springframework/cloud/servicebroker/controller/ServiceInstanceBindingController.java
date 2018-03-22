@@ -170,7 +170,7 @@ public class ServiceInstanceBindingController extends BaseController {
 
 	@ExceptionHandler(ServiceInstanceBindingExistsException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceBindingExistsException ex) {
-		LOGGER.debug("Service instance binding already exists: ", ex);
+		LOGGER.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
 	}
 }

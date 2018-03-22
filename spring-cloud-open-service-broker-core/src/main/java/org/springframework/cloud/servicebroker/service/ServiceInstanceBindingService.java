@@ -16,7 +16,6 @@
 
 package org.springframework.cloud.servicebroker.service;
 
-import org.springframework.cloud.servicebroker.exception.ServiceBrokerException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
@@ -42,7 +41,6 @@ public interface ServiceInstanceBindingService {
 	 * @return a {@link CreateServiceInstanceBindingResponse} on successful processing of the request
 	 * @throws ServiceInstanceBindingExistsException if a binding with the given ID is already known to the broker
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
-	 * @throws ServiceBrokerException on internal failure
 	 */
 	CreateServiceInstanceBindingResponse createServiceInstanceBinding(CreateServiceInstanceBindingRequest request);
 

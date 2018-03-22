@@ -18,10 +18,9 @@ package org.springframework.cloud.servicebroker.exception;
 
 /**
  * General exception for underlying broker errors (like connectivity to the service
- * being brokered).
+ * being brokered) not covered by a more specific exception.
  *
  * @author sgreenberg@pivotal.io
- *
  */
 public class ServiceBrokerException extends RuntimeException {
 

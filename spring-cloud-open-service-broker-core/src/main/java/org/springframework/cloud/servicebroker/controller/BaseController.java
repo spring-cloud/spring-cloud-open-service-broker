@@ -25,8 +25,10 @@ import org.slf4j.Logger;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerUnavailableException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.Context;
@@ -134,25 +136,56 @@ public class BaseController {
 
 	@ExceptionHandler(ServiceBrokerApiVersionException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerApiVersionException ex) {
-		LOGGER.debug("Unsupported service broker API version: ", ex);
+		LOGGER.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.PRECONDITION_FAILED);
 	}
 
 	@ExceptionHandler(ServiceInstanceDoesNotExistException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceDoesNotExistException ex) {
-		LOGGER.debug("Service instance does not exist: ", ex);
+		LOGGER.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceDefinitionDoesNotExistException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceDefinitionDoesNotExistException ex) {
-		LOGGER.debug("Service definition does not exist: ", ex);
+		LOGGER.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+
+	@ExceptionHandler(ServiceBrokerAsyncRequiredException.class)
+	public ResponseEntity<AsyncRequiredErrorMessage> handleException(ServiceBrokerAsyncRequiredException ex) {
+		LOGGER.debug(ex.getMessage(), ex);
+		return new ResponseEntity<>(
+				new AsyncRequiredErrorMessage(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+
+	@ExceptionHandler(ServiceBrokerInvalidParametersException.class)
+	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerInvalidParametersException ex) {
+		LOGGER.debug(ex.getMessage(), ex);
+		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+
+	@ExceptionHandler(ServiceBrokerOperationInProgressException.class)
+	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerOperationInProgressException ex) {
+		LOGGER.debug(ex.getMessage(), ex);
+		return getErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(ServiceBrokerUnavailableException.class)
+	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerUnavailableException ex) {
+		LOGGER.debug(ex.getMessage(), ex);
+		return getErrorResponse(ex.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
+	}
+
+	@ExceptionHandler(ServiceBrokerException.class)
+	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerException ex) {
+		LOGGER.debug("Service broker exception handled: ", ex);
+		return getErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<ErrorMessage> handleException(HttpMessageNotReadableException ex) {
-		LOGGER.debug("Unprocessable request received: ", ex);
+		LOGGER.error("Unprocessable request received: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
@@ -169,7 +202,7 @@ public class BaseController {
 	}
 
 	private ResponseEntity<ErrorMessage> handleBindingException(Exception ex, final BindingResult result) {
-		LOGGER.debug("Unprocessable request received: ", ex);
+		LOGGER.error("Unprocessable request received: ", ex);
 		StringBuilder message = new StringBuilder("Missing required fields:");
 		for (FieldError error : result.getFieldErrors()) {
 			message.append(' ').append(error.getField());
@@ -177,28 +210,9 @@ public class BaseController {
 		return getErrorResponse(message.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
-	@ExceptionHandler(ServiceBrokerAsyncRequiredException.class)
-	public ResponseEntity<AsyncRequiredErrorMessage> handleException(ServiceBrokerAsyncRequiredException ex) {
-		LOGGER.debug("Broker requires async support: ", ex);
-		return new ResponseEntity<>(
-				new AsyncRequiredErrorMessage(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
-	}
-
-	@ExceptionHandler(ServiceBrokerInvalidParametersException.class)
-	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerInvalidParametersException ex) {
-		LOGGER.debug("Invalid parameters received: ", ex);
-		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
-	}
-
-	@ExceptionHandler(ServiceBrokerOperationInProgressException.class)
-	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerOperationInProgressException ex) {
-		LOGGER.debug("Service broker operation in progress: ", ex);
-		return getErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
-	}
-
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorMessage> handleException(Exception ex) {
-		LOGGER.debug("Unknown exception handled: ", ex);
+		LOGGER.error("Unknown exception handled: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 

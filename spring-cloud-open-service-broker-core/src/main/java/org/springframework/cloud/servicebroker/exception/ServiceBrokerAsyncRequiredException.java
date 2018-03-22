@@ -25,6 +25,6 @@ public class ServiceBrokerAsyncRequiredException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	public ServiceBrokerAsyncRequiredException(String message) {
-		super(message);
+		super("Service broker requires async operations: " + message);
 	}
 }

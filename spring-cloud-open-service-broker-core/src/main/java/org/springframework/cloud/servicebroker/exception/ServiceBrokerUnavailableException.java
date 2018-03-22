@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,24 +17,23 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that the plan change requested is not supported or if the request
- * can not currently be fulfilled due to the state of the instance.
+ * Thrown to indicate that a service broker is able to accept requests from the platform but is temporarily unable
+ * to process those requests.
+ *
+ * @author Scott Frederick
  */
-public class ServiceInstanceUpdateNotSupportedException extends RuntimeException {
+public class ServiceBrokerUnavailableException extends RuntimeException {
+	private final static String MESSAGE_PREFIX = "Service broker is temporarily unavailable";
 
-	private static final long serialVersionUID = 4719676639792071582L;
-	private static final String MESSAGE_PREFIX = "Service instance update not supported";
-
-	public ServiceInstanceUpdateNotSupportedException(String message) {
+	public ServiceBrokerUnavailableException(String message) {
 		super(MESSAGE_PREFIX + ": " + message);
 	}
 
-	public ServiceInstanceUpdateNotSupportedException(String message, Throwable cause) {
+	public ServiceBrokerUnavailableException(String message, Throwable cause) {
 		super(MESSAGE_PREFIX + ": " + message, cause);
 	}
 
-	public ServiceInstanceUpdateNotSupportedException(Throwable cause) {
+	public ServiceBrokerUnavailableException(Throwable cause) {
 		super(MESSAGE_PREFIX, cause);
 	}
-
 }
