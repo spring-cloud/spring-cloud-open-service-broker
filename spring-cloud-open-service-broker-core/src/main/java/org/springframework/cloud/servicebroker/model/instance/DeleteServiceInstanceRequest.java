@@ -25,8 +25,8 @@ import java.util.Objects;
  * Details of a request to delete a service instance.
  *
  * <p>
- * Objects of this type are constructed by the framework from the headers, path variables, and query parameters
- * passed to the service broker by the platform.
+ * Objects of this type are constructed by the framework from the headers, path variables, query parameters
+ * and message body passed to the service broker by the platform.
  *
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-6">Open Service Broker API specification</a>
  *
@@ -67,7 +67,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 	}
 
 	/**
-	 * Get the ID of the service definition for to the service to delete. This will match one of the service
+	 * Get the ID of the service definition for to the service instance to delete. This will match one of the service
 	 * definition IDs provided in the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog}.
 	 *
 	 * <p>
@@ -80,7 +80,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 	}
 
 	/**
-	 * Get the ID of the plan for to the service to delete. This will match one of the plan IDs provided
+	 * Get the ID of the plan for to the service instance to delete. This will match one of the plan IDs provided
 	 * in the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} within the specified
 	 * {@link ServiceDefinition}.
 	 *
@@ -154,7 +154,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 	}
 
 	/**
-	 * Provides a fluent API for constructing a {@literal DeleteServiceInstanceRequest}.
+	 * Provides a fluent API for constructing a {@link DeleteServiceInstanceRequest}.
 	 */
 	public static class DeleteServiceInstanceRequestBuilder {
 		private String serviceInstanceId;
@@ -208,7 +208,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 		/**
 		 * Set the plan ID of the request as would be provided in the request from the platform.
 		 *
-		 * @param planId the plan ID.
+		 * @param planId the plan ID
 		 * @return the builder
 		 * @see #getPlanId()
 		 */
@@ -267,7 +267,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
 		}
 
 		/**
-		 * Construct a {@literal DeleteServiceInstanceRequest} from the provided values.
+		 * Construct a {@link DeleteServiceInstanceRequest} from the provided values.
 		 *
 		 * @return the newly constructed {@literal DeleteServiceInstanceRequest}
 		 */

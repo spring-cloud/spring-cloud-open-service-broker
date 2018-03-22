@@ -113,7 +113,7 @@ public class GetLastServiceOperationResponse {
 	}
 
 	/**
-	 * Provides a fluent API for constructing a {@literal GetLastServiceOperationResponse}.
+	 * Provides a fluent API for constructing a {@link GetLastServiceOperationResponse}.
 	 */
 	public static class GetLastServiceOperationResponseBuilder {
 		private OperationState state;
@@ -177,7 +177,7 @@ public class GetLastServiceOperationResponse {
 		}
 
 		/**
-		 * Construct a {@literal GetLastServiceOperationResponse} from the provided values.
+		 * Construct a {@link GetLastServiceOperationResponse} from the provided values.
 		 *
 		 * @return the newly constructed {@literal GetLastServiceOperationResponse}
 		 */

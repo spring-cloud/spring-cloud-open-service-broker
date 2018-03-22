@@ -33,8 +33,8 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
  * Details of a request to update a service instance.
  *
  * <p>
- * Objects of this type are constructed by the framework from the headers, path variables, and query parameters
- * passed to the service broker by the platform.
+ * Objects of this type are constructed by the framework from the headers, path variables, query parameters
+ * and message body passed to the service broker by the platform.
  *
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-3">Open Service Broker API specification</a>
  *
@@ -98,7 +98,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	/**
-	 * Get the ID of the service definition for to the service to update. This will match one of the service
+	 * Get the ID of the service definition for to the service instance to update. This will match one of the service
 	 * definition IDs provided in the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog}.
 	 *
 	 * <p>
@@ -111,7 +111,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	/**
-	 * Get the ID of the plan for to the service to update. This will match one of the plan IDs provided
+	 * Get the ID of the plan for to the service instance to update. This will match one of the plan IDs provided
 	 * in the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} within the specified
 	 * {@link ServiceDefinition}.
 	 *
@@ -137,7 +137,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	/**
-	 * Get the service definition of the service to update.
+	 * Get the service definition of the service instance to update.
 	 *
 	 * <p>
 	 * The service definition is retrieved from the
@@ -258,7 +258,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	/**
-	 * Provides a fluent API for constructing a {@literal UpdateServiceInstanceRequest}.
+	 * Provides a fluent API for constructing a {@link UpdateServiceInstanceRequest}.
 	 */
 	public static class UpdateServiceInstanceRequestBuilder {
 		private String serviceInstanceId;
@@ -315,7 +315,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * Set the plan ID as would be provided in the request from the platform.
 		 *
-		 * @param planId the plan ID.
+		 * @param planId the plan ID
 		 * @return the builder
 		 * @see #getPlanId()
 		 */
@@ -425,7 +425,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		}
 
 		/**
-		 * Construct a {@literal UpdateServiceInstanceRequest} from the provided values.
+		 * Construct a {@link UpdateServiceInstanceRequest} from the provided values.
 		 *
 		 * @return the newly constructed {@literal UpdateServiceInstanceRequest}
 		 */

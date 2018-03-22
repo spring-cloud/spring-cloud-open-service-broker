@@ -25,8 +25,8 @@ import java.util.Objects;
  * Details of a request to get the state of the last operation on a service instance.
  *
  * <p>
- * Objects of this type are constructed by the framework from the headers, path variables, and query parameters
- * passed to the service broker by the platform.
+ * Objects of this type are constructed by the framework from the headers, path variables, query parameters
+ * and message body passed to the service broker by the platform.
  *
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-1">Open Service Broker API specification</a>
  *
@@ -149,6 +149,9 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 				'}';
 	}
 
+	/**
+	 * Provides a fluent API for constructing a {@link GetLastServiceOperationRequest}.
+	 */
 	public static class GetLastServiceOperationRequestBuilder {
 		private String serviceInstanceId;
 		private String serviceDefinitionId;
@@ -245,7 +248,7 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		}
 
 		/**
-		 * Construct a {@literal GetLastServiceOperationRequest} from the provided values.
+		 * Construct a {@link GetLastServiceOperationRequest} from the provided values.
 		 *
 		 * @return the newly constructed {@literal GetLastServiceOperationRequest}
 		 */

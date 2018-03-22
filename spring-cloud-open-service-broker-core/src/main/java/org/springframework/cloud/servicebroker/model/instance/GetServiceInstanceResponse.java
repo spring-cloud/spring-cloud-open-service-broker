@@ -133,7 +133,7 @@ public class GetServiceInstanceResponse {
 	}
 
 	/**
-	 * Provides a fluent API for constructing a {@literal GetServiceInstanceResponse}.
+	 * Provides a fluent API for constructing a {@link GetServiceInstanceResponse}.
 	 */
 	public static class GetServiceInstanceResponseBuilder {
 		private String serviceDefinitionId;
@@ -218,7 +218,7 @@ public class GetServiceInstanceResponse {
 		}
 
 		/**
-		 * Construct a {@literal GetServiceInstanceResponse} from the provided values.
+		 * Construct a {@link GetServiceInstanceResponse} from the provided values.
 		 *
 		 * @return the newly constructed {@literal GetServiceInstanceResponse}
 		 */

@@ -23,6 +23,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Represents a type of distributed {@link VolumeDevice} which can be mounted on multiple app instances simultaneously.
+ * 
+ * <p>
+ * Objects of this type are constructed by the service broker application,
+ * and used to build the response to the platform.
+ *
+ * @author Scott Frederick
+ */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class SharedVolumeDevice extends VolumeDevice {
 	private final String volumeId;
@@ -34,14 +43,29 @@ public class SharedVolumeDevice extends VolumeDevice {
 		this.mountConfig = mountConfig;
 	}
 
+	/**
+	 * Get the ID of the shared volume device to mount on each app instance.
+	 *
+	 * @return the volume ID
+	 */
 	public String getVolumeId() {
 		return this.volumeId;
 	}
 
+	/**
+	 * Get the configuration properties for the volume device.
+	 *
+	 * @return the device configuration
+	 */
 	public Map<String, Object> getMountConfig() {
 		return this.mountConfig;
 	}
 
+	/**
+	 * Create a builder that provides a fluent API for constructing a {@literal SharedVolumeDevice}.
+	 *
+	 * @return the builder
+	 */
 	public static SharedVolumeDeviceBuilder builder() {
 		return new SharedVolumeDeviceBuilder();
 	}
@@ -68,6 +92,9 @@ public class SharedVolumeDevice extends VolumeDevice {
 				'}';
 	}
 
+	/**
+	 * Provides a fluent API for constructing a {@link SharedVolumeDevice}.
+	 */
 	public static class SharedVolumeDeviceBuilder {
 		private String volumeId;
 		private final Map<String, Object> mountConfig = new HashMap<>();
@@ -75,21 +102,54 @@ public class SharedVolumeDevice extends VolumeDevice {
 		SharedVolumeDeviceBuilder() {
 		}
 
+		/**
+		 * Set the ID of the shared volume device to mount on each app instance.
+		 *
+		 * <p>
+		 * This value sets the {@literal volume_id} field in the body of the response to the platform.
+		 *
+		 * @param volumeId the volume ID
+		 * @return the builder
+		 */
 		public SharedVolumeDeviceBuilder volumeId(String volumeId) {
 			this.volumeId = volumeId;
 			return this;
 		}
 
+		/**
+		 * Add a set of configuration properties from the provided {@literal Map} to the volume device configuration.
+		 *
+		 * <p>
+		 * This value sets the {@literal mount_config} field in the body of the response to the platform.
+		 *
+		 * @param mountConfig the configuration properties to add
+		 * @return the builder
+		 */
 		public SharedVolumeDeviceBuilder mountConfig(Map<String, Object> mountConfig) {
 			this.mountConfig.putAll(mountConfig);
 			return this;
 		}
 
+		/**
+		 * Add a key/value pair to the volume device configuration.
+		 *
+		 * <p>
+		 * This value sets the {@literal mount_config} field in the body of the response to the platform.
+		 *
+		 * @param key the configuration properties key
+		 * @param value the configuration properties value
+		 * @return the builder
+		 */
 		public SharedVolumeDeviceBuilder mountConfig(String key, Object value) {
 			this.mountConfig.put(key, value);
 			return this;
 		}
 
+		/**
+		 * Construct a {@link SharedVolumeDevice} from the provided values.
+		 *
+		 * @return the newly constructed {@literal SharedVolumeDevice}
+		 */
 		public SharedVolumeDevice build() {
 			return new SharedVolumeDevice(volumeId, mountConfig);
 		}

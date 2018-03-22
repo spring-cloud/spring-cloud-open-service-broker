@@ -25,16 +25,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Details of any platform resources that a service binding will be associated with.
+ *
+ * <p>
+ * Objects of this type are constructed by the framework from the message body passed to the
+ * service broker by the platform in a service binding request.
+ *
+ * @see <a href=https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#bind-resource-object>Open Service Broker API specification</a>
+ *
+ * @author Scott Frederick
+ */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class BindResource {
-	/**
-	 * The GUID of an application associated with the binding. May be provided for credentials bindings.
-	 */
 	private final String appGuid;
 
-	/**
-	 * The URL of an application to be intermediated. May be provided for route services bindings.
-	 */
 	private final String route;
 
 	@JsonAnySetter
@@ -54,28 +59,52 @@ public class BindResource {
 	}
 
 	/**
-	 * Get the value of a field in the request with the given key.
+	 * Get the value of a property in the bind resource with the given key.
 	 *
 	 * @param key the key of the value to retrieve
-	 * @return the value of the field, or {@literal null} if the key is not present in the request
+	 * @return the value of the property, or {@literal null} if the key is not present in the bind resource
 	 */
 	public Object getProperty(String key) {
 		return this.properties.get(key);
 	}
 
+	/**
+	 * Get all properties in the bind resource.
+	 *
+	 * @return the set of bind resource properties
+	 */
 	@JsonAnyGetter
 	public Map<String, Object> getProperties() {
 		return this.properties;
 	}
 
+	/**
+	 * Get the GUID of an application associated with the binding. May be provided for credentials bindings.
+	 *
+	 * @return the application GUID
+	 */
 	public String getAppGuid() {
 		return this.appGuid;
 	}
 
+	/**
+	 * Get the URL of an application to be intermediated. May be provided for route services bindings.
+	 *
+	 * @return the application route
+	 */
 	public String getRoute() {
 		return this.route;
 	}
 
+	/**
+	 * Create a builder that provides a fluent API for constructing a {@link BindResource}.
+	 *
+	 * <p>
+	 * This builder is provided to support testing of
+	 * {@link org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService} implementations.
+	 *
+	 * @return the builder
+	 */
 	public static BindResourceBuilder builder() {
 		return new BindResourceBuilder();
 	}
@@ -104,36 +133,72 @@ public class BindResource {
 				'}';
 	}
 
+	/**
+	 * Provides a fluent API for constructing a {@literal BindResource}.
+	 */
 	public static class BindResourceBuilder {
 		private String appGuid;
 		private String route;
-		private final Map<String, Object> parameters = new HashMap<>();
+		private final Map<String, Object> properties = new HashMap<>();
 
 		BindResourceBuilder() {
 		}
 
+		/**
+		 * Set an application GUID as would be provided in an app binding request from the platform.
+		 *
+		 * @param appGuid the application GUID
+		 * @return the builder
+		 */
 		public BindResourceBuilder appGuid(String appGuid) {
 			this.appGuid = appGuid;
 			return this;
 		}
 
+		/**
+		 * Set an application route as would be provided in a route binding request from the platform.
+		 *
+		 * @param route the application GUID
+		 * @return the builder
+		 */
 		public BindResourceBuilder route(String route) {
 			this.route = route;
 			return this;
 		}
 
-		public BindResourceBuilder parameters(Map<String, Object> parameters) {
-			this.parameters.putAll(parameters);
+		/**
+		 * Add a set of properties from the provided {@literal Map} to the bind resource properties
+		 * as would be provided in the request from the platform.
+		 *
+		 * @param properties the properties to add
+		 * @return the builder
+		 * @see #getProperties()
+		 */
+		public BindResourceBuilder properties(Map<String, Object> properties) {
+			this.properties.putAll(properties);
 			return this;
 		}
 
-		public BindResourceBuilder parameters(String key, Object value) {
-			this.parameters.put(key, value);
+		/**
+		 * Add a key/value pair to the bind resource properties as would be provided in the request from the platform.
+		 *
+		 * @param key the property key to add
+		 * @param value the property value to add
+		 * @return the builder
+		 * @see #getProperties()
+		 */
+		public BindResourceBuilder properties(String key, Object value) {
+			this.properties.put(key, value);
 			return this;
 		}
 
+		/**
+		 * Construct a {@link BindResource} from the provided values.
+		 *
+		 * @return the newly constructed {@literal BindResource}
+		 */
 		public BindResource build() {
-			return new BindResource(appGuid, route, parameters);
+			return new BindResource(appGuid, route, properties);
 		}
 	}
 }

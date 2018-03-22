@@ -55,7 +55,7 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 * The platform will pass the user-supplied JSON structure to the service broker as-is. The service broker is
 	 * responsible for validating the contents of the parameters for correctness or applicability.
 	 *
-	 * @return the instantiated and populated object
+	 * @return the populated {@literal Map}
 	 */
 	public Map<String, Object> getParameters() {
 		return this.parameters;

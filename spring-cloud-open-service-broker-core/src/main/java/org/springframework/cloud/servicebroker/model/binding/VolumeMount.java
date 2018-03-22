@@ -25,11 +25,22 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import java.util.Objects;
 
 /**
- * Details of a volume mount in a binding response.
+ * Details of a volume mount in a service binding response.
+ * 
+ * <p>
+ * Objects of this type are constructed by the service broker application,
+ * and used to build the response to the platform.
+ *
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#volume-mount-object">Open Service Broker API specification</a>
+ *
+ * @author Scott Frederick
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VolumeMount {
+	/**
+	 * Values designating whether the mounted volume can be written to or read from.
+	 */
 	public enum Mode {
 		READ_ONLY("r"),
 		READ_WRITE("rw");
@@ -46,10 +57,12 @@ public class VolumeMount {
 		}
 	}
 
+	/**
+	 * Values specifying the type of device to mount.
+	 */
 	public enum DeviceType {
 		/**
-		 * A shared volume mount represents a distributed file system which can be mounted on all app instances
-		 * simultaneously.
+		 * Indicates a distributed volume which can be mounted on multiple app instances simultaneously.
 		 */
 		SHARED("shared");
 
@@ -65,31 +78,16 @@ public class VolumeMount {
 		}
 	}
 
-	/**
-	 * The name of the volume driver plugin which manages the device.
-	 */
 	private final String driver;
 
-	/**
-	 * The directory to mount inside the application container.
-	 */
 	private final String containerDir;
 
-	/**
-	 * Indicates whether the volume can be mounted in read-only or read-write mode.
-	 */
 	@JsonSerialize(using = ToStringSerializer.class)
 	private final Mode mode;
 
-	/**
-	 * The type of the volume device to mount.
-	 */
 	@JsonSerialize(using = ToStringSerializer.class)
 	private final DeviceType deviceType;
 
-	/**
-	 * Details of the volume device to mount, specific to the device type.
-	 */
 	private final VolumeDevice device;
 
 	VolumeMount(String driver, String containerDir, Mode mode, DeviceType deviceType, VolumeDevice device) {
@@ -100,26 +98,56 @@ public class VolumeMount {
 		this.device = device;
 	}
 
+	/**
+	 * Get the name of the volume driver plugin which manages the device.
+	 *
+	 * @return the name of the driver
+	 */
 	public String getDriver() {
 		return this.driver;
 	}
 
+	/**
+	 * Set the directory to mount inside the application container.
+	 *
+	 * @return the container directory
+	 */
 	public String getContainerDir() {
 		return this.containerDir;
 	}
 
+	/**
+	 * Get a value indicating whether the volume can be mounted in read-only or read-write mode.
+	 *
+	 * @return the volume read/write mode
+	 */
 	public Mode getMode() {
 		return this.mode;
 	}
 
+	/**
+	 * Get the type of the volume device to mount.
+	 *
+	 * @return the volume device type
+	 */
 	public DeviceType getDeviceType() {
 		return this.deviceType;
 	}
 
+	/**
+	 * Get the details of the volume device to mount.
+	 *
+	 * @return the volume device details
+	 */
 	public VolumeDevice getDevice() {
 		return this.device;
 	}
 
+	/**
+	 * Create a builder that provides a fluent API for constructing a {@literal VolumeMount}.
+	 *
+	 * @return the builder
+	 */
 	public static VolumeMountBuilder builder() {
 		return new VolumeMountBuilder();
 	}
@@ -152,6 +180,9 @@ public class VolumeMount {
 				'}';
 	}
 
+	/**
+	 * Provides a fluent API for constructing a {@link VolumeMount}.
+	 */
 	public static class VolumeMountBuilder {
 		private String driver;
 		private String containerDir;
@@ -162,31 +193,81 @@ public class VolumeMount {
 		VolumeMountBuilder() {
 		}
 
+		/**
+		 * Set the name of the volume driver plugin which manages the device.
+		 *
+		 * <p>
+		 * This value will set the {@literal driver} field in the body of the response to the platform.
+		 *
+		 * @param driver the driver name
+		 * @return the builder
+		 */
 		public VolumeMountBuilder driver(String driver) {
 			this.driver = driver;
 			return this;
 		}
 
+		/**
+		 * Set the directory to mount inside the application container.
+		 * 
+		 * <p>
+		 * This value will set the {@literal container_dir} field in the body of the response to the platform.
+		 *
+		 * @param containerDir the container directory
+		 * @return the builder
+		 */
 		public VolumeMountBuilder containerDir(String containerDir) {
 			this.containerDir = containerDir;
 			return this;
 		}
 
+		/**
+		 * Set a value indicating whether the volume can be mounted in read-only or read-write mode.
+		 *
+		 * <p>
+		 * This value will set the {@literal mode} field in the body of the response to the platform.
+		 *
+		 * @param mode the volume read/write mode
+		 * @return the builder
+		 */
 		public VolumeMountBuilder mode(Mode mode) {
 			this.mode = mode;
 			return this;
 		}
 
+		/**
+		 * Set the type of the volume device to mount.
+		 *
+		 * <p>
+		 * This value will set the {@literal device_type} field in the body of the response to the platform.
+		 *
+		 * @param deviceType the volume device type
+		 * @return the builder
+		 */
 		public VolumeMountBuilder deviceType(DeviceType deviceType) {
 			this.deviceType = deviceType;
 			return this;
 		}
 
+		/**
+		 * Set the details of the volume device to mount, specific to the device type.
+		 *
+		 * <p>
+		 * This value will set the {@literal device} field in the body of the response to the platform.
+		 *
+		 * @param device the volume device details
+		 * @return the builder
+		 */
 		public VolumeMountBuilder device(VolumeDevice device) {
 			this.device = device;
 			return this;
 		}
 
+		/**
+		 * Construct a {@link VolumeMount} from the provided values.
+		 *
+		 * @return the newly constructed {@literal VolumeMount}
+		 */
 		public VolumeMount build() {
 			return new VolumeMount(driver, containerDir, mode, deviceType, device);
 		}

@@ -26,15 +26,13 @@ import java.util.Objects;
 /**
  * Details of a response to a service instance binding create request.
  *
+ * Service brokers will typically construct one of the subtypes of this class to build a response.
+ *
  * @author Scott Frederick
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class CreateServiceInstanceBindingResponse {
-	/**
-	 * <code>true</code> to indicated that the service instance binding already existed with the same parameters as the
-	 * requested service instance binding, <code>false</code> to indicate that the binding was created as new
-	 */
 	@JsonIgnore
 	protected final boolean bindingExisted;
 
@@ -42,6 +40,12 @@ public class CreateServiceInstanceBindingResponse {
 		this.bindingExisted = bindingExisted;
 	}
 
+	/**
+	 * Get the boolean value indicating whether the service binding already exists with the same parameters as the
+	 * requested service binding.
+	 *
+	 * @return the boolean value
+	 */
 	public boolean isBindingExisted() {
 		return this.bindingExisted;
 	}

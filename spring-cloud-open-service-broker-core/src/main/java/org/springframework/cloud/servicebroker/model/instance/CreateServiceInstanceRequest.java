@@ -30,8 +30,8 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
  * Details of a request to create a new service instance.
  *
  * <p>
- * Objects of this type are constructed by the framework from the headers, path variables, and query parameters
- * passed to the service broker by the platform.
+ * Objects of this type are constructed by the framework from the headers, path variables, query parameters
+ * and message body passed to the service broker by the platform.
  *
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-2">Open Service Broker API specification</a>
  *
@@ -104,7 +104,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	/**
-	 * Get the ID of the service definition for to the service to create. This will match one of the service
+	 * Get the ID of the service definition for to the service instance to create. This will match one of the service
 	 * definition IDs provided in the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog}.
 	 *
 	 * <p>
@@ -117,7 +117,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	/**
-	 * Get the ID of the plan for to the service to create. This will match one of the plan IDs provided
+	 * Get the ID of the plan for to the service instance to create. This will match one of the plan IDs provided
 	 * in the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} within the specified
 	 * {@link ServiceDefinition}.
 	 *
@@ -234,7 +234,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	/**
-	 * Provides a fluent API for constructing a {@literal CreateServiceInstanceRequest}.
+	 * Provides a fluent API for constructing a {@link CreateServiceInstanceRequest}.
 	 */
 	public static class CreateServiceInstanceRequestBuilder {
 		private String serviceInstanceId;
@@ -290,7 +290,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * Set the plan ID as would be provided in the request from the platform.
 		 *
-		 * @param planId the plan ID.
+		 * @param planId the plan ID
 		 * @return the builder
 		 * @see #getPlanId()
 		 */
@@ -386,7 +386,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		}
 
 		/**
-		 * Construct a {@literal CreateServiceInstanceRequest} from the provided values.
+		 * Construct a {@link CreateServiceInstanceRequest} from the provided values.
 		 *
 		 * @return the newly constructed {@literal CreateServiceInstanceRequest}
 		 */

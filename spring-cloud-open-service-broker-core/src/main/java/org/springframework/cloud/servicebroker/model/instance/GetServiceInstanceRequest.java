@@ -25,8 +25,8 @@ import java.util.Objects;
  * Details of a request to retrieve a service instance.
  *
  * <p>
- * Objects of this type are constructed by the framework from the headers, path variables, and query parameters
- * passed to the service broker by the platform.
+ * Objects of this type are constructed by the framework from the headers, path variables, query parameters
+ * and message body passed to the service broker by the platform.
  *
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API specification</a>
  *
@@ -95,7 +95,7 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 	}
 
 	/**
-	 * Provides a fluent API for constructing a {@literal GetServiceInstanceRequest}.
+	 * Provides a fluent API for constructing a {@link GetServiceInstanceRequest}.
 	 */
 	public static class GetServiceInstanceRequestBuilder {
 		private String serviceInstanceId;
@@ -155,7 +155,7 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 		}
 
 		/**
-		 * Construct a {@literal GetServiceInstanceRequest} from the provided values.
+		 * Construct a {@link GetServiceInstanceRequest} from the provided values.
 		 *
 		 * @return the newly constructed {@literal GetServiceInstanceRequest}
 		 */

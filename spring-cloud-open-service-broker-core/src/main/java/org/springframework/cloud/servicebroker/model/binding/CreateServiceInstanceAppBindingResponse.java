@@ -24,28 +24,24 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Details of a response to a request to create a new service instance binding for an application.
+ * Details of a response to a request to create a new service instance binding associated with an application.
  *
+ * <p>
+ * Objects of this type are constructed by the service broker application,
+ * and used to build the response to the platform.
+ *
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-4">Open Service Broker API specification</a>
+ * 
  * @author sgreenberg@pivotal.io
  * @author Josh Long
  * @author Scott Frederick
  */
 public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstanceBindingResponse {
 
-	/**
-	 * A free-form hash of credentials that the bound application can use to access the service.
-	 */
 	private final Map<String, Object> credentials;
 
-	/**
-	 * The URL to which the platform should drain logs for the bound application. Can be <code>null</code> to
-	 * indicate that the service binding does not support syslog drains.
-	 */
 	private final String syslogDrainUrl;
 
-	/**
-	 * The details of the volume mounts available to applications.
-	 */
 	private final List<VolumeMount> volumeMounts;
 
 	CreateServiceInstanceAppBindingResponse(boolean bindingExisted, Map<String, Object> credentials,
@@ -56,18 +52,38 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		this.volumeMounts = volumeMounts;
 	}
 
+	/**
+	 * Get the credentials that the bound application can use to access the service instance.
+	 *
+	 * @return the service binding credentials
+	 */
 	public Map<String, Object> getCredentials() {
 		return this.credentials;
 	}
 
+	/**
+	 * Get the URL to which the platform should drain logs for the bound application.
+	 *
+	 * @return the syslog drain URL
+	 */
 	public String getSyslogDrainUrl() {
 		return this.syslogDrainUrl;
 	}
 
-	public List<VolumeMount> getVolumeMounts() {
+	/**
+	 * Get the set of volume mounts that can be used in an application container file system.
+	 *
+	 * @return the set of volume mounts
+	 */
+	 public List<VolumeMount> getVolumeMounts() {
 		return this.volumeMounts;
 	}
 
+	/**
+	 * Create a builder that provides a fluent API for constructing a {@literal CreateServiceInstanceAppBindingResponse}.
+	 *
+	 * @return the builder
+	 */
 	public static CreateServiceInstanceAppBindingResponseBuilder builder() {
 		return new CreateServiceInstanceAppBindingResponseBuilder();
 	}
@@ -104,6 +120,9 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 				'}';
 	}
 
+	/**
+	 * Provides a fluent API for constructing a {@link CreateServiceInstanceAppBindingResponse}.
+	 */
 	public static class CreateServiceInstanceAppBindingResponseBuilder {
 		private Map<String, Object> credentials = new HashMap<>();
 		private String syslogDrainUrl;
@@ -113,36 +132,104 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		CreateServiceInstanceAppBindingResponseBuilder() {
 		}
 
+		/**
+		 * Add a set of credentials from the provided {@literal Map} to the credentials that the bound application
+		 * can use to access the service instance.
+		 *
+		 * <p>
+		 * This value will set the {@literal credentials} field in the body of the response to the platform
+		 *
+		 * @param credentials a {@literal Map} of credentials
+		 * @return the builder
+		 */
 		public CreateServiceInstanceAppBindingResponseBuilder credentials(Map<String, Object> credentials) {
 			this.credentials.putAll(credentials);
 			return this;
 		}
 
+		/**
+		 * Add a key/value pair to the that the bound application can use to access the service instance.
+		 *
+		 * <p>
+		 * This value will set the {@literal credentials} field in the body of the response to the platform
+		 *
+		 * @param key the credential key
+		 * @param value the credential value
+		 * @return the builder
+		 */
 		public CreateServiceInstanceAppBindingResponseBuilder credentials(String key, Object value) {
 			this.credentials.put(key, value);
 			return this;
 		}
 
+		/**
+		 * Set the URL to which the platform should drain logs for the bound application. Can be {@literal null} to
+		 * indicate that the service binding does not support syslog drains.
+		 *
+		 * <p>
+		 * This value will set the {@literal syslog_drain_url} field in the body of the response to the platform
+		 *
+		 * @param syslogDrainUrl the syslog URL
+		 * @return the builder
+		 */
 		public CreateServiceInstanceAppBindingResponseBuilder syslogDrainUrl(String syslogDrainUrl) {
 			this.syslogDrainUrl = syslogDrainUrl;
 			return this;
 		}
 
+		/**
+		 * Add a set of volume mounts from the provided {@literal List} to the volume mounts that can be used in
+		 * an application container file system.
+		 *
+		 * <p>
+		 * This value will set the {@literal volume_mounts} field in the body of the response to the platform.
+		 *
+		 * @param volumeMounts a {@literal List} of volume mounts
+		 * @return the builder
+		 */
 		public CreateServiceInstanceAppBindingResponseBuilder volumeMounts(List<VolumeMount> volumeMounts) {
 			this.volumeMounts.addAll(volumeMounts);
 			return this;
 		}
 
+		/**
+		 * Add a set of volume mounts from the provided array to the volume mounts that can be used in
+		 * an application container file system.
+		 *
+		 * <p>
+		 * This value will set the {@literal volume_mounts} field in the body of the response to the platform.
+		 *
+		 * @param volumeMounts one more volume mounts
+		 * @return the builder
+		 */
 		public CreateServiceInstanceAppBindingResponseBuilder volumeMounts(VolumeMount... volumeMounts) {
 			Collections.addAll(this.volumeMounts, volumeMounts);
 			return this;
 		}
 
+		/**
+		 * Set a boolean value indicating whether the service binding already exists with the same parameters as the
+		 * requested service binding. A {@literal true} value indicates a service binding exists and no new resources
+		 * were created by the service broker, <code>false</code> indicates that new resources were created.
+		 *
+		 * <p>
+		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
+		 * result in a response code {@literal 200 OK}, and a {@literal false} value will result in a response code
+		 * {@literal 201 CREATED}.
+		 *
+		 * @param bindingExisted {@literal true} to indicate that the binding exists, {@literal false} otherwise
+		 * @return the builder
+		 */
 		public CreateServiceInstanceAppBindingResponseBuilder bindingExisted(boolean bindingExisted) {
 			this.bindingExisted = bindingExisted;
 			return this;
 		}
 
+		/**
+		 * Construct a {@link CreateServiceInstanceAppBindingResponse} from the provided values.
+		 *
+		 * @return the newly constructed {@literal CreateServiceInstanceAppBindingResponse}
+		 */
 		public CreateServiceInstanceAppBindingResponse build() {
 			return new CreateServiceInstanceAppBindingResponse(bindingExisted, credentials, syslogDrainUrl, volumeMounts);
 		}

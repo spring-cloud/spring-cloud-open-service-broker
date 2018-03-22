@@ -49,7 +49,7 @@ public class UpdateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 	}
 
 	/**
-	 * Provides a fluent API for constructing an {@literal UpdateServiceInstanceResponse}.
+	 * Provides a fluent API for constructing an {@link UpdateServiceInstanceResponse}.
 	 */
 	public static class UpdateServiceInstanceResponseBuilder {
 		private boolean async;
@@ -93,7 +93,7 @@ public class UpdateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 		}
 
 		/**
-		 * Construct an {@literal UpdateServiceInstanceResponse} from the provided values.
+		 * Construct an {@link UpdateServiceInstanceResponse} from the provided values.
 		 *
 		 * @return the newly constructed {@literal UpdateServiceInstanceResponse}
 		 */

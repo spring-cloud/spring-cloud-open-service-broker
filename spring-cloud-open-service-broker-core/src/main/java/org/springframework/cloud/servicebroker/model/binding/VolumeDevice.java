@@ -16,6 +16,11 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+/**
+ * Base class for types of volume devices.
+ *
+ * @author Scott Frederick
+ */
 public class VolumeDevice {
 	public String toString() {
 		return "VolumeDevice()";

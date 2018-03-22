@@ -105,7 +105,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 	}
 
 	/**
-	 * Provides a fluent API for constructing a {@literal CreateServiceInstanceResponse}.
+	 * Provides a fluent API for constructing a {@link CreateServiceInstanceResponse}.
 	 */
 	public static class CreateServiceInstanceResponseBuilder {
 		private String dashboardUrl;
@@ -187,7 +187,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 		}
 
 		/**
-		 * Construct a {@literal CreateServiceInstanceResponse} from the provided values.
+		 * Construct a {@link CreateServiceInstanceResponse} from the provided values.
 		 *
 		 * @return the newly constructed {@literal CreateServiceInstanceResponse}
 		 */

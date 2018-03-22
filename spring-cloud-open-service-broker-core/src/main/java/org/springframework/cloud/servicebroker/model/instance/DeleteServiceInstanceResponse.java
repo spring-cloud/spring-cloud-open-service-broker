@@ -49,7 +49,7 @@ public class DeleteServiceInstanceResponse extends AsyncServiceInstanceResponse 
 	}
 
 	/**
-	 * Provides a fluent API for constructing a {@literal DeleteServiceInstanceResponse}.
+	 * Provides a fluent API for constructing a {@link DeleteServiceInstanceResponse}.
 	 */
 	public static class DeleteServiceInstanceResponseBuilder {
 		private boolean async;
@@ -93,7 +93,7 @@ public class DeleteServiceInstanceResponse extends AsyncServiceInstanceResponse 
 		}
 
 		/**
-		 * Construct a {@literal DeleteServiceInstanceResponse} from the provided values.
+		 * Construct a {@link DeleteServiceInstanceResponse} from the provided values.
 		 *
 		 * @return the newly constructed {@literal DeleteServiceInstanceResponse}
 		 */

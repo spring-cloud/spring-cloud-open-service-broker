@@ -21,14 +21,17 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Details of a response to a request to create a new service instance binding for a route.
+ * Details of a response to a request to create a new service instance binding associated with a route.
  *
+ * <p>
+ * Objects of this type are constructed by the service broker application,
+ * and used to build the response to the platform.
+ *
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API specification</a>
+ * 
  * @author Scott Frederick
  */
 public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBindingResponse {
-	/**
-	 * A URL to which the platform should proxy requests for the bound route. Can be <code>null</code>.
-	 */
 	private final String routeServiceUrl;
 
 	GetServiceInstanceRouteBindingResponse(Map<String, Object> parameters, String routeServiceUrl) {
@@ -36,10 +39,21 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 		this.routeServiceUrl = routeServiceUrl;
 	}
 
+	/**
+	 * Get a URL to which the platform should proxy requests for the bound route.
+	 *
+	 * @return the route service URL
+	 */
 	public String getRouteServiceUrl() {
 		return this.routeServiceUrl;
 	}
 
+	/**
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal GetServiceInstanceRouteBindingResponse}.
+	 *
+	 * @return the builder
+	 */
 	public static GetServiceInstanceRouteBindingResponseBuilder builder() {
 		return new GetServiceInstanceRouteBindingResponseBuilder();
 	}
@@ -71,6 +85,9 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 				'}';
 	}
 
+	/**
+	 * Provides a fluent API for constructing a {@link GetServiceInstanceRouteBindingResponse}.
+	 */
 	public static class GetServiceInstanceRouteBindingResponseBuilder {
 		private String routeServiceUrl;
 		private Map<String, Object> parameters = new HashMap<>();
@@ -78,21 +95,58 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 		GetServiceInstanceRouteBindingResponseBuilder() {
 		}
 
+		/**
+		 * Set a URL to which the platform should proxy requests for the bound route. Can be {@literal null}.
+		 *
+		 * <p>
+		 * This value will set the {@literal route_service_url} field in the body of the response to the platform
+		 *
+		 * @param routeServiceUrl the route service URL
+		 * @return the builder
+		 */
 		public GetServiceInstanceRouteBindingResponseBuilder routeServiceUrl(String routeServiceUrl) {
 			this.routeServiceUrl = routeServiceUrl;
 			return this;
 		}
 
+		/**
+		 * Add a set of parameters from the provided {@literal Map} to the request parameters
+		 * as were provided by the platform at service binding creation.
+		 *
+		 * <p>
+		 * This value will set the {@literal parameters} field in the body of the response to the platform.
+		 *
+		 * @param parameters the parameters to add
+		 * @return the builder
+		 * @see #getParameters()
+		 */
 		public GetServiceInstanceRouteBindingResponseBuilder parameters(Map<String, Object> parameters) {
 			this.parameters.putAll(parameters);
 			return this;
 		}
 
+		/**
+		 * Add a key/value pair to the request parameters as were provided in the request from the platform at
+		 * service binding creation.
+		 *
+		 * <p>
+		 * This value will set the {@literal parameters} field in the body of the response to the platform.
+		 *
+		 * @param key the parameter key to add
+		 * @param value the parameter value to add
+		 * @return the builder
+		 * @see #getParameters()
+		 */
 		public GetServiceInstanceRouteBindingResponseBuilder parameters(String key, Object value) {
 			this.parameters.put(key, value);
 			return this;
 		}
 
+		/**
+		 * Construct a {@link GetServiceInstanceRouteBindingResponse} from the provided values.
+		 *
+		 * @return the newly constructed {@literal GetServiceInstanceRouteBindingResponse}
+		 */
 		public GetServiceInstanceRouteBindingResponse build() {
 			return new GetServiceInstanceRouteBindingResponse(parameters, routeServiceUrl);
 		}

@@ -26,20 +26,24 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 /**
  * Details of a response to a request to retrieve a service instance binding.
  *
+ * Service brokers will typically construct one of the subtypes of this class to build a response.
+ * 
  * @author Scott Frederick
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class GetServiceInstanceBindingResponse {
-	/**
-	 * Parameters passed by the user in the form of a JSON structure when the binding was created.
-	 */
 	private final Map<String, Object> parameters;
 
 	protected GetServiceInstanceBindingResponse(Map<String, Object> parameters) {
 		this.parameters = parameters;
 	}
 
+	/**
+	 * Get any parameters passed by the user at service binding creation.
+	 *
+	 * @return the populated {@literal Map}
+	 */
 	public Map<String, Object> getParameters() {
 		return parameters;
 	}

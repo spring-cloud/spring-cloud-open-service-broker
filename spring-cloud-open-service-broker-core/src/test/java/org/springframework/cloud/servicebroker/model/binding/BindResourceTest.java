@@ -47,9 +47,9 @@ public class BindResourceTest {
 		BindResource bindResource = BindResource.builder()
 				.appGuid("app-guid")
 				.route("route")
-				.parameters("parameter1", "value1")
-				.parameters("parameter2", 2)
-				.parameters(parameters)
+				.properties("parameter1", "value1")
+				.properties("parameter2", 2)
+				.properties(parameters)
 				.build();
 
 		assertThat(bindResource.getAppGuid()).isEqualTo("app-guid");
