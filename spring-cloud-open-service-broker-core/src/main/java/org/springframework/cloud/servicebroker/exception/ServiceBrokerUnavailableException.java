@@ -23,6 +23,7 @@ package org.springframework.cloud.servicebroker.exception;
  * @author Scott Frederick
  */
 public class ServiceBrokerUnavailableException extends RuntimeException {
+	private static final long serialVersionUID = -6387820141285204722L;
 	private final static String MESSAGE_PREFIX = "Service broker is temporarily unavailable";
 
 	public ServiceBrokerUnavailableException(String message) {
