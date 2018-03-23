@@ -17,7 +17,12 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a request includes a service definition ID does not exist.
+ * Thrown to indicate that a request includes a service definition ID that does not exist in the
+ * service broker catalog.
+ *
+ * <p>
+ * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY}
+ * being returned to the platform.
  *
  * @author sgreenberg@pivotal.io
  */
@@ -25,8 +30,12 @@ public class ServiceDefinitionDoesNotExistException extends RuntimeException {
 
 	private static final long serialVersionUID = -62090827040416788L;
 
+	/**
+	 * Construct an exception with a default message that includes the provided service definition ID.
+	 *
+	 * @param serviceDefinitionId the ID of the service definition
+	 */
 	public ServiceDefinitionDoesNotExistException(String serviceDefinitionId) {
 		super("Service definition does not exist: id=" + serviceDefinitionId);
 	}
-
 }

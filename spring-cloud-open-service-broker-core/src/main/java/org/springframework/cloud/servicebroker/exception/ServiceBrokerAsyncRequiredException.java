@@ -17,13 +17,23 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a broker requires <code>accepts_incomplete</code> to be <code>true</code> to
- * successfully process a request.
+ * Thrown to indicate that a service broker requires that the platform support asynchronous processing of operations.
+ * This requires that the {@literal accepts_incomplete} request parameter be {@literal true} in requests
+ * from the platform.
+ * 
+ * <p>
+ * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY}
+ * being returned to the platform.
  */
 public class ServiceBrokerAsyncRequiredException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Construct an exception with the provided message.
+	 *
+	 * @param message the exception message
+	 */
 	public ServiceBrokerAsyncRequiredException(String message) {
 		super("Service broker requires async operations: " + message);
 	}

@@ -16,6 +16,10 @@
 
 package org.springframework.cloud.servicebroker.exception;
 
+/**
+ * Provides a formatted message indicating that the service broker does not support the version of the
+ * Open Service Broker API provided by the platform.
+ */
 public class ServiceBrokerApiVersionErrorMessage {
 
 	private static final String MESSAGE_TEMPLATE = "The provided service broker API version is not supported: " +
@@ -23,7 +27,13 @@ public class ServiceBrokerApiVersionErrorMessage {
 
 	private final String message;
 
-	public ServiceBrokerApiVersionErrorMessage(String expectedVersion, String providedVersion) {
+	/**
+	 * Construct a message with the expected and provided version numbers.
+	 *
+	 * @param expectedVersion the version expected by the service broker
+	 * @param providedVersion the version provided by the platform
+	 */
+	private ServiceBrokerApiVersionErrorMessage(String expectedVersion, String providedVersion) {
 		this.message = String.format(MESSAGE_TEMPLATE, expectedVersion, providedVersion);
 	}
 
@@ -32,6 +42,12 @@ public class ServiceBrokerApiVersionErrorMessage {
 		return message;
 	}
 
+	/**
+	 * Construct a message with the expected and provided version numbers.
+	 *
+	 * @param expectedVersion the version expected by the service broker
+	 * @param providedVersion the version provided by the platform
+	 */
 	public static ServiceBrokerApiVersionErrorMessage from(String expectedVersion, String providedVersion) {
 		return new ServiceBrokerApiVersionErrorMessage(expectedVersion, providedVersion);
 	}

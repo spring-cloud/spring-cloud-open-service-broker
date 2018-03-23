@@ -17,7 +17,11 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a request is received for an unknown service instance binding ID.
+ * Thrown to indicate that a request includes a service binding ID that is not known to the service broker.
+ *
+ * <p>
+ * Throwing this exception will result in an HTTP status code {@literal 410 GONE}
+ * being returned to the platform.
  */
 public class ServiceInstanceBindingDoesNotExistException extends RuntimeException {
 

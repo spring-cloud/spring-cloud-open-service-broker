@@ -24,13 +24,13 @@ public class ServiceBrokerApiVersionErrorMessageTest {
 
 	@Test
 	public void nulls() {
-		ServiceBrokerApiVersionErrorMessage message = new ServiceBrokerApiVersionErrorMessage(null, null);
+		ServiceBrokerApiVersionErrorMessage message = ServiceBrokerApiVersionErrorMessage.from(null, null);
 		assertThat(message.toString()).isEqualTo("The provided service broker API version is not supported: expected version=null, provided version=null");
 	}
 
 	@Test
 	public void message() {
-		ServiceBrokerApiVersionErrorMessage message = new ServiceBrokerApiVersionErrorMessage("expected-version", "actual-version");
+		ServiceBrokerApiVersionErrorMessage message = ServiceBrokerApiVersionErrorMessage.from("expected-version", "actual-version");
 		assertThat(message.toString()).isEqualTo("The provided service broker API version is not supported: expected version=expected-version, provided version=actual-version");
 	}
 

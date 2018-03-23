@@ -17,7 +17,12 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a duplicate request to bind to a service instance is received.
+ * Thrown to indicate that a service binding create request was received for a binding that already exists
+ * with parameters that are different from the existing binding.
+ *
+ * <p>
+ * Throwing this exception will result in an HTTP status code {@literal 409 CONFLICT}
+ * being returned to the platform.
  *
  * @author sgreenberg@pivotal.io
  */
@@ -25,10 +30,15 @@ public class ServiceInstanceBindingExistsException extends RuntimeException {
 
 	private static final long serialVersionUID = -914571358227517785L;
 
+	/**
+	 * Construct an exception with a default message that includes the provided IDs.
+	 *
+	 * @param serviceInstanceId the ID of the service instance
+	 * @param bindingId the ID of the service binding
+	 */
 	public ServiceInstanceBindingExistsException(String serviceInstanceId, String bindingId) {
 		super("Service instance binding already exists: "
 				+ "serviceInstanceId=" + serviceInstanceId
 				+ ", bindingId=" + bindingId);
 	}
-
 }

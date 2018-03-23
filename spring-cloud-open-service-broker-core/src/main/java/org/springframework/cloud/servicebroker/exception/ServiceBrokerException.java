@@ -17,8 +17,12 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * General exception for underlying broker errors (like connectivity to the service
+ * Thrown to indicate underlying service broker errors (like connectivity to the service
  * being brokered) not covered by a more specific exception.
+ *
+ * <p>
+ * Throwing this exception will result in an HTTP status code {@literal 500 INTERNAL SERVER ERROR}
+ * being returned to the platform.
  *
  * @author sgreenberg@pivotal.io
  */
@@ -30,10 +34,21 @@ public class ServiceBrokerException extends RuntimeException {
 		super(message);
 	}
 
+	/**
+	 * Construct an exception with the provided message and cause.
+	 *
+	 * @param message the exception message
+	 * @param cause the cause of the exception
+	 */
 	public ServiceBrokerException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
+	/**
+	 * Construct an exception without a message and with the provided cause.
+	 *
+	 * @param cause the cause of the exception
+	 */
 	public ServiceBrokerException(Throwable cause) {
 		super(cause);
 	}

@@ -17,7 +17,11 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a request is received while an operation is in progress.
+ * Thrown to indicate that a request was received while processing of an asynchronous operation is in progress.
+ *
+ * <p>
+ * Throwing this exception will result in an HTTP status code {@literal 404 NOT FOUND}
+ * being returned to the platform.
  *
  * @author Scott Frederick
  */
@@ -25,10 +29,18 @@ public class ServiceBrokerOperationInProgressException extends RuntimeException 
 
 	private static final long serialVersionUID = -1879753092397657116L;
 
+	/**
+	 * Construct an exception with a default message.
+	 */
 	public ServiceBrokerOperationInProgressException() {
 		super("Service broker operation is in progress for the requested service instance or binding");
 	}
 
+	/**
+	 * Construct an exception with a default message that includes the provided {@literal operation} description.
+	 *
+	 * @param operation a description of the operation in progress
+	 */
 	public ServiceBrokerOperationInProgressException(String operation) {
 		super("Service broker operation is in progress for the requested service instance or binding: " +
 				"operation=" + operation);

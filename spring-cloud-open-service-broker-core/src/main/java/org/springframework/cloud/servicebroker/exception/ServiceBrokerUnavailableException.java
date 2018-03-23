@@ -20,11 +20,15 @@ package org.springframework.cloud.servicebroker.exception;
  * Thrown to indicate that a service broker is able to accept requests from the platform but is temporarily unable
  * to process those requests.
  *
+ * <p>
+ * Throwing this exception will result in an HTTP status code {@literal 503 SERVICE UNAVAILABLE}
+ * being returned to the platform.
+ *
  * @author Scott Frederick
  */
 public class ServiceBrokerUnavailableException extends RuntimeException {
 	private static final long serialVersionUID = -6387820141285204722L;
-	private final static String MESSAGE_PREFIX = "Service broker is temporarily unavailable";
+	private static final String MESSAGE_PREFIX = "Service broker is temporarily unavailable";
 
 	public ServiceBrokerUnavailableException(String message) {
 		super(MESSAGE_PREFIX + ": " + message);

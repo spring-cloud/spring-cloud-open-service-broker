@@ -17,22 +17,41 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that the plan change requested is not supported or if the request
- * can not currently be fulfilled due to the state of the instance.
+ * Thrown to indicate that a request to update a service instance can not be fulfilled by the service broker.
+ *
+ * <p>
+ * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY}
+ * being returned to the platform.
  */
 public class ServiceInstanceUpdateNotSupportedException extends RuntimeException {
 
 	private static final long serialVersionUID = 4719676639792071582L;
 	private static final String MESSAGE_PREFIX = "Service instance update not supported";
 
+	/**
+	 * Construct an exception with a default message and the provided detail.
+	 *
+	 * @param message detail to add to the default message
+	 */
 	public ServiceInstanceUpdateNotSupportedException(String message) {
 		super(MESSAGE_PREFIX + ": " + message);
 	}
 
+	/**
+	 * Construct an exception with a default message and the provided detail and a cause.
+	 *
+	 * @param message detail to add to the default message
+	 * @param cause the cause of the exception
+	 */
 	public ServiceInstanceUpdateNotSupportedException(String message, Throwable cause) {
 		super(MESSAGE_PREFIX + ": " + message, cause);
 	}
 
+	/**
+	 * Construct an exception with a default message and the provided cause.
+	 *
+	 * @param cause the cause of the exception
+	 */
 	public ServiceInstanceUpdateNotSupportedException(Throwable cause) {
 		super(MESSAGE_PREFIX, cause);
 	}
