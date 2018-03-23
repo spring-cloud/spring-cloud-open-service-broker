@@ -29,9 +29,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for the service broker API validation.
- * Configures support for any service broker API version if a version is not specifically
- * configured.
+ * {@link EnableAutoConfiguration Auto-configuration} for the service broker API
+ * validation. Configures support for any service broker API version if a version is not
+ * specifically configured.
+ *
+ * <p>
+ * API validation may be disabled completely by setting the following configuration
+ * property:
+ *
+ * <pre>
+ * spring.cloud.openservicebroker.apiVersionCheckEnabled = false
+ * </pre>
  *
  * @author Roy Clarkson
  */

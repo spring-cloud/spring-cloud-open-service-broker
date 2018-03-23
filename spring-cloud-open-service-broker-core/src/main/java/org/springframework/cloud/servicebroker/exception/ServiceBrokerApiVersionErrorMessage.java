@@ -47,6 +47,7 @@ public class ServiceBrokerApiVersionErrorMessage {
 	 *
 	 * @param expectedVersion the version expected by the service broker
 	 * @param providedVersion the version provided by the platform
+	 * @return error message
 	 */
 	public static ServiceBrokerApiVersionErrorMessage from(String expectedVersion, String providedVersion) {
 		return new ServiceBrokerApiVersionErrorMessage(expectedVersion, providedVersion);

@@ -18,29 +18,32 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
- * A service plan available for a ServiceDefinition
+ * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
+ * that describe a service plan available for a {@link ServiceDefinition}.
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see org.springframework.cloud.servicebroker.model.catalog.Plan
  */
 class Plan {
 
 	/**
-	 * An identifier used to correlate this plan in future requests to the catalog. This must be unique within
-	 * the platform. Using a GUID is recommended.
+	 * An identifier used to correlate this plan in future requests to the catalog. This
+	 * must be unique within the platform. Using a GUID is recommended.
 	 */
 	@NotEmpty
 	private String id;
 
 	/**
-	 * A CLI-friendly name of the plan that will appear in the catalog. The value should be all lowercase,
-	 * with no spaces.
+	 * A CLI-friendly name of the plan that will appear in the catalog. The value should
+	 * be all lowercase, with no spaces.
 	 */
 	@NotEmpty
 	private String name;
@@ -63,13 +66,15 @@ class Plan {
 	private Schemas schemas;
 
 	/**
-	 * Indicates whether the service with this plan can be bound to applications. This is an optional field. If the
-	 * value is <code>null</code>, the field will be omitted from the serialized JSON.
+	 * Indicates whether the service with this plan can be bound to applications. This is
+	 * an optional field. If the value is <code>null</code>, the field will be omitted
+	 * from the serialized JSON.
 	 */
 	private Boolean bindable = false;
 
 	/**
-	 * Indicates whether the plan can be limited by the non_basic_services_allowed field in a platform quota.
+	 * Indicates whether the plan can be limited by the non_basic_services_allowed field
+	 * in a platform quota.
 	 */
 	private Boolean free = false;
 
@@ -129,6 +134,12 @@ class Plan {
 		this.free = free;
 	}
 
+	/**
+	 * Converts this object into its corresponding model
+	 *
+	 * @return a Plan model
+	 * @see org.springframework.cloud.servicebroker.model.catalog.Plan
+	 */
 	public org.springframework.cloud.servicebroker.model.catalog.Plan toModel() {
 		return org.springframework.cloud.servicebroker.model.catalog.Plan.builder()
 				.id(this.id)

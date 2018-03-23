@@ -98,6 +98,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	/**
 	 * This method is intended to be used internally only; use {@link #builder()} to construct an object of this
 	 * type and set all field values.
+	 *
+	 * @param serviceInstanceId the ID of the service instance to create
 	 */
 	public void setServiceInstanceId(final String serviceInstanceId) {
 		this.serviceInstanceId = serviceInstanceId;
@@ -174,6 +176,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	/**
 	 * This method is intended to be used internally only; use {@link #builder()} to construct an object of this
 	 * type and set all field values.
+	 *
+	 * @param serviceDefinition the service definition of the service to create
 	 */
 	public void setServiceDefinition(ServiceDefinition serviceDefinition) {
 		this.serviceDefinition = serviceDefinition;

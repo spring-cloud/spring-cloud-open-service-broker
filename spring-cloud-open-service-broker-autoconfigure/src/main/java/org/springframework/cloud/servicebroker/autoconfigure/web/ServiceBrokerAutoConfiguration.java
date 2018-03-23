@@ -31,15 +31,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for the service broker implementation beans.
+ * {@link EnableAutoConfiguration Auto-configuration} for the service broker
+ * implementation beans.
  * <p>
- * Provides a default {@link CatalogService} bean if a {@link Catalog} bean is provided.
+ * Provides a default {@link CatalogService} bean if a {@link Catalog} bean is provided. A
+ * catalog may be defined in external configuration, or via a Spring bean.
  * <p>
- * Provides a {@link NonBindableServiceInstanceBindingService} if a {@link ServiceInstanceBindingService}
- * is not provided, indicating that the service broker provides no bindable services.
+ * Provides a {@link NonBindableServiceInstanceBindingService} if a
+ * {@link ServiceInstanceBindingService} is not provided, indicating that the service
+ * broker provides no bindable services.
  *
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see ServiceBrokerProperties
  */
 @Configuration
 @ConditionalOnBean({ServiceInstanceService.class})

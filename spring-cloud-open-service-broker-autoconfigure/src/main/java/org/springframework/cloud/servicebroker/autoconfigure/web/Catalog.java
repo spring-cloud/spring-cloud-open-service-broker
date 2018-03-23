@@ -25,11 +25,13 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
- * The catalog of services offered by the service broker.
+ * Internal class for marshaling a catalog of services within
+ * {@link ServiceBrokerProperties} configuration properties.
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see org.springframework.cloud.servicebroker.model.catalog.Catalog
  */
 class Catalog {
 
@@ -44,6 +46,12 @@ class Catalog {
 		return this.services;
 	}
 
+	/**
+	 * Converts this object into its corresponding model
+	 *
+	 * @return a Catalog model
+	 * @see org.springframework.cloud.servicebroker.model.catalog.Catalog
+	 */
 	public org.springframework.cloud.servicebroker.model.catalog.Catalog toModel() {
 		List<org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition> modelServiceDefinitions =
 				this.services.stream()

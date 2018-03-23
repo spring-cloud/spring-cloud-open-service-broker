@@ -29,16 +29,25 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for the service broker API validation.
- * Configures support for any service broker API version if a version is not specifically
- * configured.
+ * {@link EnableAutoConfiguration Auto-configuration} for the service broker API
+ * validation. Configures support for any service broker API version if a version is not
+ * specifically configured.
+ *
+ * <p>
+ * API validation may be disabled completely by setting the following configuration
+ * property:
+ *
+ * <pre>
+ * spring.cloud.openservicebroker.apiVersionCheckEnabled = false
+ * </pre>
  *
  * @author Benjamin Ihrig
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-@ConditionalOnBean({ServiceInstanceService.class})
+@ConditionalOnBean({ ServiceInstanceService.class })
 @ConditionalOnProperty(prefix = "spring.cloud.openservicebroker", name = "apiVersionCheckEnabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter(WebMvcAutoConfiguration.class)
 public class ApiVersionWebMvcAutoConfiguration {
@@ -50,7 +59,8 @@ public class ApiVersionWebMvcAutoConfiguration {
 	}
 
 	@Bean
-	public ApiVersionInterceptor serviceBrokerApiVersionInterceptor(BrokerApiVersion brokerApiVersion) {
+	public ApiVersionInterceptor serviceBrokerApiVersionInterceptor(
+			BrokerApiVersion brokerApiVersion) {
 		return new ApiVersionInterceptor(brokerApiVersion);
 	}
 

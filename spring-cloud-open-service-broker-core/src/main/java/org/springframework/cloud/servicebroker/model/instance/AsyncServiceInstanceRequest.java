@@ -16,10 +16,10 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import java.util.Objects;
+
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
-
-import java.util.Objects;
 
 /**
  * Details of a request that supports asynchronous operations.
@@ -60,6 +60,9 @@ public abstract class AsyncServiceInstanceRequest extends ServiceBrokerRequest {
 	/**
 	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this
 	 * type and set all field values.
+	 *
+	 * @param asyncAccepted the value indicating whether the platform allows the broker to complete the request
+	 * asynchronously
 	 */
 	public void setAsyncAccepted(boolean asyncAccepted) {
 		this.asyncAccepted = asyncAccepted;

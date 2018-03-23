@@ -19,11 +19,13 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
- * Service binding JSON Schemas.
+ * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
+ * that describe a Service binding JSON Schemas.
  *
  * @author sgunaratne@pivotal.io
  * @author Sam Gunaratne
  * @author Roy Clarkson
+ * @see org.springframework.cloud.servicebroker.model.catalog.ServiceBindingSchema
  */
 class ServiceBindingSchema {
 
@@ -41,6 +43,12 @@ class ServiceBindingSchema {
 		this.create = create;
 	}
 
+	/**
+	 * Converts this object to its corresponding model
+	 *
+	 * @return a ServiceBindingSchema model
+	 * @see org.springframework.cloud.servicebroker.model.catalog.ServiceBindingSchema
+	 */
 	public org.springframework.cloud.servicebroker.model.catalog.ServiceBindingSchema toModel() {
 		return org.springframework.cloud.servicebroker.model.catalog.ServiceBindingSchema.builder()
 				.createMethodSchema(this.create != null ? this.create.toModel() : null)

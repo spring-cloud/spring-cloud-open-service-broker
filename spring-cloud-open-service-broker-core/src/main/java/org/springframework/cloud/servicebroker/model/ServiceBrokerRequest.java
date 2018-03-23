@@ -16,10 +16,10 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
-import java.util.Objects;
 
 /**
  * Details common to all service broker requests.
@@ -68,6 +68,8 @@ public class ServiceBrokerRequest {
 	/**
 	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this
 	 * type and set all field values.
+	 *
+	 * @param platformInstanceId the platform instance ID
 	 */
 	public void setPlatformInstanceId(String platformInstanceId) {
 		this.platformInstanceId = platformInstanceId;
@@ -90,6 +92,8 @@ public class ServiceBrokerRequest {
 	/**
 	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this
 	 * type and set all field values.
+	 *
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 */
 	public void setApiInfoLocation(String apiInfoLocation) {
 		this.apiInfoLocation = apiInfoLocation;
@@ -109,6 +113,8 @@ public class ServiceBrokerRequest {
 	/**
 	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this
 	 * type and set all field values.
+	 *
+	 * @param originatingIdentity identity of the user that initiated the request from the platform
 	 */
 	public void setOriginatingIdentity(Context originatingIdentity) {
 		this.originatingIdentity = originatingIdentity;

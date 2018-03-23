@@ -16,11 +16,11 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
-import org.springframework.cloud.servicebroker.model.Context;
-import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapper;
-
 import java.util.Map;
 import java.util.Objects;
+
+import org.springframework.cloud.servicebroker.model.Context;
+import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapper;
 
 /**
  * Details of a request that supports arbitrary parameters and asynchronous behavior.
@@ -76,7 +76,8 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 * The platform will pass the user-supplied JSON structure to the service broker as-is. The service broker is
 	 * responsible for validating the contents of the parameters for correctness or applicability.
 	 *
-	 * @param cls the type of object to map the parameter key/value pairs to
+	 * @param cls the {@link Class} representing the type of object to map the parameter key/value pairs to
+	 * @param <T> the type of the object to instantiate and populate
 	 * @return the instantiated and populated object
 	 */
 	public <T> T getParameters(Class<T> cls) {

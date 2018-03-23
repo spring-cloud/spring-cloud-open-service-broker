@@ -21,17 +21,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires;
 
 /**
- * A service offered by this broker.
+ * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
+ * that describes a service offered by this broker.
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition
  */
 class ServiceDefinition {
 
@@ -186,8 +189,10 @@ class ServiceDefinition {
 	}
 
 	/**
-	 * Convert this property object to the corresponding model
+	 * Convert this object to its corresponding model
+	 *
 	 * @return a converted ServiceDefinition
+	 * @see org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition
 	 */
 	public org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition toModel() {
 		List<org.springframework.cloud.servicebroker.model.catalog.Plan> modelPlans =

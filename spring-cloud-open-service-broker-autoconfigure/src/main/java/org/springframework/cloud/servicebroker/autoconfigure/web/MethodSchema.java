@@ -20,10 +20,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * JSON Schema for a service broker object method.
+ * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
+ * that describe a JSON Schema for a service broker object method.
  *
  * @author Sam Gunaratne
  * @author Roy Clarkson
+ * @see org.springframework.cloud.servicebroker.model.catalog.MethodSchema
  */
 class MethodSchema {
 
@@ -36,6 +38,12 @@ class MethodSchema {
 		return this.parameters;
 	}
 
+	/**
+	 * Converts this object into its corresponding model
+	 *
+	 * @return a MethodSchema model
+	 * @see org.springframework.cloud.servicebroker.model.catalog.MethodSchema
+	 */
 	public org.springframework.cloud.servicebroker.model.catalog.MethodSchema toModel() {
 		return org.springframework.cloud.servicebroker.model.catalog.MethodSchema.builder()
 				.parameters(this.parameters)

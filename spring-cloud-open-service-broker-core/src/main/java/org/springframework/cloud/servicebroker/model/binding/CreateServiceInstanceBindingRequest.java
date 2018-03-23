@@ -108,6 +108,8 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	/**
 	 * This method is intended to be used internally only; use {@link #builder()} to construct an object of this
 	 * type and set all field values.
+	 *
+	 * @param serviceInstanceId the ID of the service instance associated with the binding
 	 */
 	public void setServiceInstanceId(final String serviceInstanceId) {
 		this.serviceInstanceId = serviceInstanceId;
@@ -130,6 +132,8 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	/**
 	 * This method is intended to be used internally only; use {@link #builder()} to construct an object of this
 	 * type and set all field values.
+	 *
+	 * @param bindingId the ID of the service binding to create
 	 */
 	public void setBindingId(final String bindingId) {
 		this.bindingId = bindingId;
@@ -221,7 +225,8 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 * The platform will pass the user-supplied JSON structure to the service broker as-is. The service broker is
 	 * responsible for validating the contents of the parameters for correctness or applicability.
 	 *
-	 * @param cls the type of object to map the parameter key/value pairs to
+	 * @param cls the {@link Class} representing the type of object to map the parameter key/value pairs to
+	 * @param <T> the type of the object to instantiate and populate
 	 * @return the instantiated and populated object
 	 */
 	public <T> T getParameters(Class<T> cls) {
@@ -256,6 +261,8 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	/**
 	 * This method is intended to be used internally only; use {@link #builder()} to construct an object of this
 	 * type and set all field values.
+	 *
+	 * @param serviceDefinition the service definition of the service instance associated with the binding
 	 */
 	public void setServiceDefinition(final ServiceDefinition serviceDefinition) {
 		this.serviceDefinition = serviceDefinition;

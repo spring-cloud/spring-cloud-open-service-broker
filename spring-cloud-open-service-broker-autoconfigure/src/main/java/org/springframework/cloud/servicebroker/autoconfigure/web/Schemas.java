@@ -19,11 +19,13 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
- * JSON Schemas available for a Plan.
+ * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
+ * that describes a JSON Schemas available for a {@link Plan}.
  *
  * @author sgunaratne@pivotal.io
  * @author Sam Gunaratne
  * @author Roy Clarkson
+ * @see org.springframework.cloud.servicebroker.model.catalog.Schemas
  */
 class Schemas {
 
@@ -55,10 +57,17 @@ class Schemas {
 		this.serviceBinding = serviceBinding;
 	}
 
+	/**
+	 * Converts this object into its corresponding model
+	 *
+	 * @return a Schemas model
+	 * @see org.springframework.cloud.servicebroker.model.catalog.Schemas
+	 */
 	public org.springframework.cloud.servicebroker.model.catalog.Schemas toModel() {
 		return org.springframework.cloud.servicebroker.model.catalog.Schemas.builder()
 				.serviceInstanceSchema(this.serviceInstance != null ? this.serviceInstance.toModel() : null)
 				.serviceBindingSchema(this.serviceBinding != null ? this.serviceBinding.toModel() : null)
 				.build();
 	}
+
 }

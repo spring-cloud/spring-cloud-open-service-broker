@@ -64,6 +64,14 @@ public class ApiVersionWebFilter implements WebFilter {
 		this.version = version;
 	}
 
+	/**
+	 * Process the web request and validate the API version in the header. If the API version
+	 * does not match, then set an HTTP 412 status and write the error message to the response.
+	 *
+	 * @param exchange {@inheritDoc}
+	 * @param chain {@inheritDoc}
+	 * @return {@inheritDoc}
+	 */
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
 		PathPattern p = new PathPatternParser().parse(V2_API_PATH_PATTERN);
@@ -72,7 +80,7 @@ public class ApiVersionWebFilter implements WebFilter {
 			if (!version.getApiVersion().equals(apiVersion)) {
 				String message = ServiceBrokerApiVersionErrorMessage.from(version.getApiVersion(), apiVersion).toString();
 				ServerHttpResponse response = exchange.getResponse();
-				String json = null;
+				String json;
 				try {
 					json = new ObjectMapper().writeValueAsString(new ErrorMessage(message));
 				}
