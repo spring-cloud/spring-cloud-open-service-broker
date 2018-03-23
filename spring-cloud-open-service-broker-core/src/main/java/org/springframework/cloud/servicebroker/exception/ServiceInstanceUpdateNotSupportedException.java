@@ -23,7 +23,7 @@ package org.springframework.cloud.servicebroker.exception;
  * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY}
  * being returned to the platform.
  */
-public class ServiceInstanceUpdateNotSupportedException extends RuntimeException {
+public class ServiceInstanceUpdateNotSupportedException extends ServiceBrokerException {
 
 	private static final long serialVersionUID = 4719676639792071582L;
 	private static final String MESSAGE_PREFIX = "Service instance update not supported";
@@ -38,6 +38,16 @@ public class ServiceInstanceUpdateNotSupportedException extends RuntimeException
 	}
 
 	/**
+	 * Construct an exception with an error code, default message and the provided detail.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param message detail to add to the default message
+	 */
+	public ServiceInstanceUpdateNotSupportedException(String errorCode, String message) {
+		super(errorCode, MESSAGE_PREFIX + ": " + message);
+	}
+
+	/**
 	 * Construct an exception with a default message and the provided detail and a cause.
 	 *
 	 * @param message detail to add to the default message
@@ -45,6 +55,17 @@ public class ServiceInstanceUpdateNotSupportedException extends RuntimeException
 	 */
 	public ServiceInstanceUpdateNotSupportedException(String message, Throwable cause) {
 		super(MESSAGE_PREFIX + ": " + message, cause);
+	}
+
+	/**
+	 * Construct an exception with a default message and the provided detail and a cause.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param message detail to add to the default message
+	 * @param cause the cause of the exception
+	 */
+	public ServiceInstanceUpdateNotSupportedException(String errorCode, String message, Throwable cause) {
+		super(errorCode, MESSAGE_PREFIX + ": " + message, cause);
 	}
 
 	/**

@@ -26,8 +26,7 @@ package org.springframework.cloud.servicebroker.exception;
  *
  * @author sgreenberg@pivotal.io
  */
-public class ServiceInstanceExistsException extends RuntimeException {
-
+public class ServiceInstanceExistsException extends ServiceBrokerException {
 	private static final long serialVersionUID = -914571358227517785L;
 
 	/**
@@ -37,9 +36,23 @@ public class ServiceInstanceExistsException extends RuntimeException {
 	 * @param serviceDefinitionId the ID of the service definition
 	 */
 	public ServiceInstanceExistsException(String serviceInstanceId, String serviceDefinitionId) {
-		super("Service instance with the given ID already exists: " +
-				"serviceInstanceId=" + serviceInstanceId +
-				", serviceDefinitionId=" + serviceDefinitionId);
+		super(buildMessage(serviceInstanceId, serviceDefinitionId));
 	}
 
+	/**
+	 * Construct an exception with an error code and default message that includes the provided IDs.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param serviceInstanceId the ID of the service instance
+	 * @param serviceDefinitionId the ID of the service definition
+	 */
+	public ServiceInstanceExistsException(String errorCode, String serviceInstanceId, String serviceDefinitionId) {
+		super(errorCode, buildMessage(serviceInstanceId, serviceDefinitionId));
+	}
+
+	private static String buildMessage(String serviceInstanceId, String serviceDefinitionId) {
+		return "Service instance with the given ID already exists: " +
+				"serviceInstanceId=" + serviceInstanceId +
+				", serviceDefinitionId=" + serviceDefinitionId;
+	}
 }

@@ -25,8 +25,9 @@ package org.springframework.cloud.servicebroker.exception;
  *
  * @author Scott Frederick
  */
-public class ServiceBrokerConcurrencyException extends RuntimeException {
+public class ServiceBrokerConcurrencyException extends ServiceBrokerException {
 	private static final long serialVersionUID = -2521415489841815405L;
+	public final static String CONCURRENCY_ERROR = "ConcurrencyError";
 
 	/**
 	 * Construct an exception with the provided message.
@@ -34,7 +35,7 @@ public class ServiceBrokerConcurrencyException extends RuntimeException {
 	 * @param message the exception message
 	 */
 	public ServiceBrokerConcurrencyException(String message) {
-		super(message);
+		super(CONCURRENCY_ERROR, message);
 	}
 
 	/**
@@ -44,15 +45,6 @@ public class ServiceBrokerConcurrencyException extends RuntimeException {
 	 * @param cause the exception cause
 	 */
 	public ServiceBrokerConcurrencyException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	/**
-	 * Construct an exception with the provided cause.
-	 *
-	 * @param cause the exception cause
-	 */
-	public ServiceBrokerConcurrencyException(Throwable cause) {
-		super(cause);
+		super(CONCURRENCY_ERROR, message, cause);
 	}
 }

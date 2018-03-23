@@ -26,7 +26,7 @@ package org.springframework.cloud.servicebroker.exception;
  *
  * @author sgreenberg@pivotal.io
  */
-public class ServiceDefinitionDoesNotExistException extends RuntimeException {
+public class ServiceDefinitionDoesNotExistException extends ServiceBrokerException {
 
 	private static final long serialVersionUID = -62090827040416788L;
 
@@ -36,6 +36,21 @@ public class ServiceDefinitionDoesNotExistException extends RuntimeException {
 	 * @param serviceDefinitionId the ID of the service definition
 	 */
 	public ServiceDefinitionDoesNotExistException(String serviceDefinitionId) {
-		super("Service definition does not exist: id=" + serviceDefinitionId);
+		super(buildMessage(serviceDefinitionId));
+	}
+
+	/**
+	 * Construct an exception with an error code and default message that includes the
+	 * provided service definition ID.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param serviceDefinitionId the ID of the service definition
+	 */
+	public ServiceDefinitionDoesNotExistException(String errorCode, String serviceDefinitionId) {
+		super(errorCode, buildMessage(serviceDefinitionId));
+	}
+
+	private static String buildMessage(String serviceDefinitionId) {
+		return "Service definition does not exist: id=" + serviceDefinitionId;
 	}
 }

@@ -17,7 +17,8 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a request was received while processing of an asynchronous operation is in progress.
+ * Thrown to indicate that a request for a service instance or binding was received while
+ * asynchronous creation of the service instance or binding is in progress.
  *
  * <p>
  * Throwing this exception will result in an HTTP status code {@literal 404 NOT FOUND}
@@ -25,15 +26,16 @@ package org.springframework.cloud.servicebroker.exception;
  *
  * @author Scott Frederick
  */
-public class ServiceBrokerOperationInProgressException extends RuntimeException {
-
+public class ServiceBrokerOperationInProgressException extends ServiceBrokerException {
 	private static final long serialVersionUID = -1879753092397657116L;
+	private static final String MESSAGE_PREFIX = "Service broker operation is in progress " +
+			"for the requested service instance or binding";
 
 	/**
 	 * Construct an exception with a default message.
 	 */
 	public ServiceBrokerOperationInProgressException() {
-		super("Service broker operation is in progress for the requested service instance or binding");
+		super(MESSAGE_PREFIX);
 	}
 
 	/**
@@ -42,7 +44,20 @@ public class ServiceBrokerOperationInProgressException extends RuntimeException 
 	 * @param operation a description of the operation in progress
 	 */
 	public ServiceBrokerOperationInProgressException(String operation) {
-		super("Service broker operation is in progress for the requested service instance or binding: " +
-				"operation=" + operation);
+		super(prependMessagePrefix(operation));
+	}
+
+	/**
+	 * Construct an exception with an error code and default message.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param operation a description of the operation in progress
+	 */
+	public ServiceBrokerOperationInProgressException(String errorCode, String operation) {
+		super(errorCode, prependMessagePrefix(operation));
+	}
+
+	private static String prependMessagePrefix(String operation) {
+		return MESSAGE_PREFIX + ": operation=" + operation;
 	}
 }

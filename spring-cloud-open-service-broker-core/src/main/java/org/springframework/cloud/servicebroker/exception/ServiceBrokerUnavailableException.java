@@ -26,19 +26,60 @@ package org.springframework.cloud.servicebroker.exception;
  *
  * @author Scott Frederick
  */
-public class ServiceBrokerUnavailableException extends RuntimeException {
+public class ServiceBrokerUnavailableException extends ServiceBrokerException {
 	private static final long serialVersionUID = -6387820141285204722L;
 	private static final String MESSAGE_PREFIX = "Service broker is temporarily unavailable";
 
+	/**
+	 * Construct an exception with the provided message.
+	 *
+	 * @param message the exception message
+	 */
 	public ServiceBrokerUnavailableException(String message) {
-		super(MESSAGE_PREFIX + ": " + message);
+		super(prependMessagePrefix(message));
 	}
 
+	/**
+	 * Construct an exception with the provided error code and message.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param message the exception message
+	 */
+	public ServiceBrokerUnavailableException(String errorCode, String message) {
+		super(errorCode, prependMessagePrefix(message));
+	}
+
+	/**
+	 * Construct an exception with the provided message and cause.
+	 *
+	 * @param message the exception message
+	 * @param cause the exception cause
+	 */
 	public ServiceBrokerUnavailableException(String message, Throwable cause) {
-		super(MESSAGE_PREFIX + ": " + message, cause);
+		super(prependMessagePrefix(message), cause);
 	}
 
+	/**
+	 * Construct an exception with the provided error code, message and cause.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param message the exception message
+	 * @param cause the exception cause
+	 */
+	public ServiceBrokerUnavailableException(String errorCode, String message, Throwable cause) {
+		super(errorCode, prependMessagePrefix(message), cause);
+	}
+
+	/**
+	 * Construct an exception with the provided cause.
+	 *
+	 * @param cause the exception cause
+	 */
 	public ServiceBrokerUnavailableException(Throwable cause) {
 		super(MESSAGE_PREFIX, cause);
+	}
+
+	private static String prependMessagePrefix(String message) {
+		return MESSAGE_PREFIX + ": " + message;
 	}
 }

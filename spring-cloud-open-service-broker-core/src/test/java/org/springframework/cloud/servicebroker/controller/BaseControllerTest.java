@@ -45,8 +45,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.support.WebExchangeBindException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage.ASYNC_REQUIRED_ERROR;
-import static org.springframework.cloud.servicebroker.model.error.ConcurrencyErrorMessage.CONCURRENCY_ERROR;
+import static org.springframework.cloud.servicebroker.exception.ServiceBrokerConcurrencyException.CONCURRENCY_ERROR;
+import static org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException.ASYNC_REQUIRED_ERROR;
 
 public class BaseControllerTest {
 	private BaseController controller;
@@ -194,6 +194,17 @@ public class BaseControllerTest {
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 		assertThat(responseEntity.getBody().getError()).isNull();
+		assertThat(responseEntity.getBody().getMessage()).contains("test message");
+	}
+
+	@Test
+	public void serviceBrokerExceptionWithErrorCodeGivesExpectedStatus() {
+		ServiceBrokerException exception = new ServiceBrokerException("ErrorCode", "test message");
+
+		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+		assertThat(responseEntity.getBody().getError()).isEqualTo("ErrorCode");
 		assertThat(responseEntity.getBody().getMessage()).contains("test message");
 	}
 

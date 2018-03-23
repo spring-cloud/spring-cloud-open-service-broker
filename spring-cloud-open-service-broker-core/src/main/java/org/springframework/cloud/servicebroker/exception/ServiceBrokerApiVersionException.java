@@ -24,8 +24,7 @@ package org.springframework.cloud.servicebroker.exception;
  * Throwing this exception will result in an HTTP status code {@literal 412 PRECONDITION FAILED}
  * being returned to the platform.
  */
-public class ServiceBrokerApiVersionException extends RuntimeException {
-
+public class ServiceBrokerApiVersionException extends ServiceBrokerException {
 	private static final long serialVersionUID = -6792404679608443775L;
 
 	/**
@@ -38,4 +37,14 @@ public class ServiceBrokerApiVersionException extends RuntimeException {
 		super(ServiceBrokerApiVersionErrorMessage.from(expectedVersion, providedVersion).toString());
 	}
 
+	/**
+	 * Construct an exception with an error code and the expected and provided versions.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param expectedVersion the version expected by the service broker
+	 * @param providedVersion the version provided by the platform
+	 */
+	public ServiceBrokerApiVersionException(String errorCode, String expectedVersion, String providedVersion) {
+		super(errorCode, ServiceBrokerApiVersionErrorMessage.from(expectedVersion, providedVersion).toString());
+	}
 }

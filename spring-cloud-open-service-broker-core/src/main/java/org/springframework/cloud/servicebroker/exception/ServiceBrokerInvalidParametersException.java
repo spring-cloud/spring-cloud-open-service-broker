@@ -25,8 +25,7 @@ package org.springframework.cloud.servicebroker.exception;
  *
  * @author Scott Frederick
  */
-public class ServiceBrokerInvalidParametersException extends RuntimeException {
-
+public class ServiceBrokerInvalidParametersException extends ServiceBrokerException {
 	private static final long serialVersionUID = 4719676639792071582L;
 	private static final String MESSAGE_PREFIX = "Service broker parameters are invalid";
 
@@ -36,7 +35,17 @@ public class ServiceBrokerInvalidParametersException extends RuntimeException {
 	 * @param message the exception message
 	 */
 	public ServiceBrokerInvalidParametersException(String message) {
-		super(MESSAGE_PREFIX + ": " + message);
+		super(prependMessagePrefix(message));
+	}
+
+	/**
+	 * Construct an exception with the provided error code and message.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param message the exception message
+	 */
+	public ServiceBrokerInvalidParametersException(String errorCode, String message) {
+		super(errorCode, prependMessagePrefix(message));
 	}
 
 	/**
@@ -46,7 +55,18 @@ public class ServiceBrokerInvalidParametersException extends RuntimeException {
 	 * @param cause the cause of the exception
 	 */
 	public ServiceBrokerInvalidParametersException(String message, Throwable cause) {
-		super(MESSAGE_PREFIX + ": " + message, cause);
+		super(prependMessagePrefix(message), cause);
+	}
+
+	/**
+	 * Construct an exception with the provided error code, message and cause.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param message the exception message
+	 * @param cause the cause of the exception
+	 */
+	public ServiceBrokerInvalidParametersException(String errorCode, String message, Throwable cause) {
+		super(errorCode, prependMessagePrefix(message), cause);
 	}
 
 	/**
@@ -58,4 +78,7 @@ public class ServiceBrokerInvalidParametersException extends RuntimeException {
 		super(MESSAGE_PREFIX, cause);
 	}
 
+	private static String prependMessagePrefix(String message) {
+		return MESSAGE_PREFIX + ": " + message;
+	}
 }

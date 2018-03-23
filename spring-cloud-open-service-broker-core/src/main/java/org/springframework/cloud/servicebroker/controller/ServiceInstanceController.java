@@ -257,12 +257,12 @@ public class ServiceInstanceController extends BaseController {
 	@ExceptionHandler(ServiceInstanceExistsException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceExistsException ex) {
 		LOGGER.debug(ex.getMessage(), ex);
-		return getErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
+		return getErrorResponse(ex.getErrorMessage(), HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(ServiceInstanceUpdateNotSupportedException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceUpdateNotSupportedException ex) {
 		LOGGER.debug(ex.getMessage(), ex);
-		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+		return getErrorResponse(ex.getErrorMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 }

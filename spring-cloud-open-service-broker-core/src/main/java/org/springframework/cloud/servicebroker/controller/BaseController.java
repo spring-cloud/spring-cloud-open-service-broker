@@ -35,8 +35,6 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotE
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-import org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage;
-import org.springframework.cloud.servicebroker.model.error.ConcurrencyErrorMessage;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.service.CatalogService;
@@ -139,57 +137,55 @@ public class BaseController {
 	@ExceptionHandler(ServiceBrokerApiVersionException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerApiVersionException ex) {
 		LOGGER.debug(ex.getMessage(), ex);
-		return getErrorResponse(ex.getMessage(), HttpStatus.PRECONDITION_FAILED);
+		return getErrorResponse(ex.getErrorMessage(), HttpStatus.PRECONDITION_FAILED);
 	}
 
 	@ExceptionHandler(ServiceInstanceDoesNotExistException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceDoesNotExistException ex) {
 		LOGGER.debug(ex.getMessage(), ex);
-		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+		return getErrorResponse(ex.getErrorMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceDefinitionDoesNotExistException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceDefinitionDoesNotExistException ex) {
 		LOGGER.debug(ex.getMessage(), ex);
-		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+		return getErrorResponse(ex.getErrorMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceBrokerAsyncRequiredException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerAsyncRequiredException ex) {
 		LOGGER.debug(ex.getMessage(), ex);
-		return getErrorResponse(
-				new AsyncRequiredErrorMessage(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+		return getErrorResponse(ex.getErrorMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceBrokerInvalidParametersException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerInvalidParametersException ex) {
 		LOGGER.debug(ex.getMessage(), ex);
-		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+		return getErrorResponse(ex.getErrorMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceBrokerOperationInProgressException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerOperationInProgressException ex) {
 		LOGGER.debug(ex.getMessage(), ex);
-		return getErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+		return getErrorResponse(ex.getErrorMessage(), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(ServiceBrokerUnavailableException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerUnavailableException ex) {
 		LOGGER.debug(ex.getMessage(), ex);
-		return getErrorResponse(ex.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
+		return getErrorResponse(ex.getErrorMessage(), HttpStatus.SERVICE_UNAVAILABLE);
 	}
 
 	@ExceptionHandler(ServiceBrokerConcurrencyException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerConcurrencyException ex) {
 		LOGGER.debug(ex.getMessage(), ex);
-		return getErrorResponse(
-				new ConcurrencyErrorMessage(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+		return getErrorResponse(ex.getErrorMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceBrokerException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerException ex) {
 		LOGGER.debug("Service broker exception handled: ", ex);
-		return getErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		return getErrorResponse(ex.getErrorMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)

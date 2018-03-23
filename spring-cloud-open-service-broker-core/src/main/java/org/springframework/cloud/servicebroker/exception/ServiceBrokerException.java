@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.exception;
 
+import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
+
 /**
  * Thrown to indicate underlying service broker errors (like connectivity to the service
  * being brokered) not covered by a more specific exception.
@@ -29,9 +31,27 @@ package org.springframework.cloud.servicebroker.exception;
 public class ServiceBrokerException extends RuntimeException {
 
 	private static final long serialVersionUID = -5544859893499349135L;
+	private final ErrorMessage errorMessage;
 
+	/**
+	 * Construct an exception with the provided message.
+	 *
+	 * @param message the exception message
+	 */
 	public ServiceBrokerException(String message) {
 		super(message);
+		this.errorMessage = new ErrorMessage(message);
+	}
+
+	/**
+	 * Construct an exception with the provided error code and message.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param message the exception message
+	 */
+	public ServiceBrokerException(String errorCode, String message) {
+		super(message);
+		this.errorMessage = new ErrorMessage(errorCode, message);
 	}
 
 	/**
@@ -42,6 +62,19 @@ public class ServiceBrokerException extends RuntimeException {
 	 */
 	public ServiceBrokerException(String message, Throwable cause) {
 		super(message, cause);
+		this.errorMessage = new ErrorMessage(message);
+	}
+
+	/**
+	 * Construct an exception with the provided error code, message and cause.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param message the exception message
+	 * @param cause the cause of the exception
+	 */
+	public ServiceBrokerException(String errorCode, String message, Throwable cause) {
+		super(message, cause);
+		this.errorMessage = new ErrorMessage(errorCode, message);
 	}
 
 	/**
@@ -51,6 +84,10 @@ public class ServiceBrokerException extends RuntimeException {
 	 */
 	public ServiceBrokerException(Throwable cause) {
 		super(cause);
+		this.errorMessage = new ErrorMessage();
 	}
 
+	public ErrorMessage getErrorMessage() {
+		return errorMessage;
+	}
 }

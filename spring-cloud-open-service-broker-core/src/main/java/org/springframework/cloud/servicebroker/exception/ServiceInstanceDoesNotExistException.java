@@ -25,7 +25,7 @@ package org.springframework.cloud.servicebroker.exception;
  *
  * @author sgreenberg@pivotal.io
  */
-public class ServiceInstanceDoesNotExistException extends RuntimeException {
+public class ServiceInstanceDoesNotExistException extends ServiceBrokerException {
 
 	private static final long serialVersionUID = -1879753092397657116L;
 
@@ -35,7 +35,22 @@ public class ServiceInstanceDoesNotExistException extends RuntimeException {
 	 * @param serviceInstanceId the ID of the service instance
 	 */
 	public ServiceInstanceDoesNotExistException(String serviceInstanceId) {
-		super("Service instance does not exist: id=" + serviceInstanceId);
+		super(buildMessage(serviceInstanceId));
+	}
+
+	/**
+	 * Construct an exception with an error code and default message that includes the
+	 * provided service instance ID.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param serviceInstanceId the ID of the service instance
+	 */
+	public ServiceInstanceDoesNotExistException(String errorCode, String serviceInstanceId) {
+		super(errorCode, buildMessage(serviceInstanceId));
+	}
+
+	private static String buildMessage(String serviceInstanceId) {
+		return "Service instance does not exist: id=" + serviceInstanceId;
 	}
 
 }

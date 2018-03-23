@@ -26,8 +26,9 @@ package org.springframework.cloud.servicebroker.exception;
  *
  * @author Scott Frederick
  */
-public class ServiceBrokerBindingRequiresAppException extends RuntimeException {
+public class ServiceBrokerBindingRequiresAppException extends ServiceBrokerException {
 	private static final long serialVersionUID = -5605297457258622988L;
+	public final static String APP_REQUIRED_ERROR = "RequiresApp";
 
 	/**
 	 * Construct an exception with the provided message.
@@ -35,7 +36,7 @@ public class ServiceBrokerBindingRequiresAppException extends RuntimeException {
 	 * @param message the exception message
 	 */
 	public ServiceBrokerBindingRequiresAppException(String message) {
-		super(message);
+		super(APP_REQUIRED_ERROR, message);
 	}
 
 	/**
@@ -45,15 +46,6 @@ public class ServiceBrokerBindingRequiresAppException extends RuntimeException {
 	 * @param cause the exception cause
 	 */
 	public ServiceBrokerBindingRequiresAppException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	/**
-	 * Construct an exception with the provided cause.
-	 *
-	 * @param cause the exception cause
-	 */
-	public ServiceBrokerBindingRequiresAppException(Throwable cause) {
-		super(cause);
+		super(APP_REQUIRED_ERROR, message, cause);
 	}
 }

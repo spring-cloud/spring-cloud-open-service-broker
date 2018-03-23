@@ -32,7 +32,6 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationI
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
-import org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceRequest;
@@ -49,6 +48,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException.*;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 
@@ -192,7 +192,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.expectStatus().is4xxClientError()
 				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
 				.expectBody()
-				.jsonPath("$.error").isEqualTo(AsyncRequiredErrorMessage.ASYNC_REQUIRED_ERROR)
+				.jsonPath("$.error").isEqualTo(ASYNC_REQUIRED_ERROR)
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> assertDescriptionContains(result, "async required description"));
 	}

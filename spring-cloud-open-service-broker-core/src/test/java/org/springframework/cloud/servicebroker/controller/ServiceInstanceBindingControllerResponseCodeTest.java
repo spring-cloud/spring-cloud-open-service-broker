@@ -51,7 +51,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.cloud.servicebroker.model.error.AppRequiredErrorMessage.APP_REQUIRED_ERROR;
+import static org.springframework.cloud.servicebroker.exception.ServiceBrokerBindingRequiresAppException.APP_REQUIRED_ERROR;
 
 @RunWith(Theories.class)
 public class ServiceInstanceBindingControllerResponseCodeTest {

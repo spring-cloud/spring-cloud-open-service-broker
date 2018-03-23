@@ -26,7 +26,6 @@ import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
-import org.springframework.cloud.servicebroker.model.error.AppRequiredErrorMessage;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
@@ -161,7 +160,7 @@ public class ServiceInstanceBindingController extends BaseController {
 		try {
 			serviceInstanceBindingService.deleteServiceInstanceBinding(request);
 		} catch (ServiceInstanceBindingDoesNotExistException e) {
-			LOGGER.debug("Service instance binding does not exist: ", e);
+			LOGGER.debug(e.getMessage(), e);
 			return new ResponseEntity<>("{}", HttpStatus.GONE);
 		}
 
@@ -173,12 +172,12 @@ public class ServiceInstanceBindingController extends BaseController {
 	@ExceptionHandler(ServiceInstanceBindingExistsException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceBindingExistsException ex) {
 		LOGGER.debug(ex.getMessage(), ex);
-		return getErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
+		return getErrorResponse(ex.getErrorMessage(), HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(ServiceBrokerBindingRequiresAppException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerBindingRequiresAppException ex) {
 		LOGGER.debug(ex.getMessage(), ex);
-		return getErrorResponse(new AppRequiredErrorMessage(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+		return getErrorResponse(ex.getErrorMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 }

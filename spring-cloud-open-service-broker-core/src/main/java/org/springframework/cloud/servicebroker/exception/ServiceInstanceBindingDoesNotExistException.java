@@ -27,8 +27,16 @@ public class ServiceInstanceBindingDoesNotExistException extends RuntimeExceptio
 
 	private static final long serialVersionUID = -1879753092397657116L;
 
+	/**
+	 * Construct an exception with a default message that includes the provided service binding ID.
+	 *
+	 * @param bindingId the ID of the service binding
+	 */
 	public ServiceInstanceBindingDoesNotExistException(String bindingId) {
-		super("Service binding does not exist: id=" + bindingId);
+		super(buildMessage(bindingId));
 	}
 
+	private static String buildMessage(String bindingId) {
+		return "Service binding does not exist: id=" + bindingId;
+	}
 }

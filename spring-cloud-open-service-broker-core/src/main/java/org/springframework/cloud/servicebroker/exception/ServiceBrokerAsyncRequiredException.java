@@ -25,9 +25,9 @@ package org.springframework.cloud.servicebroker.exception;
  * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY}
  * being returned to the platform.
  */
-public class ServiceBrokerAsyncRequiredException extends RuntimeException {
-
-	private static final long serialVersionUID = 1L;
+public class ServiceBrokerAsyncRequiredException extends ServiceBrokerException {
+	private static final long serialVersionUID = -6116656797448174365L;
+	public final static String ASYNC_REQUIRED_ERROR = "AsyncRequired";
 
 	/**
 	 * Construct an exception with the provided message.
@@ -35,6 +35,6 @@ public class ServiceBrokerAsyncRequiredException extends RuntimeException {
 	 * @param message the exception message
 	 */
 	public ServiceBrokerAsyncRequiredException(String message) {
-		super("Service broker requires async operations: " + message);
+		super(ASYNC_REQUIRED_ERROR, "Service broker requires async operations: " + message);
 	}
 }
