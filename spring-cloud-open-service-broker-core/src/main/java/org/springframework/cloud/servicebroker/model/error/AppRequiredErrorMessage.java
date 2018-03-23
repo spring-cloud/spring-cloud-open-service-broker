@@ -17,20 +17,20 @@
 package org.springframework.cloud.servicebroker.model.error;
 
 /**
- * An error returned when a service broker requires the platform to support asynchronous operations.
+ * An error returned when a service broker requires that a service binding request include an application GUID.
  *
- * @author krujos
+ * @author Scott Frederick
  */
-public class AsyncRequiredErrorMessage extends ErrorMessage {
+public class AppRequiredErrorMessage extends ErrorMessage {
 
-	public final static String ASYNC_REQUIRED_ERROR = "AsyncRequired";
+	public final static String APP_REQUIRED_ERROR = "RequiresApp";
 
 	/**
 	 * Construct an error message with the provided description.
 	 *
 	 * @param description additional detail of the requirement
 	 */
-	public AsyncRequiredErrorMessage(String description) {
-		super(ASYNC_REQUIRED_ERROR, description);
+	public AppRequiredErrorMessage(String description) {
+		super(APP_REQUIRED_ERROR, description);
 	}
 }

@@ -25,6 +25,7 @@ import org.junit.Test;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerConcurrencyException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
@@ -32,7 +33,6 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerUnavailabl
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
-import org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
@@ -46,6 +46,7 @@ import org.springframework.web.bind.support.WebExchangeBindException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage.ASYNC_REQUIRED_ERROR;
+import static org.springframework.cloud.servicebroker.model.error.ConcurrencyErrorMessage.CONCURRENCY_ERROR;
 
 public class BaseControllerTest {
 	private BaseController controller;
@@ -86,6 +87,7 @@ public class BaseControllerTest {
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.PRECONDITION_FAILED);
+		assertThat(responseEntity.getBody().getError()).isNull();
 		assertThat(responseEntity.getBody().getMessage()).contains("expected version=expected-version");
 		assertThat(responseEntity.getBody().getMessage()).contains("provided version=actual-version");
 	}
@@ -98,6 +100,7 @@ public class BaseControllerTest {
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(responseEntity.getBody().getError()).isNull();
 		assertThat(responseEntity.getBody().getMessage()).contains("id=service-instance-id");
 	}
 
@@ -109,6 +112,7 @@ public class BaseControllerTest {
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(responseEntity.getBody().getError()).isNull();
 		assertThat(responseEntity.getBody().getMessage()).contains("id=service-definition-id");
 	}
 
@@ -117,11 +121,11 @@ public class BaseControllerTest {
 		ServiceBrokerAsyncRequiredException exception =
 				new ServiceBrokerAsyncRequiredException("test message");
 
-		ResponseEntity<AsyncRequiredErrorMessage> responseEntity = controller.handleException(exception);
+		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
-		assertThat(responseEntity.getBody().getMessage()).contains("test message");
 		assertThat(responseEntity.getBody().getError()).isEqualTo(ASYNC_REQUIRED_ERROR);
+		assertThat(responseEntity.getBody().getMessage()).contains("test message");
 	}
 
 	@Test
@@ -132,6 +136,7 @@ public class BaseControllerTest {
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(responseEntity.getBody().getError()).isNull();
 		assertThat(responseEntity.getBody().getMessage()).contains("test message");
 	}
 
@@ -143,6 +148,7 @@ public class BaseControllerTest {
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(responseEntity.getBody().getError()).isNull();
 		assertThat(responseEntity.getBody().getMessage()).contains("test message");
 	}
 
@@ -154,6 +160,7 @@ public class BaseControllerTest {
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		assertThat(responseEntity.getBody().getError()).isNull();
 		assertThat(responseEntity.getBody().getMessage()).contains("still working");
 	}
 
@@ -164,7 +171,19 @@ public class BaseControllerTest {
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);
+		assertThat(responseEntity.getBody().getError()).isNull();
 		assertThat(responseEntity.getBody().getMessage()).contains("maintenance in progress");
+	}
+
+	@Test
+	public void serviceBrokerConcurrencyExceptionGivesExpectedStatus() {
+		ServiceBrokerConcurrencyException exception = new ServiceBrokerConcurrencyException("operation in progress");
+
+		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(responseEntity.getBody().getError()).isEqualTo(CONCURRENCY_ERROR);
+		assertThat(responseEntity.getBody().getMessage()).contains("operation in progress");
 	}
 
 	@Test
@@ -174,6 +193,7 @@ public class BaseControllerTest {
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+		assertThat(responseEntity.getBody().getError()).isNull();
 		assertThat(responseEntity.getBody().getMessage()).contains("test message");
 	}
 
@@ -184,6 +204,7 @@ public class BaseControllerTest {
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+		assertThat(responseEntity.getBody().getError()).isNull();
 		assertThat(responseEntity.getBody().getMessage()).contains("test message");
 	}
 
@@ -202,6 +223,7 @@ public class BaseControllerTest {
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(responseEntity.getBody().getError()).isNull();
 		assertThat(responseEntity.getBody().getMessage()).contains("field1");
 		assertThat(responseEntity.getBody().getMessage()).contains("field2");
 	}
@@ -221,6 +243,7 @@ public class BaseControllerTest {
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(responseEntity.getBody().getError()).isNull();
 		assertThat(responseEntity.getBody().getMessage()).contains("field1");
 		assertThat(responseEntity.getBody().getMessage()).contains("field2");
 	}

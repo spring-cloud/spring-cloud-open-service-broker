@@ -18,6 +18,7 @@ package org.springframework.cloud.servicebroker.controller;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerBindingRequiresAppException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
@@ -25,6 +26,7 @@ import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.error.AppRequiredErrorMessage;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
@@ -172,5 +174,11 @@ public class ServiceInstanceBindingController extends BaseController {
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceBindingExistsException ex) {
 		LOGGER.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(ServiceBrokerBindingRequiresAppException.class)
+	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerBindingRequiresAppException ex) {
+		LOGGER.debug(ex.getMessage(), ex);
+		return getErrorResponse(new AppRequiredErrorMessage(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 }

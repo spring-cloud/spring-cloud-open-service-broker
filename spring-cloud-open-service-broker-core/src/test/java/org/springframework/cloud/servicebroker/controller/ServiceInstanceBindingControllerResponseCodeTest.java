@@ -22,6 +22,7 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerBindingRequiresAppException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceAppBindingResponse;
@@ -50,6 +51,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.cloud.servicebroker.model.error.AppRequiredErrorMessage.APP_REQUIRED_ERROR;
 
 @RunWith(Theories.class)
 public class ServiceInstanceBindingControllerResponseCodeTest {
@@ -163,9 +165,20 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 				.handleException(new ServiceInstanceBindingExistsException("service-instance-id", "binding-id"));
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+		assertThat(responseEntity.getBody().getError()).isNull();
 		assertThat(responseEntity.getBody().getMessage())
 				.contains("serviceInstanceId=service-instance-id")
 				.contains("bindingId=binding-id");
+	}
+
+	@Test
+	public void appRequiredExistsGivesExpectedStatus() {
+		ResponseEntity<ErrorMessage> responseEntity = controller
+				.handleException(new ServiceBrokerBindingRequiresAppException("app GUID is required"));
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(responseEntity.getBody().getError()).isEqualTo(APP_REQUIRED_ERROR);
+		assertThat(responseEntity.getBody().getMessage()).contains("app GUID is required");
 	}
 
 	public static class CreateResponseAndExpectedStatus {

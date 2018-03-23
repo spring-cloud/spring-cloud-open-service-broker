@@ -16,10 +16,34 @@
 
 package org.springframework.cloud.servicebroker.model.error;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
+import org.springframework.cloud.servicebroker.JsonUtils;
+
+import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class ErrorMessageTest {
+	@Test
+	public void errorWithCodeAndDescriptionIsBuilt() {
+		ErrorMessage errorMessage = new ErrorMessage("ErrorCode", "error description");
+
+		DocumentContext json = JsonUtils.toJsonPath(errorMessage);
+
+		assertThat(json).hasPath("$.error").isEqualTo("ErrorCode");
+		assertThat(json).hasPath("$.description").isEqualTo("error description");
+	}
+
+	@Test
+	public void errorWithDescriptionIsBuilt() {
+		ErrorMessage errorMessage = new ErrorMessage("error description");
+
+		DocumentContext json = JsonUtils.toJsonPath(errorMessage);
+
+		assertThat(json).hasNoPath("$.error");
+		assertThat(json).hasPath("$.description").isEqualTo("error description");
+	}
+
 	@Test
 	public void equalsAndHashCode() {
 		EqualsVerifier

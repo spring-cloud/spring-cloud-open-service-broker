@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerConcurrencyException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
@@ -35,6 +36,7 @@ import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.error.AsyncRequiredErrorMessage;
+import org.springframework.cloud.servicebroker.model.error.ConcurrencyErrorMessage;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.service.CatalogService;
@@ -153,9 +155,9 @@ public class BaseController {
 	}
 
 	@ExceptionHandler(ServiceBrokerAsyncRequiredException.class)
-	public ResponseEntity<AsyncRequiredErrorMessage> handleException(ServiceBrokerAsyncRequiredException ex) {
+	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerAsyncRequiredException ex) {
 		LOGGER.debug(ex.getMessage(), ex);
-		return new ResponseEntity<>(
+		return getErrorResponse(
 				new AsyncRequiredErrorMessage(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
@@ -175,6 +177,13 @@ public class BaseController {
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerUnavailableException ex) {
 		LOGGER.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
+	}
+
+	@ExceptionHandler(ServiceBrokerConcurrencyException.class)
+	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerConcurrencyException ex) {
+		LOGGER.debug(ex.getMessage(), ex);
+		return getErrorResponse(
+				new ConcurrencyErrorMessage(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceBrokerException.class)
@@ -218,5 +227,9 @@ public class BaseController {
 
 	protected ResponseEntity<ErrorMessage> getErrorResponse(String message, HttpStatus status) {
 		return new ResponseEntity<>(new ErrorMessage(message), status);
+	}
+
+	protected ResponseEntity<ErrorMessage> getErrorResponse(ErrorMessage message, HttpStatus status) {
+		return new ResponseEntity<>(message, status);
 	}
 }

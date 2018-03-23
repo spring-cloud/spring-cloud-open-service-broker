@@ -17,20 +17,20 @@
 package org.springframework.cloud.servicebroker.model.error;
 
 /**
- * An error returned when a service broker requires the platform to support asynchronous operations.
+ * An error returned when a service broker receives concurrent requests to modify a resource.
  *
- * @author krujos
+ * @author Scott Frederick
  */
-public class AsyncRequiredErrorMessage extends ErrorMessage {
+public class ConcurrencyErrorMessage extends ErrorMessage {
 
-	public final static String ASYNC_REQUIRED_ERROR = "AsyncRequired";
+	public final static String CONCURRENCY_ERROR = "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-broker-errors";
 
 	/**
 	 * Construct an error message with the provided description.
 	 *
-	 * @param description additional detail of the requirement
+	 * @param description additional detail of the error
 	 */
-	public AsyncRequiredErrorMessage(String description) {
-		super(ASYNC_REQUIRED_ERROR, description);
+	public ConcurrencyErrorMessage(String description) {
+		super(CONCURRENCY_ERROR, description);
 	}
 }
