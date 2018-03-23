@@ -23,16 +23,25 @@ import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstan
 /**
  * Default implementation of ServiceInstanceBindingService for service brokers that do not support bindable services.
  *
- * See http://docs.cloudfoundry.org/services/api.html#binding
- *
  * @author Scott Frederick
  */
 public class NonBindableServiceInstanceBindingService implements ServiceInstanceBindingService {
+	/**
+	 * Create a new binding to a service instance.
+	 *
+	 * @param request containing the details of the request
+	 * @return this implementation will always throw a {@literal UnsupportedOperationException}
+	 */
 	@Override
 	public CreateServiceInstanceBindingResponse createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
 		throw nonBindableException();
 	}
 
+	/**
+	 * Delete a service instance binding.
+	 *
+	 * @param request containing the details of the request
+	 */
 	@Override
 	public void deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
 		throw nonBindableException();

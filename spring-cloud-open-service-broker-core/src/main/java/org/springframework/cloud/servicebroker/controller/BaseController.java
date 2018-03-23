@@ -53,7 +53,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 
 /**
- * Base controller.
+ * Base functionality shared by controllers.
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick

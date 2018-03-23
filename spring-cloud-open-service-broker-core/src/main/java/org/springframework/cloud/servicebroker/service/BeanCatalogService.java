@@ -23,7 +23,7 @@ import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 /**
- * An implementation of the CatalogService that allows the Catalog to be specified as a Spring Bean.
+ * An implementation of the {@link CatalogService} that allows the {@link Catalog} to be specified as a Spring Bean.
  *
  * @author sgreenberg@pivotal.io
  */
@@ -32,6 +32,11 @@ public class BeanCatalogService implements CatalogService {
 	private final Catalog catalog;
 	private final Map<String,ServiceDefinition> serviceDefs = new HashMap<>();
 
+	/**
+	 * Construct a service with the provided {@link Catalog bean}.
+	 *
+	 * @param catalog the {@link Catalog} bean
+	 */
 	public BeanCatalogService(Catalog catalog) {
 		this.catalog = catalog;
 		initializeMap();

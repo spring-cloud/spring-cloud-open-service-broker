@@ -54,7 +54,9 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.SERVICE_ID_PARAMETER;
 
 /**
- * See: http://docs.cloudfoundry.org/services/api.html
+ * Provide endpoints for the service bindings API.
+ * 
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#binding">Open Service Broker API specification</a>
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick

@@ -27,7 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
- * See: http://docs.cloudfoundry.org/services/api.html
+ * Provide endpoints for the catalog API.
+ *
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#catalog-management">Open Service Broker API specification</a>
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
