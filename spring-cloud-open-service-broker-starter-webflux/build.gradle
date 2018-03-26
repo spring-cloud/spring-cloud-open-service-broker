@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-description = "Spring Cloud Service Broker Web Flux Starter"
+description = "Spring Cloud Open Service Broker Web Flux Starter"
 
 dependencyManagement {
 	imports {

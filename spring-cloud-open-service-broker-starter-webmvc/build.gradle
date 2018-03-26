@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-description = "Spring Cloud Service Broker Web MVC Starter"
+description = "Spring Cloud Open Service Broker Web MVC Starter"
 
 dependencyManagement {
 	imports {

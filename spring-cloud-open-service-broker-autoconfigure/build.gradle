@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-description = "Spring Cloud Service Broker Auto-Configuration"
+description = "Spring Cloud Open Service Broker Auto-Configuration"
 
 apply plugin: "groovy"
 apply plugin: "spring-cloud-contract"
