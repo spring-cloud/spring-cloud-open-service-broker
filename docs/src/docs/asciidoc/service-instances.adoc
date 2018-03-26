@@ -35,7 +35,7 @@ method must be provided by the service broker if the `plan_updateable` field is 
 catalog. Otherwise, this method will never be called by the platform and the default implementation in the interface
 can be used.
 
-Services brokers can modify the configuration of an existing resource when updating a service instance, or deploy
+Services brokers can modify the configuration of an existing resource when updating a service instance, or deploying
 a new resource.
 
 === Service Instance Deletion

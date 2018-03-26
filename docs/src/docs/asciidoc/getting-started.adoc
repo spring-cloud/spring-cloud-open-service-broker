@@ -1,7 +1,7 @@
 [[getting-started]]
 == Getting started
 
-See the {springboot-docs}/#getting-started-first-application[Spring Boot documentation] for getting started building a
+See the {springboot-docs}#quick-start[Spring Boot documentation] for getting started building a
 Spring Boot application.
 
 Most service broker applications will implement API or web UI endpoints beyond the Open Service Broker API endpoints.
