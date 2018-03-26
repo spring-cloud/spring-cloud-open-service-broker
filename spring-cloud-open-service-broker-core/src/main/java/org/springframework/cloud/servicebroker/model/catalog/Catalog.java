@@ -27,14 +27,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The catalog of services offered by the service broker.
  *
+ * <p>
+ * Objects of this type are constructed by the service broker application,
+ * and used to build the response to the platform.
+ *
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#catalog-management">Open Service Broker API specification</a>
+ *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  */
 public class Catalog {
-
-	/**
-	 * A list of service offerings provided by the service broker.
-	 */
 	@NotEmpty
 	@JsonProperty("services")
 	private final List<ServiceDefinition> serviceDefinitions;
@@ -43,6 +45,11 @@ public class Catalog {
 		this.serviceDefinitions = serviceDefinitions;
 	}
 
+	/**
+	 * Get the set of service offerings.
+	 *
+	 * @return a set of service offerings
+	 */
 	public List<ServiceDefinition> getServiceDefinitions() {
 		return this.serviceDefinitions;
 	}
@@ -67,6 +74,11 @@ public class Catalog {
 				'}';
 	}
 
+	/**
+	 * Create a builder that provides a fluent API for constructing a {@literal Catalog}.
+	 *
+	 * @return the builder
+	 */
 	public static CatalogBuilder builder() {
 		return new CatalogBuilder();
 	}
@@ -77,16 +89,39 @@ public class Catalog {
 		CatalogBuilder() {
 		}
 
+		/**
+		 * Add a set of service offerings from the provided {@literal List} to the
+		 * service offerings provided by the service broker.
+		 *
+		 * <p>
+		 * This value sets the {@literal services} field in the response to the platform.
+		 *
+		 * @param serviceDefinitions a {@literal List} of service offerings
+		 */
 		public CatalogBuilder serviceDefinitions(List<ServiceDefinition> serviceDefinitions) {
 			this.serviceDefinitions.addAll(serviceDefinitions);
 			return this;
 		}
 
+		/**
+		 * Add a set of service offerings from the provided array to the
+		 * service offerings provided by the service broker.
+		 *
+		 * <p>
+		 * This value sets the {@literal services} field in the response to the platform.
+		 *
+		 * @param serviceDefinitions an array of service offerings
+		 */
 		public CatalogBuilder serviceDefinitions(ServiceDefinition... serviceDefinitions) {
 			Collections.addAll(this.serviceDefinitions, serviceDefinitions);
 			return this;
 		}
 
+		/**
+		 * Construct a {@link Catalog} from the provided values.
+		 *
+		 * @return the newly constructed {@literal Catalog}
+		 */
 		public Catalog build() {
 			return new Catalog(serviceDefinitions);
 		}
