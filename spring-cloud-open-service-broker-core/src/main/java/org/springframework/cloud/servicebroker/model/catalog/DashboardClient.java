@@ -16,31 +16,27 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
-import java.util.Objects;
-
+/**
+ * The dashboard URI for a {@link ServiceDefinition}
+ *
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#dashboard-client-object">Open
+ * Service Broker API specification</a>
+ */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DashboardClient {
 
-	/**
-	 * The client ID of the dashboard OAuth2 client that the service intends to use. The name must be unique within the
-	 * platform. If the name is already in use, the platform will return an error to the
-	 * operator when the service is registered.
-	 */
 	private final String id;
 
-	/**
-	 * The client secret for the dashboard OAuth2 client.
-	 */
 	private final String secret;
 
-	/**
-	 * A domain for the service dashboard that will be whitelisted by the UAA to enable dashboard SSO.
-	 */
 	private final String redirectUri;
 
 	DashboardClient(String id, String secret, String redirectUri) {
@@ -49,18 +45,42 @@ public class DashboardClient {
 		this.redirectUri = redirectUri;
 	}
 
+	/**
+	 * The client ID of the dashboard OAuth2 client that the service intends to use. The
+	 * name must be unique within the platform. If the name is already in use, the
+	 * platform will return an error to the operator when the service is registered.
+	 *
+	 * @return the client ID
+	 */
 	public String getId() {
 		return this.id;
 	}
 
+	/**
+	 * The client secret for the dashboard OAuth2 client.
+	 *
+	 * @return the client secret
+	 */
 	public String getSecret() {
 		return this.secret;
 	}
 
+	/**
+	 * A domain for the service dashboard that will be whitelisted by the UAA to enable
+	 * dashboard SSO.
+	 *
+	 * @return the dashboard URI
+	 */
 	public String getRedirectUri() {
 		return this.redirectUri;
 	}
 
+	/**
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal DashboardClient}.
+	 *
+	 * @return the builder
+	 */
 	public static DashboardClientBuilder builder() {
 		return new DashboardClientBuilder();
 	}
@@ -89,6 +109,9 @@ public class DashboardClient {
 				'}';
 	}
 
+	/**
+	 * Provides a fluent API for constructing a {@literal DashboardClient}.
+	 */
 	public static class DashboardClientBuilder {
 		private String id;
 		private String secret;
@@ -97,21 +120,47 @@ public class DashboardClient {
 		DashboardClientBuilder() {
 		}
 
+		/**
+		 * The client ID of the dashboard OAuth2 client that the service intends to use. The
+		 * name must be unique within the platform. If the name is already in use, the
+		 * platform will return an error to the operator when the service is registered.
+		 *
+		 * @param id the client ID
+		 * @return the builder instance
+		 */
 		public DashboardClient.DashboardClientBuilder id(String id) {
 			this.id = id;
 			return this;
 		}
 
+		/**
+		 * The client secret for the dashboard OAuth2 client.
+		 *
+		 * @param secret the client secret
+		 * @return the builder instance
+		 */
 		public DashboardClient.DashboardClientBuilder secret(String secret) {
 			this.secret = secret;
 			return this;
 		}
 
+		/**
+		 * A domain for the service dashboard that will be whitelisted by the UAA to
+		 * enable dashboard SSO.
+		 *
+		 * @param redirectUri the dashboard URI
+		 * @return the builder instance
+		 */
 		public DashboardClient.DashboardClientBuilder redirectUri(String redirectUri) {
 			this.redirectUri = redirectUri;
 			return this;
 		}
 
+		/**
+		 * Construct a {@link DashboardClient} from the provided values.
+		 *
+		 * @return the newly constructed {@literal DashboardClient}
+		 */
 		public DashboardClient build() {
 			return new DashboardClient(id, secret, redirectUri);
 		}

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -33,78 +34,43 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 /**
  * A service offered by this broker.
  *
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-object">Open
+ * Service Broker API specification</a>
+ *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceDefinition {
-	/**
-	 * An identifier used to correlate this service in future requests to the catalog. This must be unique within
-	 * the platform. Using a GUID is recommended.
-	 */
+
 	@NotEmpty
 	private final String id;
 
-	/**
-	 * A CLI-friendly name of the service that will appear in the catalog. The value should be all lowercase,
-	 * with no spaces.
-	 */
 	@NotEmpty
 	private final String name;
 
-	/**
-	 * A user-friendly short description of the service that will appear in the catalog.
-	 */
 	@NotEmpty
 	private final String description;
 
-	/**
-	 * Indicates whether the service can be bound to applications.
-	 */
 	private final boolean bindable;
 
-	/**
-	 * Indicates whether the service supports requests to update instances to use a different plan from the one
-	 * used to provision a service instance.
-	 */
 	private final Boolean planUpdateable;
 
-	/**
-	 * Indicates whether the service broker supports retrieving service instances.
-	 */
 	private final Boolean instancesRetrievable;
 
-	/**
-	 * Indicates whether the service broker supports retrieving service bindings.
-	 */
 	private final Boolean bindingsRetrievable;
 
-	/**
-	 * A list of plans for this service.
-	 */
 	@NotEmpty
 	private final List<Plan> plans;
 
-	/**
-	 * A list of tags to aid in categorizing and classifying services with similar characteristics.
-	 */
 	private final List<String> tags;
 
-	/**
-	 * A map of metadata to further describe a service offering.
-	 */
 	private final Map<String, Object> metadata;
 
-	/**
-	 * A list of permissions that the user would have to give the service, if they provision it. See
-	 * {@link ServiceDefinitionRequires} for supported permissions.
-	 */
 	private final List<String> requires;
 
-	/**
-	 * Data necessary to activate the Dashboard SSO feature for this service.
-	 */
 	private final DashboardClient dashboardClient;
 
 	ServiceDefinition(String id, String name, String description, boolean bindable, Boolean planUpdateable,
@@ -125,54 +91,124 @@ public class ServiceDefinition {
 		this.dashboardClient = dashboardClient;
 	}
 
+	/**
+	 * An identifier used to correlate this service in future requests to the catalog.
+	 * This must be unique within the platform. Using a GUID is recommended.
+	 *
+	 * @return the service ID
+	 */
 	public String getId() {
 		return this.id;
 	}
 
+	/**
+	 * A CLI-friendly name of the service that will appear in the catalog. The value
+	 * should be all lowercase, with no spaces.
+	 *
+	 * @return the service name
+	 */
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 * A user-friendly short description of the service that will appear in the catalog.
+	 *
+	 * @return the service description
+	 */
 	public String getDescription() {
 		return this.description;
 	}
 
+	/**
+	 * Indicates whether the service can be bound to applications.
+	 *
+	 * @return true if the service may be bound
+	 */
 	public boolean isBindable() {
 		return this.bindable;
 	}
 
+	/**
+	 * Indicates whether the service supports requests to update instances to use a
+	 * different plan from the one used to provision a service instance.
+	 *
+	 * @return true if the plan may be updated
+	 */
 	public Boolean isPlanUpdateable() {
 		return this.planUpdateable;
 	}
 
+	/**
+	 * Indicates whether the service broker supports retrieving service instances.
+	 *
+	 * @return true if the service instances may be retrieved
+	 */
 	public Boolean isInstancesRetrievable() {
 		return this.instancesRetrievable;
 	}
 
+	/**
+	 * Indicates whether the service broker supports retrieving service bindings.
+	 *
+	 * @return true if the service bindings may be retrieved
+	 */
 	public Boolean isBindingsRetrievable() {
 		return this.bindingsRetrievable;
 	}
 
+	/**
+	 * A list of plans for this service.
+	 *
+	 * @return the service plans
+	 */
 	public List<Plan> getPlans() {
 		return this.plans;
 	}
 
+	/**
+	 * A list of tags to aid in categorizing and classifying services with similar
+	 * characteristics.
+	 *
+	 * @return the tags
+	 */
 	public List<String> getTags() {
 		return this.tags;
 	}
 
+	/**
+	 * A map of metadata to further describe a service offering.
+	 *
+	 * @return the service metadata
+	 */
 	public Map<String, Object> getMetadata() {
 		return this.metadata;
 	}
 
+	/**
+	 * A list of permissions that the user would have to give the service, if they
+	 * provision it. See {@link ServiceDefinitionRequires} for supported permissions.
+	 *
+	 * @return the required permissions
+	 */
 	public List<String> getRequires() {
 		return this.requires;
 	}
 
+	/**
+	 * Data necessary to activate the Dashboard SSO feature for this service.
+	 *
+	 * @return the service dashboard URI
+	 */
 	public DashboardClient getDashboardClient() {
 		return this.dashboardClient;
 	}
 
+	/**
+	 * Create a builder that provides a fluent API for constructing a {@literal ServiceDefinition}.
+	 *
+	 * @return the builder
+	 */
 	public static ServiceDefinitionBuilder builder() {
 		return new ServiceDefinitionBuilder();
 	}
@@ -221,6 +257,9 @@ public class ServiceDefinition {
 				'}';
 	}
 
+	/**
+	 * Provides a fluent API for constructing a {@literal ServiceDefinition}.
+	 */
 	public static class ServiceDefinitionBuilder {
 		private String id;
 		private String name;
@@ -238,51 +277,115 @@ public class ServiceDefinition {
 		ServiceDefinitionBuilder() {
 		}
 
+		/**
+		 * An identifier used to correlate this service in future requests to the catalog.
+		 * This must be unique within the platform. Using a GUID is recommended.
+		 *
+		 * @param id the service ID
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder id(String id) {
 			this.id = id;
 			return this;
 		}
 
+		/**
+		 * A CLI-friendly name of the service that will appear in the catalog. The value
+		 * should be all lowercase, with no spaces.
+		 *
+		 * @param name the service name
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder name(String name) {
 			this.name = name;
 			return this;
 		}
 
+		/**
+		 * A user-friendly short description of the service that will appear in the catalog.
+		 *
+		 * @param description the service description
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder description(String description) {
 			this.description = description;
 			return this;
 		}
 
+		/**
+		 * Indicates whether the service can be bound to applications.
+		 *
+		 * @param bindable true if the service may be bound
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder bindable(boolean bindable) {
 			this.bindable = bindable;
 			return this;
 		}
 
+		/**
+		 * Indicates whether the service supports requests to update instances to use a
+		 * different plan from the one used to provision a service instance.
+		 *
+		 * @param planUpdateable true if the plan may be updated
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder planUpdateable(boolean planUpdateable) {
 			this.planUpdateable = planUpdateable;
 			return this;
 		}
 
+		/**
+		 * Indicates whether the service broker supports retrieving service instances.
+		 *
+		 * @param instancesRetrievable true if the service instances may be retrieved
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder instancesRetrievable(boolean instancesRetrievable) {
 			this.instancesRetrievable = instancesRetrievable;
 			return this;
 		}
 
+		/**
+		 * Indicates whether the service broker supports retrieving service bindings.
+		 *
+		 * @param bindingsRetrievable true if the service bindings may be retrieved
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder bindingsRetrievable(boolean bindingsRetrievable) {
 			this.bindingsRetrievable = bindingsRetrievable;
 			return this;
 		}
 
+		/**
+		 * A list of plans for this service.
+		 *
+		 * @param plans the service plans
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder plans(Plan... plans) {
 			Collections.addAll(this.plans, plans);
 			return this;
 		}
 
+		/**
+		 * A list of plans for this service.
+		 *
+		 * @param plans the service plans
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder plans(List<Plan> plans) {
 			this.plans.addAll(plans);
 			return this;
 		}
 
+		/**
+		 * A list of tags to aid in categorizing and classifying services with similar
+		 * characteristics.
+		 *
+		 * @param tags the tags
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder tags(String... tags) {
 			if (this.tags == null) {
 				this.tags = new ArrayList<>();
@@ -291,6 +394,13 @@ public class ServiceDefinition {
 			return this;
 		}
 
+		/**
+		 * A list of tags to aid in categorizing and classifying services with similar
+		 * characteristics.
+		 *
+		 * @param tags the tags
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder tags(List<String> tags) {
 			if (this.tags == null) {
 				this.tags = new ArrayList<>();
@@ -299,6 +409,12 @@ public class ServiceDefinition {
 			return this;
 		}
 
+		/**
+		 * A map of metadata to further describe a service offering.
+		 *
+		 * @param metadata the service metadata
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder metadata(Map<String, Object> metadata) {
 			if (this.metadata == null) {
 				this.metadata = new HashMap<>();
@@ -307,6 +423,13 @@ public class ServiceDefinition {
 			return this;
 		}
 
+		/**
+		 * A key/value pair to add to the map of metadata to further describe a service offering.
+		 *
+		 * @param key the unique key
+		 * @param value the value
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder metadata(String key, Object value) {
 			if (this.metadata == null) {
 				this.metadata = new HashMap<>();
@@ -315,6 +438,13 @@ public class ServiceDefinition {
 			return this;
 		}
 
+		/**
+		 * A list of permissions that the user would have to give the service, if they
+		 * provision it. See {@link ServiceDefinitionRequires} for supported permissions.
+		 *
+		 * @param requires the required permissions
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder requires(String... requires) {
 			if (this.requires == null) {
 				this.requires = new ArrayList<>();
@@ -323,6 +453,13 @@ public class ServiceDefinition {
 			return this;
 		}
 
+		/**
+		 * A list of permissions that the user would have to give the service, if they
+		 * provision it. See {@link ServiceDefinitionRequires} for supported permissions.
+		 *
+		 * @param requires the required permissions
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder requires(List<String> requires) {
 			if (this.requires == null) {
 				this.requires = new ArrayList<>();
@@ -331,6 +468,13 @@ public class ServiceDefinition {
 			return this;
 		}
 
+		/**
+		 * A list of permissions that the user would have to give the service, if they
+		 * provision it. See {@link ServiceDefinitionRequires} for supported permissions.
+		 *
+		 * @param requires the required permissions
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder requires(ServiceDefinitionRequires... requires) {
 			if (this.requires == null) {
 				this.requires = new ArrayList<>();
@@ -341,11 +485,22 @@ public class ServiceDefinition {
 			return this;
 		}
 
+		/**
+		 * Data necessary to activate the Dashboard SSO feature for this service.
+		 *
+		 * @param dashboardClient the service dashboard URI
+		 * @return the binder instance
+		 */
 		public ServiceDefinitionBuilder dashboardClient(DashboardClient dashboardClient) {
 			this.dashboardClient = dashboardClient;
 			return this;
 		}
 
+		/**
+		 * Construct a {@link ServiceDefinition} from the provided values.
+		 *
+		 * @return the newly constructed {@literal ServiceDefinition}
+		 */
 		public ServiceDefinition build() {
 			return new ServiceDefinition(id, name, description, bindable, planUpdateable,
 					instancesRetrievable, bindingsRetrievable,

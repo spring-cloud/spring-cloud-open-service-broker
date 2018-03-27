@@ -16,13 +16,17 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Objects;
-
 /**
  * Service binding JSON Schemas.
+ *
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-binding-schema-object">Open
+ * Service Broker API specification</a>
  *
  * @author sgunaratne@pivotal.io
  * @author Sam Gunaratne
@@ -30,9 +34,6 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceBindingSchema {
 
-	/**
-	 * The JSON schema for configuration parameters when creating a service binding.
-	 */
 	@JsonProperty("create")
 	private final MethodSchema createMethodSchema;
 
@@ -40,12 +41,22 @@ public class ServiceBindingSchema {
 		this.createMethodSchema = createMethodSchema;
 	}
 
-	public static ServiceBindingSchemaBuilder builder() {
-		return new ServiceBindingSchemaBuilder();
-	}
-
+	/**
+	 * The JSON schema for configuration parameters when creating a service binding.
+	 *
+	 * @return the schema
+	 */
 	public MethodSchema getCreateMethodSchema() {
 		return this.createMethodSchema;
+	}
+
+	/**
+	 * Create a builder that provides a fluent API for constructing a {@literal ServiceBindingSchema}.
+	 *
+	 * @return the builder
+	 */
+	public static ServiceBindingSchemaBuilder builder() {
+		return new ServiceBindingSchemaBuilder();
 	}
 
 	@Override
@@ -68,17 +79,31 @@ public class ServiceBindingSchema {
 				'}';
 	}
 
+	/**
+	 * Provides a fluent API for constructing a {@literal ServiceBindingSchema}.
+	 */
 	public static class ServiceBindingSchemaBuilder {
 		private MethodSchema createMethodSchema;
 
 		ServiceBindingSchemaBuilder() {
 		}
 
+		/**
+		 * The JSON schema for configuration parameters when creating a service binding.
+		 *
+		 * @param createMethodSchema the schema
+		 * @return the binder instance
+		 */
 		public ServiceBindingSchema.ServiceBindingSchemaBuilder createMethodSchema(MethodSchema createMethodSchema) {
 			this.createMethodSchema = createMethodSchema;
 			return this;
 		}
 
+		/**
+		 * Construct a {@link ServiceBindingSchema} from the provided values.
+		 *
+		 * @return the newly constructed {@literal ServiceBindingSchema}
+		 */
 		public ServiceBindingSchema build() {
 			return new ServiceBindingSchema(createMethodSchema);
 		}

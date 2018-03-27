@@ -16,11 +16,11 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * JSON Schema for a service broker object method.
@@ -30,19 +30,27 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MethodSchema {
 
-	/**
-	 * A map of JSON schema for configuration parameters.
-	 */
 	private final Map<String, Object> parameters;
 
 	MethodSchema(Map<String, Object> parameters) {
 		this.parameters = parameters;
 	}
 
+	/**
+	 * A map of JSON schema for configuration parameters.
+	 *
+	 * @return the configuration parameters
+	 */
 	public Map<String, Object> getParameters() {
 		return this.parameters;
 	}
 
+	/**
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal MethodSchema}.
+	 *
+	 * @return the builder
+	 */
 	public static MethodSchemaBuilder builder() {
 		return new MethodSchemaBuilder();
 	}
@@ -67,22 +75,43 @@ public class MethodSchema {
 				'}';
 	}
 
+	/**
+	 * Provides a fluent API for constructing a {@literal MethodSchema}.
+	 */
 	public static class MethodSchemaBuilder {
 		private final Map<String, Object> parameters = new HashMap<>();
 
 		MethodSchemaBuilder() {
 		}
 
+		/**
+		 * A map of JSON schema for configuration parameters.
+		 *
+		 * @param parameters the configuration parameters
+		 * @return the builder instance
+		 */
 		public MethodSchema.MethodSchemaBuilder parameters(Map<String, Object> parameters) {
 			this.parameters.putAll(parameters);
 			return this;
 		}
 
+		/**
+		 * A key/value pair to add to the JSON schema configuration parameters
+		 *
+		 * @param key the unique key
+		 * @param value the value
+		 * @return the builder instance
+		 */
 		public MethodSchema.MethodSchemaBuilder parameters(String key, Object value) {
 			this.parameters.put(key, value);
 			return this;
 		}
 
+		/**
+		 * Construct a {@link MethodSchema} from the provided values.
+		 *
+		 * @return the newly constructed {@literal MethodSchema}
+		 */
 		public MethodSchema build() {
 			return new MethodSchema(parameters);
 		}

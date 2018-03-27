@@ -16,28 +16,26 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Objects;
-
 /**
  * Service instance JSON Schemas.
+ *
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-instance-schema-object">Open
+ * Service Broker API specification</a>
  *
  * @author Sam Gunaratne
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceInstanceSchema {
 
-	/**
-	 * The JSON schema for configuration parameters when creating a service instance.
-	 */
 	@JsonProperty("create")
 	private final MethodSchema createMethodSchema;
 
-	/**
-	 * The JSON schema for configuration parameters when updating a service instance.
-	 */
 	@JsonProperty("update")
 	private final MethodSchema updateMethodSchema;
 
@@ -47,14 +45,29 @@ public class ServiceInstanceSchema {
 		this.updateMethodSchema = updateMethodSchema;
 	}
 
+	/**
+	 * The JSON schema for configuration parameters when creating a service instance.
+	 *
+	 * @return the schema
+	 */
 	public MethodSchema getCreateMethodSchema() {
 		return this.createMethodSchema;
 	}
 
+	/**
+	 * The JSON schema for configuration parameters when updating a service instance.
+	 *
+	 * @return the schema
+	 */
 	public MethodSchema getUpdateMethodSchema() {
 		return this.updateMethodSchema;
 	}
 
+	/**
+	 * Create a builder that provides a fluent API for constructing a {@literal ServiceInstanceSchema}.
+	 *
+	 * @return the builder
+	 */
 	public static ServiceInstanceSchemaBuilder builder() {
 		return new ServiceInstanceSchemaBuilder();
 	}
@@ -81,6 +94,9 @@ public class ServiceInstanceSchema {
 				'}';
 	}
 
+	/**
+	 * Provides a fluent API for constructing a {@literal ServiceInstanceSchema}.
+	 */
 	public static class ServiceInstanceSchemaBuilder {
 		private MethodSchema createMethodSchema;
 		private MethodSchema updateMethodSchema;
@@ -88,16 +104,33 @@ public class ServiceInstanceSchema {
 		ServiceInstanceSchemaBuilder() {
 		}
 
+		/**
+		 * The JSON schema for configuration parameters when creating a service instance.
+		 *
+		 * @param createMethodSchema the schema
+		 * @return the binder instance
+		 */
 		public ServiceInstanceSchemaBuilder createMethodSchema(MethodSchema createMethodSchema) {
 			this.createMethodSchema = createMethodSchema;
 			return this;
 		}
 
+		/**
+		 * The JSON schema for configuration parameters when updating a service instance.
+		 *
+		 * @param updateMethodSchema the schema
+		 * @return the binder instance
+		 */
 		public ServiceInstanceSchemaBuilder updateMethodSchema(MethodSchema updateMethodSchema) {
 			this.updateMethodSchema = updateMethodSchema;
 			return this;
 		}
 
+		/**
+		 * Construct a {@link ServiceInstanceSchema} from the provided values.
+		 *
+		 * @return the newly constructed {@literal ServiceInstanceSchema}
+		 */
 		public ServiceInstanceSchema build() {
 			return new ServiceInstanceSchema(createMethodSchema, updateMethodSchema);
 		}

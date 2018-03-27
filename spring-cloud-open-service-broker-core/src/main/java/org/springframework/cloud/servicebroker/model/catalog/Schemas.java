@@ -16,13 +16,17 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Objects;
-
 /**
  * JSON Schemas available for a Plan.
+ *
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#schemas-object">Open
+ * Service Broker API specification</a>
  *
  * @author sgunaratne@pivotal.io
  * @author Sam Gunaratne
@@ -30,15 +34,9 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Schemas {
 
-	/**
-	 * The schemas available on a service instance.
-	 */
 	@JsonProperty("service_instance")
 	private final ServiceInstanceSchema serviceInstanceSchema;
 
-	/**
-	 * The schemas available on a service binding.
-	 */
 	@JsonProperty("service_binding")
 	private final ServiceBindingSchema serviceBindingSchema;
 
@@ -48,14 +46,29 @@ public class Schemas {
 		this.serviceBindingSchema = serviceBindingSchema;
 	}
 
+	/**
+	 * The schemas available on a service instance.
+	 *
+	 * @return the schemas
+	 */
 	public ServiceInstanceSchema getServiceInstanceSchema() {
 		return this.serviceInstanceSchema;
 	}
 
+	/**
+	 * The schemas available on a service binding.
+	 *
+	 * @return the schemas
+	 */
 	public ServiceBindingSchema getServiceBindingSchema() {
 		return this.serviceBindingSchema;
 	}
 
+	/**
+	 * Create a builder that provides a fluent API for constructing a {@literal Schemas}.
+	 *
+	 * @return the builder
+	 */
 	public static SchemasBuilder builder() {
 		return new SchemasBuilder();
 	}
@@ -82,6 +95,9 @@ public class Schemas {
 				'}';
 	}
 
+	/**
+	 * Provides a fluent API for constructing a {@literal Schemas}.
+	 */
 	public static class SchemasBuilder {
 		private ServiceInstanceSchema serviceInstanceSchema;
 		private ServiceBindingSchema serviceBindingSchema;
@@ -89,16 +105,33 @@ public class Schemas {
 		SchemasBuilder() {
 		}
 
+		/**
+		 * The schemas available on a service instance.
+		 *
+		 * @param serviceInstanceSchema the schemas
+		 * @return the binder instance
+		 */
 		public SchemasBuilder serviceInstanceSchema(ServiceInstanceSchema serviceInstanceSchema) {
 			this.serviceInstanceSchema = serviceInstanceSchema;
 			return this;
 		}
 
+		/**
+		 * The schemas available on a service binding.
+		 *
+		 * @param serviceBindingSchema the schemas
+		 * @return the binder instance
+		 */
 		public SchemasBuilder serviceBindingSchema(ServiceBindingSchema serviceBindingSchema) {
 			this.serviceBindingSchema = serviceBindingSchema;
 			return this;
 		}
 
+		/**
+		 * Construct a {@link Schemas} from the provided values.
+		 *
+		 * @return the newly constructed {@literal Schemas}
+		 */
 		public Schemas build() {
 			return new Schemas(serviceInstanceSchema, serviceBindingSchema);
 		}

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,10 +29,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The catalog of services offered by the service broker.
  *
  * <p>
- * Objects of this type are constructed by the service broker application,
- * and used to build the response to the platform.
+ * Objects of this type are constructed by the service broker application, and used to
+ * build the response to the platform.
  *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#catalog-management">Open Service Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#catalog-management">Open
+ * Service Broker API specification</a>
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
@@ -83,6 +86,9 @@ public class Catalog {
 		return new CatalogBuilder();
 	}
 
+	/**
+	 * Provides a fluent API for constructing a {@literal Catalog}.
+	 */
 	public static class CatalogBuilder {
 		private final List<ServiceDefinition> serviceDefinitions = new ArrayList<>();
 
@@ -97,6 +103,7 @@ public class Catalog {
 		 * This value sets the {@literal services} field in the response to the platform.
 		 *
 		 * @param serviceDefinitions a {@literal List} of service offerings
+		 * @return the catalog builder instance
 		 */
 		public CatalogBuilder serviceDefinitions(List<ServiceDefinition> serviceDefinitions) {
 			this.serviceDefinitions.addAll(serviceDefinitions);
@@ -111,6 +118,7 @@ public class Catalog {
 		 * This value sets the {@literal services} field in the response to the platform.
 		 *
 		 * @param serviceDefinitions an array of service offerings
+		 * @return the catalog builder instance
 		 */
 		public CatalogBuilder serviceDefinitions(ServiceDefinition... serviceDefinitions) {
 			Collections.addAll(this.serviceDefinitions, serviceDefinitions);
