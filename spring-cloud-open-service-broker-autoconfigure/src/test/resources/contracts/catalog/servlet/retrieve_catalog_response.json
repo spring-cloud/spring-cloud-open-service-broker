@@ -1,0 +1,56 @@
+{
+  "services": [
+    {
+      "id": "service-one-id",
+      "name": "Service One",
+      "description": "Description for Service One",
+      "bindable": true,
+      "requires": [
+        "syslog_drain",
+        "route_forwarding"
+      ],
+      "plans": [
+        {
+          "id": "plan-one-id",
+          "name": "Plan One",
+          "description": "Description for Plan One"
+        },
+        {
+          "id": "plan-two-id",
+          "name": "Plan Two",
+          "description": "Description for Plan Two",
+          "metadata": {
+            "key1": "value1",
+            "key2": "value2"
+          },
+          "bindable": false,
+          "free": true,
+          "schemas": {
+            "service_instance": {
+              "create": {
+                "parameters": {
+                  "$schema": "http://example.com/service/create/schema",
+                  "type": "object"
+                }
+              },
+              "update": {
+                "parameters": {
+                  "$schema": "http://example.com/service/update/schema",
+                  "type": "object"
+                }
+              }
+            },
+            "service_binding": {
+              "create": {
+                "parameters": {
+                  "$schema": "http://example.com/binding/create/schema",
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

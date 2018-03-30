@@ -36,7 +36,7 @@ ext {
 	if (!project.hasProperty("springBootVersion")) {
 		ext.springBootVersion = "2.0.0.RELEASE"
 	}
-	springCloudContractVersion = "1.2.2.RELEASE"
+	springCloudContractVersion = "1.2.4.RELEASE"
 
 	javadocLinks = [
 			"http://docs.oracle.com/javase/8/docs/api/",

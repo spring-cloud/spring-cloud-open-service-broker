@@ -21,6 +21,7 @@ apply plugin: "spring-cloud-contract"
 
 contracts {
 	packageWithBaseClasses = "org.springframework.cloud.servicebroker.autoconfigure.contract"
+	testMode = "EXPLICIT"
 }
 
 dependencyManagement {
