@@ -1,16 +1,12 @@
 [[getting-started]]
 == Getting started
 
-See the {springboot-docs}#quick-start[Spring Boot documentation] for getting started building a
-Spring Boot application.
+See the {springboot-docs}#quick-start[Spring Boot documentation] for getting started building a Spring Boot application.
 
-Most service broker applications will implement API or web UI endpoints beyond the Open Service Broker API endpoints.
-These additional endpoints might provide information about the application, provide a dashboard UI, or provide
-controls over application behavior. Developers can choose to implement these additional endpoints using
-https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html[Spring MVC] or
-https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html[Spring WebFlux].
+Most service broker applications implement API or web UI endpoints beyond the Open Service Broker API endpoints.
+These additional endpoints might provide information about the application, provide a dashboard UI, or provide controls over application behavior.
+Developers can choose to implement these additional endpoints with https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html[Spring MVC] or https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html[Spring WebFlux].
 
-The choice of Spring web framework does not affect the behavior of the Open Service Broker API endpoints,
-but the auto-configuration of the project depends on which web framework the service broker application uses.
+The choice of Spring web framework does not affect the behavior of the Open Service Broker API endpoints, but the autoconfiguration of the project depends on which web framework the service broker application uses.
 
 Two Spring Boot starter dependencies are provided, reflecting the choice of Spring web framework.
