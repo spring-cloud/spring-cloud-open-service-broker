@@ -92,8 +92,8 @@ configure(allprojects) {
 
 }
 
-configure(subprojects - [project(":spring-cloud-open-service-broker-starter-webmvc"),
-						 project(":spring-cloud-open-service-broker-starter-webflux")]) {
+configure(subprojects - [project(":spring-cloud-starter-open-service-broker-webmvc"),
+						 project(":spring-cloud-starter-open-service-broker-webflux")]) {
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
 	[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
