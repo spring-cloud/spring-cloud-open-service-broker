@@ -1,17 +1,16 @@
 [[service-broker-security]]
 == Service Broker Security
 
-Authentication and authorization of service broker endpoints is not specified in the Open Service Broker API
-specification, but some platforms require or allow
-https://en.wikipedia.org/wiki/Basic_access_authentication[basic authentication] or
-https://oauth.net/2/[OAuth2] credentials to be provided when a service broker is registered to the platform.
+Authentication and authorization of service broker endpoints is not specified in the Open Service Broker API specification, but some platforms require or let https://en.wikipedia.org/wiki/Basic_access_authentication[basic authentication] or https://oauth.net/2/[OAuth2] credentials be provided when a service broker is registered to the platform.
 
 The Spring Cloud Open Service Broker project does not implement any security configuration.
-Service broker application endpoints can be secured using http://projects.spring.io/spring-security/[Spring Security]
+Service broker application endpoints can be secured with http://projects.spring.io/spring-security/[Spring Security]
 and https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-security.html[Spring Boot security configuration]
-by applying security to application endpoints with the path-matching pattern `/v2/**`.
+by applying security to application endpoints with the path-matching pattern: `/v2/**`.
 
 === Example Configuration
+
+The following examps shows a security configuration implementation:
 
 [source,java,%autofit]
 ----

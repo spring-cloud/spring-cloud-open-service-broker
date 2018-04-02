@@ -1,6 +1,5 @@
 [[example-service-broker]]
 == Example Service Broker Application
-The https://github.com/spring-cloud-samples/bookstore-service-broker[Bookstore Service Broker] project
-implements a simple service broker that adheres to the Open Service Broker API using the
-Spring Cloud Open Service Broker framework. It can be deployed to either Cloud Foundry or Kubernetes,
-and can be registered as a service broker to either platform. View the project README for more information. 
+The https://github.com/spring-cloud-samples/bookstore-service-broker[Bookstore Service Broker] project implements a simple service broker that adheres to the Open Service Broker API by using the Spring Cloud Open Service Broker framework.
+It can be deployed to either Cloud Foundry or Kubernetes and can be registered as a service broker to either platform. 
+View the project README for more information.

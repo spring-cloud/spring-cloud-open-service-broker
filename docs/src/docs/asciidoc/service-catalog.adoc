@@ -1,12 +1,9 @@
 [[service-catalog]]
 == Advertising Services
-The {osbspec}#catalog-management[service broker catalog] provides a set of metadata describing the available services
-along with attributes such as cost and capabilities. The catalog is made available to the platform's services
-marketplace via the service broker `/v2/catalog` endpoint.
+The {osbspec}#catalog-management[service broker catalog] provides a set of metadata that describes the available services along with attributes such as cost and capabilities.
+The catalog is made available to the platform's services marketplace through the service broker `/v2/catalog` endpoint.
 
-The service broker can either provide a Spring bean of type
-{scosb-api}/org/springframework/cloud/servicebroker/model/catalog/Catalog.html[Catalog] or implement the service
-{scosb-api-services}CatalogService.html[CatalogService].
+The service broker can either provide a Spring bean of type {scosb-api}/org/springframework/cloud/servicebroker/model/catalog/Catalog.html[Catalog] or implement the service {scosb-api-services}CatalogService.html[CatalogService].
 
 === Providing a Catalog Bean
 
@@ -20,12 +17,17 @@ include::{examples-dir}/ExampleCatalogConfiguration.java[]
 
 === Providing a Catalog Using Properties
 
-A catalog may be configured with Spring Boot externalized configuration within a Java properties file or YAML file. The catalog is parsed and made available as a `Catalog` bean during auto-configuration.
+A catalog may be configured with Spring Boot externalized configuration within a Java properties file or YAML file.
+The catalog is parsed and made available as a `Catalog` bean during autoconfiguration.
+
+The following example shows a YAML file that configures a catalog:
 
 [source,yaml,%autofit]
 ----
 include::{examples-dir}/catalog-minimal.yml[]
 ----
+
+The following example shows a properties file that configures a catalog:
 
 [source,properties,%autofit]
 ----
@@ -36,6 +38,8 @@ include::{examples-dir}/catalog-minimal.properties[]
 
 A service broker can take more control over the catalog by implementing the `CatalogService` interface.
 This might be required if some details of the catalog metadata need to be read from the environment or from an external data source.
+
+The following example shows an implementation of the `CatalogService` interface:
 
 [source,java,%autofit]
 ----

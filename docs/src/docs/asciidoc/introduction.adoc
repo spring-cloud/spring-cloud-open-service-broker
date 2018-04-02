@@ -10,6 +10,5 @@ Service brokers are responsible for:
 * Deleting bindings between a service instance and a client application
 * Deprovisioning (deleting) service instances
 
-The {scosb-href} project provides the scaffolding for an {osbapi-href}-compliant service broker by implementing the
-required Spring web controllers, domain objects and configuration. Service broker authors can simply provide Spring
-beans that implement the {scosb-api-services}package-summary.html[appropriate interfaces].
+The {scosb-href} project provides the scaffolding for an {osbapi-href}-compliant service broker by implementing the required Spring web controllers, domain objects, and configuration. 
+Service broker authors can provide Spring beans that implement the {scosb-api-services}package-summary.html[appropriate interfaces].
