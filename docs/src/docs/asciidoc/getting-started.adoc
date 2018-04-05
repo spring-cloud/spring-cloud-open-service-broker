@@ -1,8 +1,6 @@
 [[getting-started]]
 == Getting started
 
-See the {springboot-docs}#quick-start[Spring Boot documentation] for getting started building a Spring Boot application.
-
 Most service broker applications implement API or web UI endpoints beyond the Open Service Broker API endpoints.
 These additional endpoints might provide information about the application, provide a dashboard UI, or provide controls over application behavior.
 Developers can choose to implement these additional endpoints with https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html[Spring MVC] or https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html[Spring WebFlux].
@@ -10,3 +8,57 @@ Developers can choose to implement these additional endpoints with https://docs.
 The choice of Spring web framework does not affect the behavior of the Open Service Broker API endpoints, but the autoconfiguration of the project depends on which web framework the service broker application uses.
 
 Two Spring Boot starter dependencies are provided, reflecting the choice of Spring web framework.
+
+=== Maven dependencies
+
+To use Spring Cloud Open Service Broker in a *Spring MVC* application, add the `webmvc` starter:
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-open-service-broker-webmvc</artifactId>
+            <version>${version}</version>
+        </dependency>
+    </dependencies>
+
+To use Spring Cloud Open Service Broker in a *Spring WebFlux* application, add the `webflux` starter:
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-open-service-broker-webflux</artifactId>
+            <version>${version}</version>
+        </dependency>
+    </dependencies>
+
+=== Gradle dependencies
+
+To use Spring Cloud Open Service Broker in a *Spring MVC* application, add the `webmvc` starter:
+
+    dependencies {
+        compile("org.springframework.cloud:spring-cloud-starter-open-service-broker-webmvc:${version}")
+    }
+
+To use Spring Cloud Open Service Broker in a *Spring WebFlux* application, add the `webflux` starter:
+
+    dependencies {
+        compile("org.springframework.cloud:spring-cloud-starter-open-service-broker-webflux:${version}")
+    }
+
+=== Configuring the service broker
+
+See the http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#getting-started-first-application[Spring Boot documentation] for getting started building a Spring Boot application.
+
+The framework provides default implementations of most of the components needed to implement a service broker.
+In Spring Boot fashion, you can override the default behavior by providing your own implementation of Spring beans, and the framework will back away from its defaults.
+
+To start, use the `@SpringBootApplication` annotation on the service broker's main application class:
+
+    @SpringBootApplication
+    public class Application {
+        public static void main(String[] args) {
+            SpringApplication.run(Application.class, args);
+        }
+    }
+
+This will trigger the inclusion of the default configuration.
