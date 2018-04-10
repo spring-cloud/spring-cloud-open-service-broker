@@ -34,7 +34,7 @@ ext {
 		ext.springVersion = "5.0.5.RELEASE"
 	}
 	if (!project.hasProperty("springBootVersion")) {
-		ext.springBootVersion = "2.0.0.RELEASE"
+		ext.springBootVersion = "2.0.1.RELEASE"
 	}
 	springCloudContractVersion = "1.2.4.RELEASE"
 
