@@ -29,8 +29,18 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class ServiceBrokerProperties {
 
+	private String apiVersion;
+
 	@NestedConfigurationProperty
 	private Catalog catalog;
+
+	public String getApiVersion() {
+		return apiVersion;
+	}
+
+	public void setApiVersion(String apiVersion) {
+		this.apiVersion = apiVersion;
+	}
 
 	public Catalog getCatalog() {
 		return catalog;

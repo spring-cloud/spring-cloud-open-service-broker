@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import org.springframework.boot.context.properties.bind.Bindable;
@@ -32,19 +33,31 @@ import static org.assertj.core.api.Assertions.entry;
 
 public class ServiceBrokerPropertiesTest {
 
+	private static final String PREFIX = "spring.cloud.openservicebroker";
+
+	private Map<String, String> map;
+
+	@Before
+	public void setUp() {
+		this.map = new HashMap<>();
+	}
+
 	@Test
-	public void emptyCatalog() {
-		Map<String, String> map = new HashMap<>();
-		ConfigurationPropertySource source = new MapConfigurationPropertySource(map);
-		Binder binder = new Binder(source);
-		ServiceBrokerProperties properties = new ServiceBrokerProperties();
-		binder.bind("spring.cloud.openservicebroker", Bindable.ofInstance(properties));
+	public void empty() {
+		ServiceBrokerProperties properties = bindProperties();
+		assertThat(properties.getApiVersion()).isNull();
 		assertThat(properties.getCatalog()).isNull();
 	}
 
 	@Test
-	public void fullCatalog() {
-		Map<String, String> map = new HashMap<>();
+	public void apiVersion() {
+		map.put("spring.cloud.openservicebroker.apiVersion", "42.42");
+		ServiceBrokerProperties properties = bindProperties();
+		assertThat(properties.getApiVersion()).isEqualTo("42.42");
+	}
+
+	@Test
+	public void catalog() {
 		map.put("spring.cloud.openservicebroker.catalog.services[0].id", "service-one-id");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].name", "Service One");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].description", "Description for Service One");
@@ -84,10 +97,7 @@ public class ServiceBrokerPropertiesTest {
 		map.put("spring.cloud.openservicebroker.catalog.services[1].plans[0].name", "Plan One");
 		map.put("spring.cloud.openservicebroker.catalog.services[1].plans[0].description", "Description for Plan One");
 
-		ConfigurationPropertySource source = new MapConfigurationPropertySource(map);
-		Binder binder = new Binder(source);
-		ServiceBrokerProperties properties = new ServiceBrokerProperties();
-		binder.bind("spring.cloud.openservicebroker", Bindable.ofInstance(properties));
+		ServiceBrokerProperties properties = bindProperties();
 
 		assertThat(properties.getCatalog()).isNotNull();
 		assertThat(properties.getCatalog().getServices()).hasSize(2);
@@ -163,6 +173,14 @@ public class ServiceBrokerPropertiesTest {
 		assertThat(catalog.getServiceDefinitions().get(1).getPlans().get(0).getId()).isEqualTo("plan-one-id");
 		assertThat(catalog.getServiceDefinitions().get(1).getPlans().get(0).getName()).isEqualTo("Plan One");
 		assertThat(catalog.getServiceDefinitions().get(1).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
+	}
+
+	private ServiceBrokerProperties bindProperties() {
+		ConfigurationPropertySource source = new MapConfigurationPropertySource(this.map);
+		Binder binder = new Binder(source);
+		ServiceBrokerProperties serviceBrokerProperties = new ServiceBrokerProperties();
+		binder.bind(PREFIX, Bindable.ofInstance(serviceBrokerProperties));
+		return serviceBrokerProperties;
 	}
 
 }

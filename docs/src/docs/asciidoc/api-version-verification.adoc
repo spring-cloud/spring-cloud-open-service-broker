@@ -4,11 +4,20 @@ Platforms are required to provide an https://github.com/openservicebrokerapi/ser
 Spring Cloud Open Service Broker can be configured to verify the version provided by the platform on each call to the service broker.
 This version verification is configured to allow any API version by default.
 
-To customize the version verification, provide a Spring bean that specifies the API version required by the service broker, as in this example:
+To customize the version verification, set the `apiVersion` property that specifies the API version required by the service broker, as follows:
+
+[source,bash,%autofit]
+----
+spring.cloud.openservicebroker.apiVersion=2.13
+----
+
+Alternatively, provide a `BrokerApiVersion` Spring bean, as in this example:
 
 [source,java,%autofit]
 ----
 include::{examples-dir}/ExampleApiVersionConfiguration.java[]
 ----
+
+In the case of both a Spring Bean and a property being configured, then the Spring Bean will take precedence over the property.
 
 If an API version is specified and the platform provides a different version in the `X-Broker-API-Version` header, the framework will return a `412 Precondition Failed` error to the platform.

@@ -27,12 +27,14 @@ import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.model.BrokerApiVersion.API_VERSION_ANY;
 import static org.springframework.cloud.servicebroker.model.BrokerApiVersion.API_VERSION_CURRENT;
 
 public class ApiVersionWebMvcAutoConfigurationTest {
+
 	@Test
 	public void apiVersionBeansAreNotCreatedWithNonWebConfiguration() {
 		nonWebApplicationContextRunner()
@@ -67,9 +69,20 @@ public class ApiVersionWebMvcAutoConfigurationTest {
 	}
 
 	@Test
-	public void apiVersionBeansAreCreatedWithCustomVersion() {
+	public void apiVersionCheckIsDisabled() {
 		webApplicationContextRunner()
-				.withUserConfiguration(ServicesConfiguration.class, CustomBrokerApiVersionConfiguration.class)
+				.withUserConfiguration(ServicesConfiguration.class)
+				.withPropertyValues("spring.cloud.openservicebroker.apiVersionCheckEnabled=false")
+				.run((context) -> {
+					assertThat(context).doesNotHaveBean(BrokerApiVersion.class);
+					assertThat(context).doesNotHaveBean(ApiVersionWebFilter.class);
+				});
+	}
+
+	@Test
+	public void apiVersionBeansAreCreatedFromCustomVersionBean() {
+		webApplicationContextRunner()
+				.withUserConfiguration(ServicesConfiguration.class, CustomBrokerApiVersionConfigurationFromBean.class)
 				.run((context) -> {
 					assertThat(context).getBean(BrokerApiVersion.class)
 							.hasFieldOrPropertyWithValue("apiVersion", API_VERSION_CURRENT);
@@ -79,13 +92,26 @@ public class ApiVersionWebMvcAutoConfigurationTest {
 	}
 
 	@Test
-	public void apiVersionCheckIsDisabled() {
+	public void apiVersionBeansAreCreatedFromCustomVersionProperty() {
 		webApplicationContextRunner()
-				.withUserConfiguration(ServicesConfiguration.class)
-				.withPropertyValues("spring.cloud.openservicebroker.apiVersionCheckEnabled=false")
+				.withUserConfiguration(ServicesConfiguration.class, CustomBrokerApiVersionConfigurationFromProperty.class)
 				.run((context) -> {
-					assertThat(context).doesNotHaveBean(BrokerApiVersion.class);
-					assertThat(context).doesNotHaveBean(ApiVersionWebFilter.class);
+					assertThat(context).getBean(BrokerApiVersion.class)
+							.hasFieldOrPropertyWithValue("apiVersion", "42.321");
+					assertThat(context).hasSingleBean(ApiVersionInterceptor.class);
+					assertThat(context).hasSingleBean(ApiVersionWebMvcConfigurerAdapter.class);
+				});
+	}
+
+	@Test
+	public void apiVersionBeansAreCreatedFromCustomVersionBeanOverridesProperty() {
+		webApplicationContextRunner()
+				.withUserConfiguration(ServicesConfiguration.class, CustomBrokerApiVersionConfigurationFromBeanAndProperty.class)
+				.run((context) -> {
+					assertThat(context).getBean(BrokerApiVersion.class)
+							.hasFieldOrPropertyWithValue("apiVersion", "99.999");
+					assertThat(context).hasSingleBean(ApiVersionInterceptor.class);
+					assertThat(context).hasSingleBean(ApiVersionWebMvcConfigurerAdapter.class);
 				});
 	}
 
@@ -108,10 +134,25 @@ public class ApiVersionWebMvcAutoConfigurationTest {
 	}
 
 	@Configuration
-	public static class CustomBrokerApiVersionConfiguration {
+	public static class CustomBrokerApiVersionConfigurationFromBean {
 		@Bean
 		public BrokerApiVersion version() {
 			return new BrokerApiVersion(API_VERSION_CURRENT);
+		}
+	}
+
+	@Configuration
+	@PropertySource("classpath:apiversion.properties")
+	public static class CustomBrokerApiVersionConfigurationFromProperty {
+
+	}
+
+	@Configuration
+	@PropertySource("classpath:apiversion.properties")
+	public static class CustomBrokerApiVersionConfigurationFromBeanAndProperty {
+		@Bean
+		public BrokerApiVersion version() {
+			return new BrokerApiVersion("99.999");
 		}
 	}
 
