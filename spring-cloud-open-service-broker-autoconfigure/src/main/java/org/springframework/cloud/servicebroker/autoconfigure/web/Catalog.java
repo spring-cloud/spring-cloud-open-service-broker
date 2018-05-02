@@ -22,8 +22,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
-
 /**
  * Internal class for marshaling a catalog of services within
  * {@link ServiceBrokerProperties} configuration properties.
@@ -38,7 +36,6 @@ class Catalog {
 	/**
 	 * A list of service offerings provided by the service broker.
 	 */
-	@NestedConfigurationProperty
 	@NotEmpty
 	private List<ServiceDefinition> services = new ArrayList<>();
 
