@@ -31,10 +31,10 @@ buildscript {
 
 ext {
 	if (!project.hasProperty("springVersion")) {
-		ext.springVersion = "5.0.5.RELEASE"
+		springVersion = "5.0.5.RELEASE"
 	}
 	if (!project.hasProperty("springBootVersion")) {
-		ext.springBootVersion = "2.0.1.RELEASE"
+		springBootVersion = "2.0.1.RELEASE"
 	}
 	springCloudContractVersion = "1.2.4.RELEASE"
 
