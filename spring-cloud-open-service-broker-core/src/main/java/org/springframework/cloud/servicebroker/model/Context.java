@@ -16,17 +16,14 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM;
-import static org.springframework.cloud.servicebroker.model.KubernetesContext.KUBERNETES_PLATFORM;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * Platform specific contextual information under which the service instance is to be provisioned or updated. Fields
@@ -38,8 +35,8 @@ import static org.springframework.cloud.servicebroker.model.KubernetesContext.KU
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY,
 		property = "platform", visible = true, defaultImpl = Context.class)
 @JsonSubTypes({
-		@JsonSubTypes.Type(value = CloudFoundryContext.class, name = CLOUD_FOUNDRY_PLATFORM),
-		@JsonSubTypes.Type(value = KubernetesContext.class, name = KUBERNETES_PLATFORM),
+		@JsonSubTypes.Type(value = CloudFoundryContext.class, name = CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM),
+		@JsonSubTypes.Type(value = KubernetesContext.class, name = KubernetesContext.KUBERNETES_PLATFORM),
 })
 public class Context {
 	/**

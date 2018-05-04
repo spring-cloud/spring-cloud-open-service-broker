@@ -16,11 +16,18 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
+import java.util.Map;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerBindingRequiresAppException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
+import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
@@ -41,18 +48,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.util.Map;
-
-import static org.slf4j.LoggerFactory.getLogger;
-import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
-import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.BINDING_ID_PATH_VARIABLE;
-import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE;
-import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
-import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.PLAN_ID_PARAMETER;
-import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE;
-import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.SERVICE_ID_PARAMETER;
-
 /**
  * Provide endpoints for the service bindings API.
  * 
@@ -63,7 +58,8 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
  */
 @RestController
 public class ServiceInstanceBindingController extends BaseController {
-	private static final Logger LOGGER = getLogger(ServiceInstanceBindingController.class);
+
+	private static final Logger logger = LoggerFactory.getLogger(ServiceInstanceBindingController.class);
 
 	private final ServiceInstanceBindingService serviceInstanceBindingService;
 
@@ -80,21 +76,21 @@ public class ServiceInstanceBindingController extends BaseController {
 	})
 	public ResponseEntity<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(
 			@PathVariable Map<String, String> pathVariables,
-			@PathVariable(INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-			@PathVariable(BINDING_ID_PATH_VARIABLE) String bindingId,
-			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
+			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
+			@PathVariable(ServiceBrokerRequest.BINDING_ID_PATH_VARIABLE) String bindingId,
+			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody CreateServiceInstanceBindingRequest request) {
 		request.setServiceInstanceId(serviceInstanceId);
 		request.setBindingId(bindingId);
 		request.setServiceDefinition(getRequiredServiceDefinition(request.getServiceDefinitionId()));
-		setCommonRequestFields(request, pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation, originatingIdentityString);
+		setCommonRequestFields(request, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation, originatingIdentityString);
 
-		LOGGER.debug("Creating a service instance binding: request={}", request);
+		logger.debug("Creating a service instance binding: request={}", request);
 
 		CreateServiceInstanceBindingResponse response = serviceInstanceBindingService.createServiceInstanceBinding(request);
 
-		LOGGER.debug("Creating a service instance binding succeeded: serviceInstanceId={}, bindingId={}, response={}",
+		logger.debug("Creating a service instance binding succeeded: serviceInstanceId={}, bindingId={}, response={}",
 				serviceInstanceId, bindingId, response);
 
 		return new ResponseEntity<>(response, getCreateResponseCode(response));
@@ -113,23 +109,23 @@ public class ServiceInstanceBindingController extends BaseController {
 	})
 	public ResponseEntity<GetServiceInstanceBindingResponse> getServiceInstanceBinding(
 			@PathVariable Map<String, String> pathVariables,
-			@PathVariable(INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-			@PathVariable(BINDING_ID_PATH_VARIABLE) String bindingId,
-			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
+			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
+			@PathVariable(ServiceBrokerRequest.BINDING_ID_PATH_VARIABLE) String bindingId,
+			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
 		GetServiceInstanceBindingRequest request = GetServiceInstanceBindingRequest.builder()
 				.serviceInstanceId(serviceInstanceId)
 				.bindingId(bindingId)
-				.platformInstanceId(pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE))
+				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 				.apiInfoLocation(apiInfoLocation)
 				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
 				.build();
 
-		LOGGER.debug("Getting a service instance binding: request={}", request);
+		logger.debug("Getting a service instance binding: request={}", request);
 
 		GetServiceInstanceBindingResponse response = serviceInstanceBindingService.getServiceInstanceBinding(request);
 
-		LOGGER.debug("Getting a service instance binding succeeded: bindingId={}", bindingId);
+		logger.debug("Getting a service instance binding succeeded: bindingId={}", bindingId);
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
@@ -140,46 +136,46 @@ public class ServiceInstanceBindingController extends BaseController {
 	})
 	public ResponseEntity<String> deleteServiceInstanceBinding(
 			@PathVariable Map<String, String> pathVariables,
-			@PathVariable(INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-			@PathVariable(BINDING_ID_PATH_VARIABLE) String bindingId,
-			@RequestParam(SERVICE_ID_PARAMETER) String serviceDefinitionId,
-			@RequestParam(PLAN_ID_PARAMETER) String planId,
-			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
+			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
+			@PathVariable(ServiceBrokerRequest.BINDING_ID_PATH_VARIABLE) String bindingId,
+			@RequestParam(ServiceBrokerRequest.SERVICE_ID_PARAMETER) String serviceDefinitionId,
+			@RequestParam(ServiceBrokerRequest.PLAN_ID_PARAMETER) String planId,
+			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
 		DeleteServiceInstanceBindingRequest request = DeleteServiceInstanceBindingRequest.builder()
 				.serviceInstanceId(serviceInstanceId)
 				.bindingId(bindingId)
 				.serviceDefinitionId(serviceDefinitionId)
 				.planId(planId)
 				.serviceDefinition(getServiceDefinition(serviceDefinitionId))
-				.platformInstanceId(pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE))
+				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 				.apiInfoLocation(apiInfoLocation)
 				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
 				.build();
 
-		LOGGER.debug("Deleting a service instance binding: request={}", request);
+		logger.debug("Deleting a service instance binding: request={}", request);
 
 		try {
 			serviceInstanceBindingService.deleteServiceInstanceBinding(request);
 		} catch (ServiceInstanceBindingDoesNotExistException e) {
-			LOGGER.debug(e.getMessage(), e);
+			logger.debug(e.getMessage(), e);
 			return new ResponseEntity<>("{}", HttpStatus.GONE);
 		}
 
-		LOGGER.debug("Deleting a service instance binding succeeded: bindingId={}", bindingId);
+		logger.debug("Deleting a service instance binding succeeded: bindingId={}", bindingId);
 
 		return new ResponseEntity<>("{}", HttpStatus.OK);
 	}
 
 	@ExceptionHandler(ServiceInstanceBindingExistsException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceBindingExistsException ex) {
-		LOGGER.debug(ex.getMessage(), ex);
+		logger.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getErrorMessage(), HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(ServiceBrokerBindingRequiresAppException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerBindingRequiresAppException ex) {
-		LOGGER.debug(ex.getMessage(), ex);
+		logger.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getErrorMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 }

@@ -27,8 +27,11 @@
 		<exclude name="AbstractNaming" />
 		<exclude name="AvoidFieldNameMatchingMethodName" />
 	</rule>
-	<rule ref="rulesets/java/imports.xml">
-		<exclude name="TooManyStaticImports"/>
+	<rule ref="rulesets/java/imports.xml" />
+	<rule ref="rulesets/java/imports.xml/TooManyStaticImports">
+		<properties>
+			<property name="maximumStaticImports" value="0"/>
+		</properties>
 	</rule>
 	<rule ref="rulesets/java/optimizations.xml">
 		<exclude name="LocalVariableCouldBeFinal"/>

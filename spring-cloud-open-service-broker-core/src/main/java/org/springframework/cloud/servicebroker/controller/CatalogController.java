@@ -17,14 +17,14 @@
 package org.springframework.cloud.servicebroker.controller;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Provide endpoints for the catalog API.
@@ -36,7 +36,8 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 @RestController
 public class CatalogController extends BaseController {
-	private static final Logger LOGGER = getLogger(CatalogController.class);
+
+	private static final Logger logger = LoggerFactory.getLogger(CatalogController.class);
 
 	@Autowired
 	public CatalogController(CatalogService service) {
@@ -45,7 +46,7 @@ public class CatalogController extends BaseController {
 
 	@RequestMapping(value = {"/v2/catalog", "{platformInstanceId}/v2/catalog"}, method = RequestMethod.GET)
 	public Catalog getCatalog() {
-		LOGGER.debug("Retrieving catalog");
+		logger.debug("Retrieving catalog");
 		return catalogService.getCatalog();
 	}
 }

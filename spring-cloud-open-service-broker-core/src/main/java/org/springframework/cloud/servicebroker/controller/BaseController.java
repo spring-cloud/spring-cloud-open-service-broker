@@ -22,6 +22,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
@@ -49,9 +50,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.support.WebExchangeBindException;
 
-import static org.slf4j.LoggerFactory.getLogger;
-import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
-
 /**
  * Base functionality shared by controllers.
  *
@@ -59,7 +57,8 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
  * @author Scott Frederick
  */
 public class BaseController {
-	private static final Logger LOGGER = getLogger(BaseController.class);
+
+	private static final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
 	protected CatalogService catalogService;
 
@@ -102,7 +101,7 @@ public class BaseController {
 
 		if (parts.length != 2) {
 			throw new HttpMessageNotReadableException("Expected platform and properties values in "
-					+ ORIGINATING_IDENTITY_HEADER + " header in request");
+					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request");
 		}
 
 		String encodedProperties;
@@ -110,7 +109,7 @@ public class BaseController {
 			encodedProperties = new String(Base64Utils.decode(parts[1].getBytes()));
 		} catch (IllegalArgumentException e) {
 			throw new HttpMessageNotReadableException("Error decoding JSON properties from "
-					+ ORIGINATING_IDENTITY_HEADER + " header in request", e);
+					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request", e);
 		}
 
 		Map<String, Object> properties;
@@ -118,7 +117,7 @@ public class BaseController {
 			properties = readJsonFromString(encodedProperties);
 		} catch (IOException e) {
 			throw new HttpMessageNotReadableException("Error parsing JSON properties from "
-					+ ORIGINATING_IDENTITY_HEADER + " header in request", e);
+					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request", e);
 		}
 
 		String platform = parts[0];
@@ -136,61 +135,61 @@ public class BaseController {
 
 	@ExceptionHandler(ServiceBrokerApiVersionException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerApiVersionException ex) {
-		LOGGER.debug(ex.getMessage(), ex);
+		logger.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getErrorMessage(), HttpStatus.PRECONDITION_FAILED);
 	}
 
 	@ExceptionHandler(ServiceInstanceDoesNotExistException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceDoesNotExistException ex) {
-		LOGGER.debug(ex.getMessage(), ex);
+		logger.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getErrorMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceDefinitionDoesNotExistException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceDefinitionDoesNotExistException ex) {
-		LOGGER.debug(ex.getMessage(), ex);
+		logger.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getErrorMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceBrokerAsyncRequiredException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerAsyncRequiredException ex) {
-		LOGGER.debug(ex.getMessage(), ex);
+		logger.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getErrorMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceBrokerInvalidParametersException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerInvalidParametersException ex) {
-		LOGGER.debug(ex.getMessage(), ex);
+		logger.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getErrorMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceBrokerOperationInProgressException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerOperationInProgressException ex) {
-		LOGGER.debug(ex.getMessage(), ex);
+		logger.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getErrorMessage(), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(ServiceBrokerUnavailableException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerUnavailableException ex) {
-		LOGGER.debug(ex.getMessage(), ex);
+		logger.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getErrorMessage(), HttpStatus.SERVICE_UNAVAILABLE);
 	}
 
 	@ExceptionHandler(ServiceBrokerConcurrencyException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerConcurrencyException ex) {
-		LOGGER.debug(ex.getMessage(), ex);
+		logger.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getErrorMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(ServiceBrokerException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerException ex) {
-		LOGGER.debug("Service broker exception handled: ", ex);
+		logger.debug("Service broker exception handled: ", ex);
 		return getErrorResponse(ex.getErrorMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<ErrorMessage> handleException(HttpMessageNotReadableException ex) {
-		LOGGER.error("Unprocessable request received: ", ex);
+		logger.error("Unprocessable request received: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
@@ -207,7 +206,7 @@ public class BaseController {
 	}
 
 	private ResponseEntity<ErrorMessage> handleBindingException(Exception ex, final BindingResult result) {
-		LOGGER.error("Unprocessable request received: ", ex);
+		logger.error("Unprocessable request received: ", ex);
 		StringBuilder message = new StringBuilder("Missing required fields:");
 		for (FieldError error : result.getFieldErrors()) {
 			message.append(' ').append(error.getField());
@@ -217,7 +216,7 @@ public class BaseController {
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorMessage> handleException(Exception ex) {
-		LOGGER.error("Unknown exception handled: ", ex);
+		logger.error("Unknown exception handled: ", ex);
 		return getErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 

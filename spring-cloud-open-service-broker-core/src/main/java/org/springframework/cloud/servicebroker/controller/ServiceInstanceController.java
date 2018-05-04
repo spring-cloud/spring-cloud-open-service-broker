@@ -16,23 +16,30 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
+import java.util.Map;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
+import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
+import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceResponse;
-import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationRequest;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationResponse;
 import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
-import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.service.CatalogService;
@@ -50,18 +57,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.util.Map;
-
-import static org.slf4j.LoggerFactory.getLogger;
-import static org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceRequest.ASYNC_REQUEST_PARAMETER;
-import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
-import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE;
-import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
-import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.PLAN_ID_PARAMETER;
-import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE;
-import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.SERVICE_ID_PARAMETER;
-
 /**
  * Provide endpoints for the service instances API.
  *
@@ -72,7 +67,8 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
  */
 @RestController
 public class ServiceInstanceController extends BaseController {
-	private static final Logger LOGGER = getLogger(ServiceInstanceController.class);
+
+	private static final Logger logger = LoggerFactory.getLogger(ServiceInstanceController.class);
 
 	private final ServiceInstanceService service;
 
@@ -88,23 +84,23 @@ public class ServiceInstanceController extends BaseController {
 	})
 	public ResponseEntity<CreateServiceInstanceResponse> createServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
-			@PathVariable(INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-			@RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
-			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
+			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
+			@RequestParam(value = AsyncServiceInstanceRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
+			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody CreateServiceInstanceRequest request) {
 		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(request.getServiceDefinitionId());
 
 		request.setServiceInstanceId(serviceInstanceId);
 		request.setServiceDefinition(serviceDefinition);
-		setCommonRequestFields(request, pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
+		setCommonRequestFields(request, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
 				originatingIdentityString, acceptsIncomplete);
 
-		LOGGER.debug("Creating a service instance: request={}", request);
+		logger.debug("Creating a service instance: request={}", request);
 
 		CreateServiceInstanceResponse response = service.createServiceInstance(request);
 
-		LOGGER.debug("Creating a service instance succeeded: serviceInstanceId={}, response={}",
+		logger.debug("Creating a service instance succeeded: serviceInstanceId={}, response={}",
 				serviceInstanceId, response);
 
 		return new ResponseEntity<>(response, getCreateResponseCode(response));
@@ -127,21 +123,21 @@ public class ServiceInstanceController extends BaseController {
 	})
 	public ResponseEntity<GetServiceInstanceResponse> getServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
-			@PathVariable(INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
+			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
+			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
 		GetServiceInstanceRequest request = GetServiceInstanceRequest.builder()
 				.serviceInstanceId(serviceInstanceId)
-				.platformInstanceId(pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE))
+				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 				.apiInfoLocation(apiInfoLocation)
 				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
 				.build();
 
-		LOGGER.debug("Getting service instance: request={}", request);
+		logger.debug("Getting service instance: request={}", request);
 
 		GetServiceInstanceResponse response = service.getServiceInstance(request);
 
-		LOGGER.debug("Getting service instance succeeded: serviceInstanceId={}, response={}",
+		logger.debug("Getting service instance succeeded: serviceInstanceId={}, response={}",
 				serviceInstanceId, response);
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -153,27 +149,27 @@ public class ServiceInstanceController extends BaseController {
 	})
 	public ResponseEntity<GetLastServiceOperationResponse> getServiceInstanceLastOperation(
 			@PathVariable Map<String, String> pathVariables,
-			@PathVariable(INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-			@RequestParam(value = SERVICE_ID_PARAMETER, required = false) String serviceDefinitionId,
-			@RequestParam(value = PLAN_ID_PARAMETER, required = false) String planId,
+			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
+			@RequestParam(value = ServiceBrokerRequest.SERVICE_ID_PARAMETER, required = false) String serviceDefinitionId,
+			@RequestParam(value = ServiceBrokerRequest.PLAN_ID_PARAMETER, required = false) String planId,
 			@RequestParam(value = "operation", required = false) String operation,
-			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
+			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
 		GetLastServiceOperationRequest request = GetLastServiceOperationRequest.builder()
 				.serviceDefinitionId(serviceDefinitionId)
 				.serviceInstanceId(serviceInstanceId)
 				.planId(planId)
 				.operation(operation)
-				.platformInstanceId(pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE))
+				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 				.apiInfoLocation(apiInfoLocation)
 				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
 				.build();
 
-		LOGGER.debug("Getting service instance last operation: request={}", request);
+		logger.debug("Getting service instance last operation: request={}", request);
 
 		GetLastServiceOperationResponse response = service.getLastOperation(request);
 
-		LOGGER.debug("Getting service instance last operation succeeded: serviceInstanceId={}, response={}",
+		logger.debug("Getting service instance last operation succeeded: serviceInstanceId={}, response={}",
 				serviceInstanceId, response);
 
 		boolean isSuccessfulDelete = response.getState().equals(OperationState.SUCCEEDED) && response.isDeleteOperation();
@@ -187,12 +183,12 @@ public class ServiceInstanceController extends BaseController {
 	})
 	public ResponseEntity<DeleteServiceInstanceResponse> deleteServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
-			@PathVariable(INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-			@RequestParam(SERVICE_ID_PARAMETER) String serviceDefinitionId,
-			@RequestParam(PLAN_ID_PARAMETER) String planId,
-			@RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
-			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
+			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
+			@RequestParam(ServiceBrokerRequest.SERVICE_ID_PARAMETER) String serviceDefinitionId,
+			@RequestParam(ServiceBrokerRequest.PLAN_ID_PARAMETER) String planId,
+			@RequestParam(value = AsyncServiceInstanceRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
+			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
 		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(serviceDefinitionId);
 
 		DeleteServiceInstanceRequest request = DeleteServiceInstanceRequest.builder()
@@ -201,22 +197,22 @@ public class ServiceInstanceController extends BaseController {
 				.planId(planId)
 				.serviceDefinition(serviceDefinition)
 				.asyncAccepted(acceptsIncomplete)
-				.platformInstanceId(pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE))
+				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 				.apiInfoLocation(apiInfoLocation)
 				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
 				.build();
 
-		LOGGER.debug("Deleting a service instance: request={}", request);
+		logger.debug("Deleting a service instance: request={}", request);
 
 		try {
 			DeleteServiceInstanceResponse response = service.deleteServiceInstance(request);
 
-			LOGGER.debug("Deleting a service instance succeeded: serviceInstanceId={}, response={}",
+			logger.debug("Deleting a service instance succeeded: serviceInstanceId={}, response={}",
 					serviceInstanceId, response);
 
 			return new ResponseEntity<>(response, getAsyncResponseCode(response));
 		} catch (ServiceInstanceDoesNotExistException e) {
-			LOGGER.debug("Service instance does not exist: ", e);
+			logger.debug("Service instance does not exist: ", e);
 			return new ResponseEntity<>(DeleteServiceInstanceResponse.builder().build(), HttpStatus.GONE);
 		}
 	}
@@ -227,23 +223,23 @@ public class ServiceInstanceController extends BaseController {
 	})
 	public ResponseEntity<UpdateServiceInstanceResponse> updateServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
-			@PathVariable(INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-			@RequestParam(value = ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
-			@RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
+			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
+			@RequestParam(value = AsyncServiceInstanceRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
+			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody UpdateServiceInstanceRequest request) {
 		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(request.getServiceDefinitionId());
 
 		request.setServiceInstanceId(serviceInstanceId);
 		request.setServiceDefinition(serviceDefinition);
-		setCommonRequestFields(request, pathVariables.get(PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
+		setCommonRequestFields(request, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
 				originatingIdentityString, acceptsIncomplete);
 
-		LOGGER.debug("Updating a service instance: request={}", request);
+		logger.debug("Updating a service instance: request={}", request);
 
 		UpdateServiceInstanceResponse response = service.updateServiceInstance(request);
 
-		LOGGER.debug("Updating a service instance succeeded: serviceInstanceId={}, response={}",
+		logger.debug("Updating a service instance succeeded: serviceInstanceId={}, response={}",
 				serviceInstanceId, response);
 
 		return new ResponseEntity<>(response, getAsyncResponseCode(response));
@@ -258,13 +254,13 @@ public class ServiceInstanceController extends BaseController {
 
 	@ExceptionHandler(ServiceInstanceExistsException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceExistsException ex) {
-		LOGGER.debug(ex.getMessage(), ex);
+		logger.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getErrorMessage(), HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(ServiceInstanceUpdateNotSupportedException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceUpdateNotSupportedException ex) {
-		LOGGER.debug(ex.getMessage(), ex);
+		logger.debug(ex.getMessage(), ex);
 		return getErrorResponse(ex.getErrorMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 }
