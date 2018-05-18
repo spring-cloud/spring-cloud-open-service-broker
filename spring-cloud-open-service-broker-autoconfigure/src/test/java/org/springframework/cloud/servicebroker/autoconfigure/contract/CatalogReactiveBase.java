@@ -15,8 +15,7 @@
  */
 package org.springframework.cloud.servicebroker.autoconfigure.contract;
 
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-
+import io.restassured.RestAssured;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,11 +32,9 @@ import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.Service
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import io.restassured.RestAssured;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CatalogReactiveBase.TestApplication.class,
@@ -62,14 +59,6 @@ public class CatalogReactiveBase {
 	@SpringBootApplication(scanBasePackageClasses = {ServiceBrokerAutoConfiguration.class,
 			ServiceBrokerWebFluxAutoConfiguration.class}, exclude = ServiceBrokerWebMvcAutoConfiguration.class)
 	public static class TestApplication {
-
-		@Bean
-		public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-			return http
-					.httpBasic().disable()
-					.csrf().disable()
-					.build();
-		}
 
 		@Bean
 		public Catalog catalog() {

@@ -32,8 +32,6 @@ import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.Service
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -60,14 +58,7 @@ public class CatalogServletBase {
 
 	@SpringBootApplication(scanBasePackageClasses = {ServiceBrokerAutoConfiguration.class,
 			ServiceBrokerWebMvcAutoConfiguration.class}, exclude = ServiceBrokerWebFluxAutoConfiguration.class)
-	public static class TestApplication extends WebSecurityConfigurerAdapter {
-
-		@Override
-		protected void configure(HttpSecurity http) throws Exception {
-			http
-					.httpBasic().disable()
-					.csrf().disable();
-		}
+	public static class TestApplication {
 
 		@Bean
 		public Catalog catalog() {
