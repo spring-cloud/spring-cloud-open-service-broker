@@ -25,10 +25,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerAutoConfiguration;
+import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerWebMvcAutoConfiguration;
 import org.springframework.cloud.servicebroker.autoconfigure.web.TestServiceInstanceService;
 import org.springframework.cloud.servicebroker.autoconfigure.web.fixture.ServiceFixture;
-import org.springframework.cloud.servicebroker.autoconfigure.web.reactive.ServiceBrokerWebFluxAutoConfiguration;
-import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.ServiceBrokerWebMvcAutoConfiguration;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
@@ -56,8 +55,9 @@ public class CatalogServletBase {
 		// hooray
 	}
 
-	@SpringBootApplication(scanBasePackageClasses = {ServiceBrokerAutoConfiguration.class,
-			ServiceBrokerWebMvcAutoConfiguration.class}, exclude = ServiceBrokerWebFluxAutoConfiguration.class)
+	@SpringBootApplication(scanBasePackageClasses = {
+			ServiceBrokerAutoConfiguration.class,
+			ServiceBrokerWebMvcAutoConfiguration.class })
 	public static class TestApplication {
 
 		@Bean

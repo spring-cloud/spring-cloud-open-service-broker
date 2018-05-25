@@ -36,7 +36,6 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	optional("org.springframework.boot:spring-boot-starter-web")
-	optional("org.springframework.boot:spring-boot-starter-webflux")
 
 	testCompile project(path: ":spring-cloud-open-service-broker-core", configuration: "testOutput")
 

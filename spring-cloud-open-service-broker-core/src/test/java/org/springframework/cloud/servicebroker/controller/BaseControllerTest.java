@@ -42,11 +42,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.MapBindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.support.WebExchangeBindException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.cloud.servicebroker.exception.ServiceBrokerConcurrencyException.CONCURRENCY_ERROR;
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException.ASYNC_REQUIRED_ERROR;
+import static org.springframework.cloud.servicebroker.exception.ServiceBrokerConcurrencyException.CONCURRENCY_ERROR;
 
 public class BaseControllerTest {
 	private BaseController controller;
@@ -230,26 +229,6 @@ public class BaseControllerTest {
 		
 		MethodArgumentNotValidException exception =
 				new MethodArgumentNotValidException(parameter, bindingResult);
-
-		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
-		assertThat(responseEntity.getBody().getError()).isNull();
-		assertThat(responseEntity.getBody().getMessage()).contains("field1");
-		assertThat(responseEntity.getBody().getMessage()).contains("field2");
-	}
-
-	@Test
-	public void webExchangeBindExceptionGivesExpectedStatus() throws NoSuchMethodException {
-		BindingResult bindingResult = new MapBindingResult(new HashMap<>(), "objectName");
-		bindingResult.addError(new FieldError("objectName", "field1", "message"));
-		bindingResult.addError(new FieldError("objectName", "field2", "message"));
-
-		Method method = this.getClass().getMethod("setUp", (Class<?>[]) null);
-		MethodParameter parameter = new MethodParameter(method, -1);
-
-		WebExchangeBindException exception =
-				new WebExchangeBindException(parameter, bindingResult);
 
 		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
 
