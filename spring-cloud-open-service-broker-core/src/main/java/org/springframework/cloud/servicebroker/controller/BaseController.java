@@ -48,7 +48,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.support.WebExchangeBindException;
 
 /**
  * Base functionality shared by controllers.
@@ -193,15 +192,8 @@ public class BaseController {
 		return getErrorResponse(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
-	// Spring MVC throws this exception on binding errors
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorMessage> handleException(MethodArgumentNotValidException ex) {
-		return handleBindingException(ex, ex.getBindingResult());
-	}
-
-	// Spring WebFlux throws this exception on binding errors
-	@ExceptionHandler(WebExchangeBindException.class)
-	public ResponseEntity<ErrorMessage> handleException(WebExchangeBindException ex) {
 		return handleBindingException(ex, ex.getBindingResult());
 	}
 

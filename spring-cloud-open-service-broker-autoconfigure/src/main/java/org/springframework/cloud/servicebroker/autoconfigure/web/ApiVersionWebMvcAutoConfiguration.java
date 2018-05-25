@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
+package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -22,13 +22,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerProperties;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -44,19 +42,21 @@ import org.springframework.context.annotation.Configuration;
  * spring.cloud.openservicebroker.apiVersionCheckEnabled = false
  * </pre>
  *
+ * @author Benjamin Ihrig
+ * @author Scott Frederick
  * @author Roy Clarkson
  */
 @Configuration
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
-@ConditionalOnBean(ServiceInstanceService.class)
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+@ConditionalOnBean({ ServiceInstanceService.class })
 @ConditionalOnProperty(prefix = "spring.cloud.openservicebroker", name = "apiVersionCheckEnabled", havingValue = "true", matchIfMissing = true)
-@AutoConfigureAfter(WebFluxAutoConfiguration.class)
+@AutoConfigureAfter(WebMvcAutoConfiguration.class)
 @EnableConfigurationProperties(ServiceBrokerProperties.class)
-public class ApiVersionWebFluxAutoConfiguration {
+public class ApiVersionWebMvcAutoConfiguration {
 
 	private ServiceBrokerProperties serviceBrokerProperties;
 
-	public ApiVersionWebFluxAutoConfiguration(ServiceBrokerProperties serviceBrokerProperties) {
+	public ApiVersionWebMvcAutoConfiguration(ServiceBrokerProperties serviceBrokerProperties) {
 		this.serviceBrokerProperties = serviceBrokerProperties;
 	}
 
@@ -74,8 +74,15 @@ public class ApiVersionWebFluxAutoConfiguration {
 	}
 
 	@Bean
-	public ApiVersionWebFilter apiVersionWebFilter(BrokerApiVersion brokerApiVersion) {
-		return new ApiVersionWebFilter(brokerApiVersion);
+	public ApiVersionInterceptor serviceBrokerApiVersionInterceptor(
+			BrokerApiVersion brokerApiVersion) {
+		return new ApiVersionInterceptor(brokerApiVersion);
+	}
+
+	@Bean
+	public ApiVersionWebMvcConfigurerAdapter serviceBrokerWebMvcConfigurerAdapter(
+			ApiVersionInterceptor apiVersionInterceptor) {
+		return new ApiVersionWebMvcConfigurerAdapter(apiVersionInterceptor);
 	}
 
 }

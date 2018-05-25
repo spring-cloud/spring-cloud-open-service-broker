@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
+package org.springframework.cloud.servicebroker.autoconfigure.web;
 
-import java.nio.charset.Charset;
-import java.util.Map;
-
-import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractServiceInstanceControllerIntegrationTest;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
@@ -43,25 +38,38 @@ import org.springframework.cloud.servicebroker.model.instance.GetServiceInstance
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException.*;
+import static org.hamcrest.Matchers.anEmptyMap;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.StringContains.containsString;
+import static org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException.ASYNC_REQUIRED_ERROR;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceControllerIntegrationTest {
 
-	private static final Charset UTF_8 = Charset.forName("UTF-8");
-
-	private WebTestClient client;
+	private MockMvc mockMvc;
 
 	@Before
 	public void setUp() {
-		this.client = WebTestClient.bindToController(this.controller).build();
+		this.mockMvc = MockMvcBuilders.standaloneSetup(this.controller)
+				.setMessageConverters(new MappingJackson2HttpMessageConverter())
+				.build();
 	}
 
 	@Test
@@ -72,14 +80,13 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.async(true)
 				.build());
 
-		client.put().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
-				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+		mockMvc.perform(put(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
+				.content(createRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().isAccepted();
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isAccepted());
 
 		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
@@ -87,7 +94,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceWithEmptyPlatformInstanceIdSucceeds() {
+	public void createServiceInstanceWithEmptyPlatformInstanceIdSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
@@ -97,30 +104,28 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 		// force a condition where the platformInstanceId segment is present but empty
 		// e.g. http://test.example.com//v2/service_instances/[guid]
 		String url = "http://test.example.com/" + buildCreateUpdateUrl();
-		client.put().uri(url)
+		mockMvc.perform(put(url)
+				.content(createRequestBody)
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().isAccepted();
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isAccepted());
 
 		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
 		assertHeaderValuesNotSet(actualRequest);
 	}
 
 	@Test
-	public void createServiceInstanceWithoutAsyncAndHeadersSucceeds() {
+	public void createServiceInstanceWithoutAsyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
 				.build());
 
-		client.put().uri(buildCreateUpdateUrl())
+		mockMvc.perform(put(buildCreateUpdateUrl())
+				.content(createRequestBody)
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().isCreated();
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isCreated());
 
 		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
@@ -128,131 +133,102 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceWithExistingInstanceSucceeds() {
+	public void createServiceInstanceWithExistingInstanceSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
 				.instanceExisted(true)
 				.build());
 
-		client.put().uri(buildCreateUpdateUrl())
+		mockMvc.perform(put(buildCreateUpdateUrl())
+				.content(createRequestBody)
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().isOk();
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
 	}
 
 	@Test
-	public void createServiceInstanceWithUnknownServiceDefinitionIdFails() {
+	public void createServiceInstanceWithUnknownServiceDefinitionIdFails() throws Exception {
 		setupCatalogService(null);
 
-		client.put().uri(buildCreateUpdateUrl())
+		mockMvc.perform(put(buildCreateUpdateUrl())
+				.content(createRequestBody)
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-				.expectBody()
-				.jsonPath("$.description").isNotEmpty()
-				.consumeWith(result -> assertDescriptionContains(result, String.format("id=%s", serviceDefinition.getId())));
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isUnprocessableEntity())
+				.andExpect(jsonPath("$.description", containsString(serviceDefinition.getId())));
 	}
 
 	@Test
-	public void createDuplicateServiceInstanceIdFails() {
+	public void createDuplicateServiceInstanceIdFails() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceInstanceExistsException(SERVICE_INSTANCE_ID, serviceDefinition.getId()));
 
-		client.put().uri(buildCreateUpdateUrl())
+		mockMvc.perform(put(buildCreateUpdateUrl())
+				.content(createRequestBody)
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.CONFLICT)
-				.expectBody()
-				.jsonPath("$.description").isNotEmpty()
-				.consumeWith(result -> assertDescriptionContains(result,
-						String.format("serviceInstanceId=%s, serviceDefinitionId=%s", SERVICE_INSTANCE_ID, serviceDefinition.getId())));
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isConflict())
+				.andExpect(jsonPath("$.description", containsString(SERVICE_INSTANCE_ID)));
 	}
 
 	@Test
-	public void createServiceInstanceWithAsyncRequiredFails() {
+	public void createServiceInstanceWithAsyncRequiredFails() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceBrokerAsyncRequiredException("async required description"));
 
-		client.put().uri(buildCreateUpdateUrl())
+		mockMvc.perform(put(buildCreateUpdateUrl())
+				.content(createRequestBody)
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-				.expectBody()
-				.jsonPath("$.error").isEqualTo(ASYNC_REQUIRED_ERROR)
-				.jsonPath("$.description").isNotEmpty()
-				.consumeWith(result -> assertDescriptionContains(result, "async required description"));
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isUnprocessableEntity())
+				.andExpect(jsonPath("$.error", is(ASYNC_REQUIRED_ERROR)))
+				.andExpect(jsonPath("$.description", endsWith("async required description")));
 	}
 
 	@Test
-	public void createServiceInstanceWithInvalidParametersFails() {
+	public void createServiceInstanceWithInvalidParametersFails() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceBrokerInvalidParametersException("invalid parameters description"));
 
-		client.put().uri(buildCreateUpdateUrl())
+		mockMvc.perform(put(buildCreateUpdateUrl())
+				.content(createRequestBody)
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
-				.accept(MediaType.APPLICATION_JSON)
-		        .exchange()
-				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-				.expectBody()
-				.jsonPath("$.description").isNotEmpty()
-				.consumeWith(result -> assertDescriptionContains(result, "invalid parameters description"));
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isUnprocessableEntity())
+				.andExpect(jsonPath("$.description", endsWith("invalid parameters description")));
 	}
 
 	@Test
 	public void createServiceInstanceWithInvalidFieldsFails() throws Exception {
 		String body = createRequestBody.replace("service_id", "foo");
 
-		client.put().uri(buildCreateUpdateUrl())
-				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(body)
+		mockMvc.perform(put(buildCreateUpdateUrl())
+				.content(body)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-				.expectBody()
-				.jsonPath("$.description").isNotEmpty()
-				.consumeWith(result -> assertDescriptionContains(result, "serviceDefinitionId"));
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isUnprocessableEntity())
+				.andExpect(jsonPath("$.description", containsString("serviceDefinitionId")));
 	}
 
 	@Test
 	public void createServiceInstanceWithMissingFieldsFails() throws Exception {
 		String body = "{}";
 
-		client.put().uri(buildCreateUpdateUrl())
-				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(body)
+		mockMvc.perform(put(buildCreateUpdateUrl())
+				.content(body)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-				.expectBody()
-				.jsonPath("$.description").isNotEmpty()
-				.consumeWith(result -> {
-					String responseBody = new String(result.getResponseBody(), UTF_8);
-					String description = JsonPath.read(responseBody, "$.description");
-					assertThat(description).contains("planId", "serviceDefinitionId");
-				});
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isUnprocessableEntity())
+				.andExpect(jsonPath("$.description", containsString("serviceDefinitionId")))
+				.andExpect(jsonPath("$.description", containsString("planId")));
 	}
 
 	@Test
@@ -260,12 +236,12 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 		setupServiceInstanceService(GetServiceInstanceResponse.builder()
 			.build());
 
-		client.get().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, false))
+		mockMvc.perform(get(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, false))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().isOk();
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
 
 		GetServiceInstanceRequest actualRequest = verifyGetServiceInstance();
 		assertHeaderValuesSet(actualRequest);
@@ -275,14 +251,13 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	public void getServiceInstanceWithOperationInProgressFails() throws Exception {
 		setupServiceInstanceService(new ServiceBrokerOperationInProgressException("still working"));
 
-		client.get().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, false))
+		mockMvc.perform(get(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, false))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().isNotFound()
-				.expectBody()
-				.consumeWith(result -> assertDescriptionContains(result, "operation=still working"));
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound())
+				.andExpect(jsonPath("$.description", containsString("still working")));
 	}
 
 	@Test
@@ -294,14 +269,12 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.operation("working")
 				.build());
 
-		client.delete().uri(buildDeleteUrl(PLATFORM_INSTANCE_ID, true))
+		mockMvc.perform(delete(buildDeleteUrl(PLATFORM_INSTANCE_ID, true))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().isAccepted()
-				.expectBody()
-				.jsonPath("$.operation").isEqualTo("working");
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isAccepted())
+				.andExpect(jsonPath("$.operation", equalTo("working")));
 
 		DeleteServiceInstanceRequest actualRequest = verifyDeleteServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
@@ -309,18 +282,16 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void deleteServiceInstanceWithoutAsyncAndHeadersSucceeds() {
+	public void deleteServiceInstanceWithoutAsyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(DeleteServiceInstanceResponse.builder()
 				.build());
 
-		client.delete().uri(buildDeleteUrl())
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody()
-				.json("{}");
+		mockMvc.perform(delete(buildDeleteUrl())
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().string("{}"));
 
 		DeleteServiceInstanceRequest actualRequest = verifyDeleteServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
@@ -328,37 +299,25 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void deleteServiceInstanceWithUnknownIdFails() {
+	public void deleteServiceInstanceWithUnknownIdFails() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID));
 
-		client.delete().uri(buildDeleteUrl())
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.GONE)
-				.expectBody()
-				.jsonPath("$").isMap()
-				.consumeWith(result -> {
-					String responseBody = new String(result.getResponseBody(), UTF_8);
-					Map<String, Object> map = JsonPath.read(responseBody, "$");
-					assertThat(map).isEmpty();
-				});
+		mockMvc.perform(delete(buildDeleteUrl())
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isGone())
+				.andExpect(jsonPath("$", anEmptyMap()));
 	}
 
 	@Test
-	public void deleteServiceInstanceWithUnknownServiceDefinitionIdFails() {
+	public void deleteServiceInstanceWithUnknownServiceDefinitionIdFails() throws Exception {
 		setupCatalogService(null);
 
-		client.delete().uri(buildDeleteUrl())
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-				.expectBody()
-				.jsonPath("$.description").isNotEmpty()
-				.consumeWith(result -> assertDescriptionContains(result, String.format("id=%s", serviceDefinition.getId())));
+		mockMvc.perform(delete(buildDeleteUrl())
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isUnprocessableEntity())
+				.andExpect(jsonPath("$.description", containsString(serviceDefinition.getId())));
 	}
 
 	@Test
@@ -370,16 +329,14 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.operation("working")
 				.build());
 
-		client.patch().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
-				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(updateRequestBody)
+		mockMvc.perform(patch(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
+				.content(updateRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().isAccepted()
-				.expectBody()
-				.jsonPath("$.operation").isEqualTo("working");
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isAccepted())
+				.andExpect(jsonPath("$.operation", equalTo("working")));
 
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
@@ -387,20 +344,18 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void updateServiceInstanceWithoutSyncAndHeadersSucceeds() {
+	public void updateServiceInstanceWithoutSyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
 				.build());
 
-		client.patch().uri(buildCreateUpdateUrl())
+		mockMvc.perform(patch(buildCreateUpdateUrl())
+				.content(updateRequestBody)
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(updateRequestBody)
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody()
-				.json("{}");
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().string("{}"));
 
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
@@ -408,54 +363,44 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void updateServiceInstanceWithUnknownServiceDefinitionIdFails() {
+	public void updateServiceInstanceWithUnknownServiceDefinitionIdFails() throws Exception {
 		setupCatalogService(null);
 
-		client.patch().uri(buildCreateUpdateUrl())
+		mockMvc.perform(patch(buildCreateUpdateUrl())
+				.content(updateRequestBody)
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(updateRequestBody)
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-				.expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
-				.expectBody()
-				.jsonPath("$.description").isNotEmpty()
-				.consumeWith(result -> assertDescriptionContains(result, String.format("id=%s", serviceDefinition.getId())));
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isUnprocessableEntity())
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.description", containsString(serviceDefinition.getId())));
 	}
 
 	@Test
-	public void updateServiceInstanceWithUnsupportedOperationFails() {
+	public void updateServiceInstanceWithUnsupportedOperationFails() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceInstanceUpdateNotSupportedException("description"));
 
-		client.patch().uri(buildCreateUpdateUrl())
+		mockMvc.perform(patch(buildCreateUpdateUrl())
+				.content(updateRequestBody)
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(updateRequestBody)
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-				.expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
-				.expectBody()
-				.jsonPath("$.description").isNotEmpty()
-				.consumeWith(result -> assertDescriptionContains(result, "description"));
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isUnprocessableEntity())
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.description", containsString("description")));
 	}
 
 	@Test
-	public void lastOperationHasInProgressStatus() {
+	public void lastOperationHasInProgressStatus() throws Exception {
 		setupServiceInstanceService(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.IN_PROGRESS)
 				.description("working on it")
 				.build());
 
-		client.get().uri(buildLastOperationUrl())
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody()
-				.jsonPath("$.state").isEqualTo(OperationState.IN_PROGRESS.toString())
-				.jsonPath("$.description").isEqualTo("working on it");
+		mockMvc.perform(get(buildLastOperationUrl()))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.state", is(OperationState.IN_PROGRESS.toString())))
+				.andExpect(jsonPath("$.description", is("working on it")));
 
 		GetLastServiceOperationRequest actualRequest = verifyLastOperation();
 		assertHeaderValuesNotSet(actualRequest);
@@ -468,49 +413,42 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.description("all good")
 				.build());
 
-		client.get().uri(buildLastOperationUrl(PLATFORM_INSTANCE_ID))
+		mockMvc.perform(get(buildLastOperationUrl(PLATFORM_INSTANCE_ID))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
-				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody()
-				.jsonPath("$.state").isEqualTo(OperationState.SUCCEEDED.toString())
-				.jsonPath("$.description").isEqualTo("all good");
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader()))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.state", is(OperationState.SUCCEEDED.toString())))
+				.andExpect(jsonPath("$.description", is("all good")));
 
 		GetLastServiceOperationRequest actualRequest = verifyLastOperation();
 		assertHeaderValuesSet(actualRequest);
 	}
 
 	@Test
-	public void lastOperationHasSucceededStatusWithDeletionComplete() {
+	public void lastOperationHasSucceededStatusWithDeletionComplete() throws Exception {
 		setupServiceInstanceService(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.SUCCEEDED)
 				.description("all gone")
 				.deleteOperation(true)
 				.build());
 
-		client.get().uri(buildLastOperationUrl())
-				.exchange()
-				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.GONE)
-				.expectBody()
-				.jsonPath("$.state").isEqualTo(OperationState.SUCCEEDED.toString())
-				.jsonPath("$.description").isEqualTo("all gone");
+		mockMvc.perform(get(buildLastOperationUrl()))
+				.andExpect(status().isGone())
+				.andExpect(jsonPath("$.state", is(OperationState.SUCCEEDED.toString())))
+				.andExpect(jsonPath("$.description", is("all gone")));
 	}
 
 	@Test
-	public void lastOperationHasFailedStatus() {
+	public void lastOperationHasFailedStatus() throws Exception {
 		setupServiceInstanceService(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.FAILED)
 				.description("not so good")
 				.build());
 
-		client.get().uri(buildLastOperationUrl())
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody()
-				.jsonPath("$.state").isEqualTo(OperationState.FAILED.toString())
-				.jsonPath("$.description").isEqualTo("not so good");
+		mockMvc.perform(get(buildLastOperationUrl()))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.state", is(OperationState.FAILED.toString())))
+				.andExpect(jsonPath("$.description", is("not so good")));
 	}
 
 }
