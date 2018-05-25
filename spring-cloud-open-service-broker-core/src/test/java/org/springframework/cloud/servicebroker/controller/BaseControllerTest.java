@@ -208,17 +208,6 @@ public class BaseControllerTest {
 	}
 
 	@Test
-	public void unknownExceptionGivesExpectedStatus() {
-		Exception exception = new Exception("test message");
-
-		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-		assertThat(responseEntity.getBody().getError()).isNull();
-		assertThat(responseEntity.getBody().getMessage()).contains("test message");
-	}
-
-	@Test
 	public void methodArgumentNotValidExceptionGivesExpectedStatus() throws NoSuchMethodException {
 		BindingResult bindingResult = new MapBindingResult(new HashMap<>(), "objectName");
 		bindingResult.addError(new FieldError("objectName", "field1", "message"));
