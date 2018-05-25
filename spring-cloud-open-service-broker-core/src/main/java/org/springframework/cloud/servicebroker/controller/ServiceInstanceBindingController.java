@@ -167,6 +167,12 @@ public class ServiceInstanceBindingController extends BaseController {
 		return new ResponseEntity<>("{}", HttpStatus.OK);
 	}
 
+	@ExceptionHandler(UnsupportedOperationException.class)
+	public ResponseEntity<ErrorMessage> handleException(UnsupportedOperationException ex) {
+		logger.debug(ex.getMessage(), ex);
+		return getErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
 	@ExceptionHandler(ServiceInstanceBindingExistsException.class)
 	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceBindingExistsException ex) {
 		logger.debug(ex.getMessage(), ex);

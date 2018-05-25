@@ -214,12 +214,6 @@ public class BaseController {
 		return getErrorResponse(message.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ErrorMessage> handleException(Exception ex) {
-		logger.error("Unknown exception handled: ", ex);
-		return getErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
 	protected ResponseEntity<ErrorMessage> getErrorResponse(String message, HttpStatus status) {
 		return new ResponseEntity<>(new ErrorMessage(message), status);
 	}
