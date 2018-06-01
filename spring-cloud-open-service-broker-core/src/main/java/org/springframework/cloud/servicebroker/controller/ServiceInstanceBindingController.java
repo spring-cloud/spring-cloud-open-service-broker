@@ -24,29 +24,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.servicebroker.exception.ServiceBrokerBindingRequiresAppException;
+import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
-import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
-import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Provide endpoints for the service bindings API.
@@ -56,7 +52,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  */
-@RestController
+@ServiceBrokerRestController
 public class ServiceInstanceBindingController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ServiceInstanceBindingController.class);
@@ -165,17 +161,5 @@ public class ServiceInstanceBindingController extends BaseController {
 		logger.debug("Deleting a service instance binding succeeded: bindingId={}", bindingId);
 
 		return new ResponseEntity<>("{}", HttpStatus.OK);
-	}
-
-	@ExceptionHandler(ServiceInstanceBindingExistsException.class)
-	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceBindingExistsException ex) {
-		logger.debug(ex.getMessage(), ex);
-		return getErrorResponse(ex.getErrorMessage(), HttpStatus.CONFLICT);
-	}
-
-	@ExceptionHandler(ServiceBrokerBindingRequiresAppException.class)
-	public ResponseEntity<ErrorMessage> handleException(ServiceBrokerBindingRequiresAppException ex) {
-		logger.debug(ex.getMessage(), ex);
-		return getErrorResponse(ex.getErrorMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 }

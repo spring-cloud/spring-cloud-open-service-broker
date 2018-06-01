@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import org.springframework.cloud.servicebroker.controller.ServiceBrokerExceptionHandler;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
@@ -68,6 +69,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	@Before
 	public void setUp() {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(this.controller)
+				.setControllerAdvice(ServiceBrokerExceptionHandler.class)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter())
 				.build();
 	}
@@ -200,6 +202,20 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.description", endsWith("invalid parameters description")));
+	}
+
+	@Test
+	public void createServiceInstanceWithExceptionFails() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(new NullPointerException("unknown error"));
+
+		mockMvc.perform(put(buildCreateUpdateUrl())
+				.content(createRequestBody)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isInternalServerError())
+				.andExpect(jsonPath("$.description", endsWith("unknown error")));
 	}
 
 	@Test

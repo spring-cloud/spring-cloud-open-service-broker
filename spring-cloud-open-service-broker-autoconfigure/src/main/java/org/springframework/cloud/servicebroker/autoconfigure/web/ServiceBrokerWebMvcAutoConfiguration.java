@@ -21,8 +21,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
-import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerAutoConfiguration;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
+import org.springframework.cloud.servicebroker.controller.ServiceBrokerExceptionHandler;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceController;
 import org.springframework.cloud.servicebroker.service.CatalogService;
@@ -70,6 +70,11 @@ public class ServiceBrokerWebMvcAutoConfiguration {
 	@Bean
 	public ServiceInstanceBindingController serviceInstanceBindingController() {
 		return new ServiceInstanceBindingController(this.catalogService, this.serviceInstanceBindingService);
+	}
+
+	@Bean
+	public ServiceBrokerExceptionHandler serviceBrokerExceptionHandler() {
+		return new ServiceBrokerExceptionHandler();
 	}
 
 }

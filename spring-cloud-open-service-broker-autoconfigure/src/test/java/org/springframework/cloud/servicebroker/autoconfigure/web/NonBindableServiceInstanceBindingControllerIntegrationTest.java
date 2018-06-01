@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import org.springframework.cloud.servicebroker.controller.ServiceBrokerExceptionHandler;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.service.NonBindableServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
@@ -45,6 +46,7 @@ public class NonBindableServiceInstanceBindingControllerIntegrationTest extends 
 				new ServiceInstanceBindingController(catalogService, serviceInstanceBindingService);
 
 		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
+				.setControllerAdvice(ServiceBrokerExceptionHandler.class)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
 	}
 

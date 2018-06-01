@@ -23,12 +23,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
-import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
-import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
@@ -47,7 +45,6 @@ import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,7 +52,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Provide endpoints for the service instances API.
@@ -65,7 +61,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  */
-@RestController
+@ServiceBrokerRestController
 public class ServiceInstanceController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ServiceInstanceController.class);
@@ -250,17 +246,5 @@ public class ServiceInstanceController extends BaseController {
 			return HttpStatus.ACCEPTED;
 		}
 		return HttpStatus.OK;
-	}
-
-	@ExceptionHandler(ServiceInstanceExistsException.class)
-	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceExistsException ex) {
-		logger.debug(ex.getMessage(), ex);
-		return getErrorResponse(ex.getErrorMessage(), HttpStatus.CONFLICT);
-	}
-
-	@ExceptionHandler(ServiceInstanceUpdateNotSupportedException.class)
-	public ResponseEntity<ErrorMessage> handleException(ServiceInstanceUpdateNotSupportedException ex) {
-		logger.debug(ex.getMessage(), ex);
-		return getErrorResponse(ex.getErrorMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 }

@@ -23,14 +23,11 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
-import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
-import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceResponse;
-import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationRequest;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationResponse;
 import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceRequest;
@@ -289,29 +286,6 @@ public class ServiceInstanceControllerResponseCodeTest {
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(data.response);
-	}
-
-	@Test
-	public void serviceInstanceExistsExceptionGivesExpectedStatus() {
-		ServiceInstanceExistsException exception =
-				new ServiceInstanceExistsException("service-instance-id", "service-definition-id");
-
-		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
-		assertThat(responseEntity.getBody().getMessage()).contains("serviceInstanceId=service-instance-id");
-		assertThat(responseEntity.getBody().getMessage()).contains("serviceDefinitionId=service-definition-id");
-	}
-
-	@Test
-	public void serviceInstanceUpdateNotSupportedExceptionGivesExpectedStatus() {
-		ServiceInstanceUpdateNotSupportedException exception = new
-				ServiceInstanceUpdateNotSupportedException("test exception");
-
-		ResponseEntity<ErrorMessage> responseEntity = controller.handleException(exception);
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
-		assertThat(responseEntity.getBody().getMessage()).contains("test exception");
 	}
 
 	public static class AsyncResponseAndExpectedStatus<T extends AsyncServiceInstanceResponse> {
