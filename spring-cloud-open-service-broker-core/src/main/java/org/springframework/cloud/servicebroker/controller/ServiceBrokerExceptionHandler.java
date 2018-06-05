@@ -33,6 +33,8 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotE
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
@@ -50,6 +52,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @ControllerAdvice(annotations = ServiceBrokerRestController.class)
 @ResponseBody
+@Order(Ordered.LOWEST_PRECEDENCE - 10)
 public class ServiceBrokerExceptionHandler {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceBrokerExceptionHandler.class);
 
