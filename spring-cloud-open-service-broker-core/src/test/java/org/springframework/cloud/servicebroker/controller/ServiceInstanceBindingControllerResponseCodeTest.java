@@ -22,9 +22,7 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-import org.springframework.cloud.servicebroker.exception.ServiceBrokerBindingRequiresAppException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
-import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
@@ -32,7 +30,6 @@ import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
-import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
@@ -51,7 +48,6 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.cloud.servicebroker.exception.ServiceBrokerBindingRequiresAppException.APP_REQUIRED_ERROR;
 
 @RunWith(Theories.class)
 public class ServiceInstanceBindingControllerResponseCodeTest {
@@ -157,28 +153,6 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
 		assertThat(responseEntity.getBody()).isEqualTo("{}");
-	}
-
-	@Test
-	public void bindingExistsGivesExpectedStatus() {
-		ResponseEntity<ErrorMessage> responseEntity = controller
-				.handleException(new ServiceInstanceBindingExistsException("service-instance-id", "binding-id"));
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
-		assertThat(responseEntity.getBody().getError()).isNull();
-		assertThat(responseEntity.getBody().getMessage())
-				.contains("serviceInstanceId=service-instance-id")
-				.contains("bindingId=binding-id");
-	}
-
-	@Test
-	public void appRequiredExistsGivesExpectedStatus() {
-		ResponseEntity<ErrorMessage> responseEntity = controller
-				.handleException(new ServiceBrokerBindingRequiresAppException("app GUID is required"));
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
-		assertThat(responseEntity.getBody().getError()).isEqualTo(APP_REQUIRED_ERROR);
-		assertThat(responseEntity.getBody().getMessage()).contains("app GUID is required");
 	}
 
 	public static class CreateResponseAndExpectedStatus {
