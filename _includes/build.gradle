@@ -1,7 +1,0 @@
-dependencies {
-    // For use in a Spring Boot project using Spring MVC, add the following
-    compile '{@= groupId @}:spring-cloud-starter-open-service-broker-webmvc:{@= version @}'
-
-    // For use in a Spring Boot project using Spring WebFlux, add the following
-    compile '{@= groupId @}:spring-cloud-starter-open-service-broker-webflux:{@= version @}'
-}
