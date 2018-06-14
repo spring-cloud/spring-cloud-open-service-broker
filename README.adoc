@@ -1,6 +1,6 @@
 image:https://build.spring.io/plugins/servlet/wittified/build-status/CLOUD-SCCFSB["Bamboo", link="https://build.spring.io/browse/CLOUD-SCCFSB"]
 image:https://circleci.com/gh/spring-cloud/spring-cloud-open-service-broker.svg?style=svg["CircleCI", link="https://circleci.com/gh/spring-cloud/spring-cloud-open-service-broker"]
-image:https://api.codacy.com/project/badge/Grade/6fb04712acd14a898ecf504d545d1400["Codacy code quality", link="https://www.codacy.com/app/scottfrederick/spring-cloud-cloudfoundry-service-broker?utm_source=github.com&utm_medium=referral&utm_content=spring-cloud/spring-cloud-cloudfoundry-service-broker&utm_campaign=Badge_Grade"]
+image:https://api.codacy.com/project/badge/Grade/6fb04712acd14a898ecf504d545d1400["Codacy code quality", link="https://www.codacy.com/app/scottfrederick/spring-cloud-open-service-broker?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=spring-cloud/spring-cloud-open-service-broker&amp;utm_campaign=Badge_Grade"]
 image:https://codecov.io/gh/spring-cloud/spring-cloud-open-service-broker/branch/master/graph/badge.svg["Codecov", link="https://codecov.io/gh/spring-cloud/spring-cloud-open-service-broker/branch/master"]
 
 = Overview
