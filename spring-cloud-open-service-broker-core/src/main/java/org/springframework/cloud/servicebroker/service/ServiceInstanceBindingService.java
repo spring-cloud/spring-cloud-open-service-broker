@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.service;
 
+import reactor.core.publisher.Mono;
+
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerBindingRequiresAppException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
@@ -45,7 +47,9 @@ public interface ServiceInstanceBindingService {
 	 * @throws ServiceBrokerBindingRequiresAppException if the broker only supports application binding but an
 	 *                                                  app GUID is not provided in the request
 	 */
-	CreateServiceInstanceBindingResponse createServiceInstanceBinding(CreateServiceInstanceBindingRequest request);
+	default Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
+		return Mono.error(new UnsupportedOperationException("This service broker does not support creating service bindings."));
+	}
 
 	/**
 	 * Get the details of a binding to a service instance.
@@ -56,18 +60,22 @@ public interface ServiceInstanceBindingService {
 	 * @throws ServiceInstanceBindingDoesNotExistException if a binding with the given ID is not known to the broker
 	 * @throws ServiceBrokerOperationInProgressException if a an operation is in progress for the service binding
 	 */
-	default GetServiceInstanceBindingResponse getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
-		throw new UnsupportedOperationException("This service broker does not support retrieving service bindings. " +
+	default Mono<GetServiceInstanceBindingResponse> getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
+		return Mono.error(new UnsupportedOperationException("This service broker does not support retrieving service bindings. " +
 				"The service broker should set 'bindings_retrievable:false' in the service catalog, " +
-				"or provide an implementation of the fetch binding API.");
+				"or provide an implementation of the fetch binding API."));
 	}
 
 	/**
 	 * Delete a service instance binding.
 	 *
 	 * @param request containing the details of the request
+	 * @return an empty Mono
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
 	 * @throws ServiceInstanceBindingDoesNotExistException if a binding with the given ID is not known to the broker
 	 */
-	void deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request);
+	default Mono<Void> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+		return Mono.error(new UnsupportedOperationException("This service broker does not support deleting service bindings."));
+	}
+
 }

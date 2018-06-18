@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.autoconfigure.web;
+package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import org.springframework.cloud.servicebroker.autoconfigure.web.ApiVersionInterceptor;
+import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.ApiVersionInterceptor;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.autoconfigure.web;
+package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

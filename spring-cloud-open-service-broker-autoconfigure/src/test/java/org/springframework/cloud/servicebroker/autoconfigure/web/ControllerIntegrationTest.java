@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
 import org.mockito.Mock;
+import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.model.Context;
@@ -37,16 +38,25 @@ import org.springframework.util.Base64Utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
 public abstract class ControllerIntegrationTest {
+
 	protected static final String API_INFO_LOCATION = "https://api.platform.example.com";
+
 	protected static final String ORIGINATING_IDENTITY_PLATFORM = "test-platform";
+
 	protected static final String ORIGINATING_USER_KEY = "user_id";
+
 	protected static final String ORIGINATING_USER_VALUE = "user_id";
+
 	protected static final String ORIGINATING_EMAIL_KEY = "email";
+
 	protected static final String ORIGINATING_EMAIL_VALUE = "user@example.com";
+
 	protected static final String PLATFORM_INSTANCE_ID = "platform-abc";
+
 	protected static final String SERVICE_INSTANCE_ID = "service-instance-one-id";
 
 	@Mock
@@ -60,13 +70,24 @@ public abstract class ControllerIntegrationTest {
 	}
 
 	protected void setupCatalogService() {
+		when(catalogService.getServiceDefinition(isNull()))
+				.thenReturn(Mono.empty());
 		when(catalogService.getServiceDefinition(eq(serviceDefinition.getId())))
-				.thenReturn(serviceDefinition);
+				.thenReturn(Mono.just(serviceDefinition));
 	}
 
 	protected void setupCatalogService(ServiceDefinition serviceDefinition) {
+		Mono<ServiceDefinition> serviceDefinitionMono;
+		if (serviceDefinition == null) {
+			serviceDefinitionMono = Mono.empty();
+		}
+		else {
+			serviceDefinitionMono = Mono.just(serviceDefinition);
+		}
+		when(catalogService.getServiceDefinition(isNull()))
+				.thenReturn(Mono.empty());
 		when(catalogService.getServiceDefinition(eq(this.serviceDefinition.getId())))
-				.thenReturn(serviceDefinition);
+				.thenReturn(serviceDefinitionMono);
 	}
 
 	protected String buildOriginatingIdentityHeader() throws JsonProcessingException {

@@ -18,8 +18,8 @@ package org.springframework.cloud.servicebroker.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
@@ -39,14 +39,14 @@ public class CatalogController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(CatalogController.class);
 
-	@Autowired
 	public CatalogController(CatalogService service) {
 		super(service);
 	}
 
 	@RequestMapping(value = {"/v2/catalog", "{platformInstanceId}/v2/catalog"}, method = RequestMethod.GET)
-	public Catalog getCatalog() {
-		logger.debug("Retrieving catalog");
-		return catalogService.getCatalog();
+	public Mono<Catalog> getCatalog() {
+		return catalogService.getCatalog()
+				.doOnRequest(v -> logger.debug("Retrieving catalog"));
 	}
+
 }

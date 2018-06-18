@@ -23,8 +23,9 @@ import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstan
 import org.springframework.web.util.UriComponentsBuilder;
 
 public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIntegrationTest {
+
 	public static final String SERVICE_INSTANCE_BINDING_ID = "service-instance-binding-id";
-	
+
 	protected static final String SERVICE_INSTANCES_ROOT_PATH = "/v2/service_instances/";
 
 	protected String createRequestBody;
@@ -64,4 +65,5 @@ public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIn
 				.path(SERVICE_INSTANCES_ROOT_PATH)
 				.pathSegment(SERVICE_INSTANCE_ID, "service_bindings", SERVICE_INSTANCE_BINDING_ID);
 	}
+
 }

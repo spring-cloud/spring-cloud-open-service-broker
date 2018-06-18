@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.autoconfigure.web;
+package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.controller.CatalogController;
 import org.springframework.cloud.servicebroker.controller.ServiceBrokerExceptionHandler;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
+import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -32,6 +35,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,6 +51,13 @@ public class ApiVersionInterceptorIntegrationTest {
 	@Mock
 	@SuppressWarnings("unused")
 	private CatalogService catalogService;
+
+	@Before
+	public void setUp() {
+		Catalog catalog = Catalog.builder().build();
+		given(catalogService.getCatalog())
+				.willReturn(Mono.just(catalog));
+	}
 
 	@Test
 	public void noHeaderSent() throws Exception {
