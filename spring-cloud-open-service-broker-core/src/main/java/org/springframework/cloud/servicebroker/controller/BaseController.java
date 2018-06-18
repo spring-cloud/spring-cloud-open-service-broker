@@ -21,6 +21,9 @@ import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidOriginatingIdentityException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
@@ -42,35 +45,37 @@ import org.springframework.util.Base64Utils;
  * @author Scott Frederick
  */
 public class BaseController {
+
+	private static final Logger logger = LoggerFactory.getLogger(BaseController.class);
+
 	protected CatalogService catalogService;
 
 	public BaseController(CatalogService catalogService) {
 		this.catalogService = catalogService;
 	}
 
-	protected void setCommonRequestFields(ServiceBrokerRequest request, String platformInstanceId,
-										  String apiInfoLocation, String originatingIdentityString) {
+	protected Mono<ServiceBrokerRequest> setCommonRequestFields(ServiceBrokerRequest request, String platformInstanceId,
+																String apiInfoLocation, String originatingIdentityString) {
 		request.setPlatformInstanceId(platformInstanceId);
 		request.setApiInfoLocation(apiInfoLocation);
 		request.setOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
+		return Mono.just(request);
 	}
 
-	protected void setCommonRequestFields(AsyncServiceInstanceRequest request, String platformInstanceId,
-										  String apiInfoLocation, String originatingIdentityString,
-										  boolean asyncAccepted) {
-		setCommonRequestFields(request, platformInstanceId, apiInfoLocation, originatingIdentityString);
+	protected Mono<AsyncServiceInstanceRequest> setCommonRequestFields(AsyncServiceInstanceRequest request, String platformInstanceId,
+																	   String apiInfoLocation, String originatingIdentityString,
+																	   boolean asyncAccepted) {
 		request.setAsyncAccepted(asyncAccepted);
+		return setCommonRequestFields(request, platformInstanceId, apiInfoLocation, originatingIdentityString)
+				.cast(AsyncServiceInstanceRequest.class);
 	}
 
-	protected ServiceDefinition getRequiredServiceDefinition(String serviceDefinitionId) {
-		ServiceDefinition serviceDefinition = getServiceDefinition(serviceDefinitionId);
-		if (serviceDefinition == null) {
-			throw new ServiceDefinitionDoesNotExistException(serviceDefinitionId);
-		}
-		return serviceDefinition;
+	protected Mono<ServiceDefinition> getRequiredServiceDefinition(String serviceDefinitionId) {
+		return getServiceDefinition(serviceDefinitionId)
+				.switchIfEmpty(Mono.error(new ServiceDefinitionDoesNotExistException(serviceDefinitionId)));
 	}
 
-	protected ServiceDefinition getServiceDefinition(String serviceDefinitionId) {
+	protected Mono<ServiceDefinition> getServiceDefinition(String serviceDefinitionId) {
 		return catalogService.getServiceDefinition(serviceDefinitionId);
 	}
 
@@ -124,4 +129,5 @@ public class BaseController {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
 		return objectMapper.readValue(value, new TypeReference<Map<String,Object>>() {});
 	}
+
 }

@@ -42,6 +42,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.MapBindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.support.WebExchangeBindException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException.ASYNC_REQUIRED_ERROR;
@@ -49,6 +50,7 @@ import static org.springframework.cloud.servicebroker.exception.ServiceBrokerBin
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerConcurrencyException.CONCURRENCY_ERROR;
 
 public class ServiceBrokerExceptionHandlerTest {
+
 	private ServiceBrokerExceptionHandler exceptionHandler;
 
 	@Before
@@ -192,9 +194,28 @@ public class ServiceBrokerExceptionHandlerTest {
 
 		Method method = this.getClass().getMethod("setUp", (Class<?>[]) null);
 		MethodParameter parameter = new MethodParameter(method, -1);
-		
+
 		MethodArgumentNotValidException exception =
 				new MethodArgumentNotValidException(parameter, bindingResult);
+
+		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
+
+		assertThat(errorMessage.getError()).isNull();
+		assertThat(errorMessage.getMessage()).contains("field1");
+		assertThat(errorMessage.getMessage()).contains("field2");
+	}
+
+	@Test
+	public void webExchangeBindExceptionException() throws NoSuchMethodException {
+		BindingResult bindingResult = new MapBindingResult(new HashMap<>(), "objectName");
+		bindingResult.addError(new FieldError("objectName", "field1", "message"));
+		bindingResult.addError(new FieldError("objectName", "field2", "message"));
+
+		Method method = this.getClass().getMethod("setUp", (Class<?>[]) null);
+		MethodParameter parameter = new MethodParameter(method, -1);
+
+		WebExchangeBindException exception =
+				new WebExchangeBindException(parameter, bindingResult);
 
 		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
 
@@ -243,4 +264,5 @@ public class ServiceBrokerExceptionHandlerTest {
 		assertThat(errorMessage.getError()).isEqualTo(APP_REQUIRED_ERROR);
 		assertThat(errorMessage.getMessage()).contains("app GUID is required");
 	}
+
 }

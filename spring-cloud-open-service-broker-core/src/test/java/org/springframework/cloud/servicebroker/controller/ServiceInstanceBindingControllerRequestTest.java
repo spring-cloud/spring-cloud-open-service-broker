@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,19 +17,21 @@
 package org.springframework.cloud.servicebroker.controller;
 
 import org.junit.Test;
+import reactor.core.publisher.Mono;
+
+import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.binding.BindResource;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest.CreateServiceInstanceBindingRequestBuilder;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
-import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ServiceInstanceBindingControllerRequestTest extends ControllerRequestTest{
+public class ServiceInstanceBindingControllerRequestTest extends ControllerRequestTest {
 
 	@Test
 	public void createServiceBindingParametersAreMappedToRequest() {
@@ -108,20 +110,22 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 		}
 
 		@Override
-		public CreateServiceInstanceBindingResponse createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
+		public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
-			return null;
+			return Mono.empty();
 		}
 
 		@Override
-		public GetServiceInstanceBindingResponse getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
+		public Mono<GetServiceInstanceBindingResponse> getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
-			return null;
+			return Mono.empty();
 		}
 
 		@Override
-		public void deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+		public Mono<Void> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
+			return Mono.empty();
 		}
 	}
+
 }

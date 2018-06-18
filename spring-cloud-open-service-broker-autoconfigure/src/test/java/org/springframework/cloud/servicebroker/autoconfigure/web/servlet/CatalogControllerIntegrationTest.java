@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.autoconfigure.web;
+package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
 import java.util.List;
 import java.util.Map;
@@ -25,30 +25,34 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import reactor.core.publisher.Mono;
 
+import org.springframework.cloud.servicebroker.autoconfigure.web.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.Schemas;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-import org.springframework.cloud.servicebroker.autoconfigure.web.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_ROUTE_FORWARDING;
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_SYSLOG_DRAIN;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -61,41 +65,44 @@ public class CatalogControllerIntegrationTest {
 
 	@Mock
 	private CatalogService catalogService;
+
 	private ServiceDefinition serviceDefinition;
 
 	@Before
 	public void setUp() {
-		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
-				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
-
-		serviceDefinition = ServiceFixture.getSimpleService();
-
+		this.mockMvc = MockMvcBuilders.standaloneSetup(this.controller)
+				.setMessageConverters(new MappingJackson2HttpMessageConverter())
+				.build();
+		this.serviceDefinition = ServiceFixture.getSimpleService();
 		Catalog catalog = Catalog.builder()
-				.serviceDefinitions(serviceDefinition)
+				.serviceDefinitions(this.serviceDefinition)
 				.build();
 
-		when(catalogService.getCatalog()).thenReturn(catalog);
+		given(this.catalogService.getCatalog())
+				.willReturn(Mono.just(catalog));
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
 	public void catalogIsRetrieved() throws Exception {
-		ResultActions result = this.mockMvc.perform(get("/v2/catalog")
-				.accept(MediaType.APPLICATION_JSON));
-
-		assertResult(result);
+		MvcResult mvcResult = this.mockMvc.perform(get("/v2/catalog")
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+		assertResult(mvcResult);
 	}
 
 	@Test
 	public void catalogIsRetrievedWithPlatformInstanceId() throws Exception {
-		ResultActions result = this.mockMvc.perform(get("/123/v2/catalog")
-				.accept(MediaType.APPLICATION_JSON));
-
-		assertResult(result);
+		MvcResult mvcResult = this.mockMvc.perform(get("/123/v2/catalog")
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+		assertResult(mvcResult);
 	}
 
 	@SuppressWarnings("unchecked")
-	private void assertResult(ResultActions result) throws Exception {
+	private void assertResult(MvcResult mvcResult) throws Exception {
 		List<Plan> plans = serviceDefinition.getPlans();
 		Schemas schemas = plans.get(1).getSchemas();
 
@@ -103,7 +110,9 @@ public class CatalogControllerIntegrationTest {
 		Map<String, Object> updateServiceInstanceSchema = schemas.getServiceInstanceSchema().getUpdateMethodSchema().getParameters();
 		Map<String, Object> createServiceBindingSchema = schemas.getServiceBindingSchema().getCreateMethodSchema().getParameters();
 
-		result
+		ResultActions resultActions = this.mockMvc.perform(asyncDispatch(mvcResult));
+
+		resultActions
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -128,4 +137,5 @@ public class CatalogControllerIntegrationTest {
 				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_instance.update.parameters", contains(updateServiceInstanceSchema)))
 				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_binding.create.parameters", contains(createServiceBindingSchema)));
 	}
+
 }

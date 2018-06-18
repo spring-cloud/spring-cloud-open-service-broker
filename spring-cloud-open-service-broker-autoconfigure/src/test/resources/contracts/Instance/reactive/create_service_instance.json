@@ -1,0 +1,14 @@
+{
+  "platform_instance_id": null,
+  "api_info_location": null,
+  "originating_identity": null,
+  "async_accepted": false,
+  "parameters": {},
+  "context": null,
+  "plan_id": "standard",
+  "organization_guid": null,
+  "space_guid": null,
+  "service_instance_id": null,
+  "service_definition": null,
+  "service_id": "service-one-id"
+}

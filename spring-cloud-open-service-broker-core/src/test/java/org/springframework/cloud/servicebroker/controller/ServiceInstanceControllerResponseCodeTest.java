@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,13 +16,21 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import reactor.core.publisher.Mono;
+
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
@@ -33,18 +41,12 @@ import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOper
 import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
-import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -203,13 +205,20 @@ public class ServiceInstanceControllerResponseCodeTest {
 		controller = new ServiceInstanceController(catalogService, serviceInstanceService);
 
 		when(catalogService.getServiceDefinition(anyString()))
-				.thenReturn(ServiceDefinition.builder().build());
+				.thenReturn(Mono.just(ServiceDefinition.builder().build()));
 	}
 
 	@Theory
 	public void createServiceInstanceWithResponseGivesExpectedStatus(CreateResponseAndExpectedStatus data) {
+		Mono<CreateServiceInstanceResponse> responseMono;
+		if (data.response == null) {
+			responseMono = Mono.empty();
+		}
+		else {
+			responseMono = Mono.just(data.response);
+		}
 		when(serviceInstanceService.createServiceInstance(any(CreateServiceInstanceRequest.class)))
-						.thenReturn(data.response);
+				.thenReturn(responseMono);
 
 		CreateServiceInstanceRequest createRequest = CreateServiceInstanceRequest.builder()
 				.serviceDefinitionId("service-definition-id")
@@ -217,7 +226,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 
 		ResponseEntity<CreateServiceInstanceResponse> responseEntity = controller
 				.createServiceInstance(pathVariables, null, false, null, null,
-						createRequest);
+						createRequest)
+				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(data.response);
@@ -225,11 +235,19 @@ public class ServiceInstanceControllerResponseCodeTest {
 
 	@Theory
 	public void getServiceInstanceWithResponseGivesExpectedStatus(GetResponseAndExpectedStatus data) {
+		Mono<GetServiceInstanceResponse> responseMono;
+		if (data.response == null) {
+			responseMono = Mono.empty();
+		}
+		else {
+			responseMono = Mono.just(data.response);
+		}
 		when(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
-						.thenReturn(data.response);
+				.thenReturn(responseMono);
 
 		ResponseEntity<GetServiceInstanceResponse> responseEntity = controller
-				.getServiceInstance(pathVariables, null, null, null);
+				.getServiceInstance(pathVariables, null, null, null)
+				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(data.response);
@@ -237,11 +255,20 @@ public class ServiceInstanceControllerResponseCodeTest {
 
 	@Theory
 	public void deleteServiceInstanceWithResponseGivesExpectedStatus(DeleteResponseAndExpectedStatus data) {
+		Mono<DeleteServiceInstanceResponse> responseMono;
+		if (data.response == null) {
+			responseMono = Mono.empty();
+		}
+		else {
+			responseMono = Mono.just(data.response);
+		}
 		when(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
-				.thenReturn(data.response);
+				.thenReturn(responseMono);
 
 		ResponseEntity<DeleteServiceInstanceResponse> responseEntity = controller
-				.deleteServiceInstance(pathVariables, null, "service-definition-id", null, false, null, null);
+				.deleteServiceInstance(pathVariables, null, "service-definition-id", null,
+						false, null, null)
+				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(data.response);
@@ -250,10 +277,12 @@ public class ServiceInstanceControllerResponseCodeTest {
 	@Test
 	public void deleteServiceInstanceWithMissingInstanceGivesExpectedStatus() {
 		when(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
-				.thenThrow(new ServiceInstanceDoesNotExistException("instance does not exist"));
+				.thenReturn(Mono.error(new ServiceInstanceDoesNotExistException("instance does not exist")));
 
 		ResponseEntity<DeleteServiceInstanceResponse> responseEntity = controller
-				.deleteServiceInstance(pathVariables, null, "service-definition-id", null, false, null, null);
+				.deleteServiceInstance(pathVariables, null, "service-definition-id", null,
+						false, null, null)
+				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
 		assertThat(responseEntity.getBody()).isEqualTo(DeleteServiceInstanceResponse.builder().build());
@@ -261,8 +290,15 @@ public class ServiceInstanceControllerResponseCodeTest {
 
 	@Theory
 	public void updateServiceInstanceWithResponseGivesExpectedStatus(UpdateResponseAndExpectedStatus data) {
+		Mono<UpdateServiceInstanceResponse> responseMono;
+		if (data.response == null) {
+			responseMono = Mono.empty();
+		}
+		else {
+			responseMono = Mono.just(data.response);
+		}
 		when(serviceInstanceService.updateServiceInstance(any(UpdateServiceInstanceRequest.class)))
-				.thenReturn(data.response);
+				.thenReturn(responseMono);
 
 		UpdateServiceInstanceRequest updateRequest = UpdateServiceInstanceRequest.builder()
 				.serviceDefinitionId("service-definition-id")
@@ -270,7 +306,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 
 		ResponseEntity<UpdateServiceInstanceResponse> responseEntity = controller
 				.updateServiceInstance(pathVariables, null, false, null, null,
-						updateRequest);
+						updateRequest)
+				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(data.response);
@@ -279,10 +316,11 @@ public class ServiceInstanceControllerResponseCodeTest {
 	@Theory
 	public void getLastOperationWithResponseGivesExpectedStatus(GetLastOperationResponseAndExpectedStatus data) {
 		when(serviceInstanceService.getLastOperation(any(GetLastServiceOperationRequest.class)))
-				.thenReturn(data.response);
+				.thenReturn(Mono.just(data.response));
 
 		ResponseEntity<GetLastServiceOperationResponse> responseEntity = controller
-				.getServiceInstanceLastOperation(pathVariables, null, null, null, null, null, null);
+				.getServiceInstanceLastOperation(pathVariables, null, null, null, null,
+						null, null).block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(data.response);
@@ -302,7 +340,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 			String responseValue = response == null ? "null" :
 					"{" +
 							"async=" + response.isAsync() +
-					"}";
+							"}";
 
 			return "response=" + responseValue +
 					", expectedStatus=" + expectedStatus;
@@ -321,7 +359,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 					"{" +
 							"async=" + response.isAsync() +
 							", instanceExisted=" + response.isInstanceExisted() +
-					"}";
+							"}";
 
 			return "response=" + responseValue +
 					", expectedStatus=" + expectedStatus;
@@ -371,10 +409,11 @@ public class ServiceInstanceControllerResponseCodeTest {
 							"state=" + response.getState() +
 							", description=" + response.getDescription() +
 							", deleteOperation=" + response.isDeleteOperation() +
-					"}";
+							"}";
 
 			return "response=" + responseValue +
 					", expectedStatus=" + expectedStatus;
 		}
 	}
+
 }

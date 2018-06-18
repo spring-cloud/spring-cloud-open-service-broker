@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.autoconfigure.web;
+package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
+import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerAutoConfiguration;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
 import org.springframework.cloud.servicebroker.controller.ServiceBrokerExceptionHandler;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
@@ -32,16 +33,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for the service broker REST API endpoints.
+ * {@link EnableAutoConfiguration Auto-configuration} for the service broker REST API
+ * endpoints.
  *
- * @author Benjamin Ihrig
  * @author Roy Clarkson
  */
 @Configuration
-@ConditionalOnBean({CatalogService.class, ServiceInstanceService.class, ServiceInstanceBindingService.class})
-@AutoConfigureAfter({WebMvcAutoConfiguration.class, ServiceBrokerAutoConfiguration.class})
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-public class ServiceBrokerWebMvcAutoConfiguration {
+@ConditionalOnBean({ CatalogService.class, ServiceInstanceService.class,
+		ServiceInstanceBindingService.class })
+@AutoConfigureAfter({ WebFluxAutoConfiguration.class,
+		ServiceBrokerAutoConfiguration.class })
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+public class ServiceBrokerWebFluxAutoConfiguration {
 
 	private final CatalogService catalogService;
 
@@ -49,8 +52,8 @@ public class ServiceBrokerWebMvcAutoConfiguration {
 
 	private final ServiceInstanceBindingService serviceInstanceBindingService;
 
-	protected ServiceBrokerWebMvcAutoConfiguration(
-			CatalogService catalogService, ServiceInstanceService serviceInstanceService,
+	protected ServiceBrokerWebFluxAutoConfiguration(CatalogService catalogService,
+			ServiceInstanceService serviceInstanceService,
 			ServiceInstanceBindingService serviceInstanceBindingService) {
 		this.catalogService = catalogService;
 		this.serviceInstanceService = serviceInstanceService;
@@ -64,12 +67,14 @@ public class ServiceBrokerWebMvcAutoConfiguration {
 
 	@Bean
 	public ServiceInstanceController serviceInstanceController() {
-		return new ServiceInstanceController(this.catalogService, this.serviceInstanceService);
+		return new ServiceInstanceController(this.catalogService,
+				this.serviceInstanceService);
 	}
 
 	@Bean
 	public ServiceInstanceBindingController serviceInstanceBindingController() {
-		return new ServiceInstanceBindingController(this.catalogService, this.serviceInstanceBindingService);
+		return new ServiceInstanceBindingController(this.catalogService,
+				this.serviceInstanceBindingService);
 	}
 
 	@Bean

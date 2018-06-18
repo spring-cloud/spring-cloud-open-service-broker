@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.service;
 
+import reactor.core.publisher.Mono;
+
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
@@ -26,6 +28,7 @@ import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstan
  * @author Scott Frederick
  */
 public class NonBindableServiceInstanceBindingService implements ServiceInstanceBindingService {
+
 	/**
 	 * Create a new binding to a service instance.
 	 *
@@ -33,8 +36,8 @@ public class NonBindableServiceInstanceBindingService implements ServiceInstance
 	 * @return this implementation will always throw a {@literal UnsupportedOperationException}
 	 */
 	@Override
-	public CreateServiceInstanceBindingResponse createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
-		throw nonBindableException();
+	public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
+		return Mono.error(nonBindableException());
 	}
 
 	/**
@@ -43,8 +46,8 @@ public class NonBindableServiceInstanceBindingService implements ServiceInstance
 	 * @param request containing the details of the request
 	 */
 	@Override
-	public void deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
-		throw nonBindableException();
+	public Mono<Void> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+		return Mono.error(nonBindableException());
 	}
 
 	private UnsupportedOperationException nonBindableException() {
@@ -52,4 +55,5 @@ public class NonBindableServiceInstanceBindingService implements ServiceInstance
 				"The service broker should set 'bindable: false' in the service catalog for all service offerings, " +
 				"or provide an implementation of the binding API.");
 	}
+
 }

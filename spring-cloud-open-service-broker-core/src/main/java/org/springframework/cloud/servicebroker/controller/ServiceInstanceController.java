@@ -21,12 +21,12 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
-import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
@@ -78,28 +78,31 @@ public class ServiceInstanceController extends BaseController {
 			"/{platformInstanceId}/v2/service_instances/{instanceId}",
 			"/v2/service_instances/{instanceId}"
 	})
-	public ResponseEntity<CreateServiceInstanceResponse> createServiceInstance(
+	public Mono<ResponseEntity<CreateServiceInstanceResponse>> createServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
 			@RequestParam(value = AsyncServiceInstanceRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody CreateServiceInstanceRequest request) {
-		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(request.getServiceDefinitionId());
 
-		request.setServiceInstanceId(serviceInstanceId);
-		request.setServiceDefinition(serviceDefinition);
-		setCommonRequestFields(request, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
-				originatingIdentityString, acceptsIncomplete);
-
-		logger.debug("Creating a service instance: request={}", request);
-
-		CreateServiceInstanceResponse response = service.createServiceInstance(request);
-
-		logger.debug("Creating a service instance succeeded: serviceInstanceId={}, response={}",
-				serviceInstanceId, response);
-
-		return new ResponseEntity<>(response, getCreateResponseCode(response));
+		// TODO: potential threading issues?
+		return getRequiredServiceDefinition(request.getServiceDefinitionId())
+				.map(serviceDefinition -> {
+					request.setServiceInstanceId(serviceInstanceId);
+					request.setServiceDefinition(serviceDefinition);
+					return request;
+				})
+				.flatMap(req -> setCommonRequestFields(req, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
+						originatingIdentityString, acceptsIncomplete))
+				.cast(CreateServiceInstanceRequest.class)
+				.flatMap(req -> service.createServiceInstance(req)
+						.doOnRequest(v -> logger.debug("Creating a service instance: request={}", req))
+						.doOnSuccess(response ->
+								logger.debug("Creating a service instance succeeded: serviceInstanceId={}, response={}",
+										serviceInstanceId, response)))
+				.map(response -> new ResponseEntity<>(response, getCreateResponseCode(response)))
+				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.CREATED)));
 	}
 
 	private HttpStatus getCreateResponseCode(CreateServiceInstanceResponse response) {
@@ -117,33 +120,32 @@ public class ServiceInstanceController extends BaseController {
 			"/{platformInstanceId}/v2/service_instances/{instanceId}",
 			"/v2/service_instances/{instanceId}"
 	})
-	public ResponseEntity<GetServiceInstanceResponse> getServiceInstance(
+	public Mono<ResponseEntity<GetServiceInstanceResponse>> getServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-		GetServiceInstanceRequest request = GetServiceInstanceRequest.builder()
+
+		// TODO: potential threading issues?
+		return Mono.just(GetServiceInstanceRequest.builder()
 				.serviceInstanceId(serviceInstanceId)
 				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 				.apiInfoLocation(apiInfoLocation)
 				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
-				.build();
-
-		logger.debug("Getting service instance: request={}", request);
-
-		GetServiceInstanceResponse response = service.getServiceInstance(request);
-
-		logger.debug("Getting service instance succeeded: serviceInstanceId={}, response={}",
-				serviceInstanceId, response);
-
-		return new ResponseEntity<>(response, HttpStatus.OK);
+				.build())
+				.flatMap(request -> service.getServiceInstance(request)
+						.doOnRequest(v -> logger.debug("Getting service instance: request={}", request))
+						.doOnSuccess(response -> logger.debug("Getting service instance succeeded: serviceInstanceId={}, response={}",
+								serviceInstanceId, response)))
+				.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
+				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)));
 	}
 
 	@GetMapping(value = {
 			"/{platformInstanceId}/v2/service_instances/{instanceId}/last_operation",
 			"/v2/service_instances/{instanceId}/last_operation"
 	})
-	public ResponseEntity<GetLastServiceOperationResponse> getServiceInstanceLastOperation(
+	public Mono<ResponseEntity<GetLastServiceOperationResponse>> getServiceInstanceLastOperation(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
 			@RequestParam(value = ServiceBrokerRequest.SERVICE_ID_PARAMETER, required = false) String serviceDefinitionId,
@@ -151,7 +153,9 @@ public class ServiceInstanceController extends BaseController {
 			@RequestParam(value = "operation", required = false) String operation,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-		GetLastServiceOperationRequest request = GetLastServiceOperationRequest.builder()
+
+		// TODO: potential threading issues?
+		return Mono.just(GetLastServiceOperationRequest.builder()
 				.serviceDefinitionId(serviceDefinitionId)
 				.serviceInstanceId(serviceInstanceId)
 				.planId(planId)
@@ -159,25 +163,23 @@ public class ServiceInstanceController extends BaseController {
 				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 				.apiInfoLocation(apiInfoLocation)
 				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
-				.build();
-
-		logger.debug("Getting service instance last operation: request={}", request);
-
-		GetLastServiceOperationResponse response = service.getLastOperation(request);
-
-		logger.debug("Getting service instance last operation succeeded: serviceInstanceId={}, response={}",
-				serviceInstanceId, response);
-
-		boolean isSuccessfulDelete = response.getState().equals(OperationState.SUCCEEDED) && response.isDeleteOperation();
-
-		return new ResponseEntity<>(response, isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK);
+				.build())
+				.flatMap(request -> service.getLastOperation(request)
+						.doOnRequest(v -> logger.debug("Getting service instance last operation: request={}", request))
+						.doOnSuccess(response -> logger.debug("Getting service instance last operation succeeded: serviceInstanceId={}, response={}",
+								serviceInstanceId, response))
+				)
+				.map(response -> {
+					boolean isSuccessfulDelete = response.getState().equals(OperationState.SUCCEEDED) && response.isDeleteOperation();
+					return new ResponseEntity<>(response, isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK);
+				});
 	}
 
 	@DeleteMapping(value = {
 			"/{platformInstanceId}/v2/service_instances/{instanceId}",
 			"/v2/service_instances/{instanceId}"
 	})
-	public ResponseEntity<DeleteServiceInstanceResponse> deleteServiceInstance(
+	public Mono<ResponseEntity<DeleteServiceInstanceResponse>> deleteServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
 			@RequestParam(ServiceBrokerRequest.SERVICE_ID_PARAMETER) String serviceDefinitionId,
@@ -185,60 +187,64 @@ public class ServiceInstanceController extends BaseController {
 			@RequestParam(value = AsyncServiceInstanceRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(serviceDefinitionId);
 
-		DeleteServiceInstanceRequest request = DeleteServiceInstanceRequest.builder()
-				.serviceInstanceId(serviceInstanceId)
-				.serviceDefinitionId(serviceDefinitionId)
-				.planId(planId)
-				.serviceDefinition(serviceDefinition)
-				.asyncAccepted(acceptsIncomplete)
-				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
-				.apiInfoLocation(apiInfoLocation)
-				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
-				.build();
-
-		logger.debug("Deleting a service instance: request={}", request);
-
-		try {
-			DeleteServiceInstanceResponse response = service.deleteServiceInstance(request);
-
-			logger.debug("Deleting a service instance succeeded: serviceInstanceId={}, response={}",
-					serviceInstanceId, response);
-
-			return new ResponseEntity<>(response, getAsyncResponseCode(response));
-		} catch (ServiceInstanceDoesNotExistException e) {
-			logger.debug("Service instance does not exist: ", e);
-			return new ResponseEntity<>(DeleteServiceInstanceResponse.builder().build(), HttpStatus.GONE);
-		}
+		// TODO: potential threading issues?
+		return getRequiredServiceDefinition(serviceDefinitionId)
+				.map(serviceDefinition -> DeleteServiceInstanceRequest.builder()
+						.serviceInstanceId(serviceInstanceId)
+						.serviceDefinitionId(serviceDefinitionId)
+						.planId(planId)
+						.serviceDefinition(serviceDefinition)
+						.asyncAccepted(acceptsIncomplete)
+						.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
+						.apiInfoLocation(apiInfoLocation)
+						.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+						.build())
+				.flatMap(request -> service.deleteServiceInstance(request)
+						.doOnRequest(v -> logger.debug("Deleting a service instance: request={}", request))
+						.doOnSuccess(response -> logger.debug("Deleting a service instance succeeded: serviceInstanceId={}, response={}",
+								serviceInstanceId, response))
+						.doOnError(e -> logger.debug("Service instance does not exist: ", e)))
+				.map(response -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
+				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
+				.onErrorResume(e -> {
+					if (e instanceof ServiceInstanceDoesNotExistException) {
+						return Mono.just(new ResponseEntity<>(DeleteServiceInstanceResponse.builder().build(), HttpStatus.GONE));
+					}
+					else {
+						return Mono.error(e);
+					}
+				});
 	}
 
 	@PatchMapping(value = {
 			"/{platformInstanceId}/v2/service_instances/{instanceId}",
 			"/v2/service_instances/{instanceId}"
 	})
-	public ResponseEntity<UpdateServiceInstanceResponse> updateServiceInstance(
+	public Mono<ResponseEntity<UpdateServiceInstanceResponse>> updateServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
 			@RequestParam(value = AsyncServiceInstanceRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody UpdateServiceInstanceRequest request) {
-		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(request.getServiceDefinitionId());
 
-		request.setServiceInstanceId(serviceInstanceId);
-		request.setServiceDefinition(serviceDefinition);
-		setCommonRequestFields(request, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
-				originatingIdentityString, acceptsIncomplete);
-
-		logger.debug("Updating a service instance: request={}", request);
-
-		UpdateServiceInstanceResponse response = service.updateServiceInstance(request);
-
-		logger.debug("Updating a service instance succeeded: serviceInstanceId={}, response={}",
-				serviceInstanceId, response);
-
-		return new ResponseEntity<>(response, getAsyncResponseCode(response));
+		// TODO: potential threading issues?
+		return getRequiredServiceDefinition(request.getServiceDefinitionId())
+				.flatMap(serviceDefinition -> {
+					request.setServiceInstanceId(serviceInstanceId);
+					request.setServiceDefinition(serviceDefinition);
+					return Mono.just(request);
+				})
+				.flatMap(req -> setCommonRequestFields(req, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
+						originatingIdentityString, acceptsIncomplete))
+				.cast(UpdateServiceInstanceRequest.class)
+				.flatMap(req -> service.updateServiceInstance(req)
+						.doOnRequest(v -> logger.debug("Updating a service instance: request={}", request))
+						.doOnSuccess(response -> logger.debug("Updating a service instance succeeded: serviceInstanceId={}, response={}",
+								serviceInstanceId, response)))
+				.map(response -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
+				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)));
 	}
 
 	private HttpStatus getAsyncResponseCode(AsyncServiceInstanceResponse response) {
@@ -247,4 +253,5 @@ public class ServiceInstanceController extends BaseController {
 		}
 		return HttpStatus.OK;
 	}
+
 }
