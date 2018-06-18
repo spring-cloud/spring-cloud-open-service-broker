@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.autoconfigure.web;
+package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceInstanceBindingIntegrationTest;
 import org.springframework.cloud.servicebroker.controller.ServiceBrokerExceptionHandler;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.service.NonBindableServiceInstanceBindingService;
@@ -28,10 +29,13 @@ import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingSer
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -54,18 +58,23 @@ public class NonBindableServiceInstanceBindingControllerIntegrationTest extends 
 	public void createBindingToAppFails() throws Exception {
 		setupCatalogService();
 
-		mockMvc.perform(put(buildCreateUrl())
+		MvcResult mvcResult = mockMvc.perform(put(buildCreateUrl())
 				.content(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
 	public void deleteBindingFails() throws Exception {
-		mockMvc.perform(delete(buildDeleteUrl())
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isInternalServerError());
+		mockMvc.perform(delete(buildDeleteUrl()))
+				.andExpect(request().asyncNotStarted())
+				.andExpect(status().isInternalServerError())
+				.andReturn();
 	}
 
 }

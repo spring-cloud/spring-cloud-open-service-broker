@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,20 +16,23 @@
 
 package org.springframework.cloud.servicebroker.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.springframework.cloud.servicebroker.model.catalog.Catalog;
-import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.springframework.cloud.servicebroker.model.catalog.Catalog;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class BeanCatalogServiceTest {
+
+	private static final String SVC_DEF_ID = "svc-def-id";
 
 	private BeanCatalogService service;
 
 	private Catalog catalog;
+
 	private ServiceDefinition serviceDefinition;
-	private static final String SVC_DEF_ID = "svc-def-id";
 
 	@Before
 	public void setUp() {
@@ -49,17 +52,17 @@ public class BeanCatalogServiceTest {
 
 	@Test
 	public void catalogIsReturnedSuccessfully() {
-		assertThat(service.getCatalog()).isEqualTo(catalog);
+		assertThat(service.getCatalog().block()).isEqualTo(catalog);
 	}
 
 	@Test
 	public void serviceDefinitionIsFound() {
-		assertThat(service.getServiceDefinition(SVC_DEF_ID)).isEqualTo(serviceDefinition);
+		assertThat(service.getServiceDefinition(SVC_DEF_ID).block()).isEqualTo(serviceDefinition);
 	}
 
 	@Test
 	public void serviceDefinitionIsNotFound() {
-		assertThat(service.getServiceDefinition("NOT_THERE")).isNull();
+		assertThat(service.getServiceDefinition("NOT_THERE").block()).isNull();
 	}
 
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,8 +17,10 @@
 package org.springframework.cloud.servicebroker.controller;
 
 import org.junit.Test;
+import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
+import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest.CreateServiceInstanceRequestBuilder;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
@@ -29,7 +31,6 @@ import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOper
 import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
-import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest.PreviousValues;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest.UpdateServiceInstanceRequestBuilder;
@@ -56,7 +57,8 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
 		controller.createServiceInstance(pathVariables, "service-instance-id", true,
-				"api-info-location", encodeOriginatingIdentity(identityContext), parsedRequest);
+				"api-info-location", encodeOriginatingIdentity(identityContext), parsedRequest)
+				.block();
 	}
 
 	private CreateServiceInstanceRequestBuilder buildCreateRequest() {
@@ -77,7 +79,8 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 		ServiceInstanceController controller = createControllerUnderTest();
 
 		controller.createServiceInstance(pathVariables, null, false,
-				null, null, createRequest);
+				null, null, createRequest)
+				.block();
 	}
 
 	@Test
@@ -92,7 +95,8 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
 		controller.getServiceInstance(pathVariables, "service-instance-id",
-				"api-info-location", encodeOriginatingIdentity(identityContext));
+				"api-info-location", encodeOriginatingIdentity(identityContext))
+				.block();
 	}
 
 	@Test
@@ -111,7 +115,8 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		controller.getServiceInstanceLastOperation(pathVariables, "service-instance-id",
 				"service-definition-id", "plan-id", "operation",
-				"api-info-location", encodeOriginatingIdentity(identityContext));
+				"api-info-location", encodeOriginatingIdentity(identityContext))
+				.block();
 	}
 
 	@Test
@@ -129,15 +134,18 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
-		controller.deleteServiceInstance(pathVariables, "service-instance-id", "service-definition-id",
-				"plan-id", true, "api-info-location", encodeOriginatingIdentity(identityContext));
+		controller.deleteServiceInstance(pathVariables, "service-instance-id",
+				"service-definition-id", "plan-id", true, "api-info-location",
+				encodeOriginatingIdentity(identityContext))
+				.block();
 	}
 
 	@Test(expected = ServiceDefinitionDoesNotExistException.class)
 	public void deleteServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
 		ServiceInstanceController controller = createControllerUnderTest();
-		controller.deleteServiceInstance(pathVariables, null, "unknown-service-definition-id",
-				null, false, null, null);
+		controller.deleteServiceInstance(pathVariables, null,
+				"unknown-service-definition-id", null, false, null, null)
+				.block();
 	}
 
 	@Test
@@ -156,7 +164,9 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
 		controller.updateServiceInstance(pathVariables, "service-instance-id", true,
-				"api-info-location", encodeOriginatingIdentity(identityContext), parsedRequest);
+				"api-info-location", encodeOriginatingIdentity(identityContext),
+				parsedRequest)
+				.block();
 	}
 
 	private UpdateServiceInstanceRequestBuilder buildUpdateRequest() {
@@ -178,7 +188,8 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 		ServiceInstanceController controller = createControllerUnderTest();
 
 		controller.updateServiceInstance(pathVariables, null, false,
-				null, null, updateRequest);
+				null, null, updateRequest)
+				.block();
 	}
 
 	private ServiceInstanceController createControllerUnderTest(ServiceBrokerRequest expectedRequest) {
@@ -197,35 +208,36 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 		}
 
 		@Override
-		public CreateServiceInstanceResponse createServiceInstance(CreateServiceInstanceRequest request) {
+		public Mono<CreateServiceInstanceResponse> createServiceInstance(CreateServiceInstanceRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
-			return null;
+			return Mono.empty();
 		}
 
 		@Override
-		public GetServiceInstanceResponse getServiceInstance(GetServiceInstanceRequest request) {
+		public Mono<GetServiceInstanceResponse> getServiceInstance(GetServiceInstanceRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
-			return null;
+			return Mono.empty();
 		}
 
 		@Override
-		public GetLastServiceOperationResponse getLastOperation(GetLastServiceOperationRequest request) {
+		public Mono<GetLastServiceOperationResponse> getLastOperation(GetLastServiceOperationRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
-			return GetLastServiceOperationResponse.builder()
+			return Mono.just(GetLastServiceOperationResponse.builder()
 					.operationState(OperationState.SUCCEEDED)
-					.build();
+					.build());
 		}
 
 		@Override
-		public DeleteServiceInstanceResponse deleteServiceInstance(DeleteServiceInstanceRequest request) {
+		public Mono<DeleteServiceInstanceResponse> deleteServiceInstance(DeleteServiceInstanceRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
-			return null;
+			return Mono.empty();
 		}
 
 		@Override
-		public UpdateServiceInstanceResponse updateServiceInstance(UpdateServiceInstanceRequest request) {
+		public Mono<UpdateServiceInstanceResponse> updateServiceInstance(UpdateServiceInstanceRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
-			return null;
+			return Mono.empty();
 		}
 	}
+
 }

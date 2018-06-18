@@ -19,6 +19,8 @@ package org.springframework.cloud.servicebroker.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import reactor.core.publisher.Mono;
+
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
@@ -30,6 +32,7 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 public class BeanCatalogService implements CatalogService {
 
 	private final Catalog catalog;
+
 	private final Map<String,ServiceDefinition> serviceDefs = new HashMap<>();
 
 	/**
@@ -49,13 +52,21 @@ public class BeanCatalogService implements CatalogService {
 	}
 
 	@Override
-	public Catalog getCatalog() {
-		return catalog;
+	public Mono<Catalog> getCatalog() {
+		return Mono.just(catalog);
 	}
 
 	@Override
-	public ServiceDefinition getServiceDefinition(String serviceId) {
-		return serviceDefs.get(serviceId);
+	public Mono<ServiceDefinition> getServiceDefinition(final String serviceId) {
+		// TODO: reconsider
+		return Mono.defer(() -> {
+			if (serviceDefs.containsKey(serviceId)) {
+				return Mono.just(serviceDefs.get(serviceId));
+			}
+			else {
+				return Mono.empty();
+			}
+		});
 	}
 
 }

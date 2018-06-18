@@ -17,11 +17,11 @@
 package org.springframework.cloud.servicebroker.controller;
 
 import java.util.Map;
-
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
@@ -32,6 +32,7 @@ import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.http.HttpStatus;
@@ -70,26 +71,30 @@ public class ServiceInstanceBindingController extends BaseController {
 			"/{platformInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
 			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
 	})
-	public ResponseEntity<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(
+	public Mono<ResponseEntity<CreateServiceInstanceBindingResponse>> createServiceInstanceBinding(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
 			@PathVariable(ServiceBrokerRequest.BINDING_ID_PATH_VARIABLE) String bindingId,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody CreateServiceInstanceBindingRequest request) {
-		request.setServiceInstanceId(serviceInstanceId);
-		request.setBindingId(bindingId);
-		request.setServiceDefinition(getRequiredServiceDefinition(request.getServiceDefinitionId()));
-		setCommonRequestFields(request, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation, originatingIdentityString);
-
-		logger.debug("Creating a service instance binding: request={}", request);
-
-		CreateServiceInstanceBindingResponse response = serviceInstanceBindingService.createServiceInstanceBinding(request);
-
-		logger.debug("Creating a service instance binding succeeded: serviceInstanceId={}, bindingId={}, response={}",
-				serviceInstanceId, bindingId, response);
-
-		return new ResponseEntity<>(response, getCreateResponseCode(response));
+		return getRequiredServiceDefinition(request.getServiceDefinitionId())
+				.flatMap(serviceDefinition -> {
+					request.setServiceInstanceId(serviceInstanceId);
+					request.setBindingId(bindingId);
+					request.setServiceDefinition(serviceDefinition);
+					return Mono.just(request);
+				})
+				.cast(ServiceBrokerRequest.class)
+				.flatMap(req -> setCommonRequestFields(req, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE),
+						apiInfoLocation, originatingIdentityString))
+				.cast(CreateServiceInstanceBindingRequest.class)
+				.flatMap(req -> serviceInstanceBindingService.createServiceInstanceBinding(req)
+						.doOnRequest(v -> logger.debug("Creating a service instance binding: request={}", req))
+						.doOnSuccess(response -> logger.debug("Creating a service instance binding succeeded: serviceInstanceId={}, bindingId={}, response={}",
+								serviceInstanceId, bindingId, response)))
+				.map(response -> new ResponseEntity<>(response, getCreateResponseCode(response)))
+				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.CREATED)));
 	}
 
 	private HttpStatus getCreateResponseCode(CreateServiceInstanceBindingResponse response) {
@@ -103,34 +108,31 @@ public class ServiceInstanceBindingController extends BaseController {
 			"/{platformInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
 			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
 	})
-	public ResponseEntity<GetServiceInstanceBindingResponse> getServiceInstanceBinding(
+	public Mono<ResponseEntity<GetServiceInstanceBindingResponse>> getServiceInstanceBinding(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
 			@PathVariable(ServiceBrokerRequest.BINDING_ID_PATH_VARIABLE) String bindingId,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-		GetServiceInstanceBindingRequest request = GetServiceInstanceBindingRequest.builder()
+		return Mono.just(GetServiceInstanceBindingRequest.builder()
 				.serviceInstanceId(serviceInstanceId)
 				.bindingId(bindingId)
 				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 				.apiInfoLocation(apiInfoLocation)
 				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
-				.build();
-
-		logger.debug("Getting a service instance binding: request={}", request);
-
-		GetServiceInstanceBindingResponse response = serviceInstanceBindingService.getServiceInstanceBinding(request);
-
-		logger.debug("Getting a service instance binding succeeded: bindingId={}", bindingId);
-
-		return new ResponseEntity<>(response, HttpStatus.OK);
+				.build())
+				.flatMap(req -> serviceInstanceBindingService.getServiceInstanceBinding(req)
+						.doOnRequest(v -> logger.debug("Getting a service instance binding: request={}", req))
+						.doOnSuccess(response -> logger.debug("Getting a service instance binding succeeded: bindingId={}", bindingId)))
+				.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
+				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)));
 	}
 
 	@DeleteMapping(value = {
 			"/{platformInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
 			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
 	})
-	public ResponseEntity<String> deleteServiceInstanceBinding(
+	public Mono<ResponseEntity<String>> deleteServiceInstanceBinding(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
 			@PathVariable(ServiceBrokerRequest.BINDING_ID_PATH_VARIABLE) String bindingId,
@@ -138,28 +140,31 @@ public class ServiceInstanceBindingController extends BaseController {
 			@RequestParam(ServiceBrokerRequest.PLAN_ID_PARAMETER) String planId,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-		DeleteServiceInstanceBindingRequest request = DeleteServiceInstanceBindingRequest.builder()
-				.serviceInstanceId(serviceInstanceId)
-				.bindingId(bindingId)
-				.serviceDefinitionId(serviceDefinitionId)
-				.planId(planId)
-				.serviceDefinition(getServiceDefinition(serviceDefinitionId))
-				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
-				.apiInfoLocation(apiInfoLocation)
-				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
-				.build();
-
-		logger.debug("Deleting a service instance binding: request={}", request);
-
-		try {
-			serviceInstanceBindingService.deleteServiceInstanceBinding(request);
-		} catch (ServiceInstanceBindingDoesNotExistException e) {
-			logger.debug(e.getMessage(), e);
-			return new ResponseEntity<>("{}", HttpStatus.GONE);
-		}
-
-		logger.debug("Deleting a service instance binding succeeded: bindingId={}", bindingId);
-
-		return new ResponseEntity<>("{}", HttpStatus.OK);
+		return getServiceDefinition(serviceDefinitionId)
+				.switchIfEmpty(Mono.just(ServiceDefinition.builder().build()))
+				.map(serviceDefinition -> DeleteServiceInstanceBindingRequest.builder()
+						.serviceInstanceId(serviceInstanceId)
+						.bindingId(bindingId)
+						.serviceDefinitionId(serviceDefinitionId)
+						.planId(planId)
+						.serviceDefinition(serviceDefinition)
+						.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
+						.apiInfoLocation(apiInfoLocation)
+						.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+						.build())
+				.flatMap(req -> serviceInstanceBindingService.deleteServiceInstanceBinding(req)
+						.doOnRequest(v -> logger.debug("Deleting a service instance binding: request={}", req))
+						.doOnSuccess(aVoid -> logger.debug("Deleting a service instance binding succeeded: bindingId={}", bindingId))
+						.doOnError(e -> logger.debug(e.getMessage(), e)))
+				.then(Mono.just(new ResponseEntity<>("{}", HttpStatus.OK)))
+				.onErrorResume(e -> {
+					if (e instanceof ServiceInstanceBindingDoesNotExistException) {
+						return Mono.just(new ResponseEntity<>("{}", HttpStatus.GONE));
+					}
+					else {
+						return Mono.error(e);
+					}
+				});
 	}
+
 }

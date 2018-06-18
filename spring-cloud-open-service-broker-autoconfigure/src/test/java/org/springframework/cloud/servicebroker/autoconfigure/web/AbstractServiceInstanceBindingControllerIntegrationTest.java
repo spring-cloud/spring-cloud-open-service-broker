@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
@@ -42,12 +43,12 @@ public abstract class AbstractServiceInstanceBindingControllerIntegrationTest ex
 
 	protected void setupServiceInstanceBindingService(CreateServiceInstanceBindingResponse createResponse) {
 		when(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
-				.thenReturn(createResponse);
+				.thenReturn(Mono.just(createResponse));
 	}
 
 	protected void setupServiceInstanceBindingService(GetServiceInstanceBindingResponse getResponse) {
 		when(serviceInstanceBindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
-				.thenReturn(getResponse);
+				.thenReturn(Mono.just(getResponse));
 	}
 
 	protected CreateServiceInstanceBindingRequest verifyCreateBinding() {

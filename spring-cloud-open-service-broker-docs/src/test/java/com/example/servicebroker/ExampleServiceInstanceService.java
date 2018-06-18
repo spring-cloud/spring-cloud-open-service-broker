@@ -1,5 +1,9 @@
 package com.example.servicebroker;
 
+import java.util.Map;
+
+import reactor.core.publisher.Mono;
+
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceRequest;
@@ -14,13 +18,11 @@ import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInsta
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
 @Service
 public class ExampleServiceInstanceService implements ServiceInstanceService {
 
 	@Override
-	public CreateServiceInstanceResponse createServiceInstance(CreateServiceInstanceRequest request) {
+	public Mono<CreateServiceInstanceResponse> createServiceInstance(CreateServiceInstanceRequest request) {
 		String serviceInstanceId = request.getServiceInstanceId();
 		String planId = request.getPlanId();
 		Map<String, Object> parameters = request.getParameters();
@@ -32,14 +34,16 @@ public class ExampleServiceInstanceService implements ServiceInstanceService {
 		
 		String dashboardUrl = new String(/* construct a dashboard URL */);
 
-		return CreateServiceInstanceResponse.builder()
+		CreateServiceInstanceResponse response = CreateServiceInstanceResponse.builder()
 				.dashboardUrl(dashboardUrl)
 				.async(true)
 				.build();
+
+		return Mono.just(response);
 	}
 
 	@Override
-	public UpdateServiceInstanceResponse updateServiceInstance(UpdateServiceInstanceRequest request) {
+	public Mono<UpdateServiceInstanceResponse> updateServiceInstance(UpdateServiceInstanceRequest request) {
 		String serviceInstanceId = request.getServiceInstanceId();
 		String planId = request.getPlanId();
 		String previousPlan = request.getPreviousValues().getPlanId();
@@ -50,13 +54,15 @@ public class ExampleServiceInstanceService implements ServiceInstanceService {
 		// updating of all necessary resources
 		//
 
-		return UpdateServiceInstanceResponse.builder()
+		UpdateServiceInstanceResponse response = UpdateServiceInstanceResponse.builder()
 				.async(true)
 				.build();
+
+		return Mono.just(response);
 	}
 
 	@Override
-	public DeleteServiceInstanceResponse deleteServiceInstance(DeleteServiceInstanceRequest request) {
+	public Mono<DeleteServiceInstanceResponse> deleteServiceInstance(DeleteServiceInstanceRequest request) {
 		String serviceInstanceId = request.getServiceInstanceId();
 		String planId = request.getPlanId();
 
@@ -65,13 +71,15 @@ public class ExampleServiceInstanceService implements ServiceInstanceService {
 		// deletion of all provisioned resources
 		//
 
-		return DeleteServiceInstanceResponse.builder()
+		DeleteServiceInstanceResponse response = DeleteServiceInstanceResponse.builder()
 				.async(true)
 				.build();
+
+		return Mono.just(response);
 	}
 
 	@Override
-	public GetServiceInstanceResponse getServiceInstance(GetServiceInstanceRequest request) {
+	public Mono<GetServiceInstanceResponse> getServiceInstance(GetServiceInstanceRequest request) {
 		String serviceInstanceId = request.getServiceInstanceId();
 
 		//
@@ -80,13 +88,15 @@ public class ExampleServiceInstanceService implements ServiceInstanceService {
 
 		String dashboardUrl = new String(/* retrieve dashboard URL */);
 
-		return GetServiceInstanceResponse.builder()
+		GetServiceInstanceResponse response = GetServiceInstanceResponse.builder()
 				.dashboardUrl(dashboardUrl)
 				.build();
+
+		return Mono.just(response);
 	}
 
 	@Override
-	public GetLastServiceOperationResponse getLastOperation(GetLastServiceOperationRequest request) {
+	public Mono<GetLastServiceOperationResponse> getLastOperation(GetLastServiceOperationRequest request) {
 		String serviceInstanceId = request.getServiceInstanceId();
 
 		//
@@ -95,8 +105,10 @@ public class ExampleServiceInstanceService implements ServiceInstanceService {
 
 		OperationState state = OperationState.SUCCEEDED;
 
-		return GetLastServiceOperationResponse.builder()
+		GetLastServiceOperationResponse response = GetLastServiceOperationResponse.builder()
 				.operationState(state)
 				.build();
+
+		return Mono.just(response);
 	}
 }

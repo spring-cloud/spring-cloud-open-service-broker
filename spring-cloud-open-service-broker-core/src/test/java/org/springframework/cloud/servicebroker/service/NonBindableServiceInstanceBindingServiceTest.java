@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,6 +18,7 @@ package org.springframework.cloud.servicebroker.service;
 
 import org.junit.Before;
 import org.junit.Test;
+
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 
@@ -32,11 +33,14 @@ public class NonBindableServiceInstanceBindingServiceTest {
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void createServiceInstanceBinding() {
-		service.createServiceInstanceBinding(CreateServiceInstanceBindingRequest.builder().build());
+		service.createServiceInstanceBinding(CreateServiceInstanceBindingRequest.builder().build())
+				.block();
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void deleteServiceInstanceBinding() {
-		service.deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest.builder().build());
+		service.deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest.builder().build())
+				.block();
 	}
+
 }

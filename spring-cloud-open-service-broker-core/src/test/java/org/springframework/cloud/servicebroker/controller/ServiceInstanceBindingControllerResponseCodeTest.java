@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,12 +16,19 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import reactor.core.publisher.Mono;
+
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
@@ -36,14 +43,10 @@ import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingSer
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -51,7 +54,9 @@ import static org.mockito.Mockito.when;
 
 @RunWith(Theories.class)
 public class ServiceInstanceBindingControllerResponseCodeTest {
+
 	private final CatalogService catalogService = mock(CatalogService.class);
+
 	private final ServiceInstanceBindingService bindingService = mock(ServiceInstanceBindingService.class);
 
 	private final Map<String, String> pathVariables = Collections.emptyMap();
@@ -100,13 +105,22 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		controller = new ServiceInstanceBindingController(catalogService, bindingService);
 
 		when(catalogService.getServiceDefinition(anyString()))
-				.thenReturn(ServiceDefinition.builder().build());
+				.thenReturn(Mono.just(ServiceDefinition.builder().build()));
+		when(catalogService.getServiceDefinition(isNull()))
+				.thenReturn(Mono.empty());
 	}
 
 	@Theory
 	public void createServiceBindingWithResponseGivesExpectedStatus(CreateResponseAndExpectedStatus data) {
+		Mono<CreateServiceInstanceBindingResponse> responseMono;
+		if (data.response == null) {
+			responseMono = Mono.empty();
+		}
+		else {
+			responseMono = Mono.just(data.response);
+		}
 		when(bindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
-				.thenReturn(data.response);
+				.thenReturn(responseMono);
 
 		CreateServiceInstanceBindingRequest createRequest = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId("service-definition-id")
@@ -114,28 +128,43 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 
 		ResponseEntity<CreateServiceInstanceBindingResponse> responseEntity = controller
 				.createServiceInstanceBinding(pathVariables, null, null, null, null,
-						createRequest);
+						createRequest)
+				.block();
 
+		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(data.response);
 	}
 
 	@Theory
 	public void getServiceBindingWithResponseGivesExpectedStatus(GetResponseAndExpectedStatus data) {
+		Mono<GetServiceInstanceBindingResponse> responseMono;
+		if (data.response == null) {
+			responseMono = Mono.empty();
+		}
+		else {
+			responseMono = Mono.just(data.response);
+		}
 		when(bindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
-				.thenReturn(data.response);
+				.thenReturn(responseMono);
 
 		ResponseEntity<GetServiceInstanceBindingResponse> responseEntity = controller
-				.getServiceInstanceBinding(pathVariables, null, null, null, null);
+				.getServiceInstanceBinding(pathVariables, null, null, null, null)
+				.block();
 
+		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(data.response);
 	}
 
 	@Test
 	public void deleteServiceBindingWithSuccessGivesExpectedStatus() {
-		ResponseEntity<String> responseEntity = controller
-				.deleteServiceInstanceBinding(pathVariables, null, null, null, null, null, null);
+		when(bindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
+				.thenReturn(Mono.empty());
+
+		ResponseEntity<String> responseEntity = controller.deleteServiceInstanceBinding(
+				pathVariables, null, null, null, null, null, null)
+				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(responseEntity.getBody()).isEqualTo("{}");
@@ -148,8 +177,9 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		doThrow(new ServiceInstanceBindingDoesNotExistException("binding-id"))
 				.when(bindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 
-		ResponseEntity<String> responseEntity = controller
-				.deleteServiceInstanceBinding(pathVariables, null, null, null, null, null, null);
+		ResponseEntity<String> responseEntity = controller.deleteServiceInstanceBinding(
+				pathVariables, null, null, null, null, null, null)
+				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
 		assertThat(responseEntity.getBody()).isEqualTo("{}");
@@ -168,8 +198,8 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		public String toString() {
 			String responseValue = response == null ? "null" :
 					"{" +
-						"bindingExisted=" + response.isBindingExisted() +
-					"}";
+							"bindingExisted=" + response.isBindingExisted() +
+							"}";
 
 			return "response=" + responseValue +
 					", expectedStatus=" + expectedStatus;
@@ -185,4 +215,5 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 			this.expectedStatus = expectedStatus;
 		}
 	}
+
 }

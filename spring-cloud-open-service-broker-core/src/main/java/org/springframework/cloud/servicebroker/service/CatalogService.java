@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.service;
 
+import reactor.core.publisher.Mono;
+
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
@@ -31,7 +33,7 @@ public interface CatalogService {
 	 *
 	 * @return the catalog of services
 	 */
-	Catalog getCatalog();
+	Mono<Catalog> getCatalog();
 
 	/**
 	 * Get a service definition from the catalog by ID.
@@ -39,6 +41,6 @@ public interface CatalogService {
 	 * @param serviceId  The ID of the service definition in the catalog
 	 * @return the service definition, or null if it doesn't exist
 	 */
-	ServiceDefinition getServiceDefinition(String serviceId);
+	Mono<ServiceDefinition> getServiceDefinition(String serviceId);
 
 }

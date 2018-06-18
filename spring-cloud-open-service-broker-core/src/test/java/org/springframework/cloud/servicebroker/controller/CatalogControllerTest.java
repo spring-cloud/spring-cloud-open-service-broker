@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,6 +21,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import reactor.core.publisher.Mono;
+
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 
@@ -30,6 +32,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CatalogControllerTest {
+
 	@Mock
 	private CatalogService catalogService;
 
@@ -41,13 +44,14 @@ public class CatalogControllerTest {
 	@Test
 	public void catalogIsReturned() {
 		Catalog expectedCatalog = Catalog.builder().build();
-		
-		when(catalogService.getCatalog()).thenReturn(expectedCatalog);
+
+		when(catalogService.getCatalog()).thenReturn(Mono.just(expectedCatalog));
 
 		CatalogController controller = new CatalogController(catalogService);
 
-		Catalog actualCatalog = controller.getCatalog();
+		Catalog actualCatalog = controller.getCatalog().block();
 
 		assertThat(actualCatalog).isEqualTo(expectedCatalog);
 	}
+
 }

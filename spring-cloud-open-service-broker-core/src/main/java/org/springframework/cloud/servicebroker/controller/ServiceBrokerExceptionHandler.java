@@ -45,6 +45,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.support.WebExchangeBindException;
 
 /**
  * Exception handling logic shared by all Controllers.
@@ -55,6 +56,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseBody
 @Order(Ordered.LOWEST_PRECEDENCE - 10)
 public class ServiceBrokerExceptionHandler {
+
 	private static final Logger logger = LoggerFactory.getLogger(ServiceBrokerExceptionHandler.class);
 
 	@ExceptionHandler(ServiceBrokerApiVersionException.class)
@@ -118,9 +120,17 @@ public class ServiceBrokerExceptionHandler {
 		return getErrorResponse(ex);
 	}
 
+	// Spring WebMVC throws this exception
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public ErrorMessage handleException(MethodArgumentNotValidException ex) {
+		return handleBindingException(ex, ex.getBindingResult());
+	}
+
+	// Spring WebFlux throws this exception
+	@ExceptionHandler(WebExchangeBindException.class)
+	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	public ErrorMessage handleException(WebExchangeBindException ex) {
 		return handleBindingException(ex, ex.getBindingResult());
 	}
 
@@ -176,4 +186,5 @@ public class ServiceBrokerExceptionHandler {
 	protected ErrorMessage getErrorResponse(String message) {
 		return new ErrorMessage(message);
 	}
+
 }
