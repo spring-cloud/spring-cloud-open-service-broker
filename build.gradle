@@ -194,7 +194,7 @@ configure(rootProject) {
 		destinationDir = new File(buildDir, "apidocs")
 	}
 
-	task docsZip(type: Zip, dependsOn: [':docs:asciidoctor']) {
+	task docsZip(type: Zip, dependsOn: [':spring-cloud-open-service-broker-docs:asciidoctor']) {
 		group = "Distribution"
 		classifier = "docs"
 		description = "Builds -${classifier} archive containing api and reference " +
@@ -203,8 +203,8 @@ configure(rootProject) {
 		from(apidocs) {
 			into "apidocs"
 		}
-		println project.tasks.findByPath(':docs:asciidoctor')
-		from(project.tasks.findByPath(':docs:asciidoctor')) {
+		println project.tasks.findByPath(':spring-cloud-open-service-broker-docs:asciidoctor')
+		from(project.tasks.findByPath(':spring-cloud-open-service-broker-docs:asciidoctor')) {
 			into 'reference'
 		}
 	}
