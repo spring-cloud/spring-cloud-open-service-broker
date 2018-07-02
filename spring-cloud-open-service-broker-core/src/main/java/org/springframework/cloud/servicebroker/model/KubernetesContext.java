@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.Map;
 
 /**
  * Kubernetes specific contextual information under which the service instance is to be provisioned or updated.
@@ -29,11 +30,15 @@ public final class KubernetesContext extends Context {
 	public static final String KUBERNETES_PLATFORM = "kubernetes";
 	public static final String NAMESPACE_KEY = "namespace";
 
-	KubernetesContext() {
+	private KubernetesContext() {
+		super(KUBERNETES_PLATFORM, null);
 	}
 
-	KubernetesContext(String namespace) {
-		setNamespace(namespace);
+	private KubernetesContext(String namespace, Map<String, Object> properties) {
+		super(KUBERNETES_PLATFORM, properties);
+		if (namespace != null) {
+			setNamespace(namespace);
+		}
 	}
 
 	public String getNamespace() {
@@ -45,4 +50,28 @@ public final class KubernetesContext extends Context {
 	private void setNamespace(String namespace) {
 		properties.put(NAMESPACE_KEY, namespace);
 	}
-}
+
+	public static KubernetesContextBuilder builder() {
+		return new KubernetesContextBuilder();
+	}
+
+	public static class KubernetesContextBuilder extends ContextBaseBuilder<KubernetesContext, KubernetesContextBuilder> {
+		private String namespace;
+
+		KubernetesContextBuilder() {
+		}
+
+		@Override
+		protected KubernetesContextBuilder createBuilder() {
+			return this;
+		}
+
+		public KubernetesContextBuilder namespace(String namespace) {
+			this.namespace = namespace;
+			return this;
+		}
+
+		public KubernetesContext build() {
+			return new KubernetesContext(namespace, properties);
+		}
+	}}

@@ -19,25 +19,41 @@ package org.springframework.cloud.servicebroker.model;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM;
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.ORGANIZATION_GUID_KEY;
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.SPACE_GUID_KEY;
 
 public class CloudFoundryContextTest {
 	@Test
 	public void emptyContext() {
-		CloudFoundryContext context = new CloudFoundryContext();
+		CloudFoundryContext context = CloudFoundryContext.builder()
+				.build();
+
+		assertThat(context.getPlatform()).isEqualTo(CLOUD_FOUNDRY_PLATFORM);
+
 		assertThat(context.getOrganizationGuid()).isNull();
 		assertThat(context.getSpaceGuid()).isNull();
-		assertThat(context.getProperty(ORGANIZATION_GUID_KEY)).isNull();
-		assertThat(context.getProperty(SPACE_GUID_KEY)).isNull();
+
+		assertThat(context.getProperties()).isEmpty();
 	}
 
 	@Test
 	public void populatedContext() {
-		CloudFoundryContext context = new CloudFoundryContext("org-guid", "space-guid", null);
+		CloudFoundryContext context = CloudFoundryContext.builder()
+				.property("key1", "value1")
+				.organizationGuid("org-guid")
+				.spaceGuid("space-guid")
+				.property("key2", "value2")
+				.build();
+
+		assertThat(context.getPlatform()).isEqualTo(CLOUD_FOUNDRY_PLATFORM);
+
 		assertThat(context.getOrganizationGuid()).isEqualTo("org-guid");
 		assertThat(context.getSpaceGuid()).isEqualTo("space-guid");
 		assertThat(context.getProperty(ORGANIZATION_GUID_KEY)).isEqualTo("org-guid");
 		assertThat(context.getProperty(SPACE_GUID_KEY)).isEqualTo("space-guid");
+
+		assertThat(context.getProperty("key1")).isEqualTo("value1");
+		assertThat(context.getProperty("key2")).isEqualTo("value2");
 	}
 }

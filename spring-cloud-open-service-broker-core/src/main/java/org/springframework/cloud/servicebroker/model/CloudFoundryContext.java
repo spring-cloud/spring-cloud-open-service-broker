@@ -34,14 +34,18 @@ public final class CloudFoundryContext extends Context {
 	public static final String ORGANIZATION_GUID_KEY = "organizationGuid";
 	public static final String SPACE_GUID_KEY = "spaceGuid";
 
-	CloudFoundryContext() {
+	private CloudFoundryContext() {
 		super(CLOUD_FOUNDRY_PLATFORM, null);
 	}
 
-	CloudFoundryContext(String organizationGuid, String spaceGuid, Map<String, Object> properties) {
+	private CloudFoundryContext(String organizationGuid, String spaceGuid, Map<String, Object> properties) {
 		super(CLOUD_FOUNDRY_PLATFORM, properties);
-		setOrganizationGuid(organizationGuid);
-		setSpaceGuid(spaceGuid);
+		if (organizationGuid != null) {
+			setOrganizationGuid(organizationGuid);
+		}
+		if (spaceGuid != null) {
+			setSpaceGuid(spaceGuid);
+		}
 	}
 
 	public String getOrganizationGuid() {
@@ -62,5 +66,36 @@ public final class CloudFoundryContext extends Context {
 	@NotEmpty
 	private void setSpaceGuid(String spaceGuid) {
 		properties.put(SPACE_GUID_KEY, spaceGuid);
+	}
+
+	public static CloudFoundryContextBuilder builder() {
+		return new CloudFoundryContextBuilder();
+	}
+
+	public static class CloudFoundryContextBuilder extends ContextBaseBuilder<CloudFoundryContext, CloudFoundryContextBuilder> {
+		private String organizationGuid;
+		private String spaceGuid;
+
+		CloudFoundryContextBuilder() {
+		}
+
+		@Override
+		protected CloudFoundryContextBuilder createBuilder() {
+			return this;
+		}
+
+		public CloudFoundryContextBuilder organizationGuid(String organizationGuid) {
+			this.organizationGuid = organizationGuid;
+			return this;
+		}
+
+		public CloudFoundryContextBuilder spaceGuid(String spaceGuid) {
+			this.spaceGuid = spaceGuid;
+			return this;
+		}
+
+		public CloudFoundryContext build() {
+			return new CloudFoundryContext(organizationGuid, spaceGuid, properties);
+		}
 	}
 }

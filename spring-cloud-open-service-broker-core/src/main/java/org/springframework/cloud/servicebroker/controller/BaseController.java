@@ -23,7 +23,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
+import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.Context;
+import org.springframework.cloud.servicebroker.model.KubernetesContext;
+import org.springframework.cloud.servicebroker.model.PlatformContext;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceRequest;
@@ -31,6 +34,9 @@ import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.Base64Utils;
+
+import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM;
+import static org.springframework.cloud.servicebroker.model.KubernetesContext.KUBERNETES_PLATFORM;
 
 /**
  * Base functionality shared by controllers.
@@ -101,10 +107,20 @@ public class BaseController {
 
 		String platform = parts[0];
 
-		return Context.builder()
-				.platform(platform)
-				.properties(properties)
-				.build();
+		if (CLOUD_FOUNDRY_PLATFORM.equals(platform)) {
+			return CloudFoundryContext.builder()
+					.properties(properties)
+					.build();
+		} else if (KUBERNETES_PLATFORM.equals(platform)) {
+			return KubernetesContext.builder()
+					.properties(properties)
+					.build();
+		} else {
+			return PlatformContext.builder()
+					.platform(platform)
+					.properties(properties)
+					.build();
+		}
 	}
 
 	private Map<String, Object> readJsonFromString(String value) throws IOException {

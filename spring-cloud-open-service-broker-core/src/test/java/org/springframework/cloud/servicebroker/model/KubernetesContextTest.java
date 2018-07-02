@@ -19,20 +19,36 @@ package org.springframework.cloud.servicebroker.model;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.model.KubernetesContext.KUBERNETES_PLATFORM;
 import static org.springframework.cloud.servicebroker.model.KubernetesContext.NAMESPACE_KEY;
 
 public class KubernetesContextTest {
 	@Test
 	public void emptyContext() {
-		KubernetesContext context = new KubernetesContext();
+		KubernetesContext context = KubernetesContext.builder()
+				.build();
+
+		assertThat(context.getPlatform()).isEqualTo(KUBERNETES_PLATFORM);
+
 		assertThat(context.getNamespace()).isNull();
-		assertThat(context.getProperty(NAMESPACE_KEY)).isNull();
+
+		assertThat(context.getProperties()).isEmpty();
 	}
 
 	@Test
 	public void populatedContext() {
-		KubernetesContext context = new KubernetesContext("namespace");
+		KubernetesContext context = KubernetesContext.builder()
+				.property("key1", "value1")
+				.namespace("namespace")
+				.property("key2", "value2")
+				.build();
+
+		assertThat(context.getPlatform()).isEqualTo(KUBERNETES_PLATFORM);
+
 		assertThat(context.getNamespace()).isEqualTo("namespace");
 		assertThat(context.getProperty(NAMESPACE_KEY)).isEqualTo("namespace");
+
+		assertThat(context.getProperty("key1")).isEqualTo("value1");
+		assertThat(context.getProperty("key2")).isEqualTo("value2");
 	}
 }

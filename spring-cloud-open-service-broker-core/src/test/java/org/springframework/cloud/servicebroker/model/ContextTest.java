@@ -20,44 +20,7 @@ package org.springframework.cloud.servicebroker.model;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class ContextTest {
-	@Test
-	public void contextIsBuildWithDefaults() {
-		Context context = Context.builder()
-				.build();
-
-		assertThat(context.getPlatform()).isNull();
-		assertThat(context.getProperties()).hasSize(0);
-	}
-
-	@Test
-	@SuppressWarnings("serial")
-	public void contextIsBuildWithAllValues() {
-		Map<String, Object> properties = new HashMap<String, Object>() {{
-			put("property3", "value3");
-			put("property4", true);
-		}};
-
-		Context context = Context.builder()
-				.platform("test-platform")
-				.property("property1", 1)
-				.property("property2", "value2")
-				.properties(properties)
-				.build();
-
-		assertThat(context.getPlatform()).isEqualTo("test-platform");
-		assertThat(context.getProperties()).hasSize(4);
-		assertThat(context.getProperty("property1")).isEqualTo(1);
-		assertThat(context.getProperty("property2")).isEqualTo("value2");
-		assertThat(context.getProperty("property3")).isEqualTo("value3");
-		assertThat(context.getProperty("property4")).isEqualTo(true);
-	}
-
 	@Test
 	public void equalsAndHashCode() {
 		EqualsVerifier
