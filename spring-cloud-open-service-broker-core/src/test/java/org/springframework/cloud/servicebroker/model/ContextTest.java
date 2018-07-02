@@ -62,8 +62,6 @@ public class ContextTest {
 	public void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(Context.class)
-				.withRedefinedSubclass(CloudFoundryContext.class)
-				.withRedefinedSubclass(KubernetesContext.class)
 				.verify();
 	}
 }

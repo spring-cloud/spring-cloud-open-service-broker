@@ -16,7 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.NotEmpty;
 
 /**
@@ -26,49 +27,22 @@ import javax.validation.constraints.NotEmpty;
  */
 public final class KubernetesContext extends Context {
 	public static final String KUBERNETES_PLATFORM = "kubernetes";
+	public static final String NAMESPACE_KEY = "namespace";
 
-	/**
-	 * The Kubernetes namespace for which the operation is requested.
-	 */
-	@NotEmpty
-	private final String namespace;
-
-	private KubernetesContext() {
-		this.namespace = null;
+	KubernetesContext() {
 	}
 
-	private KubernetesContext(String namespace) {
-		this.namespace = namespace;
+	KubernetesContext(String namespace) {
+		setNamespace(namespace);
 	}
 
 	public String getNamespace() {
-		return this.namespace;
+		return getStringProperty(NAMESPACE_KEY);
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof KubernetesContext)) return false;
-		if (!super.equals(o)) return false;
-		KubernetesContext that = (KubernetesContext) o;
-		return Objects.equals(namespace, that.namespace);
-	}
-
-	@Override
-	public boolean canEqual(Object other) {
-		return (other instanceof KubernetesContext);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(super.hashCode(), namespace);
-	}
-
-	@Override
-	public String toString() {
-		return super.toString() +
-				"KubernetesContext{" +
-				"namespace='" + namespace + '\'' +
-				'}';
+	@JsonProperty
+	@NotEmpty
+	private void setNamespace(String namespace) {
+		properties.put(NAMESPACE_KEY, namespace);
 	}
 }

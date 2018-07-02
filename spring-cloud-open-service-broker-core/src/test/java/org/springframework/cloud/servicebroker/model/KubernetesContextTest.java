@@ -16,16 +16,23 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.model.KubernetesContext.NAMESPACE_KEY;
 
 public class KubernetesContextTest {
 	@Test
-	public void equalsAndHashCode() {
-		EqualsVerifier
-				.forClass(KubernetesContext.class)
-				.withRedefinedSuperclass()
-				.verify();
+	public void emptyContext() {
+		KubernetesContext context = new KubernetesContext();
+		assertThat(context.getNamespace()).isNull();
+		assertThat(context.getProperty(NAMESPACE_KEY)).isNull();
 	}
 
+	@Test
+	public void populatedContext() {
+		KubernetesContext context = new KubernetesContext("namespace");
+		assertThat(context.getNamespace()).isEqualTo("namespace");
+		assertThat(context.getProperty(NAMESPACE_KEY)).isEqualTo("namespace");
+	}
 }

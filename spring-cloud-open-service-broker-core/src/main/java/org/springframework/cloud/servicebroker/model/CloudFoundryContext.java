@@ -17,9 +17,9 @@
 package org.springframework.cloud.servicebroker.model;
 
 import java.util.Map;
-import java.util.Objects;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -31,66 +31,36 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public final class CloudFoundryContext extends Context {
 	public static final String CLOUD_FOUNDRY_PLATFORM = "cloudfoundry";
+	public static final String ORGANIZATION_GUID_KEY = "organizationGuid";
+	public static final String SPACE_GUID_KEY = "spaceGuid";
 
-	/**
-	 * The Cloud Controller GUID of the organization for which the operation is requested.
-	 */
-	@NotEmpty
-	private final String organizationGuid;
-
-	/**
-	 * The Cloud Controller GUID of the space for which the operation is requested.
-	 */
-	@NotEmpty
-	private final String spaceGuid;
-
-	private CloudFoundryContext() {
+	CloudFoundryContext() {
 		super(CLOUD_FOUNDRY_PLATFORM, null);
-		this.organizationGuid = null;
-		this.spaceGuid = null;
 	}
 
-	private CloudFoundryContext(String organizationGuid, String spaceGuid, Map<String, Object> properties) {
+	CloudFoundryContext(String organizationGuid, String spaceGuid, Map<String, Object> properties) {
 		super(CLOUD_FOUNDRY_PLATFORM, properties);
-		this.organizationGuid = organizationGuid;
-		this.spaceGuid = spaceGuid;
+		setOrganizationGuid(organizationGuid);
+		setSpaceGuid(spaceGuid);
 	}
 
 	public String getOrganizationGuid() {
-		return this.organizationGuid;
+		return getStringProperty(ORGANIZATION_GUID_KEY);
+	}
+
+	@JsonProperty
+	@NotEmpty
+	private void setOrganizationGuid(String organizationGuid) {
+		properties.put(ORGANIZATION_GUID_KEY, organizationGuid);
 	}
 
 	public String getSpaceGuid() {
-		return this.spaceGuid;
+		return getStringProperty(SPACE_GUID_KEY);
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof CloudFoundryContext)) return false;
-		if (!super.equals(o)) return false;
-		CloudFoundryContext that = (CloudFoundryContext) o;
-		return that.canEqual(this) &&
-				Objects.equals(organizationGuid, that.organizationGuid) &&
-				Objects.equals(spaceGuid, that.spaceGuid);
-	}
-
-	@Override
-	public boolean canEqual(Object other) {
-		return (other instanceof CloudFoundryContext);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(super.hashCode(), organizationGuid, spaceGuid);
-	}
-
-	@Override
-	public String toString() {
-		return super.toString() +
-				"CloudFoundryContext{" +
-				"organizationGuid='" + organizationGuid + '\'' +
-				", spaceGuid='" + spaceGuid + '\'' +
-				'}';
+	@JsonProperty
+	@NotEmpty
+	private void setSpaceGuid(String spaceGuid) {
+		properties.put(SPACE_GUID_KEY, spaceGuid);
 	}
 }

@@ -16,16 +16,28 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.ORGANIZATION_GUID_KEY;
+import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.SPACE_GUID_KEY;
 
 public class CloudFoundryContextTest {
 	@Test
-	public void equalsAndHashCode() {
-		EqualsVerifier
-				.forClass(CloudFoundryContext.class)
-				.withRedefinedSuperclass()
-				.verify();
+	public void emptyContext() {
+		CloudFoundryContext context = new CloudFoundryContext();
+		assertThat(context.getOrganizationGuid()).isNull();
+		assertThat(context.getSpaceGuid()).isNull();
+		assertThat(context.getProperty(ORGANIZATION_GUID_KEY)).isNull();
+		assertThat(context.getProperty(SPACE_GUID_KEY)).isNull();
 	}
 
+	@Test
+	public void populatedContext() {
+		CloudFoundryContext context = new CloudFoundryContext("org-guid", "space-guid", null);
+		assertThat(context.getOrganizationGuid()).isEqualTo("org-guid");
+		assertThat(context.getSpaceGuid()).isEqualTo("space-guid");
+		assertThat(context.getProperty(ORGANIZATION_GUID_KEY)).isEqualTo("org-guid");
+		assertThat(context.getProperty(SPACE_GUID_KEY)).isEqualTo("space-guid");
+	}
 }

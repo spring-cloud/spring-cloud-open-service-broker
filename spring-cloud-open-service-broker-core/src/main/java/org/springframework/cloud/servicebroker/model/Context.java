@@ -45,7 +45,7 @@ public class Context {
 	private final String platform;
 
 	@JsonAnySetter
-	private final Map<String, Object> properties = new HashMap<>();
+	protected final Map<String, Object> properties = new HashMap<>();
 
 	protected Context() {
 		this.platform = null;
@@ -77,8 +77,15 @@ public class Context {
 		return this.properties.get(key);
 	}
 
+	protected String getStringProperty(String key) {
+		if (properties.containsKey(key)) {
+			return getProperty(key).toString();
+		}
+		return null;
+	}
+
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof Context)) return false;
 		Context that = (Context) o;
@@ -87,17 +94,17 @@ public class Context {
 				Objects.equals(properties, that.properties);
 	}
 
-	public boolean canEqual(Object other) {
+	public final boolean canEqual(Object other) {
 		return (other instanceof Context);
 	}
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return Objects.hash(platform, properties);
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		return "Context{" +
 				"platform='" + platform + '\'' +
 				", properties=" + properties +
