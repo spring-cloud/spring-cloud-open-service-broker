@@ -23,7 +23,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
+import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.Context;
+import org.springframework.cloud.servicebroker.model.KubernetesContext;
+import org.springframework.cloud.servicebroker.model.PlatformContext;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceRequest;
@@ -101,10 +104,20 @@ public class BaseController {
 
 		String platform = parts[0];
 
-		return Context.builder()
-				.platform(platform)
-				.properties(properties)
-				.build();
+		if (CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM.equals(platform)) {
+			return CloudFoundryContext.builder()
+					.properties(properties)
+					.build();
+		} else if (KubernetesContext.KUBERNETES_PLATFORM.equals(platform)) {
+			return KubernetesContext.builder()
+					.properties(properties)
+					.build();
+		} else {
+			return PlatformContext.builder()
+					.platform(platform)
+					.properties(properties)
+					.build();
+		}
 	}
 
 	private Map<String, Object> readJsonFromString(String value) throws IOException {

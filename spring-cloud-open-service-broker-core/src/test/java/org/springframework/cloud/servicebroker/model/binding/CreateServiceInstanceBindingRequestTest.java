@@ -21,6 +21,7 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.JsonUtils;
+import org.springframework.cloud.servicebroker.model.PlatformContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,13 +53,13 @@ public class CreateServiceInstanceBindingRequestTest {
 	@SuppressWarnings("serial")
 	public void requestWithAllValuesIsBuilt() {
 		BindResource bindResource = BindResource.builder().build();
-		Context context = Context.builder().build();
+		Context context = PlatformContext.builder().build();
 		Map<String, Object> parameters = new HashMap<String, Object>() {{
 			put("field4", "value4");
 			put("field5", "value5");
 		}};
 
-		Context originatingIdentity = Context.builder()
+		Context originatingIdentity = PlatformContext.builder()
 				.platform("test-platform")
 				.build();
 
@@ -137,7 +138,7 @@ public class CreateServiceInstanceBindingRequestTest {
 						.properties("resource-param1", "value1")
 						.properties("resource-param2", "value2")
 						.build())
-				.context(Context.builder()
+				.context(PlatformContext.builder()
 						.platform("sample-platform")
 						.property("context-property1", "value1")
 						.property("context-property2", "value2")

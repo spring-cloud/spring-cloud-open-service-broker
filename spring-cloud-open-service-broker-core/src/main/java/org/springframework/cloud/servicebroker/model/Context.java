@@ -33,19 +33,16 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * @author Scott Frederick
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY,
-		property = "platform", visible = true, defaultImpl = Context.class)
+		property = "platform", visible = true, defaultImpl = PlatformContext.class)
 @JsonSubTypes({
 		@JsonSubTypes.Type(value = CloudFoundryContext.class, name = CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM),
 		@JsonSubTypes.Type(value = KubernetesContext.class, name = KubernetesContext.KUBERNETES_PLATFORM),
 })
 public class Context {
-	/**
-	 * The name of the platform making the request.
-	 */
-	private final String platform;
+	protected final String platform;
 
 	@JsonAnySetter
-	private final Map<String, Object> properties = new HashMap<>();
+	protected final Map<String, Object> properties = new HashMap<>();
 
 	protected Context() {
 		this.platform = null;
@@ -58,27 +55,44 @@ public class Context {
 		}
 	}
 
+	/**
+	 * Get the name of the platform making the request.
+	 *
+	 * @return the platform identifier
+	 */
 	public String getPlatform() {
 		return this.platform;
 	}
 
+	/**
+	 * Get all properties in the context.
+	 *
+	 * @return the collection of properties
+	 */
 	@JsonAnyGetter
 	public Map<String, Object> getProperties() {
 		return this.properties;
 	}
 
 	/**
-	 * Get the value of a field in the request with the given key.
+	 * Get the value of a property in the context with the given key.
 	 *
-	 * @param key the key of the value to retrieve
-	 * @return the value of the field, or {@literal null} if the key is not present in the request
+	 * @param key the key of the property to retrieve
+	 * @return the value of the property, or {@literal null} if the key is not present in the request
 	 */
 	public Object getProperty(String key) {
 		return this.properties.get(key);
 	}
 
+	protected String getStringProperty(String key) {
+		if (getProperty(key) != null) {
+			return getProperty(key).toString();
+		}
+		return null;
+	}
+
 	@Override
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof Context)) return false;
 		Context that = (Context) o;
@@ -87,25 +101,21 @@ public class Context {
 				Objects.equals(properties, that.properties);
 	}
 
-	public boolean canEqual(Object other) {
+	public final boolean canEqual(Object other) {
 		return (other instanceof Context);
 	}
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return Objects.hash(platform, properties);
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		return "Context{" +
 				"platform='" + platform + '\'' +
 				", properties=" + properties +
 				'}';
-	}
-
-	public static ContextBuilder builder() {
-		return new ContextBuilder();
 	}
 
 	protected static abstract class ContextBaseBuilder<R extends Context, B extends ContextBaseBuilder<R, B>> {
@@ -118,42 +128,45 @@ public class Context {
 			this.thisObj = createBuilder();
 		}
 
-		/**
-		 * Provide the concrete builder.
-		 *
-		 * @return the builder
-		 */
 		protected abstract B createBuilder();
 
+		/**
+		 * Set the name of the platform as would be provided in the request from the platform.
+		 *
+		 * @param platform the platform name
+		 * @return the builder
+		 */
 		public B platform(String platform) {
 			this.platform = platform;
 			return thisObj;
 		}
 
+		/**
+		 * Add a set of properties from the provided {@literal Map} to the context properties
+		 * as would be provided in the request from the platform.
+		 *
+		 * @param properties the properties to add
+		 * @return the builder
+		 * @see #getProperties()
+		 */
 		public B properties(Map<String, Object> properties) {
 			this.properties.putAll(properties);
 			return thisObj;
 		}
 
+		/**
+		 * Add a key/value pair to the context properties as would be provided in the request from the platform.
+		 *
+		 * @param key the parameter key to add
+		 * @param value the parameter value to add
+		 * @return the builder
+		 * @see #getProperties()
+		 */
 		public B property(String key, Object value) {
 			this.properties.put(key, value);
 			return thisObj;
 		}
 
 		public abstract R build();
-	}
-
-	public static class ContextBuilder extends ContextBaseBuilder<Context, ContextBuilder> {
-		ContextBuilder() {
-		}
-
-		@Override
-		protected ContextBuilder createBuilder() {
-			return this;
-		}
-
-		public Context build() {
-			return new Context(platform, properties);
-		}
 	}
 }

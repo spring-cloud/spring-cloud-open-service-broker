@@ -21,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.cloud.servicebroker.model.Context;
+import org.springframework.cloud.servicebroker.model.PlatformContext;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.JsonUtils;
@@ -59,12 +60,12 @@ public abstract class ControllerRequestTest {
 		when(catalogService.getServiceDefinition("service-definition-id"))
 				.thenReturn(serviceDefinition);
 
-		identityContext = Context.builder()
+		identityContext = PlatformContext.builder()
 				.platform("test-platform")
 				.property("user", "user-id")
 				.build();
 
-		requestContext = Context.builder()
+		requestContext = PlatformContext.builder()
 				.platform("test-platform")
 				.property("request-property", "value")
 				.build();

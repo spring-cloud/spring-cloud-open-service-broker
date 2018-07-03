@@ -20,6 +20,7 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.model.Context;
+import org.springframework.cloud.servicebroker.model.PlatformContext;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest.PreviousValues;
 import org.springframework.cloud.servicebroker.JsonUtils;
 
@@ -54,9 +55,9 @@ public class UpdateServiceInstanceRequestTest {
 			put("field4", "value4");
 			put("field5", "value5");
 		}};
-		Context context = Context.builder().build();
+		Context context = PlatformContext.builder().build();
 
-		Context originatingIdentity = Context.builder()
+		Context originatingIdentity = PlatformContext.builder()
 				.platform("test-platform")
 				.build();
 

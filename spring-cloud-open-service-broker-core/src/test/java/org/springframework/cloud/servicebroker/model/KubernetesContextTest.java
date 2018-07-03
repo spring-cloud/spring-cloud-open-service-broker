@@ -16,16 +16,39 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.model.KubernetesContext.KUBERNETES_PLATFORM;
+import static org.springframework.cloud.servicebroker.model.KubernetesContext.NAMESPACE_KEY;
 
 public class KubernetesContextTest {
 	@Test
-	public void equalsAndHashCode() {
-		EqualsVerifier
-				.forClass(KubernetesContext.class)
-				.withRedefinedSuperclass()
-				.verify();
+	public void emptyContext() {
+		KubernetesContext context = KubernetesContext.builder()
+				.build();
+
+		assertThat(context.getPlatform()).isEqualTo(KUBERNETES_PLATFORM);
+
+		assertThat(context.getNamespace()).isNull();
+
+		assertThat(context.getProperties()).isEmpty();
 	}
 
+	@Test
+	public void populatedContext() {
+		KubernetesContext context = KubernetesContext.builder()
+				.property("key1", "value1")
+				.namespace("namespace")
+				.property("key2", "value2")
+				.build();
+
+		assertThat(context.getPlatform()).isEqualTo(KUBERNETES_PLATFORM);
+
+		assertThat(context.getNamespace()).isEqualTo("namespace");
+		assertThat(context.getProperty(NAMESPACE_KEY)).isEqualTo("namespace");
+
+		assertThat(context.getProperty("key1")).isEqualTo("value1");
+		assertThat(context.getProperty("key2")).isEqualTo("value2");
+	}
 }

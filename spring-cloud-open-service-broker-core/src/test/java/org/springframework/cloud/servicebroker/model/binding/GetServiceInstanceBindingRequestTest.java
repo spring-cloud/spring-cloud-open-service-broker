@@ -21,6 +21,7 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
 import org.springframework.cloud.servicebroker.model.Context;
+import org.springframework.cloud.servicebroker.model.PlatformContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,7 +40,7 @@ public class GetServiceInstanceBindingRequestTest {
 
 	@Test
 	public void requestWithAllValuesIsBuilt() {
-		Context originatingIdentity = Context.builder()
+		Context originatingIdentity = PlatformContext.builder()
 				.platform("test-platform")
 				.build();
 

@@ -16,8 +16,10 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.NotEmpty;
+import java.util.Map;
 
 /**
  * Kubernetes specific contextual information under which the service instance is to be provisioned or updated.
@@ -26,49 +28,50 @@ import javax.validation.constraints.NotEmpty;
  */
 public final class KubernetesContext extends Context {
 	public static final String KUBERNETES_PLATFORM = "kubernetes";
-
-	/**
-	 * The Kubernetes namespace for which the operation is requested.
-	 */
-	@NotEmpty
-	private final String namespace;
+	public static final String NAMESPACE_KEY = "namespace";
 
 	private KubernetesContext() {
-		this.namespace = null;
+		super(KUBERNETES_PLATFORM, null);
 	}
 
-	private KubernetesContext(String namespace) {
-		this.namespace = namespace;
+	private KubernetesContext(String namespace, Map<String, Object> properties) {
+		super(KUBERNETES_PLATFORM, properties);
+		if (namespace != null) {
+			setNamespace(namespace);
+		}
 	}
 
 	public String getNamespace() {
-		return this.namespace;
+		return getStringProperty(NAMESPACE_KEY);
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof KubernetesContext)) return false;
-		if (!super.equals(o)) return false;
-		KubernetesContext that = (KubernetesContext) o;
-		return Objects.equals(namespace, that.namespace);
+	@JsonProperty
+	@NotEmpty
+	private void setNamespace(String namespace) {
+		properties.put(NAMESPACE_KEY, namespace);
 	}
 
-	@Override
-	public boolean canEqual(Object other) {
-		return (other instanceof KubernetesContext);
+	public static KubernetesContextBuilder builder() {
+		return new KubernetesContextBuilder();
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(super.hashCode(), namespace);
-	}
+	public static class KubernetesContextBuilder extends ContextBaseBuilder<KubernetesContext, KubernetesContextBuilder> {
+		private String namespace;
 
-	@Override
-	public String toString() {
-		return super.toString() +
-				"KubernetesContext{" +
-				"namespace='" + namespace + '\'' +
-				'}';
-	}
-}
+		KubernetesContextBuilder() {
+		}
+
+		@Override
+		protected KubernetesContextBuilder createBuilder() {
+			return this;
+		}
+
+		public KubernetesContextBuilder namespace(String namespace) {
+			this.namespace = namespace;
+			return this;
+		}
+
+		public KubernetesContext build() {
+			return new KubernetesContext(namespace, properties);
+		}
+	}}
