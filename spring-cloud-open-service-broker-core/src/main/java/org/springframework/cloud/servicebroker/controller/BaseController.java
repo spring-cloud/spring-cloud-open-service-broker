@@ -35,9 +35,6 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.Base64Utils;
 
-import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM;
-import static org.springframework.cloud.servicebroker.model.KubernetesContext.KUBERNETES_PLATFORM;
-
 /**
  * Base functionality shared by controllers.
  *
@@ -107,11 +104,11 @@ public class BaseController {
 
 		String platform = parts[0];
 
-		if (CLOUD_FOUNDRY_PLATFORM.equals(platform)) {
+		if (CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM.equals(platform)) {
 			return CloudFoundryContext.builder()
 					.properties(properties)
 					.build();
-		} else if (KUBERNETES_PLATFORM.equals(platform)) {
+		} else if (KubernetesContext.KUBERNETES_PLATFORM.equals(platform)) {
 			return KubernetesContext.builder()
 					.properties(properties)
 					.build();
