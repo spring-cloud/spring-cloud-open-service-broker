@@ -8,7 +8,7 @@ image:https://codecov.io/gh/spring-cloud/spring-cloud-open-service-broker/branch
 Spring Cloud Open Service Broker is a framework for building https://projects.spring.io/spring-boot/[Spring Boot] applications that implement the https://www.openservicebrokerapi.org/[Open Service Broker API].
 
 [NOTE]
-This project was formerly named Spring Cloud - Cloud Foundry Service Broker. View the https://github.com/spring-cloud/spring-cloud-open-service-broker/tree/1.0.x[1.0.x] branch of this repository for information on using the released versions of the project with artifacts using that name. The `master` branch of the repository is currently in active development leading to a `2.0.0` release. 
+This project was formerly named Spring Cloud - Cloud Foundry Service Broker. View the https://github.com/spring-cloud/spring-cloud-open-service-broker/tree/1.0.x[1.0.x] branch of this repository for information on using the released versions of the project with artifacts using that name. The `master` branch of the repository is currently in active development and has been released as version `2.0.0.RELEASE`. 
 
 == Compatibility
 
