@@ -27,6 +27,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequi
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerBindingRequiresAppException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerConcurrencyException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidOriginatingIdentityException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerUnavailableException;
@@ -37,7 +38,6 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsEx
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.core.MethodParameter;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.MapBindingResult;
@@ -113,9 +113,9 @@ public class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void httpMessageNotReadableException() {
-		HttpMessageNotReadableException exception =
-				new HttpMessageNotReadableException("test message");
+	public void serviceBrokerInvalidOriginatingIdentityException() {
+		ServiceBrokerInvalidOriginatingIdentityException exception =
+				new ServiceBrokerInvalidOriginatingIdentityException("test message");
 
 		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
 
