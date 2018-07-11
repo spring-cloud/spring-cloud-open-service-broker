@@ -22,6 +22,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidOriginatingIdentityException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.Context;
@@ -31,7 +32,6 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.service.CatalogService;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.Base64Utils;
 
@@ -82,7 +82,7 @@ public class BaseController {
 		String[] parts = originatingIdentityString.split(" ", 2);
 
 		if (parts.length != 2) {
-			throw new HttpMessageNotReadableException("Expected platform and properties values in "
+			throw new ServiceBrokerInvalidOriginatingIdentityException("Expected platform and properties values in "
 					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request");
 		}
 
@@ -90,7 +90,7 @@ public class BaseController {
 		try {
 			encodedProperties = new String(Base64Utils.decode(parts[1].getBytes()));
 		} catch (IllegalArgumentException e) {
-			throw new HttpMessageNotReadableException("Error decoding JSON properties from "
+			throw new ServiceBrokerInvalidOriginatingIdentityException("Error decoding JSON properties from "
 					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request", e);
 		}
 
@@ -98,7 +98,7 @@ public class BaseController {
 		try {
 			properties = readJsonFromString(encodedProperties);
 		} catch (IOException e) {
-			throw new HttpMessageNotReadableException("Error parsing JSON properties from "
+			throw new ServiceBrokerInvalidOriginatingIdentityException("Error parsing JSON properties from "
 					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request", e);
 		}
 

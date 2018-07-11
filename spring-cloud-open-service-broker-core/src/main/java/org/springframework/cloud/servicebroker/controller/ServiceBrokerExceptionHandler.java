@@ -18,12 +18,14 @@ package org.springframework.cloud.servicebroker.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerBindingRequiresAppException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerConcurrencyException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidOriginatingIdentityException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerUnavailableException;
@@ -36,7 +38,6 @@ import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -110,9 +111,9 @@ public class ServiceBrokerExceptionHandler {
 		return getErrorResponse(ex);
 	}
 
-	@ExceptionHandler(HttpMessageNotReadableException.class)
+	@ExceptionHandler(ServiceBrokerInvalidOriginatingIdentityException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-	public ErrorMessage handleException(HttpMessageNotReadableException ex) {
+	public ErrorMessage handleException(ServiceBrokerInvalidOriginatingIdentityException ex) {
 		logger.error("Unprocessable request received: ", ex);
 		return getErrorResponse(ex);
 	}

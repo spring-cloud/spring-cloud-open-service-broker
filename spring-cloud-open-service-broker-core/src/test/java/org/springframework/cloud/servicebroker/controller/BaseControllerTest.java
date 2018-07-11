@@ -20,12 +20,12 @@ import java.util.Base64;
 
 import org.junit.Test;
 
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidOriginatingIdentityException;
 import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.KubernetesContext;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,17 +37,17 @@ public class BaseControllerTest {
 
 	private TestBaseController controller = new TestBaseController();
 
-	@Test(expected = HttpMessageNotReadableException.class)
+	@Test(expected = ServiceBrokerInvalidOriginatingIdentityException.class)
 	public void originatingIdentityWithNoPropertiesThrowsException() {
 		controller.testOriginatingIdentity("platform");
 	}
 
-	@Test(expected = HttpMessageNotReadableException.class)
+	@Test(expected = ServiceBrokerInvalidOriginatingIdentityException.class)
 	public void originatingIdentityWithNonEncodedPropertiesThrowsException() {
 		controller.testOriginatingIdentity("platform some-properties");
 	}
 
-	@Test(expected = HttpMessageNotReadableException.class)
+	@Test(expected = ServiceBrokerInvalidOriginatingIdentityException.class)
 	public void originatingIdentityWithNonJsonPropertiesThrowsException() {
 		String encodedProperties = encode("some-properties");
 
