@@ -28,9 +28,13 @@ This project requires Java 8 at a minimum.
 
 The project is built with Gradle. The https://docs.gradle.org/current/userguide/gradle_wrapper.html[Gradle wrapper] allows you to build the project on multiple platforms and even if you do not have Gradle installed; run it in place of the `gradle` command (as `./gradlew`) from the root of the main project directory.
 
-=== To compile the project and run tests
+=== Compile the project and run tests
 
     ./gradlew build
+
+You may also build and run tests against the latest versions or specific version of Spring Framework and Spring Boot by using the following parameters, either individually or together.
+
+    ./gradlew build -PspringBootVersion=latest.integration -PspringVersion=latest.integration
 
 == Working with the code
 If you don't have an IDE preference we would recommend that you use
