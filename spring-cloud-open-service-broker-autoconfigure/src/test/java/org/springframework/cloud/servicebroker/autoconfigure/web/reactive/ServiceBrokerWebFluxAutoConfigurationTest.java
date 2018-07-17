@@ -24,6 +24,7 @@ import org.springframework.boot.test.context.runner.ReactiveWebApplicationContex
 import org.springframework.cloud.servicebroker.autoconfigure.web.TestCatalogService;
 import org.springframework.cloud.servicebroker.autoconfigure.web.TestServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.autoconfigure.web.TestServiceInstanceService;
+import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.ServiceBrokerWebMvcAutoConfiguration;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceController;
@@ -70,13 +71,15 @@ public class ServiceBrokerWebFluxAutoConfigurationTest {
 	}
 
 	private ReactiveWebApplicationContextRunner webApplicationContextRunner() {
-		return new ReactiveWebApplicationContextRunner()
-				.withConfiguration(AutoConfigurations.of(ServiceBrokerWebFluxAutoConfiguration.class));
+		return new ReactiveWebApplicationContextRunner().withConfiguration(
+				AutoConfigurations.of(ServiceBrokerWebFluxAutoConfiguration.class,
+						ServiceBrokerWebMvcAutoConfiguration.class));
 	}
 
 	private ApplicationContextRunner nonWebApplicationContextRunner() {
-		return new ApplicationContextRunner()
-				.withConfiguration(AutoConfigurations.of(ServiceBrokerWebFluxAutoConfiguration.class));
+		return new ApplicationContextRunner().withConfiguration(
+				AutoConfigurations.of(ServiceBrokerWebFluxAutoConfiguration.class,
+						ServiceBrokerWebMvcAutoConfiguration.class));
 	}
 
 	@Configuration
