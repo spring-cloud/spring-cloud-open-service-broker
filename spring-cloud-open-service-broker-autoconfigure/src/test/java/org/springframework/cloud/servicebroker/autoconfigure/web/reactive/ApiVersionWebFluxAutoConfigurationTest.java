@@ -22,6 +22,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
 import org.springframework.cloud.servicebroker.autoconfigure.web.TestServiceInstanceService;
+import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.ApiVersionWebMvcAutoConfiguration;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
@@ -109,13 +110,15 @@ public class ApiVersionWebFluxAutoConfigurationTest {
 	}
 
 	private ReactiveWebApplicationContextRunner webApplicationContextRunner() {
-		return new ReactiveWebApplicationContextRunner()
-				.withConfiguration(AutoConfigurations.of(ApiVersionWebFluxAutoConfiguration.class));
+		return new ReactiveWebApplicationContextRunner().withConfiguration(
+				AutoConfigurations.of(ApiVersionWebFluxAutoConfiguration.class,
+						ApiVersionWebMvcAutoConfiguration.class));
 	}
 
 	private ApplicationContextRunner nonWebApplicationContextRunner() {
-		return new ApplicationContextRunner()
-				.withConfiguration(AutoConfigurations.of(ApiVersionWebFluxAutoConfiguration.class));
+		return new ApplicationContextRunner().withConfiguration(
+				AutoConfigurations.of(ApiVersionWebFluxAutoConfiguration.class,
+						ApiVersionWebMvcAutoConfiguration.class));
 	}
 
 	@Configuration

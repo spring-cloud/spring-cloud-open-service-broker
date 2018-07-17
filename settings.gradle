@@ -3,11 +3,9 @@ rootProject.name = "spring-cloud-open-service-broker"
 include ":spring-cloud-open-service-broker-docs"
 include ":spring-cloud-open-service-broker-core"
 include ":spring-cloud-open-service-broker-autoconfigure"
-include ":spring-cloud-starter-open-service-broker-webmvc"
-include ":spring-cloud-starter-open-service-broker-webflux"
+include ":spring-cloud-starter-open-service-broker"
 
 project(":spring-cloud-open-service-broker-docs").projectDir = "$rootDir/spring-cloud-open-service-broker-docs" as File
 project(":spring-cloud-open-service-broker-core").projectDir = "$rootDir/spring-cloud-open-service-broker-core" as File
 project(":spring-cloud-open-service-broker-autoconfigure").projectDir = "$rootDir/spring-cloud-open-service-broker-autoconfigure" as File
-project(":spring-cloud-starter-open-service-broker-webmvc").projectDir = "$rootDir/spring-cloud-starter-open-service-broker-webmvc" as File
-project(":spring-cloud-starter-open-service-broker-webflux").projectDir = "$rootDir/spring-cloud-starter-open-service-broker-webflux" as File
+project(":spring-cloud-starter-open-service-broker").projectDir = "$rootDir/spring-cloud-starter-open-service-broker" as File

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-description = "Spring Cloud Open Service Broker Web Flux Starter"
+description = "Spring Cloud Open Service Broker Web MVC Starter"
 
 dependencyManagement {
 	imports {
@@ -24,7 +24,6 @@ dependencyManagement {
 
 dependencies {
 	compile project(":spring-cloud-open-service-broker-autoconfigure")
-	compile("org.springframework.boot:spring-boot-starter-webflux")
 }
 
 install {
