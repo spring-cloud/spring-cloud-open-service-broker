@@ -8,22 +8,22 @@ Spring WebFlux is currently not supported.
 
 === Maven dependencies
 
-To use Spring Cloud Open Service Broker in a *Spring MVC* application, add the `webmvc` starter:
+To use Spring Cloud Open Service Broker in a Spring web application, add the starter:
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-open-service-broker-webmvc</artifactId>
+            <artifactId>spring-cloud-starter-open-service-broker</artifactId>
             <version>${version}</version>
         </dependency>
     </dependencies>
 
 === Gradle dependencies
 
-To use Spring Cloud Open Service Broker in a *Spring MVC* application, add the `webmvc` starter:
+To use Spring Cloud Open Service Broker in a Spring web application, add the starter:
 
     dependencies {
-        compile("org.springframework.cloud:spring-cloud-starter-open-service-broker-webmvc:${version}")
+        compile("org.springframework.cloud:spring-cloud-starter-open-service-broker:${version}")
     }
 
 === Configuring the service broker
