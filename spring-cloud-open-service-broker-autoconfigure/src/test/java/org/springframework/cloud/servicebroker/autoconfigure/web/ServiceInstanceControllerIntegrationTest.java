@@ -379,6 +379,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
 				.async(true)
 				.operation("working")
+				.dashboardUrl("https://dashboard.example.com")
 				.build());
 
 		mockMvc.perform(patch(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
@@ -388,7 +389,8 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isAccepted())
-				.andExpect(jsonPath("$.operation", equalTo("working")));
+				.andExpect(jsonPath("$.operation", equalTo("working")))
+				.andExpect(jsonPath("$.dashboard_url", equalTo("https://dashboard.example.com")));
 
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
@@ -412,6 +414,42 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
 		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
+	public void updateServiceInstanceResponseShouldNotContainEmptyValuesWhenNull() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
+				.dashboardUrl(null)
+				.operation(null)
+				.build());
+
+		mockMvc.perform(patch(buildCreateUpdateUrl())
+				.content(updateRequestBody)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.dashboard_url").doesNotExist())
+				.andExpect(jsonPath("$.operation").doesNotExist());
+	}
+
+	@Test
+	public void updateServiceInstanceResponseShouldNotContainEmptyValuesWhenEmpty() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
+				.dashboardUrl("")
+				.operation("")
+				.build());
+
+		mockMvc.perform(patch(buildCreateUpdateUrl())
+				.content(updateRequestBody)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.dashboard_url").doesNotExist())
+				.andExpect(jsonPath("$.operation").doesNotExist());
 	}
 
 	@Test
