@@ -17,6 +17,7 @@
 package org.springframework.cloud.servicebroker.model.instance;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -35,6 +36,7 @@ import java.util.Objects;
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse {
+	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 	private final String dashboardUrl;
 
 	@JsonIgnore
