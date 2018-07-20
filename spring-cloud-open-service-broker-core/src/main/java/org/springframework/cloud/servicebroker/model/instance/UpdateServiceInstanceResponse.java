@@ -16,6 +16,11 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import java.util.Objects;
+
 /**
  * Details of a response to a request to update a service instance.
  *
@@ -27,9 +32,23 @@ package org.springframework.cloud.servicebroker.model.instance;
  * 
  * @author Scott Frederick
  */
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class UpdateServiceInstanceResponse extends AsyncServiceInstanceResponse {
-	UpdateServiceInstanceResponse(boolean async, String operation) {
+	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
+	private final String dashboardUrl;
+
+	UpdateServiceInstanceResponse(boolean async, String operation, String dashboardUrl) {
 		super(async, operation);
+		this.dashboardUrl = dashboardUrl;
+	}
+
+	/**
+	 * Get the URL of a web-based management user interface for the service instance.
+	 *
+	 * @return the dashboard URL, or {@literal null} if not provided
+	 */
+	public String getDashboardUrl() {
+		return this.dashboardUrl;
 	}
 
 	/**
@@ -42,9 +61,30 @@ public class UpdateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 	}
 
 	@Override
+	public final boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof UpdateServiceInstanceResponse)) return false;
+		if (!super.equals(o)) return false;
+		UpdateServiceInstanceResponse that = (UpdateServiceInstanceResponse) o;
+		return that.canEqual(this) &&
+				Objects.equals(dashboardUrl, that.dashboardUrl);
+	}
+
+	@Override
+	public boolean canEqual(Object other) {
+		return (other instanceof UpdateServiceInstanceResponseBuilder);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), dashboardUrl);
+	}
+
+	@Override
 	public String toString() {
 		return super.toString() +
 				"UpdateServiceInstanceResponse{" +
+				"dashboardUrl='" + dashboardUrl + '\'' +
 				'}';
 	}
 
@@ -52,10 +92,26 @@ public class UpdateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 	 * Provides a fluent API for constructing an {@link UpdateServiceInstanceResponse}.
 	 */
 	public static class UpdateServiceInstanceResponseBuilder {
+		private String dashboardUrl;
 		private boolean async;
 		private String operation;
 
 		UpdateServiceInstanceResponseBuilder() {
+		}
+
+		/**
+		 * Set the URL of a web-based management user interface provided by the service broker for the service
+		 * instance. Can be {@literal null} to indicate that a management dashboard is not provided.
+		 *
+		 * <p>
+		 * This value will set the {@literal dashboard_url} field in the body of the response to the platform.
+		 *
+		 * @param dashboardUrl the dashboard URL
+		 * @return the builder
+		 */
+		public UpdateServiceInstanceResponse.UpdateServiceInstanceResponseBuilder dashboardUrl(String dashboardUrl) {
+			this.dashboardUrl = dashboardUrl;
+			return this;
 		}
 
 		/**
@@ -98,7 +154,7 @@ public class UpdateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 		 * @return the newly constructed {@literal UpdateServiceInstanceResponse}
 		 */
 		public UpdateServiceInstanceResponse build() {
-			return new UpdateServiceInstanceResponse(async, operation);
+			return new UpdateServiceInstanceResponse(async, operation, dashboardUrl);
 		}
 	}
 }
