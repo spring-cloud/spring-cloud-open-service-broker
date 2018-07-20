@@ -96,6 +96,42 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
+	public void createServiceInstanceResponseShouldNotContainEmptyValuesWhenNull() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
+				.operation(null)
+				.dashboardUrl(null)
+				.build());
+
+		mockMvc.perform(put(buildCreateUpdateUrl())
+				.content(createRequestBody)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.dashboard_url").doesNotExist())
+				.andExpect(jsonPath("$.operation").doesNotExist());
+	}
+
+	@Test
+	public void createServiceInstanceResponseShouldNotContainEmptyValuesWhenEmpty() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
+				.operation("")
+				.dashboardUrl("")
+				.build());
+
+		mockMvc.perform(put(buildCreateUpdateUrl())
+				.content(createRequestBody)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.dashboard_url").doesNotExist())
+				.andExpect(jsonPath("$.operation").doesNotExist());
+	}
+
+	@Test
 	public void createServiceInstanceWithEmptyPlatformInstanceIdSucceeds() throws Exception {
 		setupCatalogService();
 

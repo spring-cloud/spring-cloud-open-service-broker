@@ -31,6 +31,7 @@ public class AsyncServiceInstanceResponse {
 	@JsonIgnore
 	protected final boolean async;
 
+	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 	protected final String operation;
 
 	protected AsyncServiceInstanceResponse(boolean async, String operation) {
