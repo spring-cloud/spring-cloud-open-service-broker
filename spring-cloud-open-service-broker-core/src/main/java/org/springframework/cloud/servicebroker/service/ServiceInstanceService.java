@@ -111,4 +111,82 @@ public interface ServiceInstanceService {
 				"or provide an implementation of the update instance API."));
 	}
 
+	// create hooks
+
+	/**
+	 * Hook for performing an action before a service instance is created
+	 * @return a completed Mono
+	 */
+	default Mono<Void> getBeforeCreateFlow() {
+		return Mono.empty();
+	}
+
+	/**
+	 * Hook for performing an action after a service instance is created
+	 * @return a completed Mono
+	 */
+	default Mono<Void> getAfterCreateFlow() {
+		return Mono.empty();
+	}
+
+	/**
+	 * Hook for performing an action when creating a service instance produces an error
+	 * @return a completed Mono
+	 */
+	default Mono<Void> getErrorCreateFlow() {
+		return Mono.empty();
+	}
+
+	// delete hooks
+
+	/**
+	 * Hook for performing an action before a service instance is deleted
+	 * @return a completed Mono
+	 */
+	default Mono<Void> getBeforeDeleteFlow() {
+		return Mono.empty();
+	}
+
+	/**
+	 * Hook for performing an action after a service instance is deleted
+	 * @return a completed Mono
+	 */
+	default Mono<Void> getAfterDeleteFlow() {
+		return Mono.empty();
+	}
+
+	/**
+	 * Hook for performing an action when deleting a service instance produces an error
+	 * @return a completed Mono
+	 */
+	default Mono<Void> getErrorDeleteFlow() {
+		return Mono.empty();
+	}
+
+	// update hooks
+
+	/**
+	 * Hook for performing an action before a service instance is updated
+	 * @return a completed Mono
+	 */
+	default Mono<Void> getBeforeUpdateFlow() {
+		return Mono.empty();
+	}
+
+	/**
+	 * Hook for performing an action after a service instance is updated
+	 * @return a completed Mono
+	 */
+	default Mono<Void> getAfterUpdateFlow() {
+		return Mono.empty();
+	}
+
+	/**
+	 * Hook for performing an action when updating a service instance produces an error
+	 * @return a completed Mono
+	 */
+	default Mono<Void> getErrorUpdateFlow() {
+		return Mono.empty();
+	}
+
 }

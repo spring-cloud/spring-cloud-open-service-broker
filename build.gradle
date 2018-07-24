@@ -37,6 +37,7 @@ ext {
 		springBootVersion = "2.0.3.RELEASE"
 	}
 	springCloudContractVersion = "2.0.0.RELEASE"
+	reactorVersion = "Bismuth-RELEASE"
 
 	javadocLinks = [
 			"http://docs.oracle.com/javase/8/docs/api/",
