@@ -90,6 +90,46 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
+	public void createServiceInstanceResponseShouldNotContainEmptyValuesWhenNull() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
+				.operation(null)
+				.dashboardUrl(null)
+				.build());
+
+		client.put().uri(buildCreateUpdateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(createRequestBody)
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isCreated()
+				.expectBody()
+				.jsonPath("$.dashboard_url").doesNotExist()
+				.jsonPath("$.operation").doesNotExist();
+	}
+
+	@Test
+	public void createServiceInstanceResponseShouldNotContainEmptyValuesWhenEmpty() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
+				.operation("")
+				.dashboardUrl("")
+				.build());
+
+		client.put().uri(buildCreateUpdateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(createRequestBody)
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isCreated()
+				.expectBody()
+				.jsonPath("$.dashboard_url").doesNotExist()
+				.jsonPath("$.operation").doesNotExist();
+	}
+
+	@Test
 	public void createServiceInstanceWithEmptyPlatformInstanceIdSucceeds() {
 		setupCatalogService();
 
