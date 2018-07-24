@@ -112,10 +112,14 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.dashboardUrl(null)
 				.build());
 
-		mockMvc.perform(put(buildCreateUpdateUrl())
+		MvcResult mvcResult = mockMvc.perform(put(buildCreateUpdateUrl())
 				.content(createRequestBody)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.dashboard_url").doesNotExist())
 				.andExpect(jsonPath("$.operation").doesNotExist());
@@ -130,10 +134,14 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.dashboardUrl("")
 				.build());
 
-		mockMvc.perform(put(buildCreateUpdateUrl())
+		MvcResult mvcResult = mockMvc.perform(put(buildCreateUpdateUrl())
 				.content(createRequestBody)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.dashboard_url").doesNotExist())
 				.andExpect(jsonPath("$.operation").doesNotExist());
