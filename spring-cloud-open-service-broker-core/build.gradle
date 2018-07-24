@@ -19,6 +19,7 @@ description = "Spring Cloud Open Service Broker Core"
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework:spring-framework-bom:${springVersion}"
+		mavenBom "io.projectreactor:reactor-bom:${reactorVersion}"
 	}
 }
 
@@ -37,6 +38,7 @@ dependencies {
 	testCompile("org.springframework:spring-test") {
 		exclude group:"commons-logging", module:"commons-logging"
 	}
+	testCompile("io.projectreactor:reactor-test")
 	testCompile("junit:junit:4.12") {
 		exclude group:"org.hamcrest", module:"hamcrest-core"
 	}

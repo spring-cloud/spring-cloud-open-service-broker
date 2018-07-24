@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
@@ -58,13 +57,12 @@ public class ServiceInstanceBindingController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ServiceInstanceBindingController.class);
 
-	private final ServiceInstanceBindingService serviceInstanceBindingService;
+	private final ServiceInstanceBindingService service;
 
-	@Autowired
 	public ServiceInstanceBindingController(CatalogService catalogService,
-											ServiceInstanceBindingService serviceInstanceBindingService) {
+			ServiceInstanceBindingService serviceInstanceBindingService) {
 		super(catalogService);
-		this.serviceInstanceBindingService = serviceInstanceBindingService;
+		this.service = serviceInstanceBindingService;
 	}
 
 	@PutMapping(value = {
@@ -89,7 +87,7 @@ public class ServiceInstanceBindingController extends BaseController {
 				.flatMap(req -> setCommonRequestFields(req, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE),
 						apiInfoLocation, originatingIdentityString))
 				.cast(CreateServiceInstanceBindingRequest.class)
-				.flatMap(req -> serviceInstanceBindingService.createServiceInstanceBinding(req)
+				.flatMap(req -> service.createServiceInstanceBinding(req)
 						.doOnRequest(v -> logger.debug("Creating a service instance binding: request={}", req))
 						.doOnSuccess(response -> logger.debug("Creating a service instance binding succeeded: serviceInstanceId={}, bindingId={}, response={}",
 								serviceInstanceId, bindingId, response)))
@@ -121,7 +119,7 @@ public class ServiceInstanceBindingController extends BaseController {
 				.apiInfoLocation(apiInfoLocation)
 				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
 				.build())
-				.flatMap(req -> serviceInstanceBindingService.getServiceInstanceBinding(req)
+				.flatMap(req -> service.getServiceInstanceBinding(req)
 						.doOnRequest(v -> logger.debug("Getting a service instance binding: request={}", req))
 						.doOnSuccess(response -> logger.debug("Getting a service instance binding succeeded: bindingId={}", bindingId)))
 				.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
@@ -152,7 +150,7 @@ public class ServiceInstanceBindingController extends BaseController {
 						.apiInfoLocation(apiInfoLocation)
 						.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
 						.build())
-				.flatMap(req -> serviceInstanceBindingService.deleteServiceInstanceBinding(req)
+				.flatMap(req -> service.deleteServiceInstanceBinding(req)
 						.doOnRequest(v -> logger.debug("Deleting a service instance binding: request={}", req))
 						.doOnSuccess(aVoid -> logger.debug("Deleting a service instance binding succeeded: bindingId={}", bindingId))
 						.doOnError(e -> logger.debug(e.getMessage(), e)))

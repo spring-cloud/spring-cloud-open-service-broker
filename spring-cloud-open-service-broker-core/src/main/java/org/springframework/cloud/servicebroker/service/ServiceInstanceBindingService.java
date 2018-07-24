@@ -78,4 +78,56 @@ public interface ServiceInstanceBindingService {
 		return Mono.error(new UnsupportedOperationException("This service broker does not support deleting service bindings."));
 	}
 
+	// create hooks
+
+	/**
+	 * Hook for performing an action before a service instance binding is created
+	 * @return a completed Mono
+	 */
+	default Mono<Void> getBeforeCreateFlow() {
+		return Mono.empty();
+	}
+
+	/**
+	 * Hook for performing an action after a service instance binding is created
+	 * @return a completed Mono
+	 */
+	default Mono<Void> getAfterCreateFlow() {
+		return Mono.empty();
+	}
+
+	/**
+	 * Hook for performing an action when creating a service instance binding produces an error
+	 * @return a completed Mono
+	 */
+	default Mono<Void> getErrorCreateFlow() {
+		return Mono.empty();
+	}
+
+	// delete hooks
+
+	/**
+	 * Hook for performing an action before a service instance binding is deleted
+	 * @return a completed Mono
+	 */
+	default Mono<Void> getBeforeDeleteFlow() {
+		return Mono.empty();
+	}
+
+	/**
+	 * Hook for performing an action after a service instance binding is deleted
+	 * @return a completed Mono
+	 */
+	default Mono<Void> getAfterDeleteFlow() {
+		return Mono.empty();
+	}
+
+	/**
+	 * Hook for performing an action when deleting a service instance binding produces an error
+	 * @return a completed Mono
+	 */
+	default Mono<Void> getErrorDeleteFlow() {
+		return Mono.empty();
+	}
+
 }
