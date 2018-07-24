@@ -27,7 +27,9 @@ import org.springframework.cloud.servicebroker.controller.ServiceBrokerException
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceController;
 import org.springframework.cloud.servicebroker.service.CatalogService;
+import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingEventService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
+import org.springframework.cloud.servicebroker.service.ServiceInstanceEventService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,16 +50,18 @@ public class ServiceBrokerWebFluxAutoConfiguration {
 
 	private final CatalogService catalogService;
 
-	private final ServiceInstanceService serviceInstanceService;
+	private final ServiceInstanceEventService serviceInstanceEventService;
 
-	private final ServiceInstanceBindingService serviceInstanceBindingService;
+	private final ServiceInstanceBindingEventService serviceInstanceBindingEventService;
 
 	protected ServiceBrokerWebFluxAutoConfiguration(CatalogService catalogService,
 			ServiceInstanceService serviceInstanceService,
 			ServiceInstanceBindingService serviceInstanceBindingService) {
 		this.catalogService = catalogService;
-		this.serviceInstanceService = serviceInstanceService;
-		this.serviceInstanceBindingService = serviceInstanceBindingService;
+		this.serviceInstanceEventService = new ServiceInstanceEventService(
+				serviceInstanceService);
+		this.serviceInstanceBindingEventService = new ServiceInstanceBindingEventService(
+				serviceInstanceBindingService);
 	}
 
 	@Bean
@@ -68,13 +72,13 @@ public class ServiceBrokerWebFluxAutoConfiguration {
 	@Bean
 	public ServiceInstanceController serviceInstanceController() {
 		return new ServiceInstanceController(this.catalogService,
-				this.serviceInstanceService);
+				this.serviceInstanceEventService);
 	}
 
 	@Bean
 	public ServiceInstanceBindingController serviceInstanceBindingController() {
 		return new ServiceInstanceBindingController(this.catalogService,
-				this.serviceInstanceBindingService);
+				this.serviceInstanceBindingEventService);
 	}
 
 	@Bean
