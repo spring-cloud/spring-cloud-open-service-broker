@@ -25,6 +25,8 @@ import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceB
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
 
 /**
+ * Internal implementation of {@link ServiceInstanceBindingService} that attaches event
+ * hooks to the requests to create and delete service instance bindings
  *
  * @author Roy Clarkson
  */
@@ -38,11 +40,11 @@ public class ServiceInstanceBindingEventService implements ServiceInstanceBindin
 
 	@Override
 	public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
-		return service.getBeforeCreateFlow()
+		return service.getBeforeCreateFlow(request)
 				.then(service.createServiceInstanceBinding(request))
-				.onErrorResume(e -> service.getErrorCreateFlow()
+				.onErrorResume(e -> service.getErrorCreateFlow(request, e)
 						.then(Mono.error(e)))
-				.flatMap(response -> service.getAfterCreateFlow()
+				.flatMap(response -> service.getAfterCreateFlow(request, response)
 						.then(Mono.just(response)));
 	}
 
@@ -53,10 +55,10 @@ public class ServiceInstanceBindingEventService implements ServiceInstanceBindin
 
 	@Override
 	public Mono<Void> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
-		return service.getBeforeDeleteFlow()
+		return service.getBeforeDeleteFlow(request)
 				.then(service.deleteServiceInstanceBinding(request))
-				.onErrorResume(e -> service.getErrorDeleteFlow()
+				.onErrorResume(e -> service.getErrorDeleteFlow(request, e)
 						.then(Mono.error(e)))
-				.then(service.getAfterDeleteFlow());
+				.then(service.getAfterDeleteFlow(request));
 	}
 }

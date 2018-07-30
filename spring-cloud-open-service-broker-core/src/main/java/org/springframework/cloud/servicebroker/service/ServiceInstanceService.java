@@ -42,6 +42,7 @@ import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInsta
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 public interface ServiceInstanceService {
 
@@ -116,24 +117,30 @@ public interface ServiceInstanceService {
 	/**
 	 * Hook for performing an action before a service instance is created
 	 * @return a completed Mono
+	 * @param request the request to create a service instance
 	 */
-	default Mono<Void> getBeforeCreateFlow() {
+	default Mono<Void> getBeforeCreateFlow(CreateServiceInstanceRequest request) {
 		return Mono.empty();
 	}
 
 	/**
 	 * Hook for performing an action after a service instance is created
 	 * @return a completed Mono
+	 * @param request the request to create a service instance
+	 * @param response the error resulting from a successful service instance create
 	 */
-	default Mono<Void> getAfterCreateFlow() {
+	default Mono<Void> getAfterCreateFlow(CreateServiceInstanceRequest request,
+			CreateServiceInstanceResponse response) {
 		return Mono.empty();
 	}
 
 	/**
 	 * Hook for performing an action when creating a service instance produces an error
 	 * @return a completed Mono
+	 * @param request the request to create a service instance
+	 * @param error the error resulting from a failed service instance create
 	 */
-	default Mono<Void> getErrorCreateFlow() {
+	default Mono<Void> getErrorCreateFlow(CreateServiceInstanceRequest request, Throwable error) {
 		return Mono.empty();
 	}
 
@@ -142,24 +149,30 @@ public interface ServiceInstanceService {
 	/**
 	 * Hook for performing an action before a service instance is deleted
 	 * @return a completed Mono
+	 * @param request the request to delete the service instance
 	 */
-	default Mono<Void> getBeforeDeleteFlow() {
+	default Mono<Void> getBeforeDeleteFlow(DeleteServiceInstanceRequest request) {
 		return Mono.empty();
 	}
 
 	/**
 	 * Hook for performing an action after a service instance is deleted
 	 * @return a completed Mono
+	 * @param request the request to delete the service instance
+	 * @param response the response resulting from a successful service instance delete
 	 */
-	default Mono<Void> getAfterDeleteFlow() {
+	default Mono<Void> getAfterDeleteFlow(DeleteServiceInstanceRequest request,
+			DeleteServiceInstanceResponse response) {
 		return Mono.empty();
 	}
 
 	/**
 	 * Hook for performing an action when deleting a service instance produces an error
 	 * @return a completed Mono
+	 * @param request the request to delete the service instance
+	 * @param error the error resulting from a failed service instance delete
 	 */
-	default Mono<Void> getErrorDeleteFlow() {
+	default Mono<Void> getErrorDeleteFlow(DeleteServiceInstanceRequest request, Throwable error) {
 		return Mono.empty();
 	}
 
@@ -168,24 +181,30 @@ public interface ServiceInstanceService {
 	/**
 	 * Hook for performing an action before a service instance is updated
 	 * @return a completed Mono
+	 * @param request the request to update the service instance
 	 */
-	default Mono<Void> getBeforeUpdateFlow() {
+	default Mono<Void> getBeforeUpdateFlow(UpdateServiceInstanceRequest request) {
 		return Mono.empty();
 	}
 
 	/**
 	 * Hook for performing an action after a service instance is updated
 	 * @return a completed Mono
+	 * @param request the request to update the service instance
+	 * @param response the response resulting from a successful service instance update
 	 */
-	default Mono<Void> getAfterUpdateFlow() {
+	default Mono<Void> getAfterUpdateFlow(UpdateServiceInstanceRequest request,
+			UpdateServiceInstanceResponse response) {
 		return Mono.empty();
 	}
 
 	/**
 	 * Hook for performing an action when updating a service instance produces an error
 	 * @return a completed Mono
+	 * @param request the request to update the service instance
+	 * @param error the error resulting from a failed service instance update
 	 */
-	default Mono<Void> getErrorUpdateFlow() {
+	default Mono<Void> getErrorUpdateFlow(UpdateServiceInstanceRequest request, Throwable error) {
 		return Mono.empty();
 	}
 
