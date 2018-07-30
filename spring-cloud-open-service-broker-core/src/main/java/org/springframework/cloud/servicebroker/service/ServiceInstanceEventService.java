@@ -30,6 +30,8 @@ import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInsta
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
 
 /**
+ * Internal implementation of {@link ServiceInstanceService} that attaches event hooks to
+ * requests related to provisioning, updating, and deprovisioning service instances.
  *
  * @author Roy Clarkson
  */
@@ -43,11 +45,11 @@ public class ServiceInstanceEventService implements ServiceInstanceService {
 
 	@Override
 	public Mono<CreateServiceInstanceResponse> createServiceInstance(CreateServiceInstanceRequest request) {
-		return service.getBeforeCreateFlow()
+		return service.getBeforeCreateFlow(request)
 				.then(service.createServiceInstance(request))
-				.onErrorResume(e -> service.getErrorCreateFlow()
+				.onErrorResume(e -> service.getErrorCreateFlow(request, e)
 						.then(Mono.error(e)))
-				.flatMap(response -> service.getAfterCreateFlow()
+				.flatMap(response -> service.getAfterCreateFlow(request, response)
 						.then(Mono.just(response)));
 	}
 
@@ -63,21 +65,21 @@ public class ServiceInstanceEventService implements ServiceInstanceService {
 
 	@Override
 	public Mono<DeleteServiceInstanceResponse> deleteServiceInstance(DeleteServiceInstanceRequest request) {
-		return service.getBeforeDeleteFlow()
+		return service.getBeforeDeleteFlow(request)
 				.then(service.deleteServiceInstance(request))
-				.onErrorResume(e -> service.getErrorDeleteFlow()
+				.onErrorResume(e -> service.getErrorDeleteFlow(request, e)
 						.then(Mono.error(e)))
-				.flatMap(response -> service.getAfterDeleteFlow()
+				.flatMap(response -> service.getAfterDeleteFlow(request, response)
 						.then(Mono.just(response)));
 	}
 
 	@Override
 	public Mono<UpdateServiceInstanceResponse> updateServiceInstance(UpdateServiceInstanceRequest request) {
-		return service.getBeforeUpdateFlow()
+		return service.getBeforeUpdateFlow(request)
 				.then(service.updateServiceInstance(request))
-				.onErrorResume(e -> service.getErrorUpdateFlow()
+				.onErrorResume(e -> service.getErrorUpdateFlow(request, e)
 						.then(Mono.error(e)))
-				.flatMap(response -> service.getAfterUpdateFlow()
+				.flatMap(response -> service.getAfterUpdateFlow(request, response)
 						.then(Mono.just(response)));
 	}
 }
