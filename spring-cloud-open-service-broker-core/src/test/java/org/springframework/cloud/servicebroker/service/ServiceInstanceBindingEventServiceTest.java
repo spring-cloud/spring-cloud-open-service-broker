@@ -53,12 +53,15 @@ public class ServiceInstanceBindingEventServiceTest {
 
 		StepVerifier
 				.create(serviceInstanceBindingEventService.createServiceInstanceBinding(
-						CreateServiceInstanceBindingRequest.builder().build()))
+						CreateServiceInstanceBindingRequest.builder()
+								.serviceInstanceId("foo")
+								.serviceDefinitionId("bar")
+								.build()))
 				.expectNext(CreateServiceInstanceAppBindingResponse.builder().build())
 				.verifyComplete();
 
-		assertThat(this.serviceInstanceBindingService.getBeforeCreate()).isEqualTo("beforeCreate");
-		assertThat(this.serviceInstanceBindingService.getAfterCreate()).isEqualTo("afterCreate");
+		assertThat(this.serviceInstanceBindingService.getBeforeCreate()).isEqualTo("before foo");
+		assertThat(this.serviceInstanceBindingService.getAfterCreate()).isEqualTo("after foo");
 		assertThat(this.serviceInstanceBindingService.getErrorCreate()).isNullOrEmpty();
 		assertThat(this.serviceInstanceBindingService.getBeforeDelete()).isNullOrEmpty();
 		assertThat(this.serviceInstanceBindingService.getAfterDelete()).isNullOrEmpty();
@@ -70,25 +73,31 @@ public class ServiceInstanceBindingEventServiceTest {
 		assertInitialState();
 
 		StepVerifier
-				.create(serviceInstanceBindingEventService.createServiceInstanceBinding(null))
+				.create(serviceInstanceBindingEventService.createServiceInstanceBinding(
+						CreateServiceInstanceBindingRequest.builder()
+								.serviceInstanceId("foo")
+								.build()))
 				.expectError()
 				.verify();
 
-		assertThat(this.serviceInstanceBindingService.getBeforeCreate()).isEqualTo("beforeCreate");
+		assertThat(this.serviceInstanceBindingService.getBeforeCreate()).isEqualTo("before foo");
 		assertThat(this.serviceInstanceBindingService.getAfterCreate()).isNullOrEmpty();
-		assertThat(this.serviceInstanceBindingService.getErrorCreate()).isEqualTo("errorCreate");
+		assertThat(this.serviceInstanceBindingService.getErrorCreate()).isEqualTo("error foo");
 		assertThat(this.serviceInstanceBindingService.getBeforeDelete()).isNullOrEmpty();
 		assertThat(this.serviceInstanceBindingService.getAfterDelete()).isNullOrEmpty();
 		assertThat(this.serviceInstanceBindingService.getErrorDelete()).isNullOrEmpty();
 	}
 
 	@Test
-	public void getServiceInstanceBindingS() {
+	public void getServiceInstanceBinding() {
 		assertInitialState();
 
 		StepVerifier
 				.create(serviceInstanceBindingEventService.getServiceInstanceBinding(
-						GetServiceInstanceBindingRequest.builder().build()))
+						GetServiceInstanceBindingRequest.builder()
+								.serviceInstanceId("foo")
+								.bindingId("bar")
+								.build()))
 				.expectNext(GetServiceInstanceAppBindingResponse.builder().build())
 				.verifyComplete();
 	}
@@ -99,15 +108,18 @@ public class ServiceInstanceBindingEventServiceTest {
 
 		StepVerifier
 				.create(serviceInstanceBindingEventService.deleteServiceInstanceBinding(
-						DeleteServiceInstanceBindingRequest.builder().build()))
+						DeleteServiceInstanceBindingRequest.builder()
+								.serviceInstanceId("foo")
+								.bindingId("bar")
+								.build()))
 				.expectNext()
 				.verifyComplete();
 
 		assertThat(this.serviceInstanceBindingService.getBeforeCreate()).isNullOrEmpty();
 		assertThat(this.serviceInstanceBindingService.getAfterCreate()).isNullOrEmpty();
 		assertThat(this.serviceInstanceBindingService.getErrorCreate()).isNullOrEmpty();
-		assertThat(this.serviceInstanceBindingService.getBeforeDelete()).isEqualTo("beforeDelete");
-		assertThat(this.serviceInstanceBindingService.getAfterDelete()).isEqualTo("afterDelete");
+		assertThat(this.serviceInstanceBindingService.getBeforeDelete()).isEqualTo("before foo");
+		assertThat(this.serviceInstanceBindingService.getAfterDelete()).isEqualTo("after foo");
 		assertThat(this.serviceInstanceBindingService.getErrorDelete()).isNullOrEmpty();
 	}
 
@@ -116,16 +128,19 @@ public class ServiceInstanceBindingEventServiceTest {
 		assertInitialState();
 
 		StepVerifier
-				.create(serviceInstanceBindingEventService.deleteServiceInstanceBinding(null))
+				.create(serviceInstanceBindingEventService.deleteServiceInstanceBinding(
+						DeleteServiceInstanceBindingRequest.builder()
+								.serviceInstanceId("foo")
+								.build()))
 				.expectError()
 				.verify();
 
 		assertThat(this.serviceInstanceBindingService.getBeforeCreate()).isNullOrEmpty();
 		assertThat(this.serviceInstanceBindingService.getAfterCreate()).isNullOrEmpty();
 		assertThat(this.serviceInstanceBindingService.getErrorCreate()).isNullOrEmpty();
-		assertThat(this.serviceInstanceBindingService.getBeforeDelete()).isEqualTo("beforeDelete");
+		assertThat(this.serviceInstanceBindingService.getBeforeDelete()).isEqualTo("before foo");
 		assertThat(this.serviceInstanceBindingService.getAfterDelete()).isNullOrEmpty();
-		assertThat(this.serviceInstanceBindingService.getErrorDelete()).isEqualTo("errorDelete");
+		assertThat(this.serviceInstanceBindingService.getErrorDelete()).isEqualTo("error foo");
 	}
 
 	private void assertInitialState() {
@@ -177,7 +192,7 @@ public class ServiceInstanceBindingEventServiceTest {
 
 		@Override
 		public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
-			if (request == null) {
+			if (request.getServiceDefinitionId() == null) {
 				return Mono.error(new ServiceInstanceBindingExistsException("foo", "arrrr"));
 			}
 			return Mono.just(CreateServiceInstanceAppBindingResponse.builder().build());
@@ -185,7 +200,7 @@ public class ServiceInstanceBindingEventServiceTest {
 
 		@Override
 		public Mono<GetServiceInstanceBindingResponse> getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
-			if (request == null) {
+			if (request.getBindingId() == null) {
 				return Mono.error(new ServiceInstanceDoesNotExistException("foo"));
 			}
 			return Mono.just(GetServiceInstanceAppBindingResponse.builder().build());
@@ -193,45 +208,48 @@ public class ServiceInstanceBindingEventServiceTest {
 
 		@Override
 		public Mono<Void> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
-			if (request == null) {
+			if (request.getBindingId() == null) {
 				return Mono.error(new ServiceInstanceBindingDoesNotExistException("bar"));
 			}
 			return Mono.empty();
 		}
 
 		@Override
-		public Mono<Void> getBeforeCreateFlow() {
-			return Mono.fromCallable(() -> this.beforeCreate = "beforeCreate")
+		public Mono<Void> getBeforeCreateFlow(CreateServiceInstanceBindingRequest request) {
+			return Mono.fromCallable(() -> this.beforeCreate = "before " + request.getServiceInstanceId())
 					.then();
 		}
 
 		@Override
-		public Mono<Void> getAfterCreateFlow() {
-			return Mono.fromCallable(() -> this.afterCreate = "afterCreate")
+		public Mono<Void> getAfterCreateFlow(CreateServiceInstanceBindingRequest request,
+											 CreateServiceInstanceBindingResponse response) {
+			return Mono.fromCallable(() -> this.afterCreate = "after " + request.getServiceInstanceId())
 					.then();
 		}
 
 		@Override
-		public Mono<Void> getErrorCreateFlow() {
-			return Mono.fromCallable(() -> this.errorCreate = "errorCreate")
+		public Mono<Void> getErrorCreateFlow(CreateServiceInstanceBindingRequest request,
+											 Throwable error) {
+			return Mono.fromCallable(() -> this.errorCreate = "error " + request.getServiceInstanceId())
 					.then();
 		}
 
 		@Override
-		public Mono<Void> getBeforeDeleteFlow() {
-			return Mono.fromCallable(() -> this.beforeDelete = "beforeDelete")
+		public Mono<Void> getBeforeDeleteFlow(DeleteServiceInstanceBindingRequest request) {
+			return Mono.fromCallable(() -> this.beforeDelete = "before " + request.getServiceInstanceId())
 					.then();
 		}
 
 		@Override
-		public Mono<Void> getAfterDeleteFlow() {
-			return Mono.fromCallable(() -> this.afterDelete = "afterDelete")
+		public Mono<Void> getAfterDeleteFlow(DeleteServiceInstanceBindingRequest request) {
+			return Mono.fromCallable(() -> this.afterDelete = "after " + request.getServiceInstanceId())
 					.then();
 		}
 
 		@Override
-		public Mono<Void> getErrorDeleteFlow() {
-			return Mono.fromCallable(() -> this.errorDelete = "errorDelete")
+		public Mono<Void> getErrorDeleteFlow(DeleteServiceInstanceBindingRequest request,
+											 Throwable error) {
+			return Mono.fromCallable(() -> this.errorDelete = "error " + request.getServiceInstanceId())
 					.then();
 		}
 	}

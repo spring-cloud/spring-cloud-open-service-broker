@@ -51,12 +51,15 @@ public class ServiceInstanceEventServiceTest {
 
 		StepVerifier
 				.create(serviceInstanceEventService.createServiceInstance(
-						CreateServiceInstanceRequest.builder().build()))
+						CreateServiceInstanceRequest.builder()
+								.serviceInstanceId("foo")
+								.serviceDefinitionId("bar")
+								.build()))
 				.expectNext(CreateServiceInstanceResponse.builder().build())
 				.verifyComplete();
 
-		assertThat(this.serviceInstanceService.getBeforeCreate()).isEqualTo("before");
-		assertThat(this.serviceInstanceService.getAfterCreate()).isEqualTo("after");
+		assertThat(this.serviceInstanceService.getBeforeCreate()).isEqualTo("before foo");
+		assertThat(this.serviceInstanceService.getAfterCreate()).isEqualTo("after foo");
 		assertThat(this.serviceInstanceService.getErrorCreate()).isNullOrEmpty();
 	}
 
@@ -64,13 +67,16 @@ public class ServiceInstanceEventServiceTest {
 	public void createServiceInstanceFails() {
 		assertInitalState();
 
-		StepVerifier.create(serviceInstanceEventService.createServiceInstance(null))
+		StepVerifier.create(serviceInstanceEventService.createServiceInstance(
+				CreateServiceInstanceRequest.builder()
+						.serviceInstanceId("foo")
+						.build()))
 				.expectError()
 				.verify();
 
-		assertThat(this.serviceInstanceService.getBeforeCreate()).isEqualTo("before");
+		assertThat(this.serviceInstanceService.getBeforeCreate()).isEqualTo("before foo");
 		assertThat(this.serviceInstanceService.getAfterCreate()).isNullOrEmpty();
-		assertThat(this.serviceInstanceService.getErrorCreate()).isEqualTo("error");
+		assertThat(this.serviceInstanceService.getErrorCreate()).isEqualTo("error foo");
 	}
 
 	@Test
@@ -79,12 +85,15 @@ public class ServiceInstanceEventServiceTest {
 
 		StepVerifier
 				.create(serviceInstanceEventService.deleteServiceInstance(
-						DeleteServiceInstanceRequest.builder().build()))
+						DeleteServiceInstanceRequest.builder()
+								.serviceInstanceId("foo")
+								.serviceDefinitionId("bar")
+								.build()))
 				.expectNext(DeleteServiceInstanceResponse.builder().build())
 				.verifyComplete();
 
-		assertThat(this.serviceInstanceService.getBeforeDelete()).isEqualTo("before");
-		assertThat(this.serviceInstanceService.getAfterDelete()).isEqualTo("after");
+		assertThat(this.serviceInstanceService.getBeforeDelete()).isEqualTo("before foo");
+		assertThat(this.serviceInstanceService.getAfterDelete()).isEqualTo("after foo");
 		assertThat(this.serviceInstanceService.getErrorDelete()).isNullOrEmpty();
 	}
 
@@ -92,13 +101,17 @@ public class ServiceInstanceEventServiceTest {
 	public void deleteServiceInstanceFails() {
 		assertInitalState();
 
-		StepVerifier.create(serviceInstanceEventService.deleteServiceInstance(null))
+		StepVerifier
+				.create(serviceInstanceEventService.deleteServiceInstance(
+						DeleteServiceInstanceRequest.builder()
+								.serviceInstanceId("foo")
+								.build()))
 				.expectError()
 				.verify();
 
-		assertThat(this.serviceInstanceService.getBeforeDelete()).isEqualTo("before");
+		assertThat(this.serviceInstanceService.getBeforeDelete()).isEqualTo("before foo");
 		assertThat(this.serviceInstanceService.getAfterDelete()).isNullOrEmpty();
-		assertThat(this.serviceInstanceService.getErrorDelete()).isEqualTo("error");
+		assertThat(this.serviceInstanceService.getErrorDelete()).isEqualTo("error foo");
 	}
 
 	@Test
@@ -107,12 +120,15 @@ public class ServiceInstanceEventServiceTest {
 
 		StepVerifier
 				.create(serviceInstanceEventService.updateServiceInstance(
-						UpdateServiceInstanceRequest.builder().build()))
+						UpdateServiceInstanceRequest.builder()
+								.serviceInstanceId("foo")
+								.serviceDefinitionId("bar")
+								.build()))
 				.expectNext(UpdateServiceInstanceResponse.builder().build())
 				.verifyComplete();
 
-		assertThat(this.serviceInstanceService.getBeforeUpdate()).isEqualTo("before");
-		assertThat(this.serviceInstanceService.getAfterUpdate()).isEqualTo("after");
+		assertThat(this.serviceInstanceService.getBeforeUpdate()).isEqualTo("before foo");
+		assertThat(this.serviceInstanceService.getAfterUpdate()).isEqualTo("after foo");
 		assertThat(this.serviceInstanceService.getErrorUpdate()).isNullOrEmpty();
 	}
 
@@ -121,13 +137,16 @@ public class ServiceInstanceEventServiceTest {
 		assertInitalState();
 
 		StepVerifier
-				.create(serviceInstanceEventService.updateServiceInstance(null))
+				.create(serviceInstanceEventService.updateServiceInstance(
+						UpdateServiceInstanceRequest.builder()
+						.serviceInstanceId("foo")
+						.build()))
 				.expectError()
 				.verify();
 
-		assertThat(this.serviceInstanceService.getBeforeUpdate()).isEqualTo("before");
+		assertThat(this.serviceInstanceService.getBeforeUpdate()).isEqualTo("before foo");
 		assertThat(this.serviceInstanceService.getAfterUpdate()).isNullOrEmpty();
-		assertThat(this.serviceInstanceService.getErrorUpdate()).isEqualTo("error");
+		assertThat(this.serviceInstanceService.getErrorUpdate()).isEqualTo("error foo");
 	}
 
 	@Test
@@ -209,7 +228,7 @@ public class ServiceInstanceEventServiceTest {
 		@Override
 		public Mono<CreateServiceInstanceResponse> createServiceInstance(
 				CreateServiceInstanceRequest request) {
-			if (request == null) {
+			if (request.getServiceDefinitionId() == null) {
 				return Mono.error(new ServiceBrokerInvalidParametersException("arrrr"));
 			}
 			return Mono.just(CreateServiceInstanceResponse.builder().build());
@@ -218,7 +237,7 @@ public class ServiceInstanceEventServiceTest {
 		@Override
 		public Mono<DeleteServiceInstanceResponse> deleteServiceInstance(
 				DeleteServiceInstanceRequest request) {
-			if (request == null) {
+			if (request.getServiceDefinitionId() == null) {
 				return Mono.error(new ServiceInstanceDoesNotExistException("foo"));
 			}
 			return Mono.just(DeleteServiceInstanceResponse.builder().build());
@@ -227,63 +246,69 @@ public class ServiceInstanceEventServiceTest {
 		@Override
 		public Mono<UpdateServiceInstanceResponse> updateServiceInstance(
 				UpdateServiceInstanceRequest request) {
-			if (request == null) {
+			if (request.getServiceDefinitionId() == null) {
 				return Mono.error(new ServiceBrokerInvalidParametersException("arrrr"));
 			}
 			return Mono.just(UpdateServiceInstanceResponse.builder().build());
 		}
 
 		@Override
-		public Mono<Void> getBeforeCreateFlow() {
-			return Mono.fromCallable(() -> beforeCreate = "before")
+		public Mono<Void> getBeforeCreateFlow(CreateServiceInstanceRequest request) {
+			return Mono.fromCallable(() -> beforeCreate = "before " + request.getServiceInstanceId())
 					.then();
 		}
 
 		@Override
-		public Mono<Void> getAfterCreateFlow() {
-			return Mono.fromCallable(() -> afterCreate = "after")
+		public Mono<Void> getAfterCreateFlow(CreateServiceInstanceRequest request,
+											 CreateServiceInstanceResponse response) {
+			return Mono.fromCallable(() -> afterCreate = "after " + request.getServiceInstanceId())
 					.then();
 		}
 
 		@Override
-		public Mono<Void> getErrorCreateFlow() {
-			return Mono.fromCallable(() -> errorCreate = "error")
+		public Mono<Void> getErrorCreateFlow(CreateServiceInstanceRequest request,
+											 Throwable error) {
+			return Mono.fromCallable(() -> errorCreate = "error " + request.getServiceInstanceId())
 					.then();
 		}
 
 		@Override
-		public Mono<Void> getBeforeDeleteFlow() {
-			return Mono.fromCallable(() -> beforeDelete = "before")
+		public Mono<Void> getBeforeDeleteFlow(DeleteServiceInstanceRequest request) {
+			return Mono.fromCallable(() -> beforeDelete = "before " + request.getServiceInstanceId())
 					.then();
 		}
 
 		@Override
-		public Mono<Void> getAfterDeleteFlow() {
-			return Mono.fromCallable(() -> afterDelete = "after")
+		public Mono<Void> getAfterDeleteFlow(DeleteServiceInstanceRequest request,
+											 DeleteServiceInstanceResponse response) {
+			return Mono.fromCallable(() -> afterDelete = "after " + request.getServiceInstanceId())
 					.then();
 		}
 
 		@Override
-		public Mono<Void> getErrorDeleteFlow() {
-			return Mono.fromCallable(() -> errorDelete = "error")
+		public Mono<Void> getErrorDeleteFlow(DeleteServiceInstanceRequest request,
+											 Throwable error) {
+			return Mono.fromCallable(() -> errorDelete = "error " + request.getServiceInstanceId())
 					.then();
 		}
 
 		@Override
-		public Mono<Void> getBeforeUpdateFlow() {
-			return Mono.fromCallable(() -> beforeUpdate = "before")
+		public Mono<Void> getBeforeUpdateFlow(UpdateServiceInstanceRequest request) {
+			return Mono.fromCallable(() -> beforeUpdate = "before " + request.getServiceInstanceId())
 					.then();
 		}
 
 		@Override
-		public Mono<Void> getAfterUpdateFlow() {
-			return Mono.fromCallable(() -> afterUpdate = "after")
+		public Mono<Void> getAfterUpdateFlow(UpdateServiceInstanceRequest request,
+											 UpdateServiceInstanceResponse response) {
+			return Mono.fromCallable(() -> afterUpdate = "after " + request.getServiceInstanceId())
 					.then();
 		}
 
 		@Override
-		public Mono<Void> getErrorUpdateFlow() {
-			return Mono.fromCallable(() -> errorUpdate = "error")
+		public Mono<Void> getErrorUpdateFlow(UpdateServiceInstanceRequest request,
+											 Throwable error) {
+			return Mono.fromCallable(() -> errorUpdate = "error " + request.getServiceInstanceId())
 					.then();
 		}
 
