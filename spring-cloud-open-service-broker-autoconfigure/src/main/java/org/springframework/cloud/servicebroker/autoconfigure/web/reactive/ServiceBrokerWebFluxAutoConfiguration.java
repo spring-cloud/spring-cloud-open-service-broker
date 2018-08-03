@@ -31,6 +31,7 @@ import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingEve
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceEventService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -56,12 +57,13 @@ public class ServiceBrokerWebFluxAutoConfiguration {
 
 	protected ServiceBrokerWebFluxAutoConfiguration(CatalogService catalogService,
 			ServiceInstanceService serviceInstanceService,
-			ServiceInstanceBindingService serviceInstanceBindingService) {
+			ServiceInstanceBindingService serviceInstanceBindingService,
+			ApplicationEventPublisher applicationEventPublisher) {
 		this.catalogService = catalogService;
-		this.serviceInstanceEventService = new ServiceInstanceEventService(
-				serviceInstanceService);
-		this.serviceInstanceBindingEventService = new ServiceInstanceBindingEventService(
-				serviceInstanceBindingService);
+		this.serviceInstanceEventService =
+				new ServiceInstanceEventService(serviceInstanceService, applicationEventPublisher);
+		this.serviceInstanceBindingEventService =
+				new ServiceInstanceBindingEventService(serviceInstanceBindingService, applicationEventPublisher);
 	}
 
 	@Bean

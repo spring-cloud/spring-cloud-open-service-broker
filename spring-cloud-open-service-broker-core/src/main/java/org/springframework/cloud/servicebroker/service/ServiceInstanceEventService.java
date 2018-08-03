@@ -16,6 +16,14 @@
 
 package org.springframework.cloud.servicebroker.service;
 
+import org.springframework.cloud.servicebroker.event.instance.CreateServiceInstanceEvent;
+import org.springframework.cloud.servicebroker.event.instance.CreateServiceInstanceCompletedEvent;
+import org.springframework.cloud.servicebroker.event.instance.DeleteServiceInstanceCompletedEvent;
+import org.springframework.cloud.servicebroker.event.instance.DeleteServiceInstanceEvent;
+import org.springframework.cloud.servicebroker.event.instance.UpdateServiceInstanceCompletedEvent;
+import org.springframework.cloud.servicebroker.event.instance.UpdateServiceInstanceEvent;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
@@ -38,18 +46,21 @@ import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInsta
 public class ServiceInstanceEventService implements ServiceInstanceService {
 
 	private final ServiceInstanceService service;
+	private final ApplicationEventPublisher applicationEventPublisher;
 
-	public ServiceInstanceEventService(ServiceInstanceService serviceInstanceService) {
+	public ServiceInstanceEventService(ServiceInstanceService serviceInstanceService,
+									   ApplicationEventPublisher applicationEventPublisher) {
 		this.service = serviceInstanceService;
+		this.applicationEventPublisher = applicationEventPublisher;
 	}
 
 	@Override
 	public Mono<CreateServiceInstanceResponse> createServiceInstance(CreateServiceInstanceRequest request) {
-		return service.getBeforeCreateFlow(request)
+		return publishEvent(new CreateServiceInstanceEvent(request))
 				.then(service.createServiceInstance(request))
-				.onErrorResume(e -> service.getErrorCreateFlow(request, e)
+				.onErrorResume(e -> publishEvent(new CreateServiceInstanceCompletedEvent(request, e))
 						.then(Mono.error(e)))
-				.flatMap(response -> service.getAfterCreateFlow(request, response)
+				.flatMap(response -> publishEvent(new CreateServiceInstanceCompletedEvent(request, response))
 						.then(Mono.just(response)));
 	}
 
@@ -65,21 +76,28 @@ public class ServiceInstanceEventService implements ServiceInstanceService {
 
 	@Override
 	public Mono<DeleteServiceInstanceResponse> deleteServiceInstance(DeleteServiceInstanceRequest request) {
-		return service.getBeforeDeleteFlow(request)
+		return publishEvent(new DeleteServiceInstanceEvent(request))
 				.then(service.deleteServiceInstance(request))
-				.onErrorResume(e -> service.getErrorDeleteFlow(request, e)
+				.onErrorResume(e -> publishEvent(new DeleteServiceInstanceCompletedEvent(request, e))
 						.then(Mono.error(e)))
-				.flatMap(response -> service.getAfterDeleteFlow(request, response)
+				.flatMap(response -> publishEvent(new DeleteServiceInstanceCompletedEvent(request, response))
 						.then(Mono.just(response)));
 	}
 
 	@Override
 	public Mono<UpdateServiceInstanceResponse> updateServiceInstance(UpdateServiceInstanceRequest request) {
-		return service.getBeforeUpdateFlow(request)
+		return publishEvent(new UpdateServiceInstanceEvent(request))
 				.then(service.updateServiceInstance(request))
-				.onErrorResume(e -> service.getErrorUpdateFlow(request, e)
+				.onErrorResume(e -> publishEvent(new UpdateServiceInstanceCompletedEvent(request, e))
 						.then(Mono.error(e)))
-				.flatMap(response -> service.getAfterUpdateFlow(request, response)
+				.flatMap(response -> publishEvent(new UpdateServiceInstanceCompletedEvent(request, response))
 						.then(Mono.just(response)));
+	}
+
+	private Mono<Void> publishEvent(ApplicationEvent event) {
+		return Mono.fromCallable(() -> {
+			applicationEventPublisher.publishEvent(event);
+			return Mono.empty();
+		}).then();
 	}
 }

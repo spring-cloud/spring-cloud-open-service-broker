@@ -31,6 +31,7 @@ import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingEve
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceEventService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -48,7 +49,6 @@ import org.springframework.context.annotation.Configuration;
 		ServiceBrokerAutoConfiguration.class })
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class ServiceBrokerWebMvcAutoConfiguration {
-
 	private final CatalogService catalogService;
 
 	private final ServiceInstanceEventService serviceInstanceEventService;
@@ -57,12 +57,13 @@ public class ServiceBrokerWebMvcAutoConfiguration {
 
 	protected ServiceBrokerWebMvcAutoConfiguration(CatalogService catalogService,
 			ServiceInstanceService serviceInstanceService,
-			ServiceInstanceBindingService serviceInstanceBindingService) {
+			ServiceInstanceBindingService serviceInstanceBindingService,
+		   ApplicationEventPublisher applicationEventPublisher) {
 		this.catalogService = catalogService;
 		this.serviceInstanceEventService = new ServiceInstanceEventService(
-				serviceInstanceService);
+				serviceInstanceService, applicationEventPublisher);
 		this.serviceInstanceBindingEventService = new ServiceInstanceBindingEventService(
-				serviceInstanceBindingService);
+				serviceInstanceBindingService, applicationEventPublisher);
 	}
 
 	@Bean

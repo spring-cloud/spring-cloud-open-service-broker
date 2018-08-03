@@ -16,6 +16,12 @@
 
 package org.springframework.cloud.servicebroker.service;
 
+import org.springframework.cloud.servicebroker.event.binding.CreateServiceInstanceBindingCompletedEvent;
+import org.springframework.cloud.servicebroker.event.binding.CreateServiceInstanceBindingEvent;
+import org.springframework.cloud.servicebroker.event.binding.DeleteServiceInstanceBindingCompletedEvent;
+import org.springframework.cloud.servicebroker.event.binding.DeleteServiceInstanceBindingEvent;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
@@ -33,18 +39,21 @@ import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceB
 public class ServiceInstanceBindingEventService implements ServiceInstanceBindingService {
 
 	private final ServiceInstanceBindingService service;
+	private final ApplicationEventPublisher applicationEventPublisher;
 
-	public ServiceInstanceBindingEventService(ServiceInstanceBindingService service) {
+	public ServiceInstanceBindingEventService(ServiceInstanceBindingService service,
+											  ApplicationEventPublisher applicationEventPublisher) {
 		this.service = service;
+		this.applicationEventPublisher = applicationEventPublisher;
 	}
 
 	@Override
 	public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
-		return service.getBeforeCreateFlow(request)
+		return publishEvent(new CreateServiceInstanceBindingEvent(request))
 				.then(service.createServiceInstanceBinding(request))
-				.onErrorResume(e -> service.getErrorCreateFlow(request, e)
+				.onErrorResume(e -> publishEvent(new CreateServiceInstanceBindingCompletedEvent(request, e))
 						.then(Mono.error(e)))
-				.flatMap(response -> service.getAfterCreateFlow(request, response)
+				.flatMap(response -> publishEvent(new CreateServiceInstanceBindingCompletedEvent(request, response))
 						.then(Mono.just(response)));
 	}
 
@@ -55,10 +64,17 @@ public class ServiceInstanceBindingEventService implements ServiceInstanceBindin
 
 	@Override
 	public Mono<Void> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
-		return service.getBeforeDeleteFlow(request)
+		return publishEvent(new DeleteServiceInstanceBindingEvent(request))
 				.then(service.deleteServiceInstanceBinding(request))
-				.onErrorResume(e -> service.getErrorDeleteFlow(request, e)
+				.onErrorResume(e -> publishEvent(new DeleteServiceInstanceBindingCompletedEvent(request, e))
 						.then(Mono.error(e)))
-				.then(service.getAfterDeleteFlow(request));
+				.then(publishEvent(new DeleteServiceInstanceBindingCompletedEvent(request)));
+	}
+
+	private Mono<Void> publishEvent(ApplicationEvent event) {
+		return Mono.fromCallable(() -> {
+			applicationEventPublisher.publishEvent(event);
+			return Mono.empty();
+		}).then();
 	}
 }
