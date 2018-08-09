@@ -411,6 +411,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
 				.async(true)
 				.operation("working")
+				.dashboardUrl("https://dashboard.example.com")
 				.build());
 
 		client.patch().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
@@ -422,7 +423,8 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.exchange()
 				.expectStatus().isAccepted()
 				.expectBody()
-				.jsonPath("$.operation").isEqualTo("working");
+				.jsonPath("$.operation").isEqualTo("working")
+				.jsonPath("$.dashboard_url").isEqualTo("https://dashboard.example.com");
 
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
@@ -448,6 +450,46 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
 		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
+	public void updateServiceInstanceResponseShouldNotContainEmptyValuesWhenNull() {
+		setupCatalogService();
+
+		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
+				.dashboardUrl(null)
+				.operation(null)
+				.build());
+
+		client.patch().uri(buildCreateUpdateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(updateRequestBody)
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody()
+				.jsonPath("$.dashboard_url").doesNotExist()
+				.jsonPath("$.operation").doesNotExist();
+	}
+
+	@Test
+	public void updateServiceInstanceResponseShouldNotContainEmptyValuesWhenEmpty() {
+		setupCatalogService();
+
+		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
+				.dashboardUrl("")
+				.operation("")
+				.build());
+
+		client.patch().uri(buildCreateUpdateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(updateRequestBody)
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody()
+				.jsonPath("$.dashboard_url").doesNotExist()
+				.jsonPath("$.operation").doesNotExist();
 	}
 
 	@Test
