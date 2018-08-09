@@ -180,8 +180,8 @@ public class ServiceInstanceController extends BaseController {
 	public ResponseEntity<DeleteServiceInstanceResponse> deleteServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-			@RequestParam(ServiceBrokerRequest.SERVICE_ID_PARAMETER) String serviceDefinitionId,
-			@RequestParam(ServiceBrokerRequest.PLAN_ID_PARAMETER) String planId,
+			@RequestParam(value = ServiceBrokerRequest.SERVICE_ID_PARAMETER, required = false) String serviceDefinitionId,
+			@RequestParam(value = ServiceBrokerRequest.PLAN_ID_PARAMETER, required = false) String planId,
 			@RequestParam(value = AsyncServiceInstanceRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
