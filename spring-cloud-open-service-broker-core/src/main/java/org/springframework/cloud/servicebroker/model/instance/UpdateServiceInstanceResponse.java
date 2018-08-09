@@ -16,10 +16,11 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import java.util.Objects;
 
 /**
  * Details of a response to a request to update a service instance.
@@ -72,11 +73,11 @@ public class UpdateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 
 	@Override
 	public boolean canEqual(Object other) {
-		return (other instanceof UpdateServiceInstanceResponseBuilder);
+		return (other instanceof UpdateServiceInstanceResponse);
 	}
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return Objects.hash(super.hashCode(), dashboardUrl);
 	}
 

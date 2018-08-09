@@ -17,7 +17,9 @@
 package org.springframework.cloud.servicebroker.model.instance;
 
 import com.jayway.jsonpath.DocumentContext;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
+
 import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,5 +54,13 @@ public class UpdateServiceInstanceResponseTest {
 
 		assertThat(json).hasPath("$.operation").isEqualTo("in progress");
 		assertThat(json).hasPath("$.dashboard_url").isEqualTo("https://dashboard.example.com");
+	}
+
+	@Test
+	public void equalsAndHashCode() {
+		EqualsVerifier
+				.forClass(UpdateServiceInstanceResponse.class)
+				.withRedefinedSuperclass()
+				.verify();
 	}
 }

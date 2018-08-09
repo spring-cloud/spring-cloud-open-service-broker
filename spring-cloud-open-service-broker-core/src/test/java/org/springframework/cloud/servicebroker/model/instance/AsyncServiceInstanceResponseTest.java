@@ -25,6 +25,7 @@ public class AsyncServiceInstanceResponseTest {
 		EqualsVerifier
 				.forClass(AsyncServiceInstanceResponse.class)
 				.withRedefinedSubclass(CreateServiceInstanceResponse.class)
+				.withRedefinedSubclass(UpdateServiceInstanceResponse.class)
 				.verify();
 	}
 }
