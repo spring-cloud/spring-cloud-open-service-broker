@@ -91,6 +91,11 @@ public class ServiceDefinition {
 		this.dashboardClient = dashboardClient;
 	}
 
+	ServiceDefinition() {
+		this(null, null, null, false, null, null, null, new ArrayList<>(),
+				new ArrayList<>(), new HashMap<>(), new ArrayList<>(), null);
+	}
+
 	/**
 	 * An identifier used to correlate this service in future requests to the catalog.
 	 * This must be unique within the platform. Using a GUID is recommended.

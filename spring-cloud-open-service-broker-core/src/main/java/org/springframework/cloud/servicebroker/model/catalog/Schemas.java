@@ -46,6 +46,10 @@ public class Schemas {
 		this.serviceBindingSchema = serviceBindingSchema;
 	}
 
+	Schemas() {
+		this(null, null);
+	}
+
 	/**
 	 * The schemas available on a service instance.
 	 *

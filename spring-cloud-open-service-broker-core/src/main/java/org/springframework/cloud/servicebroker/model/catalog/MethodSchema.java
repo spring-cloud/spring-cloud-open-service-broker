@@ -36,6 +36,10 @@ public class MethodSchema {
 		this.parameters = parameters;
 	}
 
+	MethodSchema() {
+		this(new HashMap<>());
+	}
+
 	/**
 	 * A map of JSON schema for configuration parameters.
 	 *

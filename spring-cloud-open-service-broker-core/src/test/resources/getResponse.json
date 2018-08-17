@@ -1,0 +1,9 @@
+{
+  "plan_id": "plan-id",
+  "service_id": "service-definition-id",
+  "dashboard_url": "https://dashboard.local",
+  "parameters": {
+    "field1": "foo",
+    "field2": "bar"
+  }
+}

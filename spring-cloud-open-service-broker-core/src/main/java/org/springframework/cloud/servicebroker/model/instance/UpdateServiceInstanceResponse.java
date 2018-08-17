@@ -43,6 +43,10 @@ public class UpdateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 		this.dashboardUrl = dashboardUrl;
 	}
 
+	UpdateServiceInstanceResponse() {
+		this(false, null, null);
+	}
+
 	/**
 	 * Get the URL of a web-based management user interface for the service instance.
 	 *

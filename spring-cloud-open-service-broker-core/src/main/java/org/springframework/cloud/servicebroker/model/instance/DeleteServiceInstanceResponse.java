@@ -28,8 +28,13 @@ package org.springframework.cloud.servicebroker.model.instance;
  * @author Scott Frederick
  */
 public class DeleteServiceInstanceResponse extends AsyncServiceInstanceResponse {
+
 	DeleteServiceInstanceResponse(boolean async, String operation) {
 		super(async, operation);
+	}
+
+	DeleteServiceInstanceResponse() {
+		this(false, null);
 	}
 
 	/**

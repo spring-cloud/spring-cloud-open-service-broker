@@ -1,0 +1,22 @@
+{
+  "credentials": {
+    "cred1": "foo",
+    "cred2": "bar"
+  },
+  "syslog_drain_url": "https://logs.hello.local",
+  "volume_mounts": [
+    {
+      "driver": "driver-1",
+      "container_dir": "container-dir-1",
+      "mode": "r",
+      "device_type": "shared",
+      "device": {
+        "volume_id": "volume-id",
+        "mount_config": {
+          "field1": "mount-config-1",
+          "field2": "mount-config-2"
+        }
+      }
+    }
+  ]
+}

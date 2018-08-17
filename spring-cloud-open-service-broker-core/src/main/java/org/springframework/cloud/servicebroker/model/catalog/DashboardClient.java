@@ -45,6 +45,10 @@ public class DashboardClient {
 		this.redirectUri = redirectUri;
 	}
 
+	DashboardClient() {
+		this(null, null, null);
+	}
+
 	/**
 	 * The client ID of the dashboard OAuth2 client that the service intends to use. The
 	 * name must be unique within the platform. If the name is already in use, the

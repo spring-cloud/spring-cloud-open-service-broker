@@ -16,13 +16,13 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-
-import java.util.Objects;
 
 /**
  * Details of a response to a request to get the state of the last operation on a service instance.
@@ -50,6 +50,10 @@ public class GetLastServiceOperationResponse {
 		this.state = state;
 		this.description = description;
 		this.deleteOperation = deleteOperation;
+	}
+
+	GetLastServiceOperationResponse() {
+		this(null, null, false);
 	}
 
 	/**

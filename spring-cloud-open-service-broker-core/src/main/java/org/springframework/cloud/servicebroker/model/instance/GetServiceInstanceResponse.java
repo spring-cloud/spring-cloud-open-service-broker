@@ -16,14 +16,15 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * Details of a response to a request to get the details a service instance.
@@ -53,6 +54,10 @@ public class GetServiceInstanceResponse {
 		this.planId = planId;
 		this.dashboardUrl = dashboardUrl;
 		this.parameters = parameters;
+	}
+
+	GetServiceInstanceResponse() {
+		this(null, null, null, new Hashtable<>());
 	}
 
 	/**

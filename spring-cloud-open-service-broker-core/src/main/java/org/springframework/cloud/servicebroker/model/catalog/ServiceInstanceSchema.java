@@ -45,6 +45,10 @@ public class ServiceInstanceSchema {
 		this.updateMethodSchema = updateMethodSchema;
 	}
 
+	ServiceInstanceSchema() {
+		this(null, null);
+	}
+
 	/**
 	 * The JSON schema for configuration parameters when creating a service instance.
 	 *

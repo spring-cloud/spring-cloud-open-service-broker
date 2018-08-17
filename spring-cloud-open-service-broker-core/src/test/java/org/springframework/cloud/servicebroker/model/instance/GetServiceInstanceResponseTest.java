@@ -16,16 +16,17 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class GetServiceInstanceResponseTest {
@@ -86,6 +87,17 @@ public class GetServiceInstanceResponseTest {
 		assertThat(json).hasPath("$.parameters.field3").isEqualTo(true);
 		assertThat(json).hasPath("$.parameters.field4").isEqualTo("value4");
 		assertThat(json).hasPath("$.parameters.field5").isEqualTo("value5");
+	}
+
+	@Test
+	public void responseWithAllValuesIsDeserialized() {
+		GetServiceInstanceResponse response = JsonUtils.readTestDataFile(
+				"getResponse.json", GetServiceInstanceResponse.class);
+
+		assertThat(response.getServiceDefinitionId()).isEqualTo("service-definition-id");
+		assertThat(response.getPlanId()).isEqualTo("plan-id");
+		assertThat(response.getDashboardUrl()).isEqualTo("https://dashboard.local");
+		assertThat(response.getParameters()).containsOnly(entry("field1", "foo"), entry("field2", "bar"));
 	}
 
 	@Test

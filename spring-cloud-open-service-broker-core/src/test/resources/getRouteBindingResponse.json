@@ -1,0 +1,7 @@
+{
+  "route_service_url": "https://route.local",
+  "parameters": {
+    "param1": "foo",
+    "param2": "bar"
+  }
+}

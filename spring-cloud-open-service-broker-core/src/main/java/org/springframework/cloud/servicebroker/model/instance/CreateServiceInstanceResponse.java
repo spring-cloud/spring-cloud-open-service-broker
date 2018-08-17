@@ -16,12 +16,12 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
-import java.util.Objects;
 
 /**
  * Details of a response to a request to create a new service instance.
@@ -46,6 +46,10 @@ public class CreateServiceInstanceResponse extends AsyncServiceInstanceResponse 
 		super(async, operation);
 		this.dashboardUrl = dashboardUrl;
 		this.instanceExisted = instanceExisted;
+	}
+
+	CreateServiceInstanceResponse() {
+		this(false, null, null, false);
 	}
 
 	/**

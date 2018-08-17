@@ -50,6 +50,10 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		this.volumeMounts = volumeMounts;
 	}
 
+	GetServiceInstanceAppBindingResponse() {
+		this(new HashMap<>(), new HashMap<>(), null, new ArrayList<>());
+	}
+
 	/**
 	 * Get the credentials that the bound application can use to access the service instance.
 	 *

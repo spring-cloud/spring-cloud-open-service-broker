@@ -37,6 +37,10 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 		this.routeServiceUrl = routeServiceUrl;
 	}
 
+	CreateServiceInstanceRouteBindingResponse() {
+		this(false, null);
+	}
+
 	/**
 	 * Get a URL to which the platform should proxy requests for the bound route.
 	 *

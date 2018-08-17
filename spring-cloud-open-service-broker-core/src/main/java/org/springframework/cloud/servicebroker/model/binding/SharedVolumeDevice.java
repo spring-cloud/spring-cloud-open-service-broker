@@ -16,12 +16,12 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
  * Represents a type of distributed {@link VolumeDevice} which can be mounted on multiple app instances simultaneously.
@@ -41,6 +41,10 @@ public class SharedVolumeDevice extends VolumeDevice {
 	SharedVolumeDevice(String volumeId, Map<String, Object> mountConfig) {
 		this.volumeId = volumeId;
 		this.mountConfig = mountConfig;
+	}
+
+	SharedVolumeDevice() {
+		this(null, new HashMap<>());
 	}
 
 	/**

@@ -16,16 +16,17 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 
@@ -78,6 +79,18 @@ public class GetServiceInstanceRouteBindingResponseTest {
 		assertThat(json).hasPath("$.parameters.field5").isEqualTo("value5");
 
 		assertThat(json).hasPath("$.route_service_url").isEqualTo("https://routes.example.com");
+	}
+
+	@Test
+	public void responseWithValuesIsDeserialized() {
+		GetServiceInstanceRouteBindingResponse response = JsonUtils.readTestDataFile(
+				"getRouteBindingResponse.json",
+				GetServiceInstanceRouteBindingResponse.class);
+
+		assertThat(response.getRouteServiceUrl()).isEqualTo("https://route.local");
+		assertThat(response.getParameters())
+				.hasSize(2)
+				.containsOnly(entry("param1", "foo"), entry("param2", "bar"));
 	}
 
 	@Test

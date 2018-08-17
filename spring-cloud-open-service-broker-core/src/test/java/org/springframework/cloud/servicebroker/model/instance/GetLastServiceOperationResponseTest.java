@@ -74,6 +74,15 @@ public class GetLastServiceOperationResponseTest {
 		responseWithStateIsSerializedToJson(OperationState.IN_PROGRESS, "in progress");
 	}
 
+	@Test
+	public void responseWithAllValuesIsDeserialized() {
+		GetLastServiceOperationResponse response = JsonUtils.readTestDataFile(
+				"getLastOperationResponse.json", GetLastServiceOperationResponse.class);
+
+		assertThat(response.getState()).isEqualTo(OperationState.SUCCEEDED);
+		assertThat(response.getDescription()).isEqualTo("description");
+	}
+
 	private void responseWithStateIsSerializedToJson(OperationState stateValue, String stateString) {
 		GetLastServiceOperationResponse response = GetLastServiceOperationResponse.builder()
 				.operationState(stateValue)
