@@ -16,13 +16,14 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
+import java.util.Collections;
+import java.util.List;
+
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
-import org.springframework.cloud.servicebroker.JsonUtils;
 
-import java.util.Collections;
-import java.util.List;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
@@ -79,6 +80,13 @@ public class CatalogTest {
 		assertThat(json).hasPath("$.services[1].id").isEqualTo("service-definition-id-two");
 		assertThat(json).hasPath("$.services[1].name").isEqualTo("service-definition-two");
 		assertThat(json).hasPath("$.services[1].description").isEqualTo("Service Definition Two");
+	}
+
+	@Test
+	public void catalogWithServicesIsDeserializedFromJson() {
+		Catalog catalog = JsonUtils.readTestDataFile("catalog.json", Catalog.class);
+
+		assertThat(catalog.getServiceDefinitions().get(0).getId()).isEqualTo("service-one-id");
 	}
 
 	@Test

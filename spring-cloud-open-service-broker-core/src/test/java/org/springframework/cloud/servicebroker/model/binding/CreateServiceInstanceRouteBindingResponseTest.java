@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.model.binding;
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
+
 import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,6 +53,15 @@ public class CreateServiceInstanceRouteBindingResponseTest {
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
 		assertThat(json).hasPath("$.route_service_url").isEqualTo("https://routes.example.com");
+	}
+
+	@Test
+	public void responseWithValuesIsDeserialized() {
+		CreateServiceInstanceRouteBindingResponse response = JsonUtils.readTestDataFile(
+				"createRouteBindingResponse.json",
+				CreateServiceInstanceRouteBindingResponse.class);
+
+		assertThat(response.getRouteServiceUrl()).isEqualTo("https://route.local");
 	}
 
 	@Test

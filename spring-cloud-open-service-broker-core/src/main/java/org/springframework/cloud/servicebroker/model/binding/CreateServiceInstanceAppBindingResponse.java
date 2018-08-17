@@ -52,6 +52,10 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		this.volumeMounts = volumeMounts;
 	}
 
+	CreateServiceInstanceAppBindingResponse() {
+		this(false, new HashMap<>(), null, new ArrayList<>());
+	}
+
 	/**
 	 * Get the credentials that the bound application can use to access the service instance.
 	 *

@@ -16,17 +16,19 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
-import com.jayway.jsonpath.DocumentContext;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
-import org.springframework.cloud.servicebroker.JsonUtils;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.jayway.jsonpath.DocumentContext;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import org.junit.Test;
+
+import org.springframework.cloud.servicebroker.JsonUtils;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class CreateServiceInstanceAppBindingResponseTest {
@@ -96,6 +98,28 @@ public class CreateServiceInstanceAppBindingResponseTest {
 		assertThat(json).hasPath("$.syslog_drain_url").isEqualTo("https://logs.example.com");
 
 		assertThat(json).hasListAtPath("$.volume_mounts").hasSize(4);
+	}
+
+	@Test
+	public void responseWithValuesIsDeserialized() {
+		CreateServiceInstanceAppBindingResponse response = JsonUtils.readTestDataFile(
+				"createAppBindingResponse.json",
+				CreateServiceInstanceAppBindingResponse.class);
+
+		assertThat(response.getCredentials()).containsOnly(entry("cred1", "foo"), entry("cred2", "bar"));
+		assertThat(response.getSyslogDrainUrl()).isEqualTo("https://logs.hello.local");
+		assertThat(response.getVolumeMounts()).hasSize(1);
+
+		VolumeMount volumeMount = response.getVolumeMounts().get(0);
+		assertThat(volumeMount.getDriver()).isEqualTo("driver-1");
+		assertThat(volumeMount.getContainerDir()).isEqualTo("container-dir-1");
+		assertThat(volumeMount.getMode()).isEqualTo(VolumeMount.Mode.READ_ONLY);
+		assertThat(volumeMount.getDeviceType()).isEqualTo(VolumeMount.DeviceType.SHARED);
+
+		SharedVolumeDevice sharedVolumeDevice = ((SharedVolumeDevice)volumeMount.getDevice());
+		assertThat(sharedVolumeDevice.getVolumeId()).isEqualTo("volume-id");
+		assertThat(sharedVolumeDevice.getMountConfig())
+				.containsOnly(entry("field1", "mount-config-1"), entry("field2", "mount-config-2"));
 	}
 
 	@Test

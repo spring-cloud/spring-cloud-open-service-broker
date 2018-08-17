@@ -48,6 +48,10 @@ public class Catalog {
 		this.serviceDefinitions = serviceDefinitions;
 	}
 
+	Catalog() {
+		this(new ArrayList<>());
+	}
+
 	/**
 	 * Get the set of service offerings.
 	 *

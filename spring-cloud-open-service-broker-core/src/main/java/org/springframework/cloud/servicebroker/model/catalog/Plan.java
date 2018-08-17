@@ -65,6 +65,10 @@ public class Plan {
 		this.schemas = schemas;
 	}
 
+	Plan() {
+		this(null, null, null, new HashMap<>(), null, null, null);
+	}
+
 	/**
 	 * An identifier used to correlate this plan in future requests to the catalog. This
 	 * must be unique within the platform. Using a GUID is recommended.

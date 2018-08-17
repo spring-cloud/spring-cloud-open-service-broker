@@ -41,6 +41,10 @@ public class ServiceBindingSchema {
 		this.createMethodSchema = createMethodSchema;
 	}
 
+	ServiceBindingSchema() {
+		this(null);
+	}
+
 	/**
 	 * The JSON schema for configuration parameters when creating a service binding.
 	 *

@@ -18,6 +18,8 @@ package org.springframework.cloud.servicebroker.model.instance;
 
 import org.junit.Test;
 
+import org.springframework.cloud.servicebroker.JsonUtils;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DeleteServiceInstanceResponseTest {
@@ -38,6 +40,14 @@ public class DeleteServiceInstanceResponseTest {
 				.build();
 
 		assertThat(response.isAsync()).isEqualTo(true);
+		assertThat(response.getOperation()).isEqualTo("in progress");
+	}
+
+	@Test
+	public void responseWithAllValuesIsDeserialized() {
+		DeleteServiceInstanceResponse response = JsonUtils.readTestDataFile(
+				"deleteResponse.json", DeleteServiceInstanceResponse.class);
+
 		assertThat(response.getOperation()).isEqualTo("in progress");
 	}
 }

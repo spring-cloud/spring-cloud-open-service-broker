@@ -57,6 +57,15 @@ public class UpdateServiceInstanceResponseTest {
 	}
 
 	@Test
+	public void responseWithAllValuesIsDeserialized() {
+		UpdateServiceInstanceResponse response = JsonUtils.readTestDataFile(
+				"updateResponse.json", UpdateServiceInstanceResponse.class);
+
+		assertThat(response.getOperation()).isEqualTo("in progress");
+		assertThat(response.getDashboardUrl()).isEqualTo("https://dashboard.local");
+	}
+
+	@Test
 	public void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(UpdateServiceInstanceResponse.class)

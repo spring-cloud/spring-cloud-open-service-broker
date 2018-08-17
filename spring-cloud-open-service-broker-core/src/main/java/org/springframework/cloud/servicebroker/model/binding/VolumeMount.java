@@ -16,13 +16,20 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+import java.io.IOException;
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-
-import java.util.Objects;
 
 /**
  * Details of a volume mount in a service binding response.
@@ -83,11 +90,15 @@ public class VolumeMount {
 	private final String containerDir;
 
 	@JsonSerialize(using = ToStringSerializer.class)
+	@JsonDeserialize(using = ModeDeserializer.class)
 	private final Mode mode;
 
 	@JsonSerialize(using = ToStringSerializer.class)
+	@JsonDeserialize(using = DeviceTypeDeserializer.class)
 	private final DeviceType deviceType;
 
+	@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "device_type")
+	@JsonSubTypes({@JsonSubTypes.Type(value = SharedVolumeDevice.class, name = "shared") })
 	private final VolumeDevice device;
 
 	VolumeMount(String driver, String containerDir, Mode mode, DeviceType deviceType, VolumeDevice device) {
@@ -96,6 +107,10 @@ public class VolumeMount {
 		this.mode = mode;
 		this.deviceType = deviceType;
 		this.device = device;
+	}
+
+	VolumeMount() {
+		this(null, null, null, null, null);
 	}
 
 	/**
@@ -272,4 +287,53 @@ public class VolumeMount {
 			return new VolumeMount(driver, containerDir, mode, deviceType, device);
 		}
 	}
+
+	private static class DeviceTypeDeserializer extends StdDeserializer<DeviceType> {
+
+		private static final long serialVersionUID = -7935903407118198514L;
+
+		public DeviceTypeDeserializer(){
+			this(null);
+		}
+
+		public DeviceTypeDeserializer(Class<?> c){
+			super(c);
+		}
+
+		@Override
+		public DeviceType deserialize(JsonParser jsonParser,
+				DeserializationContext deserializationContext) throws IOException {
+			for(DeviceType d : DeviceType.values()) {
+				if (d.toString().equalsIgnoreCase(jsonParser.getText())) {
+					return d;
+				}
+			}
+			throw new IllegalArgumentException("DeviceType is not defined");
+		}
+	}
+
+	private static class ModeDeserializer extends StdDeserializer<Mode> {
+
+		private static final long serialVersionUID = -4985037236705821009L;
+
+		public ModeDeserializer(){
+			this(null);
+		}
+
+		public ModeDeserializer(Class<?> c){
+			super(c);
+		}
+
+		@Override
+		public Mode deserialize(JsonParser jsonParser, DeserializationContext
+				deserializationContext) throws IOException {
+			for(Mode m : Mode.values()) {
+				if (m.toString().equalsIgnoreCase(jsonParser.getText())) {
+					return m;
+				}
+			}
+			throw new IllegalArgumentException("Mode not defined");
+		}
+	}
+
 }

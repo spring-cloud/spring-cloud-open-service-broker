@@ -39,6 +39,10 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 		this.routeServiceUrl = routeServiceUrl;
 	}
 
+	GetServiceInstanceRouteBindingResponse() {
+		this(new HashMap<>(), null);
+	}
+
 	/**
 	 * Get a URL to which the platform should proxy requests for the bound route.
 	 *
