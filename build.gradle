@@ -128,5 +128,5 @@ task dist(dependsOn: assemble) {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.14'
+    gradleVersion = '4.9'
 }
