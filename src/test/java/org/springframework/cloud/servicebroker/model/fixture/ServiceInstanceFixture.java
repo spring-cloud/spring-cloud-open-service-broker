@@ -73,4 +73,8 @@ public class ServiceInstanceFixture {
 				service.getPlans().get(0).getId(),
 				"task_10");
 	}
+
+	public static GetLastServiceOperationRequest buildGetLastOperationRequestWithoutOptionalParameters() {
+		return new GetLastServiceOperationRequest("service-instance-id");
+	}
 }

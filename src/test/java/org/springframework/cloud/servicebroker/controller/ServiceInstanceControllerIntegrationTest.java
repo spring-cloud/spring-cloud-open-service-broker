@@ -73,6 +73,7 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 	private UpdateServiceInstanceResponse asyncUpdateResponse;
 
 	private GetLastServiceOperationRequest lastOperationRequest;
+	private GetLastServiceOperationRequest lastOperationRequestWithoutOptionalParameters;
 
 	@Before
 	public void setup() {
@@ -99,6 +100,8 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		asyncUpdateResponse = ServiceInstanceFixture.buildUpdateServiceInstanceResponse(true);
 
 		lastOperationRequest = ServiceInstanceFixture.buildGetLastOperationRequest();
+		lastOperationRequestWithoutOptionalParameters =
+				ServiceInstanceFixture.buildGetLastOperationRequestWithoutOptionalParameters();
 	}
 
 	@Test
@@ -582,6 +585,22 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 		when(serviceInstanceService.getLastOperation(eq(lastOperationRequest))).thenReturn(response);
 
 		mockMvc.perform(get(buildUrl(lastOperationRequest, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.state", is(OperationState.SUCCEEDED.toString())))
+				.andExpect(jsonPath("$.description", is("all good")));
+	}
+
+	@Test
+	public void lastOperationHasSucceededStatusWithoutOptionalParameters() throws Exception {
+		GetLastServiceOperationResponse response = new GetLastServiceOperationResponse()
+				.withOperationState(OperationState.SUCCEEDED)
+				.withDescription("all good");
+
+		when(serviceInstanceService.getLastOperation(eq(lastOperationRequestWithoutOptionalParameters)))
+				.thenReturn(response);
+
+		mockMvc.perform(get(buildUrl(lastOperationRequestWithoutOptionalParameters, false))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.state", is(OperationState.SUCCEEDED.toString())))

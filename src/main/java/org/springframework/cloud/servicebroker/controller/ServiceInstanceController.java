@@ -100,8 +100,8 @@ public class ServiceInstanceController extends BaseController {
 	}, method = RequestMethod.GET)
 	public ResponseEntity<?> getServiceInstanceLastOperation(@PathVariable Map<String, String> pathVariables,
 															 @PathVariable("instanceId") String serviceInstanceId,
-															 @RequestParam("service_id") String serviceDefinitionId,
-															 @RequestParam("plan_id") String planId,
+															 @RequestParam(value = "service_id", required = false) String serviceDefinitionId,
+															 @RequestParam(value = "plan_id", required = false) String planId,
 															 @RequestParam(value = "operation", required = false) String operation,
 															 @RequestHeader(value = API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 															 @RequestHeader(value = ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
