@@ -59,6 +59,7 @@ targetCompatibility = 1.7
 
 repositories {
     mavenCentral()
+    maven { url "https://repo.spring.io/libs-milestone" }
 }
 
 dependencies {
