@@ -28,6 +28,7 @@ import org.springframework.cloud.servicebroker.model.instance.GetServiceInstance
 import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
+import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 
 /**
  * Internal implementation of {@link ServiceInstanceService} that attaches event hooks to
@@ -39,17 +40,21 @@ public class ServiceInstanceEventService implements ServiceInstanceService {
 
 	private final ServiceInstanceService service;
 
-	public ServiceInstanceEventService(ServiceInstanceService serviceInstanceService) {
+	private final EventFlowRegistries flows;
+
+	public ServiceInstanceEventService(ServiceInstanceService serviceInstanceService,
+									   EventFlowRegistries eventFlowRegistries) {
 		this.service = serviceInstanceService;
+		this.flows = eventFlowRegistries;
 	}
 
 	@Override
 	public Mono<CreateServiceInstanceResponse> createServiceInstance(CreateServiceInstanceRequest request) {
-		return service.getBeforeCreateFlow(request)
+		return flows.getCreateInstanceRegistry().getInitializationFlows(request)
 				.then(service.createServiceInstance(request))
-				.onErrorResume(e -> service.getErrorCreateFlow(request, e)
+				.onErrorResume(e -> flows.getCreateInstanceRegistry().getErrorFlows(request, e)
 						.then(Mono.error(e)))
-				.flatMap(response -> service.getAfterCreateFlow(request, response)
+				.flatMap(response -> flows.getCreateInstanceRegistry().getCompletionFlows(request, response)
 						.then(Mono.just(response)));
 	}
 
@@ -60,26 +65,31 @@ public class ServiceInstanceEventService implements ServiceInstanceService {
 
 	@Override
 	public Mono<GetLastServiceOperationResponse> getLastOperation(GetLastServiceOperationRequest request) {
-		return service.getLastOperation(request);
+		return flows.getAsyncOperationRegistry().getInitializationFlows(request)
+				.then(service.getLastOperation(request))
+				.onErrorResume(e -> flows.getAsyncOperationRegistry().getErrorFlows(request, e)
+						.then(Mono.error(e)))
+				.flatMap(response -> flows.getAsyncOperationRegistry().getCompletionFlows(request, response)
+						.then(Mono.just(response)));
 	}
 
 	@Override
 	public Mono<DeleteServiceInstanceResponse> deleteServiceInstance(DeleteServiceInstanceRequest request) {
-		return service.getBeforeDeleteFlow(request)
+		return flows.getDeleteInstanceRegistry().getInitializationFlows(request)
 				.then(service.deleteServiceInstance(request))
-				.onErrorResume(e -> service.getErrorDeleteFlow(request, e)
+				.onErrorResume(e -> flows.getDeleteInstanceRegistry().getErrorFlows(request, e)
 						.then(Mono.error(e)))
-				.flatMap(response -> service.getAfterDeleteFlow(request, response)
+				.flatMap(response -> flows.getDeleteInstanceRegistry().getCompletionFlows(request, response)
 						.then(Mono.just(response)));
 	}
 
 	@Override
 	public Mono<UpdateServiceInstanceResponse> updateServiceInstance(UpdateServiceInstanceRequest request) {
-		return service.getBeforeUpdateFlow(request)
+		return flows.getUpdateInstanceRegistry().getInitializationFlows(request)
 				.then(service.updateServiceInstance(request))
-				.onErrorResume(e -> service.getErrorUpdateFlow(request, e)
+				.onErrorResume(e -> flows.getUpdateInstanceRegistry().getErrorFlows(request, e)
 						.then(Mono.error(e)))
-				.flatMap(response -> service.getAfterUpdateFlow(request, response)
+				.flatMap(response -> flows.getUpdateInstanceRegistry().getCompletionFlows(request, response)
 						.then(Mono.just(response)));
 	}
 }

@@ -31,6 +31,7 @@ import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingEve
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceEventService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
+import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -57,12 +58,13 @@ public class ServiceBrokerWebMvcAutoConfiguration {
 
 	protected ServiceBrokerWebMvcAutoConfiguration(CatalogService catalogService,
 			ServiceInstanceService serviceInstanceService,
-			ServiceInstanceBindingService serviceInstanceBindingService) {
+			ServiceInstanceBindingService serviceInstanceBindingService,
+			EventFlowRegistries eventFlowRegistries) {
 		this.catalogService = catalogService;
 		this.serviceInstanceEventService = new ServiceInstanceEventService(
-				serviceInstanceService);
+				serviceInstanceService, eventFlowRegistries);
 		this.serviceInstanceBindingEventService = new ServiceInstanceBindingEventService(
-				serviceInstanceBindingService);
+				serviceInstanceBindingService, eventFlowRegistries);
 	}
 
 	@Bean

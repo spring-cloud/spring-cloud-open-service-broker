@@ -26,6 +26,7 @@ import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.NonBindableServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
+import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -52,6 +53,9 @@ public class ServiceBrokerAutoConfigurationTest {
 					assertThat(context)
 							.getBean(ServiceInstanceService.class)
 							.isExactlyInstanceOf(TestServiceInstanceService.class);
+
+					assertThat(context)
+							.hasSingleBean(EventFlowRegistries.class);
 				});
 	}
 
@@ -71,6 +75,9 @@ public class ServiceBrokerAutoConfigurationTest {
 					assertThat(context)
 							.getBean(ServiceInstanceService.class)
 							.isExactlyInstanceOf(TestServiceInstanceService.class);
+
+					assertThat(context)
+							.hasSingleBean(EventFlowRegistries.class);
 				});
 	}
 
@@ -118,6 +125,9 @@ public class ServiceBrokerAutoConfigurationTest {
 					assertThat(context)
 							.getBean(ServiceInstanceService.class)
 							.isExactlyInstanceOf(TestServiceInstanceService.class);
+
+					assertThat(context)
+							.hasSingleBean(EventFlowRegistries.class);
 				});
 	}
 

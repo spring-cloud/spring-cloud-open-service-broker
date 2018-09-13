@@ -31,6 +31,7 @@ import org.springframework.cloud.servicebroker.controller.ServiceInstanceControl
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
+import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -96,6 +97,11 @@ public class ServiceBrokerWebMvcAutoConfigurationTest {
 		@Bean
 		public ServiceInstanceBindingService serviceInstanceBindingService() {
 			return new TestServiceInstanceBindingService();
+		}
+
+		@Bean
+		public EventFlowRegistries eventFlowRegistries() {
+			return new EventFlowRegistries();
 		}
 	}
 }
