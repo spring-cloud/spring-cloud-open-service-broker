@@ -70,10 +70,8 @@ public class ApiVersionWebMvcAutoConfigurationTest {
 	public void apiVersionCheckIsDisabled() {
 		webApplicationContextRunner()
 				.withUserConfiguration(ServicesConfiguration.class)
-				.withPropertyValues("spring.cloud.openservicebroker.apiVersionCheckEnabled=false")
-				.run((context) -> {
-					assertThat(context).doesNotHaveBean(BrokerApiVersion.class);
-				});
+				.withPropertyValues("spring.cloud.openservicebroker.api-version-check-enabled=false")
+				.run((context) -> assertThat(context).doesNotHaveBean(BrokerApiVersion.class));
 	}
 
 	@Test

@@ -47,3 +47,5 @@ dependencies {
 	testCompile("org.assertj:assertj-core")
 	testCompile("org.apache.commons:commons-lang3")
 }
+
+compileJava.dependsOn(processResources)

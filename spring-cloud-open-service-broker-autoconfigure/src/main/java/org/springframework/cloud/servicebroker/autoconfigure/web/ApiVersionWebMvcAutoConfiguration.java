@@ -39,7 +39,7 @@ import org.springframework.context.annotation.Configuration;
  * property:
  *
  * <pre>
- * spring.cloud.openservicebroker.apiVersionCheckEnabled = false
+ * spring.cloud.openservicebroker.api-version-check-enabled = false
  * </pre>
  *
  * @author Benjamin Ihrig
@@ -49,7 +49,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnBean({ ServiceInstanceService.class })
-@ConditionalOnProperty(prefix = "spring.cloud.openservicebroker", name = "apiVersionCheckEnabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "spring.cloud.openservicebroker", name = "api-version-check-enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter(WebMvcAutoConfiguration.class)
 @EnableConfigurationProperties(ServiceBrokerProperties.class)
 public class ApiVersionWebMvcAutoConfiguration {
@@ -62,7 +62,7 @@ public class ApiVersionWebMvcAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean(BrokerApiVersion.class)
-	@ConditionalOnProperty(prefix = "spring.cloud.openservicebroker", name = "apiVersion")
+	@ConditionalOnProperty(prefix = "spring.cloud.openservicebroker", name = "api-version")
 	public BrokerApiVersion serviceBrokerApiVersionProperty() {
 		return new BrokerApiVersion(this.serviceBrokerProperties.getApiVersion());
 	}
