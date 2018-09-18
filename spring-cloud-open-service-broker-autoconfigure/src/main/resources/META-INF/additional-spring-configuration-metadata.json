@@ -1,0 +1,10 @@
+{
+  "properties": [
+    {
+      "name": "spring.cloud.openservicebroker.api-version-check-enabled",
+      "type": "java.lang.Boolean",
+      "description": "Enable validation for service broker API version if a version is not specifically configured.",
+      "defaultValue": true
+    }
+  ]
+}
