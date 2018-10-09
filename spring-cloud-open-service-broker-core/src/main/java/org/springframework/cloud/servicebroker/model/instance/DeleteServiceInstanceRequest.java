@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
@@ -33,7 +34,7 @@ import java.util.Objects;
  * @author krujos
  * @author Scott Frederick
  */
-public class DeleteServiceInstanceRequest extends AsyncServiceInstanceRequest {
+public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	private transient String serviceInstanceId;
 
 	private transient String serviceDefinitionId;

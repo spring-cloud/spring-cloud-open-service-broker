@@ -23,6 +23,7 @@ import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
@@ -36,6 +37,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 		CreateServiceInstanceBindingRequest parsedRequest = buildCreateRequest().build();
 
 		CreateServiceInstanceBindingRequest expectedRequest = buildCreateRequest()
+				.asyncAccepted(true)
 				.serviceInstanceId("service-instance-id")
 				.bindingId("binding-id")
 				.serviceDefinition(serviceDefinition)
@@ -47,7 +49,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 		ServiceInstanceBindingController controller = createControllerUnderTest(expectedRequest);
 
 		controller.createServiceInstanceBinding(pathVariables, "service-instance-id", "binding-id",
-				"api-info-location", encodeOriginatingIdentity(identityContext), parsedRequest);
+				true, "api-info-location", encodeOriginatingIdentity(identityContext), parsedRequest);
 	}
 
 	private CreateServiceInstanceBindingRequestBuilder buildCreateRequest() {
@@ -79,6 +81,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 	@Test
 	public void deleteServiceBindingParametersAreMappedToRequest() {
 		DeleteServiceInstanceBindingRequest expectedRequest = DeleteServiceInstanceBindingRequest.builder()
+				.asyncAccepted(true)
 				.serviceInstanceId("service-instance-id")
 				.serviceDefinitionId(serviceDefinition.getId())
 				.planId("plan-id")
@@ -92,7 +95,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 		ServiceInstanceBindingController controller = createControllerUnderTest(expectedRequest);
 
 		controller.deleteServiceInstanceBinding(pathVariables, "service-instance-id", "binding-id",
-				serviceDefinition.getId(), "plan-id",
+				serviceDefinition.getId(), "plan-id", true,
 				"api-info-location", encodeOriginatingIdentity(identityContext));
 	}
 
@@ -120,8 +123,9 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 		}
 
 		@Override
-		public void deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+		public DeleteServiceInstanceBindingResponse deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
+			return null;
 		}
 	}
 }

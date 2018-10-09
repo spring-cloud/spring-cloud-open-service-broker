@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.service;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
 
 /**
  * Default implementation of ServiceInstanceBindingService for service brokers that do not support bindable services.
@@ -43,7 +44,7 @@ public class NonBindableServiceInstanceBindingService implements ServiceInstance
 	 * @param request containing the details of the request
 	 */
 	@Override
-	public void deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+	public DeleteServiceInstanceBindingResponse deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
 		throw nonBindableException();
 	}
 

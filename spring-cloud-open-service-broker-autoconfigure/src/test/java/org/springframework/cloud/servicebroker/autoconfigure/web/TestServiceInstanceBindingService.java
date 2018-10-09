@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 
 public class TestServiceInstanceBindingService implements ServiceInstanceBindingService {
@@ -28,6 +29,7 @@ public class TestServiceInstanceBindingService implements ServiceInstanceBinding
 	}
 
 	@Override
-	public void deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+	public DeleteServiceInstanceBindingResponse deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+		return null;
 	}
 }

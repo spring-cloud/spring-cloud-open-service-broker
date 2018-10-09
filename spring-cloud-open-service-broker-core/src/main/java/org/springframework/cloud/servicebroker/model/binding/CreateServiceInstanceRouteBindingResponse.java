@@ -28,17 +28,19 @@ import java.util.Objects;
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-4">Open Service Broker API specification</a>
  * 
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInstanceBindingResponse {
 	private final String routeServiceUrl;
 
-	CreateServiceInstanceRouteBindingResponse(boolean bindingExisted, String routeServiceUrl) {
-		super(bindingExisted);
+	CreateServiceInstanceRouteBindingResponse(boolean async, String operation, boolean bindingExisted,
+											  String routeServiceUrl) {
+		super(async, operation, bindingExisted);
 		this.routeServiceUrl = routeServiceUrl;
 	}
 
 	CreateServiceInstanceRouteBindingResponse() {
-		this(false, null);
+		this(false, null, false, null);
 	}
 
 	/**
@@ -93,6 +95,8 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 	public static class CreateServiceInstanceRouteBindingResponseBuilder {
 		private String routeServiceUrl;
 		private boolean bindingExisted;
+		private boolean async;
+		private String operation;
 
 		CreateServiceInstanceRouteBindingResponseBuilder() {
 		}
@@ -130,12 +134,47 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 		}
 
 		/**
+		 * Set a boolean value indicating whether the requested operation is being performed synchronously or
+		 * asynchronously.
+		 *
+		 * <p>
+		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value
+		 * will result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be
+		 * determined by the value of {@link #bindingExisted(boolean)}.
+		 *
+		 * @param async {@literal true} to indicate that the operation is being performed asynchronously,
+		 * {@literal false} to indicate that the operation was completed
+		 * @return the builder
+		 * @see #bindingExisted(boolean)
+		 */
+		public CreateServiceInstanceRouteBindingResponseBuilder async(boolean async) {
+			this.async = async;
+			return this;
+		}
+
+		/**
+		 * Set a value to inform the user of the operation being performed in support of an asynchronous response.
+		 * This value will be passed back to the service broker in subsequent
+		 * {@link GetLastServiceBindingOperationRequest} requests.
+		 *
+		 * <p>
+		 * This value will set the {@literal operation} field in the body of the response to the platform.
+		 *
+		 * @param operation the informational value
+		 * @return the builder
+		 */
+		public CreateServiceInstanceRouteBindingResponseBuilder operation(String operation) {
+			this.operation = operation;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link CreateServiceInstanceRouteBindingResponse} from the provided values.
 		 *
 		 * @return the newly constructed {@literal CreateServiceInstanceRouteBindingResponse}
 		 */
 		public CreateServiceInstanceRouteBindingResponse build() {
-			return new CreateServiceInstanceRouteBindingResponse(bindingExisted, routeServiceUrl);
+			return new CreateServiceInstanceRouteBindingResponse(async, operation, bindingExisted, routeServiceUrl);
 		}
 	}
 }

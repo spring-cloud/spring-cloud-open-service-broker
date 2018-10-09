@@ -24,14 +24,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidOriginatingIdentityException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
+import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
+import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
 import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.KubernetesContext;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.service.CatalogService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.Base64Utils;
 
@@ -40,6 +42,7 @@ import org.springframework.util.Base64Utils;
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 public class BaseController {
 	protected CatalogService catalogService;
@@ -55,7 +58,7 @@ public class BaseController {
 		request.setOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
 	}
 
-	protected void setCommonRequestFields(AsyncServiceInstanceRequest request, String platformInstanceId,
+	protected void setCommonRequestFields(AsyncServiceBrokerRequest request, String platformInstanceId,
 										  String apiInfoLocation, String originatingIdentityString,
 										  boolean asyncAccepted) {
 		setCommonRequestFields(request, platformInstanceId, apiInfoLocation, originatingIdentityString);
@@ -123,5 +126,12 @@ public class BaseController {
 	private Map<String, Object> readJsonFromString(String value) throws IOException {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
 		return objectMapper.readValue(value, new TypeReference<Map<String,Object>>() {});
+	}
+
+	protected HttpStatus getAsyncResponseCode(AsyncServiceBrokerResponse response) {
+		if (response != null && response.isAsync()) {
+			return HttpStatus.ACCEPTED;
+		}
+		return HttpStatus.OK;
 	}
 }

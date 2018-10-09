@@ -16,11 +16,11 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
-import org.springframework.cloud.servicebroker.model.Context;
-import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
-import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-
 import java.util.Objects;
+
+import org.springframework.cloud.servicebroker.model.Context;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 
 /**
  *  Details of a request to delete a service instance binding.
@@ -33,8 +33,9 @@ import java.util.Objects;
  *
  * @author krujos
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
-public class DeleteServiceInstanceBindingRequest extends ServiceBrokerRequest {
+public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerRequest {
 
 	private transient String serviceInstanceId;
 
@@ -47,9 +48,9 @@ public class DeleteServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	private transient ServiceDefinition serviceDefinition;
 
 	DeleteServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
-										String bindingId, ServiceDefinition serviceDefinition,
+										String bindingId, ServiceDefinition serviceDefinition, boolean acceptsAsync,
 										String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
-		super(platformInstanceId, apiInfoLocation, originatingIdentity);
+		super(acceptsAsync, platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
@@ -178,6 +179,7 @@ public class DeleteServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		private String serviceDefinitionId;
 		private String planId;
 		private String bindingId;
+		private boolean asyncAccepted;
 		private String platformInstanceId;
 		private String apiInfoLocation;
 		private Context originatingIdentity;
@@ -231,6 +233,19 @@ public class DeleteServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		 */
 		public DeleteServiceInstanceBindingRequestBuilder bindingId(String bindingId) {
 			this.bindingId = bindingId;
+			return this;
+		}
+
+		/**
+		 * Set the value of the flag indicating whether the platform supports asynchronous operations
+		 * as would be provided in the request from the platform.
+		 *
+		 * @param asyncAccepted the boolean value of the flag
+		 * @return the builder
+		 * @see #isAsyncAccepted()
+		 */
+		public DeleteServiceInstanceBindingRequestBuilder asyncAccepted(boolean asyncAccepted) {
+			this.asyncAccepted = asyncAccepted;
 			return this;
 		}
 
@@ -289,7 +304,7 @@ public class DeleteServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		 */
 		public DeleteServiceInstanceBindingRequest build() {
 			return new DeleteServiceInstanceBindingRequest(serviceInstanceId, serviceDefinitionId, planId,
-					bindingId, serviceDefinition,
+					bindingId, serviceDefinition, asyncAccepted,
 					platformInstanceId, apiInfoLocation, originatingIdentity);
 		}
 	}

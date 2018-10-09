@@ -19,11 +19,15 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
@@ -50,6 +54,16 @@ public abstract class AbstractServiceInstanceBindingControllerIntegrationTest ex
 				.thenReturn(getResponse);
 	}
 
+	protected void setupServiceInstanceBindingService(DeleteServiceInstanceBindingResponse deleteResponse) {
+		when(serviceInstanceBindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
+				.thenReturn(deleteResponse);
+	}
+
+	protected void setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse response) {
+		when(serviceInstanceBindingService.getLastOperation(any(GetLastServiceBindingOperationRequest.class)))
+				.thenReturn(response);
+	}
+
 	protected CreateServiceInstanceBindingRequest verifyCreateBinding() {
 		ArgumentCaptor<CreateServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor.forClass(CreateServiceInstanceBindingRequest.class);
 		verify(serviceInstanceBindingService).createServiceInstanceBinding(argumentCaptor.capture());
@@ -65,6 +79,12 @@ public abstract class AbstractServiceInstanceBindingControllerIntegrationTest ex
 	protected DeleteServiceInstanceBindingRequest verifyDeleteBinding() {
 		ArgumentCaptor<DeleteServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor.forClass(DeleteServiceInstanceBindingRequest.class);
 		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(argumentCaptor.capture());
+		return argumentCaptor.getValue();
+	}
+
+	protected GetLastServiceBindingOperationRequest verifyLastOperation() {
+		ArgumentCaptor<GetLastServiceBindingOperationRequest> argumentCaptor = ArgumentCaptor.forClass(GetLastServiceBindingOperationRequest.class);
+		Mockito.verify(serviceInstanceBindingService).getLastOperation(argumentCaptor.capture());
 		return argumentCaptor.getValue();
 	}
 }
