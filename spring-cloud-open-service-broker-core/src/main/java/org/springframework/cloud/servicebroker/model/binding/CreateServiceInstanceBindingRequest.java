@@ -24,8 +24,8 @@ import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.springframework.cloud.servicebroker.model.Context;
-import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapper;
 
 /**
@@ -39,9 +39,10 @@ import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapper;
  * 
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 @SuppressWarnings({"deprecation", "DeprecatedIsStillUsed"})
-public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
+public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerRequest {
 	private transient String serviceInstanceId;
 
 	private transient String bindingId;
@@ -76,10 +77,10 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 
 	CreateServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
 										String bindingId, ServiceDefinition serviceDefinition,
-										BindResource bindResource,
+										boolean asyncAccepted, BindResource bindResource,
 										Map<String, Object> parameters, Context context,
 										String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
-		super(platformInstanceId, apiInfoLocation, originatingIdentity);
+		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
@@ -333,6 +334,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		private String planId;
 		private String bindingId;
 		private ServiceDefinition serviceDefinition;
+		private boolean asyncAccepted;
 		private BindResource bindResource;
 		private final Map<String, Object> parameters = new HashMap<>();
 		private Context context;
@@ -400,6 +402,19 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		 */
 		public CreateServiceInstanceBindingRequestBuilder serviceDefinition(ServiceDefinition serviceDefinition) {
 			this.serviceDefinition = serviceDefinition;
+			return this;
+		}
+
+		/**
+		 * Set the value of the flag indicating whether the platform supports asynchronous operations
+		 * as would be provided in the request from the platform.
+		 *
+		 * @param asyncAccepted the boolean value of the flag
+		 * @return the builder
+		 * @see #isAsyncAccepted()
+		 */
+		public CreateServiceInstanceBindingRequestBuilder asyncAccepted(boolean asyncAccepted) {
+			this.asyncAccepted = asyncAccepted;
 			return this;
 		}
 
@@ -496,7 +511,7 @@ public class CreateServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		 */
 		public CreateServiceInstanceBindingRequest build() {
 			return new CreateServiceInstanceBindingRequest(serviceInstanceId, serviceDefinitionId, planId,
-					bindingId, serviceDefinition, bindResource, parameters, context,
+					bindingId, serviceDefinition, asyncAccepted, bindResource, parameters, context,
 					platformInstanceId, apiInfoLocation, originatingIdentity);
 		}
 	}

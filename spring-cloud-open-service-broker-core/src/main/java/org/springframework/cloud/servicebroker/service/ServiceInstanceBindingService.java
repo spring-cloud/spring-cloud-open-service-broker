@@ -24,6 +24,9 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotE
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
 
@@ -32,6 +35,7 @@ import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceB
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 public interface ServiceInstanceBindingService {
 
@@ -63,11 +67,27 @@ public interface ServiceInstanceBindingService {
 	}
 
 	/**
-	 * Delete a service instance binding.
+	 * Get the status of the last requested operation for a service instance.
 	 *
 	 * @param request containing the details of the request
+	 * @return a {@link GetLastServiceBindingOperationResponse} on successful processing of the request
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
 	 * @throws ServiceInstanceBindingDoesNotExistException if a binding with the given ID is not known to the broker
 	 */
-	void deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request);
+	default GetLastServiceBindingOperationResponse getLastOperation(GetLastServiceBindingOperationRequest request) {
+		throw new UnsupportedOperationException("This service broker does not support getting the status of " +
+				"an asynchronous operation. " +
+				"If the service broker returns '202 Accepted' in response to a bind or unbind request, " +
+				"it must also provide an implementation of the get last operation API.");
+	}
+
+	/**
+	 * Delete a service instance binding.
+	 *
+	 * @param request containing the details of the request
+	 * @return a {@link DeleteServiceInstanceBindingResponse} on successful processing of the request
+	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
+	 * @throws ServiceInstanceBindingDoesNotExistException if a binding with the given ID is not known to the broker
+	 */
+	DeleteServiceInstanceBindingResponse deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request);
 }
