@@ -17,7 +17,6 @@
 package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
 import java.nio.charset.Charset;
-import java.util.Map;
 
 import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
@@ -380,14 +379,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.GONE)
-				.expectBody()
-				.jsonPath("$").isMap()
-				.consumeWith(result -> {
-					String responseBody = new String(result.getResponseBody(), UTF_8);
-					Map<String, Object> map = JsonPath.read(responseBody, "$");
-					assertThat(map).isEmpty();
-				});
+				.expectStatus().isEqualTo(HttpStatus.GONE);
 	}
 
 	@Test

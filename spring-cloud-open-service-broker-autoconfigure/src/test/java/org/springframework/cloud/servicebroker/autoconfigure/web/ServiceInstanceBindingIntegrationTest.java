@@ -41,21 +41,35 @@ public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIn
 	}
 
 	protected String buildCreateUrl() {
-		return buildCreateUrl(null);
+		return buildCreateUrl(null, false);
 	}
 
-	protected String buildCreateUrl(String platformInstanceId) {
-		return buildBaseUrl(platformInstanceId).toUriString();
+	protected String buildCreateUrl(String platformInstanceId, boolean asyncAccepted) {
+		return buildBaseUrl(platformInstanceId)
+				.queryParam("accepts_incomplete", asyncAccepted)
+				.toUriString();
 	}
 
 	protected String buildDeleteUrl() {
-		return buildDeleteUrl(null);
+		return buildDeleteUrl(null, false);
 	}
 
-	protected String buildDeleteUrl(String platformInstanceId) {
+	protected String buildDeleteUrl(String platformInstanceId, boolean asyncAccepted) {
 		return buildBaseUrl(platformInstanceId)
 				.queryParam("service_id", serviceDefinition.getId())
 				.queryParam("plan_id", serviceDefinition.getPlans().get(0).getId())
+				.queryParam("accepts_incomplete", asyncAccepted)
+				.toUriString();
+	}
+
+	protected String buildLastOperationUrl() {
+		return buildLastOperationUrl(null);
+	}
+
+	protected String buildLastOperationUrl(String platformInstanceId) {
+		return buildBaseUrl(platformInstanceId)
+				.pathSegment("last_operation")
+				.queryParam("operation", "working")
 				.toUriString();
 	}
 

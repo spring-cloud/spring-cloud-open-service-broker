@@ -28,6 +28,7 @@ import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
@@ -123,7 +124,7 @@ public class ServiceInstanceBindingEventServiceTest {
 								.serviceInstanceId("foo")
 								.bindingId("bar")
 								.build()))
-				.expectNext()
+				.expectNext(DeleteServiceInstanceBindingResponse.builder().build())
 				.verifyComplete();
 
 		assertThat(this.results.getBeforeCreate()).isNullOrEmpty();
@@ -194,7 +195,7 @@ public class ServiceInstanceBindingEventServiceTest {
 				.then(eventFlowRegistries.getDeleteInstanceBindingRegistry()
 						.addCompletionFlow(new DeleteServiceInstanceBindingCompletionFlow() {
 							@Override
-							public Mono<Void> complete(DeleteServiceInstanceBindingRequest request) {
+							public Mono<Void> complete(DeleteServiceInstanceBindingRequest request, DeleteServiceInstanceBindingResponse response) {
 								return results.setAfterDelete("after delete " + request.getServiceInstanceId());
 							}
 						}))
@@ -220,11 +221,11 @@ public class ServiceInstanceBindingEventServiceTest {
 		}
 
 		@Override
-		public Mono<Void> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+		public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
 			if (request.getBindingId() == null) {
 				return Mono.error(new ServiceInstanceBindingDoesNotExistException("bar"));
 			}
-			return Mono.empty();
+			return Mono.just(DeleteServiceInstanceBindingResponse.builder().build());
 		}
 
 	}

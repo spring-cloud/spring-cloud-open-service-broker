@@ -26,6 +26,9 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotE
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
 
@@ -68,77 +71,29 @@ public interface ServiceInstanceBindingService {
 	}
 
 	/**
-	 * Delete a service instance binding.
+	 * Get the status of the last requested operation for a service instance.
 	 *
 	 * @param request containing the details of the request
-	 * @return an empty Mono
+	 * @return a {@link GetLastServiceBindingOperationResponse} on successful processing of the request
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
 	 * @throws ServiceInstanceBindingDoesNotExistException if a binding with the given ID is not known to the broker
 	 */
-	default Mono<Void> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+	default Mono<GetLastServiceBindingOperationResponse> getLastOperation(GetLastServiceBindingOperationRequest request) {
+		return Mono.error(new UnsupportedOperationException("This service broker does not support getting the status of " +
+				"an asynchronous operation. " +
+				"If the service broker returns '202 Accepted' in response to a bind or unbind request, " +
+				"it must also provide an implementation of the get last operation API."));
+	}
+
+	/**
+	 * Delete a service instance binding.
+	 *
+	 * @param request containing the details of the request
+	 * @return a {@link DeleteServiceInstanceBindingResponse} on successful processing of the request
+	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
+	 * @throws ServiceInstanceBindingDoesNotExistException if a binding with the given ID is not known to the broker
+	 */
+	default Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
 		return Mono.error(new UnsupportedOperationException("This service broker does not support deleting service bindings."));
 	}
-
-	// create hooks
-
-	/**
-	 * Hook for performing an action before a service instance binding is created
-	 * @return a completed Mono
-	 * @param request the request to create a service instance binding
-	 */
-	default Mono<Void> getBeforeCreateFlow(CreateServiceInstanceBindingRequest request) {
-		return Mono.empty();
-	}
-
-	/**
-	 * Hook for performing an action after a service instance binding is created
-	 * @return a completed Mono
-	 * @param request the request to create a service instance binding
-	 * @param response the response resulting from a successful service instance binding create
-	 */
-	default Mono<Void> getAfterCreateFlow(CreateServiceInstanceBindingRequest request,
-			CreateServiceInstanceBindingResponse response) {
-		return Mono.empty();
-	}
-
-	/**
-	 * Hook for performing an action when creating a service instance binding produces an error
-	 * @return a completed Mono
-	 * @param request the request to create a service instance binding
-	 * @param error the error resulting from a failed service instance binding create
-	 */
-	default Mono<Void> getErrorCreateFlow(CreateServiceInstanceBindingRequest request, Throwable error) {
-		return Mono.empty();
-	}
-
-	// delete hooks
-
-	/**
-	 * Hook for performing an action before a service instance binding is deleted
-	 * @return a completed Mono
-	 * @param request the request to delete a service instance binding
-	 */
-	default Mono<Void> getBeforeDeleteFlow(DeleteServiceInstanceBindingRequest request) {
-		return Mono.empty();
-	}
-
-	/**
-	 * Hook for performing an action after a service instance binding is deleted
-	 * @return a completed Mono
-	 * @param request the request to delete a service instance binding
-	 */
-	default Mono<Void> getAfterDeleteFlow(DeleteServiceInstanceBindingRequest request) {
-		return Mono.empty();
-	}
-
-	/**
-	 * Hook for performing an action when deleting a service instance binding produces an error
-	 * @return a completed Mono
-	 * @param request the request to delete a service instance binding
-	 * @param error the error resulting from a failed service instance binding delete
-	 */
-	default Mono<Void> getErrorDeleteFlow(DeleteServiceInstanceBindingRequest request, Throwable error) {
-		return Mono.empty();
-	}
-
 }

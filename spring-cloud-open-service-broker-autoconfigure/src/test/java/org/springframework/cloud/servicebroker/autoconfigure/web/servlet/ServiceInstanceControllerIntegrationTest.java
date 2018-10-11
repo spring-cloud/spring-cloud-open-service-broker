@@ -47,7 +47,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.anEmptyMap;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
@@ -430,8 +429,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.andReturn();
 
 		mockMvc.perform(asyncDispatch(mvcResult))
-				.andExpect(status().isGone())
-				.andExpect(jsonPath("$", anEmptyMap()));
+				.andExpect(status().isGone());
 	}
 
 	@Test

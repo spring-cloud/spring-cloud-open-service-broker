@@ -24,6 +24,7 @@ public class CreateServiceInstanceBindingResponseTest {
 	public void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(CreateServiceInstanceBindingResponse.class)
+				.withRedefinedSuperclass()
 				.withRedefinedSubclass(CreateServiceInstanceAppBindingResponse.class)
 				.withRedefinedSubclass(CreateServiceInstanceRouteBindingResponse.class)
 				.verify();

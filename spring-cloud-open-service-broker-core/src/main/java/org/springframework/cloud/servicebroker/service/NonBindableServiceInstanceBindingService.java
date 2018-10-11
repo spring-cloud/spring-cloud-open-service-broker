@@ -21,11 +21,13 @@ import reactor.core.publisher.Mono;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
 
 /**
  * Default implementation of ServiceInstanceBindingService for service brokers that do not support bindable services.
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 public class NonBindableServiceInstanceBindingService implements ServiceInstanceBindingService {
 
@@ -46,7 +48,7 @@ public class NonBindableServiceInstanceBindingService implements ServiceInstance
 	 * @param request containing the details of the request
 	 */
 	@Override
-	public Mono<Void> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+	public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
 		return Mono.error(nonBindableException());
 	}
 

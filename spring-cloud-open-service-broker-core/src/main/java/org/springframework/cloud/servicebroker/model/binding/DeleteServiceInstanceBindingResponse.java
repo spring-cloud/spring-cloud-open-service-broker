@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,55 +14,77 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.model.instance;
+package org.springframework.cloud.servicebroker.model.binding;
+
+import java.util.Objects;
 
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
+import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationRequest;
 
 /**
- * Details of a response to a request to delete a service instance.
+ * Details of a response to a request to delete a service instance binding.
  *
  * <p>
  * Objects of this type are constructed by the service broker application,
  * and used to build the response to the platform.
  *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-6">Open Service Broker API specification</a>
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-8">Open Service Broker API specification</a>
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
-public class DeleteServiceInstanceResponse extends AsyncServiceBrokerResponse {
+public class DeleteServiceInstanceBindingResponse extends AsyncServiceBrokerResponse {
 
-	DeleteServiceInstanceResponse(boolean async, String operation) {
+	DeleteServiceInstanceBindingResponse(boolean async, String operation) {
 		super(async, operation);
 	}
 
-	DeleteServiceInstanceResponse() {
+	DeleteServiceInstanceBindingResponse() {
 		this(false, null);
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal DeleteServiceInstanceResponse}.
+	 * Create a builder that provides a fluent API for constructing a {@literal DeleteServiceInstanceBindingResponse}.
 	 *
 	 * @return the builder
 	 */
-	public static DeleteServiceInstanceResponseBuilder builder() {
-		return new DeleteServiceInstanceResponseBuilder();
+	public static DeleteServiceInstanceBindingResponseBuilder builder() {
+		return new DeleteServiceInstanceBindingResponseBuilder();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof DeleteServiceInstanceBindingResponse)) return false;
+		if (!super.equals(o)) return false;
+		DeleteServiceInstanceBindingResponse that = (DeleteServiceInstanceBindingResponse) o;
+		return that.canEqual(this);
+	}
+
+	public boolean canEqual(Object other) {
+		return (other instanceof DeleteServiceInstanceBindingResponse);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode());
 	}
 
 	@Override
 	public String toString() {
 		return super.toString() +
-				"DeleteServiceInstanceResponse{" +
+				"DeleteServiceInstanceBindingResponse{" +
 				'}';
 	}
 
 	/**
-	 * Provides a fluent API for constructing a {@link DeleteServiceInstanceResponse}.
+	 * Provides a fluent API for constructing a {@link DeleteServiceInstanceBindingResponse}.
 	 */
-	public static class DeleteServiceInstanceResponseBuilder {
+	public static class DeleteServiceInstanceBindingResponseBuilder {
 		private boolean async;
 		private String operation;
 
-		DeleteServiceInstanceResponseBuilder() {
+		DeleteServiceInstanceBindingResponseBuilder() {
 		}
 
 		/**
@@ -78,7 +100,7 @@ public class DeleteServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * {@literal false} to indicate that the operation was completed
 		 * @return the builder
 		 */
-		public DeleteServiceInstanceResponseBuilder async(boolean async) {
+		public DeleteServiceInstanceBindingResponseBuilder async(boolean async) {
 			this.async = async;
 			return this;
 		}
@@ -94,18 +116,18 @@ public class DeleteServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * @param operation the informational value
 		 * @return the builder
 		 */
-		public DeleteServiceInstanceResponseBuilder operation(String operation) {
+		public DeleteServiceInstanceBindingResponseBuilder operation(String operation) {
 			this.operation = operation;
 			return this;
 		}
 
 		/**
-		 * Construct a {@link DeleteServiceInstanceResponse} from the provided values.
+		 * Construct a {@link DeleteServiceInstanceBindingResponse} from the provided values.
 		 *
 		 * @return the newly constructed {@literal DeleteServiceInstanceResponse}
 		 */
-		public DeleteServiceInstanceResponse build() {
-			return new DeleteServiceInstanceResponse(async, operation);
+		public DeleteServiceInstanceBindingResponse build() {
+			return new DeleteServiceInstanceBindingResponse(async, operation);
 		}
 	}
 }

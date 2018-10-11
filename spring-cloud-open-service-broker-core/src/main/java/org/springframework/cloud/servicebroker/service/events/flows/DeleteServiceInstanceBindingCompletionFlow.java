@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.service.events.flows;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
 
 /**
  * Completion flow for delete service instance binding request
@@ -27,7 +28,7 @@ import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstan
  */
 public interface DeleteServiceInstanceBindingCompletionFlow {
 
-	default Mono<Void> complete(DeleteServiceInstanceBindingRequest request) {
+	default Mono<Void> complete(DeleteServiceInstanceBindingRequest request, DeleteServiceInstanceBindingResponse response) {
 		return Mono.empty();
 	}
 

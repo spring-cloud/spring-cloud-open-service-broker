@@ -32,13 +32,19 @@ import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceRouteBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceRouteBindingResponse;
+import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -59,14 +65,14 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void createBindingToAppSucceeds() throws Exception {
+	public void createBindingToAppWithoutAsyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse.builder()
 				.bindingExisted(false)
 				.build());
 
-		client.put().uri(buildCreateUrl(PLATFORM_INSTANCE_ID))
+		client.put().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, false))
 				.contentType(MediaType.APPLICATION_JSON)
 				.syncBody(createRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
@@ -76,6 +82,32 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.expectStatus().isCreated();
 
 		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
+		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	public void createBindingToAppWithAsyncAndHeadersSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse.builder()
+				.async(true)
+				.operation("working")
+				.bindingExisted(false)
+				.build());
+
+		client.put().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, true))
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(createRequestBody)
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isAccepted()
+				.expectBody()
+				.jsonPath("$.operation").isEqualTo("working");
+
+		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
 		assertHeaderValuesSet(actualRequest);
 	}
 
@@ -99,7 +131,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void createBindingToRouteSucceeds() throws Exception {
+	public void createBindingToRouteWithoutAsyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceRouteBindingResponse.builder()
@@ -112,6 +144,34 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isCreated();
+
+		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
+	public void createBindingToRouteWithAsyncAndHeadersSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceBindingService(CreateServiceInstanceRouteBindingResponse.builder()
+				.async(true)
+				.operation("working")
+				.bindingExisted(false)
+				.build());
+
+		client.put().uri(buildCreateUrl(null, true))
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(createRequestBody)
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isAccepted()
+				.expectBody()
+				.jsonPath("$.operation").isEqualTo("working");
+
+		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
+		assertHeaderValuesNotSet(actualRequest);
 	}
 
 	@Test
@@ -221,7 +281,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		setupServiceInstanceBindingService(GetServiceInstanceAppBindingResponse.builder()
 				.build());
 
-		client.get().uri(buildCreateUrl(PLATFORM_INSTANCE_ID))
+		client.get().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, false))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
@@ -237,7 +297,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		setupServiceInstanceBindingService(GetServiceInstanceRouteBindingResponse.builder()
 				.build());
 
-		client.get().uri(buildCreateUrl(PLATFORM_INSTANCE_ID))
+		client.get().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, false))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
@@ -260,13 +320,13 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void deleteBindingSucceeds() throws Exception {
+	public void deleteBindingWithoutAsyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
-		when(serviceInstanceBindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
-				.thenReturn(Mono.empty());
+		setupServiceInstanceBindingService(DeleteServiceInstanceBindingResponse.builder()
+				.build());
 
-		client.delete().uri(buildDeleteUrl(PLATFORM_INSTANCE_ID))
+		client.delete().uri(buildDeleteUrl(PLATFORM_INSTANCE_ID, false))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.exchange()
@@ -277,6 +337,31 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 
 		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	public void deleteBindingWithAsyncAndHeadersSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceBindingService(DeleteServiceInstanceBindingResponse.builder()
+				.async(true)
+				.operation("working")
+				.build());
+
+		client.delete().uri(buildDeleteUrl(PLATFORM_INSTANCE_ID, true))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.exchange()
+				.expectStatus().isAccepted()
+				.expectBody()
+				.jsonPath("$.operation").isEqualTo("working");
+
+		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
+
+		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
 		assertHeaderValuesSet(actualRequest);
 	}
 
@@ -306,9 +391,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		client.delete().uri(buildDeleteUrl())
 				.exchange()
 				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.GONE)
-				.expectBody()
-				.json("{}");
+				.expectStatus().isEqualTo(HttpStatus.GONE);
 	}
 
 	@Test
@@ -316,11 +399,95 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		setupCatalogService(null);
 
 		when(serviceInstanceBindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
-				.thenReturn(Mono.empty());
+				.thenReturn(Mono.just(DeleteServiceInstanceBindingResponse.builder().build()));
 
 		client.delete().uri(buildDeleteUrl())
 				.exchange()
 				.expectStatus().isOk();
+	}
+
+	@Test
+	public void lastOperationHasInProgressStatus() throws Exception {
+		setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse.builder()
+				.operationState(OperationState.IN_PROGRESS)
+				.description("working on it")
+				.build());
+
+		client.get().uri(buildLastOperationUrl())
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody()
+				.jsonPath("$.state").isEqualTo(OperationState.IN_PROGRESS.toString())
+				.jsonPath("$.description", is("working on it"));
+
+		verify(serviceInstanceBindingService).getLastOperation(any(GetLastServiceBindingOperationRequest.class));
+
+		GetLastServiceBindingOperationRequest actualRequest = verifyLastOperation();
+		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
+	public void lastOperationHasSucceededStatus() throws Exception {
+		setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse.builder()
+				.operationState(OperationState.SUCCEEDED)
+				.description("all good")
+				.build());
+
+		client.get().uri(buildLastOperationUrl(PLATFORM_INSTANCE_ID))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody()
+				.jsonPath("$.state").isEqualTo(OperationState.SUCCEEDED.toString())
+				.jsonPath("$.description", is("all good"));
+
+		verify(serviceInstanceBindingService).getLastOperation(any(GetLastServiceBindingOperationRequest.class));
+
+		GetLastServiceBindingOperationRequest actualRequest = verifyLastOperation();
+		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	public void lastOperationHasSucceededStatusWithDeletionComplete() throws Exception {
+		setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse.builder()
+				.operationState(OperationState.SUCCEEDED)
+				.description("all good")
+				.deleteOperation(true)
+				.build());
+
+		client.get().uri(buildLastOperationUrl())
+				.exchange()
+				.expectStatus().is4xxClientError()
+				.expectStatus().isEqualTo(HttpStatus.GONE)
+				.expectBody()
+				.jsonPath("$.state").isEqualTo(OperationState.SUCCEEDED.toString())
+				.jsonPath("$.description", is("all good"));
+
+		verify(serviceInstanceBindingService).getLastOperation(any(GetLastServiceBindingOperationRequest.class));
+
+		GetLastServiceBindingOperationRequest actualRequest = verifyLastOperation();
+		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
+	public void lastOperationHasFailedStatus() throws Exception {
+		setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse.builder()
+				.operationState(OperationState.FAILED)
+				.description("not so good")
+				.build());
+
+		client.get().uri(buildLastOperationUrl())
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody()
+				.jsonPath("$.state").isEqualTo(OperationState.FAILED.toString())
+				.jsonPath("$.description").isEqualTo("not so good");
+
+		verify(serviceInstanceBindingService).getLastOperation(any(GetLastServiceBindingOperationRequest.class));
+
+		GetLastServiceBindingOperationRequest actualRequest = verifyLastOperation();
+		assertHeaderValuesNotSet(actualRequest);
 	}
 
 }

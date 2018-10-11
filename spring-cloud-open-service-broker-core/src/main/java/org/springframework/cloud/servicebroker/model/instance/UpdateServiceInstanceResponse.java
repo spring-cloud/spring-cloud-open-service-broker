@@ -22,6 +22,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
+
 /**
  * Details of a response to a request to update a service instance.
  *
@@ -34,7 +36,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  * @author Scott Frederick
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class UpdateServiceInstanceResponse extends AsyncServiceInstanceResponse {
+public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 	private final String dashboardUrl;
 

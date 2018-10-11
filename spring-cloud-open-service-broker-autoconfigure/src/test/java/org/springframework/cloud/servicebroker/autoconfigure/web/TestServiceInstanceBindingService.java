@@ -21,6 +21,7 @@ import reactor.core.publisher.Mono;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 
 public class TestServiceInstanceBindingService implements ServiceInstanceBindingService {
@@ -31,7 +32,7 @@ public class TestServiceInstanceBindingService implements ServiceInstanceBinding
 	}
 
 	@Override
-	public Mono<Void> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+	public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
 		return Mono.empty();
 	}
 

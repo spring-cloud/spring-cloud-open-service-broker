@@ -35,6 +35,7 @@ import java.util.Objects;
  * @author sgreenberg@pivotal.io
  * @author Josh Long
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstanceBindingResponse {
 
@@ -44,16 +45,17 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 
 	private final List<VolumeMount> volumeMounts;
 
-	CreateServiceInstanceAppBindingResponse(boolean bindingExisted, Map<String, Object> credentials,
+	CreateServiceInstanceAppBindingResponse(boolean async, String operation, boolean bindingExisted,
+											Map<String, Object> credentials,
 											String syslogDrainUrl, List<VolumeMount> volumeMounts) {
-		super(bindingExisted);
+		super(async, operation, bindingExisted);
 		this.credentials = credentials;
 		this.syslogDrainUrl = syslogDrainUrl;
 		this.volumeMounts = volumeMounts;
 	}
 
 	CreateServiceInstanceAppBindingResponse() {
-		this(false, new HashMap<>(), null, new ArrayList<>());
+		this(false, null, false, new HashMap<>(), null, new ArrayList<>());
 	}
 
 	/**
@@ -132,6 +134,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		private String syslogDrainUrl;
 		private List<VolumeMount> volumeMounts = new ArrayList<>();
 		private boolean bindingExisted;
+		private boolean async;
+		private String operation;
 
 		CreateServiceInstanceAppBindingResponseBuilder() {
 		}
@@ -230,12 +234,48 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
+		 * Set a boolean value indicating whether the requested operation is being performed synchronously or
+		 * asynchronously.
+		 *
+		 * <p>
+		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value
+		 * will result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be
+		 * determined by the value of {@link #bindingExisted(boolean)}.
+		 *
+		 * @param async {@literal true} to indicate that the operation is being performed asynchronously,
+		 * {@literal false} to indicate that the operation was completed
+		 * @return the builder
+		 * @see #bindingExisted(boolean)
+		 */
+		public CreateServiceInstanceAppBindingResponseBuilder async(boolean async) {
+			this.async = async;
+			return this;
+		}
+
+		/**
+		 * Set a value to inform the user of the operation being performed in support of an asynchronous response.
+		 * This value will be passed back to the service broker in subsequent
+		 * {@link GetLastServiceBindingOperationRequest} requests.
+		 *
+		 * <p>
+		 * This value will set the {@literal operation} field in the body of the response to the platform.
+		 *
+		 * @param operation the informational value
+		 * @return the builder
+		 */
+		public CreateServiceInstanceAppBindingResponseBuilder operation(String operation) {
+			this.operation = operation;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link CreateServiceInstanceAppBindingResponse} from the provided values.
 		 *
 		 * @return the newly constructed {@literal CreateServiceInstanceAppBindingResponse}
 		 */
 		public CreateServiceInstanceAppBindingResponse build() {
-			return new CreateServiceInstanceAppBindingResponse(bindingExisted, credentials, syslogDrainUrl, volumeMounts);
+			return new CreateServiceInstanceAppBindingResponse(async, operation, bindingExisted, credentials,
+					syslogDrainUrl, volumeMounts);
 		}
 	}
 }
