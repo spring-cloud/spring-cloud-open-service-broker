@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.model.instance;
 import java.util.Map;
 import java.util.Objects;
 
+import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapper;
 
@@ -27,7 +28,7 @@ import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapper;
  *
  * @author Scott Frederick
  */
-public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServiceInstanceRequest {
+public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	protected final Map<String, Object> parameters;
 
 	private final Context context;

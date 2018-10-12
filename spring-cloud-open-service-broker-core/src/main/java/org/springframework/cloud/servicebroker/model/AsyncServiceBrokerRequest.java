@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,28 +14,26 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.model.instance;
+package org.springframework.cloud.servicebroker.model;
 
 import java.util.Objects;
-
-import org.springframework.cloud.servicebroker.model.Context;
-import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 
 /**
  * Details of a request that supports asynchronous operations.
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
-public abstract class AsyncServiceInstanceRequest extends ServiceBrokerRequest {
+public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
 	public final static String ASYNC_REQUEST_PARAMETER = "accepts_incomplete";
 
 	protected transient boolean asyncAccepted;
 
-	protected AsyncServiceInstanceRequest() {
+	protected AsyncServiceBrokerRequest() {
 	}
 
-	protected AsyncServiceInstanceRequest(boolean asyncAccepted, String platformInstanceId,
-										  String apiInfoLocation, Context originatingIdentity) {
+	protected AsyncServiceBrokerRequest(boolean asyncAccepted, String platformInstanceId,
+										String apiInfoLocation, Context originatingIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.asyncAccepted = asyncAccepted;
 	}
@@ -71,16 +69,16 @@ public abstract class AsyncServiceInstanceRequest extends ServiceBrokerRequest {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof AsyncServiceInstanceRequest)) return false;
+		if (!(o instanceof AsyncServiceBrokerRequest)) return false;
 		if (!super.equals(o)) return false;
-		AsyncServiceInstanceRequest that = (AsyncServiceInstanceRequest) o;
+		AsyncServiceBrokerRequest that = (AsyncServiceBrokerRequest) o;
 		return that.canEqual(this) &&
 				asyncAccepted == that.asyncAccepted;
 	}
 
 	@Override
 	public boolean canEqual(Object other) {
-		return (other instanceof AsyncServiceInstanceRequest);
+		return (other instanceof AsyncServiceBrokerRequest);
 	}
 
 	@Override
@@ -91,7 +89,7 @@ public abstract class AsyncServiceInstanceRequest extends ServiceBrokerRequest {
 	@Override
 	public String toString() {
 		return super.toString() +
-				"AsyncServiceInstanceRequest{" +
+				"AsyncServiceBrokerRequest{" +
 				"asyncAccepted=" + asyncAccepted +
 				'}';
 	}

@@ -16,15 +16,16 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
-import org.springframework.cloud.servicebroker.model.Context;
-import org.springframework.cloud.servicebroker.JsonUtils;
-import org.springframework.cloud.servicebroker.model.PlatformContext;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.cloud.servicebroker.JsonUtils;
+import org.springframework.cloud.servicebroker.model.Context;
+import org.springframework.cloud.servicebroker.model.PlatformContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.JsonUtils.fromJson;
@@ -44,6 +45,7 @@ public class CreateServiceInstanceBindingRequestTest {
 		assertThat(request.getContext()).isNull();
 		assertThat(request.getBindingId()).isNull();
 		assertThat(request.getParameters()).hasSize(0);
+		assertThat(request.isAsyncAccepted()).isEqualTo(false);
 		assertThat(request.getApiInfoLocation()).isNull();
 		assertThat(request.getPlatformInstanceId()).isNull();
 		assertThat(request.getOriginatingIdentity()).isNull();
@@ -70,6 +72,7 @@ public class CreateServiceInstanceBindingRequestTest {
 				.parameters("field2", 2)
 				.parameters("field3", true)
 				.parameters(parameters)
+				.asyncAccepted(true)
 				.bindResource(bindResource)
 				.context(context)
 				.platformInstanceId("platform-instance-id")
@@ -96,6 +99,7 @@ public class CreateServiceInstanceBindingRequestTest {
 		assertThat(request.getBindResource()).isEqualTo(bindResource);
 
 		assertThat(request.getContext()).isEqualTo(context);
+		assertThat(request.isAsyncAccepted()).isEqualTo(true);
 
 		assertThat(request.getPlatformInstanceId()).isEqualTo("platform-instance-id");
 		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.example.com");

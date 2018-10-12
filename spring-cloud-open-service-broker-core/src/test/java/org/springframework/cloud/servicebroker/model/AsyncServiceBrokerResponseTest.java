@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,18 +14,25 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.model.instance;
+package org.springframework.cloud.servicebroker.model;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
-public class AsyncServiceInstanceResponseTest {
+import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
+import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
+
+public class AsyncServiceBrokerResponseTest {
 	@Test
 	public void equalsAndHashCode() {
 		EqualsVerifier
-				.forClass(AsyncServiceInstanceResponse.class)
+				.forClass(AsyncServiceBrokerResponse.class)
 				.withRedefinedSubclass(CreateServiceInstanceResponse.class)
 				.withRedefinedSubclass(UpdateServiceInstanceResponse.class)
+				.withRedefinedSubclass(CreateServiceInstanceBindingResponse.class)
+				.withRedefinedSubclass(DeleteServiceInstanceBindingResponse.class)
 				.verify();
 	}
 }

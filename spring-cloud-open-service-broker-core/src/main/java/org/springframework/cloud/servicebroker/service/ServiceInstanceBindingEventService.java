@@ -21,6 +21,7 @@ import reactor.core.publisher.Mono;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
@@ -58,11 +59,12 @@ public class ServiceInstanceBindingEventService implements ServiceInstanceBindin
 	}
 
 	@Override
-	public Mono<Void> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+	public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
 		return flows.getDeleteInstanceBindingRegistry().getInitializationFlows(request)
 				.then(service.deleteServiceInstanceBinding(request))
 				.onErrorResume(e -> flows.getDeleteInstanceBindingRegistry().getErrorFlows(request, e)
 						.then(Mono.error(e)))
-				.thenEmpty(flows.getDeleteInstanceBindingRegistry().getCompletionFlows(request));
+				.flatMap(response -> flows.getDeleteInstanceBindingRegistry().getCompletionFlows(request, response)
+						.then(Mono.just(response)));
 	}
 }

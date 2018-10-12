@@ -30,8 +30,8 @@ import org.junit.runner.RunWith;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
+import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceRequest;
@@ -285,7 +285,6 @@ public class ServiceInstanceControllerResponseCodeTest {
 				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
-		assertThat(responseEntity.getBody()).isEqualTo(DeleteServiceInstanceResponse.builder().build());
 	}
 
 	@Theory
@@ -326,7 +325,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 		assertThat(responseEntity.getBody()).isEqualTo(data.response);
 	}
 
-	public static class AsyncResponseAndExpectedStatus<T extends AsyncServiceInstanceResponse> {
+	public static class AsyncResponseAndExpectedStatus<T extends AsyncServiceBrokerResponse> {
 		public final T response;
 		public final HttpStatus expectedStatus;
 

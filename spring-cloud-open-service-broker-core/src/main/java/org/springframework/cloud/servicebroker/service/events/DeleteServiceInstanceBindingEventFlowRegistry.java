@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.service.events;
 import reactor.core.publisher.Flux;
 
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.service.events.flows.DeleteServiceInstanceBindingCompletionFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.DeleteServiceInstanceBindingErrorFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.DeleteServiceInstanceBindingInitializationFlow;
@@ -30,7 +31,7 @@ import org.springframework.cloud.servicebroker.service.events.flows.DeleteServic
  */
 public class DeleteServiceInstanceBindingEventFlowRegistry extends EventFlowRegistry<DeleteServiceInstanceBindingInitializationFlow,
 		DeleteServiceInstanceBindingCompletionFlow, DeleteServiceInstanceBindingErrorFlow, DeleteServiceInstanceBindingRequest,
-		Void> {
+		DeleteServiceInstanceBindingResponse> {
 
 	@Override
 	public Flux<Void> getInitializationFlows(DeleteServiceInstanceBindingRequest request) {
@@ -39,14 +40,9 @@ public class DeleteServiceInstanceBindingEventFlowRegistry extends EventFlowRegi
 	}
 
 	@Override
-	public Flux<Void> getCompletionFlows(DeleteServiceInstanceBindingRequest request, Void response) {
-		return Flux.empty();
-	}
-
-	// there is no response from a binding delete
-	public Flux<Void> getCompletionFlows(DeleteServiceInstanceBindingRequest request) {
+	public Flux<Void> getCompletionFlows(DeleteServiceInstanceBindingRequest request, DeleteServiceInstanceBindingResponse response) {
 		return getCompletionFlowsInternal()
-				.flatMap(flow -> flow.complete(request));
+				.flatMap(flow -> flow.complete(request, response));
 	}
 
 	@Override

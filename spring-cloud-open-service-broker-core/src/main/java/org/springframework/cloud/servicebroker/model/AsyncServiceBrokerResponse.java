@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,27 +14,28 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.servicebroker.model.instance;
+package org.springframework.cloud.servicebroker.model;
+
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.util.Objects;
 
 /**
  * Details of a response that support asynchronous behavior.
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AsyncServiceInstanceResponse {
+public class AsyncServiceBrokerResponse {
 	@JsonIgnore
 	protected final boolean async;
 
 	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 	protected final String operation;
 
-	protected AsyncServiceInstanceResponse(boolean async, String operation) {
+	protected AsyncServiceBrokerResponse(boolean async, String operation) {
 		this.async = async;
 		this.operation = operation;
 	}
@@ -61,15 +62,15 @@ public class AsyncServiceInstanceResponse {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof AsyncServiceInstanceResponse)) return false;
-		AsyncServiceInstanceResponse that = (AsyncServiceInstanceResponse) o;
+		if (!(o instanceof AsyncServiceBrokerResponse)) return false;
+		AsyncServiceBrokerResponse that = (AsyncServiceBrokerResponse) o;
 		return that.canEqual(this) &&
 				async == that.async &&
 				Objects.equals(operation, that.operation);
 	}
 
 	public boolean canEqual(Object other) {
-		return (other instanceof AsyncServiceInstanceResponse);
+		return (other instanceof AsyncServiceBrokerResponse);
 	}
 
 	@Override

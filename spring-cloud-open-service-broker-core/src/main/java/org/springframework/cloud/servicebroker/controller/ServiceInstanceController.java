@@ -25,9 +25,8 @@ import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
+import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
-import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceRequest;
-import org.springframework.cloud.servicebroker.model.instance.AsyncServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceRequest;
@@ -59,6 +58,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 @ServiceBrokerRestController
 public class ServiceInstanceController extends BaseController {
@@ -79,7 +79,7 @@ public class ServiceInstanceController extends BaseController {
 	public Mono<ResponseEntity<CreateServiceInstanceResponse>> createServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-			@RequestParam(value = AsyncServiceInstanceRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
+			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody CreateServiceInstanceRequest request) {
@@ -182,7 +182,7 @@ public class ServiceInstanceController extends BaseController {
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
 			@RequestParam(ServiceBrokerRequest.SERVICE_ID_PARAMETER) String serviceDefinitionId,
 			@RequestParam(ServiceBrokerRequest.PLAN_ID_PARAMETER) String planId,
-			@RequestParam(value = AsyncServiceInstanceRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
+			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
 
@@ -207,7 +207,7 @@ public class ServiceInstanceController extends BaseController {
 				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
 				.onErrorResume(e -> {
 					if (e instanceof ServiceInstanceDoesNotExistException) {
-						return Mono.just(new ResponseEntity<>(DeleteServiceInstanceResponse.builder().build(), HttpStatus.GONE));
+						return Mono.just(new ResponseEntity<>(HttpStatus.GONE));
 					}
 					else {
 						return Mono.error(e);
@@ -222,7 +222,7 @@ public class ServiceInstanceController extends BaseController {
 	public Mono<ResponseEntity<UpdateServiceInstanceResponse>> updateServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-			@RequestParam(value = AsyncServiceInstanceRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
+			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody UpdateServiceInstanceRequest request) {
@@ -243,13 +243,6 @@ public class ServiceInstanceController extends BaseController {
 								serviceInstanceId, response)))
 				.map(response -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
 				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)));
-	}
-
-	private HttpStatus getAsyncResponseCode(AsyncServiceInstanceResponse response) {
-		if (response != null && response.isAsync()) {
-			return HttpStatus.ACCEPTED;
-		}
-		return HttpStatus.OK;
 	}
 
 }
