@@ -30,7 +30,7 @@ import java.util.Objects;
  * Objects of this type are constructed by the service broker application,
  * and used to build the response to the platform.
  *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-4">Open Service Broker API specification</a>
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-6">Open Service Broker API specification</a>
  * 
  * @author sgreenberg@pivotal.io
  * @author Josh Long
