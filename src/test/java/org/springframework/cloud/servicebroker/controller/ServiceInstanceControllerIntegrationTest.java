@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerBadRequestException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
@@ -247,6 +248,22 @@ public class ServiceInstanceControllerIntegrationTest extends ControllerIntegrat
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.description", is("invalid parameters description")));
+	}
+
+	@Test
+	public void createServiceInstanceWithBadRequestFails() throws Exception {
+		when(serviceInstanceService.createServiceInstance(eq(syncCreateRequest)))
+				.thenThrow(new ServiceBrokerBadRequestException("invalid request description"));
+
+		setupCatalogService(syncCreateRequest.getServiceDefinitionId());
+
+		mockMvc.perform(put(buildUrl(syncCreateRequest, false))
+				.content(DataFixture.toJson(syncCreateRequest))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.description", is("invalid request description")));
 	}
 
 	@Test
