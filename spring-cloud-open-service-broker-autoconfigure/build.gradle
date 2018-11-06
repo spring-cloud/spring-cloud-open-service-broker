@@ -43,10 +43,17 @@ dependencies {
 
 	testCompile("org.springframework.boot:spring-boot-starter-test")
 	testCompile("org.springframework.cloud:spring-cloud-starter-contract-verifier")
+	testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
+	testImplementation("org.junit.jupiter:junit-jupiter-api")
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 	testCompile("org.mockito:mockito-core")
 	testCompile("org.hamcrest:java-hamcrest:2.0.0.0")
 	testCompile("org.assertj:assertj-core")
 	testCompile("org.apache.commons:commons-lang3")
+}
+
+test {
+	useJUnitPlatform()
 }
 
 compileJava.dependsOn(processResources)
