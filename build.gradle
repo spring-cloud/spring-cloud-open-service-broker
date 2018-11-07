@@ -36,8 +36,10 @@ ext {
 	if (!project.hasProperty("springBootVersion")) {
 		springBootVersion = "2.0.6.RELEASE"
 	}
+	if (!project.hasProperty("reactorVersion")) {
+		reactorVersion = "Bismuth-SR13"
+	}
 	springCloudContractVersion = "2.0.2.RELEASE"
-	reactorVersion = "Bismuth-SR10"
 
 	javadocLinks = [
 			"https://docs.oracle.com/javase/8/docs/api/",
