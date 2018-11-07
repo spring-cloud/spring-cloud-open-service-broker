@@ -32,24 +32,24 @@ dependencyManagement {
 }
 
 dependencies {
-	compile project(":spring-cloud-open-service-broker-core")
-	compile("org.springframework.boot:spring-boot-starter")
+	implementation project(":spring-cloud-open-service-broker-core")
+	implementation("org.springframework.boot:spring-boot-starter")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
 	optional("org.springframework.boot:spring-boot-starter-web")
 	optional("org.springframework.boot:spring-boot-starter-webflux")
 
-	testCompile project(path: ":spring-cloud-open-service-broker-core", configuration: "testOutput")
+	testImplementation project(path: ":spring-cloud-open-service-broker-core", configuration: "testOutput")
 
-	testCompile("org.springframework.boot:spring-boot-starter-test")
-	testCompile("org.springframework.cloud:spring-cloud-starter-contract-verifier")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.cloud:spring-cloud-starter-contract-verifier")
 	testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
-	testImplementation("org.junit.jupiter:junit-jupiter-api")
 	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-	testCompile("org.mockito:mockito-core")
-	testCompile("org.hamcrest:java-hamcrest:2.0.0.0")
-	testCompile("org.assertj:assertj-core")
-	testCompile("org.apache.commons:commons-lang3")
+	testImplementation("org.junit.jupiter:junit-jupiter-api")
+	testImplementation("org.mockito:mockito-core")
+	testImplementation("org.hamcrest:java-hamcrest:2.0.0.0")
+	testImplementation("org.assertj:assertj-core")
+	testImplementation("org.apache.commons:commons-lang3")
 }
 
 test {

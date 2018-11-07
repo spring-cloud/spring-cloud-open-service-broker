@@ -29,11 +29,11 @@ dependencyManagement {
 apply plugin: 'org.asciidoctor.convert'
 
 dependencies {
-	compile project(":spring-cloud-open-service-broker-core")
-	compile("org.springframework.boot:spring-boot-starter")
-	compile("org.springframework.boot:spring-boot-starter-security")
-	compile("org.springframework.boot:spring-boot-starter-tomcat")
-	compile("io.projectreactor:reactor-core")
+	implementation project(":spring-cloud-open-service-broker-core")
+	implementation("org.springframework.boot:spring-boot-starter")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-tomcat")
+	implementation("io.projectreactor:reactor-core")
 }
 
 asciidoctor {

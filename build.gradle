@@ -51,11 +51,11 @@ configure(allprojects) {
 	group = "org.springframework.cloud"
 
 	apply plugin: "java"
+	apply plugin: "java-library"
 	apply plugin: "eclipse"
 	apply plugin: "idea"
 	apply plugin: "jacoco"
 	apply plugin: "pmd"
-	apply plugin: "maven"
 	apply plugin: "propdeps"
 	apply plugin: "propdeps-maven"
 	apply plugin: "propdeps-idea"
@@ -249,8 +249,4 @@ task codeCoverageReport(type: JacocoReport) {
 
 codeCoverageReport.dependsOn {
 	subprojects*.test
-}
-
-task wrapper(type: Wrapper) {
-	gradleVersion = "4.6"
 }
