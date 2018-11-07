@@ -86,9 +86,20 @@ public class ServiceBrokerAutoConfigurationTest {
 	}
 
 	@Test
+	public void servicesAreNotCreatedWithoutCatalog() {
+		this.contextRunner
+				.withUserConfiguration(MissingConfiguration.class)
+				.run(context -> {
+					assertThat(context).doesNotHaveBean(CatalogService.class);
+					assertThat(context).doesNotHaveBean(ServiceInstanceService.class);
+					assertThat(context).doesNotHaveBean(ServiceInstanceBindingService.class);
+				});
+	}
+
+	@Test
 	public void servicesAreCreatedFromCatalogProperties() {
 		this.contextRunner
-				.withUserConfiguration(NoCatalogBeanConfiguration.class)
+				.withUserConfiguration(MissingCatalogBeanConfiguration.class)
 				.withPropertyValues(
 						"spring.cloud.openservicebroker.catalog.services[0].id=service-one-id",
 						"spring.cloud.openservicebroker.catalog.services[0].name=Service One",
@@ -122,6 +133,7 @@ public class ServiceBrokerAutoConfigurationTest {
 	}
 
 	@Configuration
+	@EnableOpenServiceBroker
 	public static class CatalogBeanConfiguration {
 		@Bean
 		public Catalog catalog() {
@@ -161,11 +173,16 @@ public class ServiceBrokerAutoConfigurationTest {
 	}
 
 	@Configuration
-	public static class NoCatalogBeanConfiguration {
+	@EnableOpenServiceBroker
+	public static class MissingCatalogBeanConfiguration {
 		@Bean
 		public ServiceInstanceService serviceInstanceService() {
 			return new TestServiceInstanceService();
 		}
+	}
+
+	@Configuration
+	public static class MissingConfiguration {
 	}
 
 }

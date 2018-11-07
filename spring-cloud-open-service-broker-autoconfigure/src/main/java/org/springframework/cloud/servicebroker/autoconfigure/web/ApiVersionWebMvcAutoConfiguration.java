@@ -48,7 +48,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-@ConditionalOnBean({ ServiceInstanceService.class })
+@ConditionalOnBean({ServiceBrokerConfiguration.Marker.class, ServiceInstanceService.class })
 @ConditionalOnProperty(prefix = "spring.cloud.openservicebroker", name = "api-version-check-enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter(WebMvcAutoConfiguration.class)
 @EnableConfigurationProperties(ServiceBrokerProperties.class)

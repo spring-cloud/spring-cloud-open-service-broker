@@ -46,7 +46,7 @@ import org.springframework.context.annotation.Configuration;
  * @see ServiceBrokerProperties
  */
 @Configuration
-@ConditionalOnBean({ServiceInstanceService.class})
+@ConditionalOnBean({ServiceBrokerConfiguration.Marker.class, ServiceInstanceService.class})
 @EnableConfigurationProperties(ServiceBrokerProperties.class)
 public class ServiceBrokerAutoConfiguration {
 

@@ -76,6 +76,7 @@ public class ServiceBrokerWebMvcAutoConfigurationTest {
 	}
 
 	@Configuration
+	@EnableOpenServiceBroker
 	public static class FullServicesConfiguration {
 		@Bean
 		public CatalogService catalogService() {

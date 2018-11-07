@@ -121,6 +121,7 @@ public class ApiVersionWebMvcAutoConfigurationTest {
 	}
 
 	@Configuration
+	@EnableOpenServiceBroker
 	public static class ServicesConfiguration {
 		@Bean
 		public ServiceInstanceService serviceInstanceService() {
