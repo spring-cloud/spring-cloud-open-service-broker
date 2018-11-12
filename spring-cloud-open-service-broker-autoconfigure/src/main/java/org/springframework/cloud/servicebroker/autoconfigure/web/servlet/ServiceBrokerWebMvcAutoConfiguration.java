@@ -43,8 +43,6 @@ import org.springframework.context.annotation.Configuration;
  * @author Roy Clarkson
  */
 @Configuration
-@ConditionalOnBean({ CatalogService.class, ServiceInstanceService.class,
-		ServiceInstanceBindingService.class })
 @AutoConfigureAfter({ WebMvcAutoConfiguration.class,
 		ServiceBrokerAutoConfiguration.class })
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)

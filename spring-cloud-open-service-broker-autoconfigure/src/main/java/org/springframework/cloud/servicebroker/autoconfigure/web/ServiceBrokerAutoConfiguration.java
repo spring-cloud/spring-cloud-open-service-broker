@@ -17,17 +17,15 @@
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.BeanCatalogService;
 import org.springframework.cloud.servicebroker.service.CatalogService;
-import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 import org.springframework.cloud.servicebroker.service.NonBindableServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
-import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
+import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -47,26 +45,28 @@ import org.springframework.context.annotation.Configuration;
  * @see ServiceBrokerProperties
  */
 @Configuration
-@ConditionalOnBean({ServiceInstanceService.class})
-@EnableConfigurationProperties(ServiceBrokerProperties.class)
 public class ServiceBrokerAutoConfiguration {
 
-	private final ServiceBrokerProperties serviceBrokerProperties;
-
-	public ServiceBrokerAutoConfiguration(ServiceBrokerProperties serviceBrokerProperties) {
-		this.serviceBrokerProperties = serviceBrokerProperties;
-	}
-
-	@Bean
-	@ConditionalOnMissingBean(Catalog.class)
+	@Configuration
+	@ConditionalOnMissingBean({ Catalog.class, CatalogService.class })
+	@EnableConfigurationProperties(ServiceBrokerProperties.class)
 	@ConditionalOnProperty(prefix = "spring.cloud.openservicebroker.catalog.services[0]", name = "id")
-	public Catalog catalog() {
-		return this.serviceBrokerProperties.getCatalog().toModel();
+	protected static class CatalogPropertiesMinimalConfiguration {
+
+		private final ServiceBrokerProperties serviceBrokerProperties;
+
+		public CatalogPropertiesMinimalConfiguration(ServiceBrokerProperties serviceBrokerProperties) {
+			this.serviceBrokerProperties = serviceBrokerProperties;
+		}
+
+		@Bean
+		public Catalog catalog() {
+			return this.serviceBrokerProperties.getCatalog().toModel();
+		}
 	}
 
 	@Bean
 	@ConditionalOnMissingBean(CatalogService.class)
-	@ConditionalOnBean(Catalog.class)
 	public CatalogService beanCatalogService(Catalog catalog) {
 		return new BeanCatalogService(catalog);
 	}
