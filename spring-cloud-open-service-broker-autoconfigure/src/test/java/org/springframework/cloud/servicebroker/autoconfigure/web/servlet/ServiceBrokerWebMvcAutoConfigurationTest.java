@@ -18,7 +18,9 @@ package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
 import org.junit.Test;
 
+import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.cloud.servicebroker.autoconfigure.web.TestCatalogService;
@@ -33,11 +35,11 @@ import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingSer
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ServiceBrokerWebMvcAutoConfigurationTest {
+
 	@Test
 	public void controllersAreNotCreatedWithNonWebConfiguration() {
 		nonWebApplicationContextRunner()
@@ -52,11 +54,8 @@ public class ServiceBrokerWebMvcAutoConfigurationTest {
 	@Test
 	public void controllersAreNotCreatedWithoutRequiredServices() {
 		webApplicationContextRunner()
-				.run((context) -> {
-					assertThat(context).doesNotHaveBean(CatalogController.class);
-					assertThat(context).doesNotHaveBean(ServiceInstanceController.class);
-					assertThat(context).doesNotHaveBean(ServiceInstanceBindingController.class);
-				});
+				.run(context -> assertThat(context.getStartupFailure())
+						.isInstanceOf(UnsatisfiedDependencyException.class));
 	}
 
 	@Test
@@ -82,7 +81,7 @@ public class ServiceBrokerWebMvcAutoConfigurationTest {
 						ServiceBrokerWebFluxAutoConfiguration.class));
 	}
 
-	@Configuration
+	@TestConfiguration
 	public static class FullServicesConfiguration {
 		@Bean
 		public CatalogService catalogService() {

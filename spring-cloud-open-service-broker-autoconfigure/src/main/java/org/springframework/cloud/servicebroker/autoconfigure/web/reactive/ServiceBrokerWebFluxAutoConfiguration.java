@@ -42,8 +42,6 @@ import org.springframework.context.annotation.Configuration;
  * @author Roy Clarkson
  */
 @Configuration
-@ConditionalOnBean({ CatalogService.class, ServiceInstanceService.class,
-		ServiceInstanceBindingService.class })
 @AutoConfigureAfter({ WebFluxAutoConfiguration.class,
 		ServiceBrokerAutoConfiguration.class })
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)

@@ -16,9 +16,14 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 
+import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.BeanCatalogService;
@@ -28,9 +33,6 @@ import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingSer
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class ServiceBrokerAutoConfigurationTest {
 
@@ -40,7 +42,7 @@ public class ServiceBrokerAutoConfigurationTest {
 	@Test
 	public void servicesAreCreatedWithMinimalConfiguration() {
 		this.contextRunner
-				.withUserConfiguration(CatalogBeanConfiguration.class)
+				.withUserConfiguration(MinimalWithCatalogConfiguration.class)
 				.run((context) -> {
 					assertThat(context)
 							.getBean(CatalogService.class)
@@ -49,6 +51,28 @@ public class ServiceBrokerAutoConfigurationTest {
 					assertThat(context)
 							.getBean(ServiceInstanceBindingService.class)
 							.isExactlyInstanceOf(NonBindableServiceInstanceBindingService.class);
+
+					assertThat(context)
+							.getBean(ServiceInstanceService.class)
+							.isExactlyInstanceOf(TestServiceInstanceService.class);
+
+					assertThat(context)
+							.hasSingleBean(EventFlowRegistries.class);
+				});
+	}
+
+	@Test
+	public void servicesAreCreatedWithCatalogAndFullConfiguration() {
+		this.contextRunner
+				.withUserConfiguration(FullServicesWithCatalogConfiguration.class)
+				.run((context) -> {
+					assertThat(context)
+							.getBean(CatalogService.class)
+							.isExactlyInstanceOf(BeanCatalogService.class);
+
+					assertThat(context)
+							.getBean(ServiceInstanceBindingService.class)
+							.isExactlyInstanceOf(TestServiceInstanceBindingService.class);
 
 					assertThat(context)
 							.getBean(ServiceInstanceService.class)
@@ -82,20 +106,55 @@ public class ServiceBrokerAutoConfigurationTest {
 	}
 
 	@Test
+	public void servicesAreCreatedWithCatalogAndCatalogServiceConfiguration() {
+		this.contextRunner
+				.withUserConfiguration(CatalogAndCatalogServiceConfiguration.class)
+				.run((context) -> {
+					assertThat(context)
+							.getBean(CatalogService.class)
+							.isExactlyInstanceOf(TestCatalogService.class);
+
+					assertThat(context)
+							.getBean(ServiceInstanceBindingService.class)
+							.isExactlyInstanceOf(NonBindableServiceInstanceBindingService.class);
+
+					assertThat(context)
+							.getBean(ServiceInstanceService.class)
+							.isExactlyInstanceOf(TestServiceInstanceService.class);
+
+					assertThat(context)
+							.hasSingleBean(EventFlowRegistries.class);
+				});
+	}
+
+	@Test
 	public void servicesAreNotCreatedWithoutInstanceService() {
 		this.contextRunner
 				.withUserConfiguration(MissingInstanceServiceConfiguration.class)
-				.run((context) -> {
-					assertThat(context).doesNotHaveBean(CatalogService.class);
-					assertThat(context).doesNotHaveBean(ServiceInstanceService.class);
-					assertThat(context).doesNotHaveBean(ServiceInstanceBindingService.class);
-				});
+				.run(context -> assertThat(context.getStartupFailure())
+							.isExactlyInstanceOf(UnsatisfiedDependencyException.class));
+	}
+
+	@Test
+	public void servicesAreNotCreatedWhenMissingCatalogAndCatalogServiceConfiguration() {
+		this.contextRunner
+				.withUserConfiguration(MissingCatalogAndCatalogServiceConfiguration.class)
+				.run((context) -> assertThat(context.getStartupFailure())
+						.isExactlyInstanceOf(UnsatisfiedDependencyException.class));
+	}
+
+	@Test
+	public void servicesAreNotCreatedWhenMissingAllConfiguration() {
+		this.contextRunner
+				.withUserConfiguration(MissingAllConfiguration.class)
+				.run((context) -> assertThat(context.getStartupFailure())
+						.isExactlyInstanceOf(UnsatisfiedDependencyException.class));
 	}
 
 	@Test
 	public void servicesAreCreatedFromCatalogProperties() {
 		this.contextRunner
-				.withUserConfiguration(NoCatalogBeanConfiguration.class)
+				.withUserConfiguration(MissingCatalogAndCatalogServiceConfiguration.class)
 				.withPropertyValues(
 						"spring.cloud.openservicebroker.catalog.services[0].id=service-one-id",
 						"spring.cloud.openservicebroker.catalog.services[0].name=Service One",
@@ -131,8 +190,8 @@ public class ServiceBrokerAutoConfigurationTest {
 				});
 	}
 
-	@Configuration
-	public static class CatalogBeanConfiguration {
+	@TestConfiguration
+	public static class MinimalWithCatalogConfiguration {
 		@Bean
 		public Catalog catalog() {
 			return Catalog.builder().build();
@@ -144,7 +203,25 @@ public class ServiceBrokerAutoConfigurationTest {
 		}
 	}
 
-	@Configuration
+	@TestConfiguration
+	public static class FullServicesWithCatalogConfiguration {
+		@Bean
+		public Catalog catalog() {
+			return Catalog.builder().build();
+		}
+
+		@Bean
+		public ServiceInstanceService serviceInstanceService() {
+			return new TestServiceInstanceService();
+		}
+
+		@Bean
+		public ServiceInstanceBindingService serviceInstanceBindingService() {
+			return new TestServiceInstanceBindingService();
+		}
+	}
+
+	@TestConfiguration
 	public static class FullServicesConfiguration {
 		@Bean
 		public CatalogService catalogService() {
@@ -162,19 +239,47 @@ public class ServiceBrokerAutoConfigurationTest {
 		}
 	}
 
-	@Configuration
+	@TestConfiguration
+	public static class CatalogAndCatalogServiceConfiguration {
+		@Bean
+		public Catalog catalog() {
+			return Catalog.builder().build();
+		}
+
+		@Bean
+		public CatalogService catalogService() {
+			return new TestCatalogService();
+		}
+
+		@Bean
+		public ServiceInstanceService serviceInstanceService() {
+			return new TestServiceInstanceService();
+		}
+	}
+
+	@TestConfiguration
 	public static class MissingInstanceServiceConfiguration {
+		public MissingInstanceServiceConfiguration(ServiceInstanceService serviceInstanceService) {
+		}
 		@Bean
 		public Catalog catalog() {
 			return Catalog.builder().build();
 		}
 	}
 
-	@Configuration
-	public static class NoCatalogBeanConfiguration {
+	@TestConfiguration
+	public static class MissingCatalogAndCatalogServiceConfiguration {
+		public MissingCatalogAndCatalogServiceConfiguration(Catalog catalog, CatalogService catalogService) {
+		}
 		@Bean
 		public ServiceInstanceService serviceInstanceService() {
 			return new TestServiceInstanceService();
+		}
+	}
+
+	@TestConfiguration
+	public static class MissingAllConfiguration {
+		public MissingAllConfiguration(Catalog catalog, CatalogService catalogService, ServiceInstanceService serviceInstanceService) {
 		}
 	}
 
