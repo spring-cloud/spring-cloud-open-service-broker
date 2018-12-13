@@ -28,7 +28,9 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
+import org.springframework.cloud.servicebroker.model.Context;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
 public final class JsonUtils {
@@ -76,5 +78,15 @@ public final class JsonUtils {
 
 	private static Reader getTestDataFileReader(String fileName) {
 		return new BufferedReader(new InputStreamReader(JsonUtils.class.getResourceAsStream("/" + fileName)));
+	}
+
+	/**
+	 * Detect duplicate properties in json object through searching ":" in json string
+	 * (reading into a map would remove such duplicate, preventing effective duplicate detection)
+	 */
+	public static void assertThatJsonHasExactNumberOfProperties(Object object, int expectedNbProperties) {
+		//
+		String jsonString = toJson(object);
+		assertThat(jsonString.split(":")).as("extra duplicate properties in json object: " + jsonString).hasSize(1+expectedNbProperties);
 	}
 }

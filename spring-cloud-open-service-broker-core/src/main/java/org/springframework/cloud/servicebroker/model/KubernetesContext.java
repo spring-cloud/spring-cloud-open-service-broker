@@ -16,9 +16,12 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -41,11 +44,25 @@ public final class KubernetesContext extends Context {
 		}
 	}
 
+	@JsonProperty
 	public String getNamespace() {
 		return getStringProperty(NAMESPACE_KEY);
 	}
 
-	@JsonProperty
+	/**
+	 * Avoid polluting the serialized context with duplicated fields with different key
+	 * case
+	 */
+	@JsonAnyGetter
+	public Map<String, Object> getSerializableProperties() {
+		HashMap<String, Object> properties = new HashMap<>(super.getProperties());
+		properties.remove(KUBERNETES_PLATFORM);
+		properties.remove(NAMESPACE_KEY);
+		properties.remove(Context.PLATFORM_KEY);
+		return properties;
+	}
+
+
 	@NotEmpty
 	private void setNamespace(String namespace) {
 		properties.put(NAMESPACE_KEY, namespace);

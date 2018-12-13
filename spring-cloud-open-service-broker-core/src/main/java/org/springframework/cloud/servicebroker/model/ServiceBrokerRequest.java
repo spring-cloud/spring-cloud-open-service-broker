@@ -18,6 +18,7 @@ package org.springframework.cloud.servicebroker.model;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -36,10 +37,13 @@ public class ServiceBrokerRequest {
 	public static final String PLAN_ID_PARAMETER = "plan_id";
 	public static final String PLATFORM_INSTANCE_ID_VARIABLE = "platformInstanceId";
 
+	@JsonIgnore //relative path to Osb query path, not to include in Json body
 	protected transient String platformInstanceId;
 
+	@JsonIgnore //mapped as X-Api-Info-Location Header
 	protected transient String apiInfoLocation;
 
+	@JsonIgnore //mapped as X-Broker-API-Originating-Identity Header
 	protected transient Context originatingIdentity;
 
 	public ServiceBrokerRequest() {

@@ -16,9 +16,11 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
+import org.springframework.cloud.servicebroker.JsonPathAssert;
 import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.KubernetesContext;
 import org.springframework.cloud.servicebroker.JsonUtils;
@@ -81,6 +83,13 @@ public class AsyncParameterizedServiceInstanceRequestTest {
 		assertThat(request.getContext().getProperty("field2")).isEqualTo(2);
 
 		assertThat(request.getParameters()).isNull();
+	}
+
+	@Test
+	public void requestWithNoParametersIsSerializedWithoutParametersField() {
+		CreateServiceInstanceRequest request = CreateServiceInstanceRequest.builder().build();
+		DocumentContext json = JsonUtils.toJsonPath(request);
+		JsonPathAssert.assertThat(json).hasNoPath("$.parameters");
 	}
 
 	@Test

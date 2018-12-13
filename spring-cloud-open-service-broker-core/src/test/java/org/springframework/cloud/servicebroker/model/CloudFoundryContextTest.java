@@ -16,9 +16,13 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import com.jayway.jsonpath.DocumentContext;
 import org.junit.Test;
+import org.springframework.cloud.servicebroker.JsonPathAssert;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM;
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.ORGANIZATION_GUID_KEY;
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.SPACE_GUID_KEY;
@@ -55,5 +59,29 @@ public class CloudFoundryContextTest {
 
 		assertThat(context.getProperty("key1")).isEqualTo("value1");
 		assertThat(context.getProperty("key2")).isEqualTo("value2");
+
+		//ensure we don't break super class contract
+		assertThat(context.getProperties()).containsOnly(
+				entry("key1", "value1"),
+				entry("key2", "value2"),
+				entry(ORGANIZATION_GUID_KEY, "org-guid"),
+				entry(SPACE_GUID_KEY, "space-guid"));
 	}
+
+	@Test
+	public void contextIsSerialized() {
+		Context context = CloudFoundryContext.builder().organizationGuid("org-guid")
+				.spaceGuid("space-guid").build();
+
+		DocumentContext json = JsonUtils.toJsonPath(context);
+
+		JsonPathAssert.assertThat(json).hasPath("$.organization_guid")
+				.isEqualTo("org-guid");
+		JsonPathAssert.assertThat(json).hasPath("$.space_guid").isEqualTo("space-guid");
+		JsonPathAssert.assertThat(json).hasPath("$.platform").isEqualTo("cloudfoundry");
+		// detect any double serialization due to inheritance and naming mismatch
+		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(3);
+		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 3+1); //still have duplicated platform property
+	}
+
 }

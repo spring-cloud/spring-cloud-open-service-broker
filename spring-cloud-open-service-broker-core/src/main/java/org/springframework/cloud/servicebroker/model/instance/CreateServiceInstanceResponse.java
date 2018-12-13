@@ -41,7 +41,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 	private final String dashboardUrl;
 
-	@JsonIgnore
+	@JsonIgnore //not sent on the wire as json payload, but as http status instead
 	private final boolean instanceExisted;
 
 	CreateServiceInstanceResponse(boolean async, String operation, String dashboardUrl, boolean instanceExisted) {

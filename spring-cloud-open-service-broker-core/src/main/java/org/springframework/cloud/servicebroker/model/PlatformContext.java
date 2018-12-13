@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+
 import java.util.Map;
 
 /**
@@ -31,6 +33,12 @@ public class PlatformContext extends Context {
 
 	private PlatformContext(String platform, Map<String, Object> properties) {
 		super(platform, properties);
+	}
+
+	@Override
+	@JsonAnyGetter
+	public Map<String, Object> getProperties() {
+		return super.getProperties();
 	}
 
 	/**

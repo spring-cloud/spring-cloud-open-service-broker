@@ -19,10 +19,12 @@ package org.springframework.cloud.servicebroker.model.binding;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
+import org.springframework.cloud.servicebroker.JsonPathAssert;
 import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
@@ -151,8 +153,29 @@ public class CreateServiceInstanceBindingRequestTest {
 
 		CreateServiceInstanceBindingRequest fromJson =
 				fromJson(toJson(request), CreateServiceInstanceBindingRequest.class);
-		
+
 		assertThat(fromJson).isEqualTo(request);
+	}
+
+	@Test
+	public void requestSerializesToJsonExcludingTransients() {
+		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest
+				.builder().platformInstanceId("platform-instance-id")
+				.apiInfoLocation("api-info-location")
+				.originatingIdentity(PlatformContext.builder()
+						.platform("sample-platform").build())
+				.asyncAccepted(true)
+				.serviceDefinitionId("definition-id").build();
+
+		DocumentContext json = JsonUtils.toJsonPath(request);
+
+		// Fields present in OSB Json body should be present
+		JsonPathAssert.assertThat(json).hasPath("$.service_id").isEqualTo("definition-id");
+		JsonPathAssert.assertThat(json).hasMapAtPath("$.parameters").isEmpty();
+
+		// other fields mapped outside of json body (typically http headers or request paths)
+		// should be excluded
+		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(2);
 	}
 
 	@Test
