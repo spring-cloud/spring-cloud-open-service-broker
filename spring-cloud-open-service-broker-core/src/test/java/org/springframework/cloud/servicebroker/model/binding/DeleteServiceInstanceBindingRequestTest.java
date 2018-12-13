@@ -16,11 +16,16 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
+import org.springframework.cloud.servicebroker.JsonPathAssert;
+import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
+import org.springframework.cloud.servicebroker.model.catalog.Plan;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -70,6 +75,40 @@ public class DeleteServiceInstanceBindingRequestTest {
 	}
 
 	@Test
+	@SuppressWarnings("serial")
+	public void serializesAccordingToOsbSpecs() {
+		Context originatingIdentity = PlatformContext.builder()
+				.platform("test-platform")
+				.build();
+
+		DeleteServiceInstanceBindingRequest request = DeleteServiceInstanceBindingRequest.builder()
+				.serviceInstanceId("service-instance-id")
+				.serviceDefinitionId("service-definition-id")
+				.planId("plan-id")
+				.bindingId("binding-id")
+				.asyncAccepted(true)
+				.platformInstanceId("platform-instance-id")
+				.apiInfoLocation("https://api.example.com")
+				.originatingIdentity(originatingIdentity)
+				.plan(Plan.builder().build())
+				.serviceDefinition(ServiceDefinition.builder().build())
+				.build();
+
+		DocumentContext json = JsonUtils.toJsonPath(request);
+
+		// 3 OSB Fields should be present
+		JsonPathAssert.assertThat(json).hasPath("$.plan_id").isEqualTo("plan-id");
+		JsonPathAssert.assertThat(json).hasPath("$.service_id").isEqualTo("service-definition-id");
+		JsonPathAssert.assertThat(json).hasPath("$.accepts_incomplete").isEqualTo(true);
+
+
+		// fields mapped outside of json body (typically http headers or request paths)
+		// should be excluded
+		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(3);
+
+	}
+
+		@Test
 	public void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(DeleteServiceInstanceBindingRequest.class)

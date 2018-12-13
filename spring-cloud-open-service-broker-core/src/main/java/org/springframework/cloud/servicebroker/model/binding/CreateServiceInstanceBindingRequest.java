@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Objects;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.springframework.cloud.servicebroker.model.Context;
@@ -43,9 +45,12 @@ import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapper;
  * @author Roy Clarkson
  */
 @SuppressWarnings({"deprecation", "DeprecatedIsStillUsed"})
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerRequest {
+	@JsonIgnore //Osb field passed as path param
 	private transient String serviceInstanceId;
 
+	@JsonIgnore //Osb field passed as path param
 	private transient String bindingId;
 
 	@NotEmpty
@@ -60,12 +65,15 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 
 	private final BindResource bindResource;
 
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	private final Map<String, Object> parameters;
 
 	private final Context context;
 
+	@JsonIgnore //internal field
 	private transient ServiceDefinition serviceDefinition;
 
+	@JsonIgnore //internal field
 	private transient Plan plan;
 
 	@SuppressWarnings("unused")
@@ -75,7 +83,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		appGuid = null;
 		bindResource = null;
 		context = null;
-		parameters = null;
+		parameters = new HashMap<>();
 	}
 
 	CreateServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,

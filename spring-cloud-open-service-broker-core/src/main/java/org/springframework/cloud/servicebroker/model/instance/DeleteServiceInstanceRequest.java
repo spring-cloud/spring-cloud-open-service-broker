@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
@@ -36,14 +38,20 @@ import java.util.Objects;
  * @author Scott Frederick
  */
 public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
+
+	@JsonIgnore //mapped as path param
 	private transient String serviceInstanceId;
 
+	@JsonProperty("service_id")
 	private transient String serviceDefinitionId;
 
+	@JsonProperty("plan_id")
 	private transient String planId;
 
+	@JsonIgnore //internal support
 	private transient ServiceDefinition serviceDefinition;
 
+	@JsonIgnore /*internal field*/
 	private transient Plan plan;
 
 	DeleteServiceInstanceRequest(String serviceInstanceId, String serviceDefinitionId,
@@ -109,6 +117,12 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	 */
 	public ServiceDefinition getServiceDefinition() {
 		return this.serviceDefinition;
+	}
+
+	@JsonProperty(ASYNC_REQUEST_PARAMETER) //in base class field is excluded, as other requests are passing this as query params
+	@Override
+	public boolean isAsyncAccepted() {
+		return super.isAsyncAccepted();
 	}
 
 	/**

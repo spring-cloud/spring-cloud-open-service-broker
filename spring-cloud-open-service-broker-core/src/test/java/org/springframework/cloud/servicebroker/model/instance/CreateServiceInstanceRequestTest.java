@@ -16,12 +16,17 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
+import org.springframework.cloud.servicebroker.JsonPathAssert;
+import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
+import org.springframework.cloud.servicebroker.model.catalog.Plan;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -91,6 +96,78 @@ public class CreateServiceInstanceRequestTest {
 		assertThat(request.getPlatformInstanceId()).isEqualTo("platform-instance-id");
 		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.example.com");
 		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);
+	}
+
+	@Test
+	@SuppressWarnings("serial")
+	public void serializesAccordingToOsbSpecs() {
+		Map<String, Object> parameters = new HashMap<String, Object>() {
+			{
+				put("field4", "value4");
+				put("field5", "value5");
+			}
+		};
+		Context context = CloudFoundryContext.builder()
+				.organizationGuid("org-guid")
+				.spaceGuid("space-guid").build();
+
+		Context originatingIdentity = CloudFoundryContext.builder()
+				.property("user_id", "user-id").build();
+
+		CreateServiceInstanceRequest request = CreateServiceInstanceRequest.builder()
+				.serviceInstanceId("service-instance-id")
+				.serviceDefinitionId("service-definition-id")
+				.planId("plan-id")
+				.context(context)
+					.parameters("field1", "value1")
+					.parameters("field2", 2)
+					.parameters("field3", true)
+				    .parameters(parameters)
+				.asyncAccepted(true)
+				.platformInstanceId("platform-instance-id")
+				.apiInfoLocation("https://api.example.com")
+				.originatingIdentity(originatingIdentity)
+				.plan(Plan.builder().build())
+				.serviceDefinition(ServiceDefinition.builder().build())
+				.build();
+
+		DocumentContext json = JsonUtils.toJsonPath(request);
+		String jsonSerializaion = JsonUtils.toJson(request);
+
+		// 6 OSB Fields should be present
+		JsonPathAssert.assertThat(json).hasPath("$.plan_id").isEqualTo("plan-id");
+		JsonPathAssert.assertThat(json).hasPath("$.service_id").isEqualTo("service-definition-id");
+		JsonPathAssert.assertThat(json).hasMapAtPath("$.parameters").hasSize(5);
+		JsonPathAssert.assertThat(json).hasPath("$.parameters.field1").isEqualTo("value1");
+		JsonPathAssert.assertThat(json).hasMapAtPath("$.context").hasSize(3);
+		JsonPathAssert.assertThat(json).hasPath("$.space_guid").isEqualTo("space-guid");
+		JsonPathAssert.assertThat(json).hasPath("$.organization_guid").isEqualTo("org-guid");
+
+
+		// fields mapped outside of json body (typically http headers or request paths)
+		// should be excluded
+		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(6);
+	}
+
+	@Test
+	@SuppressWarnings("serial")
+	public void serializesWithoutContextAccordingToOsbSpecs() {
+		CreateServiceInstanceRequest request = CreateServiceInstanceRequest.builder()
+				.serviceInstanceId("service-instance-id")
+				.serviceDefinitionId("service-definition-id").planId("plan-id").build();
+
+		DocumentContext json = JsonUtils.toJsonPath(request);
+
+		// 4 OSB Fields should be present
+		JsonPathAssert.assertThat(json).hasPath("$.plan_id").isEqualTo("plan-id");
+		JsonPathAssert.assertThat(json).hasPath("$.service_id").isEqualTo("service-definition-id");
+		JsonPathAssert.assertThat(json).hasPath("$.space_guid").isEqualTo("default-undefined-value");
+		JsonPathAssert.assertThat(json).hasPath("$.organization_guid").isEqualTo("default-undefined-value");
+
+
+		// fields mapped outside of json body (typically http headers or request paths)
+		// should be excluded
+		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(4);
 	}
 
 	@Test
