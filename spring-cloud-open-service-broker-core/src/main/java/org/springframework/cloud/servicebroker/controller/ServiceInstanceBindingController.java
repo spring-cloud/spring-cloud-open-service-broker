@@ -35,6 +35,8 @@ import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindi
 import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.catalog.Plan;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
@@ -55,6 +57,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 @ServiceBrokerRestController
 public class ServiceInstanceBindingController extends BaseController {
@@ -82,9 +85,12 @@ public class ServiceInstanceBindingController extends BaseController {
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody CreateServiceInstanceBindingRequest request) {
+		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(request.getServiceDefinitionId());
+		Plan plan = getServiceDefinitionPlan(serviceDefinition, request.getPlanId());
 		request.setServiceInstanceId(serviceInstanceId);
 		request.setBindingId(bindingId);
-		request.setServiceDefinition(getRequiredServiceDefinition(request.getServiceDefinitionId()));
+		request.setServiceDefinition(serviceDefinition);
+		request.setPlan(plan);
 		setCommonRequestFields(request, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
 				originatingIdentityString, acceptsIncomplete);
 
@@ -185,12 +191,16 @@ public class ServiceInstanceBindingController extends BaseController {
 			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-		DeleteServiceInstanceBindingRequest request = DeleteServiceInstanceBindingRequest.builder()
+		ServiceDefinition serviceDefinition = getServiceDefinition(serviceDefinitionId);
+		Plan plan = getServiceDefinitionPlan(serviceDefinition, planId);
+		DeleteServiceInstanceBindingRequest request = DeleteServiceInstanceBindingRequest
+				.builder()
 				.serviceInstanceId(serviceInstanceId)
 				.bindingId(bindingId)
 				.serviceDefinitionId(serviceDefinitionId)
 				.planId(planId)
-				.serviceDefinition(getServiceDefinition(serviceDefinitionId))
+				.serviceDefinition(serviceDefinition)
+				.plan(plan)
 				.asyncAccepted(acceptsIncomplete)
 				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 				.apiInfoLocation(apiInfoLocation)

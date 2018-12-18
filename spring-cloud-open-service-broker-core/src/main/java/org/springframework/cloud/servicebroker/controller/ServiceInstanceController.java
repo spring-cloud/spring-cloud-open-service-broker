@@ -27,6 +27,7 @@ import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestContr
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
+import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
@@ -86,9 +87,11 @@ public class ServiceInstanceController extends BaseController {
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody CreateServiceInstanceRequest request) {
 		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(request.getServiceDefinitionId());
+		Plan plan = getServiceDefinitionPlan(serviceDefinition, request.getPlanId());
 
 		request.setServiceInstanceId(serviceInstanceId);
 		request.setServiceDefinition(serviceDefinition);
+		request.setPlan(plan);
 		setCommonRequestFields(request, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
 				originatingIdentityString, acceptsIncomplete);
 
@@ -186,12 +189,15 @@ public class ServiceInstanceController extends BaseController {
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
 		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(serviceDefinitionId);
+		Plan plan = getServiceDefinitionPlan(serviceDefinition, planId);
 
-		DeleteServiceInstanceRequest request = DeleteServiceInstanceRequest.builder()
+		DeleteServiceInstanceRequest request = DeleteServiceInstanceRequest
+				.builder()
 				.serviceInstanceId(serviceInstanceId)
 				.serviceDefinitionId(serviceDefinitionId)
 				.planId(planId)
 				.serviceDefinition(serviceDefinition)
+				.plan(plan)
 				.asyncAccepted(acceptsIncomplete)
 				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 				.apiInfoLocation(apiInfoLocation)
@@ -225,9 +231,11 @@ public class ServiceInstanceController extends BaseController {
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody UpdateServiceInstanceRequest request) {
 		ServiceDefinition serviceDefinition = getRequiredServiceDefinition(request.getServiceDefinitionId());
+		Plan plan = getServiceDefinitionPlan(serviceDefinition, request.getPlanId());
 
 		request.setServiceInstanceId(serviceInstanceId);
 		request.setServiceDefinition(serviceDefinition);
+		request.setPlan(plan);
 		setCommonRequestFields(request, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
 				originatingIdentityString, acceptsIncomplete);
 

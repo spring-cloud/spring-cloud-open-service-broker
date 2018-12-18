@@ -57,15 +57,25 @@ public abstract class AbstractServiceInstanceControllerIntegrationTest extends C
 
 	protected String updateRequestBody;
 
+	protected String updateRequestBodyWithPlan;
+
 	@Before
 	public void setUpCommonFixtures() {
-		this.createRequestBody = JsonUtils.toJson(CreateServiceInstanceRequest.builder()
+		this.createRequestBody = JsonUtils.toJson(CreateServiceInstanceRequest
+				.builder()
 				.serviceDefinitionId(serviceDefinition.getId())
-				.planId("standard")
+				.planId("plan-one-id")
 				.build());
 
-		this.updateRequestBody = JsonUtils.toJson(UpdateServiceInstanceRequest.builder()
+		this.updateRequestBody = JsonUtils.toJson(UpdateServiceInstanceRequest
+				.builder()
 				.serviceDefinitionId(serviceDefinition.getId())
+				.build());
+
+		this.updateRequestBodyWithPlan = JsonUtils.toJson(UpdateServiceInstanceRequest
+				.builder()
+				.serviceDefinitionId(serviceDefinition.getId())
+				.planId("plan-three-id")
 				.build());
 	}
 
@@ -132,7 +142,7 @@ public abstract class AbstractServiceInstanceControllerIntegrationTest extends C
 		return buildBaseUrl(platformInstanceId)
 				.path(SERVICE_INSTANCE_ID)
 				.queryParam("service_id", serviceDefinition.getId())
-				.queryParam("plan_id", "standard")
+				.queryParam("plan_id", "plan-three-id")
 				.queryParam("accepts_incomplete", asyncAccepted)
 				.toUriString();
 	}

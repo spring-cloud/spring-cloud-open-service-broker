@@ -18,6 +18,7 @@ package org.springframework.cloud.servicebroker.model.instance;
 
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.Context;
+import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 import java.util.Objects;
@@ -43,8 +44,10 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 
 	private transient ServiceDefinition serviceDefinition;
 
+	private transient Plan plan;
+
 	DeleteServiceInstanceRequest(String serviceInstanceId, String serviceDefinitionId,
-								 String planId, ServiceDefinition serviceDefinition,
+								 String planId, ServiceDefinition serviceDefinition, Plan plan,
 								 boolean asyncAccepted, String platformInstanceId,
 								 String apiInfoLocation, Context originatingIdentity) {
 		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity);
@@ -52,6 +55,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
 		this.serviceDefinition = serviceDefinition;
+		this.plan = plan;
 	}
 
 	/**
@@ -108,6 +112,19 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	}
 
 	/**
+	 * Get the plan for the service definition to delete
+	 *
+	 * <p>
+	 * The plan is retrieved from the
+	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a convenience.
+	 *
+	 * @return the plan
+	 */
+	public Plan getPlan() {
+		return this.plan;
+	}
+
+	/**
 	 * Create a builder that provides a fluent API for constructing a {@literal DeleteServiceInstanceRequest}.
 	 *
 	 * <p>
@@ -130,7 +147,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
 				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
 				Objects.equals(planId, that.planId) &&
-				Objects.equals(serviceDefinition, that.serviceDefinition);
+				Objects.equals(serviceDefinition, that.serviceDefinition) &&
+				Objects.equals(plan, that.plan);
 	}
 
 	@Override
@@ -141,7 +159,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	@Override
 	public final int hashCode() {
 		return Objects.hash(super.hashCode(), serviceInstanceId,
-				serviceDefinitionId, planId, serviceDefinition);
+				serviceDefinitionId, planId, serviceDefinition, plan);
 	}
 
 	@Override
@@ -161,6 +179,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		private String serviceInstanceId;
 		private String serviceDefinitionId;
 		private ServiceDefinition serviceDefinition;
+		private Plan plan;
 		private String planId;
 		private boolean asyncAccepted;
 		private String platformInstanceId;
@@ -203,6 +222,18 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		 */
 		public DeleteServiceInstanceRequestBuilder serviceDefinition(ServiceDefinition serviceDefinition) {
 			this.serviceDefinition = serviceDefinition;
+			return this;
+		}
+
+		/**
+		 * Set the fully resolved plan.
+		 *
+		 * @param plan the plan
+		 * @return the builder
+		 * @see #getPlan()
+		 */
+		public DeleteServiceInstanceRequestBuilder plan(Plan plan) {
+			this.plan = plan;
 			return this;
 		}
 
@@ -274,7 +305,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		 */
 		public DeleteServiceInstanceRequest build() {
 			return new DeleteServiceInstanceRequest(serviceInstanceId, serviceDefinitionId, planId,
-					serviceDefinition, asyncAccepted,
+					serviceDefinition, plan, asyncAccepted,
 					platformInstanceId, apiInfoLocation, originatingIdentity);
 		}
 	}

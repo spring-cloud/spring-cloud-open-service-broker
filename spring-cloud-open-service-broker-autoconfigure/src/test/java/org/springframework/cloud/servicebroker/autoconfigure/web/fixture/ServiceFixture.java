@@ -35,7 +35,7 @@ public final class ServiceFixture {
 				.name("Service One")
 				.description("Description for Service One")
 				.bindable(true)
-				.plans(getPlanOne(), getPlanTwo())
+				.plans(getPlanOne(), getPlanTwo(), getPlanThree())
 				.requires(ServiceDefinitionRequires.SERVICE_REQUIRES_SYSLOG_DRAIN.toString(),
 						ServiceDefinitionRequires.SERVICE_REQUIRES_ROUTE_FORWARDING.toString())
 				.build();
@@ -79,5 +79,13 @@ public final class ServiceFixture {
 				.free(true)
 				.schemas(schemas)
 				.build();
+	}
+
+	private static Plan getPlanThree() {
+		return Plan.builder()
+				   .id("plan-three-id")
+				   .name("Plan Three")
+				   .description("Description for Plan Three")
+				   .build();
 	}
 }

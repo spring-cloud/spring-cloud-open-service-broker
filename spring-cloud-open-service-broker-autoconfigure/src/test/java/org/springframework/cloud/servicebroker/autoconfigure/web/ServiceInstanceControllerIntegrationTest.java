@@ -186,6 +186,29 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
+	public void createServiceInstanceFiltersPlansSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(CreateServiceInstanceResponse
+				.builder()
+				.async(true)
+				.build());
+
+		mockMvc.perform(put(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
+				.content(createRequestBody)
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+			   .andExpect(status().isAccepted());
+
+		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
+		assertThat(actualRequest.getPlan().getId()).isEqualTo(actualRequest.getPlanId());
+		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
 	public void createServiceInstanceWithUnknownServiceDefinitionIdFails() throws Exception {
 		setupCatalogService(null);
 
@@ -351,6 +374,25 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
+	public void deleteServiceInstanceFiltersPlansSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(DeleteServiceInstanceResponse
+				.builder()
+				.build());
+
+		mockMvc.perform(delete(buildDeleteUrl())
+				.accept(MediaType.APPLICATION_JSON))
+			   .andExpect(status().isOk())
+			   .andExpect(content().string("{}"));
+
+		DeleteServiceInstanceRequest actualRequest = verifyDeleteServiceInstance();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertThat(actualRequest.getPlan().getId()).isEqualTo(actualRequest.getPlanId());
+		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
 	public void deleteServiceInstanceWithUnknownIdFails() throws Exception {
 		setupCatalogService();
 
@@ -413,6 +455,28 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertThat(actualRequest.getServiceDefinition().getPlans().size()).isEqualTo(3);
+		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
+	public void updateServiceInstanceFiltersPlansSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(UpdateServiceInstanceResponse
+				.builder()
+				.build());
+
+		mockMvc.perform(patch(buildCreateUpdateUrl())
+				.content(updateRequestBodyWithPlan)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+			   .andExpect(status().isOk())
+			   .andExpect(content().string("{}"));
+
+		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertThat(actualRequest.getPlan().getId()).isEqualTo(actualRequest.getPlanId());
 		assertHeaderValuesNotSet(actualRequest);
 	}
 
