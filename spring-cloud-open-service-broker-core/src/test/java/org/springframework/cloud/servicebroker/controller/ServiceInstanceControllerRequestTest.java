@@ -51,6 +51,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 				.apiInfoLocation("api-info-location")
 				.originatingIdentity(identityContext)
 				.serviceDefinition(serviceDefinition)
+				.plan(plan)
 				.build();
 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
@@ -125,6 +126,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 				.apiInfoLocation("api-info-location")
 				.originatingIdentity(identityContext)
 				.serviceDefinition(serviceDefinition)
+				.plan(plan)
 				.build();
 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
@@ -151,6 +153,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 				.apiInfoLocation("api-info-location")
 				.originatingIdentity(identityContext)
 				.serviceDefinition(serviceDefinition)
+				.plan(plan)
 				.build();
 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);

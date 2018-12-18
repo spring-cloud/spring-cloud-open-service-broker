@@ -41,6 +41,8 @@ public abstract class ControllerRequestTest {
 
 	protected ServiceDefinition serviceDefinition;
 
+	protected Plan plan;
+
 	protected Context identityContext;
 	protected Context requestContext;
 	
@@ -50,11 +52,13 @@ public abstract class ControllerRequestTest {
 	public void setUpControllerRequestTest() {
 		initMocks(this);
 
+		plan = Plan.builder()
+				   .id("plan-id")
+				   .build();
+
 		serviceDefinition = ServiceDefinition.builder()
 				.id("service-definition-id")
-				.plans(Plan.builder()
-						.id("plan-id")
-						.build())
+				.plans(plan)
 				.build();
 
 		when(catalogService.getServiceDefinition("service-definition-id"))

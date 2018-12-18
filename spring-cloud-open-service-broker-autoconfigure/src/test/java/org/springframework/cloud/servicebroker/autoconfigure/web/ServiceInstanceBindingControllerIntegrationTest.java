@@ -93,6 +93,29 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
+	public void createBindingToAppFiltersPlansSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse
+				.builder()
+				.bindingExisted(false)
+				.build());
+
+		mockMvc.perform(put(buildCreateUrl(PLATFORM_INSTANCE_ID, false))
+				.content(createRequestBody)
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON))
+			   .andExpect(status().isCreated());
+
+		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertThat(actualRequest.getPlan().getId()).isEqualTo(actualRequest.getPlanId());
+		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
 	public void createBindingToAppWithAsyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
@@ -341,6 +364,29 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	public void deleteBindingFiltersPlansSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceBindingService(DeleteServiceInstanceBindingResponse
+				.builder()
+				.build());
+
+		mockMvc.perform(delete(buildDeleteUrl(PLATFORM_INSTANCE_ID, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.contentType(MediaType.APPLICATION_JSON))
+			   .andExpect(status().isOk())
+			   .andExpect(content().string("{}"));
+
+		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
+
+		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertThat(actualRequest.getPlan().getId()).isEqualTo(actualRequest.getPlanId());
 		assertHeaderValuesSet(actualRequest);
 	}
 

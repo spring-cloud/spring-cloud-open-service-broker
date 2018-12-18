@@ -24,6 +24,7 @@ import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.springframework.cloud.servicebroker.model.Context;
+import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 /**
@@ -58,6 +59,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 	private transient ServiceDefinition serviceDefinition;
 
+	private transient Plan plan;
+
 	@SuppressWarnings("unused")
 	CreateServiceInstanceRequest() {
 		this.serviceDefinitionId = null;
@@ -67,7 +70,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	CreateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
-								 ServiceDefinition serviceDefinition,
+								 ServiceDefinition serviceDefinition, Plan plan,
 								 Map<String, Object> parameters, Context context, boolean asyncAccepted,
 								 String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
 		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity);
@@ -75,6 +78,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		this.serviceInstanceId = serviceInstanceId;
 		this.planId = planId;
 		this.serviceDefinition = serviceDefinition;
+		this.plan = plan;
 
 		// deprecated fields - they should remain in the model for marshalling but test harnesses
 		// should not use them
@@ -184,6 +188,28 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	/**
+	 * Get the plan of the service to create
+	 *
+	 * <p>
+	 * The plan is retreved from the
+	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a convenience.
+	 *
+	 * @return the plan
+	 */
+	public Plan getPlan() {
+		return this.plan;
+	}
+
+	/**
+	 * For internal use only. use {@link #builder()} to construct an object of this type and set all field values.
+	 *
+	 * @param plan the plan of the service to create
+	 */
+	public void setPlan(Plan plan) {
+		this.plan = plan;
+	}
+
+	/**
 	 * Create a builder that provides a fluent API for constructing a {@literal CreateServiceInstanceRequest}.
 	 *
 	 * <p>
@@ -211,7 +237,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 				Objects.equals(organizationGuid, that.organizationGuid) &&
 				Objects.equals(spaceGuid, that.spaceGuid) &&
 				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
-				Objects.equals(serviceDefinition, that.serviceDefinition);
+				Objects.equals(serviceDefinition, that.serviceDefinition) &&
+				Objects.equals(plan, that.plan);
 	}
 
 	@Override
@@ -222,7 +249,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@Override
 	public final int hashCode() {
 		return Objects.hash(super.hashCode(), serviceDefinitionId, planId,
-				organizationGuid, spaceGuid, serviceInstanceId, serviceDefinition);
+				organizationGuid, spaceGuid, serviceInstanceId, serviceDefinition, plan);
 	}
 
 	@Override
@@ -245,6 +272,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		private String serviceDefinitionId;
 		private String planId;
 		private ServiceDefinition serviceDefinition;
+		private Plan plan;
 		private Context context;
 		private final Map<String, Object> parameters = new HashMap<>();
 		private boolean asyncAccepted;
@@ -288,6 +316,18 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 */
 		public CreateServiceInstanceRequestBuilder serviceDefinition(ServiceDefinition serviceDefinition) {
 			this.serviceDefinition = serviceDefinition;
+			return this;
+		}
+
+		/**
+		 * Set the fully resolved plan for the service definition
+		 *
+		 * @param plan the plan
+		 * @return the builder
+		 * @see #getPlan()
+		 */
+		public CreateServiceInstanceRequestBuilder plan(Plan plan) {
+			this.plan = plan;
 			return this;
 		}
 
@@ -396,7 +436,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 */
 		public CreateServiceInstanceRequest build() {
 			return new CreateServiceInstanceRequest(serviceDefinitionId, serviceInstanceId, planId,
-					serviceDefinition, parameters, context, asyncAccepted,
+					serviceDefinition, plan, parameters, context, asyncAccepted,
 					platformInstanceId, apiInfoLocation, originatingIdentity);
 		}
 	}

@@ -18,6 +18,7 @@ package org.springframework.cloud.servicebroker.controller;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,11 +32,13 @@ import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.KubernetesContext;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
+import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.Base64Utils;
+import org.springframework.util.StringUtils;
 
 /**
  * Base functionality shared by controllers.
@@ -75,6 +78,15 @@ public class BaseController {
 
 	protected ServiceDefinition getServiceDefinition(String serviceDefinitionId) {
 		return catalogService.getServiceDefinition(serviceDefinitionId);
+	}
+
+	protected Plan getServiceDefinitionPlan(ServiceDefinition serviceDefinition, String planId) {
+		Optional<Plan> optionalPlan = Optional.empty();
+		if (serviceDefinition != null) {
+			 optionalPlan = serviceDefinition.getPlans().stream().filter(plan ->
+					plan.getId().equals(planId)).findFirst();
+		}
+		return optionalPlan.orElse(null);
 	}
 
 	protected Context parseOriginatingIdentity(String originatingIdentityString) {
