@@ -54,12 +54,11 @@ public final class CloudFoundryContext extends Context {
 		return getStringProperty(ORGANIZATION_GUID_KEY);
 	}
 
-	/**
-	 * Avoid polluting the serialized context with duplicated fields with different key
-	 * case
-	 */
+    /**
+     * Avoid polluting the serialized context with duplicated keys
+     */
 	@JsonAnyGetter
-	public Map<String, Object> getSerializableProperties() {
+    Map<String, Object> getSerializableProperties() {
 		HashMap<String, Object> properties = new HashMap<>(super.getProperties());
 		properties.remove(ORGANIZATION_GUID_KEY);
 		properties.remove(SPACE_GUID_KEY);

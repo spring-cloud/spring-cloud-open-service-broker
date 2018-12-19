@@ -50,11 +50,10 @@ public final class KubernetesContext extends Context {
 	}
 
 	/**
-	 * Avoid polluting the serialized context with duplicated fields with different key
-	 * case
+	 * Avoid polluting the serialized context with duplicated keys
 	 */
 	@JsonAnyGetter
-	public Map<String, Object> getSerializableProperties() {
+	Map<String, Object> getSerializableProperties() {
 		HashMap<String, Object> properties = new HashMap<>(super.getProperties());
 		properties.remove(KUBERNETES_PLATFORM);
 		properties.remove(NAMESPACE_KEY);
