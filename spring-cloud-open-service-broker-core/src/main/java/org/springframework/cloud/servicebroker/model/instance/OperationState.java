@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * The list of acceptable states for an operation that is being processed asynchronously.
  *
@@ -37,6 +39,7 @@ public enum OperationState {
 	 */
 	FAILED("failed");
 
+	@JsonValue
 	private final String state;
 
 	OperationState(String state) {

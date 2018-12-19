@@ -21,8 +21,6 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 /**
  * Details of a response to a request to get the state of the last operation on a service instance.
@@ -38,7 +36,6 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 @JsonAutoDetect
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetLastServiceOperationResponse {
-	@JsonSerialize(using = ToStringSerializer.class)
 	private final OperationState state;
 
 	private final String description;
