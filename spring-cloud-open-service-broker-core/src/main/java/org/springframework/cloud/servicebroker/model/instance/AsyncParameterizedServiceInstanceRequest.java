@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -36,7 +37,7 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	private final Context context;
 
 	protected AsyncParameterizedServiceInstanceRequest() {
-		this.parameters = null;
+		this.parameters = new HashMap<>(); // deserialize as empty map when no params in json
 		this.context = null;
 	}
 

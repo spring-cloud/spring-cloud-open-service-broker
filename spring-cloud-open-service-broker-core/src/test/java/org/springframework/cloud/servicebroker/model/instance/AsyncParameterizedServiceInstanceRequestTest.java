@@ -82,7 +82,8 @@ public class AsyncParameterizedServiceInstanceRequestTest {
 		assertThat(request.getContext().getProperty("field1")).isEqualTo("data");
 		assertThat(request.getContext().getProperty("field2")).isEqualTo(2);
 
-		assertThat(request.getParameters()).isNull();
+		// missing parameters should result into empty response, same as in builder
+		assertThat(request.getParameters()).isEmpty();
 	}
 
 	@Test
