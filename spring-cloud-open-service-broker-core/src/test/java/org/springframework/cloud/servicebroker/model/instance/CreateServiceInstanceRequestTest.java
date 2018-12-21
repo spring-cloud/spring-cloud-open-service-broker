@@ -127,12 +127,35 @@ public class CreateServiceInstanceRequestTest {
 
 		DocumentContext json = JsonUtils.toJsonPath(request);
 
-		// 4 OSB Fields should be present
+		// 6 OSB Fields should be present
 		JsonPathAssert.assertThat(json).hasPath("$.plan_id").isEqualTo("plan-id");
 		JsonPathAssert.assertThat(json).hasPath("$.service_id").isEqualTo("service-definition-id");
 		JsonPathAssert.assertThat(json).hasMapAtPath("$.parameters").hasSize(5);
 		JsonPathAssert.assertThat(json).hasPath("$.parameters.field1").isEqualTo("value1");
 		JsonPathAssert.assertThat(json).hasMapAtPath("$.context").hasSize(3);
+		JsonPathAssert.assertThat(json).hasPath("$.space_guid").isEqualTo("space-guid");
+		JsonPathAssert.assertThat(json).hasPath("$.organization_guid").isEqualTo("org-guid");
+
+
+		// fields mapped outside of json body (typically http headers or request paths)
+		// should be excluded
+		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(6);
+	}
+
+	@Test
+	@SuppressWarnings("serial")
+	public void serializesWithoutContextAccordingToOsbSpecs() {
+		CreateServiceInstanceRequest request = CreateServiceInstanceRequest.builder()
+				.serviceInstanceId("service-instance-id")
+				.serviceDefinitionId("service-definition-id").planId("plan-id").build();
+
+		DocumentContext json = JsonUtils.toJsonPath(request);
+
+		// 4 OSB Fields should be present
+		JsonPathAssert.assertThat(json).hasPath("$.plan_id").isEqualTo("plan-id");
+		JsonPathAssert.assertThat(json).hasPath("$.service_id").isEqualTo("service-definition-id");
+		JsonPathAssert.assertThat(json).hasPath("$.space_guid").isEqualTo("default-undefined-value");
+		JsonPathAssert.assertThat(json).hasPath("$.organization_guid").isEqualTo("default-undefined-value");
 
 
 		// fields mapped outside of json body (typically http headers or request paths)

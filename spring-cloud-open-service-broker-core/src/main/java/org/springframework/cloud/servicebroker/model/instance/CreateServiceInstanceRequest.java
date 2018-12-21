@@ -21,11 +21,13 @@ import java.util.Map;
 import java.util.Objects;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
@@ -54,11 +56,9 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	private final String planId;
 
 	@Deprecated
-	@JsonProperty("organization_guid")
 	private final String organizationGuid;
 
 	@Deprecated
-	@JsonProperty("space_guid")
 	private final String spaceGuid;
 
 	@JsonIgnore //mapped as path param
@@ -170,6 +170,36 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@Deprecated
 	public String getSpaceGuid() {
 		return this.spaceGuid;
+	}
+
+	@JsonGetter("space_guid")
+	protected String getSpaceGuidToSerialize() {
+		//prefer explicitly set field if any
+		String spaceGuid = this.spaceGuid;
+		//then use cloudfoundry context if any
+		if (spaceGuid == null && getContext() instanceof CloudFoundryContext) {
+			spaceGuid = ((CloudFoundryContext) getContext()).getSpaceGuid();
+		}
+		//Otherwise, default to an arbitrary string
+		if (spaceGuid == null) {
+			spaceGuid = "default-undefined-value"; //Osb spec says "MUST be a non-empty string."
+		}
+		return spaceGuid;
+	}
+
+	@JsonGetter("organization_guid")
+	protected String getOrganizationGuidToSerialize() {
+		//prefer explicitly set field if any
+		String organizationGuid = this.organizationGuid;
+		//then use cloudfoundry context if any
+		if (organizationGuid == null && getContext() instanceof CloudFoundryContext) {
+			organizationGuid = ((CloudFoundryContext) getContext()).getOrganizationGuid();
+		}
+		//Otherwise, default to an arbitrary string
+		if (organizationGuid == null) {
+			organizationGuid = "default-undefined-value"; //Osb spec says "MUST be a non-empty string."
+		}
+		return organizationGuid;
 	}
 
 	/**
