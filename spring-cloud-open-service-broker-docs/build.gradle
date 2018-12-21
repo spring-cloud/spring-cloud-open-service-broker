@@ -41,6 +41,7 @@ dependencies {
 	implementation project(":spring-cloud-open-service-broker-core")
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-tomcat")
 	implementation("io.projectreactor:reactor-core")
 	
 	docs("io.spring.docresources:spring-doc-resources:0.1.0.RELEASE@zip")
