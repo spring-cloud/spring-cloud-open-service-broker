@@ -35,6 +35,7 @@ import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindi
 import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.service.CatalogService;
@@ -56,6 +57,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 @ServiceBrokerRestController
 public class ServiceInstanceBindingController extends BaseController {
@@ -83,12 +85,18 @@ public class ServiceInstanceBindingController extends BaseController {
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody CreateServiceInstanceBindingRequest request) {
 		return getRequiredServiceDefinition(request.getServiceDefinitionId())
-				.flatMap(serviceDefinition -> {
-					request.setServiceInstanceId(serviceInstanceId);
-					request.setBindingId(bindingId);
-					request.setServiceDefinition(serviceDefinition);
-					return Mono.just(request);
-				})
+				.flatMap(serviceDefinition -> getServiceDefinitionPlan(serviceDefinition, request.getPlanId())
+						.map(plan -> {
+							request.setPlan(plan);
+							return request;
+						})
+						.switchIfEmpty(Mono.just(request))
+						.map(req -> {
+							request.setServiceInstanceId(serviceInstanceId);
+							request.setBindingId(bindingId);
+							request.setServiceDefinition(serviceDefinition);
+							return request;
+						}))
 				.cast(AsyncServiceBrokerRequest.class)
 				.flatMap(req -> setCommonRequestFields(req, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE),
 						apiInfoLocation, originatingIdentityString, acceptsIncomplete))
@@ -184,17 +192,20 @@ public class ServiceInstanceBindingController extends BaseController {
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
 		return getServiceDefinition(serviceDefinitionId)
 				.switchIfEmpty(Mono.just(ServiceDefinition.builder().build()))
-				.map(serviceDefinition -> DeleteServiceInstanceBindingRequest.builder()
-						.serviceInstanceId(serviceInstanceId)
-						.bindingId(bindingId)
-						.serviceDefinitionId(serviceDefinitionId)
-						.planId(planId)
-						.serviceDefinition(serviceDefinition)
-						.asyncAccepted(acceptsIncomplete)
-						.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
-						.apiInfoLocation(apiInfoLocation)
-						.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
-						.build())
+				.flatMap(serviceDefinition -> getServiceDefinitionPlan(serviceDefinition, planId)
+						.map(DeleteServiceInstanceBindingRequest.builder()::plan)
+						.switchIfEmpty(Mono.just(DeleteServiceInstanceBindingRequest.builder()))
+						.map(builder -> builder
+								.serviceInstanceId(serviceInstanceId)
+								.bindingId(bindingId)
+								.serviceDefinitionId(serviceDefinitionId)
+								.planId(planId)
+								.serviceDefinition(serviceDefinition)
+								.asyncAccepted(acceptsIncomplete)
+								.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
+								.apiInfoLocation(apiInfoLocation)
+								.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+								.build()))
 				.flatMap(req -> service.deleteServiceInstanceBinding(req)
 						.doOnRequest(v -> logger.debug("Deleting a service instance binding: request={}", req))
 						.doOnSuccess(aVoid -> logger.debug("Deleting a service instance binding succeeded: bindingId={}", bindingId))

@@ -43,6 +43,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 				.serviceInstanceId("service-instance-id")
 				.bindingId("binding-id")
 				.serviceDefinition(serviceDefinition)
+				.plan(plan)
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("api-info-location")
 				.originatingIdentity(identityContext)
@@ -92,6 +93,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 				.apiInfoLocation("api-info-location")
 				.originatingIdentity(identityContext)
 				.serviceDefinition(serviceDefinition)
+			 	.plan(plan)
 				.build();
 
 		ServiceInstanceBindingController controller = createControllerUnderTest(expectedRequest);

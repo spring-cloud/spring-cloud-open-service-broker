@@ -120,7 +120,11 @@ public class CatalogControllerIntegrationTest {
 				.jsonPath("$.services[0].plans[1].schemas.service_instance.create.parameters").isEqualTo(createServiceInstanceSchema)
 				.jsonPath("$.services[0].plans[1].schemas.service_instance.update.parameters").isEqualTo(updateServiceInstanceSchema)
 				.jsonPath("$.services[0].plans[1].schemas.service_binding.create.parameters").isEqualTo(createServiceBindingSchema)
-				.jsonPath("$.services[0].plans[2]").doesNotExist()
+			  	.jsonPath("$.services[0].plans[2].id").isEqualTo(plans.get(2).getId())
+			  	.jsonPath("$.services[0].plans[2].name").isEqualTo(plans.get(2).getName())
+			  	.jsonPath("$.services[0].plans[2].description").isEqualTo(plans.get(2).getDescription())
+			  	.jsonPath("$.services[0].plans[2].free").isEqualTo(plans.get(2).isFree())
+			  	.jsonPath("$.services[0].plans[3]").doesNotExist()
 				.jsonPath("$.services[1]").doesNotExist();
 	}
 

@@ -34,7 +34,7 @@ public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIn
 	public void setupBase() {
 		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId(serviceDefinition.getId())
-				.planId("standard")
+				.planId("plan-one-id")
 				.build();
 
 		createRequestBody = JsonUtils.toJson(request);

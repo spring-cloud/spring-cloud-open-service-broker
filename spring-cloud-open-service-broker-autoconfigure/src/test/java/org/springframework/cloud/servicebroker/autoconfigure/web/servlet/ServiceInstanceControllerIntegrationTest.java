@@ -213,6 +213,31 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
+	public void createServiceInstanceFiltersPlansSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(CreateServiceInstanceResponse
+				.builder()
+				.build());
+
+		MvcResult mvcResult = mockMvc
+				.perform(put(buildCreateUpdateUrl())
+						.content(createRequestBody)
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
+			   .andExpect(status().isCreated());
+
+		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertThat(actualRequest.getPlan().getId()).isEqualTo(actualRequest.getPlanId());
+		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
 	public void createServiceInstanceWithUnknownServiceDefinitionIdFails() throws Exception {
 		setupCatalogService(null);
 
@@ -418,6 +443,30 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
+	public void deleteServiceInstanceFiltersPlansSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(DeleteServiceInstanceResponse
+				.builder()
+				.build());
+
+		MvcResult mvcResult = mockMvc
+				.perform(delete(buildDeleteUrl())
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
+			   .andExpect(status().isOk())
+			   .andExpect(content().string("{}"));
+
+		DeleteServiceInstanceRequest actualRequest = verifyDeleteServiceInstance();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertThat(actualRequest.getPlan().getId()).isEqualTo(actualRequest.getPlanId());
+		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
 	public void deleteServiceInstanceWithUnknownIdFails() throws Exception {
 		setupCatalogService();
 
@@ -495,6 +544,34 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertThat(actualRequest.getServiceDefinition().getPlans().size()).isEqualTo(3);
+		assertThat(actualRequest.getPlan()).isNull();
+		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
+	public void updateServiceInstanceFiltersPlansSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(UpdateServiceInstanceResponse
+				.builder()
+				.build());
+
+		MvcResult mvcResult = mockMvc
+				.perform(patch(buildCreateUpdateUrl())
+						.content(updateRequestBodyWithPlan)
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
+			   .andExpect(status().isOk())
+			   .andExpect(content().string("{}"));
+
+		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertThat(actualRequest.getPlan().getId()).isEqualTo(actualRequest.getPlanId());
 		assertHeaderValuesNotSet(actualRequest);
 	}
 

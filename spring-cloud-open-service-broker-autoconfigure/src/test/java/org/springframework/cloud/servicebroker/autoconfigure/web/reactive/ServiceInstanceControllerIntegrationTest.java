@@ -186,6 +186,27 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
+	public void createServiceInstanceFiltersPlanSucceeds() {
+		setupCatalogService();
+
+		setupServiceInstanceService(CreateServiceInstanceResponse
+				.builder()
+				.build());
+
+		client.put().uri(buildCreateUpdateUrl())
+			  .contentType(MediaType.APPLICATION_JSON)
+			  .syncBody(createRequestBody)
+			  .accept(MediaType.APPLICATION_JSON)
+			  .exchange()
+			  .expectStatus().isCreated();
+
+		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertThat(actualRequest.getPlan().getId()).isEqualTo("plan-one-id");
+		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
 	public void createServiceInstanceWithUnknownServiceDefinitionIdFails() {
 		setupCatalogService(null);
 
@@ -370,6 +391,27 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
+	public void deleteServiceInstanceFiltersPlansSucceeds() {
+		setupCatalogService();
+
+		setupServiceInstanceService(DeleteServiceInstanceResponse
+				.builder()
+				.build());
+
+		client.delete().uri(buildDeleteUrl())
+			  .accept(MediaType.APPLICATION_JSON)
+			  .exchange()
+			  .expectStatus().isOk()
+			  .expectBody()
+			  .json("{}");
+
+		DeleteServiceInstanceRequest actualRequest = verifyDeleteServiceInstance();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertThat(actualRequest.getPlan().getId()).isEqualTo("plan-three-id");
+		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
 	public void deleteServiceInstanceWithUnknownIdFails() {
 		setupCatalogService();
 
@@ -424,7 +466,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void updateServiceInstanceWithoutSyncAndHeadersSucceeds() {
+	public void updateServiceInstanceWithoutAsyncAndHeadersSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
@@ -441,6 +483,29 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertThat(actualRequest.getPlan()).isNull();
+		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
+	public void updateServiceInstanceFiltersPlansSucceeds() {
+		setupCatalogService();
+
+		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
+																 .build());
+
+		client.patch().uri(buildCreateUpdateUrl())
+			  .contentType(MediaType.APPLICATION_JSON)
+			  .syncBody(updateRequestBodyWithPlan)
+			  .accept(MediaType.APPLICATION_JSON)
+			  .exchange()
+			  .expectStatus().isOk()
+			  .expectBody()
+			  .json("{}");
+
+		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertThat(actualRequest.getPlan().getId()).isEqualTo("plan-three-id");
 		assertHeaderValuesNotSet(actualRequest);
 	}
 

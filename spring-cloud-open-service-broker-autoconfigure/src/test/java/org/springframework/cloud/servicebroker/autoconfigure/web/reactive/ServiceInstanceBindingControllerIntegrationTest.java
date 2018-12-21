@@ -86,6 +86,29 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
+	public void createBindingToAppFiltersPlansSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse
+				.builder()
+				.bindingExisted(false)
+				.build());
+
+		client.put().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, false))
+			  .contentType(MediaType.APPLICATION_JSON)
+			  .syncBody(createRequestBody)
+			  .header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+			  .header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+			  .accept(MediaType.APPLICATION_JSON)
+			  .exchange()
+			  .expectStatus().isCreated();
+
+		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
+		assertThat(actualRequest.getPlan().getId()).isEqualTo(actualRequest.getPlanId());
+		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
 	public void createBindingToAppWithAsyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
@@ -147,6 +170,28 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
+	public void createBindingToRouteFiltersPlansSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceBindingService(CreateServiceInstanceRouteBindingResponse
+				.builder()
+				.bindingExisted(false)
+				.build());
+
+		client.put().uri(buildCreateUrl())
+			  .contentType(MediaType.APPLICATION_JSON)
+			  .syncBody(createRequestBody)
+			  .accept(MediaType.APPLICATION_JSON)
+			  .exchange()
+			  .expectStatus().isCreated();
+
+		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertThat(actualRequest.getPlan().getId()).isEqualTo(actualRequest.getPlanId());
 		assertHeaderValuesNotSet(actualRequest);
 	}
 
@@ -338,6 +383,29 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	public void deleteBindingFiltersPlansSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceBindingService(DeleteServiceInstanceBindingResponse.builder()
+																			   .build());
+
+		client.delete().uri(buildDeleteUrl(PLATFORM_INSTANCE_ID, false))
+			  .header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+			  .header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+			  .exchange()
+			  .expectStatus().isOk()
+			  .expectBody()
+			  .json("{}");
+
+		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
+
+		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
+		assertThat(actualRequest.getPlan().getId()).isEqualTo(actualRequest.getPlanId());
 		assertHeaderValuesSet(actualRequest);
 	}
 

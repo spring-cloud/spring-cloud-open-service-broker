@@ -51,7 +51,9 @@ import org.springframework.http.ResponseEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(Theories.class)
@@ -229,6 +231,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 						createRequest)
 				.block();
 
+		verify(serviceInstanceService).createServiceInstance(any(CreateServiceInstanceRequest.class));
 		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(data.response);
 	}

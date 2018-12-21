@@ -27,6 +27,8 @@ import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestContr
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
+import org.springframework.cloud.servicebroker.model.catalog.Plan;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceRequest;
@@ -83,14 +85,18 @@ public class ServiceInstanceController extends BaseController {
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody CreateServiceInstanceRequest request) {
-
-		// TODO: potential threading issues?
 		return getRequiredServiceDefinition(request.getServiceDefinitionId())
-				.map(serviceDefinition -> {
-					request.setServiceInstanceId(serviceInstanceId);
-					request.setServiceDefinition(serviceDefinition);
-					return request;
-				})
+				.flatMap(serviceDefinition -> getServiceDefinitionPlan(serviceDefinition, request.getPlanId())
+						.map(plan -> {
+							request.setPlan(plan);
+							return request;
+						})
+						.switchIfEmpty(Mono.just(request))
+						.map(req -> {
+							req.setServiceInstanceId(serviceInstanceId);
+							req.setServiceDefinition(serviceDefinition);
+							return req;
+						}))
 				.flatMap(req -> setCommonRequestFields(req, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
 						originatingIdentityString, acceptsIncomplete))
 				.cast(CreateServiceInstanceRequest.class)
@@ -123,8 +129,6 @@ public class ServiceInstanceController extends BaseController {
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-
-		// TODO: potential threading issues?
 		return Mono.just(GetServiceInstanceRequest.builder()
 				.serviceInstanceId(serviceInstanceId)
 				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
@@ -151,8 +155,6 @@ public class ServiceInstanceController extends BaseController {
 			@RequestParam(value = "operation", required = false) String operation,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-
-		// TODO: potential threading issues?
 		return Mono.just(GetLastServiceOperationRequest.builder()
 				.serviceDefinitionId(serviceDefinitionId)
 				.serviceInstanceId(serviceInstanceId)
@@ -185,19 +187,20 @@ public class ServiceInstanceController extends BaseController {
 			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-
-		// TODO: potential threading issues?
 		return getRequiredServiceDefinition(serviceDefinitionId)
-				.map(serviceDefinition -> DeleteServiceInstanceRequest.builder()
-						.serviceInstanceId(serviceInstanceId)
-						.serviceDefinitionId(serviceDefinitionId)
-						.planId(planId)
-						.serviceDefinition(serviceDefinition)
-						.asyncAccepted(acceptsIncomplete)
-						.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
-						.apiInfoLocation(apiInfoLocation)
-						.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
-						.build())
+				.flatMap(serviceDefinition -> getServiceDefinitionPlan(serviceDefinition, planId)
+						.map(DeleteServiceInstanceRequest.builder()::plan)
+						.switchIfEmpty(Mono.just(DeleteServiceInstanceRequest.builder()))
+						.map(builder -> builder
+								.serviceInstanceId(serviceInstanceId)
+								.serviceDefinitionId(serviceDefinitionId)
+								.planId(planId)
+								.serviceDefinition(serviceDefinition)
+								.asyncAccepted(acceptsIncomplete)
+								.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
+								.apiInfoLocation(apiInfoLocation)
+								.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+								.build()))
 				.flatMap(request -> service.deleteServiceInstance(request)
 						.doOnRequest(v -> logger.debug("Deleting a service instance: request={}", request))
 						.doOnSuccess(response -> logger.debug("Deleting a service instance succeeded: serviceInstanceId={}, response={}",
@@ -226,14 +229,18 @@ public class ServiceInstanceController extends BaseController {
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody UpdateServiceInstanceRequest request) {
-
-		// TODO: potential threading issues?
 		return getRequiredServiceDefinition(request.getServiceDefinitionId())
-				.flatMap(serviceDefinition -> {
-					request.setServiceInstanceId(serviceInstanceId);
-					request.setServiceDefinition(serviceDefinition);
-					return Mono.just(request);
-				})
+				.flatMap(serviceDefinition -> getServiceDefinitionPlan(serviceDefinition, request.getPlanId())
+						.map(plan -> {
+							request.setPlan(plan);
+							return request;
+						})
+						.switchIfEmpty(Mono.just(request))
+						.map(req -> {
+							req.setServiceInstanceId(serviceInstanceId);
+							req.setServiceDefinition(serviceDefinition);
+							return req;
+						}))
 				.flatMap(req -> setCommonRequestFields(req, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
 						originatingIdentityString, acceptsIncomplete))
 				.cast(UpdateServiceInstanceRequest.class)
