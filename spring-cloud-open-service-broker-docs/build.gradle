@@ -43,7 +43,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-tomcat")
 	implementation("io.projectreactor:reactor-core")
-	
+
 	docs("io.spring.docresources:spring-doc-resources:0.1.0.RELEASE@zip")
 }
 
@@ -75,6 +75,10 @@ asciidoctor {
 	attributes 'revnumber': project.version,
 			'spring-version': project.version,
 			'branch-or-tag': project.version.endsWith('SNAPSHOT') ? 'master' : "v${project.version}",
+			'icons': 'font',
+			'idprefix': '',
+			'idseparator': '-',
+			docinfo: 'shared',
 			sectanchors: '',
 			sectnums: '',
 			stylesdir: "css/",
