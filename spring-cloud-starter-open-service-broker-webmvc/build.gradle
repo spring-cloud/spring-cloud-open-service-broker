@@ -23,8 +23,8 @@ dependencyManagement {
 }
 
 dependencies {
-	implementation project(":spring-cloud-open-service-broker-autoconfigure")
-	implementation("org.springframework.boot:spring-boot-starter-web")
+	compile project(":spring-cloud-open-service-broker-autoconfigure")
+	compile("org.springframework.boot:spring-boot-starter-web")
 }
 
 install {

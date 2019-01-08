@@ -23,15 +23,14 @@ dependencyManagement {
 }
 
 dependencies {
-	implementation("org.springframework:spring-context")
+	compile("org.springframework:spring-context")
 	optional("org.springframework:spring-web")
-
-	api("com.fasterxml.jackson.core:jackson-databind:2.9.7")
-	implementation("org.hibernate.validator:hibernate-validator:6.0.13.Final")
-	implementation("commons-beanutils:commons-beanutils:1.9.3") {
+	compile("com.fasterxml.jackson.core:jackson-databind:2.9.7")
+	compile("org.hibernate.validator:hibernate-validator:6.0.13.Final")
+	compile("commons-beanutils:commons-beanutils:1.9.3") {
 		exclude group:"commons-logging", module:"commons-logging"
 	}
-	implementation("org.slf4j:slf4j-api:1.7.25")
+	compile("org.slf4j:slf4j-api:1.7.25")
 
 	testImplementation("org.springframework:spring-test") {
 		exclude group:"commons-logging", module:"commons-logging"
