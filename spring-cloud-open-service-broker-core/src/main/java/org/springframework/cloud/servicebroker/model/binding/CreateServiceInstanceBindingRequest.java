@@ -65,6 +65,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 
 	private final BindResource bindResource;
 
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	private final Map<String, Object> parameters;
 
 	private final Context context;
@@ -81,7 +82,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		appGuid = null;
 		bindResource = null;
 		context = null;
-		parameters = null;
+		parameters = new HashMap<>();
 	}
 
 	CreateServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
