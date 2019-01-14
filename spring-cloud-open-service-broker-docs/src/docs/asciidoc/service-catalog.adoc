@@ -34,6 +34,8 @@ The following example shows a properties file that configures a catalog:
 include::{examples-dir}/catalog-minimal.properties[]
 ----
 
+Additional examples with comprehensive catalog are available in the project unit tests.
+
 === Implementing a Catalog Service
 
 A service broker can take more control over the catalog by implementing the `CatalogService` interface.
