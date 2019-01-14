@@ -20,6 +20,15 @@ plugins {
 
 description = "Spring Cloud Open Service Broker Documentation"
 
+repositories {
+	maven { url "https://repo.spring.io/libs-release" }
+	mavenCentral()
+}
+
+configurations {
+	docs
+}
+
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
@@ -29,16 +38,57 @@ dependencyManagement {
 apply plugin: 'org.asciidoctor.convert'
 
 dependencies {
-	compile project(":spring-cloud-open-service-broker-core")
-	compile("org.springframework.boot:spring-boot-starter")
-	compile("org.springframework.boot:spring-boot-starter-security")
-	compile("org.springframework.boot:spring-boot-starter-tomcat")
+    compile project(":spring-cloud-open-service-broker-core")
+    compile("org.springframework.boot:spring-boot-starter")
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-tomcat")
+    compile("io.projectreactor:reactor-core")
+	
+	docs("io.spring.docresources:spring-doc-resources:0.1.0.RELEASE@zip")
+}
+
+task prepareAsciidocBuild(type: Sync) {
+	dependsOn configurations.docs
+	// copy doc resources
+	from {
+		configurations.docs.collect { zipTree(it) }
+	}
+	// and doc sources
+	from "src/docs/asciidoc"
+	// to a temporary build directory
+	into "$buildDir/asciidoc"
 }
 
 asciidoctor {
-
+	sourceDir = file("$buildDir/asciidoc")
+	sources {
+		include '*.adoc'
+	}
+	resources {
+		from(sourceDir) {
+			include 'images/*', 'css/**', 'js/**'
+		}
+	}
+	logDocuments = true
+	backends = ["html5"]
+	options doctype: 'book', eruby: 'erubis'
 	attributes 'revnumber': project.version,
+			'spring-version': project.version,
 			'branch-or-tag': project.version.endsWith('SNAPSHOT') ? 'master' : "v${project.version}",
+			'icons': 'font',
+			'idprefix': '',
+			'idseparator': '-',
+			docinfo: 'shared',
+			sectanchors: '',
+			sectnums: '',
+			stylesdir: "css/",
+			stylesheet: 'spring.css',
+			'linkcss': true,
 			'nofooter': true,
-			'allow-uri-read': ''
+			'allow-uri-read': '',
+			'source-highlighter=highlight.js',
+			'highlightjsdir=js/highlight',
+			'highlightjs-theme=atom-one-dark-reasonable'
 }
+
+asciidoctor.dependsOn prepareAsciidocBuild

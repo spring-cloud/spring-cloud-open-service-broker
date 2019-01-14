@@ -6,7 +6,7 @@
 :toclevels: 3
 :sectlinks:
 
-:examples-dir: ../../test/java/com/example/servicebroker/
+:examples-dir: ../../src/test/java/com/example/servicebroker
 :scosb: https://cloud.spring.io/spring-cloud-open-service-broker/
 :scosb-href: {scosb}[Spring Cloud Open Service Broker]
 :scosb-api: https://docs.spring.io/spring-cloud-open-service-broker/docs/current/apidocs/
