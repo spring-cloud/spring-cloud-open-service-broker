@@ -53,7 +53,6 @@ configure(allprojects) {
 	group = "org.springframework.cloud"
 
 	apply plugin: "java"
-	apply plugin: "java-library"
 	apply plugin: "eclipse"
 	apply plugin: "idea"
 	apply plugin: "jacoco"

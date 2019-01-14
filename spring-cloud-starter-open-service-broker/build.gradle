@@ -23,7 +23,7 @@ dependencyManagement {
 }
 
 dependencies {
-	implementation project(":spring-cloud-open-service-broker-autoconfigure")
+	compile project(":spring-cloud-open-service-broker-autoconfigure")
 }
 
 install {
