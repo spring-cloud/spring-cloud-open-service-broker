@@ -335,7 +335,7 @@ public class ServiceDefinition {
 		 * @param planUpdateable true if the plan may be updated
 		 * @return the binder instance
 		 */
-		public ServiceDefinitionBuilder planUpdateable(boolean planUpdateable) {
+		public ServiceDefinitionBuilder planUpdateable(Boolean planUpdateable) {
 			this.planUpdateable = planUpdateable;
 			return this;
 		}
@@ -346,7 +346,7 @@ public class ServiceDefinition {
 		 * @param instancesRetrievable true if the service instances may be retrieved
 		 * @return the binder instance
 		 */
-		public ServiceDefinitionBuilder instancesRetrievable(boolean instancesRetrievable) {
+		public ServiceDefinitionBuilder instancesRetrievable(Boolean instancesRetrievable) {
 			this.instancesRetrievable = instancesRetrievable;
 			return this;
 		}
@@ -357,7 +357,7 @@ public class ServiceDefinition {
 		 * @param bindingsRetrievable true if the service bindings may be retrieved
 		 * @return the binder instance
 		 */
-		public ServiceDefinitionBuilder bindingsRetrievable(boolean bindingsRetrievable) {
+		public ServiceDefinitionBuilder bindingsRetrievable(Boolean bindingsRetrievable) {
 			this.bindingsRetrievable = bindingsRetrievable;
 			return this;
 		}

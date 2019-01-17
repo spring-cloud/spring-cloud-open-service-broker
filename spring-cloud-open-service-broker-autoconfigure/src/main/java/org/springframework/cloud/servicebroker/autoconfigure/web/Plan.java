@@ -70,13 +70,13 @@ class Plan {
 	 * an optional field. If the value is <code>null</code>, the field will be omitted
 	 * from the serialized JSON.
 	 */
-	private Boolean bindable = false;
+	private Boolean bindable = null;
 
 	/**
 	 * Indicates whether the plan can be limited by the non_basic_services_allowed field
 	 * in a platform quota.
 	 */
-	private Boolean free = false;
+	private Boolean free = null;
 
 	public String getId() {
 		return this.id;

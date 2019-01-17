@@ -78,6 +78,15 @@ public class ServiceBrokerPropertiesValidationTest {
 		assertThat(catalog.getServices().get(0).getPlans().get(0).getId()).isEqualTo("plan-one-id");
 		assertThat(catalog.getServices().get(0).getPlans().get(0).getName()).isEqualTo("Plan One");
 		assertThat(catalog.getServices().get(0).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
+
+		//Mandatory fields should have a default set when unspecified in configuration
+		assertThat(catalog.getServices().get(0).isBindable()).isNotNull();
+		//Optional unspecified fields should not have a default set.
+		assertThat(catalog.getServices().get(0).getPlans().get(0).isBindable()).isNull();
+		assertThat(catalog.getServices().get(0).getPlans().get(0).isFree()).isNull();
+		assertThat(catalog.getServices().get(0).isInstancesRetrievable()).isNull();
+		assertThat(catalog.getServices().get(0).isBindingsRetrievable()).isNull();
+		assertThat(catalog.getServices().get(0).isPlanUpdateable()).isNull();
 	}
 
 	@Test
