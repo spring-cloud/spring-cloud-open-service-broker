@@ -67,17 +67,17 @@ class ServiceDefinition {
 	 * Indicates whether the service supports requests to update instances to use a different plan from the one
 	 * used to provision a service instance.
 	 */
-	private Boolean planUpdateable = false;
+	private Boolean planUpdateable = null;
 
 	/**
 	 * Indicates whether the service broker supports retrieving service instances.
 	 */
-	private Boolean instancesRetrievable = false;
+	private Boolean instancesRetrievable = null;
 
 	/**
 	 * Indicates whether the service broker supports retrieving service bindings.
 	 */
-	private Boolean bindingsRetrievable = false;
+	private Boolean bindingsRetrievable = null;
 
 	/**
 	 * A list of tags to aid in categorizing and classifying services with similar characteristics.
