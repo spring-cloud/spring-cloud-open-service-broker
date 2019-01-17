@@ -28,6 +28,8 @@ import org.springframework.cloud.servicebroker.JsonPathAssert;
 import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
+import org.springframework.cloud.servicebroker.model.catalog.Plan;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.JsonUtils.fromJson;
@@ -200,7 +202,10 @@ public class CreateServiceInstanceBindingRequestTest {
 				.originatingIdentity(PlatformContext.builder()
 						.platform("sample-platform").build())
 				.asyncAccepted(true)
-				.serviceDefinitionId("definition-id").build();
+				.serviceDefinitionId("definition-id")
+				.serviceDefinition(ServiceDefinition.builder().build())
+				.plan(Plan.builder().build())
+				.build();
 
 		DocumentContext json = JsonUtils.toJsonPath(request);
 

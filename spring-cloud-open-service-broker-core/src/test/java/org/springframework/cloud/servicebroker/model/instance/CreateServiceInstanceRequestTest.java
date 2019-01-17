@@ -25,6 +25,8 @@ import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
+import org.springframework.cloud.servicebroker.model.catalog.Plan;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -114,7 +116,8 @@ public class CreateServiceInstanceRequestTest {
 
 		CreateServiceInstanceRequest request = CreateServiceInstanceRequest.builder()
 				.serviceInstanceId("service-instance-id")
-				.serviceDefinitionId("service-definition-id").planId("plan-id")
+				.serviceDefinitionId("service-definition-id")
+				.planId("plan-id")
 				.context(context)
 					.parameters("field1", "value1")
 					.parameters("field2", 2)
@@ -123,9 +126,13 @@ public class CreateServiceInstanceRequestTest {
 				.asyncAccepted(true)
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("https://api.example.com")
-				.originatingIdentity(originatingIdentity).build();
+				.originatingIdentity(originatingIdentity)
+				.plan(Plan.builder().build())
+				.serviceDefinition(ServiceDefinition.builder().build())
+				.build();
 
 		DocumentContext json = JsonUtils.toJsonPath(request);
+		String jsonSerializaion = JsonUtils.toJson(request);
 
 		// 6 OSB Fields should be present
 		JsonPathAssert.assertThat(json).hasPath("$.plan_id").isEqualTo("plan-id");

@@ -57,6 +57,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	@JsonIgnore /*internal field*/
 	private transient ServiceDefinition serviceDefinition;
 
+	@JsonIgnore /*internal field*/
 	private transient Plan plan;
 
 	DeleteServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,

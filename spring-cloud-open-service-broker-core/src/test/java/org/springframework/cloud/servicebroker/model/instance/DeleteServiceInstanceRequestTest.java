@@ -24,6 +24,8 @@ import org.springframework.cloud.servicebroker.JsonPathAssert;
 import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
+import org.springframework.cloud.servicebroker.model.catalog.Plan;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -84,6 +86,8 @@ public class DeleteServiceInstanceRequestTest {
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("https://api.example.com")
 				.originatingIdentity(originatingIdentity)
+				.plan(Plan.builder().build())
+				.serviceDefinition(ServiceDefinition.builder().build())
 				.build();
 
 		DocumentContext json = JsonUtils.toJsonPath(request);
@@ -94,8 +98,6 @@ public class DeleteServiceInstanceRequestTest {
 		JsonPathAssert.assertThat(json).hasPath("$.accepts_incomplete").isEqualTo(true);
 		//Other internals should not be polluting the JSON representation
 		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(3);
-
-
 	}
 
 	@Test

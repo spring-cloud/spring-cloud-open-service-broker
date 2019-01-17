@@ -67,6 +67,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@JsonIgnore /*internal field*/
 	private transient ServiceDefinition serviceDefinition;
 
+    @JsonIgnore /*internal field*/
 	private transient Plan plan;
 
 	@SuppressWarnings("unused")
