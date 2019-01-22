@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,9 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 import org.springframework.cloud.servicebroker.JsonUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -70,10 +72,27 @@ public class PlanTest {
 	@Test
 	@SuppressWarnings("serial")
 	public void planWithAllFieldsIsSerializedToJson() {
-		Map<String, Object> metadata = new HashMap<String, Object>() {{
-			put("field3", "value3");
-			put("field4", "value4");
-		}};
+		HashMap<String, Object> standardCost = new HashMap<String, Object>() {
+			{
+				put("unit", "MONTHLY");
+				put("amount", new HashMap<String, Object>() {
+					{
+						put("usd", 649.0d);
+					}
+				});
+			}
+		};
+		List<HashMap<String, Object>> costs = new ArrayList<>();
+		costs.add(standardCost);
+		Map<String, Object> metadata = new HashMap<String, Object>() {
+			{
+				put("field3", "value3");
+				put("field4", "value4");
+				put("bullets", new String[] { "bullet1", "bullet2" });
+				put("costs", costs);
+				put("displayName", "sample display name");
+			}
+		};
 
 		Plan plan = Plan.builder()
 				.id("plan-id-one")
@@ -92,12 +111,15 @@ public class PlanTest {
 		assertThat(plan.getDescription()).isEqualTo("Plan One");
 		assertThat(plan.isFree()).isEqualTo(false);
 		assertThat(plan.isBindable()).isEqualTo(true);
-		assertThat(plan.getMetadata()).hasSize(4);
+		assertThat(plan.getMetadata()).hasSize(7);
 		assertThat(plan.getMetadata()).contains(
 				entry("field1", "value1"),
 				entry("field2", "value2"),
 				entry("field3", "value3"),
-				entry("field4", "value4")
+				entry("field4", "value4"),
+				entry("displayName", "sample display name"),
+				entry("bullets", new String[]{"bullet1", "bullet2"}),
+				entry("costs", costs)
 		);
 		assertThat(plan.getSchemas()).isNotNull();
 
@@ -114,6 +136,12 @@ public class PlanTest {
 				entry("field3", "value3"),
 				entry("field4", "value4")
 		);
+		assertThat(json).hasPath("$.metadata.displayName").isEqualTo("sample display name");
+		assertThat(json).hasPath("$.metadata.costs");
+		assertThat(json).hasMapAtPath("$.metadata.costs[0]");
+		assertThat(json).hasMapAtPath("$.metadata.costs[0].amount").contains(entry("usd", 649.0d));
+		assertThat(json).hasPath("$.metadata.costs[0].unit").isEqualTo("MONTHLY");
+		assertThat(json).hasListAtPath("$.metadata.bullets").containsOnly("bullet1", "bullet2");
 		assertThat(json).hasPath("$.schemas");
 	}
 
