@@ -80,8 +80,13 @@ public class ServiceBrokerPropertiesTest {
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].id", "plan-two-id");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].name", "Plan Two");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].description", "Description for Plan Two");
-		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata[key1]", "value1");
-		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata[key2]", "value2");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata.extra[key1]", "value1");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata.extra[key2]", "value2");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata.displayName", "sample display name");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata.bullets[0]", "bullet1");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata.bullets[1]", "bullet2");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata.costs[0].amount[usd]", "649.0");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata.costs[0].unit", "MONTHLY");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].bindable", "true");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].free", "true");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[$schema]", "http://example.com/service/create/schema");
@@ -121,7 +126,12 @@ public class ServiceBrokerPropertiesTest {
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getId()).isEqualTo("plan-two-id");
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getName()).isEqualTo("Plan Two");
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getDescription()).isEqualTo("Description for Plan Two");
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata()).containsOnly(entry("key1", "value1"), entry("key2", "value2"));
+		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata().getExtra()).containsOnly(entry("key1", "value1"), entry("key2", "value2"));
+		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata().getBullets()).contains("bullet1", "bullet2");
+		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata().getCosts()).hasSize(1);
+		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata().getCosts().get(0).getAmount().get("usd")).isEqualTo(649.0d);
+		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata().getCosts().get(0).getUnit()).isEqualTo("MONTHLY");
+
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isFree()).isTrue();
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate().getParameters())
@@ -158,7 +168,9 @@ public class ServiceBrokerPropertiesTest {
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getId()).isEqualTo("plan-two-id");
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getName()).isEqualTo("Plan Two");
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getDescription()).isEqualTo("Description for Plan Two");
-		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getMetadata()).containsOnly(entry("key1", "value1"), entry("key2", "value2"));
+		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getMetadata()).contains(entry("key1", "value1"), entry("key2", "value2"), entry("displayName", "sample display name"));
+		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getMetadata().get("costs")).isNotNull();
+		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getMetadata().get("bullets")).isNotNull();
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).isFree()).isTrue();
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getSchemas().getServiceInstanceSchema().getCreateMethodSchema().getParameters())

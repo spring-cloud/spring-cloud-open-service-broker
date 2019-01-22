@@ -241,6 +241,9 @@ public class Plan {
 		 * metadata conventions</a>
 		 */
 		public PlanBuilder metadata(Map<String, Object> metadata) {
+			if (metadata == null) {
+				return this;
+			}
 			if (this.metadata == null) {
 				this.metadata = new HashMap<>();
 			}

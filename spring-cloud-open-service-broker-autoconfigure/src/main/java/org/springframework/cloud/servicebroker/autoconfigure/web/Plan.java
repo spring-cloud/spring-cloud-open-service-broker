@@ -55,9 +55,10 @@ class Plan {
 	private String description;
 
 	/**
-	 * A map of metadata to further describe a service plan.
+	 * The metadata for this plan
 	 */
-	private final Map<String, Object> metadata = new HashMap<>();
+	@NestedConfigurationProperty
+	private Metadata metadata;
 
 	/**
 	 * The schemas for this plan.
@@ -102,12 +103,12 @@ class Plan {
 		this.description = description;
 	}
 
-	public Map<String, Object> getMetadata() {
+	public Metadata getMetadata() {
 		return this.metadata;
 	}
 
-	public void setMetadata(Map<String, Object> metadata) {
-		this.metadata.putAll(metadata);
+	public void setMetadata(Metadata metadata) {
+		this.metadata = metadata;
 	}
 
 	public Schemas getSchemas() {
@@ -148,7 +149,7 @@ class Plan {
 				.bindable(this.bindable)
 				.free(this.free)
 				.schemas(this.schemas != null ? this.schemas.toModel() : null)
-				.metadata(this.metadata)
+				.metadata(this.metadata != null ? this.metadata.toModel() : null)
 				.build();
 	}
 

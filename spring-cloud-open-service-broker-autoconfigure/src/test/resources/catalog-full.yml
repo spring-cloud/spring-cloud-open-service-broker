@@ -31,8 +31,17 @@ spring:
             id: plan-two-id
             name: Plan Two
             metadata:
-              key1: value1
-              key2: value2
+              displayName: "sample display name"
+              bullets:
+                - "bullet1"
+                - "bullet2"
+              costs:
+                - amount:
+                    usd: 649.0
+                  unit: MONTHLY
+              extra: # extra metadata not specified in osb specs need to be specified here
+                key1: value1
+                key2: value2
             bindable: true
             free: true
             schemas:
