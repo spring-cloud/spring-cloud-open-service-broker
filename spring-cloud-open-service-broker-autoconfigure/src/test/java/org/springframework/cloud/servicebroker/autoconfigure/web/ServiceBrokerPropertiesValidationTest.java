@@ -147,11 +147,11 @@ public class ServiceBrokerPropertiesValidationTest {
 		assertThat(catalog.getServices().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(catalog.getServices().get(0).getPlans().get(1).isFree()).isTrue();
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate().getParameters())
-				.containsOnly(entry("$schema", "https://example.com/service/create/schema"), entry("type", "object"));
+				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getUpdate().getParameters())
-				.containsOnly(entry("$schema", "https://example.com/service/update/schema"), entry("type", "object"));
+				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceBinding().getCreate().getParameters())
-				.containsOnly(entry("$schema", "https://example.com/service-binding/create/schema"), entry("type", "object"));
+				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(catalog.getServices().get(1).getId()).isEqualTo("service-two-id");
 		assertThat(catalog.getServices().get(1).getName()).isEqualTo("Service Two");
 		assertThat(catalog.getServices().get(1).getDescription()).isEqualTo("Description for Service Two");
