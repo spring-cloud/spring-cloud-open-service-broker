@@ -29,13 +29,13 @@
             "service_instance": {
               "create": {
                 "parameters": {
-                  "$schema": "http://example.com/service/create/schema",
+                  "$schema": "http://json-schema.org/draft-04/schema#",
                   "type": "object"
                 }
               },
               "update": {
                 "parameters": {
-                  "$schema": "http://example.com/service/update/schema",
+                  "$schema": "http://json-schema.org/draft-04/schema#",
                   "type": "object"
                 }
               }
@@ -43,7 +43,7 @@
             "service_binding": {
               "create": {
                 "parameters": {
-                  "$schema": "http://example.com/binding/create/schema",
+                  "$schema": "http://json-schema.org/draft-04/schema#",
                   "type": "object"
                 }
               }
