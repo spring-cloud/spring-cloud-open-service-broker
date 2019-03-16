@@ -3,7 +3,7 @@ apply plugin: 'base'
 buildscript {
     repositories {
         mavenCentral()
-        maven { url 'http://repo.spring.io/plugins-release' }
+        maven { url 'https://repo.spring.io/plugins-release' }
     }
     dependencies {
         classpath("org.springframework.build.gradle:propdeps-plugin:0.0.7")
@@ -49,8 +49,8 @@ ext {
     jsonPathVersion = '0.9.1'
 
     javadocLinks = [
-            'http://docs.oracle.com/javase/8/docs/api/',
-            'http://docs.spring.io/spring/docs/current/javadoc-api/',
+            'https://docs.oracle.com/javase/8/docs/api/',
+            'https://docs.spring.io/spring/docs/current/javadoc-api/',
     ] as String[]
 }
 
