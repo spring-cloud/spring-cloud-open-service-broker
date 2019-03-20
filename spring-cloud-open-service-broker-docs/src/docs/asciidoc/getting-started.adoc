@@ -28,7 +28,7 @@ To use Spring Cloud Open Service Broker in a Spring web application, add the sta
 
 === Configuring the service broker
 
-See the http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#getting-started-first-application[Spring Boot documentation] for getting started building a Spring Boot application.
+See the https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#getting-started-first-application[Spring Boot documentation] for getting started building a Spring Boot application.
 
 The framework provides default implementations of most of the components needed to implement a service broker.
 In Spring Boot fashion, you can override the default behavior by providing your own implementation of Spring beans, and the framework will back away from its defaults.
