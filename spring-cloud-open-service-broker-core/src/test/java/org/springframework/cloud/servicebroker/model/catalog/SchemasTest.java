@@ -77,42 +77,42 @@ public class SchemasTest {
 		Schemas schemas = Schemas.builder()
 				.serviceInstanceSchema(ServiceInstanceSchema.builder()
 						.createMethodSchema(MethodSchema.builder()
-								.parameters("$schema", "http://example.com/service/create/schema")
+								.parameters("$schema", "https://example.com/service/create/schema")
 								.parameters("type", "object")
 								.parameters(schemaProperties)
 								.build())
 						.updateMethodSchema(MethodSchema.builder()
-								.parameters("$schema", "http://example.com/service/update/schema")
+								.parameters("$schema", "https://example.com/service/update/schema")
 								.parameters("type", "object")
 								.build())
 						.build())
 				.serviceBindingSchema(ServiceBindingSchema.builder()
 						.createMethodSchema(MethodSchema.builder()
-								.parameters("$schema", "http://example.com/binding/create/schema")
+								.parameters("$schema", "https://example.com/binding/create/schema")
 								.parameters("type", "object")
 								.build())
 						.build())
 				.build();
 
 		assertThat(schemas.getServiceInstanceSchema().getCreateMethodSchema().getParameters()
-				.get("$schema")).isEqualTo("http://example.com/service/create/schema");
+				.get("$schema")).isEqualTo("https://example.com/service/create/schema");
 		assertThat(schemas.getServiceInstanceSchema().getCreateMethodSchema().getParameters()
 				.get("type")).isEqualTo("object");
 
 		assertThat(schemas.getServiceInstanceSchema().getUpdateMethodSchema().getParameters()
-				.get("$schema")).isEqualTo("http://example.com/service/update/schema");
+				.get("$schema")).isEqualTo("https://example.com/service/update/schema");
 		assertThat(schemas.getServiceInstanceSchema().getUpdateMethodSchema().getParameters()
 				.get("type")).isEqualTo("object");
 
 		assertThat(schemas.getServiceBindingSchema().getCreateMethodSchema().getParameters()
-				.get("$schema")).isEqualTo("http://example.com/binding/create/schema");
+				.get("$schema")).isEqualTo("https://example.com/binding/create/schema");
 		assertThat(schemas.getServiceBindingSchema().getCreateMethodSchema().getParameters()
 				.get("type")).isEqualTo("object");
 
 		DocumentContext json = JsonUtils.toJsonPath(schemas);
 
 		assertThat(json).hasPath("$.service_instance.create.parameters.$schema")
-						.isEqualTo("http://example.com/service/create/schema");
+						.isEqualTo("https://example.com/service/create/schema");
 		assertThat(json).hasPath("$.service_instance.create.parameters.type")
 						.isEqualTo("object");
 		assertThat(json).hasPath("$.service_instance.create.parameters.properties.billing-account.description")
@@ -121,11 +121,11 @@ public class SchemasTest {
 						.isEqualTo("string");
 
 		assertThat(json).hasMapAtPath("$.service_instance.update.parameters").contains(
-						entry("$schema", "http://example.com/service/update/schema"),
+						entry("$schema", "https://example.com/service/update/schema"),
 						entry("type", "object")
 		);
 		assertThat(json).hasMapAtPath("$.service_binding.create.parameters").contains(
-						entry("$schema", "http://example.com/binding/create/schema"),
+						entry("$schema", "https://example.com/binding/create/schema"),
 						entry("type", "object")
 		);
 	}
