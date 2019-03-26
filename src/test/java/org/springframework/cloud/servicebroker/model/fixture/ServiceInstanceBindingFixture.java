@@ -18,9 +18,9 @@ public class ServiceInstanceBindingFixture {
 
 	public static final String SERVICE_INSTANCE_BINDING_ID = "service_instance_binding_id";
 	public static final String SERVICE_INSTANCE_ID = "service-instance-one-id";
-	public static final String SYSLOG_DRAIN_URL = "http://syslog.example.com";
+	public static final String SYSLOG_DRAIN_URL = "https://syslog.example.com";
 	public static final String APP_GUID = "app_guid";
-	public static final String ROUTE = "http://route.example.com";
+	public static final String ROUTE = "https://route.example.com";
 
 	public static CreateServiceInstanceBindingRequest buildCreateAppBindingRequest() {
 		return new CreateServiceInstanceBindingRequest(
@@ -80,7 +80,7 @@ public class ServiceInstanceBindingFixture {
 
 	private static Map<String,Object> getCredentials() {
 		Map<String,Object> credentials = new HashMap<>();
-		credentials.put("uri","http://uri.example.com");
+		credentials.put("uri","https://uri.example.com");
 		credentials.put("username", "user1");
 		credentials.put("password", "pwd1");
 		return credentials;

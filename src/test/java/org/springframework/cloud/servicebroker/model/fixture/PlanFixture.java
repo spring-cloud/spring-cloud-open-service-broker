@@ -30,15 +30,15 @@ public class PlanFixture {
 		metadata.put("key2", "value2");
 
 		Map<String, Object> createServiceSchema = new HashMap<>();
-		createServiceSchema.put("$schema", "http://example.com/service/create/schema");
+		createServiceSchema.put("$schema", "https://example.com/service/create/schema");
 		createServiceSchema.put("type", "object");
 
 		Map<String, Object> updateServiceSchema = new HashMap<>();
-		updateServiceSchema.put("$schema", "http://example.com/service/update/schema");
+		updateServiceSchema.put("$schema", "https://example.com/service/update/schema");
 		updateServiceSchema.put("type", "object");
 
 		Map<String, Object> createBindingSchema = new HashMap<>();
-		createBindingSchema.put("$schema", "http://example.com/binding/create/schema");
+		createBindingSchema.put("$schema", "https://example.com/binding/create/schema");
 		createBindingSchema.put("type", "object");
 
 		ServiceInstanceSchema serviceInstanceSchema = new ServiceInstanceSchema(

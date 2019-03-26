@@ -1,17 +1,17 @@
 
 = Overview
 
-This project provides a framework for building a http://projects.spring.io/spring-boot/[Spring Boot] project to quickly implement a http://docs.cloudfoundry.org/services/overview.html[service broker] for http://www.cloudfoundry.org[Cloud Foundry].
+This project provides a framework for building a https://projects.spring.io/spring-boot/[Spring Boot] project to quickly implement a https://docs.cloudfoundry.org/services/overview.html[service broker] for https://www.cloudfoundry.org[Cloud Foundry].
 
 This project replaces https://github.com/cloudfoundry-community/spring-boot-cf-service-broker[Spring Boot CF Service Broker]. 
 
 == Compatibility
 
-* http://docs.cloudfoundry.org/services/api.html[Service Broker API]: 2.13
+* https://docs.cloudfoundry.org/services/api.html[Service Broker API]: 2.13
 
 == Getting Started
 
-See the http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#getting-started-first-application[Spring Boot documentation] for getting started building a Spring Boot application.
+See the https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#getting-started-first-application[Spring Boot documentation] for getting started building a Spring Boot application.
 
 A sample https://github.com/spring-cloud-samples/cloudfoundry-service-broker[MongoDB service broker] project is available.
 
@@ -74,7 +74,7 @@ For service instance binding/unbinding, provide a Spring bean that implements th
 
 === Security
 
-The project includes the https://github.com/spring-projects/spring-boot/tree/master/spring-boot-starters/spring-boot-starter-security[`spring-boot-starter-security`] project.  See the http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-security[Spring Boot Security documentation] for configuration options.
+The project includes the https://github.com/spring-projects/spring-boot/tree/master/spring-boot-starters/spring-boot-starter-security[`spring-boot-starter-security`] project.  See the https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-security[Spring Boot Security documentation] for configuration options.
 
 The default behavior creates a user called `user` with a generated password that is logged as an `INFO` message during app startup.  For example:
 
@@ -98,7 +98,7 @@ By default, the framework will verify the version of the service broker API for 
 
 == Deploying your broker
 
-Follow the http://docs.cloudfoundry.org/services/managing-service-brokers.html[documentation] to register the broker to Cloud Foundry.
+Follow the https://docs.cloudfoundry.org/services/managing-service-brokers.html[documentation] to register the broker to Cloud Foundry.
 
 === Build
 
@@ -138,7 +138,7 @@ added after the original pull request but before a merge.
   `eclipse-code-formatter.xml` file from the
   https://raw.githubusercontent.com/spring-cloud/spring-cloud-build/master/spring-cloud-dependencies-parent/eclipse-code-formatter.xml[Spring
   Cloud Build] project. If using IntelliJ, you can use the
-  http://plugins.jetbrains.com/plugin/6546[Eclipse Code Formatter
+  https://plugins.jetbrains.com/plugin/6546[Eclipse Code Formatter
   Plugin] to import the same file.
 * Make sure all new `.java` files to have a simple Javadoc class comment with at least an
   `@author` tag identifying you, and preferably at least a paragraph on what the class is
@@ -151,7 +151,7 @@ added after the original pull request but before a merge.
 * A few unit tests would help a lot as well -- someone has to do it.
 * If no-one else is using your branch, please rebase it against the current master (or
   other target branch in the main project).
-* When writing a commit message please follow http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html[these conventions],
+* When writing a commit message please follow https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html[these conventions],
   if you are fixing an existing issue please add `Fixes gh-XXXX` at the end of the commit
   message (where XXXX is the issue number).
 

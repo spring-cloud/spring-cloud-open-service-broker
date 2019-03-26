@@ -38,7 +38,7 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 
 /**
- * See: http://docs.cloudfoundry.org/services/api.html
+ * See: https://docs.cloudfoundry.org/services/api.html
  * 
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick

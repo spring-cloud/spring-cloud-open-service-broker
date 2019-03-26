@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * See: http://docs.cloudfoundry.org/services/api.html
+ * See: https://docs.cloudfoundry.org/services/api.html
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
