@@ -7,7 +7,7 @@ import org.springframework.cloud.servicebroker.model.DeleteServiceInstanceBindin
 /**
  * Default implementation of ServiceInstanceBindingService for service brokers that do not support bindable services.
  *
- * See http://docs.cloudfoundry.org/services/api.html#binding
+ * See https://docs.cloudfoundry.org/services/api.html#binding
  *
  * @author Scott Frederick
  */
