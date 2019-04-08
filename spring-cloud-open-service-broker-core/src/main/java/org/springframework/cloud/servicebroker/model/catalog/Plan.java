@@ -272,7 +272,7 @@ public class Plan {
 		 * @param free true if the plan has no cost
 		 * @return the build instance
 		 */
-		public PlanBuilder free(boolean free) {
+		public PlanBuilder free(Boolean free) {
 			this.free = free;
 			return this;
 		}
@@ -285,7 +285,7 @@ public class Plan {
 		 * @param bindable true if the service with this plan may be bound
 		 * @return the binder instance
 		 */
-		public PlanBuilder bindable(boolean bindable) {
+		public PlanBuilder bindable(Boolean bindable) {
 			this.bindable = bindable;
 			return this;
 		}

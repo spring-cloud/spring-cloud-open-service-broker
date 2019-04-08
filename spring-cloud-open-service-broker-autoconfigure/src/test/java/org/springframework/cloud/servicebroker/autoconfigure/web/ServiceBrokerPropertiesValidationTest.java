@@ -68,15 +68,25 @@ public class ServiceBrokerPropertiesValidationTest {
 	private void validateMinimumCatalog() {
 		this.context.refresh();
 		ServiceBrokerProperties properties = this.context.getBean(ServiceBrokerProperties.class);
-		assertThat(properties.getCatalog()).isNotNull();
-		assertThat(properties.getCatalog().getServices()).hasSize(1);
-		assertThat(properties.getCatalog().getServices().get(0).getId()).isEqualTo("service-one-id");
-		assertThat(properties.getCatalog().getServices().get(0).getName()).isEqualTo("Service One");
-		assertThat(properties.getCatalog().getServices().get(0).getDescription()).isEqualTo("Description for Service One");
-		assertThat(properties.getCatalog().getServices().get(0).getPlans()).hasSize(1);
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getId()).isEqualTo("plan-one-id");
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getName()).isEqualTo("Plan One");
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
+		Catalog catalog = properties.getCatalog();
+		assertThat(catalog).isNotNull();
+		assertThat(catalog.getServices()).hasSize(1);
+		assertThat(catalog.getServices().get(0).getId()).isEqualTo("service-one-id");
+		assertThat(catalog.getServices().get(0).getName()).isEqualTo("Service One");
+		assertThat(catalog.getServices().get(0).getDescription()).isEqualTo("Description for Service One");
+		assertThat(catalog.getServices().get(0).getPlans()).hasSize(1);
+		assertThat(catalog.getServices().get(0).getPlans().get(0).getId()).isEqualTo("plan-one-id");
+		assertThat(catalog.getServices().get(0).getPlans().get(0).getName()).isEqualTo("Plan One");
+		assertThat(catalog.getServices().get(0).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
+
+		//Mandatory fields should have a default set when unspecified in configuration
+		assertThat(catalog.getServices().get(0).isBindable()).isNotNull();
+		//Optional unspecified fields should not have a default set.
+		assertThat(catalog.getServices().get(0).getPlans().get(0).isBindable()).isNull();
+		assertThat(catalog.getServices().get(0).getPlans().get(0).isFree()).isNull();
+		assertThat(catalog.getServices().get(0).isInstancesRetrievable()).isNull();
+		assertThat(catalog.getServices().get(0).isBindingsRetrievable()).isNull();
+		assertThat(catalog.getServices().get(0).isPlanUpdateable()).isNull();
 	}
 
 	@Test
@@ -89,49 +99,66 @@ public class ServiceBrokerPropertiesValidationTest {
 	}
 
 	@Test
+	public void bindFullValidYaml() throws Exception {
+		this.context.register(ServiceBrokerPropertiesConfiguration.class);
+		Resource resource = context.getResource("classpath:catalog-full.yml");
+		YamlPropertySourceLoader sourceLoader = new YamlPropertySourceLoader();
+		List<PropertySource<?>> properties = sourceLoader.load("catalog", resource);
+		context.getEnvironment().getPropertySources().addFirst(properties.get(0));
+
+		validateFullCatalog();
+	}
+
+	@Test
 	public void bindFullValidProperties() {
 		this.context.register(ServiceBrokerPropertiesConfiguration.class);
 		TestPropertySourceUtils.addPropertiesFilesToEnvironment(this.context, "classpath:catalog-full.properties");
+		validateFullCatalog();
+	}
+
+	private void validateFullCatalog() {
 		this.context.refresh();
 		ServiceBrokerProperties properties = this.context.getBean(ServiceBrokerProperties.class);
-		assertThat(properties.getCatalog()).isNotNull();
-		assertThat(properties.getCatalog().getServices()).hasSize(2);
-		assertThat(properties.getCatalog().getServices().get(0).getId()).isEqualTo("service-one-id");
-		assertThat(properties.getCatalog().getServices().get(0).getName()).isEqualTo("Service One");
-		assertThat(properties.getCatalog().getServices().get(0).getDescription()).isEqualTo("Description for Service One");
-		assertThat(properties.getCatalog().getServices().get(0).isBindable()).isTrue();
-		assertThat(properties.getCatalog().getServices().get(0).isBindingsRetrievable()).isTrue();
-		assertThat(properties.getCatalog().getServices().get(0).isInstancesRetrievable()).isTrue();
-		assertThat(properties.getCatalog().getServices().get(0).isPlanUpdateable()).isTrue();
-		assertThat(properties.getCatalog().getServices().get(0).getMetadata()).containsOnly(entry("key1", "value1"), entry("key2", "value2"));
-		assertThat(properties.getCatalog().getServices().get(0).getRequires()).containsOnly("syslog_drain", "route_forwarding");
-		assertThat(properties.getCatalog().getServices().get(0).getTags()).containsOnly("tag1", "tag2");
-		assertThat(properties.getCatalog().getServices().get(0).getDashboardClient().getId()).isEqualTo("dashboard-id");
-		assertThat(properties.getCatalog().getServices().get(0).getDashboardClient().getSecret()).isEqualTo("dashboard-secret");
-		assertThat(properties.getCatalog().getServices().get(0).getDashboardClient().getRedirectUri()).isEqualTo("dashboard-redirect-uri");
-		assertThat(properties.getCatalog().getServices().get(0).getPlans()).hasSize(2);
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getId()).isEqualTo("plan-one-id");
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getName()).isEqualTo("Plan One");
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getId()).isEqualTo("plan-two-id");
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getName()).isEqualTo("Plan Two");
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getDescription()).isEqualTo("Description for Plan Two");
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata()).containsOnly(entry("key1", "value1"), entry("key2", "value2"));
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isBindable()).isTrue();
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isFree()).isTrue();
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate().getParameters())
+		Catalog catalog = properties.getCatalog();
+
+		assertThat(catalog).isNotNull();
+		assertThat(catalog.getServices()).hasSize(2);
+		assertThat(catalog.getServices().get(0).getId()).isEqualTo("service-one-id");
+		assertThat(catalog.getServices().get(0).getName()).isEqualTo("Service One");
+		assertThat(catalog.getServices().get(0).getDescription()).isEqualTo("Description for Service One");
+		assertThat(catalog.getServices().get(0).isBindable()).isTrue();
+		assertThat(catalog.getServices().get(0).isBindingsRetrievable()).isTrue();
+		assertThat(catalog.getServices().get(0).isInstancesRetrievable()).isTrue();
+		assertThat(catalog.getServices().get(0).isPlanUpdateable()).isTrue();
+		assertThat(catalog.getServices().get(0).getMetadata()).containsOnly(entry("key1", "value1"), entry("key2", "value2"));
+		assertThat(catalog.getServices().get(0).getRequires()).containsOnly("syslog_drain", "route_forwarding");
+		assertThat(catalog.getServices().get(0).getTags()).containsOnly("tag1", "tag2");
+		assertThat(catalog.getServices().get(0).getDashboardClient().getId()).isEqualTo("dashboard-id");
+		assertThat(catalog.getServices().get(0).getDashboardClient().getSecret()).isEqualTo("dashboard-secret");
+		assertThat(catalog.getServices().get(0).getDashboardClient().getRedirectUri()).isEqualTo("dashboard-redirect-uri");
+		assertThat(catalog.getServices().get(0).getPlans()).hasSize(2);
+		assertThat(catalog.getServices().get(0).getPlans().get(0).getId()).isEqualTo("plan-one-id");
+		assertThat(catalog.getServices().get(0).getPlans().get(0).getName()).isEqualTo("Plan One");
+		assertThat(catalog.getServices().get(0).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getId()).isEqualTo("plan-two-id");
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getName()).isEqualTo("Plan Two");
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getDescription()).isEqualTo("Description for Plan Two");
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata()).containsOnly(entry("key1", "value1"), entry("key2", "value2"));
+		assertThat(catalog.getServices().get(0).getPlans().get(1).isBindable()).isTrue();
+		assertThat(catalog.getServices().get(0).getPlans().get(1).isFree()).isTrue();
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate().getParameters())
 				.containsOnly(entry("$schema", "https://example.com/service/create/schema"), entry("type", "object"));
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getUpdate().getParameters())
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getUpdate().getParameters())
 				.containsOnly(entry("$schema", "https://example.com/service/update/schema"), entry("type", "object"));
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getSchemas().getServiceBinding().getCreate().getParameters())
-				.containsOnly(entry("$schema", "https://example.com/service/create/schema"), entry("type", "object"));
-		assertThat(properties.getCatalog().getServices().get(1).getId()).isEqualTo("service-two-id");
-		assertThat(properties.getCatalog().getServices().get(1).getName()).isEqualTo("Service Two");
-		assertThat(properties.getCatalog().getServices().get(1).getDescription()).isEqualTo("Description for Service Two");
-		assertThat(properties.getCatalog().getServices().get(1).getPlans()).hasSize(1);
-		assertThat(properties.getCatalog().getServices().get(1).getPlans().get(0).getId()).isEqualTo("plan-one-id");
-		assertThat(properties.getCatalog().getServices().get(1).getPlans().get(0).getName()).isEqualTo("Plan One");
-		assertThat(properties.getCatalog().getServices().get(1).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceBinding().getCreate().getParameters())
+				.containsOnly(entry("$schema", "https://example.com/service-binding/create/schema"), entry("type", "object"));
+		assertThat(catalog.getServices().get(1).getId()).isEqualTo("service-two-id");
+		assertThat(catalog.getServices().get(1).getName()).isEqualTo("Service Two");
+		assertThat(catalog.getServices().get(1).getDescription()).isEqualTo("Description for Service Two");
+		assertThat(catalog.getServices().get(1).getPlans()).hasSize(1);
+		assertThat(catalog.getServices().get(1).getPlans().get(0).getId()).isEqualTo("plan-one-id");
+		assertThat(catalog.getServices().get(1).getPlans().get(0).getName()).isEqualTo("Plan One");
+		assertThat(catalog.getServices().get(1).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
 	}
 
 	@Configuration
