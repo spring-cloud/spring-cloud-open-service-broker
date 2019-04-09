@@ -38,16 +38,16 @@ spring:
             schemas:
               serviceinstance:
                 create:
-                  parameters[$schema]: "https://example.com/service/create/schema"
+                  parameters[$schema]: "https://json-schema.org/draft-04/schema#"
                   parameters:
                     type: object
                 update:
-                  parameters[$schema]: "https://example.com/service/update/schema"
+                  parameters[$schema]: "https://json-schema.org/draft-04/schema#"
                   parameters:
                     type: object
               servicebinding:
                 create:
-                  parameters[$schema]: "https://example.com/service-binding/create/schema"
+                  parameters[$schema]: "https://json-schema.org/draft-04/schema#"
                   parameters:
                     type: object
 

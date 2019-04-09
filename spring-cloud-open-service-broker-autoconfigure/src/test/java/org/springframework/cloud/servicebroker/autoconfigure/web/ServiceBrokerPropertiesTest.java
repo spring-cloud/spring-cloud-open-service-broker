@@ -84,11 +84,11 @@ public class ServiceBrokerPropertiesTest {
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata[key2]", "value2");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].bindable", "true");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].free", "true");
-		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[$schema]", "https://example.com/service/create/schema");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[$schema]", "https://json-schema.org/draft-04/schema#");
  		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[type]", "object");
-		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.update.parameters[$schema]", "https://example.com/service/update/schema");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.update.parameters[$schema]", "https://json-schema.org/draft-04/schema#");
  		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.update.parameters[type]", "object");
-		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.servicebinding.create.parameters[$schema]", "https://example.com/service/create/schema");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.servicebinding.create.parameters[$schema]", "https://json-schema.org/draft-04/schema#");
  		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.servicebinding.create.parameters[type]", "object");
 		map.put("spring.cloud.openservicebroker.catalog.services[1].id", "service-two-id");
 		map.put("spring.cloud.openservicebroker.catalog.services[1].name", "Service Two");
@@ -125,11 +125,11 @@ public class ServiceBrokerPropertiesTest {
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isFree()).isTrue();
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate().getParameters())
-				.containsOnly(entry("$schema", "https://example.com/service/create/schema"), entry("type", "object"));
+				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getUpdate().getParameters())
-				.containsOnly(entry("$schema", "https://example.com/service/update/schema"), entry("type", "object"));
+				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getSchemas().getServiceBinding().getCreate().getParameters())
-				.containsOnly(entry("$schema", "https://example.com/service/create/schema"), entry("type", "object"));
+				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(properties.getCatalog().getServices().get(1).getId()).isEqualTo("service-two-id");
 		assertThat(properties.getCatalog().getServices().get(1).getName()).isEqualTo("Service Two");
 		assertThat(properties.getCatalog().getServices().get(1).getDescription()).isEqualTo("Description for Service Two");
@@ -162,11 +162,11 @@ public class ServiceBrokerPropertiesTest {
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).isFree()).isTrue();
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getSchemas().getServiceInstanceSchema().getCreateMethodSchema().getParameters())
-				.containsOnly(entry("$schema", "https://example.com/service/create/schema"), entry("type", "object"));
+				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getSchemas().getServiceInstanceSchema().getUpdateMethodSchema().getParameters())
-				.containsOnly(entry("$schema", "https://example.com/service/update/schema"), entry("type", "object"));
+				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getSchemas().getServiceBindingSchema().getCreateMethodSchema().getParameters())
-				.containsOnly(entry("$schema", "https://example.com/service/create/schema"), entry("type", "object"));
+				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(catalog.getServiceDefinitions().get(1).getId()).isEqualTo("service-two-id");
 		assertThat(catalog.getServiceDefinitions().get(1).getName()).isEqualTo("Service Two");
 		assertThat(catalog.getServiceDefinitions().get(1).getDescription()).isEqualTo("Description for Service Two");
