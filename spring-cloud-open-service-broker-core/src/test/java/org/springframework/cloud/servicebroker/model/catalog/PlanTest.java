@@ -55,6 +55,16 @@ public class PlanTest {
 		assertThat(json).hasNoPath("$.bindable");
 		assertThat(json).hasNoPath("$.metadata");
 		assertThat(json).hasNoPath("$.schemas");
+
+
+		Plan deserialized = JsonUtils.fromJson(JsonUtils.toJson(plan), Plan.class);
+		assertThat(deserialized.getId()).isEqualTo("plan-id-one");
+		assertThat(deserialized.getName()).isEqualTo("plan-one");
+		assertThat(deserialized.getDescription()).isEqualTo("Plan One");
+		assertThat(deserialized.isFree()).isEqualTo(true);
+		assertThat(deserialized.isBindable()).isNull();
+		assertThat(deserialized.getMetadata()).isEmpty(); //it's ok to not return null
+		assertThat(deserialized.getSchemas()).isNull();
 	}
 
 	@Test

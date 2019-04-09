@@ -18,10 +18,14 @@ package org.springframework.cloud.servicebroker.model.binding;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
+
+import javax.validation.constraints.NotEmpty;
 
 /**
  *  Details of a request to delete a service instance binding.
@@ -38,16 +42,22 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
  */
 public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerRequest {
 
+	@JsonIgnore // mapped as path param
 	private transient String serviceInstanceId;
 
+	@JsonIgnore // mapped as path param
 	private transient String bindingId;
 
+	@JsonProperty("service_id")
 	private transient String serviceDefinitionId;
 
+	@JsonProperty("plan_id")
 	private transient String planId;
 
+	@JsonIgnore /*internal field*/
 	private transient ServiceDefinition serviceDefinition;
 
+	@JsonIgnore /*internal field*/
 	private transient Plan plan;
 
 	DeleteServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
@@ -61,6 +71,12 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		this.bindingId = bindingId;
 		this.serviceDefinition = serviceDefinition;
 		this.plan = plan;
+	}
+
+	@JsonProperty(ASYNC_REQUEST_PARAMETER) //in base class field is excluded, as other requests are passing this as query params
+	@Override
+	public boolean isAsyncAccepted() {
+		return super.isAsyncAccepted();
 	}
 
 	/**

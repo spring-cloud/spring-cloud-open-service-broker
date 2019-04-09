@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AsyncServiceBrokerResponse {
-	@JsonIgnore
+	@JsonIgnore //not sent on the wire as json payload, but as http status instead
 	protected final boolean async;
 
 	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)

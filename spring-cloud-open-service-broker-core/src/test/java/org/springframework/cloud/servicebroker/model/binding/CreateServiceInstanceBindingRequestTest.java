@@ -19,13 +19,17 @@ package org.springframework.cloud.servicebroker.model.binding;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
+import org.springframework.cloud.servicebroker.JsonPathAssert;
 import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
+import org.springframework.cloud.servicebroker.model.catalog.Plan;
+import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.JsonUtils.fromJson;
@@ -130,6 +134,27 @@ public class CreateServiceInstanceBindingRequestTest {
 	}
 
 	@Test
+	public void minimalRequiredRequestIsDeserializedFromJson() {
+		CreateServiceInstanceBindingRequest request =
+				JsonUtils.readTestDataFile("bindRequestWithOnlyRequiredFields.json", CreateServiceInstanceBindingRequest.class);
+
+		//ensure required fields are present
+		assertThat(request.getServiceDefinitionId()).isEqualTo("test-service-id");
+		assertThat(request.getPlanId()).isEqualTo("test-plan-id");
+
+		//ensure default value for missing non required fields is consistent with default value provided by the builder
+		CreateServiceInstanceBindingRequest builderDefault = CreateServiceInstanceBindingRequest.builder().
+				serviceDefinitionId("test-service-id")
+				.planId("test-plan-id")
+				.build();
+
+		assertThat(request.getParameters()).isEqualTo(builderDefault.getParameters());
+		assertThat(request.getContext()).isEqualTo(builderDefault.getContext());
+		assertThat(request.getAppGuid()).isEqualTo(builderDefault.getAppGuid());
+		assertThat(request.getBindResource()).isEqualTo(builderDefault.getBindResource());
+	}
+
+	@Test
 	public void requestMatchesWithJsonRoundTrip() {
 		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId("definition-id")
@@ -151,8 +176,65 @@ public class CreateServiceInstanceBindingRequestTest {
 
 		CreateServiceInstanceBindingRequest fromJson =
 				fromJson(toJson(request), CreateServiceInstanceBindingRequest.class);
-		
+
 		assertThat(fromJson).isEqualTo(request);
+	}
+
+	@Test
+	public void minimalRequestMatchesWithJsonRoundTrip() {
+		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder()
+				.serviceDefinitionId("definition-id")
+				.planId("plan-id")
+				.build();
+
+		String json = toJson(request);
+		CreateServiceInstanceBindingRequest fromJson =
+				fromJson(json, CreateServiceInstanceBindingRequest.class);
+
+		assertThat(fromJson).isEqualTo(request);
+	}
+
+	@Test
+	public void requestSerializesToJsonExcludingTransients() {
+		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder()
+				.platformInstanceId("platform-instance-id")
+				.apiInfoLocation("api-info-location")
+				.originatingIdentity(PlatformContext.builder()
+						.platform("sample-platform").build())
+				.asyncAccepted(true)
+				.serviceDefinitionId("definition-id")
+				.serviceDefinition(ServiceDefinition.builder().build())
+				.plan(Plan.builder().build())
+				.build();
+
+		DocumentContext json = JsonUtils.toJsonPath(request);
+
+		// Fields present in OSB Json body should be present, but no unspecified optional ones.
+		JsonPathAssert.assertThat(json).hasPath("$.service_id").isEqualTo("definition-id");
+
+		// other fields mapped outside of json body (typically http headers or request paths)
+		// should be excluded
+		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(1);
+	}
+
+	@Test
+	public void minimalRequestSerializesToJsonWithoutMissingExcludingTransients() {
+		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest
+				.builder().platformInstanceId("platform-instance-id")
+				.apiInfoLocation("api-info-location")
+				.originatingIdentity(PlatformContext.builder()
+						.platform("sample-platform").build())
+				.asyncAccepted(true)
+				.serviceDefinitionId("definition-id").build();
+
+		DocumentContext json = JsonUtils.toJsonPath(request);
+
+		// Fields present in OSB Json body should be present
+		JsonPathAssert.assertThat(json).hasPath("$.service_id").isEqualTo("definition-id");
+
+		// other fields mapped outside of json body (typically http headers or request paths)
+		// should be excluded
+		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(1);
 	}
 
 	@Test

@@ -20,10 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 
 /**
  * Platform specific contextual information under which the service instance is to be provisioned or updated. Fields
@@ -33,12 +30,13 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * @author Scott Frederick
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY,
-		property = "platform", visible = true, defaultImpl = PlatformContext.class)
+		property = Context.PLATFORM_KEY, visible = true, defaultImpl = PlatformContext.class)
 @JsonSubTypes({
 		@JsonSubTypes.Type(value = CloudFoundryContext.class, name = CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM),
 		@JsonSubTypes.Type(value = KubernetesContext.class, name = KubernetesContext.KUBERNETES_PLATFORM),
 })
 public class Context {
+	public static final String PLATFORM_KEY = "platform";
 	protected final String platform;
 
 	@JsonAnySetter
@@ -69,7 +67,7 @@ public class Context {
 	 *
 	 * @return the collection of properties
 	 */
-	@JsonAnyGetter
+	@JsonIgnore
 	public Map<String, Object> getProperties() {
 		return this.properties;
 	}

@@ -42,7 +42,6 @@ import org.springframework.cloud.servicebroker.model.instance.OperationState;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetLastServiceBindingOperationResponse {
 
-	@JsonSerialize(using = ToStringSerializer.class)
 	private final OperationState state;
 
 	private final String description;

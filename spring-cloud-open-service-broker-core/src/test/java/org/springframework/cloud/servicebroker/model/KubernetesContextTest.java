@@ -16,9 +16,13 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import com.jayway.jsonpath.DocumentContext;
 import org.junit.Test;
+import org.springframework.cloud.servicebroker.JsonPathAssert;
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 import static org.springframework.cloud.servicebroker.model.KubernetesContext.KUBERNETES_PLATFORM;
 import static org.springframework.cloud.servicebroker.model.KubernetesContext.NAMESPACE_KEY;
 
@@ -50,5 +54,31 @@ public class KubernetesContextTest {
 
 		assertThat(context.getProperty("key1")).isEqualTo("value1");
 		assertThat(context.getProperty("key2")).isEqualTo("value2");
+
+        //ensure we don't break super class contract
+        assertThat(context.getProperties()).containsOnly(
+                entry("key1", "value1"),
+                entry("key2", "value2"),
+                entry("namespace", "namespace"));
+    }
+
+	@Test
+	public void contextIsSerialized() {
+		KubernetesContext context = KubernetesContext.builder()
+				.property("key1", "value1")
+				.namespace("namespace")
+				.property("key2", "value2")
+				.build();
+
+		DocumentContext json = JsonUtils.toJsonPath(context);
+
+		JsonPathAssert.assertThat(json).hasPath("$.platform").isEqualTo("kubernetes");
+		JsonPathAssert.assertThat(json).hasPath("$.namespace").isEqualTo("namespace");
+		JsonPathAssert.assertThat(json).hasPath("$.key1").isEqualTo("value1");
+		JsonPathAssert.assertThat(json).hasPath("$.key2").isEqualTo("value2");
+		// detect any double serialization due to inheritance and naming mismatch
+		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(4);
+		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 4+1);//still have duplicated platform property
 	}
+
 }

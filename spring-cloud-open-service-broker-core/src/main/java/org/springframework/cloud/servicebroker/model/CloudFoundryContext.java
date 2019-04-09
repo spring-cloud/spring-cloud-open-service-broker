@@ -16,9 +16,11 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import java.util.HashMap;
 import java.util.Map;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -50,6 +52,18 @@ public final class CloudFoundryContext extends Context {
 
 	public String getOrganizationGuid() {
 		return getStringProperty(ORGANIZATION_GUID_KEY);
+	}
+
+    /**
+     * Avoid polluting the serialized context with duplicated keys
+     */
+	@JsonAnyGetter
+    Map<String, Object> getSerializableProperties() {
+		HashMap<String, Object> properties = new HashMap<>(super.getProperties());
+		properties.remove(ORGANIZATION_GUID_KEY);
+		properties.remove(SPACE_GUID_KEY);
+		properties.remove(Context.PLATFORM_KEY);
+		return properties;
 	}
 
 	@JsonProperty

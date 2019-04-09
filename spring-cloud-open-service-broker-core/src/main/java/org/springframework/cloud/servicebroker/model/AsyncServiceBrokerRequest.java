@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Objects;
 
 /**
@@ -27,6 +29,7 @@ import java.util.Objects;
 public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
 	public final static String ASYNC_REQUEST_PARAMETER = "accepts_incomplete";
 
+	@JsonIgnore //accepts_incomplete Osb field passed as query param in most subclasses
 	protected transient boolean asyncAccepted;
 
 	protected AsyncServiceBrokerRequest() {
