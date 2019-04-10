@@ -40,7 +40,11 @@ spring:
                 create:
                   parameters[$schema]: "https://json-schema.org/draft-04/schema#"
                   parameters:
-                    type: object
+                    type: string
+                    enum:
+                      - one
+                      - two
+                      - three
                 update:
                   parameters[$schema]: "https://json-schema.org/draft-04/schema#"
                   parameters:

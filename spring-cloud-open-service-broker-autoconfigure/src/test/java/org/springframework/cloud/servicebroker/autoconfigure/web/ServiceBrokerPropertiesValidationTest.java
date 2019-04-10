@@ -17,6 +17,7 @@
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Rule;
@@ -147,7 +148,12 @@ public class ServiceBrokerPropertiesValidationTest {
 		assertThat(catalog.getServices().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(catalog.getServices().get(0).getPlans().get(1).isFree()).isTrue();
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate().getParameters())
-				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
+				.contains(entry("$schema", "https://json-schema.org/draft-04/schema#"),
+						entry("type", "string"));
+		Object enumMap = catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate().getParameters().get("enum");
+		assertThat(enumMap).isInstanceOf(Map.class);
+		@SuppressWarnings("unchecked") Map<String, Object>  castedMap = (Map<String, Object> ) enumMap;
+		assertThat(castedMap).containsOnly(entry("0","one"),entry("1", "two"), entry("2", "three"));
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getUpdate().getParameters())
 				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceBinding().getCreate().getParameters())
