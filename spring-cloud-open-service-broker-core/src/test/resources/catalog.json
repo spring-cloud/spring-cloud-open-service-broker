@@ -25,6 +25,20 @@
           "name": "Plan Two",
           "description": "Description for Plan Two",
           "metadata": {
+            "displayName": "sample display name",
+            "bullets": [
+              "bullet1",
+              "bullet2"
+            ],
+            "costs": [
+              {
+                "amount":
+                  {
+                    "usd": 649.0
+                  },
+                "unit": "MONTHLY"
+              }
+            ],
             "key1": "value1",
             "key2": "value2"
           },

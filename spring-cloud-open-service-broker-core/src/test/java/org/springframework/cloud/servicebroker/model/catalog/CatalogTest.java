@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,12 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -26,6 +30,7 @@ import org.junit.Test;
 import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class CatalogTest {
@@ -87,6 +92,22 @@ public class CatalogTest {
 		Catalog catalog = JsonUtils.readTestDataFile("catalog.json", Catalog.class);
 
 		assertThat(catalog.getServiceDefinitions().get(0).getId()).isEqualTo("service-one-id");
+		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getMetadata())
+				.contains(
+						entry("displayName", "sample display name"),
+						entry("bullets", Arrays.asList("bullet1", "bullet2")),
+						entry("key1", "value1"),
+						entry("key2", "value2"));
+
+		@SuppressWarnings("unchecked")
+		Map<String, Object> cost =
+				((List<Map<String, Object>>) catalog.getServiceDefinitions().get(0).getPlans().get(1).getMetadata().get(
+		 		"costs")).get(0);
+		assertThat(cost.get("unit")).isEqualTo("MONTHLY");
+
+		@SuppressWarnings("unchecked")
+		Map<String, Object> amount = (Map<String, Object>)cost.get("amount");
+		assertThat(amount).containsOnly(entry("usd", 649.0));
 	}
 
 	@Test

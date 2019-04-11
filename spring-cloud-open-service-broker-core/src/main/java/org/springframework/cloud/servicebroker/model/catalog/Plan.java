@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@ import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import org.springframework.util.CollectionUtils;
+
 /**
  * A service plan available for a ServiceDefinition
  *
@@ -34,6 +36,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 @JsonInclude(Include.NON_NULL)
 public class Plan {
@@ -241,6 +244,9 @@ public class Plan {
 		 * metadata conventions</a>
 		 */
 		public PlanBuilder metadata(Map<String, Object> metadata) {
+			if (CollectionUtils.isEmpty(metadata)) {
+				return this;
+			}
 			if (this.metadata == null) {
 				this.metadata = new HashMap<>();
 			}
@@ -259,6 +265,9 @@ public class Plan {
 		 * metadata conventions</a>
 		 */
 		public PlanBuilder metadata(String key, Object value) {
+			if (key == null || value == null) {
+				return this;
+			}
 			if (this.metadata == null) {
 				this.metadata = new HashMap<>();
 			}

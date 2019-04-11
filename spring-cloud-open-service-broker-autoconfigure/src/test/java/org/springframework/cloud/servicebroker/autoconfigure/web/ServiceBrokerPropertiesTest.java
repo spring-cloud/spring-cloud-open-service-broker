@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,19 +82,24 @@ public class ServiceBrokerPropertiesTest {
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].id", "plan-two-id");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].name", "Plan Two");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].description", "Description for Plan Two");
-		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata[key1]", "value1");
-		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata[key2]", "value2");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata.properties[key1]", "value1");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata.properties[key2]", "value2");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata.displayName", "sample display name");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata.bullets[0]", "bullet1");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata.bullets[1]", "bullet2");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata.costs[0].amount[usd]", "649.0");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata.costs[0].unit", "MONTHLY");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].bindable", "true");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].free", "true");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[$schema]", "https://json-schema.org/draft-04/schema#");
- 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[type]", "string");
- 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[enum].0", "one");
- 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[enum].1", "two");
- 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[enum].2", "three");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[type]", "string");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[enum].0", "one");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[enum].1", "two");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[enum].2", "three");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.update.parameters[$schema]", "https://json-schema.org/draft-04/schema#");
- 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.update.parameters[type]", "object");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.update.parameters[type]", "object");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.servicebinding.create.parameters[$schema]", "https://json-schema.org/draft-04/schema#");
- 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.servicebinding.create.parameters[type]", "object");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.servicebinding.create.parameters[type]", "object");
 		map.put("spring.cloud.openservicebroker.catalog.services[1].id", "service-two-id");
 		map.put("spring.cloud.openservicebroker.catalog.services[1].name", "Service Two");
 		map.put("spring.cloud.openservicebroker.catalog.services[1].description", "Description for Service Two");
@@ -125,7 +131,12 @@ public class ServiceBrokerPropertiesTest {
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getId()).isEqualTo("plan-two-id");
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getName()).isEqualTo("Plan Two");
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getDescription()).isEqualTo("Description for Plan Two");
-		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata()).containsOnly(entry("key1", "value1"), entry("key2", "value2"));
+		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata().getProperties()).containsOnly(entry("key1", "value1"), entry("key2", "value2"));
+		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata().getBullets()).contains("bullet1", "bullet2");
+		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata().getCosts()).hasSize(1);
+		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata().getCosts().get(0).getAmount().get("usd")).isEqualTo(649.0d);
+		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata().getCosts().get(0).getUnit()).isEqualTo("MONTHLY");
+
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isFree()).isTrue();
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate().getParameters())
@@ -165,13 +176,28 @@ public class ServiceBrokerPropertiesTest {
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getId()).isEqualTo("plan-two-id");
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getName()).isEqualTo("Plan Two");
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getDescription()).isEqualTo("Description for Plan Two");
-		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getMetadata()).containsOnly(entry("key1", "value1"), entry("key2", "value2"));
+		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getMetadata()).contains(entry("key1", "value1"), entry("key2", "value2"), entry("displayName", "sample display name"));
+		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getMetadata().get("costs")).isNotNull();
+		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getMetadata().get("bullets")).isNotNull();
+		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getMetadata())
+				.contains(entry("displayName", "sample display name"),
+						entry("bullets", Arrays.asList("bullet1", "bullet2")), entry("key1", "value1"),
+						entry("key2", "value2"));
+		@SuppressWarnings("unchecked")
+		Map<String, Object> cost =
+				((List<Map<String, Object>>) catalog.getServiceDefinitions().get(0).getPlans().get(1).getMetadata()
+						.get("costs")).get(0);
+		assertThat(cost.get("unit")).isEqualTo("MONTHLY");
+		@SuppressWarnings("unchecked")
+		Map<String, Object> amount = ((Map<String, Object>) cost.get("amount"));
+		assertThat(amount).containsOnly(entry("usd", 649.0));
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).isFree()).isTrue();
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getSchemas().getServiceInstanceSchema().getCreateMethodSchema().getParameters())
 				.contains(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "string"));
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getSchemas().getServiceInstanceSchema().getCreateMethodSchema().getParameters().get("enum")).isInstanceOf(List.class);
-		@SuppressWarnings("unchecked") List<String> enumList = (List<String>) catalog.getServiceDefinitions().get(0).getPlans().get(1).getSchemas().getServiceInstanceSchema().getCreateMethodSchema().getParameters().get("enum");
+		@SuppressWarnings("unchecked")
+		List<String> enumList = (List<String>) catalog.getServiceDefinitions().get(0).getPlans().get(1).getSchemas().getServiceInstanceSchema().getCreateMethodSchema().getParameters().get("enum");
 		assertThat(enumList).containsOnly("one", "two", "three");
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getSchemas().getServiceInstanceSchema().getUpdateMethodSchema().getParameters())
 				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));

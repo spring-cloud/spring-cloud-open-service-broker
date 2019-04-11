@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -144,7 +144,12 @@ public class ServiceBrokerPropertiesValidationTest {
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getId()).isEqualTo("plan-two-id");
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getName()).isEqualTo("Plan Two");
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getDescription()).isEqualTo("Description for Plan Two");
-		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata()).containsOnly(entry("key1", "value1"), entry("key2", "value2"));
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getProperties()).containsOnly(entry("key1", "value1"), entry("key2", "value2"));
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getCosts()).hasSize(1);
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getCosts().get(0).getUnit()).isEqualTo("MONTHLY");
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getCosts().get(0).getAmount()).contains(entry("usd", 649.0));
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getDisplayName()).isEqualTo("sample display name");
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getBullets()).containsExactlyInAnyOrder("bullet1", "bullet2");
 		assertThat(catalog.getServices().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(catalog.getServices().get(0).getPlans().get(1).isFree()).isTrue();
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate().getParameters())
