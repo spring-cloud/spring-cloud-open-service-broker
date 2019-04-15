@@ -24,7 +24,7 @@ buildscript {
 		classpath("io.spring.gradle:propdeps-plugin:0.0.10.RELEASE")
 		classpath("io.spring.gradle:dependency-management-plugin:1.0.5.RELEASE")
 		classpath("io.spring.gradle:spring-io-plugin:0.0.8.RELEASE")
-		classpath("org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.0.2.RELEASE")
+		classpath("org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.0.3.RELEASE")
 		classpath("org.asciidoctor:asciidoctor-gradle-plugin:1.5.3")
 	}
 }
@@ -36,7 +36,7 @@ ext {
 	if (!project.hasProperty("springBootVersion")) {
 		springBootVersion = "2.0.9.RELEASE"
 	}
-	springCloudContractVersion = "2.0.2.RELEASE"
+	springCloudContractVersion = "2.0.3.RELEASE"
 
 	javadocLinks = [
 			"https://docs.oracle.com/javase/8/docs/api/",
