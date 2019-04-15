@@ -30,21 +30,23 @@ buildscript {
 }
 
 ext {
-	if (!project.hasProperty("springVersion")) {
-		springVersion = "5.1.6.RELEASE"
-	}
-	if (!project.hasProperty("springBootVersion")) {
-		springBootVersion = "2.1.4.RELEASE"
-	}
-	if (!project.hasProperty("reactorVersion")) {
-		reactorVersion = "Californium-SR6"
-	}
+	springBootVersion = project.findProperty("springBootVersion") ?: "2.1.4.RELEASE"
+	springVersion = project.findProperty("springVersion") ?: "5.1.6.RELEASE"
+	reactorVersion = project.findProperty("reactorVersion") ?: "Californium-SR6"
 	springCloudContractVersion = "2.1.0.RELEASE"
 
 	javadocLinks = [
 			"https://docs.oracle.com/javase/8/docs/api/",
 			"https://docs.spring.io/spring/docs/${springVersion}/javadoc-api/",
 	] as String[]
+}
+
+//override managed Spring Boot versions
+if (project.hasProperty("springVersion")) {
+	ext['spring-framework.version'] = ext.springVersion
+}
+if (project.hasProperty("reactorVersion")) {
+	ext['reactor-bom.version'] = ext.reactorVersion
 }
 
 description = "Spring Cloud Service Broker"
