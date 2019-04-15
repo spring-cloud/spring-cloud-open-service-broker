@@ -31,7 +31,7 @@ import javax.validation.constraints.NotEmpty;
  * @author Roy Clarkson
  * @see org.springframework.cloud.servicebroker.model.catalog.Catalog
  */
-class Catalog {
+public class Catalog {
 
 	/**
 	 * A list of service offerings provided by the service broker.

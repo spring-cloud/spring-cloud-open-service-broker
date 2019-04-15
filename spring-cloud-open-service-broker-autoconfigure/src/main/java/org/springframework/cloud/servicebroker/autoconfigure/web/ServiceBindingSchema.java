@@ -27,7 +27,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  * @author Roy Clarkson
  * @see org.springframework.cloud.servicebroker.model.catalog.ServiceBindingSchema
  */
-class ServiceBindingSchema {
+public class ServiceBindingSchema {
 
 	/**
 	 * The JSON schema for configuration parameters when creating a service binding.

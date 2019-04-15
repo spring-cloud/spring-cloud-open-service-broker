@@ -23,7 +23,7 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
  * @author Roy Clarkson
  * @see org.springframework.cloud.servicebroker.model.catalog.DashboardClient
  */
-class DashboardClient {
+public class DashboardClient {
 
 	/**
 	 * The client ID of the dashboard OAuth2 client that the service intends to use. The

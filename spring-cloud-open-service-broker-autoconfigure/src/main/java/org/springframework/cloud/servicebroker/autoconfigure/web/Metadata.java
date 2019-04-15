@@ -32,7 +32,7 @@ import org.springframework.util.CollectionUtils;
  * @author Roy Clarkson
  * @see org.springframework.cloud.servicebroker.model.catalog.Plan
  */
-class Metadata {
+public class Metadata {
 
 	private static final String COSTS_KEY = "costs";
 

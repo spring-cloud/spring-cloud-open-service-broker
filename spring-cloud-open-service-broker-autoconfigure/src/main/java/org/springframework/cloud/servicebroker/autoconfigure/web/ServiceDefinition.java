@@ -36,7 +36,7 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRe
  * @author Roy Clarkson
  * @see org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition
  */
-class ServiceDefinition {
+public class ServiceDefinition {
 
 	/**
 	 * An identifier used to correlate this service in future requests to the catalog. This must be unique within
