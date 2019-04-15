@@ -155,8 +155,8 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.build());
 
 		// force a condition where the platformInstanceId segment is present but empty
-		// e.g. http://test.example.com//v2/service_instances/[guid]
-		String url = "http://test.example.com/" + buildCreateUpdateUrl();
+		// e.g. https://test.example.com//v2/service_instances/[guid]
+		String url = "https://test.example.com/" + buildCreateUpdateUrl();
 		MvcResult mvcResult = mockMvc.perform(put(url)
 				.content(createRequestBody)
 				.contentType(MediaType.APPLICATION_JSON)
