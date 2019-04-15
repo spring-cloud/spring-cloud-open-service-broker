@@ -29,7 +29,7 @@ import java.util.Map;
  * @author Roy Clarkson
  * @see org.springframework.cloud.servicebroker.model.catalog.MethodSchema
  */
-class MethodSchema {
+public class MethodSchema {
 
 	/**
 	 * A map of JSON schema for configuration parameters.

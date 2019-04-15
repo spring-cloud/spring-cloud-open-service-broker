@@ -27,7 +27,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  * @author Roy Clarkson
  * @see org.springframework.cloud.servicebroker.model.catalog.Schemas
  */
-class Schemas {
+public class Schemas {
 
 	/**
 	 * The schemas available on a service instance.

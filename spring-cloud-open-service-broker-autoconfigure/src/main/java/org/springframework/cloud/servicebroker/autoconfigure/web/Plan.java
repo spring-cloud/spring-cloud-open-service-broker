@@ -32,7 +32,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  * @author Roy Clarkson
  * @see org.springframework.cloud.servicebroker.model.catalog.Plan
  */
-class Plan {
+public class Plan {
 
 	/**
 	 * An identifier used to correlate this plan in future requests to the catalog. This
