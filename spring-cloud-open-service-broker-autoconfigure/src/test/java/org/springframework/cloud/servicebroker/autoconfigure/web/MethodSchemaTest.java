@@ -16,7 +16,7 @@ public class MethodSchemaTest {
     public void convertsParametersNumberedMapToArray() {
         //given the properties converted from yml, with array converted to numbered map
 
-        // Simplified example adapted from http://json-schema.org/understanding-json-schema/UnderstandingJSONSchema.pdf
+        // Simplified example adapted from https://json-schema.org/understanding-json-schema/UnderstandingJSONSchema.pdf
         // section 4.6 "array"
         /*
             {
@@ -67,7 +67,7 @@ public class MethodSchemaTest {
     public void convertsNestedParametersNumberedMapToArray() {
         //given the properties converted from yml, with array converted to numbered map
 
-        // Simplified example adapted from http://json-schema.org/understanding-json-schema/UnderstandingJSONSchema.pdf
+        // Simplified example adapted from https://json-schema.org/understanding-json-schema/UnderstandingJSONSchema.pdf
         /*
             {
               "type": "array",

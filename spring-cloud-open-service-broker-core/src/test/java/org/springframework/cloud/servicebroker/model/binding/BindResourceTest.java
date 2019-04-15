@@ -66,7 +66,7 @@ public class BindResourceTest {
 		BindResource bindResource = JsonUtils.readTestDataFile("bindResource.json", BindResource.class);
 
 		assertThat(bindResource.getAppGuid()).isEqualTo("test-app-guid");
-		assertThat(bindResource.getRoute()).isEqualTo("http://test.example.com");
+		assertThat(bindResource.getRoute()).isEqualTo("https://test.example.com");
 		assertThat(bindResource.getProperties()).hasSize(3);
 		assertThat(bindResource.getProperty("property1")).isEqualTo(1);
 		assertThat(bindResource.getProperty("property2")).isEqualTo("value2");
