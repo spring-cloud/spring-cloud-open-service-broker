@@ -8,13 +8,13 @@ image:https://codecov.io/gh/spring-cloud/spring-cloud-open-service-broker/branch
 Spring Cloud Open Service Broker is a framework for building https://projects.spring.io/spring-boot/[Spring Boot] applications that implement the https://www.openservicebrokerapi.org/[Open Service Broker API].
 
 [NOTE]
-This project was formerly named Spring Cloud - Cloud Foundry Service Broker. View the https://github.com/spring-cloud/spring-cloud-open-service-broker/tree/1.0.x[1.0.x] branch of this repository for information on using the released versions of the project with artifacts using that name. The `master` branch of the repository is currently in active development and has been released as version `2.0.0.RELEASE`. 
+This project was formerly named *Spring Cloud - Cloud Foundry Service Broker*. View the https://github.com/spring-cloud/spring-cloud-open-service-broker/tree/1.0.x[1.0.x] branch of this repository for information on using the released versions of the project with artifacts using that name. The `master` branch of is currently in active development and has been released as version `3.0.0.RELEASE`.
 
 == Compatibility
 
-* https://projects.spring.io/spring-framework/[Spring Framework] 5.x
-* https://projects.spring.io/spring-boot/[Spring Boot] 2.x
-* https://github.com/openservicebrokerapi/servicebroker/[Open Service Broker API] 2.13
+* https://projects.spring.io/spring-framework/[Spring Framework] 5.1.x
+* https://projects.spring.io/spring-boot/[Spring Boot] 2.1.x
+* https://github.com/openservicebrokerapi/servicebroker/[Open Service Broker API] 2.14
 
 == Getting Started
 
@@ -87,6 +87,6 @@ added after the original pull request but before a merge.
 * If no-one else is using your branch, please rebase it against the current master (or
   other target branch in the main project).
 * When writing a commit message please follow https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html[these conventions],
-  if you are fixing an existing issue please add `Fixes gh-XXXX` at the end of the commit
-  message (where XXXX is the issue number).
+  if you are fixing an existing issue please add `Fixes #XXXX` at the end of the commit
+  message (where XXXX is the GitHub issue number).
 
