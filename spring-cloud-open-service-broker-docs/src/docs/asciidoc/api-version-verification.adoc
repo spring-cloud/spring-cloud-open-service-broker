@@ -21,3 +21,10 @@ include::{examples-dir}/ExampleApiVersionConfiguration.java[]
 In the case of both a Spring Bean and a property being configured, then the Spring Bean will take precedence over the property.
 
 If an API version is specified and the platform provides a different version in the `X-Broker-API-Version` header, the framework will return a `412 Precondition Failed` error to the platform.
+
+As mentioned earlier, the default version verification is configured to allow any API version. However, to disable version verification entirely, set the `api-version-check-endabled` property to `false`.
+
+[source,bash,%autofit]
+----
+spring.cloud.openservicebroker.api-version-check-enabled = false
+----
