@@ -16,12 +16,14 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerAutoConfiguration;
+import org.springframework.cloud.servicebroker.autoconfigure.web.exception.ServiceInstanceServiceBeanDoesNotExistException;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
 import org.springframework.cloud.servicebroker.controller.ServiceBrokerExceptionHandler;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
@@ -54,9 +56,12 @@ public class ServiceBrokerWebFluxAutoConfiguration {
 	private final ServiceInstanceBindingEventService serviceInstanceBindingEventService;
 
 	protected ServiceBrokerWebFluxAutoConfiguration(CatalogService catalogService,
-			ServiceInstanceService serviceInstanceService,
+			@Autowired(required = false) ServiceInstanceService serviceInstanceService,
 			ServiceInstanceBindingService serviceInstanceBindingService,
 			EventFlowRegistries eventFlowRegistries) {
+		if (serviceInstanceService == null) {
+			throw new ServiceInstanceServiceBeanDoesNotExistException();
+		}
 		this.catalogService = catalogService;
 		this.serviceInstanceEventService = new ServiceInstanceEventService(
 				serviceInstanceService, eventFlowRegistries);

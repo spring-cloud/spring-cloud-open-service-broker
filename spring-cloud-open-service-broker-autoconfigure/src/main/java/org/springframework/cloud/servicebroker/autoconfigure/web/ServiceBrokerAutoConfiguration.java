@@ -16,10 +16,12 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.servicebroker.autoconfigure.web.exception.CatalogDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.BeanCatalogService;
 import org.springframework.cloud.servicebroker.service.CatalogService;
@@ -48,7 +50,7 @@ import org.springframework.context.annotation.Configuration;
 public class ServiceBrokerAutoConfiguration {
 
 	@Configuration
-	@ConditionalOnMissingBean({ Catalog.class, CatalogService.class })
+	@ConditionalOnMissingBean({Catalog.class, CatalogService.class})
 	@EnableConfigurationProperties(ServiceBrokerProperties.class)
 	@ConditionalOnProperty(prefix = "spring.cloud.openservicebroker.catalog.services[0]", name = "id")
 	protected static class CatalogPropertiesMinimalConfiguration {
@@ -67,7 +69,10 @@ public class ServiceBrokerAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean(CatalogService.class)
-	public CatalogService beanCatalogService(Catalog catalog) {
+	public CatalogService beanCatalogService(@Autowired(required = false) Catalog catalog) {
+		if (catalog == null) {
+			throw new CatalogDefinitionDoesNotExistException();
+		}
 		return new BeanCatalogService(catalog);
 	}
 

@@ -18,90 +18,53 @@ package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
 import org.junit.Test;
 
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
-import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.boot.diagnostics.FailureAnalysis;
+import org.springframework.boot.diagnostics.FailureAnalyzer;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
-import org.springframework.cloud.servicebroker.autoconfigure.web.TestCatalogService;
-import org.springframework.cloud.servicebroker.autoconfigure.web.TestServiceInstanceBindingService;
-import org.springframework.cloud.servicebroker.autoconfigure.web.TestServiceInstanceService;
-import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.ServiceBrokerWebMvcAutoConfiguration;
+import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractServiceBrokerWebAutoConfigurationTest;
+import org.springframework.cloud.servicebroker.autoconfigure.web.RequiredServiceInstanceServiceBeanFailureAnalyzer;
+import org.springframework.cloud.servicebroker.autoconfigure.web.exception.ServiceInstanceServiceBeanDoesNotExistException;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceController;
-import org.springframework.cloud.servicebroker.service.CatalogService;
-import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
-import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
-import org.springframework.context.annotation.Bean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ServiceBrokerWebFluxAutoConfigurationTest {
-
-	@Test
-	public void controllersAreNotCreatedWithNonWebConfiguration() {
-		nonWebApplicationContextRunner()
-				.withUserConfiguration(FullServicesConfiguration.class)
-				.run((context) -> {
-					assertThat(context).doesNotHaveBean(CatalogController.class);
-					assertThat(context).doesNotHaveBean(ServiceInstanceController.class);
-					assertThat(context).doesNotHaveBean(ServiceInstanceBindingController.class);
-				});
-	}
+public class ServiceBrokerWebFluxAutoConfigurationTest extends AbstractServiceBrokerWebAutoConfigurationTest {
 
 	@Test
 	public void controllersAreNotCreatedWithoutRequiredServices() {
 		webApplicationContextRunner()
 				.run(context -> assertThat(context.getStartupFailure())
-							.isExactlyInstanceOf(UnsatisfiedDependencyException.class));
+						.isExactlyInstanceOf(UnsatisfiedDependencyException.class));
 	}
 
 	@Test
 	public void controllersAreCreated() {
 		webApplicationContextRunner()
 				.withUserConfiguration(FullServicesConfiguration.class)
-				.run((context) -> {
-					assertThat(context).hasSingleBean(CatalogController.class);
-					assertThat(context).hasSingleBean(ServiceInstanceController.class);
-					assertThat(context).hasSingleBean(ServiceInstanceBindingController.class);
+				.run(context -> assertThat(context).hasSingleBean(CatalogController.class)
+						.hasSingleBean(ServiceInstanceController.class)
+						.hasSingleBean(ServiceInstanceBindingController.class));
+	}
+
+	@Test
+	public void controllersAreNotCreatedWithMissingInstanceService() {
+		webApplicationContextRunner()
+				.withUserConfiguration(MissingServiceInstanceServiceConfiguration.class)
+				.run(context -> {
+					Throwable t = context.getStartupFailure();
+					assertThat(t).isExactlyInstanceOf(BeanCreationException.class)
+							.hasRootCauseExactlyInstanceOf(ServiceInstanceServiceBeanDoesNotExistException.class);
+					assertFailureAnalysis(t);
 				});
 	}
 
 	private ReactiveWebApplicationContextRunner webApplicationContextRunner() {
-		return new ReactiveWebApplicationContextRunner().withConfiguration(
-				AutoConfigurations.of(ServiceBrokerWebFluxAutoConfiguration.class,
-						ServiceBrokerWebMvcAutoConfiguration.class));
-	}
-
-	private ApplicationContextRunner nonWebApplicationContextRunner() {
-		return new ApplicationContextRunner().withConfiguration(
-				AutoConfigurations.of(ServiceBrokerWebFluxAutoConfiguration.class,
-						ServiceBrokerWebMvcAutoConfiguration.class));
-	}
-
-	@TestConfiguration
-	public static class FullServicesConfiguration {
-		@Bean
-		public CatalogService catalogService() {
-			return new TestCatalogService();
-		}
-
-		@Bean
-		public ServiceInstanceService serviceInstanceService() {
-			return new TestServiceInstanceService();
-		}
-
-		@Bean
-		public ServiceInstanceBindingService serviceInstanceBindingService() {
-			return new TestServiceInstanceBindingService();
-		}
-
-		@Bean
-		public EventFlowRegistries eventFlowRegistries() {
-			return new EventFlowRegistries();
-		}
+		return new ReactiveWebApplicationContextRunner().withConfiguration(autoConfigurations());
 	}
 
 }
