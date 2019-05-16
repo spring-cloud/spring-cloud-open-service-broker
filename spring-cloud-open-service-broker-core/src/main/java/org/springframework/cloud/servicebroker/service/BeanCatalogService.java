@@ -33,7 +33,7 @@ public class BeanCatalogService implements CatalogService {
 
 	private final Catalog catalog;
 
-	private final Map<String,ServiceDefinition> serviceDefs = new HashMap<>();
+	private final Map<String, ServiceDefinition> serviceDefs = new HashMap<>();
 
 	/**
 	 * Construct a service with the provided {@link Catalog bean}.
@@ -46,9 +46,7 @@ public class BeanCatalogService implements CatalogService {
 	}
 
 	private void initializeMap() {
-		for (ServiceDefinition def: catalog.getServiceDefinitions()) {
-			serviceDefs.put(def.getId(), def);
-		}
+		catalog.getServiceDefinitions().forEach(def -> serviceDefs.put(def.getId(), def));
 	}
 
 	@Override
@@ -58,15 +56,7 @@ public class BeanCatalogService implements CatalogService {
 
 	@Override
 	public Mono<ServiceDefinition> getServiceDefinition(final String serviceId) {
-		// TODO: reconsider
-		return Mono.defer(() -> {
-			if (serviceDefs.containsKey(serviceId)) {
-				return Mono.just(serviceDefs.get(serviceId));
-			}
-			else {
-				return Mono.empty();
-			}
-		});
+		return Mono.justOrEmpty(serviceDefs.get(serviceId));
 	}
 
 }
