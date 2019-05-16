@@ -49,7 +49,7 @@ if (project.hasProperty("reactorVersion")) {
 	ext['reactor-bom.version'] = ext.reactorVersion
 }
 
-description = "Spring Cloud Service Broker"
+description = "Spring Cloud Open Service Broker"
 
 configure(allprojects) {
 	group = "org.springframework.cloud"
