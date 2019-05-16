@@ -4,3 +4,7 @@ org.springframework.cloud.servicebroker.autoconfigure.web.servlet.ServiceBrokerW
 org.springframework.cloud.servicebroker.autoconfigure.web.servlet.ApiVersionWebMvcAutoConfiguration,\
 org.springframework.cloud.servicebroker.autoconfigure.web.reactive.ServiceBrokerWebFluxAutoConfiguration,\
 org.springframework.cloud.servicebroker.autoconfigure.web.reactive.ApiVersionWebFluxAutoConfiguration
+
+org.springframework.boot.diagnostics.FailureAnalyzer=\
+org.springframework.cloud.servicebroker.autoconfigure.web.RequiredCatalogBeanFailureAnalyzer,\
+org.springframework.cloud.servicebroker.autoconfigure.web.RequiredServiceInstanceServiceBeanFailureAnalyzer

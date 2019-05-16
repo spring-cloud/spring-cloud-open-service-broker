@@ -20,11 +20,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.diagnostics.FailureAnalysis;
+import org.springframework.boot.diagnostics.FailureAnalyzer;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.cloud.servicebroker.autoconfigure.web.exception.CatalogDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.BeanCatalogService;
 import org.springframework.cloud.servicebroker.service.CatalogService;
@@ -35,6 +37,9 @@ import org.springframework.cloud.servicebroker.service.events.EventFlowRegistrie
 import org.springframework.context.annotation.Bean;
 
 public class ServiceBrokerAutoConfigurationTest {
+
+	private static final String ANALYZER_DESCRIPTION = "A 'service broker catalog' is required for Spring Cloud Open" +
+			" Service Broker applications";
 
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(ServiceBrokerAutoConfiguration.class));
@@ -138,9 +143,20 @@ public class ServiceBrokerAutoConfigurationTest {
 	@Test
 	public void servicesAreNotCreatedWhenMissingCatalogAndCatalogServiceConfiguration() {
 		this.contextRunner
-				.withUserConfiguration(MissingCatalogAndCatalogServiceConfiguration.class)
-				.run((context) -> assertThat(context.getStartupFailure())
-						.isExactlyInstanceOf(UnsatisfiedDependencyException.class));
+				.withUserConfiguration(MissingCatalogServiceConfiguration.class)
+				.run((context) -> {
+					Throwable t = context.getStartupFailure();
+					assertThat(t).isExactlyInstanceOf(UnsatisfiedDependencyException.class)
+							.hasRootCauseExactlyInstanceOf(CatalogDefinitionDoesNotExistException.class);
+					assertFailureAnalysis(t);
+				});
+	}
+
+	private void assertFailureAnalysis(Throwable t) {
+		FailureAnalyzer analyzer = new RequiredCatalogBeanFailureAnalyzer();
+		FailureAnalysis analysis = analyzer.analyze(t);
+		assertThat(analysis).isNotNull();
+		assertThat(analysis.getDescription()).isEqualTo(ANALYZER_DESCRIPTION);
 	}
 
 	@Test
@@ -154,7 +170,7 @@ public class ServiceBrokerAutoConfigurationTest {
 	@Test
 	public void servicesAreCreatedFromCatalogProperties() {
 		this.contextRunner
-				.withUserConfiguration(MissingCatalogAndCatalogServiceConfiguration.class)
+				.withUserConfiguration(MissingCatalogServiceConfiguration.class)
 				.withPropertyValues(
 						"spring.cloud.openservicebroker.catalog.services[0].id=service-one-id",
 						"spring.cloud.openservicebroker.catalog.services[0].name=Service One",
@@ -268,8 +284,8 @@ public class ServiceBrokerAutoConfigurationTest {
 	}
 
 	@TestConfiguration
-	public static class MissingCatalogAndCatalogServiceConfiguration {
-		public MissingCatalogAndCatalogServiceConfiguration(Catalog catalog, CatalogService catalogService) {
+	public static class MissingCatalogServiceConfiguration {
+		public MissingCatalogServiceConfiguration(CatalogService catalogService) {
 		}
 		@Bean
 		public ServiceInstanceService serviceInstanceService() {
@@ -279,7 +295,7 @@ public class ServiceBrokerAutoConfigurationTest {
 
 	@TestConfiguration
 	public static class MissingAllConfiguration {
-		public MissingAllConfiguration(Catalog catalog, CatalogService catalogService, ServiceInstanceService serviceInstanceService) {
+		public MissingAllConfiguration(CatalogService catalogService, ServiceInstanceService serviceInstanceService) {
 		}
 	}
 
