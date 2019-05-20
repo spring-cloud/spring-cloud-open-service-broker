@@ -85,10 +85,10 @@ public class CatalogControllerIntegrationTest {
 		Map<String, Object> createServiceBindingSchema = schemas.getServiceBindingSchema().getCreateMethodSchema().getParameters();
 
 		client.get().uri(uri)
-				.accept(MediaType.APPLICATION_JSON_UTF8)
+				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isOk()
-				.expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+				.expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
 				.expectBody()
 				.jsonPath("$.services").isNotEmpty()
 				.jsonPath("$.services").isArray()
