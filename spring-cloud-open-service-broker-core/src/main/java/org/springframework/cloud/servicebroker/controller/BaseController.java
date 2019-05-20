@@ -18,7 +18,6 @@ package org.springframework.cloud.servicebroker.controller;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Optional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,7 +41,6 @@ import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.Base64Utils;
-import org.springframework.util.StringUtils;
 
 /**
  * Base functionality shared by controllers.
@@ -87,15 +85,11 @@ public class BaseController {
 	}
 
 	protected Mono<Plan> getServiceDefinitionPlan(ServiceDefinition serviceDefinition, String planId) {
-		return Mono.defer(() -> {
-			if (serviceDefinition != null) {
-				return Mono.just(serviceDefinition.getPlans())
-					.flatMap(plans -> Flux.fromIterable(plans)
-							  .filter(plan -> plan.getId().equals(planId))
-							  .singleOrEmpty());
-			}
-			return Mono.empty();
-		});
+		return Mono.justOrEmpty(serviceDefinition)
+				.flatMap(serviceDef -> Mono.justOrEmpty(serviceDef.getPlans())
+						.flatMap(plans -> Flux.fromIterable(plans)
+								.filter(plan -> plan.getId().equals(planId))
+								.singleOrEmpty()));
 	}
 
 	protected Context parseOriginatingIdentity(String originatingIdentityString) {
