@@ -95,17 +95,15 @@ public class ServiceInstanceEventServiceTest {
 				.then(this.eventFlowRegistries.getCreateInstanceRegistry()
 						.addCompletionFlow(new CreateServiceInstanceCompletionFlow() {
 							@Override
-							public Mono<Void> complete(
-									CreateServiceInstanceRequest request,
-									CreateServiceInstanceResponse response) {
+							public Mono<Void> complete(CreateServiceInstanceRequest request,
+													   CreateServiceInstanceResponse response) {
 								return results.setAfterCreate("after " + request.getServiceInstanceId());
 							}
-				}))
+						}))
 				.then(eventFlowRegistries.getCreateInstanceRegistry()
 						.addErrorFlow(new CreateServiceInstanceErrorFlow() {
 							@Override
-							public Mono<Void> error(CreateServiceInstanceRequest request,
-													Throwable t) {
+							public Mono<Void> error(CreateServiceInstanceRequest request, Throwable t) {
 								return results.setErrorCreate("error " + request.getServiceInstanceId());
 							}
 						}))
