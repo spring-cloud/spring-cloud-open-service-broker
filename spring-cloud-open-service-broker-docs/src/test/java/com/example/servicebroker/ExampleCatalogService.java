@@ -21,16 +21,14 @@ public class ExampleCatalogService implements CatalogService {
 
 	@Override
 	public Mono<ServiceDefinition> getServiceDefinition(String serviceId) {
-		ServiceDefinition serviceDefinition = ServiceDefinition.builder()
+		return Mono.just(ServiceDefinition.builder()
 			.id(serviceId)
 			.name("example")
 			.description("A simple example")
 			.bindable(true)
 			.tags("example", "tags")
 			.plans(getPlan())
-			.build();
-
-		return Mono.just(serviceDefinition);
+			.build());
 	}
 
 	private Plan getPlan() {
