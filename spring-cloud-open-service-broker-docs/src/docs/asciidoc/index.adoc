@@ -11,6 +11,7 @@
 :scosb-href: {scosb}[Spring Cloud Open Service Broker]
 :scosb-api: https://docs.spring.io/spring-cloud-open-service-broker/docs/current/apidocs/
 :scosb-api-services: {scosb-api}org/springframework/cloud/servicebroker/service/
+:scosb-api-service-events: {scosb-api}org/springframework/cloud/servicebroker/service/events
 :source: {github}/tree/{branch-or-tag}
 :osbapi: https://www.openservicebrokerapi.org/
 :osbapi-href: {osbapi}[Open Service Broker API]

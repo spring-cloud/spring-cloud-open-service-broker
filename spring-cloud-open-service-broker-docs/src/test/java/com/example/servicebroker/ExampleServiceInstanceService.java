@@ -2,6 +2,8 @@ package com.example.servicebroker;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
@@ -16,6 +18,7 @@ import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
+import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,15 +34,13 @@ public class ExampleServiceInstanceService implements ServiceInstanceService {
 		// perform the steps necessary to initiate the asynchronous
 		// provisioning of all necessary resources
 		//
-		
-		String dashboardUrl = new String(/* construct a dashboard URL */);
 
-		CreateServiceInstanceResponse response = CreateServiceInstanceResponse.builder()
+		String dashboardUrl = ""; /* construct a dashboard URL */
+
+		return Mono.just(CreateServiceInstanceResponse.builder()
 				.dashboardUrl(dashboardUrl)
 				.async(true)
-				.build();
-
-		return Mono.just(response);
+				.build());
 	}
 
 	@Override
@@ -54,11 +55,9 @@ public class ExampleServiceInstanceService implements ServiceInstanceService {
 		// updating of all necessary resources
 		//
 
-		UpdateServiceInstanceResponse response = UpdateServiceInstanceResponse.builder()
+		return Mono.just(UpdateServiceInstanceResponse.builder()
 				.async(true)
-				.build();
-
-		return Mono.just(response);
+				.build());
 	}
 
 	@Override
@@ -71,11 +70,9 @@ public class ExampleServiceInstanceService implements ServiceInstanceService {
 		// deletion of all provisioned resources
 		//
 
-		DeleteServiceInstanceResponse response = DeleteServiceInstanceResponse.builder()
+		return Mono.just(DeleteServiceInstanceResponse.builder()
 				.async(true)
-				.build();
-
-		return Mono.just(response);
+				.build());
 	}
 
 	@Override
@@ -86,13 +83,11 @@ public class ExampleServiceInstanceService implements ServiceInstanceService {
 		// retrieve the details of the specified service instance
 		//
 
-		String dashboardUrl = new String(/* retrieve dashboard URL */);
+		String dashboardUrl = ""; /* retrieve dashboard URL */
 
-		GetServiceInstanceResponse response = GetServiceInstanceResponse.builder()
+		return Mono.just(GetServiceInstanceResponse.builder()
 				.dashboardUrl(dashboardUrl)
-				.build();
-
-		return Mono.just(response);
+				.build());
 	}
 
 	@Override
@@ -103,12 +98,8 @@ public class ExampleServiceInstanceService implements ServiceInstanceService {
 		// determine the status of the operation in progress
 		//
 
-		OperationState state = OperationState.SUCCEEDED;
-
-		GetLastServiceOperationResponse response = GetLastServiceOperationResponse.builder()
-				.operationState(state)
-				.build();
-
-		return Mono.just(response);
+		return Mono.just(GetLastServiceOperationResponse.builder()
+				.operationState(OperationState.SUCCEEDED)
+				.build());
 	}
 }
