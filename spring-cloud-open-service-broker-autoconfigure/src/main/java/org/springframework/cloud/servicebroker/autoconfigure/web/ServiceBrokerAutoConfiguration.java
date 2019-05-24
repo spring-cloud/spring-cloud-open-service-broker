@@ -27,7 +27,6 @@ import org.springframework.cloud.servicebroker.service.BeanCatalogService;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.NonBindableServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
-import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -80,11 +79,6 @@ public class ServiceBrokerAutoConfiguration {
 	@ConditionalOnMissingBean(ServiceInstanceBindingService.class)
 	public ServiceInstanceBindingService nonBindableServiceInstanceBindingService() {
 		return new NonBindableServiceInstanceBindingService();
-	}
-
-	@Bean
-	public EventFlowRegistries eventFlowRegistries() {
-		return new EventFlowRegistries();
 	}
 
 }

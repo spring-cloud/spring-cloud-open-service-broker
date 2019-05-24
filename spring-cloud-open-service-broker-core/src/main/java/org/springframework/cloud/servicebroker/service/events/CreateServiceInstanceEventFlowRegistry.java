@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.service.events;
 
+import java.util.List;
+
 import reactor.core.publisher.Flux;
 
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
@@ -32,6 +34,17 @@ import org.springframework.cloud.servicebroker.service.events.flows.CreateServic
 public class CreateServiceInstanceEventFlowRegistry extends EventFlowRegistry<CreateServiceInstanceInitializationFlow,
 		CreateServiceInstanceCompletionFlow, CreateServiceInstanceErrorFlow, CreateServiceInstanceRequest,
 		CreateServiceInstanceResponse> {
+
+	@Deprecated
+	public CreateServiceInstanceEventFlowRegistry() {
+	}
+
+	public CreateServiceInstanceEventFlowRegistry(
+			final List<CreateServiceInstanceInitializationFlow> initializationFlows,
+			final List<CreateServiceInstanceCompletionFlow> completionFlows,
+			final List<CreateServiceInstanceErrorFlow> errorFlows) {
+		super(initializationFlows, completionFlows, errorFlows);
+	}
 
 	@Override
 	public Flux<Void> getInitializationFlows(CreateServiceInstanceRequest request) {

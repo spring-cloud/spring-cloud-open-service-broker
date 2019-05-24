@@ -19,9 +19,9 @@ package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
+import org.springframework.cloud.servicebroker.autoconfigure.web.EventFlowsAutoConfiguration;
 import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerAutoConfiguration;
 import org.springframework.cloud.servicebroker.autoconfigure.web.exception.ServiceInstanceServiceBeanDoesNotExistException;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
@@ -45,8 +45,8 @@ import org.springframework.context.annotation.Configuration;
  * @author Roy Clarkson
  */
 @Configuration
-@AutoConfigureAfter({ WebMvcAutoConfiguration.class,
-		ServiceBrokerAutoConfiguration.class })
+@AutoConfigureAfter({WebMvcAutoConfiguration.class,
+		ServiceBrokerAutoConfiguration.class, EventFlowsAutoConfiguration.class})
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class ServiceBrokerWebMvcAutoConfiguration {
 

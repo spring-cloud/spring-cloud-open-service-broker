@@ -47,6 +47,7 @@ import org.springframework.cloud.servicebroker.service.events.flows.UpdateServic
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("deprecation")
 public class ServiceInstanceEventServiceTest {
 
 	private TestServiceInstanceService serviceInstanceService;
@@ -160,7 +161,7 @@ public class ServiceInstanceEventServiceTest {
 									DeleteServiceInstanceResponse response) {
 								return results.setAfterDelete("after " + request.getServiceInstanceId());
 							}
-				}))
+						}))
 				.then(eventFlowRegistries.getDeleteInstanceRegistry()
 						.addErrorFlow(new DeleteServiceInstanceErrorFlow() {
 							@Override
@@ -242,8 +243,8 @@ public class ServiceInstanceEventServiceTest {
 		StepVerifier
 				.create(serviceInstanceEventService.updateServiceInstance(
 						UpdateServiceInstanceRequest.builder()
-						.serviceInstanceId("foo")
-						.build()))
+								.serviceInstanceId("foo")
+								.build()))
 				.expectError()
 				.verify();
 

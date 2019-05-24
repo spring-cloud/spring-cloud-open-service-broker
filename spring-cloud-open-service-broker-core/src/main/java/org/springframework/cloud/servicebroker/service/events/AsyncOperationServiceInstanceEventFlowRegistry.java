@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.service.events;
 
+import java.util.List;
+
 import reactor.core.publisher.Flux;
 
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationRequest;
@@ -32,6 +34,17 @@ import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperati
 public class AsyncOperationServiceInstanceEventFlowRegistry extends EventFlowRegistry<AsyncOperationServiceInstanceInitializationFlow,
 		AsyncOperationServiceInstanceCompletionFlow, AsyncOperationServiceInstanceErrorFlow, GetLastServiceOperationRequest,
 		GetLastServiceOperationResponse> {
+
+	@Deprecated
+	public AsyncOperationServiceInstanceEventFlowRegistry() {
+	}
+
+	public AsyncOperationServiceInstanceEventFlowRegistry(
+			final List<AsyncOperationServiceInstanceInitializationFlow> initializationFlows,
+			final List<AsyncOperationServiceInstanceCompletionFlow> completionFlows,
+			final List<AsyncOperationServiceInstanceErrorFlow> errorFlows) {
+		super(initializationFlows, completionFlows, errorFlows);
+	}
 
 	@Override
 	public Flux<Void> getInitializationFlows(GetLastServiceOperationRequest request) {

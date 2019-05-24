@@ -42,6 +42,7 @@ import org.springframework.cloud.servicebroker.service.events.flows.DeleteServic
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("deprecation")
 public class ServiceInstanceBindingEventServiceTest {
 
 	private TestServiceInstanceBindingService serviceInstanceBindingService;
