@@ -60,9 +60,6 @@ public class ServiceBrokerAutoConfigurationTest {
 					assertThat(context)
 							.getBean(ServiceInstanceService.class)
 							.isExactlyInstanceOf(TestServiceInstanceService.class);
-
-					assertThat(context)
-							.hasSingleBean(EventFlowRegistries.class);
 				});
 	}
 
@@ -82,9 +79,6 @@ public class ServiceBrokerAutoConfigurationTest {
 					assertThat(context)
 							.getBean(ServiceInstanceService.class)
 							.isExactlyInstanceOf(TestServiceInstanceService.class);
-
-					assertThat(context)
-							.hasSingleBean(EventFlowRegistries.class);
 				});
 	}
 
@@ -104,9 +98,6 @@ public class ServiceBrokerAutoConfigurationTest {
 					assertThat(context)
 							.getBean(ServiceInstanceService.class)
 							.isExactlyInstanceOf(TestServiceInstanceService.class);
-
-					assertThat(context)
-							.hasSingleBean(EventFlowRegistries.class);
 				});
 	}
 
@@ -126,9 +117,6 @@ public class ServiceBrokerAutoConfigurationTest {
 					assertThat(context)
 							.getBean(ServiceInstanceService.class)
 							.isExactlyInstanceOf(TestServiceInstanceService.class);
-
-					assertThat(context)
-							.hasSingleBean(EventFlowRegistries.class);
 				});
 	}
 
@@ -200,9 +188,6 @@ public class ServiceBrokerAutoConfigurationTest {
 					assertThat(context)
 							.getBean(ServiceInstanceService.class)
 							.isExactlyInstanceOf(TestServiceInstanceService.class);
-
-					assertThat(context)
-							.hasSingleBean(EventFlowRegistries.class);
 				});
 	}
 

@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.service.events;
 
+import java.util.List;
+
 import reactor.core.publisher.Flux;
 
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
@@ -32,6 +34,17 @@ import org.springframework.cloud.servicebroker.service.events.flows.DeleteServic
 public class DeleteServiceInstanceBindingEventFlowRegistry extends EventFlowRegistry<DeleteServiceInstanceBindingInitializationFlow,
 		DeleteServiceInstanceBindingCompletionFlow, DeleteServiceInstanceBindingErrorFlow, DeleteServiceInstanceBindingRequest,
 		DeleteServiceInstanceBindingResponse> {
+
+	@Deprecated
+	public DeleteServiceInstanceBindingEventFlowRegistry() {
+	}
+
+	public DeleteServiceInstanceBindingEventFlowRegistry(
+			final List<DeleteServiceInstanceBindingInitializationFlow> initializationFlows,
+			final List<DeleteServiceInstanceBindingCompletionFlow> completionFlows,
+			final List<DeleteServiceInstanceBindingErrorFlow> errorFlows) {
+		super(initializationFlows, completionFlows, errorFlows);
+	}
 
 	@Override
 	public Flux<Void> getInitializationFlows(DeleteServiceInstanceBindingRequest request) {

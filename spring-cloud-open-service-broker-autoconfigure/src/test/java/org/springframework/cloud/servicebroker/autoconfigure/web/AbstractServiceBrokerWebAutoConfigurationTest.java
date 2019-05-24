@@ -84,6 +84,7 @@ public abstract class AbstractServiceBrokerWebAutoConfigurationTest {
 			return new TestServiceInstanceBindingService();
 		}
 
+		@SuppressWarnings("deprecation")
 		@Bean
 		public EventFlowRegistries eventFlowRegistries() {
 			return new EventFlowRegistries();
@@ -103,6 +104,7 @@ public abstract class AbstractServiceBrokerWebAutoConfigurationTest {
 			return new TestServiceInstanceBindingService();
 		}
 
+		@SuppressWarnings("deprecation")
 		@Bean
 		public EventFlowRegistries eventFlowRegistries() {
 			return new EventFlowRegistries();

@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.service.events;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -30,7 +31,6 @@ import reactor.core.publisher.Mono;
  * @param <E> type of error flow
  * @param <R> type of request
  * @param <S> type of response
- *
  * @author Roy Clarkson
  */
 public abstract class EventFlowRegistry<I, C, E, R, S> {
@@ -41,9 +41,25 @@ public abstract class EventFlowRegistry<I, C, E, R, S> {
 
 	private final List<Mono<E>> errorFlows = new ArrayList<>();
 
+	@Deprecated
+	public EventFlowRegistry() {
+	}
+
+	protected EventFlowRegistry(List<I> initializationFlows, List<C> completionFlows, List<E> errorFlows) {
+		if (CollectionUtils.isNotEmpty(initializationFlows)) {
+			initializationFlows.forEach(flow -> this.initializationFlows.add(Mono.just(flow)));
+		}
+		if (CollectionUtils.isNotEmpty(completionFlows)) {
+			completionFlows.forEach(flow -> this.completionFlows.add(Mono.just(flow)));
+		}
+		if (CollectionUtils.isNotEmpty(errorFlows)) {
+			errorFlows.forEach(flow -> this.errorFlows.add(Mono.just(flow)));
+		}
+	}
+
 	public Mono<Void> addInitializationFlow(I object) {
-		final Mono<I> mono = Mono.just(object);
-		return Mono.fromCallable(() -> this.initializationFlows.add(mono))
+		return Mono.justOrEmpty(object)
+				.map(flow -> this.initializationFlows.add(Mono.just(flow)))
 				.then();
 	}
 
@@ -54,8 +70,8 @@ public abstract class EventFlowRegistry<I, C, E, R, S> {
 	}
 
 	public Mono<Void> addCompletionFlow(C object) {
-		final Mono<C> mono = Mono.just(object);
-		return Mono.fromCallable(() -> this.completionFlows.add(mono))
+		return Mono.justOrEmpty(object)
+				.map(flow -> this.completionFlows.add(Mono.just(flow)))
 				.then();
 	}
 
@@ -66,8 +82,8 @@ public abstract class EventFlowRegistry<I, C, E, R, S> {
 	}
 
 	public Mono<Void> addErrorFlow(E object) {
-		final Mono<E> mono = Mono.just(object);
-		return Mono.fromCallable(() -> this.errorFlows.add(mono))
+		return Mono.justOrEmpty(object)
+				.map(flow -> this.errorFlows.add(Mono.just(flow)))
 				.then();
 	}
 
