@@ -141,7 +141,15 @@ public class ServiceInstanceBindingController extends BaseController {
 						.doOnRequest(v -> logger.debug("Getting a service instance binding: request={}", req))
 						.doOnSuccess(response -> logger.debug("Getting a service instance binding succeeded: bindingId={}", bindingId)))
 				.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
-				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)));
+				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
+				.onErrorResume(e -> {
+					if (e instanceof ServiceInstanceBindingDoesNotExistException) {
+						return Mono.just(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+					}
+					else {
+						return Mono.error(e);
+					}
+				});
 	}
 
 	@GetMapping(value = {

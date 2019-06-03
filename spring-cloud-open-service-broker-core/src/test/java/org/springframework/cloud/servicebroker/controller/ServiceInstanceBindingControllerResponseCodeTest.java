@@ -182,6 +182,18 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		assertThat(responseEntity.getBody()).isEqualTo(data.response);
 	}
 
+	@Test
+	public void getServiceBindingWithMissingBindingGivesExpectedStatus() {
+		doThrow(new ServiceInstanceBindingDoesNotExistException("binding-id"))
+				.when(bindingService).getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class));
+
+		ResponseEntity<GetServiceInstanceBindingResponse> responseEntity = controller
+				.getServiceInstanceBinding(pathVariables, null, null, null, null)
+				.block();
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
 	@Theory
 	public void deleteServiceBindingWithResponseGivesExpectedStatus(DeleteResponseAndExpectedStatus data) {
 		Mono<DeleteServiceInstanceBindingResponse> responseMono;
