@@ -18,6 +18,10 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import java.util.List;
 
+import org.springframework.cloud.servicebroker.service.events.AsyncOperationServiceInstanceBindingEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceBindingCompletionFlow;
+import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceBindingErrorFlow;
+import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceBindingInitializationFlow;
 import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +126,15 @@ public class EventFlowsAutoConfiguration {
 	}
 
 	@Bean
+	@ConditionalOnMissingBean(AsyncOperationServiceInstanceBindingEventFlowRegistry.class)
+	public AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry(
+			@Autowired(required = false) List<AsyncOperationServiceInstanceBindingInitializationFlow> initializationFlows,
+			@Autowired(required = false) List<AsyncOperationServiceInstanceBindingCompletionFlow> completionFlows,
+			@Autowired(required = false) List<AsyncOperationServiceInstanceBindingErrorFlow> errorFlows) {
+		return new AsyncOperationServiceInstanceBindingEventFlowRegistry(initializationFlows, completionFlows, errorFlows);
+	}
+
+	@Bean
 	@ConditionalOnMissingBean(EventFlowRegistries.class)
 	public EventFlowRegistries eventFlowRegistries(
 			CreateServiceInstanceEventFlowRegistry createInstanceRegistry,
@@ -129,9 +142,11 @@ public class EventFlowsAutoConfiguration {
 			DeleteServiceInstanceEventFlowRegistry deleteInstanceRegistry,
 			AsyncOperationServiceInstanceEventFlowRegistry asyncOperationRegistry,
 			CreateServiceInstanceBindingEventFlowRegistry createInstanceBindingRegistry,
-			DeleteServiceInstanceBindingEventFlowRegistry deleteInstanceBindingRegistry) {
+			DeleteServiceInstanceBindingEventFlowRegistry deleteInstanceBindingRegistry,
+			AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry) {
 		return new EventFlowRegistries(createInstanceRegistry, updateInstanceRegistry, deleteInstanceRegistry,
-				asyncOperationRegistry, createInstanceBindingRegistry, deleteInstanceBindingRegistry);
+				asyncOperationRegistry, createInstanceBindingRegistry,
+				deleteInstanceBindingRegistry, asyncOperationBindingRegistry);
 	}
 
 }
