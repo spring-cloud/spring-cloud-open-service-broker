@@ -140,7 +140,15 @@ public class ServiceInstanceController extends BaseController {
 						.doOnSuccess(response -> logger.debug("Getting service instance succeeded: serviceInstanceId={}, response={}",
 								serviceInstanceId, response)))
 				.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
-				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)));
+				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
+				.onErrorResume(e -> {
+					if (e instanceof ServiceInstanceDoesNotExistException) {
+						return Mono.just(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+					}
+					else {
+						return Mono.error(e);
+					}
+				});
 	}
 
 	@GetMapping(value = {
