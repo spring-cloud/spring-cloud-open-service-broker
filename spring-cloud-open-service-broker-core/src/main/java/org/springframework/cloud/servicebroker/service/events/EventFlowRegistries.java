@@ -35,6 +35,8 @@ public class EventFlowRegistries {
 
 	private DeleteServiceInstanceBindingEventFlowRegistry deleteInstanceBindingRegistry;
 
+    private AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry;
+
 	@Deprecated
 	public EventFlowRegistries() {
 		this.createInstanceRegistry = new CreateServiceInstanceEventFlowRegistry();
@@ -50,13 +52,15 @@ public class EventFlowRegistries {
 							   DeleteServiceInstanceEventFlowRegistry deleteInstanceRegistry,
 							   AsyncOperationServiceInstanceEventFlowRegistry asyncOperationRegistry,
 							   CreateServiceInstanceBindingEventFlowRegistry createInstanceBindingRegistry,
-							   DeleteServiceInstanceBindingEventFlowRegistry deleteInstanceBindingRegistry) {
+							   DeleteServiceInstanceBindingEventFlowRegistry deleteInstanceBindingRegistry,
+                               AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry) {
 		this.createInstanceRegistry = createInstanceRegistry;
 		this.updateInstanceRegistry = updateInstanceRegistry;
 		this.deleteInstanceRegistry = deleteInstanceRegistry;
 		this.asyncOperationRegistry = asyncOperationRegistry;
 		this.createInstanceBindingRegistry = createInstanceBindingRegistry;
 		this.deleteInstanceBindingRegistry = deleteInstanceBindingRegistry;
+		this.asyncOperationBindingRegistry = asyncOperationBindingRegistry;
 	}
 
 	public CreateServiceInstanceEventFlowRegistry getCreateInstanceRegistry() {
@@ -81,6 +85,10 @@ public class EventFlowRegistries {
 
 	public DeleteServiceInstanceBindingEventFlowRegistry getDeleteInstanceBindingRegistry() {
 		return deleteInstanceBindingRegistry;
+	}
+
+	public AsyncOperationServiceInstanceBindingEventFlowRegistry getAsyncOperationBindingRegistry() {
+		return asyncOperationBindingRegistry;
 	}
 
 }

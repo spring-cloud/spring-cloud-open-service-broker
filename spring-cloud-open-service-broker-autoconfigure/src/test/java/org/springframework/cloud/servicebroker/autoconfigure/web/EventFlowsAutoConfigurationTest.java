@@ -13,6 +13,8 @@ import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationResponse;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceRequest;
@@ -21,6 +23,7 @@ import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOper
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationResponse;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
+import org.springframework.cloud.servicebroker.service.events.AsyncOperationServiceInstanceBindingEventFlowRegistry;
 import org.springframework.cloud.servicebroker.service.events.AsyncOperationServiceInstanceEventFlowRegistry;
 import org.springframework.cloud.servicebroker.service.events.CreateServiceInstanceBindingEventFlowRegistry;
 import org.springframework.cloud.servicebroker.service.events.CreateServiceInstanceEventFlowRegistry;
@@ -29,6 +32,9 @@ import org.springframework.cloud.servicebroker.service.events.DeleteServiceInsta
 import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 import org.springframework.cloud.servicebroker.service.events.EventFlowRegistry;
 import org.springframework.cloud.servicebroker.service.events.UpdateServiceInstanceEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceBindingCompletionFlow;
+import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceBindingErrorFlow;
+import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceBindingInitializationFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceCompletionFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceErrorFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceInitializationFlow;
@@ -141,6 +147,18 @@ public class EventFlowsAutoConfigurationTest {
 				});
 	}
 
+	@Test
+	public void asyncBindingOperationEventFlowBeansAreConfigured() {
+		this.contextRunner
+				.withUserConfiguration(AsyncOperationServiceInstanceBindingEventFlowBeansConfiguration.class)
+				.run(context -> {
+					assertBeans(context);
+					AsyncOperationServiceInstanceBindingEventFlowRegistry registry =
+							context.getBean(AsyncOperationServiceInstanceBindingEventFlowRegistry.class);
+					assertEventFlowBeans(registry, 1, 2, 1);
+				});
+	}
+
 	private void assertBeans(AssertableApplicationContext context) {
 		assertThat(context)
 				.getBean(CreateServiceInstanceEventFlowRegistry.class)
@@ -167,6 +185,10 @@ public class EventFlowsAutoConfigurationTest {
 				.isNotNull();
 
 		assertThat(context)
+				.getBean(AsyncOperationServiceInstanceBindingEventFlowRegistry.class)
+				.isNotNull();
+
+		assertThat(context)
 				.getBean(EventFlowRegistries.class)
 				.isNotNull();
 
@@ -188,6 +210,9 @@ public class EventFlowsAutoConfigurationTest {
 
 		assertThat(eventFlowRegistries.getDeleteInstanceBindingRegistry())
 				.isEqualTo(context.getBean(DeleteServiceInstanceBindingEventFlowRegistry.class));
+
+		assertThat(eventFlowRegistries.getAsyncOperationBindingRegistry())
+				.isEqualTo(context.getBean(AsyncOperationServiceInstanceBindingEventFlowRegistry.class));
 	}
 
 	private void assertEventFlowBeans(EventFlowRegistry<?, ?, ?, ?, ?> registry, int initializationFlowCount,
@@ -479,4 +504,49 @@ public class EventFlowsAutoConfigurationTest {
 		}
 	}
 
+	@TestConfiguration
+	public static class AsyncOperationServiceInstanceBindingEventFlowBeansConfiguration {
+
+		@Bean
+		public AsyncOperationServiceInstanceBindingInitializationFlow getLastOperationInitFlow() {
+			return new AsyncOperationServiceInstanceBindingInitializationFlow() {
+				@Override
+				public Mono<Void> initialize(GetLastServiceBindingOperationRequest request) {
+					return Mono.empty();
+				}
+			};
+		}
+
+		@Bean
+		public AsyncOperationServiceInstanceBindingCompletionFlow getLastOperationCompleteFlow1() {
+			return new AsyncOperationServiceInstanceBindingCompletionFlow() {
+				@Override
+				public Mono<Void> complete(GetLastServiceBindingOperationRequest request,
+										   GetLastServiceBindingOperationResponse response) {
+					return Mono.empty();
+				}
+			};
+		}
+
+		@Bean
+		public AsyncOperationServiceInstanceBindingCompletionFlow getLastOperationCompleteFlow2() {
+			return new AsyncOperationServiceInstanceBindingCompletionFlow() {
+				@Override
+				public Mono<Void> complete(GetLastServiceBindingOperationRequest request,
+										   GetLastServiceBindingOperationResponse response) {
+					return Mono.empty();
+				}
+			};
+		}
+
+		@Bean
+		public AsyncOperationServiceInstanceBindingErrorFlow getLastOperationErrorFlow() {
+			return new AsyncOperationServiceInstanceBindingErrorFlow() {
+				@Override
+				public Mono<Void> error(GetLastServiceBindingOperationRequest request, Throwable t) {
+					return Mono.empty();
+				}
+			};
+		}
+	}
 }
