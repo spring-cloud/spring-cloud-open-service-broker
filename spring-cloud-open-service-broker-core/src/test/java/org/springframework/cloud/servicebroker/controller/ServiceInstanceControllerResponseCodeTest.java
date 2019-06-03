@@ -256,6 +256,18 @@ public class ServiceInstanceControllerResponseCodeTest {
 		assertThat(responseEntity.getBody()).isEqualTo(data.response);
 	}
 
+	@Test
+	public void getServiceInstanceWithMissingInstanceGivesExpectedStatus() {
+		when(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
+				.thenReturn(Mono.error(new ServiceInstanceDoesNotExistException("instance does not exist")));
+
+		ResponseEntity<GetServiceInstanceResponse> responseEntity = controller
+				.getServiceInstance(pathVariables, null, "service-definition-id", null)
+				.block();
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
 	@Theory
 	public void deleteServiceInstanceWithResponseGivesExpectedStatus(DeleteResponseAndExpectedStatus data) {
 		Mono<DeleteServiceInstanceResponse> responseMono;

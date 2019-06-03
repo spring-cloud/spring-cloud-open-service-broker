@@ -32,6 +32,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidPar
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerUnavailableException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
+import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
@@ -254,6 +255,16 @@ public class ServiceBrokerExceptionHandlerTest {
 		assertThat(errorMessage.getMessage())
 				.contains("serviceInstanceId=service-instance-id")
 				.contains("bindingId=binding-id");
+	}
+
+	@Test
+	public void bindingDoesNotExistException() {
+		ErrorMessage errorMessage = exceptionHandler
+				.handleException(new ServiceInstanceBindingDoesNotExistException("binding-id"));
+
+		assertThat(errorMessage.getError()).isNull();
+		assertThat(errorMessage.getMessage())
+				.contains("id=binding-id");
 	}
 
 	@Test
