@@ -43,6 +43,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.MapBindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.support.WebExchangeBindException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -223,6 +224,21 @@ public class ServiceBrokerExceptionHandlerTest {
 		assertThat(errorMessage.getError()).isNull();
 		assertThat(errorMessage.getMessage()).contains("field1");
 		assertThat(errorMessage.getMessage()).contains("field2");
+	}
+
+	@Test
+	public void stringParameterIsNotPresent() {
+		final String parameterType = "String";
+		final String parameterName = "plan_id";
+
+		MissingServletRequestParameterException exception =
+				new MissingServletRequestParameterException(parameterName, parameterType);
+
+		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
+
+		assertThat(errorMessage.getError()).isNull();
+		assertThat(errorMessage.getMessage()).contains(parameterType);
+		assertThat(errorMessage.getMessage()).contains(parameterName);
 	}
 
 	@Test
