@@ -314,7 +314,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.content(body)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(request().asyncNotStarted())
-				.andExpect(status().isUnprocessableEntity())
+				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.description", containsString("serviceDefinitionId")));
 	}
 
@@ -327,7 +327,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(request().asyncNotStarted())
-				.andExpect(status().isUnprocessableEntity())
+				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.description", containsString("serviceDefinitionId")))
 				.andExpect(jsonPath("$.description", containsString("planId")));
 	}
@@ -519,6 +519,19 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void deleteBindingWithMissingQueryParamsFails() throws Exception {
+		setupCatalogService(null);
+
+		final String url = buildDeleteUrl(null, false).replace("plan_id", "foo");
+
+		MvcResult mvcResult = mockMvc.perform(delete(url)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.description", containsString("plan_id")))
+				.andReturn();
 	}
 
 	@Test

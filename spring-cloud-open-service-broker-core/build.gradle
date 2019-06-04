@@ -28,6 +28,7 @@ ext {
 	hamcrestVersion = "1.3"
 	jsonPathVersion = "2.4.0"
 	equalsVerifierVersion = "2.4.1"
+	javaxServletApiVersion = "3.1.0"
 }
 
 dependencyManagement {
@@ -39,6 +40,7 @@ dependencyManagement {
 }
 
 dependencies {
+	provided("javax.servlet:javax.servlet-api:${javaxServletApiVersion}")
 	compile("org.springframework:spring-context")
 	optional("org.springframework:spring-web")
 	optional("org.springframework:spring-webflux")
@@ -64,6 +66,7 @@ dependencies {
 	testImplementation("org.mockito:mockito-core:${mockitoVersion}")
 	testImplementation("com.jayway.jsonpath:json-path:${jsonPathVersion}")
 	testImplementation("nl.jqno.equalsverifier:equalsverifier:${equalsVerifierVersion}")
+	testImplementation("javax.servlet:javax.servlet-api:${javaxServletApiVersion}")
 }
 
 test {
