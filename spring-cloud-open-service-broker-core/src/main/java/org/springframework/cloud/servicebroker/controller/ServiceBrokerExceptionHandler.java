@@ -41,6 +41,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -122,7 +123,7 @@ public class ServiceBrokerExceptionHandler {
 
 	// Spring WebMVC throws this exception
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(MethodArgumentNotValidException ex) {
 		return handleBindingException(ex, ex.getBindingResult());
 	}
@@ -141,6 +142,14 @@ public class ServiceBrokerExceptionHandler {
 			message.append(' ').append(error.getField());
 		}
 		return getErrorResponse(message.toString());
+	}
+
+	// Spring WebMVC throws this exception
+	@ExceptionHandler(MissingServletRequestParameterException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ErrorMessage handleException(MissingServletRequestParameterException ex) {
+		logger.error("Unprocessable request received: ", ex);
+		return getErrorResponse(ex.getMessage());
 	}
 
 	@ExceptionHandler(Exception.class)

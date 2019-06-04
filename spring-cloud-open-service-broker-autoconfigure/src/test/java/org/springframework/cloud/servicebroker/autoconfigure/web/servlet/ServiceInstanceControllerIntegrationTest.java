@@ -336,7 +336,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isUnprocessableEntity())
+				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.description", containsString("serviceDefinitionId")))
 				.andExpect(request().asyncNotStarted())
 				.andReturn();
@@ -352,7 +352,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isUnprocessableEntity())
+				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.description", containsString("serviceDefinitionId")))
 				.andExpect(jsonPath("$.description", containsString("planId")))
 				.andExpect(request().asyncNotStarted())
@@ -493,6 +493,19 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.description", containsString(serviceDefinition.getId())));
+	}
+
+	@Test
+	public void deleteServiceInstanceWithMissingQueryParamsFails() throws Exception {
+		setupCatalogService(null);
+
+		final String url = buildDeleteUrl(null, false).replace("plan_id", "foo");
+
+		MvcResult mvcResult = mockMvc.perform(delete(url)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.description", containsString("plan_id")))
+				.andReturn();
 	}
 
 	@Test
