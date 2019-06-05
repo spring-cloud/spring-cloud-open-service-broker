@@ -297,8 +297,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.contentType(MediaType.APPLICATION_JSON)
 				.syncBody(body)
 				.exchange()
-				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectStatus().isBadRequest()
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> assertDescriptionContains(result, "serviceDefinitionId"));
@@ -313,8 +312,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.syncBody(body)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
-				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectStatus().isBadRequest()
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> assertDescriptionContains(result, "serviceDefinitionId"))
@@ -472,6 +470,21 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		client.delete().uri(buildDeleteUrl())
 				.exchange()
 				.expectStatus().isOk();
+	}
+
+	@Test
+	public void deleteBindingWithMissingQueryParamsFails() throws Exception {
+		setupCatalogService(null);
+
+		final String url = buildDeleteUrl(null, false).replace("plan_id", "foo");
+
+		client.delete().uri(url)
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isBadRequest()
+				.expectBody()
+				.jsonPath("$.description").isNotEmpty()
+				.consumeWith(result -> assertDescriptionContains(result, "plan_id"));
 	}
 
 	@Test
