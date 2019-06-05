@@ -48,6 +48,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.support.WebExchangeBindException;
+import org.springframework.web.server.ServerWebInputException;
 
 /**
  * Exception handling logic shared by all Controllers.
@@ -131,7 +132,7 @@ public class ServiceBrokerExceptionHandler {
 
 	// Spring WebFlux throws this exception
 	@ExceptionHandler(WebExchangeBindException.class)
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(WebExchangeBindException ex) {
 		return handleBindingException(ex, ex.getBindingResult());
 	}
@@ -149,6 +150,14 @@ public class ServiceBrokerExceptionHandler {
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(MissingServletRequestParameterException ex) {
+		logger.error("Unprocessable request received: ", ex);
+		return getErrorResponse(ex.getMessage());
+	}
+
+	// Spring WebFlux throws this exception
+	@ExceptionHandler(ServerWebInputException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ErrorMessage handleException(ServerWebInputException ex) {
 		logger.error("Unprocessable request received: ", ex);
 		return getErrorResponse(ex.getMessage());
 	}

@@ -289,8 +289,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
-				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectStatus().isBadRequest()
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> assertDescriptionContains(result, "serviceDefinitionId"));
@@ -307,8 +306,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
-				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectStatus().isBadRequest()
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> {
@@ -437,6 +435,22 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> assertDescriptionContains(result, String.format("id=%s", serviceDefinition.getId())));
 	}
+
+	@Test
+	public void deleteBindingWithMissingQueryParamsFails() throws Exception {
+		setupCatalogService(null);
+
+		final String url = buildDeleteUrl(null, false).replace("plan_id", "foo");
+
+		client.delete().uri(url)
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isBadRequest()
+				.expectBody()
+				.jsonPath(".description").isNotEmpty()
+				.consumeWith(result -> assertDescriptionContains(result, "plan_id"));
+	}
+
 
 	@Test
 	public void updateServiceInstanceWithAsyncAndHeadersSucceeds() throws Exception {
