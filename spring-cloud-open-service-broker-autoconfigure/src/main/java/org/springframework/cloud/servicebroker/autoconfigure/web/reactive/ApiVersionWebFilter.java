@@ -87,7 +87,7 @@ public class ApiVersionWebFilter implements WebFilter {
 				catch (JsonProcessingException e) {
 					json = "{}";
 				}
-				response.setStatusCode(HttpStatus.PRECONDITION_FAILED);
+				response.setStatusCode(HttpStatus.BAD_REQUEST);
 				Flux<DataBuffer> responseBody =
 						Flux.just(json)
 								.map(s -> toDataBuffer(s, response.bufferFactory()));

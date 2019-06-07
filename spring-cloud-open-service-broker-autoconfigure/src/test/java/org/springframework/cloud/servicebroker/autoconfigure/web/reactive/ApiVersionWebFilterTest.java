@@ -80,7 +80,7 @@ public class ApiVersionWebFilterTest {
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", "8.8");
 		ApiVersionWebFilter webFilter = new ApiVersionWebFilter(brokerApiVersion);
 		webFilter.filter(exchange, chain).block();
-		assertThat(exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.PRECONDITION_FAILED);
+		assertThat(exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 
 }

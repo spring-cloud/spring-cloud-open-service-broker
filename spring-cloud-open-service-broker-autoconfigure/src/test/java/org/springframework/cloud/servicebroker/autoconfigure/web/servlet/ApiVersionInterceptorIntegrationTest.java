@@ -63,7 +63,7 @@ public class ApiVersionInterceptorIntegrationTest {
 	public void noHeaderSent() throws Exception {
 		mockWithExpectedVersion().perform(get(CATALOG_PATH)
 				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isPreconditionFailed())
+				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.description", containsString("expected-version")));
 	}
 
@@ -72,7 +72,7 @@ public class ApiVersionInterceptorIntegrationTest {
 		mockWithExpectedVersion().perform(get(CATALOG_PATH)
 				.header(BrokerApiVersion.DEFAULT_API_VERSION_HEADER, "wrong-version")
 				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isPreconditionFailed())
+				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.description", containsString("expected-version")))
 				.andExpect(jsonPath("$.description", containsString("wrong-version")));
 	}

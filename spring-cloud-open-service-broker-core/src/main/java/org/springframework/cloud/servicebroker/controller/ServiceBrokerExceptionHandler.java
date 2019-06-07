@@ -63,7 +63,7 @@ public class ServiceBrokerExceptionHandler {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceBrokerExceptionHandler.class);
 
 	@ExceptionHandler(ServiceBrokerApiVersionException.class)
-	@ResponseStatus(HttpStatus.PRECONDITION_FAILED)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(ServiceBrokerApiVersionException ex) {
 		return getErrorResponse(ex);
 	}
