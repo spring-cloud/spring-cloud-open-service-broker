@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionMissingException;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -65,6 +66,11 @@ public class ApiVersionInterceptor extends HandlerInterceptorAdapter {
 			throws ServiceBrokerApiVersionException {
 		if (version != null && !anyVersionAllowed()) {
 			String apiVersion = request.getHeader(version.getBrokerApiVersionHeader());
+
+			if (apiVersion == null) {
+				throw new ServiceBrokerApiVersionMissingException(version.getApiVersion());
+			}
+
 			if (!version.getApiVersion().equals(apiVersion)) {
 				throw new ServiceBrokerApiVersionException(version.getApiVersion(), apiVersion);
 			}

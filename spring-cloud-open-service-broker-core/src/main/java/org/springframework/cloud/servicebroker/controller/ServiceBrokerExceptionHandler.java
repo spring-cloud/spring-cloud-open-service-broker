@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionMissingException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerBindingRequiresAppException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerConcurrencyException;
@@ -65,6 +66,12 @@ public class ServiceBrokerExceptionHandler {
 	@ExceptionHandler(ServiceBrokerApiVersionException.class)
 	@ResponseStatus(HttpStatus.PRECONDITION_FAILED)
 	public ErrorMessage handleException(ServiceBrokerApiVersionException ex) {
+		return getErrorResponse(ex);
+	}
+
+	@ExceptionHandler(ServiceBrokerApiVersionMissingException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ErrorMessage handleException(ServiceBrokerApiVersionMissingException ex) {
 		return getErrorResponse(ex);
 	}
 

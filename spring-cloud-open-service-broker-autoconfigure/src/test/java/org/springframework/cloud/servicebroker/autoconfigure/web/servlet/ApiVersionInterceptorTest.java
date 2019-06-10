@@ -26,6 +26,7 @@ import org.mockito.MockitoAnnotations;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.ApiVersionInterceptor;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionMissingException;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 
 import static org.junit.Assert.assertTrue;
@@ -77,4 +78,11 @@ public class ApiVersionInterceptorTest {
 		interceptor.preHandle(request, response, null);
 	}
 
+	@Test(expected = ServiceBrokerApiVersionMissingException.class)
+	public void versionHeaderIsMissing() {
+		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", "9.9");
+		when(request.getHeader("header")).thenReturn(null);
+		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(brokerApiVersion);
+		interceptor.preHandle(request, response, null);
+	}
 }
