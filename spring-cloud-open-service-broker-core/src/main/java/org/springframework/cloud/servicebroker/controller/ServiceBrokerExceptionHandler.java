@@ -20,21 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
-import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
-import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
-import org.springframework.cloud.servicebroker.exception.ServiceBrokerBindingRequiresAppException;
-import org.springframework.cloud.servicebroker.exception.ServiceBrokerConcurrencyException;
-import org.springframework.cloud.servicebroker.exception.ServiceBrokerException;
-import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidOriginatingIdentityException;
-import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
-import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
-import org.springframework.cloud.servicebroker.exception.ServiceBrokerUnavailableException;
-import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
-import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
-import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
-import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
-import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
-import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
+import org.springframework.cloud.servicebroker.exception.*;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -65,6 +51,12 @@ public class ServiceBrokerExceptionHandler {
 	@ExceptionHandler(ServiceBrokerApiVersionException.class)
 	@ResponseStatus(HttpStatus.PRECONDITION_FAILED)
 	public ErrorMessage handleException(ServiceBrokerApiVersionException ex) {
+		return getErrorResponse(ex);
+	}
+
+	@ExceptionHandler(ServiceBrokerApiVersionMissingException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ErrorMessage handleException(ServiceBrokerApiVersionMissingException ex) {
 		return getErrorResponse(ex);
 	}
 
