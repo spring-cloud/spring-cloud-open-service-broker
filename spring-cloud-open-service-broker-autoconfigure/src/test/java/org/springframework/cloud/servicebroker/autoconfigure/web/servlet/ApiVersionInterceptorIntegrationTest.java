@@ -63,7 +63,7 @@ public class ApiVersionInterceptorIntegrationTest {
 	public void noHeaderSent() throws Exception {
 		mockWithExpectedVersion().perform(get(CATALOG_PATH)
 				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isPreconditionFailed())
+				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.description", containsString("expected-version")));
 	}
 
