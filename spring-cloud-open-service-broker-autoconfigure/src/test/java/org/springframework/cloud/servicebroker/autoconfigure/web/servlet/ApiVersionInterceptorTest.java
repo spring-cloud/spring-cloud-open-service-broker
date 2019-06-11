@@ -85,9 +85,4 @@ public class ApiVersionInterceptorTest {
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(brokerApiVersion);
 		interceptor.preHandle(request, response, null);
 	}
-
-	@Test
-	public void versionHeaderIsEmpty() {
-
-	}
 }
