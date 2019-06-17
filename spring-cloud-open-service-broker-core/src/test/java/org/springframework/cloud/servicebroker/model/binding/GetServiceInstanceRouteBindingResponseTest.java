@@ -90,7 +90,7 @@ public class GetServiceInstanceRouteBindingResponseTest {
 		assertThat(response.getRouteServiceUrl()).isEqualTo("https://route.local");
 		assertThat(response.getParameters())
 				.hasSize(2)
-				.containsOnly(entry("param1", "foo"), entry("param2", "bar"));
+				.containsOnly(entry("param1", "param-a"), entry("param2", "param-b"));
 	}
 
 	@Test

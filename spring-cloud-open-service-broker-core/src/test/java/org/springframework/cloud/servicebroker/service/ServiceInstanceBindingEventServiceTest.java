@@ -83,14 +83,14 @@ public class ServiceInstanceBindingEventServiceTest {
 		StepVerifier
 				.create(serviceInstanceBindingEventService.createServiceInstanceBinding(
 						CreateServiceInstanceBindingRequest.builder()
-								.serviceInstanceId("foo")
-								.serviceDefinitionId("bar")
+								.serviceInstanceId("service-instance-id")
+								.serviceDefinitionId("service-binding-id")
 								.build()))
 				.expectNext(CreateServiceInstanceAppBindingResponse.builder().build())
 				.verifyComplete();
 
-		assertThat(this.results.getBeforeCreate()).isEqualTo("before create foo");
-		assertThat(this.results.getAfterCreate()).isEqualTo("after create foo");
+		assertThat(this.results.getBeforeCreate()).isEqualTo("before create service-instance-id");
+		assertThat(this.results.getAfterCreate()).isEqualTo("after create service-instance-id");
 		assertThat(this.results.getErrorCreate()).isNullOrEmpty();
 		assertThat(this.results.getBeforeDelete()).isNullOrEmpty();
 		assertThat(this.results.getAfterDelete()).isNullOrEmpty();
@@ -104,14 +104,14 @@ public class ServiceInstanceBindingEventServiceTest {
 		StepVerifier
 				.create(serviceInstanceBindingEventService.createServiceInstanceBinding(
 						CreateServiceInstanceBindingRequest.builder()
-								.serviceInstanceId("foo")
+								.serviceInstanceId("service-instance-id")
 								.build()))
 				.expectError()
 				.verify();
 
-		assertThat(this.results.getBeforeCreate()).isEqualTo("before create foo");
+		assertThat(this.results.getBeforeCreate()).isEqualTo("before create service-instance-id");
 		assertThat(this.results.getAfterCreate()).isNullOrEmpty();
-		assertThat(this.results.getErrorCreate()).isEqualTo("error create foo");
+		assertThat(this.results.getErrorCreate()).isEqualTo("error create service-instance-id");
 		assertThat(this.results.getBeforeDelete()).isNullOrEmpty();
 		assertThat(this.results.getAfterDelete()).isNullOrEmpty();
 		assertThat(this.results.getErrorDelete()).isNullOrEmpty();
@@ -122,8 +122,8 @@ public class ServiceInstanceBindingEventServiceTest {
 		StepVerifier
 				.create(serviceInstanceBindingEventService.getServiceInstanceBinding(
 						GetServiceInstanceBindingRequest.builder()
-								.serviceInstanceId("foo")
-								.bindingId("bar")
+								.serviceInstanceId("service-instance-id")
+								.bindingId("service-binding-id")
 								.build()))
 				.expectNext(GetServiceInstanceAppBindingResponse.builder().build())
 				.verifyComplete();
@@ -136,14 +136,14 @@ public class ServiceInstanceBindingEventServiceTest {
 		StepVerifier
 				.create(serviceInstanceBindingEventService.getLastOperation(
 						GetLastServiceBindingOperationRequest.builder()
-								.bindingId("foo")
-								.serviceInstanceId("bar")
+								.bindingId("service-instance-id")
+								.serviceInstanceId("service-binding-id")
 								.build()))
 				.expectNext(GetLastServiceBindingOperationResponse.builder().build())
 				.verifyComplete();
 
-		assertThat(this.results.getBeforeLastOperation()).isEqualTo("before foo");
-		assertThat(this.results.getAfterLastOperation()).isEqualTo("after foo");
+		assertThat(this.results.getBeforeLastOperation()).isEqualTo("before service-instance-id");
+		assertThat(this.results.getAfterLastOperation()).isEqualTo("after service-instance-id");
 		assertThat(this.results.getErrorLastOperation()).isNullOrEmpty();
 	}
 
@@ -154,14 +154,14 @@ public class ServiceInstanceBindingEventServiceTest {
 		StepVerifier
 				.create(serviceInstanceBindingEventService.getLastOperation(
 						GetLastServiceBindingOperationRequest.builder()
-								.bindingId("foo")
+								.bindingId("service-instance-id")
 								.build()))
 				.expectError()
 				.verify();
 
-		assertThat(this.results.getBeforeLastOperation()).isEqualTo("before foo");
+		assertThat(this.results.getBeforeLastOperation()).isEqualTo("before service-instance-id");
 		assertThat(this.results.getAfterLastOperation()).isNullOrEmpty();
-		assertThat(this.results.getErrorLastOperation()).isEqualTo("error foo");
+		assertThat(this.results.getErrorLastOperation()).isEqualTo("error service-instance-id");
 	}
 
 	private void prepareLastOperationEventFlows() {
@@ -199,8 +199,8 @@ public class ServiceInstanceBindingEventServiceTest {
 		StepVerifier
 				.create(serviceInstanceBindingEventService.deleteServiceInstanceBinding(
 						DeleteServiceInstanceBindingRequest.builder()
-								.serviceInstanceId("foo")
-								.bindingId("bar")
+								.serviceInstanceId("service-instance-id")
+								.bindingId("service-binding-id")
 								.build()))
 				.expectNext(DeleteServiceInstanceBindingResponse.builder().build())
 				.verifyComplete();
@@ -208,8 +208,8 @@ public class ServiceInstanceBindingEventServiceTest {
 		assertThat(this.results.getBeforeCreate()).isNullOrEmpty();
 		assertThat(this.results.getAfterCreate()).isNullOrEmpty();
 		assertThat(this.results.getErrorCreate()).isNullOrEmpty();
-		assertThat(this.results.getBeforeDelete()).isEqualTo("before delete foo");
-		assertThat(this.results.getAfterDelete()).isEqualTo("after delete foo");
+		assertThat(this.results.getBeforeDelete()).isEqualTo("before delete service-instance-id");
+		assertThat(this.results.getAfterDelete()).isEqualTo("after delete service-instance-id");
 		assertThat(this.results.getErrorDelete()).isNullOrEmpty();
 	}
 
@@ -220,7 +220,7 @@ public class ServiceInstanceBindingEventServiceTest {
 		StepVerifier
 				.create(serviceInstanceBindingEventService.deleteServiceInstanceBinding(
 						DeleteServiceInstanceBindingRequest.builder()
-								.serviceInstanceId("foo")
+								.serviceInstanceId("service-instance-id")
 								.build()))
 				.expectError()
 				.verify();
@@ -228,9 +228,9 @@ public class ServiceInstanceBindingEventServiceTest {
 		assertThat(this.results.getBeforeCreate()).isNullOrEmpty();
 		assertThat(this.results.getAfterCreate()).isNullOrEmpty();
 		assertThat(this.results.getErrorCreate()).isNullOrEmpty();
-		assertThat(this.results.getBeforeDelete()).isEqualTo("before delete foo");
+		assertThat(this.results.getBeforeDelete()).isEqualTo("before delete service-instance-id");
 		assertThat(this.results.getAfterDelete()).isNullOrEmpty();
-		assertThat(this.results.getErrorDelete()).isEqualTo("error delete foo");
+		assertThat(this.results.getErrorDelete()).isEqualTo("error delete service-instance-id");
 	}
 
 
@@ -285,7 +285,7 @@ public class ServiceInstanceBindingEventServiceTest {
 		@Override
 		public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
 			if (request.getServiceDefinitionId() == null) {
-				return Mono.error(new ServiceInstanceBindingExistsException("foo", "arrrr"));
+				return Mono.error(new ServiceInstanceBindingExistsException("service-instance-id", "arrrr"));
 			}
 			return Mono.just(CreateServiceInstanceAppBindingResponse.builder().build());
 		}
@@ -293,7 +293,7 @@ public class ServiceInstanceBindingEventServiceTest {
 		@Override
 		public Mono<GetServiceInstanceBindingResponse> getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
 			if (request.getBindingId() == null) {
-				return Mono.error(new ServiceInstanceDoesNotExistException("foo"));
+				return Mono.error(new ServiceInstanceDoesNotExistException("service-instance-id"));
 			}
 			return Mono.just(GetServiceInstanceAppBindingResponse.builder().build());
 		}
@@ -301,7 +301,7 @@ public class ServiceInstanceBindingEventServiceTest {
 		@Override
 		public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
 			if (request.getBindingId() == null) {
-				return Mono.error(new ServiceInstanceBindingDoesNotExistException("bar"));
+				return Mono.error(new ServiceInstanceBindingDoesNotExistException("service-binding-id"));
 			}
 			return Mono.just(DeleteServiceInstanceBindingResponse.builder().build());
 		}

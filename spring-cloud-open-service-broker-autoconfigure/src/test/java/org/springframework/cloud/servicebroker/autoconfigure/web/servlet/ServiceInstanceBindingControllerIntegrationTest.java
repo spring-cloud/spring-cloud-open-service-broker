@@ -308,7 +308,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 	@Test
 	public void createBindingWithInvalidFieldsFails() throws Exception {
-		String body = createRequestBody.replace("service_id", "foo");
+		String body = createRequestBody.replace("service_id", "service-1");
 
 		mockMvc.perform(put(buildCreateUrl())
 				.content(body)
@@ -525,7 +525,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	public void deleteBindingWithMissingQueryParamsFails() throws Exception {
 		setupCatalogService(null);
 
-		final String url = buildDeleteUrl(null, false).replace("plan_id", "foo");
+		final String url = buildDeleteUrl(null, false).replace("plan_id", "plan-1");
 
 		MvcResult mvcResult = mockMvc.perform(delete(url)
 				.accept(MediaType.APPLICATION_JSON))

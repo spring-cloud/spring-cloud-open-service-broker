@@ -125,7 +125,7 @@ public class GetServiceInstanceAppBindingResponseTest {
 		GetServiceInstanceAppBindingResponse response = JsonUtils.readTestDataFile(
 				"getAppBindingResponse.json", GetServiceInstanceAppBindingResponse.class);
 
-		assertThat(response.getCredentials()).containsOnly(entry("cred1", "foo"), entry("cred2", "bar"));
+		assertThat(response.getCredentials()).containsOnly(entry("cred1", "cred-a"), entry("cred2", "cred-b"));
 		assertThat(response.getSyslogDrainUrl()).isEqualTo("https://logs.hello.local");
 		assertThat(response.getParameters()).containsOnly(entry("field1", "p1"), entry("field2", "p2"));
 		assertThat(response.getVolumeMounts()).hasSize(1);
