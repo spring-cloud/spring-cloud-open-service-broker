@@ -22,6 +22,8 @@ import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
@@ -56,6 +58,16 @@ public class ServiceInstanceBindingEventService implements ServiceInstanceBindin
 	@Override
 	public Mono<GetServiceInstanceBindingResponse> getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
 		return service.getServiceInstanceBinding(request);
+	}
+
+	@Override
+	public Mono<GetLastServiceBindingOperationResponse> getLastOperation(GetLastServiceBindingOperationRequest request) {
+		return flows.getAsyncOperationBindingRegistry().getInitializationFlows(request)
+				.then(service.getLastOperation(request))
+				.onErrorResume(e -> flows.getAsyncOperationBindingRegistry().getErrorFlows(request, e)
+						.then(Mono.error(e)))
+				.flatMap(response -> flows.getAsyncOperationBindingRegistry().getCompletionFlows(request, response)
+						.then(Mono.just(response)));
 	}
 
 	@Override

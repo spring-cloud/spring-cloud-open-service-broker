@@ -16,11 +16,14 @@
 
 package org.springframework.cloud.servicebroker.service;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
@@ -29,10 +32,22 @@ import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.service.events.AsyncOperationServiceInstanceBindingEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.AsyncOperationServiceInstanceEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.CreateServiceInstanceBindingEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.CreateServiceInstanceEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.DeleteServiceInstanceBindingEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.DeleteServiceInstanceEventFlowRegistry;
 import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
+import org.springframework.cloud.servicebroker.service.events.UpdateServiceInstanceEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceBindingCompletionFlow;
+import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceBindingErrorFlow;
+import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceBindingInitializationFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.CreateServiceInstanceBindingCompletionFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.CreateServiceInstanceBindingErrorFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.CreateServiceInstanceBindingInitializationFlow;
@@ -112,6 +127,69 @@ public class ServiceInstanceBindingEventServiceTest {
 								.build()))
 				.expectNext(GetServiceInstanceAppBindingResponse.builder().build())
 				.verifyComplete();
+	}
+
+	@Test
+	public void getLastOperationSucceeds() {
+		prepareLastOperationEventFlows();
+
+		StepVerifier
+				.create(serviceInstanceBindingEventService.getLastOperation(
+						GetLastServiceBindingOperationRequest.builder()
+								.bindingId("foo")
+								.serviceInstanceId("bar")
+								.build()))
+				.expectNext(GetLastServiceBindingOperationResponse.builder().build())
+				.verifyComplete();
+
+		assertThat(this.results.getBeforeLastOperation()).isEqualTo("before foo");
+		assertThat(this.results.getAfterLastOperation()).isEqualTo("after foo");
+		assertThat(this.results.getErrorLastOperation()).isNullOrEmpty();
+	}
+
+	@Test
+	public void getLastOperationFails() {
+		prepareLastOperationEventFlows();
+
+		StepVerifier
+				.create(serviceInstanceBindingEventService.getLastOperation(
+						GetLastServiceBindingOperationRequest.builder()
+								.bindingId("foo")
+								.build()))
+				.expectError()
+				.verify();
+
+		assertThat(this.results.getBeforeLastOperation()).isEqualTo("before foo");
+		assertThat(this.results.getAfterLastOperation()).isNullOrEmpty();
+		assertThat(this.results.getErrorLastOperation()).isEqualTo("error foo");
+	}
+
+	private void prepareLastOperationEventFlows() {
+		this.eventFlowRegistries.getAsyncOperationBindingRegistry()
+				.addInitializationFlow(new AsyncOperationServiceInstanceBindingInitializationFlow() {
+					@Override
+					public Mono<Void> initialize(GetLastServiceBindingOperationRequest request) {
+						return results.setBeforeLastOperation("before " + request.getBindingId());
+					}
+				})
+				.then(this.eventFlowRegistries.getAsyncOperationBindingRegistry()
+						.addCompletionFlow(new AsyncOperationServiceInstanceBindingCompletionFlow() {
+							@Override
+							public Mono<Void> complete(
+									GetLastServiceBindingOperationRequest request,
+									GetLastServiceBindingOperationResponse response) {
+								return results.setAfterLastOperation("after " + request.getBindingId());
+							}
+						}))
+				.then(eventFlowRegistries.getAsyncOperationBindingRegistry()
+						.addErrorFlow(new AsyncOperationServiceInstanceBindingErrorFlow() {
+							@Override
+							public Mono<Void> error(GetLastServiceBindingOperationRequest request,
+													Throwable t) {
+								return results.setErrorLastOperation("error " + request.getBindingId());
+							}
+						}))
+				.subscribe();
 	}
 
 	@Test
@@ -228,6 +306,13 @@ public class ServiceInstanceBindingEventServiceTest {
 			return Mono.just(DeleteServiceInstanceBindingResponse.builder().build());
 		}
 
+		@Override
+		public Mono<GetLastServiceBindingOperationResponse> getLastOperation(GetLastServiceBindingOperationRequest request) {
+			if (request.getServiceInstanceId() == null) {
+				return Mono.error(new ServiceBrokerInvalidParametersException("service instance id cannot be null"));
+			}
+			return Mono.just(GetLastServiceBindingOperationResponse.builder().build());
+		}
 	}
 
 	private static class EventFlowTestResults {
@@ -243,6 +328,12 @@ public class ServiceInstanceBindingEventServiceTest {
 		private String afterDelete = null;
 
 		private String errorDelete = null;
+
+		private String beforeLastOperation = null;
+
+		private String afterLastOperation = null;
+
+		private String errorLastOperation = null;
 
 		String getBeforeCreate() {
 			return beforeCreate;
@@ -295,6 +386,33 @@ public class ServiceInstanceBindingEventServiceTest {
 
 		public Mono<Void> setErrorDelete(String errorDelete) {
 			return Mono.fromCallable(() -> this.errorDelete = errorDelete)
+					.then();
+		}
+
+		String getBeforeLastOperation() {
+			return beforeLastOperation;
+		}
+
+		Mono<Void> setBeforeLastOperation(String s) {
+			return Mono.fromCallable(() -> this.beforeLastOperation = s)
+					.then();
+		}
+
+		String getAfterLastOperation() {
+			return afterLastOperation;
+		}
+
+		Mono<Void> setAfterLastOperation(String s) {
+			return Mono.fromCallable(() -> this.afterLastOperation = s)
+					.then();
+		}
+
+		String getErrorLastOperation() {
+			return errorLastOperation;
+		}
+
+		Mono<Void> setErrorLastOperation(String s) {
+			return Mono.fromCallable(() -> this.errorLastOperation = s)
 					.then();
 		}
 	}

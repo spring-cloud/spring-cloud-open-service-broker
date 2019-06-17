@@ -35,6 +35,8 @@ public class EventFlowRegistries {
 
 	private DeleteServiceInstanceBindingEventFlowRegistry deleteInstanceBindingRegistry;
 
+	private AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry;
+
 	public EventFlowRegistries() {
 		this.createInstanceRegistry = new CreateServiceInstanceEventFlowRegistry();
 		this.updateInstanceRegistry = new UpdateServiceInstanceEventFlowRegistry();
@@ -42,6 +44,7 @@ public class EventFlowRegistries {
 		this.asyncOperationRegistry = new AsyncOperationServiceInstanceEventFlowRegistry();
 		this.createInstanceBindingRegistry = new CreateServiceInstanceBindingEventFlowRegistry();
 		this.deleteInstanceBindingRegistry = new DeleteServiceInstanceBindingEventFlowRegistry();
+		this.asyncOperationBindingRegistry = new AsyncOperationServiceInstanceBindingEventFlowRegistry();
 	}
 
 	public CreateServiceInstanceEventFlowRegistry getCreateInstanceRegistry() {
@@ -66,6 +69,10 @@ public class EventFlowRegistries {
 
 	public DeleteServiceInstanceBindingEventFlowRegistry getDeleteInstanceBindingRegistry() {
 		return deleteInstanceBindingRegistry;
+	}
+
+	public AsyncOperationServiceInstanceBindingEventFlowRegistry getAsyncOperationBindingRegistry() {
+		return asyncOperationBindingRegistry;
 	}
 
 }
