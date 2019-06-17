@@ -97,7 +97,7 @@ public class GetServiceInstanceResponseTest {
 		assertThat(response.getServiceDefinitionId()).isEqualTo("service-definition-id");
 		assertThat(response.getPlanId()).isEqualTo("plan-id");
 		assertThat(response.getDashboardUrl()).isEqualTo("https://dashboard.local");
-		assertThat(response.getParameters()).containsOnly(entry("field1", "foo"), entry("field2", "bar"));
+		assertThat(response.getParameters()).containsOnly(entry("field1", "field-a"), entry("field2", "field-b"));
 	}
 
 	@Test

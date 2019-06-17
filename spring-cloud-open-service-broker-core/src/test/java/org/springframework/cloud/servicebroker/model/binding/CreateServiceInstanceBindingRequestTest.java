@@ -129,7 +129,7 @@ public class CreateServiceInstanceBindingRequestTest {
 		assertThat(request.getBindResource().getProperty("field2")).isEqualTo(2);
 
 		assertThat(request.getParameters().get("parameter1")).isEqualTo(1);
-		assertThat(request.getParameters().get("parameter2")).isEqualTo("foo");
+		assertThat(request.getParameters().get("parameter2")).isEqualTo("param-a");
 		assertThat(request.getParameters().get("parameter3")).isEqualTo(true);
 	}
 

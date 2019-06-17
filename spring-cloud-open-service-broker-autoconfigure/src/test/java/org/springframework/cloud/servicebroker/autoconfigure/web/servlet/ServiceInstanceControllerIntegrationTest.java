@@ -328,7 +328,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 	@Test
 	public void createServiceInstanceWithInvalidFieldsFails() throws Exception {
-		String body = createRequestBody.replace("service_id", "foo");
+		String body = createRequestBody.replace("service_id", "service-1");
 
 		MvcResult mvcResult = mockMvc.perform(put(buildCreateUpdateUrl())
 				.content(body)
@@ -499,7 +499,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	public void deleteServiceInstanceWithMissingQueryParamsFails() throws Exception {
 		setupCatalogService(null);
 
-		final String url = buildDeleteUrl(null, false).replace("plan_id", "foo");
+		final String url = buildDeleteUrl(null, false).replace("plan_id", "plan-1");
 
 		MvcResult mvcResult = mockMvc.perform(delete(url)
 				.accept(MediaType.APPLICATION_JSON))

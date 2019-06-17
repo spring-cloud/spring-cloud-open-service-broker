@@ -1,7 +1,7 @@
 {
   "credentials": {
-    "cred1": "foo",
-    "cred2": "bar"
+    "cred1": "cred-a",
+    "cred2": "cred-b"
   },
   "syslog_drain_url": "https://logs.hello.local",
   "parameters": {

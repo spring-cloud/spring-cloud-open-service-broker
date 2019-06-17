@@ -280,7 +280,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 	@Test
 	public void createServiceInstanceWithInvalidFieldsFails() throws Exception {
-		String body = createRequestBody.replace("service_id", "foo");
+		String body = createRequestBody.replace("service_id", "service-1");
 
 		client.put().uri(buildCreateUpdateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
@@ -440,7 +440,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	public void deleteBindingWithMissingQueryParamsFails() throws Exception {
 		setupCatalogService(null);
 
-		final String url = buildDeleteUrl(null, false).replace("plan_id", "foo");
+		final String url = buildDeleteUrl(null, false).replace("plan_id", "plan-1");
 
 		client.delete().uri(url)
 				.accept(MediaType.APPLICATION_JSON)

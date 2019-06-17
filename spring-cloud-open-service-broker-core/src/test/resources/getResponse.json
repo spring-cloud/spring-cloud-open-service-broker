@@ -3,7 +3,7 @@
   "service_id": "service-definition-id",
   "dashboard_url": "https://dashboard.local",
   "parameters": {
-    "field1": "foo",
-    "field2": "bar"
+    "field1": "field-a",
+    "field2": "field-b"
   }
 }

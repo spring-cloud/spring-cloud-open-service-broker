@@ -50,7 +50,7 @@ public class AsyncParameterizedServiceInstanceRequestTest {
 		Map<String, Object> parameters = request.getParameters();
 		assertThat(parameters).hasSize(3);
 		assertThat(parameters.get("parameter1")).isEqualTo(1);
-		assertThat(parameters.get("parameter2")).isEqualTo("foo");
+		assertThat(parameters.get("parameter2")).isEqualTo("param-a");
 		assertThat(parameters.get("parameter3")).isEqualTo(true);
 	}
 

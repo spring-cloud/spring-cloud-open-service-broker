@@ -13,7 +13,7 @@
 	},
 	"parameters": {
 		"parameter1": 1,
-		"parameter2": "foo",
+		"parameter2": "param-a",
 		"parameter3": true
 	}
 }

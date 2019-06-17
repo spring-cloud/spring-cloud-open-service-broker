@@ -291,7 +291,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 	@Test
 	public void createBindingWithInvalidFieldsFails() throws Exception {
-		String body = createRequestBody.replace("service_id", "foo");
+		String body = createRequestBody.replace("service_id", "service-1");
 
 		client.put().uri(buildCreateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
@@ -476,7 +476,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	public void deleteBindingWithMissingQueryParamsFails() throws Exception {
 		setupCatalogService(null);
 
-		final String url = buildDeleteUrl(null, false).replace("plan_id", "foo");
+		final String url = buildDeleteUrl(null, false).replace("plan_id", "plan-1");
 
 		client.delete().uri(url)
 				.accept(MediaType.APPLICATION_JSON)
