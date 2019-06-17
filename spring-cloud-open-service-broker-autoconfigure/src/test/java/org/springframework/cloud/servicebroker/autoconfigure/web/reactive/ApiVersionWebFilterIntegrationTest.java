@@ -64,8 +64,7 @@ public class ApiVersionWebFilterIntegrationTest {
 		mockWithExpectedVersion().get().uri(CATALOG_PATH)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
-				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.PRECONDITION_FAILED)
+				.expectStatus().isBadRequest()
 				.expectBody()
 				.consumeWith(result -> {
 					String responseBody = new String(result.getResponseBody(), UTF_8);
@@ -80,7 +79,6 @@ public class ApiVersionWebFilterIntegrationTest {
 				.header(BrokerApiVersion.DEFAULT_API_VERSION_HEADER, "wrong-version")
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
-				.expectStatus().is4xxClientError()
 				.expectStatus().isEqualTo(HttpStatus.PRECONDITION_FAILED)
 				.expectBody()
 				.consumeWith(result -> {

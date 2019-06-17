@@ -85,4 +85,12 @@ public class ApiVersionInterceptorTest {
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(brokerApiVersion);
 		interceptor.preHandle(request, response, null);
 	}
+
+	@Test
+	public void versionHeaderIsMissingAnyVersionAccepted() {
+		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", BrokerApiVersion.API_VERSION_ANY);
+		when(request.getHeader("header")).thenReturn(null);
+		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(brokerApiVersion);
+		assertTrue(interceptor.preHandle(request, response, null));
+	}
 }

@@ -16,7 +16,6 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -40,20 +39,9 @@ public class ApiVersionWebFilterTest {
 	@Mock
 	private WebFilterChain chain;
 
-	@Before
-	public void setUp() {
-		MockServerHttpRequest request = MockServerHttpRequest
-				.get(V2_API_PATH_PATTERN)
-				.header("header", "9.9")
-				.build();
-		this.exchange = MockServerWebExchange.from(request);
-		MockitoAnnotations.initMocks(this);
-		exchange.getResponse().setStatusCode(HttpStatus.OK);
-		when(chain.filter(exchange)).thenReturn(Mono.empty());
-	}
-
 	@Test
 	public void noBrokerApiVersionConfigured() {
+		setUpVersionResponse("9.9");
 		ApiVersionWebFilter webFilter = new ApiVersionWebFilter();
 		webFilter.filter(exchange, chain);
 		assertThat(exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -61,6 +49,7 @@ public class ApiVersionWebFilterTest {
 
 	@Test
 	public void anyVersionAccepted() {
+		setUpVersionResponse("9.9");
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", BrokerApiVersion.API_VERSION_ANY);
 		ApiVersionWebFilter webFilter = new ApiVersionWebFilter(brokerApiVersion);
 		webFilter.filter(exchange, chain).block();
@@ -69,6 +58,7 @@ public class ApiVersionWebFilterTest {
 
 	@Test
 	public void versionsMatch() {
+		setUpVersionResponse("9.9");
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", "9.9");
 		ApiVersionWebFilter webFilter = new ApiVersionWebFilter(brokerApiVersion);
 		webFilter.filter(exchange, chain).block();
@@ -77,10 +67,48 @@ public class ApiVersionWebFilterTest {
 
 	@Test
 	public void versionMismatch() {
+		setUpVersionResponse("9.9");
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", "8.8");
 		ApiVersionWebFilter webFilter = new ApiVersionWebFilter(brokerApiVersion);
 		webFilter.filter(exchange, chain).block();
 		assertThat(exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.PRECONDITION_FAILED);
+	}
+
+	@Test
+	public void versionHeaderIsMissing() {
+		setUpVersionResponse(null);
+		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", "9.9");
+		ApiVersionWebFilter webFilter = new ApiVersionWebFilter(brokerApiVersion);
+		webFilter.filter(exchange, chain).block();
+		assertThat(exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+	}
+
+	@Test
+	public void versionHeaderIsMissingAnyVersionAccepted() {
+		setUpVersionResponse(null);
+		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", BrokerApiVersion.API_VERSION_ANY);
+		ApiVersionWebFilter webFilter = new ApiVersionWebFilter(brokerApiVersion);
+		webFilter.filter(exchange, chain).block();
+		assertThat(exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.OK);
+	}
+
+	private void setUpVersionResponse(String version) {
+		MockServerHttpRequest request = null;
+		if (version == null) {
+			request = MockServerHttpRequest
+					.get(V2_API_PATH_PATTERN)
+					.build();
+		}
+		else {
+			request = MockServerHttpRequest
+					.get(V2_API_PATH_PATTERN)
+					.header("header", version)
+					.build();
+		}
+		this.exchange = MockServerWebExchange.from(request);
+		MockitoAnnotations.initMocks(this);
+		exchange.getResponse().setStatusCode(HttpStatus.OK);
+		when(chain.filter(exchange)).thenReturn(Mono.empty());
 	}
 
 }

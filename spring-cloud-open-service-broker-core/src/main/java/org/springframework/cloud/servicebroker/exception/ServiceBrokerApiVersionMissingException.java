@@ -17,8 +17,7 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that the {@link org.springframework.cloud.servicebroker.model.BrokerApiVersion.DEFAULT_API_VERSION_HEADER}
- * header is missing of the request.
+ * Thrown to indicate that the API version header is missing from the request.
  *
  * <p>
  * Throwing this exception will result in an HTTP status code {@literal 400 BAD REQUEST}
@@ -29,11 +28,21 @@ public class ServiceBrokerApiVersionMissingException extends ServiceBrokerExcept
 	private static final long serialVersionUID = 8299020417615147387L;
 
 	/**
-	 * Construct an exception with the expected.
+	 * Construct an exception with the expected version.
 	 *
 	 * @param expectedVersion the version expected by the service broker
 	 */
 	public ServiceBrokerApiVersionMissingException(String expectedVersion) {
 		super(ServiceBrokerApiVersionErrorMessage.from(expectedVersion, "null").toString());
+	}
+
+	/**
+	 * Construct an exception with an error code and the expected version.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param expectedVersion the version expected by the service broker
+	 */
+	public ServiceBrokerApiVersionMissingException(String errorCode, String expectedVersion) {
+		super(errorCode, ServiceBrokerApiVersionErrorMessage.from(expectedVersion, "null").toString());
 	}
 }

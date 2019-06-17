@@ -77,9 +77,18 @@ public class ApiVersionWebFilter implements WebFilter {
 		PathPattern p = new PathPatternParser().parse(V2_API_PATH_PATTERN);
 		if (p.matches(exchange.getRequest().getPath()) && version != null && !anyVersionAllowed()) {
 			String apiVersion = exchange.getRequest().getHeaders().getFirst(version.getBrokerApiVersionHeader());
-			if (!version.getApiVersion().equals(apiVersion)) {
-				String message = ServiceBrokerApiVersionErrorMessage.from(version.getApiVersion(), apiVersion).toString();
-				ServerHttpResponse response = exchange.getResponse();
+			ServerHttpResponse response = exchange.getResponse();
+			String message = null;
+			if (apiVersion == null) {
+				response.setStatusCode(HttpStatus.BAD_REQUEST);
+				message = ServiceBrokerApiVersionErrorMessage.from(version.getApiVersion(), "null").toString();
+			}
+			else if (!version.getApiVersion().equals(apiVersion)) {
+				response.setStatusCode(HttpStatus.PRECONDITION_FAILED);
+				message = ServiceBrokerApiVersionErrorMessage.from(version.getApiVersion(), apiVersion)
+						.toString();
+			}
+			if (message != null) {
 				String json;
 				try {
 					json = new ObjectMapper().writeValueAsString(new ErrorMessage(message));
@@ -87,7 +96,6 @@ public class ApiVersionWebFilter implements WebFilter {
 				catch (JsonProcessingException e) {
 					json = "{}";
 				}
-				response.setStatusCode(HttpStatus.PRECONDITION_FAILED);
 				Flux<DataBuffer> responseBody =
 						Flux.just(json)
 								.map(s -> toDataBuffer(s, response.bufferFactory()));
