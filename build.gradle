@@ -59,6 +59,7 @@ configure(allprojects) {
 	apply plugin: "idea"
 	apply plugin: "jacoco"
 	apply plugin: "pmd"
+	apply plugin: "checkstyle"
 	apply plugin: "propdeps"
 	apply plugin: "propdeps-maven"
 	apply plugin: "propdeps-idea"
@@ -93,7 +94,21 @@ configure(allprojects) {
 			}
 		}
 	}
+}
 
+configure(allprojects - [project(":spring-cloud-open-service-broker-docs")]) {
+	apply plugin: "checkstyle"
+
+	checkstyle {
+		configFile = file("${project.rootDir}/config/checkstyle.xml")
+		toolVersion = 8.16
+	}
+	checkstyleMain {
+		source = "src/main/java"
+	}
+	checkstyleTest {
+		source = "src/test/java"
+	}
 }
 
 subprojects {
