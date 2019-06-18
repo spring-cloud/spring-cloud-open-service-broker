@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
@@ -142,7 +143,8 @@ public class ServiceInstanceBindingController extends BaseController {
 				.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
 				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
 				.onErrorResume(e -> {
-					if (e instanceof ServiceInstanceBindingDoesNotExistException) {
+					if (e instanceof ServiceInstanceBindingDoesNotExistException ||
+							e instanceof ServiceInstanceDoesNotExistException) {
 						return Mono.just(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 					}
 					else {
