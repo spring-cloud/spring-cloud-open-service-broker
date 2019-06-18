@@ -27,6 +27,7 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
@@ -189,6 +190,18 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 
 		ResponseEntity<GetServiceInstanceBindingResponse> responseEntity = controller
 				.getServiceInstanceBinding(pathVariables, null, null, null, null)
+				.block();
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	public void getServiceBindingWithMissingServiceInstanceGivesExpectedStatus() {
+		doThrow(new ServiceInstanceDoesNotExistException("nonexistent-service-id"))
+				.when(bindingService).getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class));
+
+		ResponseEntity<GetServiceInstanceBindingResponse> responseEntity = controller
+				.getServiceInstanceBinding(pathVariables, "nonexistent-service-id", "nonexistent-binding-id", null, null)
 				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
