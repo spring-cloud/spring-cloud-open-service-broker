@@ -93,7 +93,21 @@ configure(allprojects) {
 			}
 		}
 	}
+}
 
+configure(allprojects - [project(":spring-cloud-open-service-broker-docs")]) {
+	apply plugin: "checkstyle"
+
+	checkstyle {
+		configFile = file("${project.rootDir}/config/checkstyle.xml")
+		toolVersion = 8.16
+	}
+	checkstyleMain {
+		source = "src/main/java"
+	}
+	checkstyleTest {
+		source = "src/test/java"
+	}
 }
 
 subprojects {

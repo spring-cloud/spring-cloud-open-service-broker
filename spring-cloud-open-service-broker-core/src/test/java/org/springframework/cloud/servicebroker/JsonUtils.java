@@ -28,7 +28,6 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
-import org.springframework.cloud.servicebroker.model.Context;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
