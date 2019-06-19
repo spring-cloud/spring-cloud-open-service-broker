@@ -23,7 +23,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractServiceInstanceBindingControllerIntegrationTest;
-import org.springframework.cloud.servicebroker.controller.ServiceBrokerExceptionHandler;
+import org.springframework.cloud.servicebroker.controller.ServiceBrokerWebFluxExceptionHandler;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
@@ -60,7 +60,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	@Before
 	public void setUp() {
 		this.client = WebTestClient.bindToController(this.controller)
-				.controllerAdvice(ServiceBrokerExceptionHandler.class)
+				.controllerAdvice(ServiceBrokerWebFluxExceptionHandler.class)
 				.build();
 	}
 

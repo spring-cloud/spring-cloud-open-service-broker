@@ -17,9 +17,7 @@
 package org.springframework.cloud.servicebroker.controller;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionMissingException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
@@ -37,33 +35,23 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotE
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.support.WebExchangeBindException;
-import org.springframework.web.server.ServerWebInputException;
 
 /**
  * Exception handling logic shared by all Controllers.
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
-@ControllerAdvice(annotations = ServiceBrokerRestController.class)
-@ResponseBody
-@Order(Ordered.LOWEST_PRECEDENCE - 10)
-public class ServiceBrokerExceptionHandler {
+public abstract class ServiceBrokerExceptionHandler {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ServiceBrokerExceptionHandler.class);
+	static final String UNPROCESSABLE_REQUEST = "Unprocessable request received: ";
 
-	private static final String UNPROCESSABLE_REQUEST = "Unprocessable request received: ";
+	protected abstract Logger getLog();
 
 	@ExceptionHandler(ServiceBrokerApiVersionException.class)
 	@ResponseStatus(HttpStatus.PRECONDITION_FAILED)
@@ -128,53 +116,14 @@ public class ServiceBrokerExceptionHandler {
 	@ExceptionHandler(ServiceBrokerInvalidOriginatingIdentityException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public ErrorMessage handleException(ServiceBrokerInvalidOriginatingIdentityException ex) {
-		LOG.error(UNPROCESSABLE_REQUEST, ex);
+		getLog().error(UNPROCESSABLE_REQUEST, ex);
 		return getErrorResponse(ex);
-	}
-
-	// Spring WebMVC throws this exception
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ErrorMessage handleException(MethodArgumentNotValidException ex) {
-		return handleBindingException(ex, ex.getBindingResult());
-	}
-
-	// Spring WebFlux throws this exception
-	@ExceptionHandler(WebExchangeBindException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ErrorMessage handleException(WebExchangeBindException ex) {
-		return handleBindingException(ex, ex.getBindingResult());
-	}
-
-	private ErrorMessage handleBindingException(Exception ex, final BindingResult result) {
-		LOG.error(UNPROCESSABLE_REQUEST, ex);
-		StringBuilder message = new StringBuilder("Missing required fields:");
-		for (FieldError error : result.getFieldErrors()) {
-			message.append(' ').append(error.getField());
-		}
-		return getErrorResponse(message.toString());
-	}
-
-	// Spring WebMVC throws this exception
-	@ExceptionHandler(MissingServletRequestParameterException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ErrorMessage handleException(MissingServletRequestParameterException ex) {
-		LOG.error(UNPROCESSABLE_REQUEST, ex);
-		return getErrorResponse(ex.getMessage());
-	}
-
-	// Spring WebFlux throws this exception
-	@ExceptionHandler(ServerWebInputException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ErrorMessage handleException(ServerWebInputException ex) {
-		LOG.error(UNPROCESSABLE_REQUEST, ex);
-		return getErrorResponse(ex.getMessage());
 	}
 
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ErrorMessage handleException(Exception ex) {
-		LOG.error("Unknown exception handled: ", ex);
+		getLog().error("Unknown exception handled: ", ex);
 		return getErrorResponse(ex);
 	}
 
@@ -208,17 +157,27 @@ public class ServiceBrokerExceptionHandler {
 		return getErrorResponse(ex);
 	}
 
-	protected ErrorMessage getErrorResponse(ServiceBrokerException ex) {
-		LOG.debug(ex.getMessage(), ex);
+	ErrorMessage getErrorResponse(ServiceBrokerException ex) {
+		getLog().debug(ex.getMessage(), ex);
 		return ex.getErrorMessage();
 	}
 
-	protected ErrorMessage getErrorResponse(Exception ex) {
+	ErrorMessage getErrorResponse(Exception ex) {
 		return getErrorResponse(ex.getMessage());
 	}
 
-	protected ErrorMessage getErrorResponse(String message) {
+	ErrorMessage getErrorResponse(String message) {
 		return new ErrorMessage(message);
 	}
+
+	ErrorMessage handleBindingException(Exception ex, final BindingResult result) {
+		getLog().error(UNPROCESSABLE_REQUEST, ex);
+		StringBuilder message = new StringBuilder("Missing required fields:");
+		for (FieldError error : result.getFieldErrors()) {
+			message.append(' ').append(error.getField());
+		}
+		return getErrorResponse(message.toString());
+	}
+
 
 }

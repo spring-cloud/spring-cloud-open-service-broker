@@ -22,7 +22,7 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractServiceInstanceControllerIntegrationTest;
-import org.springframework.cloud.servicebroker.controller.ServiceBrokerExceptionHandler;
+import org.springframework.cloud.servicebroker.controller.ServiceBrokerWebMvcExceptionHandler;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
@@ -72,7 +72,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	@Before
 	public void setUp() {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(this.controller)
-				.setControllerAdvice(ServiceBrokerExceptionHandler.class)
+				.setControllerAdvice(ServiceBrokerWebMvcExceptionHandler.class)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter())
 				.build();
 	}
