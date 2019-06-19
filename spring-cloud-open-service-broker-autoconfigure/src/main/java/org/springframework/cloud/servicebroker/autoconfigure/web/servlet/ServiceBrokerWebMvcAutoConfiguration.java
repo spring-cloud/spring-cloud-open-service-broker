@@ -24,7 +24,7 @@ import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguratio
 import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerAutoConfiguration;
 import org.springframework.cloud.servicebroker.autoconfigure.web.exception.ServiceInstanceServiceBeanDoesNotExistException;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
-import org.springframework.cloud.servicebroker.controller.ServiceBrokerExceptionHandler;
+import org.springframework.cloud.servicebroker.controller.ServiceBrokerWebMvcExceptionHandler;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceController;
 import org.springframework.cloud.servicebroker.service.CatalogService;
@@ -87,8 +87,8 @@ public class ServiceBrokerWebMvcAutoConfiguration {
 	}
 
 	@Bean
-	public ServiceBrokerExceptionHandler serviceBrokerExceptionHandler() {
-		return new ServiceBrokerExceptionHandler();
+	public ServiceBrokerWebMvcExceptionHandler serviceBrokerExceptionHandler() {
+		return new ServiceBrokerWebMvcExceptionHandler();
 	}
 
 }

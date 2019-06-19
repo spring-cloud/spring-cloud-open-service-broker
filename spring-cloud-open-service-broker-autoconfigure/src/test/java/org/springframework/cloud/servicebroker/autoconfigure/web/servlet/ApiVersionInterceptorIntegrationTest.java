@@ -25,7 +25,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.controller.CatalogController;
-import org.springframework.cloud.servicebroker.controller.ServiceBrokerExceptionHandler;
+import org.springframework.cloud.servicebroker.controller.ServiceBrokerWebMvcExceptionHandler;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
@@ -103,14 +103,14 @@ public class ApiVersionInterceptorIntegrationTest {
 	private MockMvc mockWithDefaultVersion() {
 		return MockMvcBuilders.standaloneSetup(controller)
 				.addInterceptors(new ApiVersionInterceptor(new BrokerApiVersion()))
-				.setControllerAdvice(ServiceBrokerExceptionHandler.class)
+				.setControllerAdvice(ServiceBrokerWebMvcExceptionHandler.class)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
 	}
 
 	private MockMvc mockWithExpectedVersion() {
 		return MockMvcBuilders.standaloneSetup(controller)
 				.addInterceptors(new ApiVersionInterceptor(new BrokerApiVersion("expected-version")))
-				.setControllerAdvice(ServiceBrokerExceptionHandler.class)
+				.setControllerAdvice(ServiceBrokerWebMvcExceptionHandler.class)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
 	}
 }
