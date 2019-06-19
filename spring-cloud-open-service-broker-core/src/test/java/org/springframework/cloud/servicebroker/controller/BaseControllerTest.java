@@ -35,7 +35,7 @@ public class BaseControllerTest {
 			"\"key2\":\"value2\"" +
 			"}";
 
-	private TestBaseController controller = new TestBaseController();
+	private final TestBaseController controller = new TestBaseController();
 
 	@Test(expected = ServiceBrokerInvalidOriginatingIdentityException.class)
 	public void originatingIdentityWithNoPropertiesThrowsException() {
@@ -82,8 +82,8 @@ public class BaseControllerTest {
 		assertThat(context.getProperty("key2")).isEqualTo("value2");
 	}
 
-	private String encode(String JSON_STRING) {
-		return Base64.getEncoder().encodeToString(JSON_STRING.getBytes());
+	private String encode(String json) {
+		return Base64.getEncoder().encodeToString(json.getBytes());
 	}
 
 	private static class TestBaseController extends BaseController {

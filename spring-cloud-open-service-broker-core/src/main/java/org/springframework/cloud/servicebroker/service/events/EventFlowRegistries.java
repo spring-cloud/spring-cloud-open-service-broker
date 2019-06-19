@@ -23,19 +23,19 @@ package org.springframework.cloud.servicebroker.service.events;
  */
 public class EventFlowRegistries {
 
-	private CreateServiceInstanceEventFlowRegistry createInstanceRegistry;
+	private final CreateServiceInstanceEventFlowRegistry createInstanceRegistry;
 
-	private UpdateServiceInstanceEventFlowRegistry updateInstanceRegistry;
+	private final UpdateServiceInstanceEventFlowRegistry updateInstanceRegistry;
 
-	private DeleteServiceInstanceEventFlowRegistry deleteInstanceRegistry;
+	private final DeleteServiceInstanceEventFlowRegistry deleteInstanceRegistry;
 
-	private AsyncOperationServiceInstanceEventFlowRegistry asyncOperationRegistry;
+	private final AsyncOperationServiceInstanceEventFlowRegistry asyncOperationRegistry;
 
-	private CreateServiceInstanceBindingEventFlowRegistry createInstanceBindingRegistry;
+	private final CreateServiceInstanceBindingEventFlowRegistry createInstanceBindingRegistry;
 
-	private DeleteServiceInstanceBindingEventFlowRegistry deleteInstanceBindingRegistry;
+	private final DeleteServiceInstanceBindingEventFlowRegistry deleteInstanceBindingRegistry;
 
-	private AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry;
+	private final AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry;
 
 	public EventFlowRegistries() {
 		this.createInstanceRegistry = new CreateServiceInstanceEventFlowRegistry();

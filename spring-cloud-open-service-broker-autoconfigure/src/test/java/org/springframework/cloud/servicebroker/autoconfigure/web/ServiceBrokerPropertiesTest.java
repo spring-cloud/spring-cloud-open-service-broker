@@ -60,6 +60,16 @@ public class ServiceBrokerPropertiesTest {
 
 	@Test
 	public void catalog() {
+		setUpCatalogProperties();
+
+		ServiceBrokerProperties properties = bindProperties();
+		validateCatalogProperties(properties);
+
+		Catalog catalog = properties.getCatalog().toModel();
+		validateCatalogModel(catalog);
+	}
+
+	private void setUpCatalogProperties() {
 		map.put("spring.cloud.openservicebroker.catalog.services[0].id", "service-one-id");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].name", "Service One");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].description", "Description for Service One");
@@ -106,9 +116,9 @@ public class ServiceBrokerPropertiesTest {
 		map.put("spring.cloud.openservicebroker.catalog.services[1].plans[0].id", "plan-one-id");
 		map.put("spring.cloud.openservicebroker.catalog.services[1].plans[0].name", "Plan One");
 		map.put("spring.cloud.openservicebroker.catalog.services[1].plans[0].description", "Description for Plan One");
+	}
 
-		ServiceBrokerProperties properties = bindProperties();
-
+	private void validateCatalogProperties(ServiceBrokerProperties properties) {
 		assertThat(properties.getCatalog()).isNotNull();
 		assertThat(properties.getCatalog().getServices()).hasSize(2);
 		assertThat(properties.getCatalog().getServices().get(0).getId()).isEqualTo("service-one-id");
@@ -136,7 +146,6 @@ public class ServiceBrokerPropertiesTest {
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata().getCosts()).hasSize(1);
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata().getCosts().get(0).getAmount().get("usd")).isEqualTo(649.0d);
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata().getCosts().get(0).getUnit()).isEqualTo("MONTHLY");
-
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isFree()).isTrue();
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate().getParameters())
@@ -155,8 +164,9 @@ public class ServiceBrokerPropertiesTest {
 		assertThat(properties.getCatalog().getServices().get(1).getPlans().get(0).getId()).isEqualTo("plan-one-id");
 		assertThat(properties.getCatalog().getServices().get(1).getPlans().get(0).getName()).isEqualTo("Plan One");
 		assertThat(properties.getCatalog().getServices().get(1).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
+	}
 
-		Catalog catalog = properties.getCatalog().toModel();
+	private void validateCatalogModel(Catalog catalog) {
 		assertThat(catalog.getServiceDefinitions().get(0).getId()).isEqualTo("service-one-id");
 		assertThat(catalog.getServiceDefinitions().get(0).getName()).isEqualTo("Service One");
 		assertThat(catalog.getServiceDefinitions().get(0).getDescription()).isEqualTo("Description for Service One");

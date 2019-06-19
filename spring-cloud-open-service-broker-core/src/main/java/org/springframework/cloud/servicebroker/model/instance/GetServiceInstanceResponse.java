@@ -144,7 +144,7 @@ public class GetServiceInstanceResponse {
 		private String serviceDefinitionId;
 		private String planId;
 		private String dashboardUrl;
-		private Map<String, Object> parameters = new HashMap<>();
+		private final Map<String, Object> parameters = new HashMap<>();
 
 		GetServiceInstanceResponseBuilder() {
 		}

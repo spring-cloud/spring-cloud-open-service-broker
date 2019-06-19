@@ -55,7 +55,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(ServiceBrokerProperties.class)
 public class ApiVersionWebMvcAutoConfiguration {
 
-	private ServiceBrokerProperties serviceBrokerProperties;
+	private final ServiceBrokerProperties serviceBrokerProperties;
 
 	public ApiVersionWebMvcAutoConfiguration(ServiceBrokerProperties serviceBrokerProperties) {
 		this.serviceBrokerProperties = serviceBrokerProperties;

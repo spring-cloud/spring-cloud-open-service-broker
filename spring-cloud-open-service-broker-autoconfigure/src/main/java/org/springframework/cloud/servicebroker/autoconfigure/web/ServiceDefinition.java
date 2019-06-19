@@ -16,13 +16,12 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import javax.validation.constraints.NotEmpty;
 
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires;
@@ -67,17 +66,17 @@ public class ServiceDefinition {
 	 * Indicates whether the service supports requests to update instances to use a different plan from the one
 	 * used to provision a service instance.
 	 */
-	private Boolean planUpdateable = null;
+	private Boolean planUpdateable;
 
 	/**
 	 * Indicates whether the service broker supports retrieving service instances.
 	 */
-	private Boolean instancesRetrievable = null;
+	private Boolean instancesRetrievable;
 
 	/**
 	 * Indicates whether the service broker supports retrieving service bindings.
 	 */
-	private Boolean bindingsRetrievable = null;
+	private Boolean bindingsRetrievable;
 
 	/**
 	 * A list of tags to aid in categorizing and classifying services with similar characteristics.
@@ -211,7 +210,7 @@ public class ServiceDefinition {
 				.tags(this.tags)
 				.metadata(this.metadata)
 				.requires(this.requires)
-				.dashboardClient(this.dashboardClient != null ? this.dashboardClient.toModel() : null)
+				.dashboardClient(this.dashboardClient == null ? null : this.dashboardClient.toModel())
 				.plans(modelPlans)
 				.build();
 	}

@@ -20,7 +20,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import reactor.core.publisher.Mono;
-import org.mockito.Mockito;
 
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
@@ -85,7 +84,7 @@ public abstract class AbstractServiceInstanceBindingControllerIntegrationTest ex
 
 	protected GetLastServiceBindingOperationRequest verifyLastOperation() {
 		ArgumentCaptor<GetLastServiceBindingOperationRequest> argumentCaptor = ArgumentCaptor.forClass(GetLastServiceBindingOperationRequest.class);
-		Mockito.verify(serviceInstanceBindingService).getLastOperation(argumentCaptor.capture());
+		verify(serviceInstanceBindingService).getLastOperation(argumentCaptor.capture());
 		return argumentCaptor.getValue();
 	}
 }

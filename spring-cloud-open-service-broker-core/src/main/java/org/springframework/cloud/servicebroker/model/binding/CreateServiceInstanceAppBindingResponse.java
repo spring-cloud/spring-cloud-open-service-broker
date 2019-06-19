@@ -130,9 +130,9 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	 * Provides a fluent API for constructing a {@link CreateServiceInstanceAppBindingResponse}.
 	 */
 	public static class CreateServiceInstanceAppBindingResponseBuilder {
-		private Map<String, Object> credentials = new HashMap<>();
+		private final Map<String, Object> credentials = new HashMap<>();
 		private String syslogDrainUrl;
-		private List<VolumeMount> volumeMounts = new ArrayList<>();
+		private final List<VolumeMount> volumeMounts = new ArrayList<>();
 		private boolean bindingExisted;
 		private boolean async;
 		private String operation;

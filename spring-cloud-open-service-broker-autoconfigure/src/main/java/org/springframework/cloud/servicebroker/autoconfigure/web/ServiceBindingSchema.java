@@ -51,7 +51,7 @@ public class ServiceBindingSchema {
 	 */
 	public org.springframework.cloud.servicebroker.model.catalog.ServiceBindingSchema toModel() {
 		return org.springframework.cloud.servicebroker.model.catalog.ServiceBindingSchema.builder()
-				.createMethodSchema(this.create != null ? this.create.toModel() : null)
+				.createMethodSchema(this.create == null ? null : this.create.toModel())
 				.build();
 	}
 

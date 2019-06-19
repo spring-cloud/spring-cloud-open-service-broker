@@ -35,15 +35,15 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
  */
 public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest {
 
-	private transient String serviceInstanceId;
+	private transient final String serviceInstanceId;
 
-	private transient String bindingId;
+	private transient final String bindingId;
 
-	private transient String serviceDefinitionId;
+	private transient final String serviceDefinitionId;
 
-	private transient String planId;
+	private transient final String planId;
 
-	protected transient String operation;
+	protected transient final String operation;
 
 	GetLastServiceBindingOperationRequest(String serviceInstanceId, String bindingId, String serviceDefinitionId,
 										  String planId, String operation, String platformInstanceId,

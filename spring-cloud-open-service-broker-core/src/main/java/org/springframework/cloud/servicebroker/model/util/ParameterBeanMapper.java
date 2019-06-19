@@ -16,11 +16,11 @@
 
 package org.springframework.cloud.servicebroker.model.util;
 
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.beanutils.SuppressPropertiesBeanIntrospector;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
+
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.SuppressPropertiesBeanIntrospector;
 
 /**
  * Utilities for mapping parameter maps to Java beans.
@@ -28,6 +28,10 @@ import java.util.Map;
  * @author Scott Frederick
  */
 public final class ParameterBeanMapper {
+
+	private ParameterBeanMapper() {
+	}
+
 	/**
 	 * Instantiates an object of the specified type and populates properties of the object from the provided
 	 * parameters.

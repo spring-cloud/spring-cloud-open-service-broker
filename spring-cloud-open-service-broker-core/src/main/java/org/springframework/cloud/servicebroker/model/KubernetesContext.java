@@ -16,13 +16,12 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Kubernetes specific contextual information under which the service instance is to be provisioned or updated.
@@ -37,7 +36,7 @@ public final class KubernetesContext extends Context {
 		super(KUBERNETES_PLATFORM, null);
 	}
 
-	private KubernetesContext(String namespace, Map<String, Object> properties) {
+	KubernetesContext(String namespace, Map<String, Object> properties) {
 		super(KUBERNETES_PLATFORM, properties);
 		if (namespace != null) {
 			setNamespace(namespace);

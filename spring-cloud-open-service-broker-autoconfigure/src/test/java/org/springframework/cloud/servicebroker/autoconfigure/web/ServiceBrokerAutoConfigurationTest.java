@@ -16,8 +16,6 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.Test;
 
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
@@ -35,6 +33,8 @@ import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingSer
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 import org.springframework.context.annotation.Bean;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ServiceBrokerAutoConfigurationTest {
 
@@ -275,8 +275,13 @@ public class ServiceBrokerAutoConfigurationTest {
 
 	@TestConfiguration
 	public static class MissingInstanceServiceConfiguration {
+
+		private final ServiceInstanceService serviceInstanceService;
+
 		public MissingInstanceServiceConfiguration(ServiceInstanceService serviceInstanceService) {
+			this.serviceInstanceService = serviceInstanceService;
 		}
+
 		@Bean
 		public Catalog catalog() {
 			return Catalog.builder().build();
@@ -285,8 +290,13 @@ public class ServiceBrokerAutoConfigurationTest {
 
 	@TestConfiguration
 	public static class MissingCatalogServiceConfiguration {
+
+		private final CatalogService catalogService;
+
 		public MissingCatalogServiceConfiguration(CatalogService catalogService) {
+			this.catalogService = catalogService;
 		}
+
 		@Bean
 		public ServiceInstanceService serviceInstanceService() {
 			return new TestServiceInstanceService();
@@ -295,7 +305,14 @@ public class ServiceBrokerAutoConfigurationTest {
 
 	@TestConfiguration
 	public static class MissingAllConfiguration {
+
+		private final CatalogService catalogService;
+
+		private final ServiceInstanceService serviceInstanceService;
+
 		public MissingAllConfiguration(CatalogService catalogService, ServiceInstanceService serviceInstanceService) {
+			this.catalogService = catalogService;
+			this.serviceInstanceService = serviceInstanceService;
 		}
 	}
 

@@ -126,10 +126,10 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 	 * Provides a fluent API for constructing a {@link GetServiceInstanceAppBindingResponse}.
 	 */
 	public static class GetServiceInstanceAppBindingResponseBuilder {
-		private Map<String, Object> credentials = new HashMap<>();
+		private final Map<String, Object> credentials = new HashMap<>();
 		private String syslogDrainUrl;
-		private List<VolumeMount> volumeMounts = new ArrayList<>();
-		private Map<String, Object> parameters = new HashMap<>();
+		private final List<VolumeMount> volumeMounts = new ArrayList<>();
+		private final Map<String, Object> parameters = new HashMap<>();
 
 		GetServiceInstanceAppBindingResponseBuilder() {
 		}

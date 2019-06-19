@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Configuration;
 public class ExampleServiceInstanceEventFlowsConfiguration {
 
 	// Autowire the EventFlowRegistries bean
-	private EventFlowRegistries eventFlowRegistries;
+	private final EventFlowRegistries eventFlowRegistries;
 
 	public ExampleServiceInstanceEventFlowsConfiguration(EventFlowRegistries eventFlowRegistries) {
 		this.eventFlowRegistries = eventFlowRegistries;

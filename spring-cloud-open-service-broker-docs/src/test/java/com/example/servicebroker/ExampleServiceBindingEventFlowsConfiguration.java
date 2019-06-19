@@ -6,40 +6,20 @@ import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
-import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
-import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
-import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceRequest;
-import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceResponse;
-import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationRequest;
-import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationResponse;
-import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
-import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
-import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceCompletionFlow;
-import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceErrorFlow;
-import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceInitializationFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.CreateServiceInstanceBindingCompletionFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.CreateServiceInstanceBindingErrorFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.CreateServiceInstanceBindingInitializationFlow;
-import org.springframework.cloud.servicebroker.service.events.flows.CreateServiceInstanceCompletionFlow;
-import org.springframework.cloud.servicebroker.service.events.flows.CreateServiceInstanceErrorFlow;
-import org.springframework.cloud.servicebroker.service.events.flows.CreateServiceInstanceInitializationFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.DeleteServiceInstanceBindingCompletionFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.DeleteServiceInstanceBindingErrorFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.DeleteServiceInstanceBindingInitializationFlow;
-import org.springframework.cloud.servicebroker.service.events.flows.DeleteServiceInstanceCompletionFlow;
-import org.springframework.cloud.servicebroker.service.events.flows.DeleteServiceInstanceErrorFlow;
-import org.springframework.cloud.servicebroker.service.events.flows.DeleteServiceInstanceInitializationFlow;
-import org.springframework.cloud.servicebroker.service.events.flows.UpdateServiceInstanceCompletionFlow;
-import org.springframework.cloud.servicebroker.service.events.flows.UpdateServiceInstanceErrorFlow;
-import org.springframework.cloud.servicebroker.service.events.flows.UpdateServiceInstanceInitializationFlow;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ExampleServiceBindingEventFlowsConfiguration {
 
 	// Autowire the EventFlowRegistries bean
-	private EventFlowRegistries eventFlowRegistries;
+	private final EventFlowRegistries eventFlowRegistries;
 
 	public ExampleServiceBindingEventFlowsConfiguration(EventFlowRegistries eventFlowRegistries) {
 		this.eventFlowRegistries = eventFlowRegistries;

@@ -16,10 +16,10 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import java.util.Objects;
+
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
-
-import java.util.Objects;
 
 /**
  * Details of a request to get the state of the last operation on a service instance.
@@ -33,13 +33,13 @@ import java.util.Objects;
  * @author Scott Frederick
  */
 public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
-	private transient String serviceInstanceId;
+	private transient final String serviceInstanceId;
 
-	private transient String serviceDefinitionId;
+	private transient final String serviceDefinitionId;
 
-	private transient String planId;
+	private transient final String planId;
 
-	protected transient String operation;
+	protected transient final String operation;
 
 	GetLastServiceOperationRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
 										  String operation,

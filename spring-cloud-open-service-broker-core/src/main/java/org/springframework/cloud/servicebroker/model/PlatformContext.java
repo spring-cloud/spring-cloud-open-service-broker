@@ -16,9 +16,9 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-
 import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
 
 /**
  * Platform specific contextual information under which the service instance is to be provisioned or updated.
@@ -31,7 +31,7 @@ public class PlatformContext extends Context {
 		super(null, null);
 	}
 
-	private PlatformContext(String platform, Map<String, Object> properties) {
+	PlatformContext(String platform, Map<String, Object> properties) {
 		super(platform, properties);
 	}
 

@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.ApiVersionInterceptor;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionMissingException;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;

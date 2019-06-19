@@ -53,7 +53,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(ServiceBrokerProperties.class)
 public class ApiVersionWebFluxAutoConfiguration {
 
-	private ServiceBrokerProperties serviceBrokerProperties;
+	private final ServiceBrokerProperties serviceBrokerProperties;
 
 	public ApiVersionWebFluxAutoConfiguration(ServiceBrokerProperties serviceBrokerProperties) {
 		this.serviceBrokerProperties = serviceBrokerProperties;

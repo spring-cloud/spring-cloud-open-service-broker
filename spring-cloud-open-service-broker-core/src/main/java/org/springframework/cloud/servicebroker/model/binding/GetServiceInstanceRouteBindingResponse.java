@@ -94,7 +94,7 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 	 */
 	public static class GetServiceInstanceRouteBindingResponseBuilder {
 		private String routeServiceUrl;
-		private Map<String, Object> parameters = new HashMap<>();
+		private final Map<String, Object> parameters = new HashMap<>();
 
 		GetServiceInstanceRouteBindingResponseBuilder() {
 		}
