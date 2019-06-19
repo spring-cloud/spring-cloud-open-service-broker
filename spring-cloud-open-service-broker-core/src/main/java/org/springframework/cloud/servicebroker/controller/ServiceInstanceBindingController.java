@@ -21,11 +21,11 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
+import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
@@ -64,6 +64,10 @@ public class ServiceInstanceBindingController extends BaseController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ServiceInstanceBindingController.class);
 
+	private static final String PLATFORM_PATH_MAPPING = "/{platformInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}";
+
+	private static final String PATH_MAPPING = "/v2/service_instances/{instanceId}/service_bindings/{bindingId}";
+
 	private final ServiceInstanceBindingService service;
 
 	public ServiceInstanceBindingController(CatalogService catalogService,
@@ -72,10 +76,7 @@ public class ServiceInstanceBindingController extends BaseController {
 		this.service = serviceInstanceBindingService;
 	}
 
-	@PutMapping(value = {
-			"/{platformInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
-			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
-	})
+	@PutMapping(value = {PLATFORM_PATH_MAPPING, PATH_MAPPING})
 	public Mono<ResponseEntity<CreateServiceInstanceBindingResponse>> createServiceInstanceBinding(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
@@ -120,10 +121,7 @@ public class ServiceInstanceBindingController extends BaseController {
 		return HttpStatus.CREATED;
 	}
 
-	@GetMapping(value = {
-			"/{platformInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
-			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
-	})
+	@GetMapping(value = {PLATFORM_PATH_MAPPING, PATH_MAPPING})
 	public Mono<ResponseEntity<GetServiceInstanceBindingResponse>> getServiceInstanceBinding(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
@@ -153,10 +151,7 @@ public class ServiceInstanceBindingController extends BaseController {
 				});
 	}
 
-	@GetMapping(value = {
-			"/{platformInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}/last_operation",
-			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}/last_operation"
-	})
+	@GetMapping(value = {PLATFORM_PATH_MAPPING + "/last_operation", PATH_MAPPING + "/last_operation"})
 	public Mono<ResponseEntity<GetLastServiceBindingOperationResponse>> getServiceInstanceBindingLastOperation(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
@@ -186,10 +181,7 @@ public class ServiceInstanceBindingController extends BaseController {
 								Mono.just(new ResponseEntity<>(response, isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK))));
 	}
 
-	@DeleteMapping(value = {
-			"/{platformInstanceId}/v2/service_instances/{instanceId}/service_bindings/{bindingId}",
-			"/v2/service_instances/{instanceId}/service_bindings/{bindingId}"
-	})
+	@DeleteMapping(value = {PLATFORM_PATH_MAPPING, PATH_MAPPING})
 	public Mono<ResponseEntity<DeleteServiceInstanceBindingResponse>> deleteServiceInstanceBinding(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
