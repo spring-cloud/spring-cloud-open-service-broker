@@ -1,3 +1,4 @@
+:examples-dir: ../../src/test/java/com/example/servicebroker/
 [[service-catalog]]
 == Advertising Services
 The {osbspec}#catalog-management[service broker catalog] provides a set of metadata that describes the available services along with attributes such as cost and capabilities.

@@ -1,3 +1,4 @@
+:examples-dir: ../../src/test/java/com/example/servicebroker/
 [[service-bindings]]
 == Service Bindings
 Service brokers can provide information to a consumer of a service instance through a {osbspec}#binding[service binding].

@@ -1,3 +1,4 @@
+:examples-dir: ../../src/test/java/com/example/servicebroker/
 [[service-broker-security]]
 == Service Broker Security
 
@@ -10,7 +11,7 @@ by applying security to application endpoints with the path-matching pattern: `/
 
 === Example Configuration
 
-The following examps shows a security configuration implementation:
+The following example shows a security configuration implementation:
 
 [source,java,%autofit]
 ----
