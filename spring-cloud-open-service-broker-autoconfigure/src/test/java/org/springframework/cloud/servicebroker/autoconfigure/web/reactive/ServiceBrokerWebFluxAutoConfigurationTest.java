@@ -24,6 +24,7 @@ import org.springframework.boot.test.context.runner.ReactiveWebApplicationContex
 import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractServiceBrokerWebAutoConfigurationTest;
 import org.springframework.cloud.servicebroker.autoconfigure.web.exception.ServiceInstanceServiceBeanDoesNotExistException;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
+import org.springframework.cloud.servicebroker.controller.ServiceBrokerWebFluxExceptionHandler;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceController;
 
@@ -44,7 +45,8 @@ public class ServiceBrokerWebFluxAutoConfigurationTest extends AbstractServiceBr
 				.withUserConfiguration(FullServicesConfiguration.class)
 				.run(context -> assertThat(context).hasSingleBean(CatalogController.class)
 						.hasSingleBean(ServiceInstanceController.class)
-						.hasSingleBean(ServiceInstanceBindingController.class));
+						.hasSingleBean(ServiceInstanceBindingController.class)
+						.hasSingleBean(ServiceBrokerWebFluxExceptionHandler.class));
 	}
 
 	@Test

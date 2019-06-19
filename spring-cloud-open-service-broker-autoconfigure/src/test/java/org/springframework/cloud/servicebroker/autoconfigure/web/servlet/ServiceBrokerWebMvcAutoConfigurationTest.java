@@ -24,6 +24,7 @@ import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractServiceBrokerWebAutoConfigurationTest;
 import org.springframework.cloud.servicebroker.autoconfigure.web.exception.ServiceInstanceServiceBeanDoesNotExistException;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
+import org.springframework.cloud.servicebroker.controller.ServiceBrokerWebMvcExceptionHandler;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceController;
 
@@ -44,7 +45,8 @@ public class ServiceBrokerWebMvcAutoConfigurationTest extends AbstractServiceBro
 				.withUserConfiguration(FullServicesConfiguration.class)
 				.run(context -> assertThat(context).hasSingleBean(CatalogController.class)
 						.hasSingleBean(ServiceInstanceController.class)
-						.hasSingleBean(ServiceInstanceBindingController.class));
+						.hasSingleBean(ServiceInstanceBindingController.class)
+						.hasSingleBean(ServiceBrokerWebMvcExceptionHandler.class));
 	}
 
 	@Test

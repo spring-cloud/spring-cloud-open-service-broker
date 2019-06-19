@@ -44,6 +44,7 @@ dependencies {
 	compile("org.springframework:spring-context")
 	optional("org.springframework:spring-web")
 	optional("org.springframework:spring-webflux")
+	compile("io.projectreactor:reactor-core")
 	compile("com.fasterxml.jackson.core:jackson-databind")
 	compile("org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}")
 	compile("commons-beanutils:commons-beanutils:${beanUtilsVersion}") {

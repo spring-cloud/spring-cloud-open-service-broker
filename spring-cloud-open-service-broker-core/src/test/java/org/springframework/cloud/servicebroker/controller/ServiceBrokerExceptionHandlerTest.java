@@ -16,10 +16,6 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
-import java.lang.reflect.Method;
-import java.util.HashMap;
-
-import org.junit.Before;
 import org.junit.Test;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
@@ -38,27 +34,15 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotE
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
-import org.springframework.core.MethodParameter;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.MapBindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.support.WebExchangeBindException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException.ASYNC_REQUIRED_ERROR;
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerBindingRequiresAppException.APP_REQUIRED_ERROR;
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerConcurrencyException.CONCURRENCY_ERROR;
 
-public class ServiceBrokerExceptionHandlerTest {
+public abstract class ServiceBrokerExceptionHandlerTest {
 
-	private ServiceBrokerExceptionHandler exceptionHandler;
-
-	@Before
-	public void setUp() {
-		exceptionHandler = new ServiceBrokerExceptionHandler();
-	}
+	ServiceBrokerExceptionHandler exceptionHandler;
 
 	@Test
 	public void serviceBrokerApiVersionException() {
@@ -186,59 +170,6 @@ public class ServiceBrokerExceptionHandlerTest {
 
 		assertThat(errorMessage.getError()).isNull();
 		assertThat(errorMessage.getMessage()).contains("test message");
-	}
-
-	@Test
-	public void methodArgumentNotValidException() throws NoSuchMethodException {
-		BindingResult bindingResult = new MapBindingResult(new HashMap<>(), "objectName");
-		bindingResult.addError(new FieldError("objectName", "field1", "message"));
-		bindingResult.addError(new FieldError("objectName", "field2", "message"));
-
-		Method method = this.getClass().getMethod("setUp", (Class<?>[]) null);
-		MethodParameter parameter = new MethodParameter(method, -1);
-
-		MethodArgumentNotValidException exception =
-				new MethodArgumentNotValidException(parameter, bindingResult);
-
-		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
-
-		assertThat(errorMessage.getError()).isNull();
-		assertThat(errorMessage.getMessage()).contains("field1");
-		assertThat(errorMessage.getMessage()).contains("field2");
-	}
-
-	@Test
-	public void webExchangeBindExceptionException() throws NoSuchMethodException {
-		BindingResult bindingResult = new MapBindingResult(new HashMap<>(), "objectName");
-		bindingResult.addError(new FieldError("objectName", "field1", "message"));
-		bindingResult.addError(new FieldError("objectName", "field2", "message"));
-
-		Method method = this.getClass().getMethod("setUp", (Class<?>[]) null);
-		MethodParameter parameter = new MethodParameter(method, -1);
-
-		WebExchangeBindException exception =
-				new WebExchangeBindException(parameter, bindingResult);
-
-		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
-
-		assertThat(errorMessage.getError()).isNull();
-		assertThat(errorMessage.getMessage()).contains("field1");
-		assertThat(errorMessage.getMessage()).contains("field2");
-	}
-
-	@Test
-	public void stringParameterIsNotPresent() {
-		final String parameterType = "String";
-		final String parameterName = "plan_id";
-
-		MissingServletRequestParameterException exception =
-				new MissingServletRequestParameterException(parameterName, parameterType);
-
-		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
-
-		assertThat(errorMessage.getError()).isNull();
-		assertThat(errorMessage.getMessage()).contains(parameterType);
-		assertThat(errorMessage.getMessage()).contains(parameterName);
 	}
 
 	@Test
