@@ -64,8 +64,8 @@ public class ServiceInstanceSchema {
 	 */
 	public org.springframework.cloud.servicebroker.model.catalog.ServiceInstanceSchema toModel() {
 		return org.springframework.cloud.servicebroker.model.catalog.ServiceInstanceSchema.builder()
-				.createMethodSchema(this.create != null ? this.create.toModel() : null)
-				.updateMethodSchema(this.update != null ? this.update.toModel() : null)
+				.createMethodSchema(this.create == null ? null : this.create.toModel())
+				.updateMethodSchema(this.update == null ? null : this.update.toModel())
 				.build();
 	}
 

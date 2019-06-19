@@ -23,19 +23,19 @@ package org.springframework.cloud.servicebroker.service.events;
  */
 public class EventFlowRegistries {
 
-	private CreateServiceInstanceEventFlowRegistry createInstanceRegistry;
+	private final CreateServiceInstanceEventFlowRegistry createInstanceRegistry;
 
-	private UpdateServiceInstanceEventFlowRegistry updateInstanceRegistry;
+	private final UpdateServiceInstanceEventFlowRegistry updateInstanceRegistry;
 
-	private DeleteServiceInstanceEventFlowRegistry deleteInstanceRegistry;
+	private final DeleteServiceInstanceEventFlowRegistry deleteInstanceRegistry;
 
-	private AsyncOperationServiceInstanceEventFlowRegistry asyncOperationRegistry;
+	private final AsyncOperationServiceInstanceEventFlowRegistry asyncOperationRegistry;
 
-	private CreateServiceInstanceBindingEventFlowRegistry createInstanceBindingRegistry;
+	private final CreateServiceInstanceBindingEventFlowRegistry createInstanceBindingRegistry;
 
-	private DeleteServiceInstanceBindingEventFlowRegistry deleteInstanceBindingRegistry;
+	private final DeleteServiceInstanceBindingEventFlowRegistry deleteInstanceBindingRegistry;
 
-    private AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry;
+    private final AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry;
 
 	@Deprecated
 	public EventFlowRegistries() {
@@ -45,6 +45,7 @@ public class EventFlowRegistries {
 		this.asyncOperationRegistry = new AsyncOperationServiceInstanceEventFlowRegistry();
 		this.createInstanceBindingRegistry = new CreateServiceInstanceBindingEventFlowRegistry();
 		this.deleteInstanceBindingRegistry = new DeleteServiceInstanceBindingEventFlowRegistry();
+		this.asyncOperationBindingRegistry = new AsyncOperationServiceInstanceBindingEventFlowRegistry();
 	}
 
 	public EventFlowRegistries(CreateServiceInstanceEventFlowRegistry createInstanceRegistry,
@@ -53,7 +54,7 @@ public class EventFlowRegistries {
 							   AsyncOperationServiceInstanceEventFlowRegistry asyncOperationRegistry,
 							   CreateServiceInstanceBindingEventFlowRegistry createInstanceBindingRegistry,
 							   DeleteServiceInstanceBindingEventFlowRegistry deleteInstanceBindingRegistry,
-                               AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry) {
+							   AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry) {
 		this.createInstanceRegistry = createInstanceRegistry;
 		this.updateInstanceRegistry = updateInstanceRegistry;
 		this.deleteInstanceRegistry = deleteInstanceRegistry;

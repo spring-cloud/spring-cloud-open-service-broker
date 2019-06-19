@@ -41,19 +41,19 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 
 	@JsonIgnore //mapped as path param
-	private transient String serviceInstanceId;
+	private transient final String serviceInstanceId;
 
 	@JsonProperty("service_id")
-	private transient String serviceDefinitionId;
+	private transient final String serviceDefinitionId;
 
 	@JsonProperty("plan_id")
-	private transient String planId;
+	private transient final String planId;
 
 	@JsonIgnore //internal support
-	private transient ServiceDefinition serviceDefinition;
+	private transient final ServiceDefinition serviceDefinition;
 
 	@JsonIgnore /*internal field*/
-	private transient Plan plan;
+	private transient final Plan plan;
 
 	DeleteServiceInstanceRequest(String serviceInstanceId, String serviceDefinitionId,
 								 String planId, ServiceDefinition serviceDefinition, Plan plan,

@@ -38,7 +38,7 @@ public class Cost {
 	 * An array of pricing in various currencies for the cost type as key-value pairs where key is currency code and
 	 * value (as a float) is currency amount.
 	 */
-	private Map<String, Double> amount = new HashMap<>();
+	private final Map<String, Double> amount = new HashMap<>();
 
 	/**
 	 * Display name for type of cost, e.g. Monthly, Hourly, Request, GB.

@@ -21,8 +21,6 @@ import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -50,8 +48,6 @@ import org.springframework.util.Base64Utils;
  * @author Roy Clarkson
  */
 public class BaseController {
-
-	private static final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
 	protected CatalogService catalogService;
 

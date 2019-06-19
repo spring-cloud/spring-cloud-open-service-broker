@@ -65,8 +65,8 @@ public class Schemas {
 	 */
 	public org.springframework.cloud.servicebroker.model.catalog.Schemas toModel() {
 		return org.springframework.cloud.servicebroker.model.catalog.Schemas.builder()
-				.serviceInstanceSchema(this.serviceInstance != null ? this.serviceInstance.toModel() : null)
-				.serviceBindingSchema(this.serviceBinding != null ? this.serviceBinding.toModel() : null)
+				.serviceInstanceSchema(this.serviceInstance == null ? null : this.serviceInstance.toModel())
+				.serviceBindingSchema(this.serviceBinding == null ? null : this.serviceBinding.toModel())
 				.build();
 	}
 

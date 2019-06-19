@@ -16,10 +16,10 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+import java.util.Objects;
+
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
-
-import java.util.Objects;
 
 /**
  * Details of a request to retrieve a service instance binding.
@@ -33,9 +33,10 @@ import java.util.Objects;
  * @author Scott Frederick
  */
 public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
-	private transient String serviceInstanceId;
 
-	private transient String bindingId;
+	private transient final String serviceInstanceId;
+
+	private transient final String bindingId;
 
 	GetServiceInstanceBindingRequest(String serviceInstanceId, String bindingId,
 									String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {

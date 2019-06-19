@@ -20,16 +20,12 @@ import org.junit.Test;
 
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
-import org.springframework.boot.diagnostics.FailureAnalysis;
-import org.springframework.boot.diagnostics.FailureAnalyzer;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
 import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractServiceBrokerWebAutoConfigurationTest;
-import org.springframework.cloud.servicebroker.autoconfigure.web.RequiredServiceInstanceServiceBeanFailureAnalyzer;
 import org.springframework.cloud.servicebroker.autoconfigure.web.exception.ServiceInstanceServiceBeanDoesNotExistException;
 import org.springframework.cloud.servicebroker.controller.CatalogController;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceController;
-import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

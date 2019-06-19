@@ -527,7 +527,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		final String url = buildDeleteUrl(null, false).replace("plan_id", "plan-1");
 
-		MvcResult mvcResult = mockMvc.perform(delete(url)
+		mockMvc.perform(delete(url)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.description", containsString("plan_id")))

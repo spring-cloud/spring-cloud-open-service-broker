@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @ServiceBrokerRestController
 public class CatalogController extends BaseController {
 
-	private static final Logger logger = LoggerFactory.getLogger(CatalogController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(CatalogController.class);
 
 	public CatalogController(CatalogService service) {
 		super(service);
@@ -46,7 +46,7 @@ public class CatalogController extends BaseController {
 	@RequestMapping(value = {"/v2/catalog", "{platformInstanceId}/v2/catalog"}, method = RequestMethod.GET)
 	public Mono<Catalog> getCatalog() {
 		return catalogService.getCatalog()
-				.doOnRequest(v -> logger.debug("Retrieving catalog"));
+				.doOnRequest(v -> LOG.debug("Retrieving catalog"));
 	}
 
 }

@@ -16,9 +16,9 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -40,7 +40,7 @@ public final class CloudFoundryContext extends Context {
 		super(CLOUD_FOUNDRY_PLATFORM, null);
 	}
 
-	private CloudFoundryContext(String organizationGuid, String spaceGuid, Map<String, Object> properties) {
+	CloudFoundryContext(String organizationGuid, String spaceGuid, Map<String, Object> properties) {
 		super(CLOUD_FOUNDRY_PLATFORM, properties);
 		if (organizationGuid != null) {
 			setOrganizationGuid(organizationGuid);

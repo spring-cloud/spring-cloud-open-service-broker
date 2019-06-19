@@ -20,12 +20,11 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
-
-import javax.validation.constraints.NotEmpty;
 
 /**
  *  Details of a request to delete a service instance binding.
@@ -43,22 +42,22 @@ import javax.validation.constraints.NotEmpty;
 public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerRequest {
 
 	@JsonIgnore // mapped as path param
-	private transient String serviceInstanceId;
+	private transient final String serviceInstanceId;
 
 	@JsonIgnore // mapped as path param
-	private transient String bindingId;
+	private transient final String bindingId;
 
 	@JsonProperty("service_id")
-	private transient String serviceDefinitionId;
+	private transient final String serviceDefinitionId;
 
 	@JsonProperty("plan_id")
-	private transient String planId;
+	private transient final String planId;
 
 	@JsonIgnore /*internal field*/
-	private transient ServiceDefinition serviceDefinition;
+	private transient final ServiceDefinition serviceDefinition;
 
 	@JsonIgnore /*internal field*/
-	private transient Plan plan;
+	private transient final Plan plan;
 
 	DeleteServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
 										String bindingId, ServiceDefinition serviceDefinition, Plan plan,

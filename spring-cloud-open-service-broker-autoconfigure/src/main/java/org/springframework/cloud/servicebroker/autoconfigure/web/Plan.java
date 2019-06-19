@@ -16,9 +16,6 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -71,13 +68,13 @@ public class Plan {
 	 * an optional field. If the value is <code>null</code>, the field will be omitted
 	 * from the serialized JSON.
 	 */
-	private Boolean bindable = null;
+	private Boolean bindable;
 
 	/**
 	 * Indicates whether the plan can be limited by the non_basic_services_allowed field
 	 * in a platform quota.
 	 */
-	private Boolean free = null;
+	private Boolean free;
 
 	public String getId() {
 		return this.id;
@@ -148,8 +145,8 @@ public class Plan {
 				.description(this.description)
 				.bindable(this.bindable)
 				.free(this.free)
-				.schemas(this.schemas != null ? this.schemas.toModel() : null)
-				.metadata(this.metadata != null ? this.metadata.toModel() : null)
+				.schemas(this.schemas == null ? null : this.schemas.toModel())
+				.metadata(this.metadata == null ? null: this.metadata.toModel())
 				.build();
 	}
 

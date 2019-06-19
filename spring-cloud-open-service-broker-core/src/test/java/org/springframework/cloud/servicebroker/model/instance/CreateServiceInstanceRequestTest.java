@@ -16,20 +16,21 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
+
 import org.springframework.cloud.servicebroker.JsonPathAssert;
+import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.Context;
-import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -132,7 +133,6 @@ public class CreateServiceInstanceRequestTest {
 				.build();
 
 		DocumentContext json = JsonUtils.toJsonPath(request);
-		String jsonSerializaion = JsonUtils.toJson(request);
 
 		// 6 OSB Fields should be present
 		JsonPathAssert.assertThat(json).hasPath("$.plan_id").isEqualTo("plan-id");

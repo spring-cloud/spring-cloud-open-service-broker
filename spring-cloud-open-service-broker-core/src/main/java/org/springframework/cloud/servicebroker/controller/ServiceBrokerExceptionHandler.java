@@ -61,7 +61,9 @@ import org.springframework.web.server.ServerWebInputException;
 @Order(Ordered.LOWEST_PRECEDENCE - 10)
 public class ServiceBrokerExceptionHandler {
 
-	private static final Logger logger = LoggerFactory.getLogger(ServiceBrokerExceptionHandler.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ServiceBrokerExceptionHandler.class);
+
+	private static final String UNPROCESSABLE_REQUEST = "Unprocessable request received: ";
 
 	@ExceptionHandler(ServiceBrokerApiVersionException.class)
 	@ResponseStatus(HttpStatus.PRECONDITION_FAILED)
@@ -126,7 +128,7 @@ public class ServiceBrokerExceptionHandler {
 	@ExceptionHandler(ServiceBrokerInvalidOriginatingIdentityException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public ErrorMessage handleException(ServiceBrokerInvalidOriginatingIdentityException ex) {
-		logger.error("Unprocessable request received: ", ex);
+		LOG.error(UNPROCESSABLE_REQUEST, ex);
 		return getErrorResponse(ex);
 	}
 
@@ -145,7 +147,7 @@ public class ServiceBrokerExceptionHandler {
 	}
 
 	private ErrorMessage handleBindingException(Exception ex, final BindingResult result) {
-		logger.error("Unprocessable request received: ", ex);
+		LOG.error(UNPROCESSABLE_REQUEST, ex);
 		StringBuilder message = new StringBuilder("Missing required fields:");
 		for (FieldError error : result.getFieldErrors()) {
 			message.append(' ').append(error.getField());
@@ -157,7 +159,7 @@ public class ServiceBrokerExceptionHandler {
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(MissingServletRequestParameterException ex) {
-		logger.error("Unprocessable request received: ", ex);
+		LOG.error(UNPROCESSABLE_REQUEST, ex);
 		return getErrorResponse(ex.getMessage());
 	}
 
@@ -165,14 +167,14 @@ public class ServiceBrokerExceptionHandler {
 	@ExceptionHandler(ServerWebInputException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(ServerWebInputException ex) {
-		logger.error("Unprocessable request received: ", ex);
+		LOG.error(UNPROCESSABLE_REQUEST, ex);
 		return getErrorResponse(ex.getMessage());
 	}
 
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ErrorMessage handleException(Exception ex) {
-		logger.error("Unknown exception handled: ", ex);
+		LOG.error("Unknown exception handled: ", ex);
 		return getErrorResponse(ex);
 	}
 
@@ -207,7 +209,7 @@ public class ServiceBrokerExceptionHandler {
 	}
 
 	protected ErrorMessage getErrorResponse(ServiceBrokerException ex) {
-		logger.debug(ex.getMessage(), ex);
+		LOG.debug(ex.getMessage(), ex);
 		return ex.getErrorMessage();
 	}
 

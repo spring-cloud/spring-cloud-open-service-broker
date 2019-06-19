@@ -74,6 +74,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings({"PMD.GodClass", "PMD.ExcessivePublicCount"})
 public class EventFlowsAutoConfigurationTest {
 
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()

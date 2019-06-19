@@ -312,7 +312,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	public void createServiceInstanceWithExceptionFails() throws Exception {
 		setupCatalogService();
 
-		setupServiceInstanceService(new NullPointerException("unknown error"));
+		setupServiceInstanceService(new RuntimeException("unknown error"));
 
 		MvcResult mvcResult = mockMvc.perform(put(buildCreateUpdateUrl())
 				.content(createRequestBody)
@@ -330,7 +330,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	public void createServiceInstanceWithInvalidFieldsFails() throws Exception {
 		String body = createRequestBody.replace("service_id", "service-1");
 
-		MvcResult mvcResult = mockMvc.perform(put(buildCreateUpdateUrl())
+		mockMvc.perform(put(buildCreateUpdateUrl())
 				.content(body)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
@@ -346,7 +346,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	public void createServiceInstanceWithMissingFieldsFails() throws Exception {
 		String body = "{}";
 
-		MvcResult mvcResult = mockMvc.perform(put(buildCreateUpdateUrl())
+		mockMvc.perform(put(buildCreateUpdateUrl())
 				.content(body)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
@@ -501,7 +501,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		final String url = buildDeleteUrl(null, false).replace("plan_id", "plan-1");
 
-		MvcResult mvcResult = mockMvc.perform(delete(url)
+		mockMvc.perform(delete(url)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.description", containsString("plan_id")))

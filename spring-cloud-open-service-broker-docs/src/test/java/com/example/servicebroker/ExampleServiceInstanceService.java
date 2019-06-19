@@ -2,8 +2,6 @@ package com.example.servicebroker;
 
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
@@ -18,7 +16,6 @@ import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
-import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 import org.springframework.stereotype.Service;
 
 @Service

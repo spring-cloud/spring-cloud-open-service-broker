@@ -16,10 +16,10 @@
 
 package org.springframework.cloud.servicebroker.model.util;
 
-import org.junit.Test;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,7 +38,7 @@ public class ParameterBeanMapperTest {
 		assertThat(testBean.getStringProperty()).isEqualTo("value1");
 		assertThat(testBean.getIntProperty()).isEqualTo(2);
 		assertThat(testBean.getUnusedProperty()).isNull();
-		assertThat(testBean.getNestedBean().getBooleanProperty()).isEqualTo(true);
+		assertThat(testBean.getNestedBean().isBooleanProperty()).isEqualTo(true);
 	}
 
 	@SuppressWarnings("unused")
@@ -47,7 +47,7 @@ public class ParameterBeanMapperTest {
 		private int intProperty;
 		private String unusedProperty;
 
-		private NestedBean nestedBean;
+		private final NestedBean nestedBean;
 
 		public TestBean() {
 			this.nestedBean = new NestedBean();
@@ -86,7 +86,7 @@ public class ParameterBeanMapperTest {
 	public static final class NestedBean {
 		private boolean booleanProperty;
 
-		public boolean getBooleanProperty() {
+		public boolean isBooleanProperty() {
 			return booleanProperty;
 		}
 

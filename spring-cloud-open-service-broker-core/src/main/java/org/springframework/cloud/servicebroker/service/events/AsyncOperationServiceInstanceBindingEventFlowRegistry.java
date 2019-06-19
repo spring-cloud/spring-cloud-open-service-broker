@@ -36,6 +36,10 @@ public class AsyncOperationServiceInstanceBindingEventFlowRegistry
         AsyncOperationServiceInstanceBindingCompletionFlow, AsyncOperationServiceInstanceBindingErrorFlow,
         GetLastServiceBindingOperationRequest, GetLastServiceBindingOperationResponse> {
 
+    @Deprecated
+    public AsyncOperationServiceInstanceBindingEventFlowRegistry() {
+    }
+
     public AsyncOperationServiceInstanceBindingEventFlowRegistry(
             final List<AsyncOperationServiceInstanceBindingInitializationFlow> initializationFlows,
             final List<AsyncOperationServiceInstanceBindingCompletionFlow> completionFlows,

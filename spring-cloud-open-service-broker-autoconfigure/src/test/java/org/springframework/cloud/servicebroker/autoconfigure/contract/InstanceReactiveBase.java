@@ -46,7 +46,7 @@ public class InstanceReactiveBase {
 	int port;
 
 	@Before
-	public void setup() {
+	public void setUp() {
 		RestAssured.baseURI = "http://localhost";
 		RestAssured.port = this.port;
 	}

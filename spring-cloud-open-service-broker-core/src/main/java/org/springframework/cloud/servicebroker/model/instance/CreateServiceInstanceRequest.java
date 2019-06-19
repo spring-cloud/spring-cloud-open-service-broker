@@ -16,17 +16,15 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
