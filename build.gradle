@@ -23,7 +23,7 @@ buildscript {
 	dependencies {
 		classpath("io.spring.nohttp:nohttp-gradle:0.0.3.RELEASE")
 		classpath("io.spring.gradle:propdeps-plugin:0.0.10.RELEASE")
-		classpath("io.spring.gradle:dependency-management-plugin:1.0.5.RELEASE")
+		classpath("io.spring.gradle:dependency-management-plugin:1.0.8.RELEASE")
 		classpath("io.spring.gradle:spring-io-plugin:0.0.8.RELEASE")
 		classpath("org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.1.0.RELEASE")
 		classpath("org.asciidoctor:asciidoctor-gradle-plugin:1.5.3")
@@ -31,9 +31,9 @@ buildscript {
 }
 
 ext {
-	springBootVersion = project.findProperty("springBootVersion") ?: "2.1.4.RELEASE"
-	springVersion = project.findProperty("springVersion") ?: "5.1.6.RELEASE"
-	reactorVersion = project.findProperty("reactorVersion") ?: "Californium-SR6"
+	springBootVersion = project.findProperty("springBootVersion") ?: "2.1.6.RELEASE"
+	springVersion = project.findProperty("springVersion") ?: "5.1.8.RELEASE"
+	reactorVersion = project.findProperty("reactorVersion") ?: "Californium-SR9"
 	springCloudContractVersion = "2.1.0.RELEASE"
 
 	javadocLinks = [
