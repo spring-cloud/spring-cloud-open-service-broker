@@ -76,6 +76,11 @@ configure(allprojects) {
 		repositories {
 			maven { url "https://repo.spring.io/libs-snapshot" }
 		}
+		buildscript {
+			repositories {
+				maven { url "https://repo.spring.io/libs-snapshot" }
+			}
+		}
 	}
 
     // nohttp requires a valid checkstyle configuration
