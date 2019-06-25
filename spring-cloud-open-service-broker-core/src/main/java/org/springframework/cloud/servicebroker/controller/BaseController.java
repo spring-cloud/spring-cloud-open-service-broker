@@ -26,6 +26,7 @@ import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidOriginatingIdentityException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
+import org.springframework.cloud.servicebroker.exception.ServiceDefinitionPlanDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
 import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
@@ -86,6 +87,11 @@ public class BaseController {
 						.flatMap(plans -> Flux.fromIterable(plans)
 								.filter(plan -> plan.getId().equals(planId))
 								.singleOrEmpty()));
+	}
+
+	protected Mono<Plan> getRequiredServiceDefinitionPlan(ServiceDefinition serviceDefinition, String planId) {
+		return getServiceDefinitionPlan(serviceDefinition, planId)
+				.switchIfEmpty(Mono.error(new ServiceDefinitionPlanDoesNotExistException(planId)));
 	}
 
 	protected Context parseOriginatingIdentity(String originatingIdentityString) {

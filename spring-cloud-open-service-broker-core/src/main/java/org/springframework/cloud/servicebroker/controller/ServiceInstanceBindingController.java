@@ -24,6 +24,8 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
+import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
+import org.springframework.cloud.servicebroker.exception.ServiceDefinitionPlanDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
@@ -86,12 +88,11 @@ public class ServiceInstanceBindingController extends BaseController {
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody CreateServiceInstanceBindingRequest request) {
 		return getRequiredServiceDefinition(request.getServiceDefinitionId())
-				.flatMap(serviceDefinition -> getServiceDefinitionPlan(serviceDefinition, request.getPlanId())
+				.flatMap(serviceDefinition -> getRequiredServiceDefinitionPlan(serviceDefinition, request.getPlanId())
 						.map(plan -> {
 							request.setPlan(plan);
 							return request;
 						})
-						.switchIfEmpty(Mono.just(request))
 						.map(req -> {
 							request.setServiceInstanceId(serviceInstanceId);
 							request.setBindingId(bindingId);
@@ -107,7 +108,15 @@ public class ServiceInstanceBindingController extends BaseController {
 						.doOnSuccess(response -> LOG.debug("Creating a service instance binding succeeded: serviceInstanceId={}, bindingId={}, response={}",
 								serviceInstanceId, bindingId, response)))
 				.map(response -> new ResponseEntity<>(response, getCreateResponseCode(response)))
-				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.CREATED)));
+				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.CREATED)))
+				.onErrorResume(e -> {
+					if (e instanceof ServiceDefinitionDoesNotExistException ||
+							e instanceof ServiceDefinitionPlanDoesNotExistException) {
+						return Mono.just(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+					} else {
+						return Mono.error(e);
+					}
+				});
 	}
 
 	private HttpStatus getCreateResponseCode(CreateServiceInstanceBindingResponse response) {
@@ -191,9 +200,9 @@ public class ServiceInstanceBindingController extends BaseController {
 			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-		return getServiceDefinition(serviceDefinitionId)
+		return getRequiredServiceDefinition(serviceDefinitionId)
 				.switchIfEmpty(Mono.just(ServiceDefinition.builder().build()))
-				.flatMap(serviceDefinition -> getServiceDefinitionPlan(serviceDefinition, planId)
+				.flatMap(serviceDefinition -> getRequiredServiceDefinitionPlan(serviceDefinition, planId)
 						.map(DeleteServiceInstanceBindingRequest.builder()::plan)
 						.switchIfEmpty(Mono.just(DeleteServiceInstanceBindingRequest.builder()))
 						.map(builder -> builder
@@ -216,8 +225,10 @@ public class ServiceInstanceBindingController extends BaseController {
 				.onErrorResume(e -> {
 					if (e instanceof ServiceInstanceBindingDoesNotExistException) {
 						return Mono.just(new ResponseEntity<>(HttpStatus.GONE));
-					}
-					else {
+					} else if (e instanceof ServiceDefinitionDoesNotExistException ||
+							e instanceof ServiceDefinitionPlanDoesNotExistException) {
+						return Mono.just(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+					} else {
 						return Mono.error(e);
 					}
 				});

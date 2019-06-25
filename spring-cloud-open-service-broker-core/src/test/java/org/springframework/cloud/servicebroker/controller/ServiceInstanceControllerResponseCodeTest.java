@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +32,7 @@ import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
+import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
@@ -50,7 +52,6 @@ import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -205,8 +206,12 @@ public class ServiceInstanceControllerResponseCodeTest {
 	public void setUp() {
 		controller = new ServiceInstanceController(catalogService, serviceInstanceService);
 
-		when(catalogService.getServiceDefinition(anyString()))
-				.thenReturn(Mono.just(ServiceDefinition.builder().build()));
+		ServiceDefinition serviceDefinition = mock(ServiceDefinition.class);
+		List<Plan> plans = new ArrayList<>();
+		plans.add(Plan.builder().id("service-definition-plan-id").build());
+		when(serviceDefinition.getPlans()).thenReturn(plans);
+		when(serviceDefinition.getId()).thenReturn("service-definition-id");
+		when(catalogService.getServiceDefinition(any())).thenReturn(Mono.just(serviceDefinition));
 	}
 
 	@Theory
@@ -223,6 +228,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 
 		CreateServiceInstanceRequest createRequest = CreateServiceInstanceRequest.builder()
 				.serviceDefinitionId("service-definition-id")
+				.planId("service-definition-plan-id")
 				.build();
 
 		ResponseEntity<CreateServiceInstanceResponse> responseEntity = controller
@@ -255,6 +261,35 @@ public class ServiceInstanceControllerResponseCodeTest {
 		assertThat(responseEntity.getBody()).isEqualTo(data.response);
 	}
 
+
+	@Test
+	public void createServiceInstanceWithInvalidServiceDefinitionGivesExpectedStatus() {
+		CreateServiceInstanceRequest request = mock(CreateServiceInstanceRequest.class);
+		when(request.getServiceDefinitionId()).thenReturn("service-definition-id");
+
+		ResponseEntity<CreateServiceInstanceResponse> responseEntity = controller
+				.createServiceInstance(
+						pathVariables, "service-instance-id", false, "api-info-location","originating-identity-string", request)
+				.block();
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+	}
+
+	@Test
+	public void createServiceInstanceWithInvalidServiceDefinitionPlanGivesExpectedStatus() {
+		when(catalogService.getServiceDefinition(any())).thenReturn(Mono.just(mock(ServiceDefinition.class)));
+
+		CreateServiceInstanceRequest request = mock(CreateServiceInstanceRequest.class);
+		when(request.getServiceDefinitionId()).thenReturn("service-definition-id");
+
+		ResponseEntity<CreateServiceInstanceResponse> responseEntity = controller
+				.createServiceInstance(
+						pathVariables, "service-instance-id", false, "api-info-location","originating-identity-string", request)
+				.block();
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+	}
+
 	@Test
 	public void getServiceInstanceWithMissingInstanceGivesExpectedStatus() {
 		when(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
@@ -280,7 +315,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 				.thenReturn(responseMono);
 
 		ResponseEntity<DeleteServiceInstanceResponse> responseEntity = controller
-				.deleteServiceInstance(pathVariables, null, "service-definition-id", null,
+				.deleteServiceInstance(pathVariables, null, "service-definition-id", "service-definition-plan-id",
 						false, null, null)
 				.block();
 
@@ -294,11 +329,35 @@ public class ServiceInstanceControllerResponseCodeTest {
 				.thenReturn(Mono.error(new ServiceInstanceDoesNotExistException("instance does not exist")));
 
 		ResponseEntity<DeleteServiceInstanceResponse> responseEntity = controller
-				.deleteServiceInstance(pathVariables, null, "service-definition-id", null,
+				.deleteServiceInstance(pathVariables, null, "service-definition-id", "service-definition-plan-id",
 						false, null, null)
 				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
+	}
+
+	@Test
+	public void deleteServiceInstanceWithInvalidServiceDefinitionGivesExpectedStatus() {
+		when(catalogService.getServiceDefinition(any())).thenReturn(Mono.empty());
+
+		ResponseEntity<DeleteServiceInstanceResponse> responseEntity = controller
+				.deleteServiceInstance(
+						pathVariables, "service-instance-id","service-definition-id",null, false, null,null)
+				.block();
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+	}
+
+	@Test
+	public void deleteServiceInstanceWithInvalidServiceDefinitionPlanGivesExpectedStatus() {
+		when(catalogService.getServiceDefinition(any())).thenReturn(Mono.just(mock(ServiceDefinition.class)));
+
+		ResponseEntity<DeleteServiceInstanceResponse> responseEntity = controller
+				.deleteServiceInstance(
+						pathVariables, "service-instance-id","service-definition-id","service-definition-plan-id", false, null,null)
+				.block();
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 
 	@Theory

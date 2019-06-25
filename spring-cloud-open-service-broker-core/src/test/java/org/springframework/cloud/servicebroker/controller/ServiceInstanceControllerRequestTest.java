@@ -142,14 +142,6 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 				.block();
 	}
 
-	@Test(expected = ServiceDefinitionDoesNotExistException.class)
-	public void deleteServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
-		ServiceInstanceController controller = createControllerUnderTest();
-		controller.deleteServiceInstance(pathVariables, null,
-				"unknown-service-definition-id", null, false, null, null)
-				.block();
-	}
-
 	@Test
 	public void updateServiceInstanceParametersAreMappedToRequest() {
 		UpdateServiceInstanceRequest parsedRequest = buildUpdateRequest().build();
