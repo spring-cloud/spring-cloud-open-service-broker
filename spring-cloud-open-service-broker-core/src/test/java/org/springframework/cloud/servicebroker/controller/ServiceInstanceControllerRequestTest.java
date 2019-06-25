@@ -20,6 +20,7 @@ import org.junit.Test;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
+import org.springframework.cloud.servicebroker.exception.ServiceDefinitionPlanDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest.CreateServiceInstanceRequestBuilder;
@@ -75,6 +76,20 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 	public void createServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
 		CreateServiceInstanceRequest createRequest = CreateServiceInstanceRequest.builder()
 				.serviceDefinitionId("unknown-service-definition-id")
+				.build();
+
+		ServiceInstanceController controller = createControllerUnderTest();
+
+		controller.createServiceInstance(pathVariables, null, false,
+				null, null, createRequest)
+				.block();
+	}
+
+	@Test(expected = ServiceDefinitionPlanDoesNotExistException.class)
+	public void createServiceInstanceWithInvalidPlanIdThrowsException() {
+		CreateServiceInstanceRequest createRequest = CreateServiceInstanceRequest.builder()
+				.serviceDefinitionId("service-definition-id")
+				.planId("unknown-plan-id")
 				.build();
 
 		ServiceInstanceController controller = createControllerUnderTest();
@@ -144,10 +159,30 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 	@Test(expected = ServiceDefinitionDoesNotExistException.class)
 	public void deleteServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
-		ServiceInstanceController controller = createControllerUnderTest();
-		controller.deleteServiceInstance(pathVariables, null,
-				"unknown-service-definition-id", null, false, null, null)
-				.block();
+		DeleteServiceInstanceRequest expectedRequest = DeleteServiceInstanceRequest.builder()
+				.asyncAccepted(true)
+				.serviceDefinitionId("service-definition-id")
+				.planId("plan-id")
+				.build();
+
+		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
+
+		controller.deleteServiceInstance(pathVariables, null, "unknown-service-definition-id", null, true, null,
+				encodeOriginatingIdentity(identityContext)).block();
+	}
+
+	@Test(expected = ServiceDefinitionPlanDoesNotExistException.class)
+	public void deleteServiceInstanceWithInvalidPlanIdThrowsException() {
+		DeleteServiceInstanceRequest expectedRequest = DeleteServiceInstanceRequest.builder()
+				.asyncAccepted(true)
+				.serviceDefinitionId("service-definition-id")
+				.planId("unknown-plan-id")
+				.build();
+
+		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
+
+		controller.deleteServiceInstance(pathVariables, null, "service-definition-id", "unknown-plan-id", true, null,
+				encodeOriginatingIdentity(identityContext)).block();
 	}
 
 	@Test

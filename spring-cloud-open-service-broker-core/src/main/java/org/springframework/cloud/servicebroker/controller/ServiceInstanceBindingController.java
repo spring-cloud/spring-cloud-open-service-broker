@@ -86,12 +86,11 @@ public class ServiceInstanceBindingController extends BaseController {
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody CreateServiceInstanceBindingRequest request) {
 		return getRequiredServiceDefinition(request.getServiceDefinitionId())
-				.flatMap(serviceDefinition -> getServiceDefinitionPlan(serviceDefinition, request.getPlanId())
+				.flatMap(serviceDefinition -> getRequiredServiceDefinitionPlan(serviceDefinition, request.getPlanId())
 						.map(plan -> {
 							request.setPlan(plan);
 							return request;
 						})
-						.switchIfEmpty(Mono.just(request))
 						.map(req -> {
 							request.setServiceInstanceId(serviceInstanceId);
 							request.setBindingId(bindingId);
@@ -191,9 +190,9 @@ public class ServiceInstanceBindingController extends BaseController {
 			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
-		return getServiceDefinition(serviceDefinitionId)
+		return getRequiredServiceDefinition(serviceDefinitionId)
 				.switchIfEmpty(Mono.just(ServiceDefinition.builder().build()))
-				.flatMap(serviceDefinition -> getServiceDefinitionPlan(serviceDefinition, planId)
+				.flatMap(serviceDefinition -> getRequiredServiceDefinitionPlan(serviceDefinition, planId)
 						.map(DeleteServiceInstanceBindingRequest.builder()::plan)
 						.switchIfEmpty(Mono.just(DeleteServiceInstanceBindingRequest.builder()))
 						.map(builder -> builder

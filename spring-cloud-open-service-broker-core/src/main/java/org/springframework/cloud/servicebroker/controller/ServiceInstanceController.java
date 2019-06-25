@@ -85,12 +85,11 @@ public class ServiceInstanceController extends BaseController {
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
 			@Valid @RequestBody CreateServiceInstanceRequest request) {
 		return getRequiredServiceDefinition(request.getServiceDefinitionId())
-				.flatMap(serviceDefinition -> getServiceDefinitionPlan(serviceDefinition, request.getPlanId())
+				.flatMap(serviceDefinition -> getRequiredServiceDefinitionPlan(serviceDefinition, request.getPlanId())
 						.map(plan -> {
 							request.setPlan(plan);
 							return request;
 						})
-						.switchIfEmpty(Mono.just(request))
 						.map(req -> {
 							req.setServiceInstanceId(serviceInstanceId);
 							req.setServiceDefinition(serviceDefinition);
@@ -186,9 +185,8 @@ public class ServiceInstanceController extends BaseController {
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
 		return getRequiredServiceDefinition(serviceDefinitionId)
-				.flatMap(serviceDefinition -> getServiceDefinitionPlan(serviceDefinition, planId)
+				.flatMap(serviceDefinition -> getRequiredServiceDefinitionPlan(serviceDefinition, planId)
 						.map(DeleteServiceInstanceRequest.builder()::plan)
-						.switchIfEmpty(Mono.just(DeleteServiceInstanceRequest.builder()))
 						.map(builder -> builder
 								.serviceInstanceId(serviceInstanceId)
 								.serviceDefinitionId(serviceDefinitionId)

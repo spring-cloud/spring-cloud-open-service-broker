@@ -29,6 +29,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidPar
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerUnavailableException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
+import org.springframework.cloud.servicebroker.exception.ServiceDefinitionPlanDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
@@ -72,8 +73,14 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	@ExceptionHandler(ServiceDefinitionDoesNotExistException.class)
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(ServiceDefinitionDoesNotExistException ex) {
+		return getErrorResponse(ex);
+	}
+
+	@ExceptionHandler(ServiceDefinitionPlanDoesNotExistException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ErrorMessage handleException(ServiceDefinitionPlanDoesNotExistException ex) {
 		return getErrorResponse(ex);
 	}
 

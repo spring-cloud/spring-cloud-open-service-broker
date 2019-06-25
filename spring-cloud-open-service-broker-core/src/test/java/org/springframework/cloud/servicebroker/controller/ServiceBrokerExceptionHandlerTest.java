@@ -28,6 +28,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidPar
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerUnavailableException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
+import org.springframework.cloud.servicebroker.exception.ServiceDefinitionPlanDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
@@ -76,6 +77,31 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 
 		assertThat(errorMessage.getError()).isNull();
 		assertThat(errorMessage.getMessage()).contains("id=service-definition-id");
+	}
+
+	@Test
+	public void serviceDefinitionPlanDoesNotExistException() {
+		ServiceDefinitionPlanDoesNotExistException exception =
+				new ServiceDefinitionPlanDoesNotExistException("service-definition-plan-id");
+
+		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
+
+		assertThat(errorMessage.getError()).isNull();
+		assertThat(errorMessage.getMessage()).contains("Service Definition Plan does not exist: " +
+				"id=service-definition-plan-id");
+	}
+
+	@Test
+	public void serviceDefinitionPlanDoesNotExistExceptionWithCustomCode() {
+		final String errorCode = "error";
+		ServiceDefinitionPlanDoesNotExistException exception =
+				new ServiceDefinitionPlanDoesNotExistException(errorCode, "service-definition-plan-id");
+
+		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
+
+		assertThat(errorMessage.getError()).isEqualTo(errorCode);
+		assertThat(errorMessage.getMessage()).contains("Service Definition Plan does not exist: " +
+				"id=service-definition-plan-id");
 	}
 
 	@Test

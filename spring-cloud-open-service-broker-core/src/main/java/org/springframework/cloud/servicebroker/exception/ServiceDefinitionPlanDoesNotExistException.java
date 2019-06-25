@@ -17,40 +17,40 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a request includes a service definition ID that does not exist in the
+ * Thrown to indicate that a request includes a plan ID that does not exist in the
  * service broker catalog.
  *
  * <p>
  * Throwing this exception will result in an HTTP status code {@literal 400 BAD REQUEST}
  * being returned to the platform.
  *
- * @author sgreenberg@pivotal.io
+ * @author vvpishh2
  */
-public class ServiceDefinitionDoesNotExistException extends ServiceBrokerException {
+public class ServiceDefinitionPlanDoesNotExistException extends ServiceBrokerException {
 
-	private static final long serialVersionUID = -62090827040416788L;
+	private static final long serialVersionUID = -32490837045476718L;
 
 	/**
-	 * Construct an exception with a default message that includes the provided service definition ID.
+	 * Construct an exception with a default message that includes the provided plan ID.
 	 *
-	 * @param serviceDefinitionId the ID of the service definition
+	 * @param planId the ID of the service definition
 	 */
-	public ServiceDefinitionDoesNotExistException(String serviceDefinitionId) {
-		super(buildMessage(serviceDefinitionId));
+	public ServiceDefinitionPlanDoesNotExistException(String planId) {
+		super(buildMessage(planId));
 	}
 
 	/**
 	 * Construct an exception with an error code and default message that includes the
-	 * provided service definition ID.
+	 * provided plan ID.
 	 *
 	 * @param errorCode a single word in camel case that uniquely identifies the error condition
-	 * @param serviceDefinitionId the ID of the service definition
+	 * @param planId the ID of the plan
 	 */
-	public ServiceDefinitionDoesNotExistException(String errorCode, String serviceDefinitionId) {
-		super(errorCode, buildMessage(serviceDefinitionId));
+	public ServiceDefinitionPlanDoesNotExistException(String errorCode, String planId) {
+		super(errorCode, buildMessage(planId));
 	}
 
-	private static String buildMessage(String serviceDefinitionId) {
-		return "Service definition does not exist: id=" + serviceDefinitionId;
+	private static String buildMessage(String planId) {
+		return "Service Definition Plan does not exist: id=" + planId;
 	}
 }

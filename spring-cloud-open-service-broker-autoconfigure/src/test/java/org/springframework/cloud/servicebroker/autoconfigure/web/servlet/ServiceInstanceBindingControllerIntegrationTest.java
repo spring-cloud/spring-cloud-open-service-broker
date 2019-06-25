@@ -282,7 +282,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.andReturn();
 
 		mockMvc.perform(asyncDispatch(mvcResult))
-				.andExpect(status().isUnprocessableEntity())
+				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.description", containsString(serviceDefinition.getId())));
 	}
 
@@ -518,7 +518,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.andReturn();
 
 		mockMvc.perform(asyncDispatch(mvcResult))
-				.andExpect(status().isOk());
+				.andExpect(status().isBadRequest());
 	}
 
 	@Test
