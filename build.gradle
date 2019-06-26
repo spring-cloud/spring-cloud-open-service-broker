@@ -35,6 +35,7 @@ ext {
 	springVersion = project.findProperty("springVersion") ?: "5.1.8.RELEASE"
 	reactorVersion = project.findProperty("reactorVersion") ?: "Californium-SR9"
 	springCloudContractVersion = "2.1.0.RELEASE"
+	checkstyleVersion = "8.21"
 
 	javadocLinks = [
 			"https://docs.oracle.com/javase/8/docs/api/",
@@ -85,8 +86,8 @@ configure(allprojects) {
 
     // nohttp requires a valid checkstyle configuration
     checkstyle {
-        configFile = file("${project.rootDir}/config/checkstyle-none.xml")
-        toolVersion = 8.16
+        configFile = file("${project.rootDir}/config/checkstyle-nohttp.xml")
+        toolVersion = "${checkstyleVersion}"
     }
 }
 
@@ -96,7 +97,7 @@ configure(allprojects - [project(":spring-cloud-open-service-broker-docs")]) {
 
 	checkstyle {
 		configFile = file("${project.rootDir}/config/checkstyle-header.xml")
-		toolVersion = 8.16
+		toolVersion = "${checkstyleVersion}"
 	}
 	checkstyleMain {
 		source = "src/main/java"
