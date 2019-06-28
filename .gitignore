@@ -14,3 +14,4 @@ out
 .idea
 .rest-shell.log
 spring-shell.log
+.DS_Store
