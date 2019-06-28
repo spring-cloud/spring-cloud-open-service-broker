@@ -11,8 +11,15 @@ spring:
           instancesRetrievable: true
           planUpdateable: true
           metadata:
-            key1: value1
-            key2: value2
+            displayName: service display name
+            imageUrl: image-uri
+            longDescription: service long description
+            providerDisplayName: service provider display name
+            documentationUrl: service-documentation-url
+            supportUrl: service-support-url
+            properties:
+              key1: value1
+              key2: value2
           requires:
             - syslog_drain
             - route_forwarding

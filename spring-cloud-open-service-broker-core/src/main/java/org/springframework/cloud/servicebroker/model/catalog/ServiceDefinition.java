@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,17 +26,17 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import javax.validation.constraints.NotEmpty;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+import org.springframework.util.CollectionUtils;
 
 /**
  * A service offered by this broker.
  *
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-object">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-offering-object">Open
  * Service Broker API specification</a>
  *
  * @author sgreenberg@pivotal.io
@@ -424,7 +425,9 @@ public class ServiceDefinition {
 			if (this.metadata == null) {
 				this.metadata = new HashMap<>();
 			}
-			this.metadata.putAll(metadata);
+			if (!CollectionUtils.isEmpty(metadata)) {
+				this.metadata.putAll(metadata);
+			}
 			return this;
 		}
 

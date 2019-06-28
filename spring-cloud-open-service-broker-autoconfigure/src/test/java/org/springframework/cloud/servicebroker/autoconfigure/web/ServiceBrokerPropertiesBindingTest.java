@@ -37,7 +37,7 @@ import org.springframework.test.context.support.TestPropertySourceUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 
-public class ServiceBrokerPropertiesValidationTest {
+public class ServiceBrokerPropertiesBindingTest {
 
 	@Rule
 	public final ExpectedException thrown = ExpectedException.none();
@@ -106,7 +106,6 @@ public class ServiceBrokerPropertiesValidationTest {
 		YamlPropertySourceLoader sourceLoader = new YamlPropertySourceLoader();
 		List<PropertySource<?>> properties = sourceLoader.load("catalog", resource);
 		context.getEnvironment().getPropertySources().addFirst(properties.get(0));
-
 		validateFullCatalog();
 	}
 
@@ -131,7 +130,13 @@ public class ServiceBrokerPropertiesValidationTest {
 		assertThat(catalog.getServices().get(0).isBindingsRetrievable()).isTrue();
 		assertThat(catalog.getServices().get(0).isInstancesRetrievable()).isTrue();
 		assertThat(catalog.getServices().get(0).isPlanUpdateable()).isTrue();
-		assertThat(catalog.getServices().get(0).getMetadata()).containsOnly(entry("key1", "value1"), entry("key2", "value2"));
+		assertThat(catalog.getServices().get(0).getMetadata().getDisplayName()).isEqualTo("service display name");
+		assertThat(catalog.getServices().get(0).getMetadata().getImageUrl()).isEqualTo("image-uri");
+		assertThat(catalog.getServices().get(0).getMetadata().getLongDescription()).isEqualTo("service long description");
+		assertThat(catalog.getServices().get(0).getMetadata().getProviderDisplayName()).isEqualTo("service provider display name");
+		assertThat(catalog.getServices().get(0).getMetadata().getDocumentationUrl()).isEqualTo("service-documentation-url");
+		assertThat(catalog.getServices().get(0).getMetadata().getSupportUrl()).isEqualTo("service-support-url");
+		assertThat(catalog.getServices().get(0).getMetadata().getProperties()).containsOnly(entry("key1", "value1"), entry("key2", "value2"));
 		assertThat(catalog.getServices().get(0).getRequires()).containsOnly("syslog_drain", "route_forwarding");
 		assertThat(catalog.getServices().get(0).getTags()).containsOnly("tag1", "tag2");
 		assertThat(catalog.getServices().get(0).getDashboardClient().getId()).isEqualTo("dashboard-id");
