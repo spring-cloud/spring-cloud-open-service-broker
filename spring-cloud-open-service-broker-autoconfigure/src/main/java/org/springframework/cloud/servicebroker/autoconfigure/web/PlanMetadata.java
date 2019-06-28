@@ -32,7 +32,7 @@ import org.springframework.util.CollectionUtils;
  * @author Roy Clarkson
  * @see org.springframework.cloud.servicebroker.model.catalog.Plan
  */
-public class Metadata {
+public class PlanMetadata {
 
 	private static final String COSTS_KEY = "costs";
 
@@ -45,20 +45,20 @@ public class Metadata {
 	 * are multiple costs, all of them could be billed to the user (such as a monthly + usage costs at once).
 	 */
 	@NestedConfigurationProperty
-	private List<Cost> costs = new ArrayList<Cost>();
+	private final List<Cost> costs = new ArrayList<>();
 
 	/**
-	 * Features of this plan, to be displayed in a bulleted-list.
+	 * Features of this plan, to be displayed in a bulleted-list
 	 */
-	private List<String> bullets = new ArrayList<>();
+	private final List<String> bullets = new ArrayList<>();
 
 	/**
-	 * Name of the plan to be displayed to clients.
+	 * Name of the plan to be displayed to clients
 	 */
 	private String displayName;
 
 	/**
-	 * Additional properties used to describe the plan.
+	 * Additional properties used to describe the plan
 	 */
 	private final Map<String, Object> properties = new HashMap<>();
 
@@ -68,7 +68,8 @@ public class Metadata {
 
 	public void setCosts(List<Cost> costs) {
 		if (!CollectionUtils.isEmpty(costs)) {
-			this.costs = costs;
+			this.costs.clear();
+			this.costs.addAll(costs);
 		}
 	}
 
@@ -78,7 +79,8 @@ public class Metadata {
 
 	public void setBullets(List<String> bullets) {
 		if (!CollectionUtils.isEmpty(bullets)) {
-			this.bullets = bullets;
+			this.bullets.clear();
+			this.bullets.addAll(bullets);
 		}
 	}
 

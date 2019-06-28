@@ -16,11 +16,10 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -31,7 +30,7 @@ import org.springframework.util.CollectionUtils;
  * A service plan available for a ServiceDefinition
  *
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#plan-object">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-plan-object">Open
  * Service Broker API specification</a>
  *
  * @author sgreenberg@pivotal.io

@@ -18,9 +18,7 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -86,7 +84,8 @@ public class ServiceDefinition {
 	/**
 	 * A map of metadata to further describe a service offering.
 	 */
-	private final Map<String, Object> metadata = new HashMap<>();
+	@NestedConfigurationProperty
+	private ServiceMetadata metadata;
 
 	/**
 	 * A list of permissions that the user would have to give the service, if they provision it. See
@@ -167,8 +166,12 @@ public class ServiceDefinition {
 		return this.tags;
 	}
 
-	public Map<String, Object> getMetadata() {
+	public ServiceMetadata getMetadata() {
 		return this.metadata;
+	}
+
+	public void setMetadata(ServiceMetadata metadata) {
+		this.metadata = metadata;
 	}
 
 	public List<String> getRequires() {
@@ -208,7 +211,7 @@ public class ServiceDefinition {
 				.instancesRetrievable(this.instancesRetrievable)
 				.bindingsRetrievable(this.bindingsRetrievable)
 				.tags(this.tags)
-				.metadata(this.metadata)
+				.metadata(this.metadata == null ? null : this.metadata.toModel())
 				.requires(this.requires)
 				.dashboardClient(this.dashboardClient == null ? null : this.dashboardClient.toModel())
 				.plans(modelPlans)

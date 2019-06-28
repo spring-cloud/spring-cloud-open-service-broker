@@ -55,7 +55,7 @@ public class Plan {
 	 * The metadata for this plan
 	 */
 	@NestedConfigurationProperty
-	private Metadata metadata;
+	private PlanMetadata metadata;
 
 	/**
 	 * The schemas for this plan.
@@ -100,11 +100,11 @@ public class Plan {
 		this.description = description;
 	}
 
-	public Metadata getMetadata() {
+	public PlanMetadata getMetadata() {
 		return this.metadata;
 	}
 
-	public void setMetadata(Metadata metadata) {
+	public void setMetadata(PlanMetadata metadata) {
 		this.metadata = metadata;
 	}
 
