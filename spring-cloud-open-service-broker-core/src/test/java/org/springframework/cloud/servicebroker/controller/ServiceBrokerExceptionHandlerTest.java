@@ -92,6 +92,19 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
+	public void serviceDefinitionPlanDoesNotExistExceptionWithCustomCode() {
+		final String errorCode = "error";
+		ServiceDefinitionPlanDoesNotExistException exception =
+				new ServiceDefinitionPlanDoesNotExistException(errorCode, "service-definition-plan-id");
+
+		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
+
+		assertThat(errorMessage.getError()).isEqualTo(errorCode);
+		assertThat(errorMessage.getMessage()).contains("Service Definition Plan does not exist: " +
+				"id=service-definition-plan-id");
+	}
+
+	@Test
 	public void serviceBrokerAsyncRequiredException() {
 		ServiceBrokerAsyncRequiredException exception =
 				new ServiceBrokerAsyncRequiredException("test message");

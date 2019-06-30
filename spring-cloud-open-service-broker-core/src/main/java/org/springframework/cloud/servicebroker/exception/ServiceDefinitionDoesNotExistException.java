@@ -21,7 +21,7 @@ package org.springframework.cloud.servicebroker.exception;
  * service broker catalog.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY}
+ * Throwing this exception will result in an HTTP status code {@literal 400 BAD REQUEST}
  * being returned to the platform.
  *
  * @author sgreenberg@pivotal.io
