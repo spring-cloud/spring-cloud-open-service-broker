@@ -24,8 +24,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
-import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
-import org.springframework.cloud.servicebroker.exception.ServiceDefinitionPlanDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;

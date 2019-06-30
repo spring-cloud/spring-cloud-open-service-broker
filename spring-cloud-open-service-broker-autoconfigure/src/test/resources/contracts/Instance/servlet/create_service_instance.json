@@ -5,7 +5,7 @@
   "async_accepted": false,
   "parameters": {},
   "context": null,
-  "plan_id": "standard",
+  "plan_id": "plan-one-id",
   "organization_guid": null,
   "space_guid": null,
   "service_instance_id": null,
