@@ -106,16 +106,7 @@ public class ServiceInstanceController extends BaseController {
 								LOG.debug("Creating a service instance succeeded: serviceInstanceId={}, response={}",
 										serviceInstanceId, response)))
 				.map(response -> new ResponseEntity<>(response, getCreateResponseCode(response)))
-				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.CREATED)))
-				.onErrorResume(e -> {
-					if (e instanceof ServiceInstanceDoesNotExistException ||
-							e instanceof ServiceDefinitionPlanDoesNotExistException) {
-						return Mono.just(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
-					}
-					else {
-						return Mono.error(e);
-					}
-				});
+				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.CREATED)));
 	}
 
 	private HttpStatus getCreateResponseCode(CreateServiceInstanceResponse response) {
@@ -218,10 +209,8 @@ public class ServiceInstanceController extends BaseController {
 				.onErrorResume(e -> {
 					if (e instanceof ServiceInstanceDoesNotExistException) {
 						return Mono.just(new ResponseEntity<>(HttpStatus.GONE));
-					} else if (e instanceof ServiceDefinitionDoesNotExistException ||
-							e instanceof ServiceDefinitionPlanDoesNotExistException) {
-						return Mono.just(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
-					} else {
+					}
+					else {
 						return Mono.error(e);
 					}
 				});

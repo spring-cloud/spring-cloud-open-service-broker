@@ -87,7 +87,8 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
 
 		assertThat(errorMessage.getError()).isNull();
-		assertThat(errorMessage.getMessage()).contains("Service Definition Plan does not exist: id=service-definition-plan-id");
+		assertThat(errorMessage.getMessage()).contains("Service Definition Plan does not exist: " +
+				"id=service-definition-plan-id");
 	}
 
 	@Test

@@ -249,7 +249,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.andReturn();
 
 		mockMvc.perform(asyncDispatch(mvcResult))
-				.andExpect(status().isUnprocessableEntity())
+				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.description", containsString(serviceDefinition.getId())));
 	}
 
@@ -491,7 +491,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.andReturn();
 
 		mockMvc.perform(asyncDispatch(mvcResult))
-				.andExpect(status().isUnprocessableEntity())
+				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.description", containsString(serviceDefinition.getId())));
 	}
 
@@ -636,7 +636,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.andReturn();
 
 		mockMvc.perform(asyncDispatch(mvcResult))
-				.andExpect(status().isUnprocessableEntity())
+				.andExpect(status().isBadRequest())
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.description", containsString(serviceDefinition.getId())));
 	}

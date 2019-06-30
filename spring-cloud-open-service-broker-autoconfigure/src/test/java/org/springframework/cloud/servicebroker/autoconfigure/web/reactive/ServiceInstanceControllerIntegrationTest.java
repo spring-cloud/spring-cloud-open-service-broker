@@ -216,7 +216,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectStatus().isEqualTo(HttpStatus.BAD_REQUEST)
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> assertDescriptionContains(result, String.format("id=%s", serviceDefinition.getId())));
@@ -430,7 +430,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectStatus().isEqualTo(HttpStatus.BAD_REQUEST)
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> assertDescriptionContains(result, String.format("id=%s", serviceDefinition.getId())));
@@ -573,7 +573,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectStatus().isEqualTo(HttpStatus.BAD_REQUEST)
 				.expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()

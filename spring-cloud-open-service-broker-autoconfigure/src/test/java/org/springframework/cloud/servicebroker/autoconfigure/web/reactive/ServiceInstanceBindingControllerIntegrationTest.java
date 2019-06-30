@@ -255,7 +255,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void createBindingWithUnknownServiceDefinitionIdSucceeds() throws Exception {
+	public void createBindingWithUnknownServiceDefinitionIdFails() throws Exception {
 		setupCatalogService(null);
 
 		client.put().uri(buildCreateUrl())
@@ -264,7 +264,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectStatus().isEqualTo(HttpStatus.BAD_REQUEST)
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> assertDescriptionContains(result, serviceDefinition.getId()));
@@ -461,7 +461,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void deleteBindingWithUnknownServiceDefinitionIdSucceeds() throws Exception {
+	public void deleteBindingWithUnknownServiceDefinitionIdFails() throws Exception {
 		setupCatalogService(null);
 
 		when(serviceInstanceBindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
@@ -469,7 +469,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		client.delete().uri(buildDeleteUrl())
 				.exchange()
-				.expectStatus().isOk();
+				.expectStatus().isBadRequest();
 	}
 
 	@Test

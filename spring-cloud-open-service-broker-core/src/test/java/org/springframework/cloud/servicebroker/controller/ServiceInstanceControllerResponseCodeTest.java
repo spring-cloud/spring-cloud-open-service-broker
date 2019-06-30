@@ -52,6 +52,7 @@ import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -261,35 +262,6 @@ public class ServiceInstanceControllerResponseCodeTest {
 		assertThat(responseEntity.getBody()).isEqualTo(data.response);
 	}
 
-
-	@Test
-	public void createServiceInstanceWithInvalidServiceDefinitionGivesExpectedStatus() {
-		CreateServiceInstanceRequest request = mock(CreateServiceInstanceRequest.class);
-		when(request.getServiceDefinitionId()).thenReturn("service-definition-id");
-
-		ResponseEntity<CreateServiceInstanceResponse> responseEntity = controller
-				.createServiceInstance(
-						pathVariables, "service-instance-id", false, "api-info-location","originating-identity-string", request)
-				.block();
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-	}
-
-	@Test
-	public void createServiceInstanceWithInvalidServiceDefinitionPlanGivesExpectedStatus() {
-		when(catalogService.getServiceDefinition(any())).thenReturn(Mono.just(mock(ServiceDefinition.class)));
-
-		CreateServiceInstanceRequest request = mock(CreateServiceInstanceRequest.class);
-		when(request.getServiceDefinitionId()).thenReturn("service-definition-id");
-
-		ResponseEntity<CreateServiceInstanceResponse> responseEntity = controller
-				.createServiceInstance(
-						pathVariables, "service-instance-id", false, "api-info-location","originating-identity-string", request)
-				.block();
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-	}
-
 	@Test
 	public void getServiceInstanceWithMissingInstanceGivesExpectedStatus() {
 		when(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
@@ -334,30 +306,6 @@ public class ServiceInstanceControllerResponseCodeTest {
 				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
-	}
-
-	@Test
-	public void deleteServiceInstanceWithInvalidServiceDefinitionGivesExpectedStatus() {
-		when(catalogService.getServiceDefinition(any())).thenReturn(Mono.empty());
-
-		ResponseEntity<DeleteServiceInstanceResponse> responseEntity = controller
-				.deleteServiceInstance(
-						pathVariables, "service-instance-id","service-definition-id",null, false, null,null)
-				.block();
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-	}
-
-	@Test
-	public void deleteServiceInstanceWithInvalidServiceDefinitionPlanGivesExpectedStatus() {
-		when(catalogService.getServiceDefinition(any())).thenReturn(Mono.just(mock(ServiceDefinition.class)));
-
-		ResponseEntity<DeleteServiceInstanceResponse> responseEntity = controller
-				.deleteServiceInstance(
-						pathVariables, "service-instance-id","service-definition-id","service-definition-plan-id", false, null,null)
-				.block();
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 
 	@Theory

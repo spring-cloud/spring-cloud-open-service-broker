@@ -73,14 +73,13 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	@ExceptionHandler(ServiceDefinitionDoesNotExistException.class)
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(ServiceDefinitionDoesNotExistException ex) {
 		return getErrorResponse(ex);
 	}
 
-
 	@ExceptionHandler(ServiceDefinitionPlanDoesNotExistException.class)
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(ServiceDefinitionPlanDoesNotExistException ex) {
 		return getErrorResponse(ex);
 	}

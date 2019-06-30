@@ -108,15 +108,7 @@ public class ServiceInstanceBindingController extends BaseController {
 						.doOnSuccess(response -> LOG.debug("Creating a service instance binding succeeded: serviceInstanceId={}, bindingId={}, response={}",
 								serviceInstanceId, bindingId, response)))
 				.map(response -> new ResponseEntity<>(response, getCreateResponseCode(response)))
-				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.CREATED)))
-				.onErrorResume(e -> {
-					if (e instanceof ServiceDefinitionDoesNotExistException ||
-							e instanceof ServiceDefinitionPlanDoesNotExistException) {
-						return Mono.just(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
-					} else {
-						return Mono.error(e);
-					}
-				});
+				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.CREATED)));
 	}
 
 	private HttpStatus getCreateResponseCode(CreateServiceInstanceBindingResponse response) {
@@ -225,10 +217,8 @@ public class ServiceInstanceBindingController extends BaseController {
 				.onErrorResume(e -> {
 					if (e instanceof ServiceInstanceBindingDoesNotExistException) {
 						return Mono.just(new ResponseEntity<>(HttpStatus.GONE));
-					} else if (e instanceof ServiceDefinitionDoesNotExistException ||
-							e instanceof ServiceDefinitionPlanDoesNotExistException) {
-						return Mono.just(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
-					} else {
+					}
+					else {
 						return Mono.error(e);
 					}
 				});

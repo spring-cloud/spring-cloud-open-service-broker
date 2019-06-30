@@ -50,7 +50,6 @@ import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -188,34 +187,6 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		assertThat(responseEntity.getBody()).isEqualTo(data.response);
 	}
 
-
-	@Test
-	public void createServiceBindingWithInvalidServiceDefinitionGivesExpectedStatus() {
-		when(catalogService.getServiceDefinition(any())).thenReturn(Mono.empty());
-
-		CreateServiceInstanceBindingRequest request = mock(CreateServiceInstanceBindingRequest.class);
-		when(request.getServiceDefinitionId()).thenReturn("service-definition-id");
-
-		ResponseEntity<CreateServiceInstanceBindingResponse> responseEntity = controller
-				.createServiceInstanceBinding(pathVariables, null, null, false, null, null, request)
-				.block();
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-	}
-
-	@Test
-	public void createServiceBindingWithInvalidServiceDefinitionPlanGivesExpectedStatus() {
-		CreateServiceInstanceBindingRequest request = mock(CreateServiceInstanceBindingRequest.class);
-		when(request.getServiceDefinitionId()).thenReturn("service-definition-id");
-		when(request.getServiceDefinitionId()).thenReturn("service-definition-plan-id");
-
-		ResponseEntity<CreateServiceInstanceBindingResponse> responseEntity = controller
-				.createServiceInstanceBinding(pathVariables, null, null, false, null, null, request)
-				.block();
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-	}
-
 	@Test
 	public void getServiceBindingWithMissingBindingGivesExpectedStatus() {
 		doThrow(new ServiceInstanceBindingDoesNotExistException("binding-id"))
@@ -273,26 +244,6 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
-	}
-
-	@Test
-	public void deleteServiceBindingWithInvalidServiceDefinitionGivesExpectedStatus() {
-		when(catalogService.getServiceDefinition(anyString())).thenReturn(Mono.empty());
-
-		ResponseEntity<DeleteServiceInstanceBindingResponse> responseEntity = controller
-				.deleteServiceInstanceBinding(pathVariables, null, null, "service-definition-id", "service-definition-plan-id", false, null, null)
-				.block();
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-	}
-
-	@Test
-	public void deleteServiceBindingWithInvalidServiceDefinitionPlanGivesExpectedStatus() {
-		ResponseEntity<DeleteServiceInstanceBindingResponse> responseEntity = controller
-				.deleteServiceInstanceBinding(pathVariables, null, null, "service-definition-id", "unknown-service-definition-plan-id", false, null, null)
-				.block();
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 
 	public static class AsyncResponseAndExpectedStatus<T extends AsyncServiceBrokerResponse> {
