@@ -32,20 +32,24 @@ buildscript {
 
 ext {
 	springBootVersion = project.findProperty("springBootVersion") ?: "2.1.6.RELEASE"
-	springVersion = project.findProperty("springVersion") ?: "5.1.8.RELEASE"
+	springFrameworkVersion = project.findProperty("springFrameworkVersion") ?: "5.1.8.RELEASE"
+	// deprecated in favor of `springFrameworkVersion`
+	if (project.hasProperty("springVersion")) {
+		springFrameworkVersion = project.findProperty("springVersion")
+	}
 	reactorVersion = project.findProperty("reactorVersion") ?: "Californium-SR9"
 	springCloudContractVersion = "2.1.0.RELEASE"
 	checkstyleVersion = "8.21"
 
 	javadocLinks = [
 			"https://docs.oracle.com/javase/8/docs/api/",
-			"https://docs.spring.io/spring/docs/${springVersion}/javadoc-api/",
+			"https://docs.spring.io/spring/docs/${springFrameworkVersion}/javadoc-api/",
 	] as String[]
 }
 
 //override managed Spring Boot versions
-if (project.hasProperty("springVersion")) {
-	ext['spring-framework.version'] = ext.springVersion
+if (project.hasProperty("springFrameworkVersion") || project.hasProperty("springVersion")) {
+	ext['spring-framework.version'] = ext.springFrameworkVersion
 }
 if (project.hasProperty("reactorVersion")) {
 	ext['reactor-bom.version'] = ext.reactorVersion
@@ -73,7 +77,7 @@ configure(allprojects) {
 		maven { url "https://repo.spring.io/libs-release" }
 	}
 
-	if (project.hasProperty("springVersion") || project.hasProperty("springBootVersion")) {
+	if (project.hasProperty("springFrameworkVersion") || project.hasProperty("springBootVersion")) {
 		repositories {
 			maven { url "https://repo.spring.io/libs-snapshot" }
 		}

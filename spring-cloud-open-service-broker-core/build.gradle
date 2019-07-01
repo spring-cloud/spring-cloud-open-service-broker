@@ -33,7 +33,7 @@ ext {
 
 dependencyManagement {
 	imports {
-		mavenBom "org.springframework:spring-framework-bom:${springVersion}"
+		mavenBom "org.springframework:spring-framework-bom:${springFrameworkVersion}"
 		mavenBom "io.projectreactor:reactor-bom:${reactorVersion}"
 		mavenBom "com.fasterxml.jackson:jackson-bom:${jacksonVersion}"
 	}
