@@ -20,7 +20,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractServiceInstanceBindingControllerIntegrationTest;
 import org.springframework.cloud.servicebroker.controller.ServiceBrokerWebMvcExceptionHandler;
@@ -506,11 +505,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void deleteBindingWithUnknownServiceDefinitionIdSucceeds() throws Exception {
+	public void deleteBindingWithUnknownServiceDefinitionIdFails() throws Exception {
 		setupCatalogService(null);
-
-		when(serviceInstanceBindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
-				.thenReturn(Mono.empty());
 
 		MvcResult mvcResult = mockMvc.perform(delete(buildDeleteUrl())
 				.contentType(MediaType.APPLICATION_JSON))
