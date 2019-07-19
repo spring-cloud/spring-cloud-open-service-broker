@@ -59,7 +59,20 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	@JsonIgnore /*internal field*/
 	private transient final Plan plan;
 
-	DeleteServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
+	/**
+	 * Construct a new {@link DeleteServiceInstanceBindingRequest}
+	 * @param serviceInstanceId the service instance ID
+	 * @param serviceDefinitionId the service definition ID
+	 * @param planId the plan ID
+	 * @param bindingId the service binding ID
+	 * @param serviceDefinition the service definition
+	 * @param plan the plan
+	 * @param acceptsAsync does the platform accept asynchronous requests
+	 * @param platformInstanceId the platform instance ID
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 */
+	public DeleteServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
 										String bindingId, ServiceDefinition serviceDefinition, Plan plan,
 										boolean acceptsAsync, String platformInstanceId, String apiInfoLocation,
 										Context originatingIdentity) {
@@ -171,9 +184,15 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof DeleteServiceInstanceBindingRequest)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof DeleteServiceInstanceBindingRequest)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		DeleteServiceInstanceBindingRequest that = (DeleteServiceInstanceBindingRequest) o;
 		return that.canEqual(this) &&
 				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
@@ -186,7 +205,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 
 	@Override
 	public final boolean canEqual(Object other) {
-		return (other instanceof DeleteServiceInstanceBindingRequest);
+		return other instanceof DeleteServiceInstanceBindingRequest;
 	}
 
 	@Override
@@ -221,7 +240,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		private ServiceDefinition serviceDefinition;
 		private Plan plan;
 
-		DeleteServiceInstanceBindingRequestBuilder() {
+		private DeleteServiceInstanceBindingRequestBuilder() {
 		}
 
 		/**
@@ -263,7 +282,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		/**
 		 * Set the binding ID as would be provided in the request from the platform.
 		 *
-		 * @param bindingId the binding ID
+		 * @param bindingId the service binding ID
 		 * @return the builder
 		 * @see #getBindingId()
 		 */
@@ -324,7 +343,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		/**
 		 * Set the location of the API info endpoint as would be provided in the request from the platform.
 		 *
-		 * @param apiInfoLocation the API info endpoint location
+		 * @param apiInfoLocation location of the API info endpoint of the platform instance
 		 * @return the builder
 		 * @see #getApiInfoLocation()
 		 */

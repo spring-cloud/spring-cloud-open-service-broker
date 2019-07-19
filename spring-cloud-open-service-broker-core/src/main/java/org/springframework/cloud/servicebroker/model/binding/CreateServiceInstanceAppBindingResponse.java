@@ -45,17 +45,30 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 
 	private final List<VolumeMount> volumeMounts;
 
-	CreateServiceInstanceAppBindingResponse(boolean async, String operation, boolean bindingExisted,
+	/**
+	 * Construct a new {@link CreateServiceInstanceAppBindingResponse}
+	 */
+	public CreateServiceInstanceAppBindingResponse() {
+		this(false, null, false, new HashMap<>(), null, new ArrayList<>());
+	}
+
+	/**
+	 * Construct a new {@link CreateServiceInstanceAppBindingResponse}
+	 *
+	 * @param async is the operation asynchronous
+	 * @param operation description of the operation being performed
+	 * @param bindingExisted does the service binding already exist
+	 * @param credentials the service binding credentials
+	 * @param syslogDrainUrl the syslog drain URL
+	 * @param volumeMounts the set of volume mounts
+	 */
+	public CreateServiceInstanceAppBindingResponse(boolean async, String operation, boolean bindingExisted,
 											Map<String, Object> credentials,
 											String syslogDrainUrl, List<VolumeMount> volumeMounts) {
 		super(async, operation, bindingExisted);
 		this.credentials = credentials;
 		this.syslogDrainUrl = syslogDrainUrl;
 		this.volumeMounts = volumeMounts;
-	}
-
-	CreateServiceInstanceAppBindingResponse() {
-		this(false, null, false, new HashMap<>(), null, new ArrayList<>());
 	}
 
 	/**
@@ -96,9 +109,15 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof CreateServiceInstanceAppBindingResponse)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof CreateServiceInstanceAppBindingResponse)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		CreateServiceInstanceAppBindingResponse that = (CreateServiceInstanceAppBindingResponse) o;
 		return that.canEqual(this) &&
 				Objects.equals(credentials, that.credentials) &&
@@ -108,7 +127,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 
 	@Override
 	public final boolean canEqual(Object other) {
-		return (other instanceof CreateServiceInstanceAppBindingResponse);
+		return other instanceof CreateServiceInstanceAppBindingResponse;
 	}
 
 	@Override
@@ -137,7 +156,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		private boolean async;
 		private String operation;
 
-		CreateServiceInstanceAppBindingResponseBuilder() {
+		private CreateServiceInstanceAppBindingResponseBuilder() {
 		}
 
 		/**
@@ -260,7 +279,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		 * <p>
 		 * This value will set the {@literal operation} field in the body of the response to the platform.
 		 *
-		 * @param operation the informational value
+		 * @param operation description of the operation being performed
 		 * @return the builder
 		 */
 		public CreateServiceInstanceAppBindingResponseBuilder operation(String operation) {

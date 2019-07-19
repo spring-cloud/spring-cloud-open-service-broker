@@ -27,6 +27,12 @@ import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInsta
  */
 public interface DeleteServiceInstanceInitializationFlow {
 
+	/**
+	 * Performs the operation on the initialization flow
+	 *
+	 * @param request the service broker request
+	 * @return an empty Mono
+	 */
 	default Mono<Void> initialize(DeleteServiceInstanceRequest request) {
 		return Mono.empty();
 	}

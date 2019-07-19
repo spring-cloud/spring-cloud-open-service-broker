@@ -16,12 +16,11 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -40,16 +39,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Scott Frederick
  */
 public class Catalog {
+
 	@NotEmpty
 	@JsonProperty("services")
 	private final List<ServiceDefinition> serviceDefinitions;
 
-	Catalog(List<ServiceDefinition> serviceDefinitions) {
-		this.serviceDefinitions = serviceDefinitions;
+	/**
+	 * Construct a new {@link Catalog}
+	 */
+	public Catalog() {
+		this(new ArrayList<>());
 	}
 
-	Catalog() {
-		this(new ArrayList<>());
+	/**
+	 * Construct a new {@link Catalog}
+	 * @param serviceDefinitions a collection of services
+	 */
+	public Catalog(List<ServiceDefinition> serviceDefinitions) {
+		this.serviceDefinitions = serviceDefinitions;
 	}
 
 	/**
@@ -63,8 +70,12 @@ public class Catalog {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Catalog)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Catalog)) {
+			return false;
+		}
 		Catalog catalog = (Catalog) o;
 		return Objects.equals(serviceDefinitions, catalog.serviceDefinitions);
 	}
@@ -96,7 +107,7 @@ public class Catalog {
 	public static class CatalogBuilder {
 		private final List<ServiceDefinition> serviceDefinitions = new ArrayList<>();
 
-		CatalogBuilder() {
+		private CatalogBuilder() {
 		}
 
 		/**

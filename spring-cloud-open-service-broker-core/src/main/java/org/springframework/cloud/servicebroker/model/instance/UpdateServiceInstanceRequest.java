@@ -16,10 +16,10 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -60,14 +60,30 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@JsonIgnore
 	private transient Plan plan;
 
-	@SuppressWarnings("unused")
-	UpdateServiceInstanceRequest() {
-		this.serviceDefinitionId = null;
-		this.planId = null;
-		this.previousValues = null;
+	/**
+	 * Construct a new {@link UpdateServiceInstanceRequest}
+	 */
+	public UpdateServiceInstanceRequest() {
+		this(null, null, null, null, null, null, null, null, false, null, null, null);
 	}
 
-	UpdateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
+	/**
+	 * Construct a new {@link UpdateServiceInstanceRequest}
+	 *
+	 * @param serviceDefinitionId the service definition ID
+	 * @param serviceInstanceId the service instance ID
+	 * @param planId the plan ID
+	 * @param serviceDefinition the service definition
+	 * @param plan the plan
+	 * @param previousValues the previous values
+	 * @param parameters the parameters
+	 * @param context the context
+	 * @param asyncAccepted does the platform accept asynchronous requests
+	 * @param platformInstanceId the platform instance ID
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 */
+	public UpdateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
 								 ServiceDefinition serviceDefinition, Plan plan,
 								 PreviousValues previousValues, Map<String, Object> parameters,
 								 Context context, boolean asyncAccepted,
@@ -98,7 +114,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * This method is intended to be used internally only; use {@link #builder()} to construct an object of this
 	 * type and set all field values.
 	 *
-	 * @param serviceInstanceId the ID of the service instance to update
+	 * @param serviceInstanceId the service instance ID to update
 	 */
 	public void setServiceInstanceId(String serviceInstanceId) {
 		this.serviceInstanceId = serviceInstanceId;
@@ -204,9 +220,15 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof UpdateServiceInstanceRequest)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof UpdateServiceInstanceRequest)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		UpdateServiceInstanceRequest that = (UpdateServiceInstanceRequest) o;
 		return that.canEqual(this) &&
 				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
@@ -219,7 +241,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 	@Override
 	public final boolean canEqual(Object other) {
-		return (other instanceof UpdateServiceInstanceRequest);
+		return other instanceof UpdateServiceInstanceRequest;
 	}
 
 	@Override
@@ -244,14 +266,19 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 */
 	@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 	public static class PreviousValues {
+
 		@NotEmpty
 		private final String planId;
 
-		@SuppressWarnings("unused")
 		private PreviousValues() {
-			this.planId = null;
+			this(null);
 		}
 
+		/**
+		 * Construct a new {@link PreviousValues}
+		 *
+		 * @param planId the plan ID
+		 */
 		public PreviousValues(String planId) {
 			this.planId = planId;
 		}
@@ -271,8 +298,12 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 		@Override
 		public boolean equals(Object o) {
-			if (this == o) return true;
-			if (!(o instanceof PreviousValues)) return false;
+			if (this == o) {
+				return true;
+			}
+			if (!(o instanceof PreviousValues)) {
+				return false;
+			}
 			PreviousValues that = (PreviousValues) o;
 			return Objects.equals(planId, that.planId);
 		}
@@ -307,7 +338,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		private String apiInfoLocation;
 		private Context originatingIdentity;
 
-		UpdateServiceInstanceRequestBuilder() {
+		private UpdateServiceInstanceRequestBuilder() {
 		}
 
 		/**
@@ -449,7 +480,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * Set the location of the API info endpoint as would be provided in the request from the platform.
 		 *
-		 * @param apiInfoLocation the API info endpoint location
+		 * @param apiInfoLocation location of the API info endpoint of the platform instance
 		 * @return the builder
 		 * @see #getApiInfoLocation()
 		 */

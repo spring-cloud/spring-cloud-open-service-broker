@@ -42,16 +42,27 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 
 	private final List<VolumeMount> volumeMounts;
 
-	GetServiceInstanceAppBindingResponse(Map<String, Object> parameters, Map<String, Object> credentials,
+	/**
+	 * Construct a new {@link GetServiceInstanceAppBindingResponse}
+	 */
+	public GetServiceInstanceAppBindingResponse() {
+		this(new HashMap<>(), new HashMap<>(), null, new ArrayList<>());
+	}
+
+	/**
+	 * Construct a new {@link GetServiceInstanceAppBindingResponse}
+	 *
+	 * @param parameters the parameters
+	 * @param credentials the service binding credentials
+	 * @param syslogDrainUrl the syslog drain URL
+	 * @param volumeMounts the set of volume mounts
+	 */
+	public GetServiceInstanceAppBindingResponse(Map<String, Object> parameters, Map<String, Object> credentials,
 										 String syslogDrainUrl, List<VolumeMount> volumeMounts) {
 		super(parameters);
 		this.credentials = credentials;
 		this.syslogDrainUrl = syslogDrainUrl;
 		this.volumeMounts = volumeMounts;
-	}
-
-	GetServiceInstanceAppBindingResponse() {
-		this(new HashMap<>(), new HashMap<>(), null, new ArrayList<>());
 	}
 
 	/**
@@ -92,9 +103,15 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof GetServiceInstanceAppBindingResponse)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof GetServiceInstanceAppBindingResponse)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		GetServiceInstanceAppBindingResponse that = (GetServiceInstanceAppBindingResponse) o;
 		return that.canEqual(this) &&
 				Objects.equals(credentials, that.credentials) &&
@@ -104,7 +121,7 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 
 	@Override
 	public final boolean canEqual(Object other) {
-		return (other instanceof GetServiceInstanceAppBindingResponse);
+		return other instanceof GetServiceInstanceAppBindingResponse;
 	}
 
 	@Override
@@ -131,7 +148,7 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		private final List<VolumeMount> volumeMounts = new ArrayList<>();
 		private final Map<String, Object> parameters = new HashMap<>();
 
-		GetServiceInstanceAppBindingResponseBuilder() {
+		private GetServiceInstanceAppBindingResponseBuilder() {
 		}
 
 		/**

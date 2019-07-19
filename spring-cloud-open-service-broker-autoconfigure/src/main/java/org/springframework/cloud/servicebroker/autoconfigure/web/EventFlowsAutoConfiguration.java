@@ -61,6 +61,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class EventFlowsAutoConfiguration {
 
+	/**
+	 * Conditionally create a new {@link CreateServiceInstanceEventFlowRegistry} bean
+	 *
+	 * @param initializationFlows the initialization flows
+	 * @param completionFlows the completion flows
+	 * @param errorFlows the error flows
+	 * @return the bean
+	 */
 	@Bean
 	@ConditionalOnMissingBean(CreateServiceInstanceEventFlowRegistry.class)
 	public CreateServiceInstanceEventFlowRegistry createInstanceRegistry(
@@ -70,6 +78,14 @@ public class EventFlowsAutoConfiguration {
 		return new CreateServiceInstanceEventFlowRegistry(initializationFlows, completionFlows, errorFlows);
 	}
 
+	/**
+	 * Conditionally create a new {@link DeleteServiceInstanceEventFlowRegistry} bean
+	 *
+	 * @param initializationFlows the initialization flows
+	 * @param completionFlows the completion flows
+	 * @param errorFlows the error flows
+	 * @return the bean
+	 */
 	@Bean
 	@ConditionalOnMissingBean(DeleteServiceInstanceEventFlowRegistry.class)
 	public DeleteServiceInstanceEventFlowRegistry deleteInstanceRegistry(
@@ -79,6 +95,14 @@ public class EventFlowsAutoConfiguration {
 		return new DeleteServiceInstanceEventFlowRegistry(initializationFlows, completionFlows, errorFlows);
 	}
 
+	/**
+	 * Conditionally create a new {@link UpdateServiceInstanceEventFlowRegistry} bean
+	 *
+	 * @param initializationFlows the initialization flows
+	 * @param completionFlows the completion flows
+	 * @param errorFlows the error flows
+	 * @return the bean
+	 */
 	@Bean
 	@ConditionalOnMissingBean(UpdateServiceInstanceEventFlowRegistry.class)
 	public UpdateServiceInstanceEventFlowRegistry updateInstanceRegistry(
@@ -88,6 +112,14 @@ public class EventFlowsAutoConfiguration {
 		return new UpdateServiceInstanceEventFlowRegistry(initializationFlows, completionFlows, errorFlows);
 	}
 
+	/**
+	 * Conditionally create a new {@link AsyncOperationServiceInstanceEventFlowRegistry} bean
+	 *
+	 * @param initializationFlows the initialization flows
+	 * @param completionFlows the completion flows
+	 * @param errorFlows the error flows
+	 * @return the bean
+	 */
 	@Bean
 	@ConditionalOnMissingBean(AsyncOperationServiceInstanceEventFlowRegistry.class)
 	public AsyncOperationServiceInstanceEventFlowRegistry asyncOperationRegistry(
@@ -97,6 +129,14 @@ public class EventFlowsAutoConfiguration {
 		return new AsyncOperationServiceInstanceEventFlowRegistry(initializationFlows, completionFlows, errorFlows);
 	}
 
+	/**
+	 * Conditionally create a new {@link CreateServiceInstanceBindingEventFlowRegistry} bean
+	 *
+	 * @param initializationFlows the initialization flows
+	 * @param completionFlows the completion flows
+	 * @param errorFlows the error flows
+	 * @return the bean
+	 */
 	@Bean
 	@ConditionalOnMissingBean(CreateServiceInstanceBindingEventFlowRegistry.class)
 	public CreateServiceInstanceBindingEventFlowRegistry createInstanceBindingRegistry(
@@ -106,6 +146,14 @@ public class EventFlowsAutoConfiguration {
 		return new CreateServiceInstanceBindingEventFlowRegistry(initializationFlows, completionFlows, errorFlows);
 	}
 
+	/**
+	 * Conditionally create a new {@link DeleteServiceInstanceBindingEventFlowRegistry} bean
+	 *
+	 * @param initializationFlows the initialization flows
+	 * @param completionFlows the completion flows
+	 * @param errorFlows the error flows
+	 * @return the bean
+	 */
 	@Bean
 	@ConditionalOnMissingBean(DeleteServiceInstanceBindingEventFlowRegistry.class)
 	public DeleteServiceInstanceBindingEventFlowRegistry deleteInstanceBindingRegistry(
@@ -115,6 +163,14 @@ public class EventFlowsAutoConfiguration {
 		return new DeleteServiceInstanceBindingEventFlowRegistry(initializationFlows, completionFlows, errorFlows);
 	}
 
+	/**
+	 * Conditionally create a new {@link AsyncOperationServiceInstanceBindingEventFlowRegistry} bean
+	 *
+	 * @param initializationFlows the initialization flows
+	 * @param completionFlows the completion flows
+	 * @param errorFlows the error flows
+	 * @return the bean
+	 */
 	@Bean
 	@ConditionalOnMissingBean(AsyncOperationServiceInstanceBindingEventFlowRegistry.class)
 	public AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry(
@@ -124,6 +180,18 @@ public class EventFlowsAutoConfiguration {
 		return new AsyncOperationServiceInstanceBindingEventFlowRegistry(initializationFlows, completionFlows, errorFlows);
 	}
 
+	/**
+	 * Conditionally create a new {@link EventFlowRegistries} bean
+	 *
+	 * @param createInstanceRegistry the create instance flow registry
+	 * @param updateInstanceRegistry the update instance flow registry
+	 * @param deleteInstanceRegistry the delete instance flow registry
+	 * @param asyncOperationRegistry the last operation flow registry
+	 * @param createInstanceBindingRegistry the create instance binding flow registry
+	 * @param deleteInstanceBindingRegistry the delete instance binding flow registry
+	 * @param asyncOperationBindingRegistry the last operation binding flow registry
+	 * @return the bean
+	 */
 	@Bean
 	@ConditionalOnMissingBean(EventFlowRegistries.class)
 	public EventFlowRegistries eventFlowRegistries(

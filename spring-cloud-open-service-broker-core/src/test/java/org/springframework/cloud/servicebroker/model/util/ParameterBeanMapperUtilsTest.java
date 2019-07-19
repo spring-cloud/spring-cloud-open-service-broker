@@ -23,7 +23,7 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ParameterBeanMapperTest {
+public class ParameterBeanMapperUtilsTest {
 	@Test
 	@SuppressWarnings("serial")
 	public void mapParametersToBean() {
@@ -33,7 +33,7 @@ public class ParameterBeanMapperTest {
 			put("extraProperty", "extra");
 			put("nestedBean.booleanProperty", true);
 		}};
-		TestBean testBean = ParameterBeanMapper.mapParametersToBean(parameters, TestBean.class);
+		TestBean testBean = ParameterBeanMapperUtils.mapParametersToBean(parameters, TestBean.class);
 
 		assertThat(testBean.getStringProperty()).isEqualTo("value1");
 		assertThat(testBean.getIntProperty()).isEqualTo(2);

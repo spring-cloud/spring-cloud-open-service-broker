@@ -37,16 +37,27 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
-	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
+
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	private final String dashboardUrl;
 
-	UpdateServiceInstanceResponse(boolean async, String operation, String dashboardUrl) {
-		super(async, operation);
-		this.dashboardUrl = dashboardUrl;
+	/**
+	 * Construct a new {@link UpdateServiceInstanceResponse}
+	 */
+	public UpdateServiceInstanceResponse() {
+		this(false, null, null);
 	}
 
-	UpdateServiceInstanceResponse() {
-		this(false, null, null);
+	/**
+	 * Construct a new {@link UpdateServiceInstanceResponse}
+	 *
+	 * @param async is the operation asynchronous
+	 * @param operation description of the operation being performed
+	 * @param dashboardUrl the dashboard URL
+	 */
+	public UpdateServiceInstanceResponse(boolean async, String operation, String dashboardUrl) {
+		super(async, operation);
+		this.dashboardUrl = dashboardUrl;
 	}
 
 	/**
@@ -69,9 +80,15 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof UpdateServiceInstanceResponse)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof UpdateServiceInstanceResponse)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		UpdateServiceInstanceResponse that = (UpdateServiceInstanceResponse) o;
 		return that.canEqual(this) &&
 				Objects.equals(dashboardUrl, that.dashboardUrl);
@@ -79,7 +96,7 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 	@Override
 	public boolean canEqual(Object other) {
-		return (other instanceof UpdateServiceInstanceResponse);
+		return other instanceof UpdateServiceInstanceResponse;
 	}
 
 	@Override
@@ -103,7 +120,7 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		private boolean async;
 		private String operation;
 
-		UpdateServiceInstanceResponseBuilder() {
+		private UpdateServiceInstanceResponseBuilder() {
 		}
 
 		/**

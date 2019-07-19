@@ -32,15 +32,25 @@ import java.util.Objects;
  * @author Scott Frederick
  */
 public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBindingResponse {
+
 	private final String routeServiceUrl;
 
-	GetServiceInstanceRouteBindingResponse(Map<String, Object> parameters, String routeServiceUrl) {
-		super(parameters);
-		this.routeServiceUrl = routeServiceUrl;
+	/**
+	 * Construct a new {@link GetServiceInstanceRouteBindingResponse}
+	 */
+	public GetServiceInstanceRouteBindingResponse() {
+		this(new HashMap<>(), null);
 	}
 
-	GetServiceInstanceRouteBindingResponse() {
-		this(new HashMap<>(), null);
+	/**
+	 * Construct a new {@link GetServiceInstanceRouteBindingResponse}
+	 *
+	 * @param parameters the parameters
+	 * @param routeServiceUrl the route service URL
+	 */
+	public GetServiceInstanceRouteBindingResponse(Map<String, Object> parameters, String routeServiceUrl) {
+		super(parameters);
+		this.routeServiceUrl = routeServiceUrl;
 	}
 
 	/**
@@ -64,16 +74,22 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof GetServiceInstanceRouteBindingResponse)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof GetServiceInstanceRouteBindingResponse)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		GetServiceInstanceRouteBindingResponse that = (GetServiceInstanceRouteBindingResponse) o;
 		return Objects.equals(routeServiceUrl, that.routeServiceUrl);
 	}
 
 	@Override
 	public final boolean canEqual(Object other) {
-		return (other instanceof GetServiceInstanceRouteBindingResponse);
+		return other instanceof GetServiceInstanceRouteBindingResponse;
 	}
 
 	@Override
@@ -96,7 +112,7 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 		private String routeServiceUrl;
 		private final Map<String, Object> parameters = new HashMap<>();
 
-		GetServiceInstanceRouteBindingResponseBuilder() {
+		private GetServiceInstanceRouteBindingResponseBuilder() {
 		}
 
 		/**

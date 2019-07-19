@@ -28,6 +28,13 @@ import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInsta
  */
 public interface DeleteServiceInstanceCompletionFlow {
 
+	/**
+	 * Performs the operation on the completion flow
+	 *
+	 * @param request the service broker request
+	 * @param response the service broker response
+	 * @return an empty Mono
+	 */
 	default Mono<Void> complete(DeleteServiceInstanceRequest request, DeleteServiceInstanceResponse response) {
 		return Mono.empty();
 	}

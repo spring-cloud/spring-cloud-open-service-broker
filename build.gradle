@@ -109,11 +109,17 @@ configure(allprojects - [project(":spring-cloud-open-service-broker-docs")]) {
 	checkstyleTest {
 		source = "src/test/java"
 	}
-	pmd {
-		ruleSetFiles = files("${project.rootDir}/config/pmdRuleSet.xml")
-	}
 
+	pmd {
+		toolVersion = "6.16.0"
+	}
+	pmdMain {
+		ruleSets = []
+		ruleSetFiles = files("${project.rootDir}/config/pmdRuleSet.xml")
+		source = "src/main/java"
+	}
 	pmdTest {
+		ruleSets = []
 		ruleSetFiles = files("${project.rootDir}/config/pmdTestRuleSet.xml")
 		source = "src/test/java"
 	}

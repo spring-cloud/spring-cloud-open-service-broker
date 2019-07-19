@@ -49,6 +49,11 @@ public class Cost {
 		return amount;
 	}
 
+	/**
+	 * Set a single amount key-value pair
+	 * @param amount currency code
+	 * @param value currency amount
+	 */
 	public void setAmount(String amount, Double value) {
 		if (amount != null && value != null) {
 			this.amount.put(amount, value);

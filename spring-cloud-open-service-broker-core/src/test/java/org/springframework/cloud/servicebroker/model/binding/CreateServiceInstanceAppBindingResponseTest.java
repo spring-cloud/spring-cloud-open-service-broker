@@ -116,7 +116,7 @@ public class CreateServiceInstanceAppBindingResponseTest {
 		assertThat(volumeMount.getMode()).isEqualTo(VolumeMount.Mode.READ_ONLY);
 		assertThat(volumeMount.getDeviceType()).isEqualTo(VolumeMount.DeviceType.SHARED);
 
-		SharedVolumeDevice sharedVolumeDevice = ((SharedVolumeDevice)volumeMount.getDevice());
+		SharedVolumeDevice sharedVolumeDevice = (SharedVolumeDevice)volumeMount.getDevice();
 		assertThat(sharedVolumeDevice.getVolumeId()).isEqualTo("volume-id");
 		assertThat(sharedVolumeDevice.getMountConfig())
 				.containsOnly(entry("field1", "mount-config-1"), entry("field2", "mount-config-2"));

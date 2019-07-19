@@ -16,10 +16,10 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import java.util.Objects;
+
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
-
-import java.util.Objects;
 
 /**
  * Details of a request to retrieve a service instance.
@@ -33,8 +33,17 @@ import java.util.Objects;
  * @author Scott Frederick
  */
 public class GetServiceInstanceRequest extends ServiceBrokerRequest {
+
 	private final transient String serviceInstanceId;
 
+	/**
+	 * Construct a new {@link GetServiceInstanceRequest}
+	 *
+	 * @param serviceInstanceId the service instance ID
+	 * @param platformInstanceId the platform instance ID
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 */
 	public GetServiceInstanceRequest(String serviceInstanceId, String platformInstanceId,
 									 String apiInfoLocation, Context originatingIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity);
@@ -69,16 +78,22 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof GetServiceInstanceRequest)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof GetServiceInstanceRequest)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		GetServiceInstanceRequest that = (GetServiceInstanceRequest) o;
 		return Objects.equals(serviceInstanceId, that.serviceInstanceId);
 	}
 
 	@Override
 	public final boolean canEqual(Object other) {
-		return (other instanceof GetServiceInstanceRequest);
+		return other instanceof GetServiceInstanceRequest;
 	}
 
 	@Override
@@ -103,7 +118,7 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 		private String apiInfoLocation;
 		private Context originatingIdentity;
 
-		GetServiceInstanceRequestBuilder() {
+		private GetServiceInstanceRequestBuilder() {
 		}
 
 		/**
@@ -133,7 +148,7 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 		/**
 		 * Set the location of the API info endpoint as would be provided in the request from the platform.
 		 *
-		 * @param apiInfoLocation the API info endpoint location
+		 * @param apiInfoLocation location of the API info endpoint of the platform instance
 		 * @return the builder
 		 * @see #getApiInfoLocation()
 		 */

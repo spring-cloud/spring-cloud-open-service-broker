@@ -20,7 +20,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import org.springframework.util.CollectionUtils;
 
 /**
  * Platform specific contextual information under which the service instance is to be provisioned or updated. Fields
@@ -36,19 +41,29 @@ import com.fasterxml.jackson.annotation.*;
 		@JsonSubTypes.Type(value = KubernetesContext.class, name = KubernetesContext.KUBERNETES_PLATFORM),
 })
 public class Context {
+
 	public static final String PLATFORM_KEY = "platform";
+
 	protected final String platform;
 
 	@JsonAnySetter
 	protected final Map<String, Object> properties = new HashMap<>();
 
+	/**
+	 * Create a new Context
+	 */
 	protected Context() {
-		this.platform = null;
+		this(null, null);
 	}
 
+	/**
+	 * Create a new Context
+	 * @param platform the name of the platform
+	 * @param properties collection of properties
+	 */
 	protected Context(String platform, Map<String, Object> properties) {
 		this.platform = platform;
-		if (properties != null) {
+		if (!CollectionUtils.isEmpty(properties)) {
 			this.properties.putAll(properties);
 		}
 	}
@@ -82,6 +97,11 @@ public class Context {
 		return this.properties.get(key);
 	}
 
+	/**
+	 * Get the String value of a property in the context with the given key.
+	 * @param key the key of the property to retrieve
+	 * @return the value of the property, or {@literal null} if the key is not present in the request
+	 */
 	protected String getStringProperty(String key) {
 		if (getProperty(key) != null) {
 			return getProperty(key).toString();
@@ -91,16 +111,26 @@ public class Context {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Context)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Context)) {
+			return false;
+		}
 		Context that = (Context) o;
 		return that.canEqual(this) &&
 				Objects.equals(platform, that.platform) &&
 				Objects.equals(properties, that.properties);
 	}
 
+	/**
+	 * Is another object type compatible with this object
+	 *
+	 * @param other the other object
+	 * @return true of compatible
+	 */
 	public final boolean canEqual(Object other) {
-		return (other instanceof Context);
+		return other instanceof Context;
 	}
 
 	@Override
@@ -116,16 +146,31 @@ public class Context {
 				'}';
 	}
 
+	/**
+	 * Builder class for Context
+	 *
+	 * @param <R> the type of Context
+	 * @param <B> the implementing Builder
+	 */
 	protected static abstract class ContextBaseBuilder<R extends Context, B extends ContextBaseBuilder<R, B>> {
+
 		private final B thisObj;
 
 		protected String platform;
+
 		protected Map<String, Object> properties = new HashMap<>();
 
+		/**
+		 * Construct a new ContextBaseBuilder
+		 */
 		protected ContextBaseBuilder() {
 			this.thisObj = createBuilder();
 		}
 
+		/**
+		 * Construct a builder
+		 * @return the builder
+		 */
 		protected abstract B createBuilder();
 
 		/**
@@ -165,6 +210,11 @@ public class Context {
 			return thisObj;
 		}
 
+		/**
+		 * Construct an implementing {@link ContextBaseBuilder}
+		 *
+		 * @return the newly constructed {@link Context} implementation
+		 */
 		public abstract R build();
 	}
 }

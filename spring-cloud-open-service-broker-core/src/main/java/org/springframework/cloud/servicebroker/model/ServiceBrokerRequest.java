@@ -46,9 +46,20 @@ public class ServiceBrokerRequest {
 	@JsonIgnore //mapped as X-Broker-API-Originating-Identity Header
 	protected transient Context originatingIdentity;
 
+	/**
+	 * Construct a new {@link ServiceBrokerRequest}
+	 */
 	public ServiceBrokerRequest() {
+		// This constructor is intentionally empty to support JSON serialization
 	}
 
+	/**
+	 * Construct a new {@link ServiceBrokerRequest}
+	 *
+	 * @param platformInstanceId the platform instance ID
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 */
 	protected ServiceBrokerRequest(String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
 		this.platformInstanceId = platformInstanceId;
 		this.apiInfoLocation = apiInfoLocation;
@@ -126,8 +137,12 @@ public class ServiceBrokerRequest {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof ServiceBrokerRequest)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof ServiceBrokerRequest)) {
+			return false;
+		}
 		ServiceBrokerRequest that = (ServiceBrokerRequest) o;
 		return that.canEqual(this) &&
 				Objects.equals(platformInstanceId, that.platformInstanceId) &&
@@ -135,8 +150,14 @@ public class ServiceBrokerRequest {
 				Objects.equals(originatingIdentity, that.originatingIdentity);
 	}
 
+	/**
+	 * Is another object type compatible with this object
+	 *
+	 * @param other the other object
+	 * @return true of compatible
+	 */
 	public boolean canEqual(Object other) {
-		return (other instanceof ServiceBrokerRequest);
+		return other instanceof ServiceBrokerRequest;
 	}
 
 	@Override

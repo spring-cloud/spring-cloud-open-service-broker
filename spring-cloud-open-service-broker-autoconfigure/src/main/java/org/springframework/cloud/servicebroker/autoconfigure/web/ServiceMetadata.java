@@ -201,17 +201,17 @@ public class ServiceMetadata {
 	}
 
 	private String base64EncodeImageData(String filename) {
+		String formattedImageData = null;
 		ClassPathResource resource = new ClassPathResource(filename);
-		try {
-			InputStream stream = resource.getInputStream();
+		try(InputStream stream = resource.getInputStream()) {
 			byte[] imageBytes = StreamUtils.copyToByteArray(stream);
 			String imageData = Base64Utils.encodeToString(imageBytes);
-			return String.format(IMAGE_DATA_FORMAT, imageData);
+			formattedImageData = String.format(IMAGE_DATA_FORMAT, imageData);
 		}
 		catch (IOException e) {
 			LOG.warn("Error converting image file to byte array", e);
 		}
-		return null;
+		return formattedImageData;
 	}
 
 }

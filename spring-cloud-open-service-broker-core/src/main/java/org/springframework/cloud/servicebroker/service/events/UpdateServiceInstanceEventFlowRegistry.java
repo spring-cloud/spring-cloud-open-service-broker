@@ -26,14 +26,30 @@ import org.springframework.cloud.servicebroker.service.events.flows.UpdateServic
 import org.springframework.cloud.servicebroker.service.events.flows.UpdateServiceInstanceErrorFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.UpdateServiceInstanceInitializationFlow;
 
+/**
+ * Event flow registry for update service instance requests
+ *
+ * @author Roy Clarkson
+ */
 public class UpdateServiceInstanceEventFlowRegistry extends EventFlowRegistry<UpdateServiceInstanceInitializationFlow,
 		UpdateServiceInstanceCompletionFlow, UpdateServiceInstanceErrorFlow, UpdateServiceInstanceRequest,
 		UpdateServiceInstanceResponse> {
 
+	/**
+	 * Construct a new {@link UpdateServiceInstanceEventFlowRegistry}
+	 */
 	@Deprecated
 	public UpdateServiceInstanceEventFlowRegistry() {
+		super();
 	}
 
+	/**
+	 * Construct a new {@link UpdateServiceInstanceEventFlowRegistry}
+	 *
+	 * @param initializationFlows the initialization flows
+	 * @param completionFlows the completion flows
+	 * @param errorFlows the error flows
+	 */
 	public UpdateServiceInstanceEventFlowRegistry(
 			final List<UpdateServiceInstanceInitializationFlow> initializationFlows,
 			final List<UpdateServiceInstanceCompletionFlow> completionFlows,

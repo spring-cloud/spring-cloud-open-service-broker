@@ -36,6 +36,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonAutoDetect
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetLastServiceOperationResponse {
+
 	private final OperationState state;
 
 	private final String description;
@@ -43,14 +44,24 @@ public class GetLastServiceOperationResponse {
 	@JsonIgnore
 	private final boolean deleteOperation;
 
-	GetLastServiceOperationResponse(OperationState state, String description, boolean deleteOperation) {
+	/**
+	 * Construct a new {@link GetLastServiceOperationResponse}
+	 */
+	public GetLastServiceOperationResponse() {
+		this(null, null, false);
+	}
+
+	/**
+	 * Construct a new {@link GetLastServiceOperationResponse}
+	 *
+	 * @param state the current state
+	 * @param description the description
+	 * @param deleteOperation is delete operation
+	 */
+	public GetLastServiceOperationResponse(OperationState state, String description, boolean deleteOperation) {
 		this.state = state;
 		this.description = description;
 		this.deleteOperation = deleteOperation;
-	}
-
-	GetLastServiceOperationResponse() {
-		this(null, null, false);
 	}
 
 	/**
@@ -91,8 +102,12 @@ public class GetLastServiceOperationResponse {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof GetLastServiceOperationResponse)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof GetLastServiceOperationResponse)) {
+			return false;
+		}
 		GetLastServiceOperationResponse that = (GetLastServiceOperationResponse) o;
 		return deleteOperation == that.deleteOperation &&
 				state == that.state &&
@@ -121,7 +136,7 @@ public class GetLastServiceOperationResponse {
 		private String description;
 		private boolean deleteOperation;
 
-		GetLastServiceOperationResponseBuilder() {
+		private GetLastServiceOperationResponseBuilder() {
 		}
 
 		/**

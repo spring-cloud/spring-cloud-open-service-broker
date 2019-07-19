@@ -41,7 +41,18 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 
 	protected transient final String operation;
 
-	GetLastServiceOperationRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
+	/**
+	 * Construct a new {@link GetLastServiceOperationRequest}
+	 *
+	 * @param serviceInstanceId the service instance ID
+	 * @param serviceDefinitionId the service definition ID
+	 * @param planId the plan ID
+	 * @param operation description of the operation being performed
+	 * @param platformInstanceId the platform instance ID
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 */
+	public GetLastServiceOperationRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
 										  String operation,
 										  String platformInstanceId, String apiInfoLocation,
 										  Context originatingIdentity) {
@@ -118,9 +129,15 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof GetLastServiceOperationRequest)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof GetLastServiceOperationRequest)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		GetLastServiceOperationRequest that = (GetLastServiceOperationRequest) o;
 		return Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
 				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
@@ -130,7 +147,7 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 
 	@Override
 	public final boolean canEqual(Object other) {
-		return (other instanceof GetLastServiceOperationRequest);
+		return other instanceof GetLastServiceOperationRequest;
 	}
 
 	@Override
@@ -161,7 +178,7 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		private String apiInfoLocation;
 		private Context originatingIdentity;
 
-		GetLastServiceOperationRequestBuilder() {
+		private GetLastServiceOperationRequestBuilder() {
 		}
 
 		/**
@@ -226,7 +243,7 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		/**
 		 * Set the location of the API info endpoint as would be provided in the request from the platform.
 		 *
-		 * @param apiInfoLocation the API info endpoint location
+		 * @param apiInfoLocation location of the API info endpoint of the platform instance
 		 * @return the builder
 		 * @see #getApiInfoLocation()
 		 */

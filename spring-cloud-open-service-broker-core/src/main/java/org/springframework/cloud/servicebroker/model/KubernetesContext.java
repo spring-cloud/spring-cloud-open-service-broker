@@ -29,20 +29,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Scott Frederick
  */
 public final class KubernetesContext extends Context {
+
 	public static final String KUBERNETES_PLATFORM = "kubernetes";
+
 	public static final String NAMESPACE_KEY = "namespace";
 
 	private KubernetesContext() {
 		super(KUBERNETES_PLATFORM, null);
 	}
 
-	KubernetesContext(String namespace, Map<String, Object> properties) {
+	/**
+	 * Create a new KubernetesContext
+	 * @param namespace the kubernetes namespace
+	 * @param properties a collection of properties
+	 */
+	public KubernetesContext(String namespace, Map<String, Object> properties) {
 		super(KUBERNETES_PLATFORM, properties);
 		if (namespace != null) {
 			setNamespace(namespace);
 		}
 	}
 
+	/**
+	 * Retrieve the kubernetes namespace from the collection of platform properties
+	 *
+	 * @return the namespace
+	 */
 	@JsonProperty
 	public String getNamespace() {
 		return getStringProperty(NAMESPACE_KEY);
@@ -50,9 +62,11 @@ public final class KubernetesContext extends Context {
 
 	/**
 	 * Avoid polluting the serialized context with duplicated keys
+	 *
+	 * @return properties
 	 */
 	@JsonAnyGetter
-	Map<String, Object> getSerializableProperties() {
+	public Map<String, Object> getSerializableProperties() {
 		HashMap<String, Object> properties = new HashMap<>(super.getProperties());
 		properties.remove(KUBERNETES_PLATFORM);
 		properties.remove(NAMESPACE_KEY);
@@ -66,14 +80,24 @@ public final class KubernetesContext extends Context {
 		properties.put(NAMESPACE_KEY, namespace);
 	}
 
+	/**
+	 * Create a builder that provides a fluent API for constructing a {@literal KubernetesContext}.
+	 *
+	 * @return the builder
+	 */
 	public static KubernetesContextBuilder builder() {
 		return new KubernetesContextBuilder();
 	}
 
+	/**
+	 * Builder class for KubernetesContext
+	 */
 	public static class KubernetesContextBuilder extends ContextBaseBuilder<KubernetesContext, KubernetesContextBuilder> {
+
 		private String namespace;
 
-		KubernetesContextBuilder() {
+		private KubernetesContextBuilder() {
+			super();
 		}
 
 		@Override
@@ -81,11 +105,18 @@ public final class KubernetesContext extends Context {
 			return this;
 		}
 
+		/**
+		 * Set the kubernetes namespace
+		 *
+		 * @param namespace the namespace
+		 * @return the builder
+		 */
 		public KubernetesContextBuilder namespace(String namespace) {
 			this.namespace = namespace;
 			return this;
 		}
 
+		@Override
 		public KubernetesContext build() {
 			return new KubernetesContext(namespace, properties);
 		}

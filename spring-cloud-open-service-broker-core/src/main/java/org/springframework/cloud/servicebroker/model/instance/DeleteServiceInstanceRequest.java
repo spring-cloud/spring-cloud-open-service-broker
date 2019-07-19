@@ -55,7 +55,20 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	@JsonIgnore /*internal field*/
 	private transient final Plan plan;
 
-	DeleteServiceInstanceRequest(String serviceInstanceId, String serviceDefinitionId,
+	/**
+	 * Construct a new {@link DeleteServiceInstanceRequest}
+	 *
+	 * @param serviceInstanceId the service instance ID
+	 * @param serviceDefinitionId the service definition ID
+	 * @param planId the plan ID
+	 * @param serviceDefinition the service definition
+	 * @param plan the plan
+	 * @param asyncAccepted does the platform accept asynchronous requests
+	 * @param platformInstanceId the platform instance ID
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 */
+	public DeleteServiceInstanceRequest(String serviceInstanceId, String serviceDefinitionId,
 								 String planId, ServiceDefinition serviceDefinition, Plan plan,
 								 boolean asyncAccepted, String platformInstanceId,
 								 String apiInfoLocation, Context originatingIdentity) {
@@ -154,9 +167,15 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof DeleteServiceInstanceRequest)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof DeleteServiceInstanceRequest)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		DeleteServiceInstanceRequest that = (DeleteServiceInstanceRequest) o;
 		return that.canEqual(this) &&
 				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
@@ -168,7 +187,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 
 	@Override
 	public final boolean canEqual(Object other) {
-		return (other instanceof DeleteServiceInstanceRequest);
+		return other instanceof DeleteServiceInstanceRequest;
 	}
 
 	@Override
@@ -201,7 +220,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		private String apiInfoLocation;
 		private Context originatingIdentity;
 
-		DeleteServiceInstanceRequestBuilder() {
+		private DeleteServiceInstanceRequestBuilder() {
 		}
 
 		/**
@@ -292,7 +311,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		/**
 		 * Set the location of the API info endpoint as would be provided in the request from the platform.
 		 *
-		 * @param apiInfoLocation the API info endpoint location
+		 * @param apiInfoLocation location of the API info endpoint of the platform instance
 		 * @return the builder
 		 * @see #getApiInfoLocation()
 		 */

@@ -42,6 +42,12 @@ public class ServiceInstanceEventService implements ServiceInstanceService {
 
 	private final EventFlowRegistries flows;
 
+	/**
+	 * Constructs a new {@link ServiceInstanceEventService}
+	 *
+	 * @param serviceInstanceService the service instance service
+	 * @param eventFlowRegistries the event flow registries
+	 */
 	public ServiceInstanceEventService(ServiceInstanceService serviceInstanceService,
 									   EventFlowRegistries eventFlowRegistries) {
 		this.service = serviceInstanceService;

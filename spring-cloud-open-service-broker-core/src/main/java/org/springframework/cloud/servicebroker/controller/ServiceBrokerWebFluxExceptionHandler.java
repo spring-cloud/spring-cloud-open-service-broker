@@ -49,12 +49,24 @@ public class ServiceBrokerWebFluxExceptionHandler extends ServiceBrokerException
 		return LOG;
 	}
 
+	/**
+	 * Handle a {@link WebExchangeBindException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(WebExchangeBindException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(WebExchangeBindException ex) {
 		return handleBindingException(ex, ex.getBindingResult());
 	}
 
+	/**
+	 * Handle a {@link ServerWebInputException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServerWebInputException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(ServerWebInputException ex) {

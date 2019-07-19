@@ -40,6 +40,12 @@ public class ServiceInstanceBindingEventService implements ServiceInstanceBindin
 
 	private final EventFlowRegistries flows;
 
+	/**
+	 * Construct a new {@link ServiceInstanceBindingEventService}
+	 *
+	 * @param service the service instance binding service
+	 * @param flows the event flow registries
+	 */
 	public ServiceInstanceBindingEventService(ServiceInstanceBindingService service, EventFlowRegistries flows) {
 		this.service = service;
 		this.flows = flows;

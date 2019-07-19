@@ -40,6 +40,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetServiceInstanceResponse {
+
 	@JsonProperty("service_id")
 	private final String serviceDefinitionId;
 	
@@ -49,15 +50,27 @@ public class GetServiceInstanceResponse {
 
 	private final Map<String, Object> parameters;
 
-	GetServiceInstanceResponse(String serviceDefinitionId, String planId, String dashboardUrl, Map<String, Object> parameters) {
+	/**
+	 * Construct a new {@link GetServiceInstanceResponse}
+	 */
+	public GetServiceInstanceResponse() {
+		this(null, null, null, new Hashtable<>());
+	}
+
+	/**
+	 * Construct a new {@link GetServiceInstanceResponse}
+	 *
+	 * @param serviceDefinitionId the service definition ID
+	 * @param planId the plan ID
+	 * @param dashboardUrl the dashboard URL
+	 * @param parameters the parameters
+	 */
+	public GetServiceInstanceResponse(String serviceDefinitionId, String planId, String dashboardUrl,
+								Map<String, Object> parameters) {
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
 		this.dashboardUrl = dashboardUrl;
 		this.parameters = parameters;
-	}
-
-	GetServiceInstanceResponse() {
-		this(null, null, null, new Hashtable<>());
 	}
 
 	/**
@@ -108,8 +121,12 @@ public class GetServiceInstanceResponse {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof GetServiceInstanceResponse)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof GetServiceInstanceResponse)) {
+			return false;
+		}
 		GetServiceInstanceResponse that = (GetServiceInstanceResponse) o;
 		return that.canEqual(this) &&
 				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
@@ -118,8 +135,14 @@ public class GetServiceInstanceResponse {
 				Objects.equals(parameters, that.parameters);
 	}
 
+	/**
+	 * Is another object type compatible with this object
+	 *
+	 * @param other the other object
+	 * @return true of compatible
+	 */
 	public final boolean canEqual(Object other) {
-		return (other instanceof GetServiceInstanceResponse);
+		return other instanceof GetServiceInstanceResponse;
 	}
 
 	@Override
@@ -146,7 +169,7 @@ public class GetServiceInstanceResponse {
 		private String dashboardUrl;
 		private final Map<String, Object> parameters = new HashMap<>();
 
-		GetServiceInstanceResponseBuilder() {
+		private GetServiceInstanceResponseBuilder() {
 		}
 
 		/**

@@ -37,9 +37,17 @@ import org.springframework.cloud.servicebroker.model.instance.CreateServiceInsta
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResponse {
+
 	@JsonIgnore
 	protected final boolean bindingExisted;
 
+	/**
+	 * Construct a new {@link CreateServiceInstanceBindingResponse}
+	 *
+	 * @param async is the operation asynchronous
+	 * @param operation description of the operation being performed
+	 * @param bindingExisted does the service binding already exist
+	 */
 	protected CreateServiceInstanceBindingResponse(boolean async, String operation, boolean bindingExisted) {
 		super(async, operation);
 		this.bindingExisted = bindingExisted;
@@ -57,16 +65,23 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof CreateServiceInstanceBindingResponse)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof CreateServiceInstanceBindingResponse)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		CreateServiceInstanceBindingResponse that = (CreateServiceInstanceBindingResponse) o;
 		return that.canEqual(this) &&
 				bindingExisted == that.bindingExisted;
 	}
 
+	@Override
 	public boolean canEqual(Object other) {
-		return (other instanceof CreateServiceInstanceBindingResponse);
+		return other instanceof CreateServiceInstanceBindingResponse;
 	}
 
 	@Override
@@ -89,7 +104,7 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		private boolean async;
 		private String operation;
 
-		CreateServiceInstanceBindingResponseBuilder() {
+		private CreateServiceInstanceBindingResponseBuilder() {
 		}
 
 		/**
@@ -140,7 +155,7 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 * <p>
 		 * This value will set the {@literal operation} field in the body of the response to the platform.
 		 *
-		 * @param operation the informational value
+		 * @param operation description of the operation being performed
 		 * @return the builder
 		 */
 		public CreateServiceInstanceBindingResponseBuilder operation(String operation) {

@@ -49,12 +49,24 @@ public class ServiceBrokerWebMvcExceptionHandler extends ServiceBrokerExceptionH
 		return LOG;
 	}
 
+	/**
+	 * Handle a {@link MethodArgumentNotValidException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(MethodArgumentNotValidException ex) {
 		return handleBindingException(ex, ex.getBindingResult());
 	}
 
+	/**
+	 * Handle a {@link MissingServletRequestParameterException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(MissingServletRequestParameterException ex) {

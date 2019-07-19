@@ -23,7 +23,8 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.Context;
-import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapper;
+import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapperUtils;
+import org.springframework.util.CollectionUtils;
 
 /**
  * Details of a request that supports arbitrary parameters and asynchronous behavior.
@@ -32,20 +33,35 @@ import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapper;
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServiceBrokerRequest {
-	protected final Map<String, Object> parameters;
+
+	protected final Map<String, Object> parameters = new HashMap<>();
 
 	private final Context context;
 
+	/**
+	 * Construct a new {@link AsyncParameterizedServiceInstanceRequest}
+	 */
 	protected AsyncParameterizedServiceInstanceRequest() {
-		this.parameters = new HashMap<>(); // deserialize as empty map when no params in json
-		this.context = null;
+		this(null, null, false, null, null, null);
 	}
 
+	/**
+	 * Construct a new {@link AsyncParameterizedServiceInstanceRequest}
+	 *
+	 * @param parameters the parameters
+	 * @param context the context
+	 * @param asyncAccepted does the platform accept asynchronous requests
+	 * @param platformInstanceId the platform instance ID
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 */
 	protected AsyncParameterizedServiceInstanceRequest(Map<String, Object> parameters, Context context,
 													   boolean asyncAccepted, String platformInstanceId,
 													   String apiInfoLocation, Context originatingIdentity) {
 		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity);
-		this.parameters = parameters;
+		if (!CollectionUtils.isEmpty(parameters)) {
+			this.parameters.putAll(parameters);
+		}
 		this.context = context;
 	}
 
@@ -85,7 +101,7 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 * @return the instantiated and populated object
 	 */
 	public <T> T getParameters(Class<T> cls) {
-		return ParameterBeanMapper.mapParametersToBean(parameters, cls);
+		return ParameterBeanMapperUtils.mapParametersToBean(parameters, cls);
 	}
 
 	/**
@@ -102,9 +118,15 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof AsyncParameterizedServiceInstanceRequest)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof AsyncParameterizedServiceInstanceRequest)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		AsyncParameterizedServiceInstanceRequest that = (AsyncParameterizedServiceInstanceRequest) o;
 		return that.canEqual(this) &&
 				Objects.equals(parameters, that.parameters) &&
@@ -113,7 +135,7 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 
 	@Override
 	public boolean canEqual(Object other) {
-		return (other instanceof AsyncParameterizedServiceInstanceRequest);
+		return other instanceof AsyncParameterizedServiceInstanceRequest;
 	}
 
 	@Override

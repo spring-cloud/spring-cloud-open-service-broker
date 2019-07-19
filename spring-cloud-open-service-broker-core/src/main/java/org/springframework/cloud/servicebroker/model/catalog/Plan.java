@@ -57,7 +57,26 @@ public class Plan {
 
 	private final Boolean free;
 
-	Plan(String id, String name, String description, Map<String, Object> metadata, Boolean free, Boolean bindable, Schemas schemas) {
+	/**
+	 * Construct a new {@link Plan}
+	 */
+	public Plan() {
+		this(null, null, null, new HashMap<>(), null, null, null);
+	}
+
+	/**
+	 * Construct a new {@link Plan}
+	 *
+	 * @param id the plan ID
+	 * @param name the plan name
+	 * @param description the plan description
+	 * @param metadata the plan metadata
+	 * @param free true if the plan has no cost
+	 * @param bindable true if the service with this plan may be bound
+	 * @param schemas the plan schemas
+	 */
+	public Plan(String id, String name, String description, Map<String, Object> metadata, Boolean free,
+				Boolean bindable, Schemas schemas) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -65,10 +84,6 @@ public class Plan {
 		this.free = free;
 		this.bindable = bindable;
 		this.schemas = schemas;
-	}
-
-	Plan() {
-		this(null, null, null, new HashMap<>(), null, null, null);
 	}
 
 	/**
@@ -153,8 +168,12 @@ public class Plan {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Plan)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Plan)) {
+			return false;
+		}
 		Plan plan = (Plan) o;
 		return Objects.equals(free, plan.free) &&
 				Objects.equals(id, plan.id) &&
@@ -195,7 +214,7 @@ public class Plan {
 		private Boolean bindable;
 		private Schemas schemas;
 
-		PlanBuilder() {
+		private PlanBuilder() {
 		}
 
 		/**

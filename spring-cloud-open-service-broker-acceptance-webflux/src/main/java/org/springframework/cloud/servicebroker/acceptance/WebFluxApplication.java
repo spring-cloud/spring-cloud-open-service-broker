@@ -22,18 +22,38 @@ import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * NoOp WebFlux Open Service Broker
+ *
+ * @author Roy Clarkson
+ */
 @SpringBootApplication
 public class WebFluxApplication {
 
-	public static void main(String[] args) {
+	/**
+	 * main application entry point
+	 *
+	 * @param args the args
+	 */
+	public static void main(final String[] args) {
 		SpringApplication.run(WebFluxApplication.class, args);
 	}
 
+	/**
+	 * NoOp CatalogService Bean
+	 *
+	 * @return the bean
+	 */
 	@Bean
 	public CatalogService catalogService() {
 		return new NoOpCatalogService();
 	}
 
+	/**
+	 * NoOp ServiceInstanceService Bean
+	 *
+	 * @return the bean
+	 */
 	@Bean
 	public ServiceInstanceService serviceInstanceService() {
 		return new NoOpServiceInstanceService();

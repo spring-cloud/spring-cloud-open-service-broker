@@ -45,7 +45,19 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 
 	protected transient final String operation;
 
-	GetLastServiceBindingOperationRequest(String serviceInstanceId, String bindingId, String serviceDefinitionId,
+	/**
+	 * Construct a new {@link GetLastServiceBindingOperationRequest}
+	 *
+	 * @param serviceInstanceId the service instance ID
+	 * @param bindingId the service binding ID
+	 * @param serviceDefinitionId the service definition ID
+	 * @param planId the plan ID
+	 * @param operation the operation
+	 * @param platformInstanceId the platform instance ID
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 */
+	public GetLastServiceBindingOperationRequest(String serviceInstanceId, String bindingId, String serviceDefinitionId,
 										  String planId, String operation, String platformInstanceId,
 										  String apiInfoLocation, Context originatingIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity);
@@ -138,9 +150,15 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof GetLastServiceBindingOperationRequest)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof GetLastServiceBindingOperationRequest)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		GetLastServiceBindingOperationRequest that = (GetLastServiceBindingOperationRequest) o;
 		return Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
 				Objects.equals(bindingId, that.bindingId) &&
@@ -151,7 +169,7 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 
 	@Override
 	public final boolean canEqual(Object other) {
-		return (other instanceof GetLastServiceBindingOperationRequest);
+		return other instanceof GetLastServiceBindingOperationRequest;
 	}
 
 	@Override
@@ -184,7 +202,7 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 		private String apiInfoLocation;
 		private Context originatingIdentity;
 
-		GetLastServiceBindingOperationRequestBuilder() {
+		private GetLastServiceBindingOperationRequestBuilder() {
 		}
 
 		/**
@@ -202,7 +220,7 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 		/**
 		 * Set the binding ID as would be provided in the request from the platform.
 		 *
-		 * @param bindingId the binding ID
+		 * @param bindingId the service binding ID
 		 * @return the builder
 		 * @see #getBindingId()
 		 */
@@ -261,7 +279,7 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 		/**
 		 * Set the location of the API info endpoint as would be provided in the request from the platform.
 		 *
-		 * @param apiInfoLocation the API info endpoint location
+		 * @param apiInfoLocation location of the API info endpoint of the platform instance
 		 * @return the builder
 		 * @see #getApiInfoLocation()
 		 */

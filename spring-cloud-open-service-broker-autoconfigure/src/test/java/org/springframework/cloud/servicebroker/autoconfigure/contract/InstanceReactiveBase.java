@@ -20,20 +20,23 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.reactive.context.ReactiveWebApplicationContext;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerAutoConfiguration;
+import org.springframework.cloud.servicebroker.autoconfigure.web.TestServiceInstanceService;
 import org.springframework.cloud.servicebroker.autoconfigure.web.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.autoconfigure.web.reactive.ServiceBrokerWebFluxAutoConfiguration;
-import org.springframework.cloud.servicebroker.autoconfigure.web.TestServiceInstanceService;
 import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.ServiceBrokerWebMvcAutoConfiguration;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @RunWith(SpringRunner.class)
@@ -43,7 +46,10 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 public class InstanceReactiveBase {
 
 	@LocalServerPort
-	int port;
+	private int port;
+
+	@Autowired
+	private ReactiveWebApplicationContext context;
 
 	@Before
 	public void setUp() {
@@ -53,7 +59,7 @@ public class InstanceReactiveBase {
 
 	@Test
 	public void contextLoads() {
-		// hooray
+		assertThat(context).isNotNull();
 	}
 
 	@SpringBootApplication(scanBasePackageClasses = {

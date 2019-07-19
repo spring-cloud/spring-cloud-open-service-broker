@@ -33,8 +33,14 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class GetServiceInstanceBindingResponse {
+
 	private final Map<String, Object> parameters;
 
+	/**
+	 * Construct a new {@link GetServiceInstanceBindingResponse}
+	 *
+	 * @param parameters collection of parameters
+	 */
 	protected GetServiceInstanceBindingResponse(Map<String, Object> parameters) {
 		this.parameters = parameters;
 	}
@@ -50,15 +56,25 @@ public class GetServiceInstanceBindingResponse {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof GetServiceInstanceBindingResponse)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof GetServiceInstanceBindingResponse)) {
+			return false;
+		}
 		GetServiceInstanceBindingResponse that = (GetServiceInstanceBindingResponse) o;
 		return that.canEqual(this) &&
 				Objects.equals(parameters, that.parameters);
 	}
 
+	/**
+	 * Is another object type compatible with this object
+	 *
+	 * @param other the other object
+	 * @return true of compatible
+	 */
 	public boolean canEqual(Object other) {
-		return (other instanceof GetServiceInstanceBindingResponse);
+		return other instanceof GetServiceInstanceBindingResponse;
 	}
 
 	@Override

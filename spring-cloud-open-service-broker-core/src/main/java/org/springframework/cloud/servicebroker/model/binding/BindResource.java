@@ -16,14 +16,16 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import org.springframework.util.CollectionUtils;
 
 /**
  * Details of any platform resources that a service binding will be associated with.
@@ -38,6 +40,7 @@ import java.util.Objects;
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class BindResource {
+
 	private final String appGuid;
 
 	private final String route;
@@ -45,15 +48,21 @@ public class BindResource {
 	@JsonAnySetter
 	private final Map<String, Object> properties = new HashMap<>();
 
-	BindResource() {
-		this.appGuid = null;
-		this.route = null;
+	private BindResource() {
+		this(null, null, null);
 	}
 
-	BindResource(String appGuid, String route, Map<String, Object> properties) {
+	/**
+	 * Construct a new {@link BindResource}
+	 *
+	 * @param appGuid the application GUID
+	 * @param route the application URL
+	 * @param properties a collection of properties
+	 */
+	protected BindResource(String appGuid, String route, Map<String, Object> properties) {
 		this.appGuid = appGuid;
 		this.route = route;
-		if (properties != null) {
+		if (!CollectionUtils.isEmpty(properties)) {
 			this.properties.putAll(properties);
 		}
 	}
@@ -111,8 +120,12 @@ public class BindResource {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof BindResource)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof BindResource)) {
+			return false;
+		}
 		BindResource that = (BindResource) o;
 		return Objects.equals(appGuid, that.appGuid) &&
 				Objects.equals(route, that.route) &&
@@ -141,7 +154,7 @@ public class BindResource {
 		private String route;
 		private final Map<String, Object> properties = new HashMap<>();
 
-		BindResourceBuilder() {
+		private BindResourceBuilder() {
 		}
 
 		/**

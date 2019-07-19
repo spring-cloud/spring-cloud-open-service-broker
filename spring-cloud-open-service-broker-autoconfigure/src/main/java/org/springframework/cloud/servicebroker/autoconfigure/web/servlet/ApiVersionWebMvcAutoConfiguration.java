@@ -57,10 +57,20 @@ public class ApiVersionWebMvcAutoConfiguration {
 
 	private final ServiceBrokerProperties serviceBrokerProperties;
 
+	/**
+	 * Construct a new {@link ApiVersionWebMvcAutoConfiguration}
+	 *
+	 * @param serviceBrokerProperties the service broker properties
+	 */
 	public ApiVersionWebMvcAutoConfiguration(ServiceBrokerProperties serviceBrokerProperties) {
 		this.serviceBrokerProperties = serviceBrokerProperties;
 	}
 
+	/**
+	 * Provides a {@link BrokerApiVersion} bean if the 'api-version' property is available in external configuration
+	 *
+	 * @return the bean
+	 */
 	@Bean
 	@ConditionalOnMissingBean(BrokerApiVersion.class)
 	@ConditionalOnProperty(prefix = "spring.cloud.openservicebroker", name = "api-version")
@@ -68,18 +78,35 @@ public class ApiVersionWebMvcAutoConfiguration {
 		return new BrokerApiVersion(this.serviceBrokerProperties.getApiVersion());
 	}
 
+	/**
+	 * Conditionally provides a {@link BrokerApiVersion} bean
+	 *
+	 * @return the bean
+	 */
 	@Bean
 	@ConditionalOnMissingBean(BrokerApiVersion.class)
 	public BrokerApiVersion serviceBrokerApiVersion() {
 		return new BrokerApiVersion();
 	}
 
+	/**
+	 * Provide an {@link ApiVersionInterceptor} bean
+	 *
+	 * @param brokerApiVersion the api version
+	 * @return the bean
+	 */
 	@Bean
 	public ApiVersionInterceptor serviceBrokerApiVersionInterceptor(
 			BrokerApiVersion brokerApiVersion) {
 		return new ApiVersionInterceptor(brokerApiVersion);
 	}
 
+	/**
+	 * Provide an {@link ApiVersionWebMvcConfigurerAdapter} bean
+	 *
+	 * @param apiVersionInterceptor the api version interceptor
+	 * @return the bean
+	 */
 	@Bean
 	public ApiVersionWebMvcConfigurerAdapter serviceBrokerWebMvcConfigurerAdapter(
 			ApiVersionInterceptor apiVersionInterceptor) {

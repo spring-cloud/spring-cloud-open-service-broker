@@ -35,12 +35,21 @@ import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOper
  */
 public class DeleteServiceInstanceBindingResponse extends AsyncServiceBrokerResponse {
 
-	DeleteServiceInstanceBindingResponse(boolean async, String operation) {
-		super(async, operation);
+	/**
+	 * Construct a new {@link DeleteServiceInstanceBindingResponse}
+	 */
+	public 	DeleteServiceInstanceBindingResponse() {
+		this(false, null);
 	}
 
-	DeleteServiceInstanceBindingResponse() {
-		this(false, null);
+	/**
+	 * Construct a new {@link DeleteServiceInstanceBindingResponse}
+	 *
+	 * @param async is the operation asynchronous
+	 * @param operation description of the operation being performed
+	 */
+	public DeleteServiceInstanceBindingResponse(boolean async, String operation) {
+		super(async, operation);
 	}
 
 	/**
@@ -54,15 +63,22 @@ public class DeleteServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof DeleteServiceInstanceBindingResponse)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof DeleteServiceInstanceBindingResponse)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		DeleteServiceInstanceBindingResponse that = (DeleteServiceInstanceBindingResponse) o;
 		return that.canEqual(this);
 	}
 
+	@Override
 	public boolean canEqual(Object other) {
-		return (other instanceof DeleteServiceInstanceBindingResponse);
+		return other instanceof DeleteServiceInstanceBindingResponse;
 	}
 
 	@Override
@@ -84,7 +100,7 @@ public class DeleteServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		private boolean async;
 		private String operation;
 
-		DeleteServiceInstanceBindingResponseBuilder() {
+		private DeleteServiceInstanceBindingResponseBuilder() {
 		}
 
 		/**

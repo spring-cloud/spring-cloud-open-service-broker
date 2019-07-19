@@ -75,6 +75,7 @@ public class ApiVersionWebFilter implements WebFilter {
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
 		PathPattern p = new PathPatternParser().parse(V2_API_PATH_PATTERN);
+		Mono<Void> filterMono = chain.filter(exchange);
 		if (p.matches(exchange.getRequest().getPath()) && version != null && !anyVersionAllowed()) {
 			String apiVersion = exchange.getRequest().getHeaders().getFirst(version.getBrokerApiVersionHeader());
 			ServerHttpResponse response = exchange.getResponse();
@@ -99,10 +100,10 @@ public class ApiVersionWebFilter implements WebFilter {
 				Flux<DataBuffer> responseBody =
 						Flux.just(json)
 								.map(s -> toDataBuffer(s, response.bufferFactory()));
-				return response.writeWith(responseBody);
+				filterMono = response.writeWith(responseBody);
 			}
 		}
-		return chain.filter(exchange);
+		return filterMono;
 	}
 
 	private boolean anyVersionAllowed() {
@@ -110,7 +111,7 @@ public class ApiVersionWebFilter implements WebFilter {
 	}
 
 	private DataBuffer toDataBuffer(String value, DataBufferFactory factory) {
-		byte[] data = (value).getBytes(StandardCharsets.UTF_8);
+		byte[] data = value.getBytes(StandardCharsets.UTF_8);
 		DataBuffer buffer = factory.allocateBuffer(data.length);
 		buffer.write(data);
 		return buffer;

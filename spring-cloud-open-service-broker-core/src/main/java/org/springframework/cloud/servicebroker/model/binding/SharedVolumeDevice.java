@@ -34,17 +34,28 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class SharedVolumeDevice extends VolumeDevice {
+
 	private final String volumeId;
 
 	private final Map<String, Object> mountConfig;
 
-	SharedVolumeDevice(String volumeId, Map<String, Object> mountConfig) {
-		this.volumeId = volumeId;
-		this.mountConfig = mountConfig;
+	/**
+	 * Construct a new {@link SharedVolumeDevice}
+	 */
+	public SharedVolumeDevice() {
+		this(null, new HashMap<>());
 	}
 
-	SharedVolumeDevice() {
-		this(null, new HashMap<>());
+	/**
+	 * Construct a new {@link SharedVolumeDevice}
+	 *
+	 * @param volumeId the volume ID
+	 * @param mountConfig the device configuration
+	 */
+	public SharedVolumeDevice(String volumeId, Map<String, Object> mountConfig) {
+		super();
+		this.volumeId = volumeId;
+		this.mountConfig = mountConfig;
 	}
 
 	/**
@@ -76,8 +87,12 @@ public class SharedVolumeDevice extends VolumeDevice {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof SharedVolumeDevice)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof SharedVolumeDevice)) {
+			return false;
+		}
 		SharedVolumeDevice that = (SharedVolumeDevice) o;
 		return Objects.equals(volumeId, that.volumeId) &&
 				Objects.equals(mountConfig, that.mountConfig);
@@ -103,7 +118,7 @@ public class SharedVolumeDevice extends VolumeDevice {
 		private String volumeId;
 		private final Map<String, Object> mountConfig = new HashMap<>();
 
-		SharedVolumeDeviceBuilder() {
+		private SharedVolumeDeviceBuilder() {
 		}
 
 		/**

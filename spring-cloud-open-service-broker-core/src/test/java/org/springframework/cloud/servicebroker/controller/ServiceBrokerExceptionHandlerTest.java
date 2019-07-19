@@ -43,7 +43,7 @@ import static org.springframework.cloud.servicebroker.exception.ServiceBrokerCon
 
 public abstract class ServiceBrokerExceptionHandlerTest {
 
-	ServiceBrokerExceptionHandler exceptionHandler;
+	protected ServiceBrokerExceptionHandler exceptionHandler;
 
 	@Test
 	public void serviceBrokerApiVersionException() {

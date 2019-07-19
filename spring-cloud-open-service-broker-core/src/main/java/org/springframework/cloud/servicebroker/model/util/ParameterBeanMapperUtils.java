@@ -27,9 +27,9 @@ import org.apache.commons.beanutils.SuppressPropertiesBeanIntrospector;
  *
  * @author Scott Frederick
  */
-public final class ParameterBeanMapper {
+public final class ParameterBeanMapperUtils {
 
-	private ParameterBeanMapper() {
+	private ParameterBeanMapperUtils() {
 	}
 
 	/**

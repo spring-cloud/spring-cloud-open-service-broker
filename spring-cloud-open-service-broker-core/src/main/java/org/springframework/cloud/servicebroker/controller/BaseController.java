@@ -50,37 +50,76 @@ import org.springframework.util.Base64Utils;
  */
 public class BaseController {
 
+	private static final int ORIGINATING_IDENTITY_HEADER_PARTS = 2;
+
 	protected CatalogService catalogService;
 
+	/**
+	 * Construct a new {@link BaseController}
+	 * @param catalogService the catalog service
+	 */
 	public BaseController(CatalogService catalogService) {
 		this.catalogService = catalogService;
 	}
 
-	protected Mono<ServiceBrokerRequest> setCommonRequestFields(ServiceBrokerRequest request, String platformInstanceId,
-																String apiInfoLocation, String originatingIdentityString) {
+	/**
+	 * Sets common headers for the request
+	 * @param request the request in which to set the headers
+	 * @param platformInstanceId the platform instance ID
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @return the request with the applied headers
+	 */
+	protected Mono<ServiceBrokerRequest> configureCommonRequestFields(ServiceBrokerRequest request, String platformInstanceId,
+																	  String apiInfoLocation, String originatingIdentityString) {
 		request.setPlatformInstanceId(platformInstanceId);
 		request.setApiInfoLocation(apiInfoLocation);
 		request.setOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
 		return Mono.just(request);
 	}
 
-	protected Mono<AsyncServiceBrokerRequest> setCommonRequestFields(AsyncServiceBrokerRequest request, String platformInstanceId,
-																	   String apiInfoLocation, String originatingIdentityString,
-																	   boolean asyncAccepted) {
+	/**
+	 * Sets common headers for the request
+	 * @param request the request in which to set the headers
+	 * @param platformInstanceId the platform instance ID
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param asyncAccepted does the platform accept asynchronous requests
+	 * @return the request with the applied headers
+	 */
+	protected Mono<AsyncServiceBrokerRequest> configureCommonRequestFields(AsyncServiceBrokerRequest request, String platformInstanceId,
+																		   String apiInfoLocation, String originatingIdentityString,
+																		   boolean asyncAccepted) {
 		request.setAsyncAccepted(asyncAccepted);
-		return setCommonRequestFields(request, platformInstanceId, apiInfoLocation, originatingIdentityString)
+		return configureCommonRequestFields(request, platformInstanceId, apiInfoLocation, originatingIdentityString)
 				.cast(AsyncServiceBrokerRequest.class);
 	}
 
+	/**
+	 * Find the Service Definition for the provided ID. Emits an error if not found.
+	 * @param serviceDefinitionId the service definition ID
+	 * @return the Service Definition
+	 */
 	protected Mono<ServiceDefinition> getRequiredServiceDefinition(String serviceDefinitionId) {
 		return getServiceDefinition(serviceDefinitionId)
 				.switchIfEmpty(Mono.error(new ServiceDefinitionDoesNotExistException(serviceDefinitionId)));
 	}
 
+	/**
+	 * Find the Service Definition for the provided ID, or empty if not found.
+	 * @param serviceDefinitionId the service definition ID
+	 * @return the Service Definition
+	 */
 	protected Mono<ServiceDefinition> getServiceDefinition(String serviceDefinitionId) {
 		return catalogService.getServiceDefinition(serviceDefinitionId);
 	}
 
+	/**
+	 * Find the Plan for the Service Definition and Plan ID, or empty if not found.
+	 * @param serviceDefinition the Service Definition
+	 * @param planId the plan ID
+	 * @return the Plan
+	 */
 	protected Mono<Plan> getServiceDefinitionPlan(ServiceDefinition serviceDefinition, String planId) {
 		return Mono.justOrEmpty(serviceDefinition)
 				.flatMap(serviceDef -> Mono.justOrEmpty(serviceDef.getPlans())
@@ -89,54 +128,77 @@ public class BaseController {
 								.singleOrEmpty()));
 	}
 
+	/**
+	 * Find the Plan for the Service Definition and Plan ID. Emits an error if not found.
+	 * @param serviceDefinition the Service Definition
+	 * @param planId the plan ID
+	 * @return the Plan
+	 */
 	protected Mono<Plan> getRequiredServiceDefinitionPlan(ServiceDefinition serviceDefinition, String planId) {
 		return getServiceDefinitionPlan(serviceDefinition, planId)
 				.switchIfEmpty(Mono.error(new ServiceDefinitionPlanDoesNotExistException(planId)));
 	}
 
+	/**
+	 * Populates a platform specific context from the originating identity
+	 *
+	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @return the Context
+	 */
 	protected Context parseOriginatingIdentity(String originatingIdentityString) {
 		if (originatingIdentityString == null) {
 			return null;
 		}
 
-		String[] parts = originatingIdentityString.split(" ", 2);
-
-		if (parts.length != 2) {
-			throw new ServiceBrokerInvalidOriginatingIdentityException("Expected platform and properties values in "
-					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request");
-		}
-
-		String encodedProperties;
-		try {
-			encodedProperties = new String(Base64Utils.decode(parts[1].getBytes()));
-		} catch (IllegalArgumentException e) {
-			throw new ServiceBrokerInvalidOriginatingIdentityException("Error decoding JSON properties from "
-					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request", e);
-		}
-
-		Map<String, Object> properties;
-		try {
-			properties = readJsonFromString(encodedProperties);
-		} catch (IOException e) {
-			throw new ServiceBrokerInvalidOriginatingIdentityException("Error parsing JSON properties from "
-					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request", e);
-		}
-
+		String[] parts = splitOriginatingIdentityHeaderParts(originatingIdentityString);
+		String encodedProperties = decodeOriginatingIdentityHeader(parts[1]);
+		Map<String, Object> properties = parseOriginatingIdentityHeader(encodedProperties);
 		String platform = parts[0];
 
 		if (CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM.equals(platform)) {
 			return CloudFoundryContext.builder()
 					.properties(properties)
 					.build();
-		} else if (KubernetesContext.KUBERNETES_PLATFORM.equals(platform)) {
+		}
+		else if (KubernetesContext.KUBERNETES_PLATFORM.equals(platform)) {
 			return KubernetesContext.builder()
 					.properties(properties)
 					.build();
-		} else {
+		}
+		else {
 			return PlatformContext.builder()
 					.platform(platform)
 					.properties(properties)
 					.build();
+		}
+	}
+
+	private String[] splitOriginatingIdentityHeaderParts(String header) {
+		String[] parts = header.split(" ", ORIGINATING_IDENTITY_HEADER_PARTS);
+		if (parts.length != ORIGINATING_IDENTITY_HEADER_PARTS) {
+			throw new ServiceBrokerInvalidOriginatingIdentityException("Expected platform and properties values in "
+					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request");
+		}
+		return parts;
+	}
+
+	private String decodeOriginatingIdentityHeader(String encodedProperties) {
+		try {
+			return new String(Base64Utils.decode(encodedProperties.getBytes()));
+		}
+		catch (IllegalArgumentException e) {
+			throw new ServiceBrokerInvalidOriginatingIdentityException("Error decoding JSON properties from "
+					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request", e);
+		}
+	}
+
+	private Map<String, Object> parseOriginatingIdentityHeader(String encodedProperties) {
+		try {
+			return readJsonFromString(encodedProperties);
+		}
+		catch (IOException e) {
+			throw new ServiceBrokerInvalidOriginatingIdentityException("Error parsing JSON properties from "
+					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request", e);
 		}
 	}
 
@@ -145,6 +207,11 @@ public class BaseController {
 		return objectMapper.readValue(value, new TypeReference<Map<String,Object>>() {});
 	}
 
+	/**
+	 * If an asynchronous request is received, then return HTTP 202 Accepted, otherwise HTTP 200 OK
+	 * @param response the response
+	 * @return the HTTP status
+	 */
 	protected HttpStatus getAsyncResponseCode(AsyncServiceBrokerResponse response) {
 		if (response != null && response.isAsync()) {
 			return HttpStatus.ACCEPTED;

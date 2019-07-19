@@ -32,8 +32,8 @@ public class ServiceInstanceExistsException extends ServiceBrokerException {
 	/**
 	 * Construct an exception with a default message that includes the provided IDs.
 	 *
-	 * @param serviceInstanceId the ID of the service instance
-	 * @param serviceDefinitionId the ID of the service definition
+	 * @param serviceInstanceId the service instance ID
+	 * @param serviceDefinitionId the service definition ID
 	 */
 	public ServiceInstanceExistsException(String serviceInstanceId, String serviceDefinitionId) {
 		super(buildMessage(serviceInstanceId, serviceDefinitionId));
@@ -43,8 +43,8 @@ public class ServiceInstanceExistsException extends ServiceBrokerException {
 	 * Construct an exception with an error code and default message that includes the provided IDs.
 	 *
 	 * @param errorCode a single word in camel case that uniquely identifies the error condition
-	 * @param serviceInstanceId the ID of the service instance
-	 * @param serviceDefinitionId the ID of the service definition
+	 * @param serviceInstanceId the service instance ID
+	 * @param serviceDefinitionId the service definition ID
 	 */
 	public ServiceInstanceExistsException(String errorCode, String serviceInstanceId, String serviceDefinitionId) {
 		super(errorCode, buildMessage(serviceInstanceId, serviceDefinitionId));

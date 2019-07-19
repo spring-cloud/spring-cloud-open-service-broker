@@ -16,6 +16,9 @@
 
 package org.springframework.cloud.servicebroker;
 
+import java.util.List;
+import java.util.Map;
+
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPathException;
 import com.jayway.jsonpath.TypeRef;
@@ -28,10 +31,8 @@ import org.assertj.core.api.Assertions;
 import org.assertj.core.api.ListAssert;
 import org.assertj.core.api.MapAssert;
 
-import java.util.List;
-import java.util.Map;
-
 public class JsonPathAssert extends AbstractAssert<JsonPathAssert, DocumentContext> {
+
 	public JsonPathAssert(DocumentContext actual) {
 		super(actual, JsonPathAssert.class);
 	}
@@ -45,7 +46,8 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, DocumentConte
 			Object value = actual.read(jsonPath);
 			failWithMessage("The path " + jsonPath + " was not expected but evaluated to " + value);
 			return null;
-		} catch (JsonPathException e) {
+		}
+		catch (JsonPathException e) {
 			return this;
 		}
 	}

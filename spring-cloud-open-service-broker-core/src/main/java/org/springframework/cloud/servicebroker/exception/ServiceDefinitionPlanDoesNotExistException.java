@@ -33,7 +33,7 @@ public class ServiceDefinitionPlanDoesNotExistException extends ServiceBrokerExc
 	/**
 	 * Construct an exception with a default message that includes the provided plan ID.
 	 *
-	 * @param planId the ID of the service definition
+	 * @param planId the plan ID
 	 */
 	public ServiceDefinitionPlanDoesNotExistException(String planId) {
 		super(buildMessage(planId));
@@ -44,7 +44,7 @@ public class ServiceDefinitionPlanDoesNotExistException extends ServiceBrokerExc
 	 * provided plan ID.
 	 *
 	 * @param errorCode a single word in camel case that uniquely identifies the error condition
-	 * @param planId the ID of the plan
+	 * @param planId the plan ID
 	 */
 	public ServiceDefinitionPlanDoesNotExistException(String errorCode, String planId) {
 		super(errorCode, buildMessage(planId));

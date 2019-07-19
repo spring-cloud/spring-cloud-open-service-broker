@@ -33,7 +33,7 @@ public class ServiceInstanceBindingExistsException extends ServiceBrokerExceptio
 	/**
 	 * Construct an exception with a default message that includes the provided IDs.
 	 *
-	 * @param serviceInstanceId the ID of the service instance
+	 * @param serviceInstanceId the service instance ID
 	 * @param bindingId the ID of the service binding
 	 */
 	public ServiceInstanceBindingExistsException(String serviceInstanceId, String bindingId) {
@@ -44,7 +44,7 @@ public class ServiceInstanceBindingExistsException extends ServiceBrokerExceptio
 	 * Construct an exception with a default message that includes the provided IDs.
 	 *
 	 * @param errorCode a single word in camel case that uniquely identifies the error condition
-	 * @param serviceInstanceId the ID of the service instance
+	 * @param serviceInstanceId the service instance ID
 	 * @param bindingId the ID of the service binding
 	 */
 	public ServiceInstanceBindingExistsException(String errorCode, String serviceInstanceId, String bindingId) {

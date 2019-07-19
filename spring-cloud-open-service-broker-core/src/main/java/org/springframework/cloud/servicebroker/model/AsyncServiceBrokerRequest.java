@@ -16,9 +16,9 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Details of a request that supports asynchronous operations.
@@ -27,14 +27,27 @@ import java.util.Objects;
  * @author Roy Clarkson
  */
 public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
+
 	public final static String ASYNC_REQUEST_PARAMETER = "accepts_incomplete";
 
 	@JsonIgnore //accepts_incomplete Osb field passed as query param in most subclasses
 	protected transient boolean asyncAccepted;
 
+	/**
+	 * Create a new AsyncServiceBrokerRequest
+	 */
 	protected AsyncServiceBrokerRequest() {
+		super();
 	}
 
+	/**
+	 * Create a new AsyncServiceBrokerRequest
+	 *
+	 * @param asyncAccepted does the platform accept asynchronous requests
+	 * @param platformInstanceId the platform instance ID
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 */
 	protected AsyncServiceBrokerRequest(boolean asyncAccepted, String platformInstanceId,
 										String apiInfoLocation, Context originatingIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity);
@@ -71,9 +84,15 @@ public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof AsyncServiceBrokerRequest)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof AsyncServiceBrokerRequest)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		AsyncServiceBrokerRequest that = (AsyncServiceBrokerRequest) o;
 		return that.canEqual(this) &&
 				asyncAccepted == that.asyncAccepted;
@@ -81,7 +100,7 @@ public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
 
 	@Override
 	public boolean canEqual(Object other) {
-		return (other instanceof AsyncServiceBrokerRequest);
+		return other instanceof AsyncServiceBrokerRequest;
 	}
 
 	@Override

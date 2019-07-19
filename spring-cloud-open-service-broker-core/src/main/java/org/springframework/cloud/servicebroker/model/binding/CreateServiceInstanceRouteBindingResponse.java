@@ -33,14 +33,25 @@ import java.util.Objects;
 public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInstanceBindingResponse {
 	private final String routeServiceUrl;
 
-	CreateServiceInstanceRouteBindingResponse(boolean async, String operation, boolean bindingExisted,
+	/**
+	 * Construct a new {@link CreateServiceInstanceRouteBindingResponse}
+	 */
+	public CreateServiceInstanceRouteBindingResponse() {
+		this(false, null, false, null);
+	}
+
+	/**
+	 * Construct a new {@link CreateServiceInstanceRouteBindingResponse}
+	 *
+	 * @param async is the operation asynchronous
+	 * @param operation description of the operation being performed
+	 * @param bindingExisted does the service binding already exist
+	 * @param routeServiceUrl the route service URL
+	 */
+	public CreateServiceInstanceRouteBindingResponse(boolean async, String operation, boolean bindingExisted,
 											  String routeServiceUrl) {
 		super(async, operation, bindingExisted);
 		this.routeServiceUrl = routeServiceUrl;
-	}
-
-	CreateServiceInstanceRouteBindingResponse() {
-		this(false, null, false, null);
 	}
 
 	/**
@@ -64,16 +75,22 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof CreateServiceInstanceRouteBindingResponse)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof CreateServiceInstanceRouteBindingResponse)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		CreateServiceInstanceRouteBindingResponse that = (CreateServiceInstanceRouteBindingResponse) o;
 		return Objects.equals(routeServiceUrl, that.routeServiceUrl);
 	}
 
 	@Override
 	public final boolean canEqual(Object other) {
-		return (other instanceof CreateServiceInstanceRouteBindingResponse);
+		return other instanceof CreateServiceInstanceRouteBindingResponse;
 	}
 
 	@Override
@@ -98,7 +115,7 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 		private boolean async;
 		private String operation;
 
-		CreateServiceInstanceRouteBindingResponseBuilder() {
+		private CreateServiceInstanceRouteBindingResponseBuilder() {
 		}
 
 		/**

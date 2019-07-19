@@ -55,6 +55,14 @@ public class ServiceBrokerWebFluxAutoConfiguration {
 
 	private final ServiceInstanceBindingEventService serviceInstanceBindingEventService;
 
+	/**
+	 * Construct a new {@link ServiceBrokerWebFluxAutoConfiguration}
+	 *
+	 * @param catalogService the CatalogService bean
+	 * @param serviceInstanceService the ServiceInstanceService bean
+	 * @param serviceInstanceBindingService the ServiceInstanceBindingService bean
+	 * @param eventFlowRegistries the EventFlowRegistries bean
+	 */
 	protected ServiceBrokerWebFluxAutoConfiguration(CatalogService catalogService,
 			@Autowired(required = false) ServiceInstanceService serviceInstanceService,
 			ServiceInstanceBindingService serviceInstanceBindingService,
@@ -69,23 +77,43 @@ public class ServiceBrokerWebFluxAutoConfiguration {
 				serviceInstanceBindingService, eventFlowRegistries);
 	}
 
+	/**
+	 * Provide a {@link CatalogController} bean
+	 *
+	 * @return the bean
+	 */
 	@Bean
 	public CatalogController catalogController() {
 		return new CatalogController(this.catalogService);
 	}
 
+	/**
+	 * Provide a {@link ServiceInstanceController} bean
+	 *
+	 * @return the bean
+	 */
 	@Bean
 	public ServiceInstanceController serviceInstanceController() {
 		return new ServiceInstanceController(this.catalogService,
 				this.serviceInstanceEventService);
 	}
 
+	/**
+	 * Provide a {@link ServiceInstanceBindingController} bean
+	 *
+	 * @return the bean
+	 */
 	@Bean
 	public ServiceInstanceBindingController serviceInstanceBindingController() {
 		return new ServiceInstanceBindingController(this.catalogService,
 				this.serviceInstanceBindingEventService);
 	}
 
+	/**
+	 * Provide a {@link ServiceBrokerWebFluxExceptionHandler} bean
+	 *
+	 * @return the bean
+	 */
 	@Bean
 	public ServiceBrokerWebFluxExceptionHandler serviceBrokerExceptionHandler() {
 		return new ServiceBrokerWebFluxExceptionHandler();

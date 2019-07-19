@@ -41,10 +41,21 @@ public abstract class EventFlowRegistry<I, C, E, R, S> {
 
 	private final List<Mono<E>> errorFlows = new ArrayList<>();
 
+	/**
+	 * Construct a new {@link EventFlowRegistry}
+	 */
 	@Deprecated
 	public EventFlowRegistry() {
+		// This constructor is intentionally empty to indicate it is deprecated
 	}
 
+	/**
+	 * Construct a new {@link EventFlowRegistry}
+	 *
+	 * @param initializationFlows the initialization flows
+	 * @param completionFlows the completion flows
+	 * @param errorFlows the error flows
+	 */
 	protected EventFlowRegistry(List<I> initializationFlows, List<C> completionFlows, List<E> errorFlows) {
 		if (CollectionUtils.isNotEmpty(initializationFlows)) {
 			initializationFlows.forEach(flow -> this.initializationFlows.add(Mono.just(flow)));
@@ -57,39 +68,92 @@ public abstract class EventFlowRegistry<I, C, E, R, S> {
 		}
 	}
 
+	/**
+	 * Add an initialization flow
+	 *
+	 * @param object the initialization flow
+	 * @return an empty Mono
+	 */
 	public Mono<Void> addInitializationFlow(I object) {
 		return Mono.justOrEmpty(object)
 				.map(flow -> this.initializationFlows.add(Mono.just(flow)))
 				.then();
 	}
 
+	/**
+	 * Retrieve the initialization flows as a Flux
+	 *
+	 * @param request the service broker request
+	 * @return a Flux of initialization flows
+	 */
 	public abstract Flux<Void> getInitializationFlows(R request);
 
-	Flux<I> getInitializationFlowsInternal() {
+	/**
+	 * Merges the initialization flows into a Flux
+	 *
+	 * @return a Flux of initialization flows
+	 */
+	protected Flux<I> getInitializationFlowsInternal() {
 		return Flux.merge(this.initializationFlows);
 	}
 
+	/**
+	 * Add a completion flow
+	 *
+	 * @param object the completion flow
+	 * @return an empty Mono
+	 */
 	public Mono<Void> addCompletionFlow(C object) {
 		return Mono.justOrEmpty(object)
 				.map(flow -> this.completionFlows.add(Mono.just(flow)))
 				.then();
 	}
 
+	/**
+	 * Retrieve the completion flows as a Flux
+	 *
+	 * @param request the service broker request
+	 * @param response the service broker response
+	 * @return a Flux of completion flows
+	 */
 	public abstract Flux<Void> getCompletionFlows(R request, S response);
 
-	Flux<C> getCompletionFlowsInternal() {
+	/**
+	 * Merges the completion flows into a Flux
+	 *
+	 * @return a Flux of completion flows
+	 */
+	protected Flux<C> getCompletionFlowsInternal() {
 		return Flux.merge(this.completionFlows);
 	}
 
+	/**
+	 * Add an error flow
+	 *
+	 * @param object the error flow
+	 * @return an empty Mono
+	 */
 	public Mono<Void> addErrorFlow(E object) {
 		return Mono.justOrEmpty(object)
 				.map(flow -> this.errorFlows.add(Mono.just(flow)))
 				.then();
 	}
 
+	/**
+	 * Retrieve the error flows as a Flux
+	 *
+	 * @param request the service broker request
+	 * @param t the error
+	 * @return a Flux of error flows
+	 */
 	public abstract Flux<Void> getErrorFlows(R request, Throwable t);
 
-	Flux<E> getErrorFlowsInternal() {
+	/**
+	 * Merges the error flows into a Flux
+	 *
+	 * @return a Flux of error flows
+	 */
+	protected Flux<E> getErrorFlowsInternal() {
 		return Flux.merge(this.errorFlows);
 	}
 

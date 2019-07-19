@@ -63,7 +63,7 @@ public class ServiceInstanceBindingEventServiceTest {
 
 	private EventFlowRegistries eventFlowRegistries;
 
-	EventFlowTestResults results;
+	private EventFlowTestResults results;
 
 	@Before
 	public void setUp() {

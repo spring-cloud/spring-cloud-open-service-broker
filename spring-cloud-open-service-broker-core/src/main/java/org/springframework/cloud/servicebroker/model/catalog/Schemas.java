@@ -40,14 +40,23 @@ public class Schemas {
 	@JsonProperty("service_binding")
 	private final ServiceBindingSchema serviceBindingSchema;
 
-	Schemas(ServiceInstanceSchema serviceInstanceSchema,
+	/**
+	 * Construct a new {@link Schemas}
+	 */
+	public Schemas() {
+		this(null, null);
+	}
+
+	/**
+	 * Construct a new {@link Schemas}
+	 *
+	 * @param serviceInstanceSchema the service instance schema
+	 * @param serviceBindingSchema the service binding schema
+	 */
+	public Schemas(ServiceInstanceSchema serviceInstanceSchema,
 			ServiceBindingSchema serviceBindingSchema) {
 		this.serviceInstanceSchema = serviceInstanceSchema;
 		this.serviceBindingSchema = serviceBindingSchema;
-	}
-
-	Schemas() {
-		this(null, null);
 	}
 
 	/**
@@ -79,8 +88,12 @@ public class Schemas {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Schemas)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Schemas)) {
+			return false;
+		}
 		Schemas schemas = (Schemas) o;
 		return Objects.equals(serviceInstanceSchema, schemas.serviceInstanceSchema) &&
 				Objects.equals(serviceBindingSchema, schemas.serviceBindingSchema);
@@ -106,7 +119,7 @@ public class Schemas {
 		private ServiceInstanceSchema serviceInstanceSchema;
 		private ServiceBindingSchema serviceBindingSchema;
 
-		SchemasBuilder() {
+		private SchemasBuilder() {
 		}
 
 		/**

@@ -23,8 +23,7 @@ import reactor.core.publisher.Mono;
 import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * Provide endpoints for the catalog API.
@@ -39,11 +38,21 @@ public class CatalogController extends BaseController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CatalogController.class);
 
+	/**
+	 * Construct a new {@link CatalogController}
+	 *
+	 * @param service the catalog service
+	 */
 	public CatalogController(CatalogService service) {
 		super(service);
 	}
 
-	@RequestMapping(value = {"/v2/catalog", "{platformInstanceId}/v2/catalog"}, method = RequestMethod.GET)
+	/**
+	 * REST controller for getting a catalog
+	 *
+	 * @return the catalog
+	 */
+	@GetMapping({"/v2/catalog", "{platformInstanceId}/v2/catalog"})
 	public Mono<Catalog> getCatalog() {
 		return catalogService.getCatalog()
 				.doOnRequest(v -> LOG.debug("Retrieving catalog"));

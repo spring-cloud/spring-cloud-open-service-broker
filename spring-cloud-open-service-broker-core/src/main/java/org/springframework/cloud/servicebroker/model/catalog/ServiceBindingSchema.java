@@ -37,12 +37,20 @@ public class ServiceBindingSchema {
 	@JsonProperty("create")
 	private final MethodSchema createMethodSchema;
 
-	ServiceBindingSchema(MethodSchema createMethodSchema) {
-		this.createMethodSchema = createMethodSchema;
+	/**
+	 * Construct a new {@link ServiceBindingSchema}
+	 */
+	public ServiceBindingSchema() {
+		this(null);
 	}
 
-	ServiceBindingSchema() {
-		this(null);
+	/**
+	 * Construct a new {@link ServiceBindingSchema}
+	 *
+	 * @param createMethodSchema the JSON schema
+	 */
+	public ServiceBindingSchema(MethodSchema createMethodSchema) {
+		this.createMethodSchema = createMethodSchema;
 	}
 
 	/**
@@ -65,8 +73,12 @@ public class ServiceBindingSchema {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof ServiceBindingSchema)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof ServiceBindingSchema)) {
+			return false;
+		}
 		ServiceBindingSchema that = (ServiceBindingSchema) o;
 		return Objects.equals(createMethodSchema, that.createMethodSchema);
 	}
@@ -89,7 +101,7 @@ public class ServiceBindingSchema {
 	public static class ServiceBindingSchemaBuilder {
 		private MethodSchema createMethodSchema;
 
-		ServiceBindingSchemaBuilder() {
+		private ServiceBindingSchemaBuilder() {
 		}
 
 		/**

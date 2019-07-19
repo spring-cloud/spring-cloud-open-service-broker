@@ -16,10 +16,10 @@
 
 package org.springframework.cloud.servicebroker.model.error;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
 
 /**
  * Details of an error reported to the platform from a service broker. 
@@ -31,6 +31,7 @@ import java.util.Objects;
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ErrorMessage {
+
 	private final String error;
 
 	@JsonProperty("description")
@@ -40,8 +41,7 @@ public class ErrorMessage {
 	 * Construct an error message with no error code or description.
 	 */
 	public ErrorMessage() {
-		this.error = null;
-		this.message = null;
+		this(null, null);
 	}
 
 	/**
@@ -50,8 +50,7 @@ public class ErrorMessage {
 	 * @param message a user-facing error message explaining why the request failed
 	 */
 	public ErrorMessage(String message) {
-		this.error = null;
-		this.message = message;
+		this(null, message);
 	}
 
 	/**
@@ -85,8 +84,12 @@ public class ErrorMessage {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof ErrorMessage)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof ErrorMessage)) {
+			return false;
+		}
 		ErrorMessage that = (ErrorMessage) o;
 		return Objects.equals(error, that.error) &&
 				Objects.equals(message, that.message);

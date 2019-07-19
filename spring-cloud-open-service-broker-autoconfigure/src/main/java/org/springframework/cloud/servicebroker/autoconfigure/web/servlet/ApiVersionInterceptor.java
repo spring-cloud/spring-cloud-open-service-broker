@@ -49,6 +49,7 @@ public class ApiVersionInterceptor extends HandlerInterceptorAdapter {
 	 * @param version the API version supported by the broker.
 	 */
 	public ApiVersionInterceptor(BrokerApiVersion version) {
+		super();
 		this.version = version;
 	}
 
@@ -62,8 +63,7 @@ public class ApiVersionInterceptor extends HandlerInterceptorAdapter {
 	 *         supported by the broker
 	 */
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws ServiceBrokerApiVersionException {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		if (version != null && !anyVersionAllowed()) {
 			String apiVersion = request.getHeader(version.getBrokerApiVersionHeader());
 

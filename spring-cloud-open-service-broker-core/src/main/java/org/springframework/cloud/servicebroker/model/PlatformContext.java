@@ -31,7 +31,12 @@ public class PlatformContext extends Context {
 		super(null, null);
 	}
 
-	PlatformContext(String platform, Map<String, Object> properties) {
+	/**
+	 * Construct a new {@link PlatformContext}
+	 * @param platform the name of the platform
+	 * @param properties collection of properties
+	 */
+	public PlatformContext(String platform, Map<String, Object> properties) {
 		super(platform, properties);
 	}
 
@@ -57,7 +62,9 @@ public class PlatformContext extends Context {
 	 * Provides a fluent API for constructing a {@link PlatformContext}.
 	 */
 	public static class PlatformContextBuilder extends ContextBaseBuilder<PlatformContext, PlatformContextBuilder> {
-		PlatformContextBuilder() {
+
+		private PlatformContextBuilder() {
+			super();
 		}
 
 		@Override
@@ -70,6 +77,7 @@ public class PlatformContext extends Context {
 		 *
 		 * @return the newly constructed {@literal Context}
 		 */
+		@Override
 		public PlatformContext build() {
 			return new PlatformContext(platform, properties);
 		}

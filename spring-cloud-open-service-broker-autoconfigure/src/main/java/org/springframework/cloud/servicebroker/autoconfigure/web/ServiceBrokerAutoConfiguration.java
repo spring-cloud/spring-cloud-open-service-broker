@@ -48,6 +48,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ServiceBrokerAutoConfiguration {
 
+	/**
+	 * Provides a {@link Catalog} bean when catalog properties are available in external configuration
+	 */
 	@Configuration
 	@ConditionalOnMissingBean({Catalog.class, CatalogService.class})
 	@EnableConfigurationProperties(ServiceBrokerProperties.class)
@@ -56,16 +59,32 @@ public class ServiceBrokerAutoConfiguration {
 
 		private final ServiceBrokerProperties serviceBrokerProperties;
 
+		/**
+		 * Construct a new {@link CatalogPropertiesMinimalConfiguration}
+		 *
+		 * @param serviceBrokerProperties the service broker properties
+		 */
 		public CatalogPropertiesMinimalConfiguration(ServiceBrokerProperties serviceBrokerProperties) {
 			this.serviceBrokerProperties = serviceBrokerProperties;
 		}
 
+		/**
+		 * Privide a {@link Catalog} bean
+		 *
+		 * @return the bean
+		 */
 		@Bean
 		public Catalog catalog() {
 			return this.serviceBrokerProperties.getCatalog().toModel();
 		}
 	}
 
+	/**
+	 * Conditionally provides a {@link CatalogService} bean
+	 *
+	 * @param catalog the catalog
+	 * @return the bean
+	 */
 	@Bean
 	@ConditionalOnMissingBean(CatalogService.class)
 	public CatalogService beanCatalogService(@Autowired(required = false) Catalog catalog) {
@@ -75,6 +94,11 @@ public class ServiceBrokerAutoConfiguration {
 		return new BeanCatalogService(catalog);
 	}
 
+	/**
+	 * Conditionally provides a {@link ServiceInstanceBindingService} bean
+	 *
+	 * @return the bean
+	 */
 	@Bean
 	@ConditionalOnMissingBean(ServiceInstanceBindingService.class)
 	public ServiceInstanceBindingService nonBindableServiceInstanceBindingService() {

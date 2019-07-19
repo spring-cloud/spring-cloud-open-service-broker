@@ -74,7 +74,31 @@ public class ServiceDefinition {
 
 	private final DashboardClient dashboardClient;
 
-	ServiceDefinition(String id, String name, String description, boolean bindable, Boolean planUpdateable,
+	/**
+	 * Construct a new {@link ServiceDefinition}
+	 */
+	public ServiceDefinition() {
+		this(null, null, null, false, null, null, null, new ArrayList<>(),
+				new ArrayList<>(), new HashMap<>(), new ArrayList<>(), null);
+	}
+
+	/**
+	 * Construct a new {@link ServiceDefinition}
+	 *
+	 * @param id the service ID
+	 * @param name the service name
+	 * @param description the service description
+	 * @param bindable true if the service may be bound
+	 * @param planUpdateable true if the plan may be updated
+	 * @param instancesRetrievable true if the service instances may be retrieved
+	 * @param bindingsRetrievable true if the service bindings may be retrieved
+	 * @param plans the service plans
+	 * @param tags the tags
+	 * @param metadata the service metadata
+	 * @param requires the required permissions
+	 * @param dashboardClient the service dashboard URI
+	 */
+	public ServiceDefinition(String id, String name, String description, boolean bindable, Boolean planUpdateable,
 							 Boolean instancesRetrievable, Boolean bindingsRetrievable,
 							 List<Plan> plans, List<String> tags, Map<String, Object> metadata, List<String> requires,
 							 DashboardClient dashboardClient) {
@@ -90,11 +114,6 @@ public class ServiceDefinition {
 		this.metadata = metadata;
 		this.requires = requires;
 		this.dashboardClient = dashboardClient;
-	}
-
-	ServiceDefinition() {
-		this(null, null, null, false, null, null, null, new ArrayList<>(),
-				new ArrayList<>(), new HashMap<>(), new ArrayList<>(), null);
 	}
 
 	/**
@@ -221,8 +240,12 @@ public class ServiceDefinition {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof ServiceDefinition)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof ServiceDefinition)) {
+			return false;
+		}
 		ServiceDefinition that = (ServiceDefinition) o;
 		return bindable == that.bindable &&
 				Objects.equals(planUpdateable, that.planUpdateable) &&
@@ -280,7 +303,7 @@ public class ServiceDefinition {
 		private List<String> requires;
 		private DashboardClient dashboardClient;
 
-		ServiceDefinitionBuilder() {
+		private ServiceDefinitionBuilder() {
 		}
 
 		/**

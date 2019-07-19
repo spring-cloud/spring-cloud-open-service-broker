@@ -30,6 +30,7 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BaseControllerTest {
+
 	private static final String JSON_STRING = "{" +
 			"\"key1\":\"value1\"," +
 			"\"key2\":\"value2\"" +
@@ -39,24 +40,24 @@ public class BaseControllerTest {
 
 	@Test(expected = ServiceBrokerInvalidOriginatingIdentityException.class)
 	public void originatingIdentityWithNoPropertiesThrowsException() {
-		controller.testOriginatingIdentity("platform");
+		controller.validateOriginatingIdentity("platform");
 	}
 
 	@Test(expected = ServiceBrokerInvalidOriginatingIdentityException.class)
 	public void originatingIdentityWithNonEncodedPropertiesThrowsException() {
-		controller.testOriginatingIdentity("platform some-properties");
+		controller.validateOriginatingIdentity("platform some-properties");
 	}
 
 	@Test(expected = ServiceBrokerInvalidOriginatingIdentityException.class)
 	public void originatingIdentityWithNonJsonPropertiesThrowsException() {
 		String encodedProperties = encode("some-properties");
 
-		controller.testOriginatingIdentity("platform " + encodedProperties);
+		controller.validateOriginatingIdentity("platform " + encodedProperties);
 	}
 
 	@Test
 	public void originatingIdentityWithCloudFoundryPlatform() {
-		Context context = controller.testOriginatingIdentity("cloudfoundry " + encode(JSON_STRING));
+		Context context = controller.validateOriginatingIdentity("cloudfoundry " + encode(JSON_STRING));
 
 		assertThat(context).isInstanceOf(CloudFoundryContext.class);
 		assertThat(context.getProperty("key1")).isEqualTo("value1");
@@ -65,7 +66,7 @@ public class BaseControllerTest {
 
 	@Test
 	public void originatingIdentityWithKubernetesPlatform() {
-		Context context = controller.testOriginatingIdentity("kubernetes " + encode(JSON_STRING));
+		Context context = controller.validateOriginatingIdentity("kubernetes " + encode(JSON_STRING));
 
 		assertThat(context).isInstanceOf(KubernetesContext.class);
 		assertThat(context.getProperty("key1")).isEqualTo("value1");
@@ -74,7 +75,7 @@ public class BaseControllerTest {
 
 	@Test
 	public void originatingIdentityWithUnknownPlatform() {
-		Context context = controller.testOriginatingIdentity("test-platform " + encode(JSON_STRING));
+		Context context = controller.validateOriginatingIdentity("test-platform " + encode(JSON_STRING));
 
 		assertThat(context).isInstanceOf(PlatformContext.class);
 		assertThat(context.getPlatform()).isEqualTo("test-platform");
@@ -91,11 +92,12 @@ public class BaseControllerTest {
 			super(null);
 		}
 
-		public Context testOriginatingIdentity(String originatingIdentityString) {
+		public Context validateOriginatingIdentity(String originatingIdentityString) {
 			ServiceBrokerRequest request = new ServiceBrokerRequest() {
 			};
 
-			setCommonRequestFields(request, "platform-instance-id", "api-info-location", originatingIdentityString);
+			configureCommonRequestFields(request, "platform-instance-id", "api-info-location", originatingIdentityString)
+					.block();
 
 			return request.getOriginatingIdentity();
 		}

@@ -39,14 +39,22 @@ public class ServiceInstanceSchema {
 	@JsonProperty("update")
 	private final MethodSchema updateMethodSchema;
 
-	ServiceInstanceSchema(MethodSchema createMethodSchema,
+	/**
+	 * Construct a new {@link ServiceInstanceSchema}
+	 */
+	public ServiceInstanceSchema() {
+		this(null, null);
+	}
+
+	/**
+	 * Construct a new {@link ServiceInstanceSchema}
+	 * @param createMethodSchema the schema
+	 * @param updateMethodSchema the schema
+	 */
+	public ServiceInstanceSchema(MethodSchema createMethodSchema,
 			MethodSchema updateMethodSchema) {
 		this.createMethodSchema = createMethodSchema;
 		this.updateMethodSchema = updateMethodSchema;
-	}
-
-	ServiceInstanceSchema() {
-		this(null, null);
 	}
 
 	/**
@@ -78,8 +86,12 @@ public class ServiceInstanceSchema {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof ServiceInstanceSchema)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof ServiceInstanceSchema)) {
+			return false;
+		}
 		ServiceInstanceSchema that = (ServiceInstanceSchema) o;
 		return Objects.equals(createMethodSchema, that.createMethodSchema) &&
 				Objects.equals(updateMethodSchema, that.updateMethodSchema);
@@ -105,7 +117,7 @@ public class ServiceInstanceSchema {
 		private MethodSchema createMethodSchema;
 		private MethodSchema updateMethodSchema;
 
-		ServiceInstanceSchemaBuilder() {
+		private ServiceInstanceSchemaBuilder() {
 		}
 
 		/**

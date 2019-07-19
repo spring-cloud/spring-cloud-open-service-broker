@@ -22,6 +22,11 @@ import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 
+/**
+ * NoOp implementation
+ *
+ * @author Roy Clarkson
+ */
 public class NoOpCatalogService implements CatalogService {
 
 	@Override

@@ -74,7 +74,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SuppressWarnings({"PMD.GodClass", "PMD.ExcessivePublicCount"})
 public class EventFlowsAutoConfigurationTest {
 
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
@@ -246,7 +245,7 @@ public class EventFlowsAutoConfigurationTest {
 	}
 
 	@TestConfiguration
-	public static class AlternateEventFlowRegistryBeansConfiguration {
+	protected static class AlternateEventFlowRegistryBeansConfiguration {
 
 		@SuppressWarnings("deprecation")
 		@Bean
@@ -281,7 +280,7 @@ public class EventFlowsAutoConfigurationTest {
 	}
 
 	@TestConfiguration
-	public static class CreateInstanceEventFlowBeansConfiguration {
+	protected static class CreateInstanceEventFlowBeansConfiguration {
 
 		@Bean
 		public CreateServiceInstanceInitializationFlow createInitFlow1() {
@@ -326,7 +325,7 @@ public class EventFlowsAutoConfigurationTest {
 	}
 
 	@TestConfiguration
-	public static class UpdateInstanceEventFlowBeansConfiguration {
+	protected static class UpdateInstanceEventFlowBeansConfiguration {
 
 		@Bean
 		public UpdateServiceInstanceInitializationFlow updateInitFlow() {
@@ -361,7 +360,7 @@ public class EventFlowsAutoConfigurationTest {
 	}
 
 	@TestConfiguration
-	public static class DeleteInstanceEventFlowBeansConfiguration {
+	protected static class DeleteInstanceEventFlowBeansConfiguration {
 
 		@Bean
 		public DeleteServiceInstanceInitializationFlow deleteInitFlow() {
@@ -406,7 +405,7 @@ public class EventFlowsAutoConfigurationTest {
 	}
 
 	@TestConfiguration
-	public static class AsyncOperationServiceInstanceEventFlowBeansConfiguration {
+	protected static class AsyncOperationServiceInstanceEventFlowBeansConfiguration {
 
 		@Bean
 		public AsyncOperationServiceInstanceInitializationFlow getLastOperationInitFlow() {
@@ -452,7 +451,7 @@ public class EventFlowsAutoConfigurationTest {
 	}
 
 	@TestConfiguration
-	public static class CreateInstanceBindingEventFlowBeansConfiguration {
+	protected static class CreateInstanceBindingEventFlowBeansConfiguration {
 
 		@Bean
 		public CreateServiceInstanceBindingInitializationFlow createInitFlow() {
@@ -487,7 +486,7 @@ public class EventFlowsAutoConfigurationTest {
 	}
 
 	@TestConfiguration
-	public static class DeleteInstanceBindingEventFlowBeansConfiguration {
+	protected static class DeleteInstanceBindingEventFlowBeansConfiguration {
 
 		@Bean
 		public DeleteServiceInstanceBindingInitializationFlow createInitFlow() {
@@ -522,7 +521,7 @@ public class EventFlowsAutoConfigurationTest {
 	}
 
 	@TestConfiguration
-	public static class AsyncOperationServiceInstanceBindingEventFlowBeansConfiguration {
+	protected static class AsyncOperationServiceInstanceBindingEventFlowBeansConfiguration {
 
 		@Bean
 		public AsyncOperationServiceInstanceBindingInitializationFlow getLastOperationInitFlow() {

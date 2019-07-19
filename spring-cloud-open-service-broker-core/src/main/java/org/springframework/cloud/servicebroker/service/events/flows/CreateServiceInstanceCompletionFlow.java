@@ -28,6 +28,13 @@ import org.springframework.cloud.servicebroker.model.instance.CreateServiceInsta
  */
 public interface CreateServiceInstanceCompletionFlow {
 
+	/**
+	 * Performs the operation on the completion flow
+	 *
+	 * @param request the service broker request
+	 * @param response the service broker response
+	 * @return an empty Mono
+	 */
 	default Mono<Void> complete(CreateServiceInstanceRequest request, CreateServiceInstanceResponse response) {
 		return Mono.empty();
 	}

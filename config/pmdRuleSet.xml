@@ -1,53 +1,67 @@
 <?xml version="1.0"?>
-<ruleset name="Custom ruleset"
+<!--
+  ~ Copyright 2002-2019 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<ruleset name="Main ruleset"
 		 xmlns="https://pmd.sourceforge.net/ruleset/2.0.0"
 		 xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="https://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
-
-	<rule ref="rulesets/java/basic.xml"/>
-	<rule ref="rulesets/java/braces.xml">
-		<exclude name="IfStmtsMustUseBraces"/>
-	</rule>
-	<rule ref="rulesets/java/codesize.xml">
-		<exclude name="TooManyMethods"/>
-		<exclude name="ExcessiveParameterList"/>
-	</rule>
-	<rule ref="rulesets/java/design.xml">
-		<exclude name="AccessorMethodGeneration"/>
-		<exclude name="UncommentedEmptyConstructor"/>
-		<exclude name="UncommentedEmptyMethodBody"/>
-	</rule>
-	<rule ref="rulesets/java/empty.xml" />
-	<rule ref="rulesets/java/finalizers.xml" />
-	<rule ref="rulesets/java/naming.xml">
-		<exclude name="ShortVariable" />
+	<description>Main Ruleset</description>
+	<rule ref="category/java/bestpractices.xml" />
+	<rule ref="category/java/codestyle.xml">
+		<exclude name="AtLeastOneConstructor" />
+		<exclude name="LocalVariableCouldBeFinal" />
 		<exclude name="LongVariable" />
-		<exclude name="ShortMethodName" />
+		<exclude name="MethodArgumentCouldBeFinal" />
+		<exclude name="OnlyOneReturn" />
 		<exclude name="ShortClassName" />
-		<exclude name="AbstractNaming" />
-		<exclude name="AvoidFieldNameMatchingMethodName" />
+		<exclude name="ShortMethodName" />
+		<exclude name="ShortVariable" />
 	</rule>
-	<rule ref="rulesets/java/imports.xml" />
-	<rule ref="rulesets/java/imports.xml/TooManyStaticImports">
+	<rule ref="category/java/codestyle.xml/TooManyStaticImports">
 		<properties>
 			<property name="maximumStaticImports" value="0"/>
 		</properties>
 	</rule>
-	<rule ref="rulesets/java/optimizations.xml">
-		<exclude name="LocalVariableCouldBeFinal"/>
-		<exclude name="MethodArgumentCouldBeFinal"/>
+	<rule ref="category/java/design.xml">
+		<exclude name="CouplingBetweenObjects" />
+		<exclude name="DataClass" />
+		<exclude name="ExcessiveImports" />
+		<exclude name="ExcessiveParameterList"/>
+		<exclude name="LawOfDemeter" />
+		<exclude name="LoosePackageCoupling" />
+		<exclude name="TooManyMethods"/>
+		<exclude name="UseObjectForClearerAPI" />
 	</rule>
-	<rule ref="rulesets/java/strictexception.xml" />
-	<rule ref="rulesets/java/strings.xml" />
-	<rule ref="rulesets/java/typeresolution.xml" />
-	<rule ref="rulesets/java/unnecessary.xml">
-		<exclude name="UselessParentheses" />
+	<rule ref="category/java/documentation.xml">
+		<exclude name="CommentSize" />
 	</rule>
-	<rule ref="rulesets/java/unusedcode.xml" />
-
-	<!--
-	<rule ref="rulesets/java/comments.xml"/>
-	<rule ref="rulesets/java/controversial.xml"/>
-	<rule ref="rulesets/java/junit.xml" />
-	-->
+	<rule ref="category/java/documentation.xml/CommentRequired">
+		<properties>
+			<property name="fieldCommentRequirement" value="Ignored" />
+		</properties>
+	</rule>
+	<rule ref="category/java/errorprone.xml">
+		<exclude name="AvoidFieldNameMatchingMethodName" />
+		<exclude name="BeanMembersShouldSerialize" />
+		<exclude name="DataflowAnomalyAnalysis" />
+	</rule>
+	<rule ref="category/java/multithreading.xml">
+		<exclude name="UseConcurrentHashMap" />
+	</rule>
+	<rule ref="category/java/performance.xml" />
+	<rule ref="category/java/security.xml" />
 </ruleset>

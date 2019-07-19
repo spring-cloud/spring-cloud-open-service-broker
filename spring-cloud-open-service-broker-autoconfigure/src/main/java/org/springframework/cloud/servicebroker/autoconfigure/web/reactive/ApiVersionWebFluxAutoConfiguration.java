@@ -55,10 +55,20 @@ public class ApiVersionWebFluxAutoConfiguration {
 
 	private final ServiceBrokerProperties serviceBrokerProperties;
 
+	/**
+	 * Construct a new {@link ApiVersionWebFluxAutoConfiguration}
+	 *
+	 * @param serviceBrokerProperties the service broker properties
+	 */
 	public ApiVersionWebFluxAutoConfiguration(ServiceBrokerProperties serviceBrokerProperties) {
 		this.serviceBrokerProperties = serviceBrokerProperties;
 	}
 
+	/**
+	 * Provides a {@link BrokerApiVersion} bean if the 'api-version' property is available in external configuration
+	 *
+	 * @return the bean
+	 */
 	@Bean
 	@ConditionalOnMissingBean(BrokerApiVersion.class)
 	@ConditionalOnProperty(prefix = "spring.cloud.openservicebroker", name = "api-version")
@@ -66,12 +76,23 @@ public class ApiVersionWebFluxAutoConfiguration {
 		return new BrokerApiVersion(this.serviceBrokerProperties.getApiVersion());
 	}
 
+	/**
+	 * Conditionally provides a {@link BrokerApiVersion} bean
+	 *
+	 * @return the bean
+	 */
 	@Bean
 	@ConditionalOnMissingBean(BrokerApiVersion.class)
 	public BrokerApiVersion serviceBrokerApiVersion() {
 		return new BrokerApiVersion();
 	}
 
+	/**
+	 * Conditionally provides a {@link ApiVersionWebFilter} bean
+	 *
+	 * @param brokerApiVersion the api version
+	 * @return the bean
+	 */
 	@Bean
 	public ApiVersionWebFilter apiVersionWebFilter(BrokerApiVersion brokerApiVersion) {
 		return new ApiVersionWebFilter(brokerApiVersion);

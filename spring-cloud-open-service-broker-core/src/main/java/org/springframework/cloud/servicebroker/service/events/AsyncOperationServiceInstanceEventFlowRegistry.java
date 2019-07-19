@@ -35,10 +35,20 @@ public class AsyncOperationServiceInstanceEventFlowRegistry extends EventFlowReg
 		AsyncOperationServiceInstanceCompletionFlow, AsyncOperationServiceInstanceErrorFlow, GetLastServiceOperationRequest,
 		GetLastServiceOperationResponse> {
 
+	/**
+	 * Construct a new {@link AsyncOperationServiceInstanceEventFlowRegistry}
+	 */
 	@Deprecated
 	public AsyncOperationServiceInstanceEventFlowRegistry() {
+		super();
 	}
 
+	/**
+	 * Construct a new {@link AsyncOperationServiceInstanceEventFlowRegistry}
+	 * @param initializationFlows the initialization flows
+	 * @param completionFlows the completion flows
+	 * @param errorFlows the error flows
+	 */
 	public AsyncOperationServiceInstanceEventFlowRegistry(
 			final List<AsyncOperationServiceInstanceInitializationFlow> initializationFlows,
 			final List<AsyncOperationServiceInstanceCompletionFlow> completionFlows,

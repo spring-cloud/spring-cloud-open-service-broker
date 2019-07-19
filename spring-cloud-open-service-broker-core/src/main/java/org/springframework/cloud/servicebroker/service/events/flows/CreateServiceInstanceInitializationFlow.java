@@ -27,6 +27,12 @@ import org.springframework.cloud.servicebroker.model.instance.CreateServiceInsta
  */
 public interface CreateServiceInstanceInitializationFlow {
 
+	/**
+	 * Performs the operation on the initialization flow
+	 *
+	 * @param request the service broker request
+	 * @return an empty Mono
+	 */
 	default Mono<Void> initialize(CreateServiceInstanceRequest request) {
 		return Mono.empty();
 	}

@@ -33,7 +33,7 @@ public class ServiceDefinitionDoesNotExistException extends ServiceBrokerExcepti
 	/**
 	 * Construct an exception with a default message that includes the provided service definition ID.
 	 *
-	 * @param serviceDefinitionId the ID of the service definition
+	 * @param serviceDefinitionId the service definition ID
 	 */
 	public ServiceDefinitionDoesNotExistException(String serviceDefinitionId) {
 		super(buildMessage(serviceDefinitionId));
@@ -44,7 +44,7 @@ public class ServiceDefinitionDoesNotExistException extends ServiceBrokerExcepti
 	 * provided service definition ID.
 	 *
 	 * @param errorCode a single word in camel case that uniquely identifies the error condition
-	 * @param serviceDefinitionId the ID of the service definition
+	 * @param serviceDefinitionId the service definition ID
 	 */
 	public ServiceDefinitionDoesNotExistException(String errorCode, String serviceDefinitionId) {
 		super(errorCode, buildMessage(serviceDefinitionId));

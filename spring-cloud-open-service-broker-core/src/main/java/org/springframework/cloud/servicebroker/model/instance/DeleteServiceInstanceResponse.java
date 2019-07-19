@@ -31,12 +31,21 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
  */
 public class DeleteServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
-	DeleteServiceInstanceResponse(boolean async, String operation) {
-		super(async, operation);
+	/**
+	 * Construct a new {@link DeleteServiceInstanceResponse}
+	 */
+	public DeleteServiceInstanceResponse() {
+		this(false, null);
 	}
 
-	DeleteServiceInstanceResponse() {
-		this(false, null);
+	/**
+	 * Construct a new {@link DeleteServiceInstanceResponse}
+	 *
+	 * @param async is the operation asynchronous
+	 * @param operation description of the operation being performed
+	 */
+	public DeleteServiceInstanceResponse(boolean async, String operation) {
+		super(async, operation);
 	}
 
 	/**
@@ -62,7 +71,7 @@ public class DeleteServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		private boolean async;
 		private String operation;
 
-		DeleteServiceInstanceResponseBuilder() {
+		private DeleteServiceInstanceResponseBuilder() {
 		}
 
 		/**
@@ -91,7 +100,7 @@ public class DeleteServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * <p>
 		 * This value will set the {@literal operation} field in the body of the response to the platform.
 		 *
-		 * @param operation the informational value
+		 * @param operation description of the operation being performed
 		 * @return the builder
 		 */
 		public DeleteServiceInstanceResponseBuilder operation(String operation) {

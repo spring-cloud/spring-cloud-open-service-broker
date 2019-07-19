@@ -30,6 +30,11 @@ import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInsta
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 
+/**
+ * NoOp implementation
+ *
+ * @author Roy Clarkson
+ */
 public class NoOpServiceInstanceService implements ServiceInstanceService {
 
 	@Override

@@ -27,6 +27,12 @@ import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOper
  */
 public interface AsyncOperationServiceInstanceInitializationFlow {
 
+	/**
+	 * Performs the operation on the initialization flow
+	 *
+	 * @param request the service broker request
+	 * @return an empty Mono
+	 */
 	default Mono<Void> initialize(GetLastServiceOperationRequest request) {
 		return Mono.empty();
 	}

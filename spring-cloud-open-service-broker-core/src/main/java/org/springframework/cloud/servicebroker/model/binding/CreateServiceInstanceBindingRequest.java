@@ -16,20 +16,20 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
-import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapper;
+import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapperUtils;
 
 /**
  * Details of a request to create a service instance binding.
@@ -47,10 +47,10 @@ import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapper;
 @SuppressWarnings({"deprecation", "DeprecatedIsStillUsed"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerRequest {
-	@JsonIgnore //Osb field passed as path param
+	@JsonIgnore //OSB field passed as path param
 	private transient String serviceInstanceId;
 
-	@JsonIgnore //Osb field passed as path param
+	@JsonIgnore //OSB field passed as path param
 	private transient String bindingId;
 
 	@NotEmpty
@@ -76,8 +76,11 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	@JsonIgnore //internal field
 	private transient Plan plan;
 
-	@SuppressWarnings("unused")
-	CreateServiceInstanceBindingRequest() {
+	/**
+	 * Construct a new {@link CreateServiceInstanceBindingRequest}
+	 */
+	public CreateServiceInstanceBindingRequest() {
+		super();
 		serviceDefinitionId = null;
 		planId = null;
 		appGuid = null;
@@ -86,7 +89,23 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		parameters = new HashMap<>();
 	}
 
-	CreateServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
+	/**
+	 * Construct a new {@link CreateServiceInstanceBindingRequest}
+	 * @param serviceInstanceId the service instance ID
+	 * @param serviceDefinitionId the service definition ID
+	 * @param planId the plan ID
+	 * @param bindingId the service binding ID
+	 * @param serviceDefinition the service definition
+	 * @param plan the plan
+	 * @param asyncAccepted does the platform accept asynchronous requests
+	 * @param bindResource the binding resource
+	 * @param parameters the parameters
+	 * @param context the context
+	 * @param platformInstanceId the platform instance ID
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 */
+	public CreateServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
 										String bindingId, ServiceDefinition serviceDefinition, Plan plan,
 										boolean asyncAccepted, BindResource bindResource,
 										Map<String, Object> parameters, Context context,
@@ -100,7 +119,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		this.plan = plan;
 		this.parameters = parameters;
 		this.bindResource = bindResource;
-		this.appGuid = (bindResource == null ? null : bindResource.getAppGuid());
+		this.appGuid = bindResource == null ? null : bindResource.getAppGuid();
 		this.context = context;
 	}
 
@@ -122,7 +141,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 * This method is intended to be used internally only; use {@link #builder()} to construct an object of this
 	 * type and set all field values.
 	 *
-	 * @param serviceInstanceId the ID of the service instance associated with the binding
+	 * @param serviceInstanceId the service instance ID associated with the binding
 	 */
 	public void setServiceInstanceId(final String serviceInstanceId) {
 		this.serviceInstanceId = serviceInstanceId;
@@ -243,7 +262,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 * @return the instantiated and populated object
 	 */
 	public <T> T getParameters(Class<T> cls) {
-		return ParameterBeanMapper.mapParametersToBean(parameters, cls);
+		return ParameterBeanMapperUtils.mapParametersToBean(parameters, cls);
 	}
 
 	/**
@@ -319,9 +338,15 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof CreateServiceInstanceBindingRequest)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof CreateServiceInstanceBindingRequest)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		CreateServiceInstanceBindingRequest that = (CreateServiceInstanceBindingRequest) o;
 		return that.canEqual(this) &&
 				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
@@ -338,7 +363,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 
 	@Override
 	public final boolean canEqual(Object other) {
-		return (other instanceof CreateServiceInstanceBindingRequest);
+		return other instanceof CreateServiceInstanceBindingRequest;
 	}
 
 	@Override
@@ -380,7 +405,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		private String apiInfoLocation;
 		private Context originatingIdentity;
 
-		CreateServiceInstanceBindingRequestBuilder() {
+		private CreateServiceInstanceBindingRequestBuilder() {
 		}
 
 		/**
@@ -422,7 +447,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		/**
 		 * Set the binding ID as would be provided in the request from the platform.
 		 *
-		 * @param bindingId the binding ID
+		 * @param bindingId the service binding ID
 		 * @return the builder
 		 * @see #getBindingId()
 		 */
@@ -533,7 +558,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		/**
 		 * Set the location of the API info endpoint as would be provided in the request from the platform.
 		 *
-		 * @param apiInfoLocation the API info endpoint location
+		 * @param apiInfoLocation location of the API info endpoint of the platform instance
 		 * @return the builder
 		 * @see #getApiInfoLocation()
 		 */

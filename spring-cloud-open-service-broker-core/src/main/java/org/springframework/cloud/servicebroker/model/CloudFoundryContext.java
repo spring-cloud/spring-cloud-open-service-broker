@@ -32,15 +32,24 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public final class CloudFoundryContext extends Context {
+
 	public static final String CLOUD_FOUNDRY_PLATFORM = "cloudfoundry";
+
 	public static final String ORGANIZATION_GUID_KEY = "organizationGuid";
+
 	public static final String SPACE_GUID_KEY = "spaceGuid";
 
 	private CloudFoundryContext() {
 		super(CLOUD_FOUNDRY_PLATFORM, null);
 	}
 
-	CloudFoundryContext(String organizationGuid, String spaceGuid, Map<String, Object> properties) {
+	/**
+	 * Create a new CloudFoundryContext
+	 * @param organizationGuid the organization GUID
+	 * @param spaceGuid the space GUID
+	 * @param properties additional properties
+	 */
+	public CloudFoundryContext(String organizationGuid, String spaceGuid, Map<String, Object> properties) {
 		super(CLOUD_FOUNDRY_PLATFORM, properties);
 		if (organizationGuid != null) {
 			setOrganizationGuid(organizationGuid);
@@ -50,15 +59,21 @@ public final class CloudFoundryContext extends Context {
 		}
 	}
 
+	/**
+	 * Retrieve the organization GUID from the collection of platform properties
+	 *
+	 * @return the organization GUID
+	 */
 	public String getOrganizationGuid() {
 		return getStringProperty(ORGANIZATION_GUID_KEY);
 	}
 
     /**
      * Avoid polluting the serialized context with duplicated keys
+	 * @return a map of properties
      */
 	@JsonAnyGetter
-    Map<String, Object> getSerializableProperties() {
+    public Map<String, Object> getSerializableProperties() {
 		HashMap<String, Object> properties = new HashMap<>(super.getProperties());
 		properties.remove(ORGANIZATION_GUID_KEY);
 		properties.remove(SPACE_GUID_KEY);
@@ -72,6 +87,11 @@ public final class CloudFoundryContext extends Context {
 		properties.put(ORGANIZATION_GUID_KEY, organizationGuid);
 	}
 
+	/**
+	 * Retrieve the space GUID from the collection of platform properties
+	 *
+	 * @return the space GUID
+	 */
 	public String getSpaceGuid() {
 		return getStringProperty(SPACE_GUID_KEY);
 	}
@@ -82,15 +102,26 @@ public final class CloudFoundryContext extends Context {
 		properties.put(SPACE_GUID_KEY, spaceGuid);
 	}
 
+	/**
+	 * Builder for constructing a {@link CloudFoundryContext}
+	 *
+	 * @return the builder
+	 */
 	public static CloudFoundryContextBuilder builder() {
 		return new CloudFoundryContextBuilder();
 	}
 
+	/**
+	 * Provides a fluent API for constructing a {@link CloudFoundryContext}
+	 */
 	public static class CloudFoundryContextBuilder extends ContextBaseBuilder<CloudFoundryContext, CloudFoundryContextBuilder> {
+
 		private String organizationGuid;
+
 		private String spaceGuid;
 
-		CloudFoundryContextBuilder() {
+		private CloudFoundryContextBuilder() {
+			super();
 		}
 
 		@Override
@@ -98,16 +129,29 @@ public final class CloudFoundryContext extends Context {
 			return this;
 		}
 
+		/**
+		 * Set the organization GUID
+		 *
+		 * @param organizationGuid the organization GUID
+		 * @return the builder
+		 */
 		public CloudFoundryContextBuilder organizationGuid(String organizationGuid) {
 			this.organizationGuid = organizationGuid;
 			return this;
 		}
 
+		/**
+		 * Set the space GUID
+		 *
+		 * @param spaceGuid the space GUID
+		 * @return the builder
+		 */
 		public CloudFoundryContextBuilder spaceGuid(String spaceGuid) {
 			this.spaceGuid = spaceGuid;
 			return this;
 		}
 
+		@Override
 		public CloudFoundryContext build() {
 			return new CloudFoundryContext(organizationGuid, spaceGuid, properties);
 		}

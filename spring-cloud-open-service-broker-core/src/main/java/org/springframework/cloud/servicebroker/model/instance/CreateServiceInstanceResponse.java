@@ -38,20 +38,33 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
-	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
+
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	private final String dashboardUrl;
 
 	@JsonIgnore //not sent on the wire as json payload, but as http status instead
 	private final boolean instanceExisted;
 
-	CreateServiceInstanceResponse(boolean async, String operation, String dashboardUrl, boolean instanceExisted) {
+	/**
+	 * Construct a new {@link CreateServiceInstanceResponse}
+	 */
+	public CreateServiceInstanceResponse() {
+		this(false, null, null, false);
+	}
+
+	/**
+	 * Construct a new {@link CreateServiceInstanceResponse}
+	 *
+	 * @param async is the operation asynchronous
+	 * @param operation description of the operation being performed
+	 * @param dashboardUrl the dashboard URL
+	 * @param instanceExisted true if the instance exists
+	 */
+	public CreateServiceInstanceResponse(boolean async, String operation, String dashboardUrl,
+										 boolean instanceExisted) {
 		super(async, operation);
 		this.dashboardUrl = dashboardUrl;
 		this.instanceExisted = instanceExisted;
-	}
-
-	CreateServiceInstanceResponse() {
-		this(false, null, null, false);
 	}
 
 	/**
@@ -84,9 +97,15 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof CreateServiceInstanceResponse)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof CreateServiceInstanceResponse)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		CreateServiceInstanceResponse that = (CreateServiceInstanceResponse) o;
 		return that.canEqual(this) &&
 				instanceExisted == that.instanceExisted &&
@@ -95,7 +114,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 	@Override
 	public boolean canEqual(Object other) {
-		return (other instanceof CreateServiceInstanceResponse);
+		return other instanceof CreateServiceInstanceResponse;
 	}
 
 	@Override
@@ -121,7 +140,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		private boolean async;
 		private String operation;
 
-		CreateServiceInstanceResponseBuilder() {
+		private CreateServiceInstanceResponseBuilder() {
 		}
 
 		/**

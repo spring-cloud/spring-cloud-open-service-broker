@@ -35,10 +35,21 @@ public class CreateServiceInstanceEventFlowRegistry extends EventFlowRegistry<Cr
 		CreateServiceInstanceCompletionFlow, CreateServiceInstanceErrorFlow, CreateServiceInstanceRequest,
 		CreateServiceInstanceResponse> {
 
+	/**
+	 * Construct a new {@link CreateServiceInstanceEventFlowRegistry}
+	 */
 	@Deprecated
 	public CreateServiceInstanceEventFlowRegistry() {
+		super();
 	}
 
+	/**
+	 * Construct a new {@link CreateServiceInstanceEventFlowRegistry}
+	 *
+	 * @param initializationFlows the initialization flows
+	 * @param completionFlows the completion flows
+	 * @param errorFlows the error flows
+	 */
 	public CreateServiceInstanceEventFlowRegistry(
 			final List<CreateServiceInstanceInitializationFlow> initializationFlows,
 			final List<CreateServiceInstanceCompletionFlow> completionFlows,

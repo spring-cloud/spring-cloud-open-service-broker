@@ -101,16 +101,28 @@ public class VolumeMount {
 	@JsonSubTypes({@JsonSubTypes.Type(value = SharedVolumeDevice.class, name = "shared") })
 	private final VolumeDevice device;
 
-	VolumeMount(String driver, String containerDir, Mode mode, DeviceType deviceType, VolumeDevice device) {
+	/**
+	 * Construct a new {@link VolumeMount}
+	 */
+	public VolumeMount() {
+		this(null, null, null, null, null);
+	}
+
+	/**
+	 * Construct a new {@link VolumeMount}
+	 *
+	 * @param driver the name of the driver
+	 * @param containerDir the container directory
+	 * @param mode the volume read/write mode
+	 * @param deviceType the volume device type
+	 * @param device the volume device details
+	 */
+	public VolumeMount(String driver, String containerDir, Mode mode, DeviceType deviceType, VolumeDevice device) {
 		this.driver = driver;
 		this.containerDir = containerDir;
 		this.mode = mode;
 		this.deviceType = deviceType;
 		this.device = device;
-	}
-
-	VolumeMount() {
-		this(null, null, null, null, null);
 	}
 
 	/**
@@ -169,8 +181,12 @@ public class VolumeMount {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof VolumeMount)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof VolumeMount)) {
+			return false;
+		}
 		VolumeMount that = (VolumeMount) o;
 		return Objects.equals(driver, that.driver) &&
 				Objects.equals(containerDir, that.containerDir) &&
@@ -205,7 +221,7 @@ public class VolumeMount {
 		private DeviceType deviceType;
 		private VolumeDevice device;
 
-		VolumeMountBuilder() {
+		private VolumeMountBuilder() {
 		}
 
 		/**
@@ -288,14 +304,25 @@ public class VolumeMount {
 		}
 	}
 
+	/**
+	 * Custom {@link DeviceType} Jackson Deserializer
+	 */
 	private static class DeviceTypeDeserializer extends StdDeserializer<DeviceType> {
 
 		private static final long serialVersionUID = -7935903407118198514L;
 
+		/**
+		 * Construct a new {@link DeviceTypeDeserializer}
+		 */
 		public DeviceTypeDeserializer(){
 			this(null);
 		}
 
+		/**
+		 * Construct a new {@link DeviceTypeDeserializer}
+		 *
+		 * @param c the type
+		 */
 		public DeviceTypeDeserializer(Class<?> c){
 			super(c);
 		}
@@ -312,14 +339,25 @@ public class VolumeMount {
 		}
 	}
 
+	/**
+	 * Custom {@link Mode} Jackson Deserializer
+	 */
 	private static class ModeDeserializer extends StdDeserializer<Mode> {
 
 		private static final long serialVersionUID = -4985037236705821009L;
 
+		/**
+		 * Construct a new {@link ModeDeserializer}
+		 */
 		public ModeDeserializer(){
 			this(null);
 		}
 
+		/**
+		 * Construct a new {@link ModeDeserializer}
+		 *
+		 * @param c the type
+		 */
 		public ModeDeserializer(Class<?> c){
 			super(c);
 		}

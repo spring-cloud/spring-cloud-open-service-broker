@@ -27,6 +27,13 @@ import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstan
  */
 public interface DeleteServiceInstanceBindingErrorFlow {
 
+	/**
+	 * Performs the operation on the error flow
+	 *
+	 * @param request the service broker request
+	 * @param t the error
+	 * @return an empty Mono
+	 */
 	default Mono<Void> error(DeleteServiceInstanceBindingRequest request, Throwable t) {
 		return Mono.empty();
 	}

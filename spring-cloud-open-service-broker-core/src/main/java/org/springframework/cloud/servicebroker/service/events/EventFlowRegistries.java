@@ -37,6 +37,9 @@ public class EventFlowRegistries {
 
     private final AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry;
 
+	/**
+	 * Construct a new {@link EventFlowRegistries}
+	 */
 	@Deprecated
 	public EventFlowRegistries() {
 		this.createInstanceRegistry = new CreateServiceInstanceEventFlowRegistry();
@@ -48,6 +51,17 @@ public class EventFlowRegistries {
 		this.asyncOperationBindingRegistry = new AsyncOperationServiceInstanceBindingEventFlowRegistry();
 	}
 
+	/**
+	 * Construct a new {@link EventFlowRegistries}
+	 *
+	 * @param createInstanceRegistry the create instance flow registry
+	 * @param updateInstanceRegistry the update instance flow registry
+	 * @param deleteInstanceRegistry the delete instance flow registry
+	 * @param asyncOperationRegistry the instance last operation flow registry
+	 * @param createInstanceBindingRegistry the create instance binding flow registry
+	 * @param deleteInstanceBindingRegistry the delete instance binding flow registry
+	 * @param asyncOperationBindingRegistry the instance binding last operation flow registry
+	 */
 	public EventFlowRegistries(CreateServiceInstanceEventFlowRegistry createInstanceRegistry,
 							   UpdateServiceInstanceEventFlowRegistry updateInstanceRegistry,
 							   DeleteServiceInstanceEventFlowRegistry deleteInstanceRegistry,

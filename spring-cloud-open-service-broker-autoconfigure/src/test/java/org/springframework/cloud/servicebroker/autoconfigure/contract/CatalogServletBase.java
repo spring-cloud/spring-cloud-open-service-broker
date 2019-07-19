@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,7 +34,9 @@ import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.context.WebApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @RunWith(SpringRunner.class)
@@ -43,7 +46,10 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 public class CatalogServletBase {
 
 	@LocalServerPort
-	int port;
+	private int port;
+
+	@Autowired
+	private WebApplicationContext context;
 
 	@Before
 	public void setUp() {
@@ -53,7 +59,7 @@ public class CatalogServletBase {
 
 	@Test
 	public void contextLoads() {
-		// hooray
+		assertThat(context).isNotNull();
 	}
 
 	@SpringBootApplication(scanBasePackageClasses = {

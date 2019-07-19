@@ -47,14 +47,23 @@ public class GetLastServiceBindingOperationResponse {
 	@JsonIgnore
 	private final boolean deleteOperation;
 
-	GetLastServiceBindingOperationResponse(OperationState state, String description, boolean deleteOperation) {
+	/**
+	 * Construct a new {@link GetLastServiceBindingOperationResponse}
+	 */
+	public GetLastServiceBindingOperationResponse() {
+		this(null, null, false);
+	}
+
+	/**
+	 * Construct a new {@link GetLastServiceBindingOperationResponse}
+	 * @param state the current state
+	 * @param description the description
+	 * @param deleteOperation is delete operation
+	 */
+	public GetLastServiceBindingOperationResponse(OperationState state, String description, boolean deleteOperation) {
 		this.state = state;
 		this.description = description;
 		this.deleteOperation = deleteOperation;
-	}
-
-	GetLastServiceBindingOperationResponse() {
-		this(null, null, false);
 	}
 
 	/**
@@ -95,8 +104,12 @@ public class GetLastServiceBindingOperationResponse {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof GetLastServiceBindingOperationResponse)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof GetLastServiceBindingOperationResponse)) {
+			return false;
+		}
 		GetLastServiceBindingOperationResponse that = (GetLastServiceBindingOperationResponse) o;
 		return deleteOperation == that.deleteOperation &&
 				state == that.state &&
@@ -125,7 +138,7 @@ public class GetLastServiceBindingOperationResponse {
 		private String description;
 		private boolean deleteOperation;
 
-		GetLastServiceBindingOperationResponseBuilder() {
+		private GetLastServiceBindingOperationResponseBuilder() {
 		}
 
 		/**

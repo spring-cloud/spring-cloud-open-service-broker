@@ -50,76 +50,153 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 public abstract class ServiceBrokerExceptionHandler {
 
-	static final String UNPROCESSABLE_REQUEST = "Unprocessable request received: ";
+	protected static final String UNPROCESSABLE_REQUEST = "Unprocessable request received: ";
 
+	/**
+	 * Callback to implementing classes to obtain the configured Logger
+	 *
+	 * @return the Logger
+	 */
 	protected abstract Logger getLog();
 
+	/**
+	 * Handle a {@link ServiceBrokerApiVersionException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceBrokerApiVersionException.class)
 	@ResponseStatus(HttpStatus.PRECONDITION_FAILED)
 	public ErrorMessage handleException(ServiceBrokerApiVersionException ex) {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link ServiceBrokerApiVersionMissingException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceBrokerApiVersionMissingException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(ServiceBrokerApiVersionMissingException ex) {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link ServiceInstanceDoesNotExistException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceInstanceDoesNotExistException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public ErrorMessage handleException(ServiceInstanceDoesNotExistException ex) {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link ServiceDefinitionDoesNotExistException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceDefinitionDoesNotExistException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(ServiceDefinitionDoesNotExistException ex) {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link ServiceDefinitionPlanDoesNotExistException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceDefinitionPlanDoesNotExistException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(ServiceDefinitionPlanDoesNotExistException ex) {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link ServiceBrokerAsyncRequiredException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceBrokerAsyncRequiredException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public ErrorMessage handleException(ServiceBrokerAsyncRequiredException ex) {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link ServiceBrokerInvalidParametersException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceBrokerInvalidParametersException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public ErrorMessage handleException(ServiceBrokerInvalidParametersException ex) {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link ServiceBrokerOperationInProgressException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceBrokerOperationInProgressException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ErrorMessage handleException(ServiceBrokerOperationInProgressException ex) {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link ServiceBrokerUnavailableException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceBrokerUnavailableException.class)
 	@ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
 	public ErrorMessage handleException(ServiceBrokerUnavailableException ex) {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link ServiceBrokerConcurrencyException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceBrokerConcurrencyException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public ErrorMessage handleException(ServiceBrokerConcurrencyException ex) {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link ServiceBrokerException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceBrokerException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ErrorMessage handleException(ServiceBrokerException ex) {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link ServiceBrokerInvalidOriginatingIdentityException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceBrokerInvalidOriginatingIdentityException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public ErrorMessage handleException(ServiceBrokerInvalidOriginatingIdentityException ex) {
@@ -127,6 +204,12 @@ public abstract class ServiceBrokerExceptionHandler {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link Exception}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ErrorMessage handleException(Exception ex) {
@@ -134,50 +217,101 @@ public abstract class ServiceBrokerExceptionHandler {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link ServiceInstanceExistsException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceInstanceExistsException.class)
 	@ResponseStatus(HttpStatus.CONFLICT)
 	public ErrorMessage handleException(ServiceInstanceExistsException ex) {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link ServiceInstanceUpdateNotSupportedException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceInstanceUpdateNotSupportedException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public ErrorMessage handleException(ServiceInstanceUpdateNotSupportedException ex) {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link ServiceInstanceBindingExistsException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceInstanceBindingExistsException.class)
 	@ResponseStatus(HttpStatus.CONFLICT)
 	public ErrorMessage handleException(ServiceInstanceBindingExistsException ex) {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link ServiceInstanceBindingDoesNotExistException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceInstanceBindingDoesNotExistException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public ErrorMessage handleException(ServiceInstanceBindingDoesNotExistException ex) {
 		return getErrorResponse(ex);
 	}
 
+	/**
+	 * Handle a {@link ServiceBrokerBindingRequiresAppException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
 	@ExceptionHandler(ServiceBrokerBindingRequiresAppException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public ErrorMessage handleException(ServiceBrokerBindingRequiresAppException ex) {
 		return getErrorResponse(ex);
 	}
 
-	ErrorMessage getErrorResponse(ServiceBrokerException ex) {
+	/**
+	 * Format an error message for the exception
+	 * @param ex the exception
+	 * @return the error message
+	 */
+	protected ErrorMessage getErrorResponse(ServiceBrokerException ex) {
 		getLog().debug(ex.getMessage(), ex);
 		return ex.getErrorMessage();
 	}
 
-	ErrorMessage getErrorResponse(Exception ex) {
+	/**
+	 * Format an error message for the exception
+	 * @param ex the exception
+	 * @return the error message
+	 */
+	protected ErrorMessage getErrorResponse(Exception ex) {
 		return getErrorResponse(ex.getMessage());
 	}
 
-	ErrorMessage getErrorResponse(String message) {
+	/**
+	 * Create an error message object
+	 * @param message the text of the message
+	 * @return the error message
+	 */
+	protected ErrorMessage getErrorResponse(String message) {
 		return new ErrorMessage(message);
 	}
 
-	ErrorMessage handleBindingException(Exception ex, final BindingResult result) {
+	/**
+	 * Creates an error message for binding errors
+	 * @param ex the exception
+	 * @param result the binding result
+	 * @return the error message
+	 */
+	protected ErrorMessage handleBindingException(Exception ex, final BindingResult result) {
 		getLog().error(UNPROCESSABLE_REQUEST, ex);
 		StringBuilder message = new StringBuilder("Missing required fields:");
 		for (FieldError error : result.getFieldErrors()) {

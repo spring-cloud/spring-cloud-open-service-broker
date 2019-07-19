@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * @author Scott Frederick
  */
 public enum OperationState {
+
 	/**
 	 * Indicates that a request is still being processed. The platform will continue polling for the current state.
 	 */

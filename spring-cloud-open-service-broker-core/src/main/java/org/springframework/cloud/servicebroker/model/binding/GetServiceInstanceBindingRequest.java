@@ -38,7 +38,16 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 
 	private transient final String bindingId;
 
-	GetServiceInstanceBindingRequest(String serviceInstanceId, String bindingId,
+	/**
+	 * Construct a new {@link GetServiceInstanceBindingRequest}
+	 *
+	 * @param serviceInstanceId the service instance ID
+	 * @param bindingId the service binding ID
+	 * @param platformInstanceId the platform instance ID
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 */
+	public GetServiceInstanceBindingRequest(String serviceInstanceId, String bindingId,
 									String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.serviceInstanceId = serviceInstanceId;
@@ -88,9 +97,15 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof GetServiceInstanceBindingRequest)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof GetServiceInstanceBindingRequest)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		GetServiceInstanceBindingRequest that = (GetServiceInstanceBindingRequest) o;
 		return Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
 				Objects.equals(bindingId, that.bindingId);
@@ -98,7 +113,7 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 
 	@Override
 	public final boolean canEqual(Object other) {
-		return (other instanceof GetServiceInstanceBindingRequest);
+		return other instanceof GetServiceInstanceBindingRequest;
 	}
 
 	@Override
@@ -125,7 +140,7 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		private String apiInfoLocation;
 		private Context originatingIdentity;
 
-		GetServiceInstanceBindingRequestBuilder() {
+		private GetServiceInstanceBindingRequestBuilder() {
 		}
 
 		/**
@@ -143,7 +158,7 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		/**
 		 * Set the binding ID as would be provided in the request from the platform.
 		 *
-		 * @param bindingId the binding ID
+		 * @param bindingId the service binding ID
 		 * @return the builder
 		 * @see #getBindingId()
 		 */
@@ -167,7 +182,7 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		/**
 		 * Set the location of the API info endpoint as would be provided in the request from the platform.
 		 *
-		 * @param apiInfoLocation the API info endpoint location
+		 * @param apiInfoLocation location of the API info endpoint of the platform instance
 		 * @return the builder
 		 * @see #getApiInfoLocation()
 		 */

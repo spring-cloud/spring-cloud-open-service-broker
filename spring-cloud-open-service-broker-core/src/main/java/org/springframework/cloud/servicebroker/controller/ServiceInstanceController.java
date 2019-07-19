@@ -71,12 +71,29 @@ public class ServiceInstanceController extends BaseController {
 
 	private final ServiceInstanceService service;
 
+	/**
+	 * Construct a new {@link ServiceInstanceController}
+	 *
+	 * @param catalogService the catalog service
+	 * @param serviceInstanceService the service instance service
+	 */
 	public ServiceInstanceController(CatalogService catalogService, ServiceInstanceService serviceInstanceService) {
 		super(catalogService);
 		this.service = serviceInstanceService;
 	}
 
-	@PutMapping(value = {PLATFORM_PATH_MAPPING, PATH_MAPPING})
+	/**
+	 * REST controller for creating a service instance
+	 *
+	 * @param pathVariables the path variables
+	 * @param serviceInstanceId the service instance ID
+	 * @param acceptsIncomplete indicates an asynchronous request
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param request the request body
+	 * @return the response
+	 */
+	@PutMapping({PLATFORM_PATH_MAPPING, PATH_MAPPING})
 	public Mono<ResponseEntity<CreateServiceInstanceResponse>> createServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
@@ -95,7 +112,7 @@ public class ServiceInstanceController extends BaseController {
 							req.setServiceDefinition(serviceDefinition);
 							return req;
 						}))
-				.flatMap(req -> setCommonRequestFields(req, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
+				.flatMap(req -> configureCommonRequestFields(req, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
 						originatingIdentityString, acceptsIncomplete))
 				.cast(CreateServiceInstanceRequest.class)
 				.flatMap(req -> service.createServiceInstance(req)
@@ -108,17 +125,28 @@ public class ServiceInstanceController extends BaseController {
 	}
 
 	private HttpStatus getCreateResponseCode(CreateServiceInstanceResponse response) {
+		HttpStatus status = HttpStatus.CREATED;
 		if (response != null) {
 			if (response.isAsync()) {
-				return HttpStatus.ACCEPTED;
-			} else if (response.isInstanceExisted()) {
-				return HttpStatus.OK;
+				status = HttpStatus.ACCEPTED;
+			}
+			else if (response.isInstanceExisted()) {
+				status = HttpStatus.OK;
 			}
 		}
-		return HttpStatus.CREATED;
+		return status;
 	}
 
-	@GetMapping(value = {PLATFORM_PATH_MAPPING, PATH_MAPPING})
+	/**
+	 * REST controller for getting a service instance
+	 *
+	 * @param pathVariables the path variables
+	 * @param serviceInstanceId the service instance ID
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @return the response
+	 */
+	@GetMapping({PLATFORM_PATH_MAPPING, PATH_MAPPING})
 	public Mono<ResponseEntity<GetServiceInstanceResponse>> getServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
@@ -146,7 +174,19 @@ public class ServiceInstanceController extends BaseController {
 				});
 	}
 
-	@GetMapping(value = {PLATFORM_PATH_MAPPING + "/last_operation", PATH_MAPPING + "/last_operation"})
+	/**
+	 * REST controller for getting the last operation of a service instance
+	 *
+	 * @param pathVariables the path variables
+	 * @param serviceInstanceId the service instance ID
+	 * @param serviceDefinitionId the service definition ID
+	 * @param planId the plan ID
+	 * @param operation description of the operation being performed
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @return the response
+	 */
+	@GetMapping({PLATFORM_PATH_MAPPING + "/last_operation", PATH_MAPPING + "/last_operation"})
 	public Mono<ResponseEntity<GetLastServiceOperationResponse>> getServiceInstanceLastOperation(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
@@ -175,7 +215,19 @@ public class ServiceInstanceController extends BaseController {
 				});
 	}
 
-	@DeleteMapping(value = {PLATFORM_PATH_MAPPING, PATH_MAPPING})
+	/**
+	 * REST controller for deleting a service instance
+	 *
+	 * @param pathVariables the path variables
+	 * @param serviceInstanceId the service instance ID
+	 * @param serviceDefinitionId the service definition ID
+	 * @param planId the plan ID
+	 * @param acceptsIncomplete indicates an asynchronous request
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @return the response
+	 */
+	@DeleteMapping({PLATFORM_PATH_MAPPING, PATH_MAPPING})
 	public Mono<ResponseEntity<DeleteServiceInstanceResponse>> deleteServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
@@ -214,7 +266,18 @@ public class ServiceInstanceController extends BaseController {
 				});
 	}
 
-	@PatchMapping(value = {PLATFORM_PATH_MAPPING, PATH_MAPPING})
+	/**
+	 * REST controller for updating a service instance
+	 *
+	 * @param pathVariables the path variables
+	 * @param serviceInstanceId the service instance ID
+	 * @param acceptsIncomplete indicates an asynchronous request
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param request the request body
+	 * @return the response
+	 */
+	@PatchMapping({PLATFORM_PATH_MAPPING, PATH_MAPPING})
 	public Mono<ResponseEntity<UpdateServiceInstanceResponse>> updateServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
@@ -234,7 +297,7 @@ public class ServiceInstanceController extends BaseController {
 							req.setServiceDefinition(serviceDefinition);
 							return req;
 						}))
-				.flatMap(req -> setCommonRequestFields(req, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
+				.flatMap(req -> configureCommonRequestFields(req, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
 						originatingIdentityString, acceptsIncomplete))
 				.cast(UpdateServiceInstanceRequest.class)
 				.flatMap(req -> service.updateServiceInstance(req)

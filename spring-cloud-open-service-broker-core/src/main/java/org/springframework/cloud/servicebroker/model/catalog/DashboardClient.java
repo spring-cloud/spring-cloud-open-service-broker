@@ -39,14 +39,24 @@ public class DashboardClient {
 
 	private final String redirectUri;
 
-	DashboardClient(String id, String secret, String redirectUri) {
+	/**
+	 * Construct a new {@link DashboardClient}
+	 */
+	public DashboardClient() {
+		this(null, null, null);
+	}
+
+	/**
+	 * Construct a new {@link DashboardClient}
+	 *
+	 * @param id the client ID
+	 * @param secret the client secret
+	 * @param redirectUri the dashboard URI
+	 */
+	public DashboardClient(String id, String secret, String redirectUri) {
 		this.id = id;
 		this.secret = secret;
 		this.redirectUri = redirectUri;
-	}
-
-	DashboardClient() {
-		this(null, null, null);
 	}
 
 	/**
@@ -91,8 +101,12 @@ public class DashboardClient {
 
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof DashboardClient)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof DashboardClient)) {
+			return false;
+		}
 		DashboardClient that = (DashboardClient) o;
 		return Objects.equals(id, that.id) &&
 				Objects.equals(secret, that.secret) &&
@@ -121,7 +135,7 @@ public class DashboardClient {
 		private String secret;
 		private String redirectUri;
 
-		DashboardClientBuilder() {
+		private DashboardClientBuilder() {
 		}
 
 		/**

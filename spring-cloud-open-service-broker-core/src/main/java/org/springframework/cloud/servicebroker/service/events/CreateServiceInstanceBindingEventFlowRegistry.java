@@ -35,10 +35,21 @@ public class CreateServiceInstanceBindingEventFlowRegistry extends EventFlowRegi
 		CreateServiceInstanceBindingCompletionFlow, CreateServiceInstanceBindingErrorFlow, CreateServiceInstanceBindingRequest,
 		CreateServiceInstanceBindingResponse> {
 
+	/**
+	 * Construct a new {@link CreateServiceInstanceBindingEventFlowRegistry}
+	 */
 	@Deprecated
 	public CreateServiceInstanceBindingEventFlowRegistry() {
+		super();
 	}
 
+	/**
+	 * Construct a new {@link CreateServiceInstanceBindingEventFlowRegistry}
+	 *
+	 * @param initializationFlows the initialization flows
+	 * @param completionFlows the completion flows
+	 * @param errorFlows the error flows
+	 */
 	public CreateServiceInstanceBindingEventFlowRegistry(
 			final List<CreateServiceInstanceBindingInitializationFlow> initializationFlows,
 			final List<CreateServiceInstanceBindingCompletionFlow> completionFlows,

@@ -29,12 +29,18 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AsyncServiceBrokerResponse {
+
 	@JsonIgnore //not sent on the wire as json payload, but as http status instead
 	protected final boolean async;
 
-	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	protected final String operation;
 
+	/**
+	 * Create a new AsyncServiceBrokerResponse
+	 * @param async is the operation asynchronous
+	 * @param operation description of the operation being performed
+	 */
 	protected AsyncServiceBrokerResponse(boolean async, String operation) {
 		this.async = async;
 		this.operation = operation;
@@ -61,16 +67,26 @@ public class AsyncServiceBrokerResponse {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof AsyncServiceBrokerResponse)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof AsyncServiceBrokerResponse)) {
+			return false;
+		}
 		AsyncServiceBrokerResponse that = (AsyncServiceBrokerResponse) o;
 		return that.canEqual(this) &&
 				async == that.async &&
 				Objects.equals(operation, that.operation);
 	}
 
+	/**
+	 * Is another object type compatible with this object
+	 *
+	 * @param other the other object
+	 * @return true of compatible
+	 */
 	public boolean canEqual(Object other) {
-		return (other instanceof AsyncServiceBrokerResponse);
+		return other instanceof AsyncServiceBrokerResponse;
 	}
 
 	@Override

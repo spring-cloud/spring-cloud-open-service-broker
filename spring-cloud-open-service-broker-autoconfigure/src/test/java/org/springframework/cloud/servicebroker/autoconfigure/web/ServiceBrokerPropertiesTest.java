@@ -217,7 +217,7 @@ public class ServiceBrokerPropertiesTest {
 						.get("costs")).get(0);
 		assertThat(cost.get("unit")).isEqualTo("MONTHLY");
 		@SuppressWarnings("unchecked")
-		Map<String, Object> amount = ((Map<String, Object>) cost.get("amount"));
+		Map<String, Object> amount = (Map<String, Object>) cost.get("amount");
 		assertThat(amount).containsOnly(entry("usd", 649.0));
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).isFree()).isTrue();

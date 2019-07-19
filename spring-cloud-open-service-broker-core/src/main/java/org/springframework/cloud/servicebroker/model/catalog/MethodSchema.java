@@ -32,12 +32,19 @@ public class MethodSchema {
 
 	private final Map<String, Object> parameters;
 
-	MethodSchema(Map<String, Object> parameters) {
-		this.parameters = parameters;
+	/**
+	 * Construct a new {@link MethodSchema}
+	 */
+	public MethodSchema() {
+		this(new HashMap<>());
 	}
 
-	MethodSchema() {
-		this(new HashMap<>());
+	/**
+	 * Construct a new {@link MethodSchema}
+	 * @param parameters a collection of parameters
+	 */
+	public MethodSchema(Map<String, Object> parameters) {
+		this.parameters = parameters;
 	}
 
 	/**
@@ -61,8 +68,12 @@ public class MethodSchema {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof MethodSchema)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof MethodSchema)) {
+			return false;
+		}
 		MethodSchema that = (MethodSchema) o;
 		return Objects.equals(parameters, that.parameters);
 	}
@@ -85,7 +96,7 @@ public class MethodSchema {
 	public static class MethodSchemaBuilder {
 		private final Map<String, Object> parameters = new HashMap<>();
 
-		MethodSchemaBuilder() {
+		private MethodSchemaBuilder() {
 		}
 
 		/**

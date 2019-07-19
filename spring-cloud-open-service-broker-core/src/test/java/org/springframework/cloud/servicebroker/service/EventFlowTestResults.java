@@ -18,7 +18,7 @@ package org.springframework.cloud.servicebroker.service;
 
 import reactor.core.publisher.Mono;
 
-class EventFlowTestResults {
+public class EventFlowTestResults {
 
 	private String beforeCreate;
 
@@ -44,110 +44,110 @@ class EventFlowTestResults {
 
 	private String errorLastOperation;
 
-	String getBeforeCreate() {
+	public String getBeforeCreate() {
 		return beforeCreate;
 	}
 
-	Mono<Void> setBeforeCreate(String s) {
+	public Mono<Void> setBeforeCreate(String s) {
 		return Mono.fromCallable(() -> this.beforeCreate = s)
 				.then();
 	}
 
-	String getAfterCreate() {
+	public String getAfterCreate() {
 		return afterCreate;
 	}
 
-	Mono<Void> setAfterCreate(String s) {
+	public Mono<Void> setAfterCreate(String s) {
 		return Mono.fromCallable(() -> this.afterCreate = s)
 				.then();
 	}
 
-	String getErrorCreate() {
+	public String getErrorCreate() {
 		return errorCreate;
 	}
 
-	Mono<Void> setErrorCreate(String s) {
+	public Mono<Void> setErrorCreate(String s) {
 		return Mono.fromCallable(() -> this.errorCreate = s)
 				.then();
 	}
 
-	String getBeforeDelete() {
+	public String getBeforeDelete() {
 		return beforeDelete;
 	}
 
-	Mono<Void> setBeforeDelete(String s) {
+	public Mono<Void> setBeforeDelete(String s) {
 		return Mono.fromCallable(() -> this.beforeDelete = s)
 				.then();
 	}
 
-	String getAfterDelete() {
+	public String getAfterDelete() {
 		return afterDelete;
 	}
 
-	Mono<Void> setAfterDelete(String s) {
+	public Mono<Void> setAfterDelete(String s) {
 		return Mono.fromCallable(() -> this.afterDelete = s)
 				.then();
 	}
 
-	String getErrorDelete() {
+	public String getErrorDelete() {
 		return errorDelete;
 	}
 
-	Mono<Void> setErrorDelete(String s) {
+	public Mono<Void> setErrorDelete(String s) {
 		return Mono.fromCallable(() -> this.errorDelete = s)
 				.then();
 	}
 
-	String getBeforeUpdate() {
+	public String getBeforeUpdate() {
 		return beforeUpdate;
 	}
 
-	Mono<Void> setBeforeUpdate(String s) {
+	public Mono<Void> setBeforeUpdate(String s) {
 		return Mono.fromCallable(() -> this.beforeUpdate = s)
 				.then();
 	}
 
-	String getAfterUpdate() {
+	public String getAfterUpdate() {
 		return afterUpdate;
 	}
 
-	Mono<Void> setAfterUpdate(String s) {
+	public Mono<Void> setAfterUpdate(String s) {
 		return Mono.fromCallable(() -> this.afterUpdate = s)
 				.then();
 	}
 
-	String getErrorUpdate() {
+	public String getErrorUpdate() {
 		return errorUpdate;
 	}
 
-	Mono<Void> setErrorUpdate(String s) {
+	public Mono<Void> setErrorUpdate(String s) {
 		return Mono.fromCallable(() -> this.errorUpdate = s)
 				.then();
 	}
 
-	String getBeforeLastOperation() {
+	public String getBeforeLastOperation() {
 		return beforeLastOperation;
 	}
 
-	Mono<Void> setBeforeLastOperation(String s) {
+	public Mono<Void> setBeforeLastOperation(String s) {
 		return Mono.fromCallable(() -> this.beforeLastOperation = s)
 				.then();
 	}
 
-	String getAfterLastOperation() {
+	public String getAfterLastOperation() {
 		return afterLastOperation;
 	}
 
-	Mono<Void> setAfterLastOperation(String s) {
+	public Mono<Void> setAfterLastOperation(String s) {
 		return Mono.fromCallable(() -> this.afterLastOperation = s)
 				.then();
 	}
 
-	String getErrorLastOperation() {
+	public String getErrorLastOperation() {
 		return errorLastOperation;
 	}
 
-	Mono<Void> setErrorLastOperation(String s) {
+	public Mono<Void> setErrorLastOperation(String s) {
 		return Mono.fromCallable(() -> this.errorLastOperation = s)
 				.then();
 	}

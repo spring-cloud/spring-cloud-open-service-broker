@@ -53,9 +53,15 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@JsonProperty("plan_id")
 	private final String planId;
 
+	/**
+	 * 	remains in the model for marshalling support but test harnesses should not use
+	 */
 	@Deprecated
 	private final String organizationGuid;
 
+	/**
+	 * 	remains in the model for marshalling support but test harnesses should not use
+	 */
 	@Deprecated
 	private final String spaceGuid;
 
@@ -68,29 +74,49 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
     @JsonIgnore /*internal field*/
 	private transient Plan plan;
 
-	@SuppressWarnings("unused")
-	CreateServiceInstanceRequest() {
-		this.serviceDefinitionId = null;
-		this.planId = null;
-		this.organizationGuid = null;
-		this.spaceGuid = null;
+	/**
+	 * Construct a new {@link CreateServiceInstanceRequest}
+	 */
+	public CreateServiceInstanceRequest() {
+		this(null, null, null, null, null, null, null, false, null, null, null);
 	}
 
-	CreateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
+	/**
+	 * Construct a new {@link CreateServiceInstanceRequest}
+	 *
+	 * @param serviceDefinitionId the service definition ID
+	 * @param serviceInstanceId the service instance ID
+	 * @param planId the plan ID
+	 * @param serviceDefinition the service definition
+	 * @param plan the plan
+	 * @param parameters the parameters
+	 * @param context the context
+	 * @param asyncAccepted does the platform accept asynchronous requests
+	 * @param platformInstanceId the platform instance ID
+	 * @param apiInfoLocation location of the API info endpoint of the platform instance
+	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 */
+	public CreateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
 								 ServiceDefinition serviceDefinition, Plan plan,
 								 Map<String, Object> parameters, Context context, boolean asyncAccepted,
 								 String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
+		this(serviceDefinitionId, serviceInstanceId, planId, serviceDefinition, plan, parameters, context,
+				asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity, null, null);
+	}
+
+	private CreateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
+										ServiceDefinition serviceDefinition, Plan plan,
+										Map<String, Object> parameters, Context context, boolean asyncAccepted,
+										String platformInstanceId, String apiInfoLocation,
+										 Context originatingIdentity, String organizationGuid, String spaceGuid) {
 		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.serviceInstanceId = serviceInstanceId;
 		this.planId = planId;
 		this.serviceDefinition = serviceDefinition;
 		this.plan = plan;
-
-		// deprecated fields - they should remain in the model for marshalling but test harnesses
-		// should not use them
-		this.organizationGuid = null;
-		this.spaceGuid = null;
+		this.organizationGuid = organizationGuid;
+		this.spaceGuid = spaceGuid;
 	}
 
 	/**
@@ -110,7 +136,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * This method is intended to be used internally only; use {@link #builder()} to construct an object of this
 	 * type and set all field values.
 	 *
-	 * @param serviceInstanceId the ID of the service instance to create
+	 * @param serviceInstanceId the service instance ID to create
 	 */
 	public void setServiceInstanceId(final String serviceInstanceId) {
 		this.serviceInstanceId = serviceInstanceId;
@@ -171,6 +197,11 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		return this.spaceGuid;
 	}
 
+	/**
+	 * Determine the space GUID
+	 *
+	 * @return the space GUID
+	 */
 	@JsonGetter("space_guid")
 	protected String getSpaceGuidToSerialize() {
 		//prefer explicitly set field if any
@@ -181,11 +212,16 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		}
 		//Otherwise, default to an arbitrary string
 		if (spaceGuid == null) {
-			spaceGuid = "default-undefined-value"; //Osb spec says "MUST be a non-empty string."
+			spaceGuid = "default-undefined-value"; //OSB spec says "MUST be a non-empty string."
 		}
 		return spaceGuid;
 	}
 
+	/**
+	 * Determine the organization GUID
+	 *
+	 * @return the organization GUID
+	 */
 	@JsonGetter("organization_guid")
 	protected String getOrganizationGuidToSerialize() {
 		//prefer explicitly set field if any
@@ -196,7 +232,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		}
 		//Otherwise, default to an arbitrary string
 		if (organizationGuid == null) {
-			organizationGuid = "default-undefined-value"; //Osb spec says "MUST be a non-empty string."
+			organizationGuid = "default-undefined-value"; //OSB spec says "MUST be a non-empty string."
 		}
 		return organizationGuid;
 	}
@@ -264,9 +300,15 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 */
 	@Override
 	public final boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof CreateServiceInstanceRequest)) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof CreateServiceInstanceRequest)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		CreateServiceInstanceRequest that = (CreateServiceInstanceRequest) o;
 		return that.canEqual(this) &&
 				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
@@ -280,7 +322,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 	@Override
 	public boolean canEqual(Object other) {
-		return (other instanceof CreateServiceInstanceRequest);
+		return other instanceof CreateServiceInstanceRequest;
 	}
 
 	@Override
@@ -317,7 +359,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		private String apiInfoLocation;
 		private Context originatingIdentity;
 
-		CreateServiceInstanceRequestBuilder() {
+		private CreateServiceInstanceRequestBuilder() {
 		}
 
 		/**
@@ -445,7 +487,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * Set the location of the API info endpoint as would be provided in the request from the platform.
 		 *
-		 * @param apiInfoLocation the API info endpoint location
+		 * @param apiInfoLocation location of the API info endpoint of the platform instance
 		 * @return the builder
 		 * @see #getApiInfoLocation()
 		 */
