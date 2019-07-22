@@ -76,6 +76,12 @@ public class Plan {
 	 */
 	private Boolean free;
 
+	/**
+	 * Indicates whether the plan can be updated. This is an optional field. If the value is <code>null</code>, the
+	 * field will be omitted from the serialized JSON.
+	 */
+	private Boolean planUpdateable;
+
 	public String getId() {
 		return this.id;
 	}
@@ -132,6 +138,14 @@ public class Plan {
 		this.free = free;
 	}
 
+	public Boolean isPlanUpdateable() {
+		return planUpdateable;
+	}
+
+	public void setPlanUpdateable(Boolean planUpdateable) {
+		this.planUpdateable = planUpdateable;
+	}
+
 	/**
 	 * Converts this object into its corresponding model
 	 *
@@ -145,6 +159,7 @@ public class Plan {
 				.description(this.description)
 				.bindable(this.bindable)
 				.free(this.free)
+				.planUpdateable(this.planUpdateable)
 				.schemas(this.schemas == null ? null : this.schemas.toModel())
 				.metadata(this.metadata == null ? null: this.metadata.toModel())
 				.build();

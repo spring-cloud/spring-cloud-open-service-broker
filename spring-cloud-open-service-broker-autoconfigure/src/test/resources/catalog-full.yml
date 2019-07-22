@@ -51,6 +51,7 @@ spring:
                 key2: value2
             bindable: true
             free: true
+            planUpdateable: true
             schemas:
               serviceinstance:
                 create:

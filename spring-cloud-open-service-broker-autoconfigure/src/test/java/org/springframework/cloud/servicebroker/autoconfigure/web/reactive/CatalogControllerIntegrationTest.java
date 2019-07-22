@@ -117,6 +117,7 @@ public class CatalogControllerIntegrationTest {
 				.jsonPath("$.services[0].plans[1].metadata").isEqualTo(plans.get(1).getMetadata())
 				.jsonPath("$.services[0].plans[1].bindable").isEqualTo(plans.get(1).isBindable())
 				.jsonPath("$.services[0].plans[1].free").isEqualTo(plans.get(1).isFree())
+				.jsonPath("$.services[0].plans[1].plan_updateable").isEqualTo(plans.get(1).isPlanUpdateable())
 				.jsonPath("$.services[0].plans[1].schemas.service_instance.create.parameters").isEqualTo(createServiceInstanceSchema)
 				.jsonPath("$.services[0].plans[1].schemas.service_instance.update.parameters").isEqualTo(updateServiceInstanceSchema)
 				.jsonPath("$.services[0].plans[1].schemas.service_binding.create.parameters").isEqualTo(createServiceBindingSchema)

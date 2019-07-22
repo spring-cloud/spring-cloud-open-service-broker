@@ -23,6 +23,8 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import org.springframework.util.CollectionUtils;
 
@@ -37,6 +39,7 @@ import org.springframework.util.CollectionUtils;
  * @author Scott Frederick
  * @author Roy Clarkson
  */
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonInclude(Include.NON_NULL)
 public class Plan {
 
@@ -51,17 +54,20 @@ public class Plan {
 
 	private final Map<String, Object> metadata;
 
-	private final Schemas schemas;
+	private final Boolean free;
 
 	private final Boolean bindable;
 
-	private final Boolean free;
+	private final Boolean planUpdateable;
+
+	private final Schemas schemas;
+
 
 	/**
 	 * Construct a new {@link Plan}
 	 */
 	public Plan() {
-		this(null, null, null, new HashMap<>(), null, null, null);
+		this(null, null, null, new HashMap<>(), null, null, null, null);
 	}
 
 	/**
@@ -73,16 +79,18 @@ public class Plan {
 	 * @param metadata the plan metadata
 	 * @param free true if the plan has no cost
 	 * @param bindable true if the service with this plan may be bound
+	 * @param planUpdateable true if the plan may be updated
 	 * @param schemas the plan schemas
 	 */
 	public Plan(String id, String name, String description, Map<String, Object> metadata, Boolean free,
-				Boolean bindable, Schemas schemas) {
+				Boolean bindable, Boolean planUpdateable, Schemas schemas) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.metadata = metadata;
 		this.free = free;
 		this.bindable = bindable;
+		this.planUpdateable = planUpdateable;
 		this.schemas = schemas;
 	}
 
@@ -128,12 +136,13 @@ public class Plan {
 	}
 
 	/**
-	 * The schemas for this plan.
+	 * Indicates whether the plan can be limited by the non_basic_services_allowed field
+	 * in a platform quota.
 	 *
-	 * @return the plan schemas
+	 * @return true if the plan has no cost
 	 */
-	public Schemas getSchemas() {
-		return this.schemas;
+	public Boolean isFree() {
+		return this.free;
 	}
 
 	/**
@@ -148,13 +157,24 @@ public class Plan {
 	}
 
 	/**
-	 * Indicates whether the plan can be limited by the non_basic_services_allowed field
-	 * in a platform quota.
+	 * Whether the Plan supports upgrade/downgrade/sidegrade to another version. This field is OPTIONAL. If
+	 * specified, this takes precedence over the Service Offering's plan_updateable field. If not specified, the
+	 * default is derived from the Service Offering. If the value is <code>null</code>, the field will be omitted
+	 * from the serialized JSON.
 	 *
-	 * @return true if the plan has no cost
+	 * @return true if the plan may be updated
 	 */
-	public Boolean isFree() {
-		return this.free;
+	public Boolean isPlanUpdateable() {
+		return planUpdateable;
+	}
+
+	/**
+	 * The schemas for this plan.
+	 *
+	 * @return the plan schemas
+	 */
+	public Schemas getSchemas() {
+		return this.schemas;
 	}
 
 	/**
@@ -175,18 +195,19 @@ public class Plan {
 			return false;
 		}
 		Plan plan = (Plan) o;
-		return Objects.equals(free, plan.free) &&
-				Objects.equals(id, plan.id) &&
+		return Objects.equals(id, plan.id) &&
 				Objects.equals(name, plan.name) &&
 				Objects.equals(description, plan.description) &&
 				Objects.equals(metadata, plan.metadata) &&
-				Objects.equals(schemas, plan.schemas) &&
-				Objects.equals(bindable, plan.bindable);
+				Objects.equals(free, plan.free) &&
+				Objects.equals(bindable, plan.bindable) &&
+				Objects.equals(planUpdateable, plan.planUpdateable) &&
+				Objects.equals(schemas, plan.schemas);
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(id, name, description, metadata, schemas, bindable, free);
+		return Objects.hash(id, name, description, metadata, free, bindable, planUpdateable, schemas);
 	}
 
 	@Override
@@ -196,9 +217,10 @@ public class Plan {
 				", name='" + name + '\'' +
 				", description='" + description + '\'' +
 				", metadata=" + metadata +
-				", schemas=" + schemas +
-				", bindable=" + bindable +
 				", free=" + free +
+				", bindable=" + bindable +
+				", planUpdateable=" + planUpdateable +
+				", schemas=" + schemas +
 				'}';
 	}
 
@@ -212,6 +234,7 @@ public class Plan {
 		private Map<String, Object> metadata;
 		private Boolean free = true;
 		private Boolean bindable;
+		private Boolean planUpdateable;
 		private Schemas schemas;
 
 		private PlanBuilder() {
@@ -318,6 +341,18 @@ public class Plan {
 		}
 
 		/**
+		 * Indicates whether the the plan can be updated. This is an optional field. If the value is
+		 * <code>null</code>, the field will be omitted from the serialized JSON.
+		 *
+		 * @param planUpdateable true if the service with this plan may be bound
+		 * @return the binder instance
+		 */
+		public PlanBuilder planUpdateable(Boolean planUpdateable) {
+			this.planUpdateable = planUpdateable;
+			return this;
+		}
+
+		/**
 		 * The schemas for this plan
 		 *
 		 * @param schemas plan schemas
@@ -334,7 +369,7 @@ public class Plan {
 		 * @return the newly constructed {@literal Plan}
 		 */
 		public Plan build() {
-			return new Plan(id, name, description, metadata, free, bindable, schemas);
+			return new Plan(id, name, description, metadata, free, bindable, planUpdateable, schemas);
 		}
 	}
 }

@@ -107,6 +107,7 @@ public class ServiceBrokerPropertiesTest {
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].metadata.costs[0].unit", "MONTHLY");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].bindable", "true");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].free", "true");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].planUpdateable", "true");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[$schema]", "https://json-schema.org/draft-04/schema#");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[type]", "string");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[enum].0", "one");
@@ -160,6 +161,7 @@ public class ServiceBrokerPropertiesTest {
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMetadata().getCosts().get(0).getUnit()).isEqualTo("MONTHLY");
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isFree()).isTrue();
+		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isPlanUpdateable()).isTrue();
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate().getParameters())
 				.contains(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "string"));
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate().getParameters().get("enum")).isInstanceOf(Map.class);
@@ -221,6 +223,7 @@ public class ServiceBrokerPropertiesTest {
 		assertThat(amount).containsOnly(entry("usd", 649.0));
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).isFree()).isTrue();
+		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).isPlanUpdateable()).isTrue();
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getSchemas().getServiceInstanceSchema().getCreateMethodSchema().getParameters())
 				.contains(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "string"));
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getSchemas().getServiceInstanceSchema().getCreateMethodSchema().getParameters().get("enum")).isInstanceOf(List.class);

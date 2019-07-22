@@ -133,6 +133,7 @@ public class CatalogControllerIntegrationTest {
 				.andExpect(jsonPath("$.services[*].plans[*].bindable", hasSize(1)))
 				.andExpect(jsonPath("$.services[*].plans[*].bindable", contains(plans.get(1).isBindable())))
 				.andExpect(jsonPath("$.services[*].plans[*].free", containsInAnyOrder(plans.get(0).isFree(), plans.get(1).isFree(), plans.get(2).isFree())))
+				.andExpect(jsonPath("$.services[*].plans[*].plan_updateable", contains(plans.get(1).isPlanUpdateable())))
 				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_instance.create.parameters", contains(createServiceInstanceSchema)))
 				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_instance.update.parameters", contains(updateServiceInstanceSchema)))
 				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_binding.create.parameters", contains(createServiceBindingSchema)));

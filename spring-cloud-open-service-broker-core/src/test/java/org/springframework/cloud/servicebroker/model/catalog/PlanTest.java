@@ -16,15 +16,16 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
-import com.jayway.jsonpath.DocumentContext;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
-import org.springframework.cloud.servicebroker.JsonUtils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.jayway.jsonpath.DocumentContext;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import org.junit.Test;
+
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
@@ -43,9 +44,10 @@ public class PlanTest {
 		assertThat(plan.getId()).isEqualTo("plan-id-one");
 		assertThat(plan.getName()).isEqualTo("plan-one");
 		assertThat(plan.getDescription()).isEqualTo("Plan One");
+		assertThat(plan.getMetadata()).isNull();
 		assertThat(plan.isFree()).isEqualTo(true);
 		assertThat(plan.isBindable()).isNull();
-		assertThat(plan.getMetadata()).isNull();
+		assertThat(plan.isPlanUpdateable()).isNull();
 		assertThat(plan.getSchemas()).isNull();
 
 		DocumentContext json = JsonUtils.toJsonPath(plan);
@@ -53,9 +55,10 @@ public class PlanTest {
 		assertThat(json).hasPath("$.id").isEqualTo("plan-id-one");
 		assertThat(json).hasPath("$.name").isEqualTo("plan-one");
 		assertThat(json).hasPath("$.description").isEqualTo("Plan One");
+		assertThat(json).hasNoPath("$.metadata");
 		assertThat(json).hasPath("$.free").isEqualTo(true);
 		assertThat(json).hasNoPath("$.bindable");
-		assertThat(json).hasNoPath("$.metadata");
+		assertThat(json).hasNoPath("$.plan_updateable");
 		assertThat(json).hasNoPath("$.schemas");
 
 
@@ -63,9 +66,10 @@ public class PlanTest {
 		assertThat(deserialized.getId()).isEqualTo("plan-id-one");
 		assertThat(deserialized.getName()).isEqualTo("plan-one");
 		assertThat(deserialized.getDescription()).isEqualTo("Plan One");
+		assertThat(deserialized.getMetadata()).isEmpty(); //it's ok to not return null
 		assertThat(deserialized.isFree()).isEqualTo(true);
 		assertThat(deserialized.isBindable()).isNull();
-		assertThat(deserialized.getMetadata()).isEmpty(); //it's ok to not return null
+		assertThat(deserialized.isPlanUpdateable()).isNull();
 		assertThat(deserialized.getSchemas()).isNull();
 	}
 
@@ -100,6 +104,7 @@ public class PlanTest {
 				.description("Plan One")
 				.free(false)
 				.bindable(true)
+				.planUpdateable(true)
 				.metadata("field1", "value1")
 				.metadata("field2", "value2")
 				.metadata(metadata)
@@ -130,6 +135,7 @@ public class PlanTest {
 		assertThat(json).hasPath("$.description").isEqualTo("Plan One");
 		assertThat(json).hasPath("$.free").isEqualTo(false);
 		assertThat(json).hasPath("$.bindable").isEqualTo(true);
+		assertThat(json).hasPath("$.plan_updateable").isEqualTo(true);
 		assertThat(json).hasMapAtPath("$.metadata").contains(
 				entry("field1", "value1"),
 				entry("field2", "value2"),

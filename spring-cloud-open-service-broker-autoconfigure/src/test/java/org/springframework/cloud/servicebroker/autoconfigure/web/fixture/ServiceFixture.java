@@ -77,6 +77,7 @@ public final class ServiceFixture {
 				.metadata("key2", "value2")
 				.bindable(false)
 				.free(true)
+				.planUpdateable(true)
 				.schemas(schemas)
 				.build();
 	}

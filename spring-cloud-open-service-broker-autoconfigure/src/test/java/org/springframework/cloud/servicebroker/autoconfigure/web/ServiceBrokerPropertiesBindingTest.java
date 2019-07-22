@@ -85,6 +85,7 @@ public class ServiceBrokerPropertiesBindingTest {
 		//Optional unspecified fields should not have a default set.
 		assertThat(catalog.getServices().get(0).getPlans().get(0).isBindable()).isNull();
 		assertThat(catalog.getServices().get(0).getPlans().get(0).isFree()).isNull();
+		assertThat(catalog.getServices().get(0).getPlans().get(0).isPlanUpdateable()).isNull();
 		assertThat(catalog.getServices().get(0).isInstancesRetrievable()).isNull();
 		assertThat(catalog.getServices().get(0).isBindingsRetrievable()).isNull();
 		assertThat(catalog.getServices().get(0).isPlanUpdateable()).isNull();
@@ -157,6 +158,7 @@ public class ServiceBrokerPropertiesBindingTest {
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getBullets()).containsExactlyInAnyOrder("bullet1", "bullet2");
 		assertThat(catalog.getServices().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(catalog.getServices().get(0).getPlans().get(1).isFree()).isTrue();
+		assertThat(catalog.getServices().get(0).getPlans().get(1).isPlanUpdateable()).isTrue();
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate().getParameters())
 				.contains(entry("$schema", "https://json-schema.org/draft-04/schema#"),
 						entry("type", "string"));
