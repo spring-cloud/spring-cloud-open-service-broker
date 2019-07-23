@@ -49,6 +49,7 @@ public class PlanTest {
 		assertThat(plan.isBindable()).isNull();
 		assertThat(plan.isPlanUpdateable()).isNull();
 		assertThat(plan.getSchemas()).isNull();
+		assertThat(plan.getMaximumPollingDuration()).isNull();
 
 		DocumentContext json = JsonUtils.toJsonPath(plan);
 
@@ -60,7 +61,6 @@ public class PlanTest {
 		assertThat(json).hasNoPath("$.bindable");
 		assertThat(json).hasNoPath("$.plan_updateable");
 		assertThat(json).hasNoPath("$.schemas");
-
 
 		Plan deserialized = JsonUtils.fromJson(JsonUtils.toJson(plan), Plan.class);
 		assertThat(deserialized.getId()).isEqualTo("plan-id-one");
@@ -109,6 +109,7 @@ public class PlanTest {
 				.metadata("field2", "value2")
 				.metadata(metadata)
 				.schemas(Schemas.builder().build())
+				.maximumPollingDuration(210)
 				.build();
 
 		assertThat(plan.getId()).isEqualTo("plan-id-one");
@@ -149,6 +150,7 @@ public class PlanTest {
 		assertThat(json).hasPath("$.metadata.costs[0].unit").isEqualTo("MONTHLY");
 		assertThat(json).hasListAtPath("$.metadata.bullets").containsOnly("bullet1", "bullet2");
 		assertThat(json).hasPath("$.schemas");
+		assertThat(json).hasPath("$.maximum_polling_duration").isEqualTo(210);
 	}
 
 	@Test

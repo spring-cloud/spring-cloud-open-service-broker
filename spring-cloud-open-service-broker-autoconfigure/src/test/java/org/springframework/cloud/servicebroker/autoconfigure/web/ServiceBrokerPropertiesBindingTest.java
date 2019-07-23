@@ -86,6 +86,7 @@ public class ServiceBrokerPropertiesBindingTest {
 		assertThat(catalog.getServices().get(0).getPlans().get(0).isBindable()).isNull();
 		assertThat(catalog.getServices().get(0).getPlans().get(0).isFree()).isNull();
 		assertThat(catalog.getServices().get(0).getPlans().get(0).isPlanUpdateable()).isNull();
+		assertThat(catalog.getServices().get(0).getPlans().get(0).getMaximumPollingDuration()).isNull();
 		assertThat(catalog.getServices().get(0).isInstancesRetrievable()).isNull();
 		assertThat(catalog.getServices().get(0).isBindingsRetrievable()).isNull();
 		assertThat(catalog.getServices().get(0).isPlanUpdateable()).isNull();
@@ -170,6 +171,7 @@ public class ServiceBrokerPropertiesBindingTest {
 				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceBinding().getCreate().getParameters())
 				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getMaximumPollingDuration()).isEqualTo(120);
 		assertThat(catalog.getServices().get(1).getId()).isEqualTo("service-two-id");
 		assertThat(catalog.getServices().get(1).getName()).isEqualTo("Service Two");
 		assertThat(catalog.getServices().get(1).getDescription()).isEqualTo("Description for Service Two");

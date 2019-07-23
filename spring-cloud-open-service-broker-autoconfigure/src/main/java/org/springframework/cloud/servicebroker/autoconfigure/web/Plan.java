@@ -82,6 +82,12 @@ public class Plan {
 	 */
 	private Boolean planUpdateable;
 
+	/**
+	 * A duration, in seconds, that the Platform SHOULD use as the Service's maximum polling duration. If the
+	 * value is <code>null</code>, the field will be omitted from the serialized JSON.
+	 */
+	private Integer maximumPollingDuration;
+
 	public String getId() {
 		return this.id;
 	}
@@ -139,11 +145,19 @@ public class Plan {
 	}
 
 	public Boolean isPlanUpdateable() {
-		return planUpdateable;
+		return this.planUpdateable;
 	}
 
 	public void setPlanUpdateable(Boolean planUpdateable) {
 		this.planUpdateable = planUpdateable;
+	}
+
+	public Integer getMaximumPollingDuration() {
+		return this.maximumPollingDuration;
+	}
+
+	public void setMaximumPollingDuration(Integer maximumPollingDuration) {
+		this.maximumPollingDuration = maximumPollingDuration;
 	}
 
 	/**
@@ -162,6 +176,7 @@ public class Plan {
 				.planUpdateable(this.planUpdateable)
 				.schemas(this.schemas == null ? null : this.schemas.toModel())
 				.metadata(this.metadata == null ? null: this.metadata.toModel())
+				.maximumPollingDuration(this.maximumPollingDuration)
 				.build();
 	}
 

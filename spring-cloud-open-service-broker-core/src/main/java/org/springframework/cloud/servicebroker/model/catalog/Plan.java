@@ -62,12 +62,14 @@ public class Plan {
 
 	private final Schemas schemas;
 
+	private final Integer maximumPollingDuration;
+
 
 	/**
 	 * Construct a new {@link Plan}
 	 */
 	public Plan() {
-		this(null, null, null, new HashMap<>(), null, null, null, null);
+		this(null, null, null, new HashMap<>(), null, null, null, null, null);
 	}
 
 	/**
@@ -81,9 +83,10 @@ public class Plan {
 	 * @param bindable true if the service with this plan may be bound
 	 * @param planUpdateable true if the plan may be updated
 	 * @param schemas the plan schemas
+	 * @param maximumPollingDuration the maximum polling duration in seconds
 	 */
 	public Plan(String id, String name, String description, Map<String, Object> metadata, Boolean free,
-				Boolean bindable, Boolean planUpdateable, Schemas schemas) {
+				Boolean bindable, Boolean planUpdateable, Schemas schemas, Integer maximumPollingDuration) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -92,6 +95,7 @@ public class Plan {
 		this.bindable = bindable;
 		this.planUpdateable = planUpdateable;
 		this.schemas = schemas;
+		this.maximumPollingDuration = maximumPollingDuration;
 	}
 
 	/**
@@ -178,6 +182,17 @@ public class Plan {
 	}
 
 	/**
+	 * A duration, in seconds, that the Platform SHOULD use as the Service's maximum polling duration. If the
+	 * maximum polling duration is reached, the platform should cease polling and the operation state MUST be
+	 * considered failed. If the value is <code>null</code>, the field will be omitted from the serialized JSON.
+	 *
+	 * @return the maximum polling duration
+	 */
+	public Integer getMaximumPollingDuration() {
+		return this.maximumPollingDuration;
+	}
+
+	/**
 	 * Create a builder that provides a fluent API for constructing a {@literal Plan}.
 	 *
 	 * @return the builder
@@ -202,12 +217,13 @@ public class Plan {
 				Objects.equals(free, plan.free) &&
 				Objects.equals(bindable, plan.bindable) &&
 				Objects.equals(planUpdateable, plan.planUpdateable) &&
-				Objects.equals(schemas, plan.schemas);
+				Objects.equals(schemas, plan.schemas) &&
+				Objects.equals(maximumPollingDuration, plan.maximumPollingDuration);
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(id, name, description, metadata, free, bindable, planUpdateable, schemas);
+		return Objects.hash(id, name, description, metadata, free, bindable, planUpdateable, schemas, maximumPollingDuration);
 	}
 
 	@Override
@@ -221,6 +237,7 @@ public class Plan {
 				", bindable=" + bindable +
 				", planUpdateable=" + planUpdateable +
 				", schemas=" + schemas +
+				", maximumPollingDuration=" + maximumPollingDuration +
 				'}';
 	}
 
@@ -236,6 +253,7 @@ public class Plan {
 		private Boolean bindable;
 		private Boolean planUpdateable;
 		private Schemas schemas;
+		private Integer maximumPollingDuration;
 
 		private PlanBuilder() {
 		}
@@ -320,7 +338,7 @@ public class Plan {
 		 * Whether the plan has a cost associated with it or not
 		 *
 		 * @param free true if the plan has no cost
-		 * @return the build instance
+		 * @return the builder instance
 		 */
 		public PlanBuilder free(Boolean free) {
 			this.free = free;
@@ -333,7 +351,7 @@ public class Plan {
 		 * omitted from the serialized JSON.
 		 *
 		 * @param bindable true if the service with this plan may be bound
-		 * @return the binder instance
+		 * @return the builder instance
 		 */
 		public PlanBuilder bindable(Boolean bindable) {
 			this.bindable = bindable;
@@ -345,7 +363,7 @@ public class Plan {
 		 * <code>null</code>, the field will be omitted from the serialized JSON.
 		 *
 		 * @param planUpdateable true if the service with this plan may be bound
-		 * @return the binder instance
+		 * @return the builder instance
 		 */
 		public PlanBuilder planUpdateable(Boolean planUpdateable) {
 			this.planUpdateable = planUpdateable;
@@ -356,10 +374,22 @@ public class Plan {
 		 * The schemas for this plan
 		 *
 		 * @param schemas plan schemas
-		 * @return the binder instance
+		 * @return the builder instance
 		 */
 		public PlanBuilder schemas(Schemas schemas) {
 			this.schemas = schemas;
+			return this;
+		}
+
+		/**
+		 * A duration, in seconds, that the Platform SHOULD use as the Service's maximum polling duration. If the
+		 * value is <code>null</code>, the field will be omitted from the serialized JSON.
+		 *
+		 * @param maximumPollingDuration the maximum polling duration
+		 * @return the builder instance
+		 */
+		public PlanBuilder maximumPollingDuration(Integer maximumPollingDuration) {
+			this.maximumPollingDuration = maximumPollingDuration;
 			return this;
 		}
 
@@ -369,7 +399,7 @@ public class Plan {
 		 * @return the newly constructed {@literal Plan}
 		 */
 		public Plan build() {
-			return new Plan(id, name, description, metadata, free, bindable, planUpdateable, schemas);
+			return new Plan(id, name, description, metadata, free, bindable, planUpdateable, schemas, maximumPollingDuration);
 		}
 	}
 }

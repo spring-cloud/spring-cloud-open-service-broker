@@ -79,6 +79,7 @@ public final class ServiceFixture {
 				.free(true)
 				.planUpdateable(true)
 				.schemas(schemas)
+				.maximumPollingDuration(180)
 				.build();
 	}
 

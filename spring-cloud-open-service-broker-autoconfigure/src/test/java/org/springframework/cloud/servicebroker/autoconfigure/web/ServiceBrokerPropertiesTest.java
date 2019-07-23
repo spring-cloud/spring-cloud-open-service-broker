@@ -117,6 +117,7 @@ public class ServiceBrokerPropertiesTest {
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.update.parameters[type]", "object");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.servicebinding.create.parameters[$schema]", "https://json-schema.org/draft-04/schema#");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.servicebinding.create.parameters[type]", "object");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].maximumPollingDuration", "200");
 		map.put("spring.cloud.openservicebroker.catalog.services[1].id", "service-two-id");
 		map.put("spring.cloud.openservicebroker.catalog.services[1].name", "Service Two");
 		map.put("spring.cloud.openservicebroker.catalog.services[1].description", "Description for Service Two");
@@ -171,6 +172,7 @@ public class ServiceBrokerPropertiesTest {
 				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getSchemas().getServiceBinding().getCreate().getParameters())
 				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
+		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMaximumPollingDuration()).isEqualTo(200);
 		assertThat(properties.getCatalog().getServices().get(1).getId()).isEqualTo("service-two-id");
 		assertThat(properties.getCatalog().getServices().get(1).getName()).isEqualTo("Service Two");
 		assertThat(properties.getCatalog().getServices().get(1).getDescription()).isEqualTo("Description for Service Two");
@@ -234,6 +236,7 @@ public class ServiceBrokerPropertiesTest {
 				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getSchemas().getServiceBindingSchema().getCreateMethodSchema().getParameters())
 				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
+		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getMaximumPollingDuration()).isEqualTo(200);
 		assertThat(catalog.getServiceDefinitions().get(1).getId()).isEqualTo("service-two-id");
 		assertThat(catalog.getServiceDefinitions().get(1).getName()).isEqualTo("Service Two");
 		assertThat(catalog.getServiceDefinitions().get(1).getDescription()).isEqualTo("Description for Service Two");
