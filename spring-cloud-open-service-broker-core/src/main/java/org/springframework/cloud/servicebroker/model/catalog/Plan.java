@@ -64,12 +64,14 @@ public class Plan {
 
 	private final Integer maximumPollingDuration;
 
+	private final MaintenanceInfo maintenanceInfo;
+
 
 	/**
 	 * Construct a new {@link Plan}
 	 */
 	public Plan() {
-		this(null, null, null, new HashMap<>(), null, null, null, null, null);
+		this(null, null, null, new HashMap<>(), null, null, null, null, null, null);
 	}
 
 	/**
@@ -86,7 +88,8 @@ public class Plan {
 	 * @param maximumPollingDuration the maximum polling duration in seconds
 	 */
 	public Plan(String id, String name, String description, Map<String, Object> metadata, Boolean free,
-				Boolean bindable, Boolean planUpdateable, Schemas schemas, Integer maximumPollingDuration) {
+				Boolean bindable, Boolean planUpdateable, Schemas schemas, Integer maximumPollingDuration,
+				MaintenanceInfo maintenanceInfo) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -96,6 +99,7 @@ public class Plan {
 		this.planUpdateable = planUpdateable;
 		this.schemas = schemas;
 		this.maximumPollingDuration = maximumPollingDuration;
+		this.maintenanceInfo = maintenanceInfo;
 	}
 
 	/**
@@ -193,6 +197,16 @@ public class Plan {
 	}
 
 	/**
+	 * Maintenance information for a Service Instance which is provisioned using the Service Plan. If provided,
+	 * a version string MUST be provided and platforms MAY use this when Provisioning or Updating a Service Instance.
+	 *
+	 * @return the maintenance info
+	 */
+	public MaintenanceInfo getMaintenanceInfo() {
+		return maintenanceInfo;
+	}
+
+	/**
 	 * Create a builder that provides a fluent API for constructing a {@literal Plan}.
 	 *
 	 * @return the builder
@@ -218,12 +232,14 @@ public class Plan {
 				Objects.equals(bindable, plan.bindable) &&
 				Objects.equals(planUpdateable, plan.planUpdateable) &&
 				Objects.equals(schemas, plan.schemas) &&
-				Objects.equals(maximumPollingDuration, plan.maximumPollingDuration);
+				Objects.equals(maximumPollingDuration, plan.maximumPollingDuration) &&
+				Objects.equals(maintenanceInfo, plan.maintenanceInfo);
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(id, name, description, metadata, free, bindable, planUpdateable, schemas, maximumPollingDuration);
+		return Objects.hash(id, name, description, metadata, free, bindable,
+				planUpdateable, schemas, maximumPollingDuration, maintenanceInfo);
 	}
 
 	@Override
@@ -238,6 +254,7 @@ public class Plan {
 				", planUpdateable=" + planUpdateable +
 				", schemas=" + schemas +
 				", maximumPollingDuration=" + maximumPollingDuration +
+				", maintenanceInfo=" + maintenanceInfo +
 				'}';
 	}
 
@@ -254,6 +271,7 @@ public class Plan {
 		private Boolean planUpdateable;
 		private Schemas schemas;
 		private Integer maximumPollingDuration;
+		private MaintenanceInfo maintenanceInfo;
 
 		private PlanBuilder() {
 		}
@@ -394,12 +412,25 @@ public class Plan {
 		}
 
 		/**
+		 * Maintenance information for a Service Instance which is provisioned using the Service Plan. If provided a
+		 * version string MUST be provided and platforms MAY use this when Provisioning or Updating a Service Instance.
+		 *
+		 * @param maintenanceInfo the maintenanceInfo
+		 * @return the builder instance
+		 */
+		public PlanBuilder maintenanceInfo(MaintenanceInfo maintenanceInfo) {
+			this.maintenanceInfo = maintenanceInfo;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link Plan} from the provided values.
 		 *
 		 * @return the newly constructed {@literal Plan}
 		 */
 		public Plan build() {
-			return new Plan(id, name, description, metadata, free, bindable, planUpdateable, schemas, maximumPollingDuration);
+			return new Plan(id, name, description, metadata, free, bindable,
+					planUpdateable, schemas, maximumPollingDuration, maintenanceInfo);
 		}
 	}
 }
