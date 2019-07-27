@@ -148,6 +148,8 @@ public class ServiceBrokerPropertiesBindingTest {
 		assertThat(catalog.getServices().get(0).getPlans().get(0).getId()).isEqualTo("plan-one-id");
 		assertThat(catalog.getServices().get(0).getPlans().get(0).getName()).isEqualTo("Plan One");
 		assertThat(catalog.getServices().get(0).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
+		assertThat(catalog.getServices().get(0).getPlans().get(0).getMaintenanceInfo().getVersion()).isEqualTo("1.0.1");
+		assertThat(catalog.getServices().get(0).getPlans().get(0).getMaintenanceInfo().getDescription()).isEqualTo("Description for maintenance info");
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getId()).isEqualTo("plan-two-id");
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getName()).isEqualTo("Plan Two");
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getDescription()).isEqualTo("Description for Plan Two");

@@ -95,6 +95,8 @@ public class ServiceBrokerPropertiesTest {
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[0].id", "plan-one-id");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[0].name", "Plan One");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[0].description", "Description for Plan One");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[0].maintenance_info.version", "1.0.1");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[0].maintenance_info.description", "Description for maintenance info");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].id", "plan-two-id");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].name", "Plan Two");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].description", "Description for Plan Two");
@@ -152,6 +154,8 @@ public class ServiceBrokerPropertiesTest {
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getId()).isEqualTo("plan-one-id");
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getName()).isEqualTo("Plan One");
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
+		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getMaintenanceInfo().getVersion()).isEqualTo("1.0.1");
+		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(0).getMaintenanceInfo().getDescription()).isEqualTo("Description for maintenance info");
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getId()).isEqualTo("plan-two-id");
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getName()).isEqualTo("Plan Two");
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getDescription()).isEqualTo("Description for Plan Two");
@@ -205,6 +209,8 @@ public class ServiceBrokerPropertiesTest {
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(0).getId()).isEqualTo("plan-one-id");
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(0).getName()).isEqualTo("Plan One");
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
+		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(0).getMaintenanceInfo().getVersion().toString()).isEqualTo("1.0.1");
+		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(0).getMaintenanceInfo().getDescription()).isEqualTo("Description for maintenance info");
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getId()).isEqualTo("plan-two-id");
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getName()).isEqualTo("Plan Two");
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getDescription()).isEqualTo("Description for Plan Two");

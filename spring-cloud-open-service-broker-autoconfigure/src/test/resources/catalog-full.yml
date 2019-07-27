@@ -34,6 +34,9 @@ spring:
           - description: Description for Plan One
             id: plan-one-id
             name: Plan One
+            maintenance_info:
+              version: 1.0.1
+              description: "Description for maintenance info"
           - description: Description for Plan Two
             id: plan-two-id
             name: Plan Two

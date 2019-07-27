@@ -137,7 +137,9 @@ public class CatalogControllerIntegrationTest {
 				.andExpect(jsonPath("$.services[*].plans[*].maximum_polling_duration", contains(plans.get(1).getMaximumPollingDuration())))
 				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_instance.create.parameters", contains(createServiceInstanceSchema)))
 				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_instance.update.parameters", contains(updateServiceInstanceSchema)))
-				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_binding.create.parameters", contains(createServiceBindingSchema)));
+				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_binding.create.parameters", contains(createServiceBindingSchema)))
+				.andExpect(jsonPath("$.services[*].plans[*].maintenance_info.version", contains(plans.get(0).getMaintenanceInfo().getVersion())))
+				.andExpect(jsonPath("$.services[*].plans[*].maintenance_info.description", contains(plans.get(0).getMaintenanceInfo().getDescription())));
 	}
 
 }

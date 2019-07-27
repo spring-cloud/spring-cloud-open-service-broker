@@ -88,6 +88,12 @@ public class Plan {
 	 */
 	private Integer maximumPollingDuration;
 
+	/**
+	 * Maintenance information for a Service Instance which is provisioned using the Service Plan. If provided,
+	 * a version string MUST be provided and platforms MAY use this when Provisioning or Updating a Service Instance.
+	 */
+	private MaintenanceInfo maintenanceInfo;
+
 	public String getId() {
 		return this.id;
 	}
@@ -160,6 +166,14 @@ public class Plan {
 		this.maximumPollingDuration = maximumPollingDuration;
 	}
 
+	public MaintenanceInfo getMaintenanceInfo() {
+		return maintenanceInfo;
+	}
+
+	public void setMaintenanceInfo(MaintenanceInfo maintenanceInfo) {
+		this.maintenanceInfo = maintenanceInfo;
+	}
+
 	/**
 	 * Converts this object into its corresponding model
 	 *
@@ -175,8 +189,9 @@ public class Plan {
 				.free(this.free)
 				.planUpdateable(this.planUpdateable)
 				.schemas(this.schemas == null ? null : this.schemas.toModel())
-				.metadata(this.metadata == null ? null: this.metadata.toModel())
+				.metadata(this.metadata == null ? null : this.metadata.toModel())
 				.maximumPollingDuration(this.maximumPollingDuration)
+				.maintenanceInfo(this.maintenanceInfo == null ? null : this.maintenanceInfo.toModel())
 				.build();
 	}
 

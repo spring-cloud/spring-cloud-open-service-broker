@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.fixture;
 
+import org.springframework.cloud.servicebroker.model.catalog.MaintenanceInfo;
 import org.springframework.cloud.servicebroker.model.catalog.MethodSchema;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.Schemas;
@@ -46,6 +47,10 @@ public final class ServiceFixture {
 				.id("plan-one-id")
 				.name("Plan One")
 				.description("Description for Plan One")
+				.maintenanceInfo(MaintenanceInfo.builder()
+						.version("1.0.0-alpha+001")
+						.description("Description for maintenance info")
+						.build())
 				.build();
 	}
 
@@ -85,9 +90,9 @@ public final class ServiceFixture {
 
 	private static Plan getPlanThree() {
 		return Plan.builder()
-				   .id("plan-three-id")
-				   .name("Plan Three")
-				   .description("Description for Plan Three")
-				   .build();
+				.id("plan-three-id")
+				.name("Plan Three")
+				.description("Description for Plan Three")
+				.build();
 	}
 }

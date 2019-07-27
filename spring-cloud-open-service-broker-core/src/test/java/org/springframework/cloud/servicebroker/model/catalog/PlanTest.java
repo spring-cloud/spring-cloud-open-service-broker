@@ -110,6 +110,10 @@ public class PlanTest {
 				.metadata(metadata)
 				.schemas(Schemas.builder().build())
 				.maximumPollingDuration(210)
+				.maintenanceInfo(MaintenanceInfo.builder()
+						.version(1, 0, 0, "-alpha+001")
+						.description("Description for maintenance info")
+						.build())
 				.build();
 
 		assertThat(plan.getId()).isEqualTo("plan-id-one");
@@ -117,6 +121,7 @@ public class PlanTest {
 		assertThat(plan.getDescription()).isEqualTo("Plan One");
 		assertThat(plan.isFree()).isEqualTo(false);
 		assertThat(plan.isBindable()).isEqualTo(true);
+		assertThat(plan.isPlanUpdateable()).isEqualTo(true);
 		assertThat(plan.getMetadata()).hasSize(7);
 		assertThat(plan.getMetadata()).contains(
 				entry("field1", "value1"),
@@ -128,6 +133,9 @@ public class PlanTest {
 				entry("costs", costs)
 		);
 		assertThat(plan.getSchemas()).isNotNull();
+		assertThat(plan.getMaximumPollingDuration()).isEqualTo(210);
+		assertThat(plan.getMaintenanceInfo().getVersion()).isEqualTo("1.0.0-alpha+001");
+		assertThat(plan.getMaintenanceInfo().getDescription()).isEqualTo("Description for maintenance info");
 
 		DocumentContext json = JsonUtils.toJsonPath(plan);
 
@@ -151,6 +159,8 @@ public class PlanTest {
 		assertThat(json).hasListAtPath("$.metadata.bullets").containsOnly("bullet1", "bullet2");
 		assertThat(json).hasPath("$.schemas");
 		assertThat(json).hasPath("$.maximum_polling_duration").isEqualTo(210);
+		assertThat(json).hasPath("$.maintenance_info.version").isEqualTo("1.0.0-alpha+001");
+		assertThat(json).hasPath("$.maintenance_info.description").isEqualTo("Description for maintenance info");
 	}
 
 	@Test
