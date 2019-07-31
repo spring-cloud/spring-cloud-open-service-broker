@@ -118,6 +118,7 @@ public class Plan {
 
 	public void setMetadata(PlanMetadata metadata) {
 		this.metadata = metadata;
+		throw new IllegalArgumentException()
 	}
 
 	public Schemas getSchemas() {
