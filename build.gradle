@@ -150,7 +150,9 @@ configure(subprojects - [project(":spring-cloud-starter-open-service-broker")]) 
 			"-Xlint:try",
 			"-Xlint:fallthrough",
 			"-Xlint:rawtypes",
-			"-Xlint:deprecation",
+			// Suppress deprecation warnings when building against latest integration releases
+			(springBootVersion == "latest.integration" || springFrameworkVersion == "latest.integration")
+					? "-Xlint:-deprecation" : "-Xlint:deprecation",
 			"-Xlint:unchecked",
 			"-Xlint:options",
 			"-Werror"
