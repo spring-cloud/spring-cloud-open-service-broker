@@ -86,6 +86,7 @@ public class Plan {
 	 * @param planUpdateable true if the plan may be updated
 	 * @param schemas the plan schemas
 	 * @param maximumPollingDuration the maximum polling duration in seconds
+	 * @param maintenanceInfo the maintentance information
 	 */
 	public Plan(String id, String name, String description, Map<String, Object> metadata, Boolean free,
 				Boolean bindable, Boolean planUpdateable, Schemas schemas, Integer maximumPollingDuration,
