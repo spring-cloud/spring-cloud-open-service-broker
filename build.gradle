@@ -31,9 +31,9 @@ buildscript {
 }
 
 ext {
-	springBootVersion = project.findProperty("springBootVersion") ?: "2.1.6.RELEASE"
-	springVersion = project.findProperty("springVersion") ?: "5.1.8.RELEASE"
-	reactorVersion = project.findProperty("reactorVersion") ?: "Californium-SR9"
+	springBootVersion = project.findProperty("springBootVersion") ?: "2.1.8.RELEASE"
+	springVersion = project.findProperty("springVersion") ?: "5.1.9.RELEASE"
+	reactorVersion = project.findProperty("reactorVersion") ?: "Californium-SR11"
 	springCloudContractVersion = "2.1.0.RELEASE"
 
 	javadocLinks = [
