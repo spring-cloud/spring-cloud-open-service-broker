@@ -24,8 +24,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractServiceInstanceControllerIntegrationTest;
 import org.springframework.cloud.servicebroker.controller.ServiceBrokerWebMvcExceptionHandler;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerCreateOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerDeleteOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerUpdateOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
@@ -100,6 +103,29 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
 		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	public void createServiceInstanceWithAsyncAndHeadersOperationInProgress() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(new ServiceBrokerCreateOperationInProgressException("still working"));
+
+		MvcResult mvcResult = mockMvc.perform(put(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
+				.content(createRequestBody)
+				.contentType(MediaType.APPLICATION_JSON)
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andExpect(status().isOk())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
+				.andExpect(status().isAccepted())
+				.andExpect(jsonPath("$.description", containsString("still working")));
+
+		verifyCreateServiceInstance();
 	}
 
 	@Test
@@ -422,6 +448,27 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
+	public void deleteServiceInstanceWithAsyncAndHeadersOperationInProgress() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(new ServiceBrokerDeleteOperationInProgressException("still working"));
+
+		MvcResult mvcResult = mockMvc.perform(delete(buildDeleteUrl(PLATFORM_INSTANCE_ID, true))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andExpect(status().isOk())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
+				.andExpect(status().isAccepted())
+				.andExpect(jsonPath("$.description", containsString("still working")));
+
+		verifyDeleteServiceInstance();
+	}
+
+	@Test
 	public void deleteServiceInstanceWithoutAsyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
@@ -535,6 +582,28 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
 		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	public void updateServiceInstanceWithAsyncAndHeadersOperationInProgress() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(new ServiceBrokerUpdateOperationInProgressException("still working"));
+
+		MvcResult mvcResult = mockMvc.perform(patch(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
+				.content(updateRequestBody)
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
+				.andExpect(status().isAccepted())
+				.andExpect(jsonPath("$.description", containsString("still working")));
+
+		verifyUpdateServiceInstance();
 	}
 
 	@Test

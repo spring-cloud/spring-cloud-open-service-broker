@@ -19,8 +19,11 @@ package org.springframework.cloud.servicebroker.service;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerCreateOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerDeleteOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerUpdateOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
@@ -54,6 +57,7 @@ public interface ServiceInstanceService {
 	 * @throws ServiceInstanceExistsException if a service instance with the given ID is already known to the broker
 	 * @throws ServiceBrokerAsyncRequiredException if the broker requires asynchronous processing of the request
 	 * @throws ServiceBrokerInvalidParametersException if any parameters passed in the request are invalid
+	 * @throws ServiceBrokerCreateOperationInProgressException if a an operation is in progress for the service instance
 	 */
 	Mono<CreateServiceInstanceResponse> createServiceInstance(CreateServiceInstanceRequest request);
 
@@ -92,6 +96,7 @@ public interface ServiceInstanceService {
 	 * @return a {@link DeleteServiceInstanceResponse} on successful processing of the request
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
 	 * @throws ServiceBrokerAsyncRequiredException if the broker requires asynchronous processing of the request
+	 * @throws ServiceBrokerDeleteOperationInProgressException if a an operation is in progress for the service binding
 	 */
 	Mono<DeleteServiceInstanceResponse> deleteServiceInstance(DeleteServiceInstanceRequest request);
 
@@ -105,6 +110,7 @@ public interface ServiceInstanceService {
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
 	 * @throws ServiceBrokerAsyncRequiredException if the broker requires asynchronous processing of the request
 	 * @throws ServiceBrokerInvalidParametersException if any parameters passed in the request are invalid
+	 * @throws ServiceBrokerUpdateOperationInProgressException if a an operation is in progress for the service instance
 	 */
 	default Mono<UpdateServiceInstanceResponse> updateServiceInstance(UpdateServiceInstanceRequest request) {
 		return Mono.error(new UnsupportedOperationException("This service broker does not support updating service instances. " +

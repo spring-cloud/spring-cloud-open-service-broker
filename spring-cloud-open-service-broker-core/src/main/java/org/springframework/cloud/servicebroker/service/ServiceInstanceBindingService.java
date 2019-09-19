@@ -19,6 +19,8 @@ package org.springframework.cloud.servicebroker.service;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerBindingRequiresAppException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerCreateOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerDeleteOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
@@ -50,6 +52,9 @@ public interface ServiceInstanceBindingService {
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
 	 * @throws ServiceBrokerBindingRequiresAppException if the broker only supports application binding but an
 	 *                                                  app GUID is not provided in the request
+	 * @throws ServiceBrokerCreateOperationInProgressException if a an operation is in progress for the service
+	 * binding
+	 *
 	 */
 	default Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
 		return Mono.error(new UnsupportedOperationException("This service broker does not support creating service bindings."));
@@ -92,6 +97,7 @@ public interface ServiceInstanceBindingService {
 	 * @return a {@link DeleteServiceInstanceBindingResponse} on successful processing of the request
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
 	 * @throws ServiceInstanceBindingDoesNotExistException if a binding with the given ID is not known to the broker
+	 * @throws ServiceBrokerDeleteOperationInProgressException if a an operation is in progress for the service binding
 	 */
 	default Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
 		return Mono.error(new UnsupportedOperationException("This service broker does not support deleting service bindings."));

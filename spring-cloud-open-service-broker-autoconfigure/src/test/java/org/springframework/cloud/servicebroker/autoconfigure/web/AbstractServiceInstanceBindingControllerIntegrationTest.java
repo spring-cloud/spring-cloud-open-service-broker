@@ -22,6 +22,8 @@ import org.mockito.Mock;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerCreateOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerDeleteOperationInProgressException;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
@@ -62,6 +64,16 @@ public abstract class AbstractServiceInstanceBindingControllerIntegrationTest ex
 	protected void setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse response) {
 		when(serviceInstanceBindingService.getLastOperation(any(GetLastServiceBindingOperationRequest.class)))
 				.thenReturn(Mono.just(response));
+	}
+
+	protected void setupServiceInstanceBindingService(ServiceBrokerCreateOperationInProgressException exception) {
+		when(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
+				.thenReturn(Mono.error(exception));
+	}
+
+	protected void setupServiceInstanceBindingService(ServiceBrokerDeleteOperationInProgressException exception) {
+		when(serviceInstanceBindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
+				.thenReturn(Mono.error(exception));
 	}
 
 	protected CreateServiceInstanceBindingRequest verifyCreateBinding() {

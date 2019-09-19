@@ -23,11 +23,14 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersion
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerBindingRequiresAppException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerConcurrencyException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerCreateOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerDeleteOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidOriginatingIdentityException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerUnavailableException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerUpdateOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionPlanDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
@@ -152,6 +155,42 @@ public abstract class ServiceBrokerExceptionHandler {
 	@ExceptionHandler(ServiceBrokerOperationInProgressException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ErrorMessage handleException(ServiceBrokerOperationInProgressException ex) {
+		return getErrorResponse(ex);
+	}
+
+	/**
+	 * Handle a {@link ServiceBrokerCreateOperationInProgressException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
+	@ExceptionHandler(ServiceBrokerCreateOperationInProgressException.class)
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	public ErrorMessage handleException(ServiceBrokerCreateOperationInProgressException ex) {
+		return getErrorResponse(ex);
+	}
+
+	/**
+	 * Handle a {@link ServiceBrokerUpdateOperationInProgressException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
+	@ExceptionHandler(ServiceBrokerUpdateOperationInProgressException.class)
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	public ErrorMessage handleException(ServiceBrokerUpdateOperationInProgressException ex) {
+		return getErrorResponse(ex);
+	}
+
+	/**
+	 * Handle a {@link ServiceBrokerDeleteOperationInProgressException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
+	@ExceptionHandler(ServiceBrokerDeleteOperationInProgressException.class)
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	public ErrorMessage handleException(ServiceBrokerDeleteOperationInProgressException ex) {
 		return getErrorResponse(ex);
 	}
 

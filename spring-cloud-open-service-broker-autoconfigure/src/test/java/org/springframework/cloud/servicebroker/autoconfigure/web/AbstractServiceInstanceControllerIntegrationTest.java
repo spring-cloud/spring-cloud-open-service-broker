@@ -25,7 +25,10 @@ import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceController;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerCreateOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerDeleteOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerUpdateOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
@@ -99,6 +102,22 @@ public abstract class AbstractServiceInstanceControllerIntegrationTest extends C
 		when(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
 				.thenReturn(Mono.error(exception));
 	}
+
+	protected void setupServiceInstanceService(ServiceBrokerCreateOperationInProgressException exception) {
+		when(serviceInstanceService.createServiceInstance(any(CreateServiceInstanceRequest.class)))
+				.thenReturn(Mono.error(exception));
+	}
+
+	protected void setupServiceInstanceService(ServiceBrokerUpdateOperationInProgressException exception) {
+		when(serviceInstanceService.updateServiceInstance(any(UpdateServiceInstanceRequest.class)))
+				.thenReturn(Mono.error(exception));
+	}
+
+	protected void setupServiceInstanceService(ServiceBrokerDeleteOperationInProgressException exception) {
+		when(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
+				.thenReturn(Mono.error(exception));
+	}
+
 	protected void setupServiceInstanceService(DeleteServiceInstanceResponse response) {
 		when(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
 				.thenReturn(Mono.just(response));

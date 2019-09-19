@@ -23,6 +23,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractServiceInstanceBindingControllerIntegrationTest;
 import org.springframework.cloud.servicebroker.controller.ServiceBrokerWebMvcExceptionHandler;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerCreateOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerDeleteOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
@@ -155,6 +157,29 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
 		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	public void createBindingToAppWithAsyncAndHeadersOperationInProgress() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceBindingService(new ServiceBrokerCreateOperationInProgressException("still working"));
+
+		MvcResult mvcResult = mockMvc.perform(put(buildCreateUrl(PLATFORM_INSTANCE_ID, true))
+				.content(createRequestBody)
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andExpect(status().isOk())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
+				.andExpect(status().isAccepted())
+				.andExpect(jsonPath("$.description", containsString("still working")));
+
+		verifyCreateBinding();
 	}
 
 	@Test
@@ -410,6 +435,29 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
 		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	public void deleteBindingWithoutAsyncAndHeadersOperationInProgress() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceBindingService(new ServiceBrokerDeleteOperationInProgressException("still working"));
+
+		MvcResult mvcResult = mockMvc.perform(delete(buildDeleteUrl(PLATFORM_INSTANCE_ID, false))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andExpect(status().isOk())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
+				.andExpect(status().isAccepted())
+				.andExpect(jsonPath("$.description", containsString("still working")));
+
+		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
+
+		verifyDeleteBinding();
 	}
 
 	@Test

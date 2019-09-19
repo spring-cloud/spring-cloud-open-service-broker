@@ -23,6 +23,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractServiceInstanceBindingControllerIntegrationTest;
 import org.springframework.cloud.servicebroker.controller.ServiceBrokerWebFluxExceptionHandler;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerCreateOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerDeleteOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
@@ -131,6 +133,26 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
 		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	public void createBindingToAppWithAsyncAndHeadersOperationInProgress() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceBindingService(new ServiceBrokerCreateOperationInProgressException("still working"));
+
+		client.put().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, true))
+				.contentType(MediaType.APPLICATION_JSON)
+				.syncBody(createRequestBody)
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isAccepted()
+				.expectBody().jsonPath("$.description").isNotEmpty()
+				.consumeWith(result -> assertDescriptionContains(result, "still working"));
+
+		verifyCreateBinding();
 	}
 
 	@Test
@@ -428,6 +450,24 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
 		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	public void deleteBindingWithAsyncAndHeadersOperationInProgress() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceBindingService(new ServiceBrokerDeleteOperationInProgressException("still working"));
+
+		client.delete().uri(buildDeleteUrl(PLATFORM_INSTANCE_ID, true))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.exchange()
+				.expectStatus().isAccepted()
+				.expectBody()
+				.jsonPath("$.description").isNotEmpty()
+				.consumeWith(result -> assertDescriptionContains(result, "still working"));
+
+		verifyDeleteBinding();
 	}
 
 	@Test
