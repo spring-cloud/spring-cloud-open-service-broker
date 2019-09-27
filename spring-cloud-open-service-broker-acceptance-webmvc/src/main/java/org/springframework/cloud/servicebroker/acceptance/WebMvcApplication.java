@@ -18,7 +18,6 @@ package org.springframework.cloud.servicebroker.acceptance;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
 
@@ -37,16 +36,6 @@ public class WebMvcApplication {
 	 */
 	public static void main(final String[] args) {
 		SpringApplication.run(WebMvcApplication.class, args);
-	}
-
-	/**
-	 * NoOp CatalogService Bean
-	 *
-	 * @return the bean
-	 */
-	@Bean
-	public CatalogService catalogService() {
-		return new NoOpCatalogService();
 	}
 
 	/**

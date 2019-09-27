@@ -24,6 +24,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.cloud.servicebroker.autoconfigure.web.util.MetadataUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.CollectionUtils;
@@ -194,8 +195,8 @@ public class ServiceMetadata {
 		if (StringUtils.hasText(this.supportUrl)) {
 			model.put(SUPPORT_URL_KEY, this.supportUrl);
 		}
-		if (!CollectionUtils.isEmpty(properties)) {
-			model.putAll(properties);
+		if (!CollectionUtils.isEmpty(this.properties)) {
+			model.putAll(MetadataUtils.convertMap(this.properties));
 		}
 		return model;
 	}
