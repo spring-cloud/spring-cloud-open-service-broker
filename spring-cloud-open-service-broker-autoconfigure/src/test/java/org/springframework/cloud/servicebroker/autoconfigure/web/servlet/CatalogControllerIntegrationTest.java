@@ -103,6 +103,9 @@ public class CatalogControllerIntegrationTest {
 
 	@SuppressWarnings("unchecked")
 	private void assertResult(MvcResult mvcResult) throws Exception {
+
+		List<String> features = (List<String>) serviceDefinition.getMetadata().get("features");
+
 		List<Plan> plans = serviceDefinition.getPlans();
 		Schemas schemas = plans.get(1).getSchemas();
 
@@ -125,6 +128,7 @@ public class CatalogControllerIntegrationTest {
 						SERVICE_REQUIRES_SYSLOG_DRAIN.toString(),
 						SERVICE_REQUIRES_ROUTE_FORWARDING.toString())
 				))
+				.andExpect(jsonPath("$.services[*].metadata.features[*]", contains(features.get(0), features.get(1))))
 				.andExpect(jsonPath("$.services[*].plans[*]", hasSize(3)))
 				.andExpect(jsonPath("$.services[*].plans[*].id", containsInAnyOrder(plans.get(0).getId(), plans.get(1).getId(), plans.get(2).getId())))
 				.andExpect(jsonPath("$.services[*].plans[*].name", containsInAnyOrder(plans.get(0).getName(), plans.get(1).getName(), plans.get(2).getName())))

@@ -16,6 +16,11 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.fixture;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.cloud.servicebroker.model.catalog.MaintenanceInfo;
 import org.springframework.cloud.servicebroker.model.catalog.MethodSchema;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
@@ -39,7 +44,18 @@ public final class ServiceFixture {
 				.plans(getPlanOne(), getPlanTwo(), getPlanThree())
 				.requires(ServiceDefinitionRequires.SERVICE_REQUIRES_SYSLOG_DRAIN.toString(),
 						ServiceDefinitionRequires.SERVICE_REQUIRES_ROUTE_FORWARDING.toString())
+				.metadata(getMetadata())
 				.build();
+	}
+
+	private static Map<String, Object> getMetadata() {
+		List<String> features = new ArrayList<>();
+		features.add("hosting");
+		features.add("scaling");
+
+		Map<String, Object> metadata = new HashMap<>();
+		metadata.put("features", features);
+		return metadata;
 	}
 
 	private static Plan getPlanOne() {

@@ -122,8 +122,14 @@ public class ServiceBrokerPropertiesBindingTest {
 		this.context.refresh();
 		ServiceBrokerProperties properties = this.context.getBean(ServiceBrokerProperties.class);
 		Catalog catalog = properties.getCatalog();
-
 		assertThat(catalog).isNotNull();
+		validateServiceOne(catalog);
+		validateServiceOneMetadata(catalog);
+		validateServiceOnePlans(catalog);
+		validateServiceTwo(catalog);
+	}
+
+	private void validateServiceOne(Catalog catalog) {
 		assertThat(catalog.getServices()).hasSize(2);
 		assertThat(catalog.getServices().get(0).getId()).isEqualTo("service-one-id");
 		assertThat(catalog.getServices().get(0).getName()).isEqualTo("Service One");
@@ -132,18 +138,38 @@ public class ServiceBrokerPropertiesBindingTest {
 		assertThat(catalog.getServices().get(0).isBindingsRetrievable()).isTrue();
 		assertThat(catalog.getServices().get(0).isInstancesRetrievable()).isTrue();
 		assertThat(catalog.getServices().get(0).isPlanUpdateable()).isTrue();
+		assertThat(catalog.getServices().get(0).getRequires()).containsOnly("syslog_drain", "route_forwarding");
+		assertThat(catalog.getServices().get(0).getTags()).containsOnly("tag1", "tag2");
+		assertThat(catalog.getServices().get(0).getDashboardClient().getId()).isEqualTo("dashboard-id");
+		assertThat(catalog.getServices().get(0).getDashboardClient().getSecret()).isEqualTo("dashboard-secret");
+		assertThat(catalog.getServices().get(0).getDashboardClient().getRedirectUri()).isEqualTo("dashboard-redirect-uri");
+	}
+
+	private void validateServiceOneMetadata(Catalog catalog) {
 		assertThat(catalog.getServices().get(0).getMetadata().getDisplayName()).isEqualTo("service display name");
 		assertThat(catalog.getServices().get(0).getMetadata().getImageUrl()).isEqualTo("image-uri");
 		assertThat(catalog.getServices().get(0).getMetadata().getLongDescription()).isEqualTo("service long description");
 		assertThat(catalog.getServices().get(0).getMetadata().getProviderDisplayName()).isEqualTo("service provider display name");
 		assertThat(catalog.getServices().get(0).getMetadata().getDocumentationUrl()).isEqualTo("service-documentation-url");
 		assertThat(catalog.getServices().get(0).getMetadata().getSupportUrl()).isEqualTo("service-support-url");
-		assertThat(catalog.getServices().get(0).getMetadata().getProperties()).containsOnly(entry("key1", "value1"), entry("key2", "value2"));
-		assertThat(catalog.getServices().get(0).getRequires()).containsOnly("syslog_drain", "route_forwarding");
-		assertThat(catalog.getServices().get(0).getTags()).containsOnly("tag1", "tag2");
-		assertThat(catalog.getServices().get(0).getDashboardClient().getId()).isEqualTo("dashboard-id");
-		assertThat(catalog.getServices().get(0).getDashboardClient().getSecret()).isEqualTo("dashboard-secret");
-		assertThat(catalog.getServices().get(0).getDashboardClient().getRedirectUri()).isEqualTo("dashboard-redirect-uri");
+
+		Object licenses = catalog.getServices().get(0).getMetadata().getProperties().get("licenses");
+		assertThat(licenses).isInstanceOf(Map.class);
+		@SuppressWarnings("unchecked")
+		Map<String, Object> licenseMap = (Map<String, Object>) licenses;
+		assertThat(licenseMap).containsOnly(entry("0", "license1"), entry("1", "license2"));
+
+		Object features = catalog.getServices().get(0).getMetadata().getProperties().get("features");
+		assertThat(features).isInstanceOf(Map.class);
+		@SuppressWarnings("unchecked")
+		Map<String, Object> featuresMap = (Map<String, Object>) features;
+		assertThat(featuresMap).containsOnly(entry("0", "hosting"), entry("1", "scaling"));
+
+		assertThat(catalog.getServices().get(0).getMetadata().getProperties()).contains(entry("key1", "value1"),
+				entry("key2", "value2"));
+	}
+
+	private void validateServiceOnePlans(Catalog catalog) {
 		assertThat(catalog.getServices().get(0).getPlans()).hasSize(2);
 		assertThat(catalog.getServices().get(0).getPlans().get(0).getId()).isEqualTo("plan-one-id");
 		assertThat(catalog.getServices().get(0).getPlans().get(0).getName()).isEqualTo("Plan One");
@@ -167,13 +193,17 @@ public class ServiceBrokerPropertiesBindingTest {
 						entry("type", "string"));
 		Object enumMap = catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate().getParameters().get("enum");
 		assertThat(enumMap).isInstanceOf(Map.class);
-		@SuppressWarnings("unchecked") Map<String, Object>  castedMap = (Map<String, Object> ) enumMap;
+		@SuppressWarnings("unchecked")
+		Map<String, Object>  castedMap = (Map<String, Object> ) enumMap;
 		assertThat(castedMap).containsOnly(entry("0","one"),entry("1", "two"), entry("2", "three"));
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getUpdate().getParameters())
 				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceBinding().getCreate().getParameters())
 				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getMaximumPollingDuration()).isEqualTo(120);
+	}
+
+	private void validateServiceTwo(Catalog catalog) {
 		assertThat(catalog.getServices().get(1).getId()).isEqualTo("service-two-id");
 		assertThat(catalog.getServices().get(1).getName()).isEqualTo("Service Two");
 		assertThat(catalog.getServices().get(1).getDescription()).isEqualTo("Description for Service Two");
