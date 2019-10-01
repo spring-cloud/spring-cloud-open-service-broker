@@ -23,6 +23,7 @@ import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
+import static org.springframework.cloud.servicebroker.model.KubernetesContext.CLUSTERID_KEY;
 import static org.springframework.cloud.servicebroker.model.KubernetesContext.KUBERNETES_PLATFORM;
 import static org.springframework.cloud.servicebroker.model.KubernetesContext.NAMESPACE_KEY;
 
@@ -44,13 +45,16 @@ public class KubernetesContextTest {
 		KubernetesContext context = KubernetesContext.builder()
 				.property("key1", "value1")
 				.namespace("namespace")
+				.clusterid("clusterid")
 				.property("key2", "value2")
 				.build();
 
 		assertThat(context.getPlatform()).isEqualTo(KUBERNETES_PLATFORM);
 
 		assertThat(context.getNamespace()).isEqualTo("namespace");
+		assertThat(context.getClusterid()).isEqualTo("clusterid");
 		assertThat(context.getProperty(NAMESPACE_KEY)).isEqualTo("namespace");
+		assertThat(context.getProperty(CLUSTERID_KEY)).isEqualTo("clusterid");
 
 		assertThat(context.getProperty("key1")).isEqualTo("value1");
 		assertThat(context.getProperty("key2")).isEqualTo("value2");
@@ -59,11 +63,12 @@ public class KubernetesContextTest {
         assertThat(context.getProperties()).containsOnly(
                 entry("key1", "value1"),
                 entry("key2", "value2"),
-                entry("namespace", "namespace"));
+                entry("namespace", "namespace"),
+				entry("clusterid", "clusterid"));
     }
 
 	@Test
-	public void contextIsSerialized() {
+	public void partialContextIsSerialized() {
 		KubernetesContext context = KubernetesContext.builder()
 				.property("key1", "value1")
 				.namespace("namespace")
@@ -79,6 +84,27 @@ public class KubernetesContextTest {
 		// detect any double serialization due to inheritance and naming mismatch
 		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(4);
 		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 4+1);//still have duplicated platform property
+	}
+
+	@Test
+	public void fullContextIsSerialized() {
+		KubernetesContext context = KubernetesContext.builder()
+				.property("key1", "value1")
+				.namespace("namespace")
+				.clusterid("clusterid")
+				.property("key2", "value2")
+				.build();
+
+		DocumentContext json = JsonUtils.toJsonPath(context);
+
+		JsonPathAssert.assertThat(json).hasPath("$.platform").isEqualTo("kubernetes");
+		JsonPathAssert.assertThat(json).hasPath("$.namespace").isEqualTo("namespace");
+		JsonPathAssert.assertThat(json).hasPath("$.clusterid").isEqualTo("clusterid");
+		JsonPathAssert.assertThat(json).hasPath("$.key1").isEqualTo("value1");
+		JsonPathAssert.assertThat(json).hasPath("$.key2").isEqualTo("value2");
+		// detect any double serialization due to inheritance and naming mismatch
+		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(5);
+		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 5+1);//still have duplicated platform property
 	}
 
 }

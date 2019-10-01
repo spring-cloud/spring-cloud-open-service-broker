@@ -63,6 +63,8 @@ public class ServiceDefinition {
 
 	private final Boolean bindingsRetrievable;
 
+	private final Boolean allowContextUpdates;
+
 	@NotEmpty
 	private final List<Plan> plans;
 
@@ -78,7 +80,7 @@ public class ServiceDefinition {
 	 * Construct a new {@link ServiceDefinition}
 	 */
 	public ServiceDefinition() {
-		this(null, null, null, false, null, null, null, new ArrayList<>(),
+		this(null, null, null, false, null, null, null, null, new ArrayList<>(),
 				new ArrayList<>(), new HashMap<>(), new ArrayList<>(), null);
 	}
 
@@ -92,6 +94,7 @@ public class ServiceDefinition {
 	 * @param planUpdateable true if the plan may be updated
 	 * @param instancesRetrievable true if the service instances may be retrieved
 	 * @param bindingsRetrievable true if the service bindings may be retrieved
+	 * @param allowContextUpdates true if the service instance supports context updates
 	 * @param plans the service plans
 	 * @param tags the tags
 	 * @param metadata the service metadata
@@ -99,7 +102,7 @@ public class ServiceDefinition {
 	 * @param dashboardClient the service dashboard URI
 	 */
 	public ServiceDefinition(String id, String name, String description, boolean bindable, Boolean planUpdateable,
-							 Boolean instancesRetrievable, Boolean bindingsRetrievable,
+							 Boolean instancesRetrievable, Boolean bindingsRetrievable, Boolean allowContextUpdates,
 							 List<Plan> plans, List<String> tags, Map<String, Object> metadata, List<String> requires,
 							 DashboardClient dashboardClient) {
 		this.id = id;
@@ -109,6 +112,7 @@ public class ServiceDefinition {
 		this.planUpdateable = planUpdateable;
 		this.instancesRetrievable = instancesRetrievable;
 		this.bindingsRetrievable = bindingsRetrievable;
+		this.allowContextUpdates = allowContextUpdates;
 		this.plans = plans;
 		this.tags = tags;
 		this.metadata = metadata;
@@ -183,6 +187,16 @@ public class ServiceDefinition {
 	}
 
 	/**
+	 * Indicates whether a service instance supports update requests when contextual data for the service instance
+	 * in the platform changes.
+	 *
+	 * @return true if the service instances supports context updates
+	 */
+	public Boolean isAllowContextUpdates() {
+		return allowContextUpdates;
+	}
+
+	/**
 	 * A list of plans for this service.
 	 *
 	 * @return the service plans
@@ -251,6 +265,7 @@ public class ServiceDefinition {
 				Objects.equals(planUpdateable, that.planUpdateable) &&
 				Objects.equals(instancesRetrievable, that.instancesRetrievable) &&
 				Objects.equals(bindingsRetrievable, that.bindingsRetrievable) &&
+				Objects.equals(allowContextUpdates, that.allowContextUpdates) &&
 				Objects.equals(id, that.id) &&
 				Objects.equals(name, that.name) &&
 				Objects.equals(description, that.description) &&
@@ -264,7 +279,7 @@ public class ServiceDefinition {
 	@Override
 	public final int hashCode() {
 		return Objects.hash(id, name, description, bindable, planUpdateable,
-				instancesRetrievable, bindingsRetrievable,
+				instancesRetrievable, bindingsRetrievable, allowContextUpdates,
 				plans, tags, metadata, requires, dashboardClient);
 	}
 
@@ -278,6 +293,7 @@ public class ServiceDefinition {
 				", planUpdateable=" + planUpdateable +
 				", instancesRetrievable=" + instancesRetrievable +
 				", bindingsRetrievable=" + bindingsRetrievable +
+				", allowContextUpdates=" + allowContextUpdates +
 				", plans=" + plans +
 				", tags=" + tags +
 				", metadata=" + metadata +
@@ -297,6 +313,7 @@ public class ServiceDefinition {
 		private Boolean planUpdateable;
 		private Boolean instancesRetrievable;
 		private Boolean bindingsRetrievable;
+		private Boolean allowContextUpdates;
 		private final List<Plan> plans = new ArrayList<>();
 		private List<String> tags;
 		private Map<String, Object> metadata;
@@ -383,6 +400,17 @@ public class ServiceDefinition {
 		 */
 		public ServiceDefinitionBuilder bindingsRetrievable(Boolean bindingsRetrievable) {
 			this.bindingsRetrievable = bindingsRetrievable;
+			return this;
+		}
+
+		/**
+		 * Indicates whether the service instance supports contextual updates.
+		 *
+		 * @param allowContextUpdates true if the service instance supports context updates
+		 * @return the builder
+		 */
+		public ServiceDefinitionBuilder allowContextUpdates(Boolean allowContextUpdates) {
+			this.allowContextUpdates = allowContextUpdates;
 			return this;
 		}
 
@@ -534,7 +562,7 @@ public class ServiceDefinition {
 		 */
 		public ServiceDefinition build() {
 			return new ServiceDefinition(id, name, description, bindable, planUpdateable,
-					instancesRetrievable, bindingsRetrievable,
+					instancesRetrievable, bindingsRetrievable, allowContextUpdates,
 					plans, tags, metadata, requires, dashboardClient);
 		}
 	}

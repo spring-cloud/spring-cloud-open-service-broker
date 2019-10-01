@@ -77,6 +77,12 @@ public class ServiceDefinition {
 	private Boolean bindingsRetrievable;
 
 	/**
+	 * Specifies whether a Service Instance supports Update requests when contextual data for the Service Instance
+	 * in the Platform changes.
+	 */
+	private Boolean allowContextUpdates;
+
+	/**
 	 * A list of tags to aid in categorizing and classifying services with similar characteristics.
 	 */
 	private final List<String> tags = new ArrayList<>();
@@ -162,6 +168,14 @@ public class ServiceDefinition {
 		this.bindingsRetrievable = bindingsRetrievable;
 	}
 
+	public Boolean isAllowContextUpdates() {
+		return allowContextUpdates;
+	}
+
+	public void setAllowContextUpdates(Boolean allowContextUpdates) {
+		this.allowContextUpdates = allowContextUpdates;
+	}
+
 	public List<String> getTags() {
 		return this.tags;
 	}
@@ -210,6 +224,7 @@ public class ServiceDefinition {
 				.planUpdateable(this.planUpdateable)
 				.instancesRetrievable(this.instancesRetrievable)
 				.bindingsRetrievable(this.bindingsRetrievable)
+				.allowContextUpdates(this.allowContextUpdates)
 				.tags(this.tags)
 				.metadata(this.metadata == null ? null : this.metadata.toModel())
 				.requires(this.requires)

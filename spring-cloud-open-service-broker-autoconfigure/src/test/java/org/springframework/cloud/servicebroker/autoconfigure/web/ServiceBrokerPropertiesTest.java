@@ -75,6 +75,7 @@ public class ServiceBrokerPropertiesTest {
 		map.put("spring.cloud.openservicebroker.catalog.services[0].description", "Description for Service One");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].bindable", "true");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].bindings-retrievable", "true");
+		map.put("spring.cloud.openservicebroker.catalog.services[0].allowContextUpdates", "false");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].instances-retrievable", "true");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plan-updateable", "true");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].metadata.properties[key1]", "value1");
@@ -136,6 +137,7 @@ public class ServiceBrokerPropertiesTest {
 		assertThat(properties.getCatalog().getServices().get(0).getDescription()).isEqualTo("Description for Service One");
 		assertThat(properties.getCatalog().getServices().get(0).isBindable()).isTrue();
 		assertThat(properties.getCatalog().getServices().get(0).isBindingsRetrievable()).isTrue();
+		assertThat(properties.getCatalog().getServices().get(0).isAllowContextUpdates()).isFalse();
 		assertThat(properties.getCatalog().getServices().get(0).isInstancesRetrievable()).isTrue();
 		assertThat(properties.getCatalog().getServices().get(0).isPlanUpdateable()).isTrue();
 		assertThat(properties.getCatalog().getServices().get(0).getMetadata().getDisplayName()).isEqualTo("service display name");
@@ -192,6 +194,7 @@ public class ServiceBrokerPropertiesTest {
 		assertThat(catalog.getServiceDefinitions().get(0).getDescription()).isEqualTo("Description for Service One");
 		assertThat(catalog.getServiceDefinitions().get(0).isBindable()).isTrue();
 		assertThat(catalog.getServiceDefinitions().get(0).isBindingsRetrievable()).isTrue();
+		assertThat(catalog.getServiceDefinitions().get(0).isAllowContextUpdates()).isFalse();
 		assertThat(catalog.getServiceDefinitions().get(0).isInstancesRetrievable()).isTrue();
 		assertThat(catalog.getServiceDefinitions().get(0).isPlanUpdateable()).isTrue();
 		assertThat(catalog.getServiceDefinitions().get(0).getMetadata()).contains(entry("key1", "value1"), entry("key2", "value2"));

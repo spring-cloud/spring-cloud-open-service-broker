@@ -16,23 +16,29 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import org.springframework.util.StringUtils;
 
 /**
  * Kubernetes specific contextual information under which the service instance is to be provisioned or updated.
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public final class KubernetesContext extends Context {
 
 	public static final String KUBERNETES_PLATFORM = "kubernetes";
 
 	public static final String NAMESPACE_KEY = "namespace";
+
+	public static final String CLUSTERID_KEY = "clusterid";
 
 	private KubernetesContext() {
 		super(KUBERNETES_PLATFORM, null);
@@ -41,23 +47,17 @@ public final class KubernetesContext extends Context {
 	/**
 	 * Create a new KubernetesContext
 	 * @param namespace the kubernetes namespace
+	 * @param clusterid the kubernetes clusterid
 	 * @param properties a collection of properties
 	 */
-	public KubernetesContext(String namespace, Map<String, Object> properties) {
+	public KubernetesContext(String namespace, String clusterid, Map<String, Object> properties) {
 		super(KUBERNETES_PLATFORM, properties);
-		if (namespace != null) {
+		if (StringUtils.hasText(namespace)) {
 			setNamespace(namespace);
 		}
-	}
-
-	/**
-	 * Retrieve the kubernetes namespace from the collection of platform properties
-	 *
-	 * @return the namespace
-	 */
-	@JsonProperty
-	public String getNamespace() {
-		return getStringProperty(NAMESPACE_KEY);
+		if (StringUtils.hasText(clusterid)) {
+			setCluserid(clusterid);
+		}
 	}
 
 	/**
@@ -70,14 +70,37 @@ public final class KubernetesContext extends Context {
 		HashMap<String, Object> properties = new HashMap<>(super.getProperties());
 		properties.remove(KUBERNETES_PLATFORM);
 		properties.remove(NAMESPACE_KEY);
+		properties.remove(CLUSTERID_KEY);
 		properties.remove(Context.PLATFORM_KEY);
 		return properties;
 	}
 
+	/**
+	 * Retrieve the kubernetes namespace from the collection of platform properties
+	 *
+	 * @return the namespace
+	 */
+	@JsonProperty
+	public String getNamespace() {
+		return getStringProperty(NAMESPACE_KEY);
+	}
 
-	@NotEmpty
 	private void setNamespace(String namespace) {
 		properties.put(NAMESPACE_KEY, namespace);
+	}
+
+	/**
+	 * Retrieve the kubernetes clusterid from the collection of platform properties
+	 *
+	 * @return the clusterid
+	 */
+	@JsonProperty
+	public String getClusterid() {
+		return getStringProperty(CLUSTERID_KEY);
+	}
+
+	private void setCluserid(String cluserid) {
+		properties.put(CLUSTERID_KEY, cluserid);
 	}
 
 	/**
@@ -95,6 +118,8 @@ public final class KubernetesContext extends Context {
 	public static class KubernetesContextBuilder extends ContextBaseBuilder<KubernetesContext, KubernetesContextBuilder> {
 
 		private String namespace;
+
+		private String clusterid;
 
 		private KubernetesContextBuilder() {
 			super();
@@ -116,8 +141,19 @@ public final class KubernetesContext extends Context {
 			return this;
 		}
 
+		/**
+		 * Set the kubernetes clusterid
+		 *
+		 * @param clusterid the clusterid
+		 * @return the builder
+		 */
+		public KubernetesContextBuilder clusterid(String clusterid) {
+			this.clusterid = clusterid;
+			return this;
+		}
+
 		@Override
 		public KubernetesContext build() {
-			return new KubernetesContext(namespace, properties);
+			return new KubernetesContext(namespace, clusterid, properties);
 		}
 	}}

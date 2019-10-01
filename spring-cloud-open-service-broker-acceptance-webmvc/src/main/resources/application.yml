@@ -8,6 +8,7 @@ spring:
           name: Service One
           bindable: true
           bindingsRetrievable: true
+          allowContextUpdates: false
           instancesRetrievable: true
           planUpdateable: true
           metadata:
