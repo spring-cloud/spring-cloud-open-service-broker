@@ -18,5 +18,26 @@
         }
       }
     }
+  ],
+  "endpoints": [
+    {
+      "host": "test-host1",
+      "ports": [
+        "port1",
+        "port2",
+        "port3-port4"
+      ],
+      "protocol": "tcp"
+    },
+    {
+      "host": "test-host2",
+      "ports": ["8080"],
+      "protocol": "udp"
+    },
+    {
+      "host": "test-host3",
+      "ports": ["9999-11111"],
+      "protocol": "all"
+    }
   ]
 }

@@ -42,12 +42,14 @@ public class CreateServiceInstanceAppBindingResponseTest {
 		assertThat(response.getCredentials()).hasSize(0);
 		assertThat(response.getSyslogDrainUrl()).isNull();
 		assertThat(response.getVolumeMounts()).hasSize(0);
+		assertThat(response.getEndpoints()).hasSize(0);
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
 		assertThat(json).hasNoPath("$.credentials");
 		assertThat(json).hasNoPath("$.syslog_drain_url");
 		assertThat(json).hasNoPath("$.volume_mounts");
+		assertThat(json).hasNoPath("$.endpoints");
 	}
 
 	@Test
@@ -63,6 +65,10 @@ public class CreateServiceInstanceAppBindingResponseTest {
 				VolumeMount.builder().build()
 		);
 
+		List<Endpoint> endpoints = Arrays.asList(
+				Endpoint.builder().build()
+		);
+
 		CreateServiceInstanceAppBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
 				.bindingExisted(true)
 				.credentials("credential1", "value1")
@@ -73,6 +79,8 @@ public class CreateServiceInstanceAppBindingResponseTest {
 				.volumeMounts(VolumeMount.builder().build())
 				.volumeMounts(VolumeMount.builder().build())
 				.volumeMounts(volumeMounts)
+				.endpoints(Endpoint.builder().build())
+				.endpoints(endpoints)
 				.build();
 
 		assertThat(response.isBindingExisted()).isEqualTo(true);
@@ -99,6 +107,7 @@ public class CreateServiceInstanceAppBindingResponseTest {
 		assertThat(json).hasPath("$.syslog_drain_url").isEqualTo("https://logs.example.com");
 
 		assertThat(json).hasListAtPath("$.volume_mounts").hasSize(4);
+		assertThat(json).hasListAtPath("$.endpoints").hasSize(2);
 	}
 
 	@Test
@@ -121,6 +130,22 @@ public class CreateServiceInstanceAppBindingResponseTest {
 		assertThat(sharedVolumeDevice.getVolumeId()).isEqualTo("volume-id");
 		assertThat(sharedVolumeDevice.getMountConfig())
 				.containsOnly(entry("field1", "mount-config-1"), entry("field2", "mount-config-2"));
+
+		assertThat(response.getEndpoints().size()).isEqualTo(3);
+		Endpoint endpoint = response.getEndpoints().get(0);
+		assertThat(endpoint.getHost()).isEqualTo("test-host1");
+		assertThat(endpoint.getPorts()).containsOnly("port1", "port2", "port3-port4");
+		assertThat(endpoint.getProtocol()).isEqualTo(Endpoint.Protocol.TCP);
+
+		endpoint = response.getEndpoints().get(1);
+		assertThat(endpoint.getHost()).isEqualTo("test-host2");
+		assertThat(endpoint.getPorts()).containsOnly("8080");
+		assertThat(endpoint.getProtocol()).isEqualTo(Endpoint.Protocol.UDP);
+
+		endpoint = response.getEndpoints().get(2);
+		assertThat(endpoint.getHost()).isEqualTo("test-host3");
+		assertThat(endpoint.getPorts()).containsOnly("9999-11111");
+		assertThat(endpoint.getProtocol()).isEqualTo(Endpoint.Protocol.ALL);
 	}
 
 	@Test

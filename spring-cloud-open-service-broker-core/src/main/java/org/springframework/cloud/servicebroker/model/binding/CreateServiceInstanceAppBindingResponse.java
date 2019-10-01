@@ -45,11 +45,13 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 
 	private final List<VolumeMount> volumeMounts;
 
+	private final List<Endpoint> endpoints;
+
 	/**
 	 * Construct a new {@link CreateServiceInstanceAppBindingResponse}
 	 */
 	public CreateServiceInstanceAppBindingResponse() {
-		this(false, null, false, new HashMap<>(), null, new ArrayList<>());
+		this(false, null, false, new HashMap<>(), null, new ArrayList<>(), new ArrayList<>());
 	}
 
 	/**
@@ -61,14 +63,16 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	 * @param credentials the service binding credentials
 	 * @param syslogDrainUrl the syslog drain URL
 	 * @param volumeMounts the set of volume mounts
+	 * @param endpoints the set of endpoints
 	 */
 	public CreateServiceInstanceAppBindingResponse(boolean async, String operation, boolean bindingExisted,
-											Map<String, Object> credentials,
-											String syslogDrainUrl, List<VolumeMount> volumeMounts) {
+												   Map<String, Object> credentials, String syslogDrainUrl,
+												   List<VolumeMount> volumeMounts, List<Endpoint> endpoints) {
 		super(async, operation, bindingExisted);
 		this.credentials = credentials;
 		this.syslogDrainUrl = syslogDrainUrl;
 		this.volumeMounts = volumeMounts;
+		this.endpoints = endpoints;
 	}
 
 	/**
@@ -98,6 +102,10 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		return this.volumeMounts;
 	}
 
+	public List<Endpoint> getEndpoints() {
+	 	return this.endpoints;
+	}
+
 	/**
 	 * Create a builder that provides a fluent API for constructing a {@literal CreateServiceInstanceAppBindingResponse}.
 	 *
@@ -122,7 +130,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		return that.canEqual(this) &&
 				Objects.equals(credentials, that.credentials) &&
 				Objects.equals(syslogDrainUrl, that.syslogDrainUrl) &&
-				Objects.equals(volumeMounts, that.volumeMounts);
+				Objects.equals(volumeMounts, that.volumeMounts) &&
+				Objects.equals(endpoints, that.endpoints);
 	}
 
 	@Override
@@ -132,7 +141,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(super.hashCode(), credentials, syslogDrainUrl, volumeMounts);
+		return Objects.hash(super.hashCode(), credentials, syslogDrainUrl, volumeMounts, endpoints);
 	}
 
 	@Override
@@ -142,6 +151,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 				"credentials=" + credentials +
 				", syslogDrainUrl='" + syslogDrainUrl + '\'' +
 				", volumeMounts=" + volumeMounts +
+				", endpoints=" + endpoints +
 				'}';
 	}
 
@@ -149,11 +159,19 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	 * Provides a fluent API for constructing a {@link CreateServiceInstanceAppBindingResponse}.
 	 */
 	public static class CreateServiceInstanceAppBindingResponseBuilder {
+
 		private final Map<String, Object> credentials = new HashMap<>();
+
 		private String syslogDrainUrl;
+
 		private final List<VolumeMount> volumeMounts = new ArrayList<>();
+
+		private final List<Endpoint> endpoints = new ArrayList<>();
+
 		private boolean bindingExisted;
+
 		private boolean async;
+
 		private String operation;
 
 		private CreateServiceInstanceAppBindingResponseBuilder() {
@@ -235,6 +253,37 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
+		 * Add a set of endpoints from the provided {@literal List} to the endpoints that can be used by an application
+		 * to
+		 * connect to the service instance.
+		 *
+		 * <p>
+		 * This value will set the {@literal endpoints} field in the body of the response to the platform.
+		 *
+		 * @param endpoints one more endpoints
+		 * @return the builder
+		 */
+		public CreateServiceInstanceAppBindingResponseBuilder endpoints(List<Endpoint> endpoints) {
+			this.endpoints.addAll(endpoints);
+			return this;
+		}
+
+		/**
+		 * Add a set of endpoints from the provided array to the endpoints that can be used by an application to
+		 * connect to the service instance.
+		 *
+		 * <p>
+		 * This value will set the {@literal endpoints} field in the body of the response to the platform.
+		 *
+		 * @param endpoints one more endpoints
+		 * @return the builder
+		 */
+		public CreateServiceInstanceAppBindingResponseBuilder endpoints(Endpoint... endpoints) {
+			Collections.addAll(this.endpoints, endpoints);
+			return this;
+		}
+
+		/**
 		 * Set a boolean value indicating whether the service binding already exists with the same parameters as the
 		 * requested service binding. A {@literal true} value indicates a service binding exists and no new resources
 		 * were created by the service broker, <code>false</code> indicates that new resources were created.
@@ -294,7 +343,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		 */
 		public CreateServiceInstanceAppBindingResponse build() {
 			return new CreateServiceInstanceAppBindingResponse(async, operation, bindingExisted, credentials,
-					syslogDrainUrl, volumeMounts);
+					syslogDrainUrl, volumeMounts, endpoints);
 		}
 	}
 }
