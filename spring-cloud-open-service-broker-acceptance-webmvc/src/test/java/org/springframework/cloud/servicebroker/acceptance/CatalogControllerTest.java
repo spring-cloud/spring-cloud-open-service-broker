@@ -59,6 +59,7 @@ public class CatalogControllerTest {
 		assertThat(ctx.read("$.services[0].description", String.class)).isEqualTo("Description for Service One");
 		assertThat(ctx.read("$.services[0].bindable", Boolean.class)).isEqualTo(true);
 		assertThat(ctx.read("$.services[0].bindings_retrievable", Boolean.class)).isEqualTo(true);
+		assertThat(ctx.read("$.services[0].allow_context_updates", Boolean.class)).isEqualTo(false);
 		assertThat(ctx.read("$.services[0].instances_retrievable", Boolean.class)).isEqualTo(true);
 		assertThat(ctx.read("$.services[0].plan_updateable", Boolean.class)).isEqualTo(true);
 		assertThat(ctx.read("$.services[0].requires[0]", String.class)).isEqualTo("syslog_drain");
