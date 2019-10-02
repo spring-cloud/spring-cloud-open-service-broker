@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import net.bytebuddy.utility.RandomString;
 import org.junit.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
@@ -23,6 +24,7 @@ import org.springframework.cloud.servicebroker.JsonUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DeleteServiceInstanceResponseTest {
+
 	@Test
 	public void responseWithDefaultsIsBuilt() {
 		DeleteServiceInstanceResponse response = DeleteServiceInstanceResponse.builder()
@@ -49,5 +51,26 @@ public class DeleteServiceInstanceResponseTest {
 				"deleteResponse.json", DeleteServiceInstanceResponse.class);
 
 		assertThat(response.getOperation()).isEqualTo("in progress");
+	}
+
+	@Test
+	public void withinOperationCharacterLimit() throws Exception {
+		DeleteServiceInstanceResponse.builder()
+				.operation(RandomString.make(9_999))
+				.build();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void exceedsOperationCharacterLimit() throws Exception {
+		DeleteServiceInstanceResponse.builder()
+				.operation(RandomString.make(10_001))
+				.build();
+	}
+
+	@Test
+	public void exactlyOperationCharacterLimit() throws Exception {
+		DeleteServiceInstanceResponse.builder()
+				.operation(RandomString.make(10_000))
+				.build();
 	}
 }

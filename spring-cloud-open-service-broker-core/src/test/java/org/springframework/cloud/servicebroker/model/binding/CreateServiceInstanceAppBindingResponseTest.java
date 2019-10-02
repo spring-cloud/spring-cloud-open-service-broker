@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.jayway.jsonpath.DocumentContext;
+import net.bytebuddy.utility.RandomString;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
@@ -128,5 +129,26 @@ public class CreateServiceInstanceAppBindingResponseTest {
 				.forClass(CreateServiceInstanceAppBindingResponse.class)
 				.withRedefinedSuperclass()
 				.verify();
+	}
+
+	@Test
+	public void withinOperationCharacterLimit() throws Exception {
+		CreateServiceInstanceAppBindingResponse.builder()
+				.operation(RandomString.make(9_999))
+				.build();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void exceedsOperationCharacterLimit() throws Exception {
+		CreateServiceInstanceAppBindingResponse.builder()
+				.operation(RandomString.make(10_001))
+				.build();
+	}
+
+	@Test
+	public void exactlyOperationCharacterLimit() throws Exception {
+		CreateServiceInstanceAppBindingResponse.builder()
+				.operation(RandomString.make(10_000))
+				.build();
 	}
 }
