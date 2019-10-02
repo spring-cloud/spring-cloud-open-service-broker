@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+import net.bytebuddy.utility.RandomString;
 import org.junit.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
@@ -49,5 +50,26 @@ public class DeleteServiceInstanceBindingResponseTest {
 				"deleteResponse.json", DeleteServiceInstanceBindingResponse.class);
 
 		assertThat(response.getOperation()).isEqualTo("in progress");
+	}
+
+	@Test
+	public void withinOperationCharacterLimit() throws Exception {
+		DeleteServiceInstanceBindingResponse.builder()
+				.operation(RandomString.make(9_999))
+				.build();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void exceedsOperationCharacterLimit() throws Exception {
+		DeleteServiceInstanceBindingResponse.builder()
+				.operation(RandomString.make(10_001))
+				.build();
+	}
+
+	@Test
+	public void exactlyOperationCharacterLimit() throws Exception {
+		DeleteServiceInstanceBindingResponse.builder()
+				.operation(RandomString.make(10_000))
+				.build();
 	}
 }

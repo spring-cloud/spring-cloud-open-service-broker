@@ -21,6 +21,8 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import org.springframework.util.StringUtils;
+
 /**
  * Details of a response that support asynchronous behavior.
  *
@@ -29,6 +31,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AsyncServiceBrokerResponse {
+
+	private static final int MAX_OPERATION_LENGTH = 10_000;
 
 	@JsonIgnore //not sent on the wire as json payload, but as http status instead
 	protected final boolean async;
@@ -40,8 +44,13 @@ public class AsyncServiceBrokerResponse {
 	 * Create a new AsyncServiceBrokerResponse
 	 * @param async is the operation asynchronous
 	 * @param operation description of the operation being performed
+	 * @throws IllegalArgumentException if operation length exceeds 10,000 characters
 	 */
 	protected AsyncServiceBrokerResponse(boolean async, String operation) {
+		if (StringUtils.hasLength(operation) && operation.length() > MAX_OPERATION_LENGTH) {
+			throw new IllegalArgumentException("operation strings are restricted to 10,000 characters in the response" +
+					" body");
+		}
 		this.async = async;
 		this.operation = operation;
 	}
