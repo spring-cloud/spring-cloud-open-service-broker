@@ -26,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class GetLastServiceOperationResponseTest {
+
 	@Test
 	public void responseWithDefaultsIsBuilt() {
 		GetLastServiceOperationResponse response = GetLastServiceOperationResponse.builder()
@@ -39,6 +40,22 @@ public class GetLastServiceOperationResponseTest {
 
 		assertThat(json).hasNoPath("$.state");
 		assertThat(json).hasNoPath("$.description");
+	}
+
+	@Test
+	public void responseWithEmptyDescriptionIsBuilt() {
+		GetLastServiceOperationResponse response = GetLastServiceOperationResponse.builder()
+				.description("")
+				.build();
+
+		assertThat(response.getState()).isNull();
+		assertThat(response.getDescription()).isNotNull();
+		assertThat(response.isDeleteOperation()).isEqualTo(false);
+
+		DocumentContext json = JsonUtils.toJsonPath(response);
+
+		assertThat(json).hasNoPath("$.state");
+		assertThat(json).hasPath("$.description").isEqualTo("");
 	}
 
 	@Test
