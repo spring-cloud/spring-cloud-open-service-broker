@@ -75,7 +75,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		client.put().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, false))
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
@@ -97,7 +97,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		client.put().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, false))
 			  .contentType(MediaType.APPLICATION_JSON)
-			  .syncBody(createRequestBody)
+			  .bodyValue(createRequestBody)
 			  .header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 			  .header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 			  .accept(MediaType.APPLICATION_JSON)
@@ -121,7 +121,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		client.put().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, true))
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
@@ -143,7 +143,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		client.put().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, true))
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
@@ -165,7 +165,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		client.put().uri(buildCreateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isOk();
@@ -184,7 +184,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		client.put().uri(buildCreateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isCreated();
@@ -205,7 +205,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		client.put().uri(buildCreateUrl())
 			  .contentType(MediaType.APPLICATION_JSON)
-			  .syncBody(createRequestBody)
+			  .bodyValue(createRequestBody)
 			  .accept(MediaType.APPLICATION_JSON)
 			  .exchange()
 			  .expectStatus().isCreated();
@@ -228,7 +228,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		client.put().uri(buildCreateUrl(null, true))
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isAccepted()
@@ -250,7 +250,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		client.put().uri(buildCreateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isOk();
@@ -265,7 +265,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		client.put().uri(buildCreateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is4xxClientError()
@@ -281,7 +281,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		client.put().uri(buildCreateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is4xxClientError()
@@ -300,7 +300,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		client.put().uri(buildCreateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is4xxClientError()
@@ -316,7 +316,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		client.put().uri(buildCreateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(body)
+				.bodyValue(body)
 				.exchange()
 				.expectStatus().isBadRequest()
 				.expectBody()
@@ -330,7 +330,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 		client.put().uri(buildCreateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(body)
+				.bodyValue(body)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isBadRequest()

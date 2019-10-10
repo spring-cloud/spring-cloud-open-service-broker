@@ -79,7 +79,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.put().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
@@ -99,7 +99,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.put().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
@@ -123,7 +123,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.put().uri(buildCreateUpdateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isCreated()
@@ -143,7 +143,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.put().uri(buildCreateUpdateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isCreated()
@@ -165,7 +165,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 		String url = "https://test.example.com/" + buildCreateUpdateUrl();
 		client.put().uri(url)
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isAccepted();
@@ -183,7 +183,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.put().uri(buildCreateUpdateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isCreated();
@@ -203,7 +203,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.put().uri(buildCreateUpdateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isOk();
@@ -219,7 +219,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.put().uri(buildCreateUpdateUrl())
 			  .contentType(MediaType.APPLICATION_JSON)
-			  .syncBody(createRequestBody)
+			  .bodyValue(createRequestBody)
 			  .accept(MediaType.APPLICATION_JSON)
 			  .exchange()
 			  .expectStatus().isCreated();
@@ -236,7 +236,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.put().uri(buildCreateUpdateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is4xxClientError()
@@ -254,7 +254,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.put().uri(buildCreateUpdateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is4xxClientError()
@@ -273,7 +273,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.put().uri(buildCreateUpdateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is4xxClientError()
@@ -292,7 +292,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.put().uri(buildCreateUpdateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is4xxClientError()
@@ -308,7 +308,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.put().uri(buildCreateUpdateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(body)
+				.bodyValue(body)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
@@ -325,7 +325,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.put().uri(buildCreateUpdateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(body)
+				.bodyValue(body)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
@@ -507,7 +507,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.patch().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(updateRequestBody)
+				.bodyValue(updateRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
@@ -530,7 +530,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.patch().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(updateRequestBody)
+				.bodyValue(updateRequestBody)
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
@@ -552,7 +552,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.patch().uri(buildCreateUpdateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(updateRequestBody)
+				.bodyValue(updateRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isOk()
@@ -574,7 +574,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.patch().uri(buildCreateUpdateUrl())
 			  .contentType(MediaType.APPLICATION_JSON)
-			  .syncBody(updateRequestBodyWithPlan)
+			  .bodyValue(updateRequestBodyWithPlan)
 			  .accept(MediaType.APPLICATION_JSON)
 			  .exchange()
 			  .expectStatus().isOk()
@@ -598,7 +598,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.patch().uri(buildCreateUpdateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(updateRequestBody)
+				.bodyValue(updateRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isOk()
@@ -618,7 +618,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.patch().uri(buildCreateUpdateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(updateRequestBody)
+				.bodyValue(updateRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isOk()
@@ -633,7 +633,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.patch().uri(buildCreateUpdateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(updateRequestBody)
+				.bodyValue(updateRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is4xxClientError()
@@ -652,7 +652,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 		client.patch().uri(buildCreateUpdateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(updateRequestBody)
+				.bodyValue(updateRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is4xxClientError()

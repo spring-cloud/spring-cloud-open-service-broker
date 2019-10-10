@@ -50,7 +50,7 @@ public class NonBindableServiceInstanceBindingControllerIntegrationTest extends 
 
 		client.put().uri(buildCreateUrl())
 				.contentType(MediaType.APPLICATION_JSON)
-				.syncBody(createRequestBody)
+				.bodyValue(createRequestBody)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is5xxServerError()

@@ -46,7 +46,4 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile project(":spring-cloud-starter-open-service-broker")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
 }
