@@ -35,6 +35,7 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
  *
  * @author krujos
  * @author Scott Frederick
+ * @author Roy Clarkson
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-6">Open Service
  * 		Broker API specification</a>
  */
@@ -67,12 +68,12 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 */
 	public DeleteServiceInstanceRequest(String serviceInstanceId, String serviceDefinitionId,
-			String planId, ServiceDefinition serviceDefinition, Plan plan,
-			boolean asyncAccepted, String platformInstanceId,
-			String apiInfoLocation, Context originatingIdentity) {
-		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity);
+			String planId, ServiceDefinition serviceDefinition, Plan plan, boolean asyncAccepted,
+			String platformInstanceId, String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
+		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
@@ -230,6 +231,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 
 		private Context originatingIdentity;
 
+		private String requestIdentity;
+
 		private DeleteServiceInstanceRequestBuilder() {
 		}
 
@@ -343,14 +346,26 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		}
 
 		/**
+		 * Set the identity of the request sent from the platform
+		 *
+		 * @param requestIdentity the request identity
+		 * @return the builder
+		 * @see #getRequestIdentity()
+		 */
+		public DeleteServiceInstanceRequestBuilder requestIdentity(String requestIdentity) {
+			this.requestIdentity = requestIdentity;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link DeleteServiceInstanceRequest} from the provided values.
 		 *
 		 * @return the newly constructed {@literal DeleteServiceInstanceRequest}
 		 */
 		public DeleteServiceInstanceRequest build() {
 			return new DeleteServiceInstanceRequest(serviceInstanceId, serviceDefinitionId, planId,
-					serviceDefinition, plan, asyncAccepted,
-					platformInstanceId, apiInfoLocation, originatingIdentity);
+					serviceDefinition, plan, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity,
+					requestIdentity);
 		}
 
 	}

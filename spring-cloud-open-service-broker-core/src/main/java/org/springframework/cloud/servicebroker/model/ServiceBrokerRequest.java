@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  * Details common to all service broker requests.
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ServiceBrokerRequest {
@@ -39,6 +40,11 @@ public class ServiceBrokerRequest {
 	 * API Originating Identity header
 	 */
 	public final static String ORIGINATING_IDENTITY_HEADER = "X-Broker-API-Originating-Identity";
+
+	/**
+	 * API Request Identity header
+	 */
+	public final static String REQUEST_IDENTITY_HEADER = "X-Broker-API-Request-Identity";
 
 	/**
 	 * Instance ID path variable name
@@ -74,6 +80,9 @@ public class ServiceBrokerRequest {
 	@JsonIgnore //mapped as X-Broker-API-Originating-Identity Header
 	protected transient Context originatingIdentity;
 
+	@JsonIgnore //mapped as X-Broker-API-Request-Identity Header
+	protected transient String requestIdentity;
+
 	/**
 	 * Construct a new {@link ServiceBrokerRequest}
 	 */
@@ -87,11 +96,14 @@ public class ServiceBrokerRequest {
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request being sent from the platform
 	 */
-	protected ServiceBrokerRequest(String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
+	protected ServiceBrokerRequest(String platformInstanceId, String apiInfoLocation, Context originatingIdentity,
+			String requestIdentity) {
 		this.platformInstanceId = platformInstanceId;
 		this.apiInfoLocation = apiInfoLocation;
 		this.originatingIdentity = originatingIdentity;
+		this.requestIdentity = requestIdentity;
 	}
 
 	/**
@@ -163,6 +175,26 @@ public class ServiceBrokerRequest {
 		this.originatingIdentity = originatingIdentity;
 	}
 
+	/**
+	 * Get the identify of the request that was sent from the platform
+	 * <p>
+	 * This value is set from the {@literal X-Broker-API-Request-Identity} header in the request from the platform
+	 *
+	 * @return the request identity, or {@literal null} if not provided
+	 */
+	public String getRequestIdentity() {
+		return this.requestIdentity;
+	}
+
+	/**
+	 * For internal use only; use a {@literal builder} to construct an object of this type and set all field values.
+	 *
+	 * @param requestIdentity identify of the request sent from the platform
+	 */
+	public void setRequestIdentity(String requestIdentity) {
+		this.requestIdentity = requestIdentity;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -175,7 +207,8 @@ public class ServiceBrokerRequest {
 		return that.canEqual(this) &&
 				Objects.equals(platformInstanceId, that.platformInstanceId) &&
 				Objects.equals(apiInfoLocation, that.apiInfoLocation) &&
-				Objects.equals(originatingIdentity, that.originatingIdentity);
+				Objects.equals(originatingIdentity, that.originatingIdentity) &&
+				Objects.equals(requestIdentity, that.requestIdentity);
 	}
 
 	/**
@@ -190,7 +223,7 @@ public class ServiceBrokerRequest {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(platformInstanceId, apiInfoLocation, originatingIdentity);
+		return Objects.hash(platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 	}
 
 	@Override
@@ -198,7 +231,8 @@ public class ServiceBrokerRequest {
 		return "ServiceBrokerRequest{" +
 				"platformInstanceId='" + platformInstanceId + '\'' +
 				", apiInfoLocation='" + apiInfoLocation + '\'' +
-				", originatingIdentity=" + originatingIdentity +
+				", originatingIdentity=" + originatingIdentity + '\'' +
+				", requestIdentity=" + requestIdentity +
 				'}';
 	}
 

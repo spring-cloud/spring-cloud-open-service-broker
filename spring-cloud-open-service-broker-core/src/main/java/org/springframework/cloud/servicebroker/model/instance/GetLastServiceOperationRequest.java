@@ -29,6 +29,7 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
  * body passed to the service broker by the platform.
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-1">Open Service
  * 		Broker API specification</a>
  */
@@ -52,12 +53,12 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 */
 	public GetLastServiceOperationRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
-			String operation,
-			String platformInstanceId, String apiInfoLocation,
-			Context originatingIdentity) {
-		super(platformInstanceId, apiInfoLocation, originatingIdentity);
+			String operation, String platformInstanceId, String apiInfoLocation, Context originatingIdentity,
+			String requestIdentity) {
+		super(platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
@@ -140,7 +141,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 			return false;
 		}
 		GetLastServiceOperationRequest that = (GetLastServiceOperationRequest) o;
-		return Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
+		return that.canEqual(this) &&
+				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
 				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
 				Objects.equals(planId, that.planId) &&
 				Objects.equals(operation, that.operation);
@@ -185,6 +187,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		private String apiInfoLocation;
 
 		private Context originatingIdentity;
+
+		private String requestIdentity;
 
 		private GetLastServiceOperationRequestBuilder() {
 		}
@@ -273,14 +277,25 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		}
 
 		/**
+		 * Set the identity of the request sent from the platform
+		 *
+		 * @param requestIdentity the request identity
+		 * @return the builder
+		 * @see #getRequestIdentity()
+		 */
+		public GetLastServiceOperationRequestBuilder requestIdentity(String requestIdentity) {
+			this.requestIdentity = requestIdentity;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link GetLastServiceOperationRequest} from the provided values.
 		 *
 		 * @return the newly constructed {@literal GetLastServiceOperationRequest}
 		 */
 		public GetLastServiceOperationRequest build() {
 			return new GetLastServiceOperationRequest(serviceInstanceId, serviceDefinitionId, planId,
-					operation,
-					platformInstanceId, apiInfoLocation, originatingIdentity);
+					operation, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		}
 
 	}

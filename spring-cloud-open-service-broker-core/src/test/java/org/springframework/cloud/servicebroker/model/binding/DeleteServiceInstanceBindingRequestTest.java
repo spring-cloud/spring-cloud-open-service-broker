@@ -46,6 +46,7 @@ public class DeleteServiceInstanceBindingRequestTest {
 		assertThat(request.getApiInfoLocation()).isNull();
 		assertThat(request.getPlatformInstanceId()).isNull();
 		assertThat(request.getOriginatingIdentity()).isNull();
+		assertThat(request.getRequestIdentity()).isNull();
 	}
 
 	@Test
@@ -63,6 +64,7 @@ public class DeleteServiceInstanceBindingRequestTest {
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("https://api.example.com")
 				.originatingIdentity(originatingIdentity)
+				.requestIdentity("request-id")
 				.build();
 
 		assertThat(request.getServiceInstanceId()).isEqualTo("service-instance-id");
@@ -74,6 +76,7 @@ public class DeleteServiceInstanceBindingRequestTest {
 		assertThat(request.getPlatformInstanceId()).isEqualTo("platform-instance-id");
 		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.example.com");
 		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);
+		assertThat(request.getRequestIdentity()).isEqualTo("request-id");
 	}
 
 	@Test
@@ -92,6 +95,7 @@ public class DeleteServiceInstanceBindingRequestTest {
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("https://api.example.com")
 				.originatingIdentity(originatingIdentity)
+				.requestIdentity("request-id")
 				.plan(Plan.builder().build())
 				.serviceDefinition(ServiceDefinition.builder().build())
 				.build();

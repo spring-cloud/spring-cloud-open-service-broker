@@ -45,6 +45,7 @@ public class DeleteServiceInstanceRequestTest {
 		assertThat(request.getApiInfoLocation()).isNull();
 		assertThat(request.getPlatformInstanceId()).isNull();
 		assertThat(request.getOriginatingIdentity()).isNull();
+		assertThat(request.getRequestIdentity()).isNull();
 	}
 
 	@Test
@@ -62,6 +63,7 @@ public class DeleteServiceInstanceRequestTest {
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("https://api.example.com")
 				.originatingIdentity(originatingIdentity)
+				.requestIdentity("request-id")
 				.build();
 
 		assertThat(request.getServiceInstanceId()).isEqualTo("service-instance-id");
@@ -72,6 +74,7 @@ public class DeleteServiceInstanceRequestTest {
 		assertThat(request.getPlatformInstanceId()).isEqualTo("platform-instance-id");
 		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.example.com");
 		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);
+		assertThat(request.getRequestIdentity()).isEqualTo("request-id");
 	}
 
 	@Test
@@ -88,6 +91,7 @@ public class DeleteServiceInstanceRequestTest {
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("https://api.example.com")
 				.originatingIdentity(originatingIdentity)
+				.requestIdentity("request-id")
 				.plan(Plan.builder().build())
 				.serviceDefinition(ServiceDefinition.builder().build())
 				.build();
@@ -100,6 +104,7 @@ public class DeleteServiceInstanceRequestTest {
 		JsonPathAssert.assertThat(json).hasPath("$.accepts_incomplete").isEqualTo(true);
 		//Other internals should not be polluting the JSON representation
 		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(3);
+		JsonPathAssert.assertThat(json).hasNoPath("$.request_identity");
 	}
 
 	@Test

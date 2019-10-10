@@ -91,6 +91,7 @@ public class ServiceInstanceController extends BaseController {
 	 * @param acceptsIncomplete indicates an asynchronous request
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 * @param request the request body
 	 * @return the response
 	 */
@@ -101,6 +102,7 @@ public class ServiceInstanceController extends BaseController {
 			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
+			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, required = false) String requestIdentity,
 			@Valid @RequestBody CreateServiceInstanceRequest request) {
 		return getRequiredServiceDefinition(request.getServiceDefinitionId())
 				.flatMap(serviceDefinition -> getRequiredServiceDefinitionPlan(serviceDefinition, request.getPlanId())
@@ -115,7 +117,7 @@ public class ServiceInstanceController extends BaseController {
 						}))
 				.flatMap(req -> configureCommonRequestFields(req,
 						pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
-						originatingIdentityString, acceptsIncomplete))
+						originatingIdentityString, requestIdentity, acceptsIncomplete))
 				.cast(CreateServiceInstanceRequest.class)
 				.flatMap(req -> service.createServiceInstance(req)
 						.doOnRequest(v -> LOG.debug("Creating a service instance: request={}", req))
@@ -146,6 +148,7 @@ public class ServiceInstanceController extends BaseController {
 	 * @param serviceInstanceId the service instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the response
 	 */
 	@GetMapping({PLATFORM_PATH_MAPPING, PATH_MAPPING})
@@ -153,12 +156,14 @@ public class ServiceInstanceController extends BaseController {
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
+			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, required = false) String requestIdentity) {
 		return Mono.just(GetServiceInstanceRequest.builder()
 				.serviceInstanceId(serviceInstanceId)
 				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 				.apiInfoLocation(apiInfoLocation)
 				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+				.requestIdentity(requestIdentity)
 				.build())
 				.flatMap(request -> service.getServiceInstance(request)
 						.doOnRequest(v -> LOG.debug("Getting service instance: request={}", request))
@@ -187,6 +192,7 @@ public class ServiceInstanceController extends BaseController {
 	 * @param operation description of the operation being performed
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the response
 	 */
 	@GetMapping({PLATFORM_PATH_MAPPING + "/last_operation", PATH_MAPPING + "/last_operation"})
@@ -197,7 +203,8 @@ public class ServiceInstanceController extends BaseController {
 			@RequestParam(value = ServiceBrokerRequest.PLAN_ID_PARAMETER, required = false) String planId,
 			@RequestParam(value = "operation", required = false) String operation,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
+			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, required = false) String requestIdentity) {
 		return Mono.just(GetLastServiceOperationRequest.builder()
 				.serviceDefinitionId(serviceDefinitionId)
 				.serviceInstanceId(serviceInstanceId)
@@ -206,6 +213,7 @@ public class ServiceInstanceController extends BaseController {
 				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 				.apiInfoLocation(apiInfoLocation)
 				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+				.requestIdentity(requestIdentity)
 				.build())
 				.flatMap(request -> service.getLastOperation(request)
 						.doOnRequest(v -> LOG.debug("Getting service instance last operation: request={}", request))
@@ -230,6 +238,7 @@ public class ServiceInstanceController extends BaseController {
 	 * @param acceptsIncomplete indicates an asynchronous request
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the response
 	 */
 	@DeleteMapping({PLATFORM_PATH_MAPPING, PATH_MAPPING})
@@ -240,7 +249,8 @@ public class ServiceInstanceController extends BaseController {
 			@RequestParam(ServiceBrokerRequest.PLAN_ID_PARAMETER) String planId,
 			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
+			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, required = false) String requestIdentity) {
 		return getRequiredServiceDefinition(serviceDefinitionId)
 				.flatMap(serviceDefinition -> getRequiredServiceDefinitionPlan(serviceDefinition, planId)
 						.map(DeleteServiceInstanceRequest.builder()::plan)
@@ -254,6 +264,7 @@ public class ServiceInstanceController extends BaseController {
 										pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 								.apiInfoLocation(apiInfoLocation)
 								.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+								.requestIdentity(requestIdentity)
 								.build()))
 				.flatMap(request -> service.deleteServiceInstance(request)
 						.doOnRequest(v -> LOG.debug("Deleting a service instance: request={}", request))
@@ -281,6 +292,7 @@ public class ServiceInstanceController extends BaseController {
 	 * @param acceptsIncomplete indicates an asynchronous request
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 * @param request the request body
 	 * @return the response
 	 */
@@ -291,6 +303,7 @@ public class ServiceInstanceController extends BaseController {
 			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
+			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, required = false) String requestIdentity,
 			@Valid @RequestBody UpdateServiceInstanceRequest request) {
 		return getRequiredServiceDefinition(request.getServiceDefinitionId())
 				.flatMap(serviceDefinition -> getServiceDefinitionPlan(serviceDefinition, request.getPlanId())
@@ -306,7 +319,7 @@ public class ServiceInstanceController extends BaseController {
 						}))
 				.flatMap(req -> configureCommonRequestFields(req,
 						pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
-						originatingIdentityString, acceptsIncomplete))
+						originatingIdentityString, requestIdentity, acceptsIncomplete))
 				.cast(UpdateServiceInstanceRequest.class)
 				.flatMap(req -> service.updateServiceInstance(req)
 						.doOnRequest(v -> LOG.debug("Updating a service instance: request={}", request))

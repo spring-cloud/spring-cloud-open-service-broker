@@ -50,10 +50,11 @@ public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 */
 	protected AsyncServiceBrokerRequest(boolean asyncAccepted, String platformInstanceId,
-			String apiInfoLocation, Context originatingIdentity) {
-		super(platformInstanceId, apiInfoLocation, originatingIdentity);
+			String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
+		super(platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		this.asyncAccepted = asyncAccepted;
 	}
 

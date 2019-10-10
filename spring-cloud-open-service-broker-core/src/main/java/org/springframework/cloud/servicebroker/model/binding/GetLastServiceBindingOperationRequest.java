@@ -56,11 +56,12 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 */
 	public GetLastServiceBindingOperationRequest(String serviceInstanceId, String bindingId, String serviceDefinitionId,
-			String planId, String operation, String platformInstanceId,
-			String apiInfoLocation, Context originatingIdentity) {
-		super(platformInstanceId, apiInfoLocation, originatingIdentity);
+			String planId, String operation, String platformInstanceId, String apiInfoLocation,
+			Context originatingIdentity, String requestIdentity) {
+		super(platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.bindingId = bindingId;
 		this.serviceDefinitionId = serviceDefinitionId;
@@ -158,7 +159,8 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 			return false;
 		}
 		GetLastServiceBindingOperationRequest that = (GetLastServiceBindingOperationRequest) o;
-		return Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
+		return that.canEqual(this) &&
+				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
 				Objects.equals(bindingId, that.bindingId) &&
 				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
 				Objects.equals(planId, that.planId) &&
@@ -207,6 +209,8 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 		private String apiInfoLocation;
 
 		private Context originatingIdentity;
+
+		private String requestIdentity;
 
 		private GetLastServiceBindingOperationRequestBuilder() {
 		}
@@ -307,13 +311,25 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 		}
 
 		/**
+		 * Set the identity of the request sent from the platform
+		 *
+		 * @param requestIdentity the request identity
+		 * @return the builder
+		 * @see #getRequestIdentity()
+		 */
+		public GetLastServiceBindingOperationRequestBuilder requestIdentity(String requestIdentity) {
+			this.requestIdentity = requestIdentity;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link GetLastServiceBindingOperationRequest} from the provided values.
 		 *
 		 * @return the newly constructed {@literal GetLastServiceOperationRequest}
 		 */
 		public GetLastServiceBindingOperationRequest build() {
 			return new GetLastServiceBindingOperationRequest(serviceInstanceId, bindingId, serviceDefinitionId, planId,
-					operation, platformInstanceId, apiInfoLocation, originatingIdentity);
+					operation, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		}
 
 	}

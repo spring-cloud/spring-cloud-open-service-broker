@@ -41,6 +41,7 @@ public class GetLastServiceBindingOperationRequestTest {
 		assertThat(request.getApiInfoLocation()).isNull();
 		assertThat(request.getPlatformInstanceId()).isNull();
 		assertThat(request.getOriginatingIdentity()).isNull();
+		assertThat(request.getRequestIdentity()).isNull();
 	}
 
 	@Test
@@ -59,6 +60,7 @@ public class GetLastServiceBindingOperationRequestTest {
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("https://api.example.com")
 				.originatingIdentity(originatingIdentity)
+				.requestIdentity("request-id")
 				.build();
 
 		assertThat(request.getServiceInstanceId()).isEqualTo("service-instance-id");
@@ -70,6 +72,7 @@ public class GetLastServiceBindingOperationRequestTest {
 		assertThat(request.getPlatformInstanceId()).isEqualTo("platform-instance-id");
 		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.example.com");
 		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);
+		assertThat(request.getRequestIdentity()).isEqualTo("request-id");
 	}
 
 	@Test

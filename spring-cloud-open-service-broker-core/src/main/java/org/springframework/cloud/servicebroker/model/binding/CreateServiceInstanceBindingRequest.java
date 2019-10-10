@@ -107,13 +107,13 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 */
 	public CreateServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
-			String bindingId, ServiceDefinition serviceDefinition, Plan plan,
-			boolean asyncAccepted, BindResource bindResource,
-			Map<String, Object> parameters, Context context,
-			String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
-		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity);
+			String bindingId, ServiceDefinition serviceDefinition, Plan plan, boolean asyncAccepted,
+			BindResource bindResource, Map<String, Object> parameters, Context context, String platformInstanceId,
+			String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
+		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
@@ -418,6 +418,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 
 		private Context originatingIdentity;
 
+		private String requestIdentity;
+
 		private CreateServiceInstanceBindingRequestBuilder() {
 		}
 
@@ -593,14 +595,26 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		}
 
 		/**
+		 * Set the identity of the request sent from the platform
+		 *
+		 * @param requestIdentity the request identity
+		 * @return the builder
+		 * @see #getRequestIdentity()
+		 */
+		public CreateServiceInstanceBindingRequestBuilder requestIdentity(String requestIdentity) {
+			this.requestIdentity = requestIdentity;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link CreateServiceInstanceBindingRequest} from the provided values.
 		 *
 		 * @return the newly constructed {@literal CreateServiceInstanceBindingRequest}
 		 */
 		public CreateServiceInstanceBindingRequest build() {
-			return new CreateServiceInstanceBindingRequest(serviceInstanceId, serviceDefinitionId, planId,
-					bindingId, serviceDefinition, plan, asyncAccepted, bindResource, parameters, context,
-					platformInstanceId, apiInfoLocation, originatingIdentity);
+			return new CreateServiceInstanceBindingRequest(serviceInstanceId, serviceDefinitionId, planId, bindingId,
+					serviceDefinition, plan, asyncAccepted, bindResource, parameters, context, platformInstanceId,
+					apiInfoLocation, originatingIdentity, requestIdentity);
 		}
 
 	}

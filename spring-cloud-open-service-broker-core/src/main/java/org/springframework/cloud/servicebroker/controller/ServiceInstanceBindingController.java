@@ -92,6 +92,7 @@ public class ServiceInstanceBindingController extends BaseController {
 	 * @param acceptsIncomplete indicates an asynchronous request
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 * @param request the request body
 	 * @return the response
 	 */
@@ -103,6 +104,7 @@ public class ServiceInstanceBindingController extends BaseController {
 			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
 			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
+			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, required = false) String requestIdentity,
 			@Valid @RequestBody CreateServiceInstanceBindingRequest request) {
 		return getRequiredServiceDefinition(request.getServiceDefinitionId())
 				.flatMap(serviceDefinition -> getRequiredServiceDefinitionPlan(serviceDefinition, request.getPlanId())
@@ -119,7 +121,7 @@ public class ServiceInstanceBindingController extends BaseController {
 				.cast(AsyncServiceBrokerRequest.class)
 				.flatMap(req -> configureCommonRequestFields(req,
 						pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE),
-						apiInfoLocation, originatingIdentityString, acceptsIncomplete))
+						apiInfoLocation, originatingIdentityString, requestIdentity, acceptsIncomplete))
 				.cast(CreateServiceInstanceBindingRequest.class)
 				.flatMap(req -> service.createServiceInstanceBinding(req)
 						.doOnRequest(v -> LOG.debug("Creating a service instance binding: request={}", req))
@@ -151,6 +153,7 @@ public class ServiceInstanceBindingController extends BaseController {
 	 * @param bindingId the service binding ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the response
 	 */
 	@GetMapping({PLATFORM_PATH_MAPPING, PATH_MAPPING})
@@ -159,13 +162,15 @@ public class ServiceInstanceBindingController extends BaseController {
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
 			@PathVariable(ServiceBrokerRequest.BINDING_ID_PATH_VARIABLE) String bindingId,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
+			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, required = false) String requestIdentity) {
 		return Mono.just(GetServiceInstanceBindingRequest.builder()
 				.serviceInstanceId(serviceInstanceId)
 				.bindingId(bindingId)
 				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 				.apiInfoLocation(apiInfoLocation)
 				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+				.requestIdentity(requestIdentity)
 				.build())
 				.flatMap(req -> service.getServiceInstanceBinding(req)
 						.doOnRequest(v -> LOG.debug("Getting a service instance binding: request={}", req))
@@ -195,6 +200,7 @@ public class ServiceInstanceBindingController extends BaseController {
 	 * @param operation description of the operation being performed
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the response
 	 */
 	@GetMapping({PLATFORM_PATH_MAPPING + "/last_operation", PATH_MAPPING + "/last_operation"})
@@ -206,7 +212,8 @@ public class ServiceInstanceBindingController extends BaseController {
 			@RequestParam(value = ServiceBrokerRequest.PLAN_ID_PARAMETER, required = false) String planId,
 			@RequestParam(value = "operation", required = false) String operation,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
+			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, required = false) String requestIdentity) {
 		return Mono.just(GetLastServiceBindingOperationRequest.builder()
 				.serviceDefinitionId(serviceDefinitionId)
 				.serviceInstanceId(serviceInstanceId)
@@ -216,6 +223,7 @@ public class ServiceInstanceBindingController extends BaseController {
 				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 				.apiInfoLocation(apiInfoLocation)
 				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+				.requestIdentity(requestIdentity)
 				.build())
 				.flatMap(request -> service.getLastOperation(request)
 						.doOnRequest(
@@ -242,6 +250,7 @@ public class ServiceInstanceBindingController extends BaseController {
 	 * @param acceptsIncomplete indicates an asynchronous request
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the response
 	 */
 	@DeleteMapping({PLATFORM_PATH_MAPPING, PATH_MAPPING})
@@ -253,7 +262,8 @@ public class ServiceInstanceBindingController extends BaseController {
 			@RequestParam(ServiceBrokerRequest.PLAN_ID_PARAMETER) String planId,
 			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
 			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString) {
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
+			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, required = false) String requestIdentity) {
 		return getRequiredServiceDefinition(serviceDefinitionId)
 				.switchIfEmpty(Mono.just(ServiceDefinition.builder().build()))
 				.flatMap(serviceDefinition -> getRequiredServiceDefinitionPlan(serviceDefinition, planId)
@@ -270,6 +280,7 @@ public class ServiceInstanceBindingController extends BaseController {
 										pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 								.apiInfoLocation(apiInfoLocation)
 								.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+								.requestIdentity(requestIdentity)
 								.build()))
 				.flatMap(req -> service.deleteServiceInstanceBinding(req)
 						.doOnRequest(v -> LOG.debug("Deleting a service instance binding: request={}", req))

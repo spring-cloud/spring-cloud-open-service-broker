@@ -119,4 +119,14 @@ public class ServiceBrokerWebMvcAutoConfiguration {
 		return new ServiceBrokerWebMvcExceptionHandler();
 	}
 
+	/**
+	 * Provide a {@link RequestIdentityInterceptor} bean
+	 *
+	 * @return the bean
+	 */
+	@Bean
+	public RequestIdentityInterceptor requestIdentityInterceptor() {
+		return new RequestIdentityInterceptor();
+	}
+
 }

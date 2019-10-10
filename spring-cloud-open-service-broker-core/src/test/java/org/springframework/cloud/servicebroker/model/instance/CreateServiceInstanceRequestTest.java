@@ -51,6 +51,7 @@ public class CreateServiceInstanceRequestTest {
 		assertThat(request.getApiInfoLocation()).isNull();
 		assertThat(request.getPlatformInstanceId()).isNull();
 		assertThat(request.getOriginatingIdentity()).isNull();
+		assertThat(request.getRequestIdentity()).isNull();
 	}
 
 	@Test
@@ -79,6 +80,7 @@ public class CreateServiceInstanceRequestTest {
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("https://api.example.com")
 				.originatingIdentity(originatingIdentity)
+				.requestIdentity("request-id")
 				.build();
 
 		assertThat(request.getServiceInstanceId()).isEqualTo("service-instance-id");
@@ -98,6 +100,7 @@ public class CreateServiceInstanceRequestTest {
 		assertThat(request.getPlatformInstanceId()).isEqualTo("platform-instance-id");
 		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.example.com");
 		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);
+		assertThat(request.getRequestIdentity()).isEqualTo("request-id");
 	}
 
 	@Test
@@ -129,6 +132,7 @@ public class CreateServiceInstanceRequestTest {
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("https://api.example.com")
 				.originatingIdentity(originatingIdentity)
+				.requestIdentity("request-id")
 				.plan(Plan.builder().build())
 				.serviceDefinition(ServiceDefinition.builder().build())
 				.build();
@@ -143,6 +147,7 @@ public class CreateServiceInstanceRequestTest {
 		JsonPathAssert.assertThat(json).hasMapAtPath("$.context").hasSize(3);
 		JsonPathAssert.assertThat(json).hasPath("$.space_guid").isEqualTo("space-guid");
 		JsonPathAssert.assertThat(json).hasPath("$.organization_guid").isEqualTo("org-guid");
+		JsonPathAssert.assertThat(json).hasNoPath("$.request_identity");
 
 
 		// fields mapped outside of json body (typically http headers or request paths)
@@ -155,7 +160,9 @@ public class CreateServiceInstanceRequestTest {
 	public void serializesWithoutContextAccordingToOsbSpecs() {
 		CreateServiceInstanceRequest request = CreateServiceInstanceRequest.builder()
 				.serviceInstanceId("service-instance-id")
-				.serviceDefinitionId("service-definition-id").planId("plan-id").build();
+				.serviceDefinitionId("service-definition-id")
+				.planId("plan-id")
+				.build();
 
 		DocumentContext json = JsonUtils.toJsonPath(request);
 
