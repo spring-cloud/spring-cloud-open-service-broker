@@ -16,8 +16,6 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
-import java.util.Base64;
-
 import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidOriginatingIdentityException;
@@ -26,6 +24,7 @@ import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.KubernetesContext;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
+import org.springframework.util.Base64Utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -87,7 +86,7 @@ public class BaseControllerTest {
 	}
 
 	private String encode(String json) {
-		return Base64.getEncoder().encodeToString(json.getBytes());
+		return Base64Utils.encodeToString(json.getBytes());
 	}
 
 	private static class TestBaseController extends BaseController {
@@ -101,7 +100,7 @@ public class BaseControllerTest {
 			};
 
 			configureCommonRequestFields(request, "platform-instance-id", "api-info-location",
-					originatingIdentityString)
+					originatingIdentityString, "request-id")
 					.block();
 
 			return request.getOriginatingIdentity();

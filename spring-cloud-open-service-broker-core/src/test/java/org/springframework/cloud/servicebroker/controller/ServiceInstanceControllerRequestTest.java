@@ -53,6 +53,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("api-info-location")
 				.originatingIdentity(identityContext)
+				.requestIdentity("request-id")
 				.serviceDefinition(serviceDefinition)
 				.plan(plan)
 				.build();
@@ -60,7 +61,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
 		controller.createServiceInstance(pathVariables, "service-instance-id", true,
-				"api-info-location", encodeOriginatingIdentity(identityContext), parsedRequest)
+				"api-info-location", encodeOriginatingIdentity(identityContext), "request-id", parsedRequest)
 				.block();
 	}
 
@@ -83,7 +84,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		assertThrows(ServiceDefinitionDoesNotExistException.class, () ->
 				controller.createServiceInstance(pathVariables, null, false,
-						null, null, createRequest)
+						null, null, null, createRequest)
 						.block());
 	}
 
@@ -98,7 +99,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		assertThrows(ServiceDefinitionPlanDoesNotExistException.class, () ->
 				controller.createServiceInstance(pathVariables, null, false,
-						null, null, createRequest)
+						null, null, null, createRequest)
 						.block());
 	}
 
@@ -109,12 +110,13 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("api-info-location")
 				.originatingIdentity(identityContext)
+				.requestIdentity("request-id")
 				.build();
 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
 		controller.getServiceInstance(pathVariables, "service-instance-id",
-				"api-info-location", encodeOriginatingIdentity(identityContext))
+				"api-info-location", encodeOriginatingIdentity(identityContext), "request-id")
 				.block();
 	}
 
@@ -128,13 +130,14 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("api-info-location")
 				.originatingIdentity(identityContext)
+				.requestIdentity("request-id")
 				.build();
 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
 		controller.getServiceInstanceLastOperation(pathVariables, "service-instance-id",
 				"service-definition-id", "plan-id", "operation",
-				"api-info-location", encodeOriginatingIdentity(identityContext))
+				"api-info-location", encodeOriginatingIdentity(identityContext), "request-id")
 				.block();
 	}
 
@@ -148,6 +151,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("api-info-location")
 				.originatingIdentity(identityContext)
+				.requestIdentity("request-id")
 				.serviceDefinition(serviceDefinition)
 				.plan(plan)
 				.build();
@@ -156,7 +160,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		controller.deleteServiceInstance(pathVariables, "service-instance-id",
 				"service-definition-id", "plan-id", true, "api-info-location",
-				encodeOriginatingIdentity(identityContext))
+				encodeOriginatingIdentity(identityContext), "request-id")
 				.block();
 	}
 
@@ -172,7 +176,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		assertThrows(ServiceDefinitionDoesNotExistException.class, () ->
 				controller.deleteServiceInstance(pathVariables, null, "unknown-service-definition-id", null, true, null,
-						encodeOriginatingIdentity(identityContext))
+						encodeOriginatingIdentity(identityContext), "request-id")
 						.block());
 	}
 
@@ -188,8 +192,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		assertThrows(ServiceDefinitionPlanDoesNotExistException.class, () ->
 				controller.deleteServiceInstance(pathVariables, null, "service-definition-id", "unknown-plan-id", true,
-						null,
-						encodeOriginatingIdentity(identityContext))
+						null, encodeOriginatingIdentity(identityContext), "request-id")
 						.block());
 	}
 
@@ -203,6 +206,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("api-info-location")
 				.originatingIdentity(identityContext)
+				.requestIdentity("request-id")
 				.serviceDefinition(serviceDefinition)
 				.plan(plan)
 				.build();
@@ -210,7 +214,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
 		controller.updateServiceInstance(pathVariables, "service-instance-id", true,
-				"api-info-location", encodeOriginatingIdentity(identityContext),
+				"api-info-location", encodeOriginatingIdentity(identityContext), "request-id",
 				parsedRequest)
 				.block();
 	}
@@ -235,7 +239,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		assertThrows(ServiceDefinitionDoesNotExistException.class, () ->
 				controller.updateServiceInstance(pathVariables, null, false,
-						null, null, updateRequest)
+						null, null, null, updateRequest)
 						.block());
 	}
 

@@ -29,6 +29,7 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
  * body passed to the service broker by the platform.
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API
  * 		specification</a>
  */
@@ -46,10 +47,11 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 */
-	public GetServiceInstanceBindingRequest(String serviceInstanceId, String bindingId,
-			String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
-		super(platformInstanceId, apiInfoLocation, originatingIdentity);
+	public GetServiceInstanceBindingRequest(String serviceInstanceId, String bindingId, String platformInstanceId,
+			String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
+		super(platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.bindingId = bindingId;
 	}
@@ -105,7 +107,8 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 			return false;
 		}
 		GetServiceInstanceBindingRequest that = (GetServiceInstanceBindingRequest) o;
-		return Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
+		return that.canEqual(this) &&
+				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
 				Objects.equals(bindingId, that.bindingId);
 	}
 
@@ -142,6 +145,8 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		private String apiInfoLocation;
 
 		private Context originatingIdentity;
+
+		private String requestIdentity;
 
 		private GetServiceInstanceBindingRequestBuilder() {
 		}
@@ -207,13 +212,25 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		}
 
 		/**
+		 * Set the identity of the request sent from the platform
+		 *
+		 * @param requestIdentity the request identity
+		 * @return the builder
+		 * @see #getRequestIdentity()
+		 */
+		public GetServiceInstanceBindingRequestBuilder requestIdentity(String requestIdentity) {
+			this.requestIdentity = requestIdentity;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link GetServiceInstanceBindingRequest} from the provided values.
 		 *
 		 * @return the newly constructed {@literal GetServiceInstanceBindingRequest}
 		 */
 		public GetServiceInstanceBindingRequest build() {
-			return new GetServiceInstanceBindingRequest(serviceInstanceId, bindingId,
-					platformInstanceId, apiInfoLocation, originatingIdentity);
+			return new GetServiceInstanceBindingRequest(serviceInstanceId, bindingId, platformInstanceId,
+					apiInfoLocation, originatingIdentity, requestIdentity);
 		}
 
 	}

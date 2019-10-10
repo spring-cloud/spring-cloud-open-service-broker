@@ -70,13 +70,15 @@ public class BaseController {
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the request with the applied headers
 	 */
 	protected Mono<ServiceBrokerRequest> configureCommonRequestFields(ServiceBrokerRequest request, String platformInstanceId,
-			String apiInfoLocation, String originatingIdentityString) {
+			String apiInfoLocation, String originatingIdentityString, String requestIdentity) {
 		request.setPlatformInstanceId(platformInstanceId);
 		request.setApiInfoLocation(apiInfoLocation);
 		request.setOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
+		request.setRequestIdentity(requestIdentity);
 		return Mono.just(request);
 	}
 
@@ -87,13 +89,15 @@ public class BaseController {
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 * @param asyncAccepted does the platform accept asynchronous requests
 	 * @return the request with the applied headers
 	 */
 	protected Mono<AsyncServiceBrokerRequest> configureCommonRequestFields(AsyncServiceBrokerRequest request, String platformInstanceId,
-			String apiInfoLocation, String originatingIdentityString, boolean asyncAccepted) {
+			String apiInfoLocation, String originatingIdentityString, String requestIdentity, boolean asyncAccepted) {
 		request.setAsyncAccepted(asyncAccepted);
-		return configureCommonRequestFields(request, platformInstanceId, apiInfoLocation, originatingIdentityString)
+		return configureCommonRequestFields(request, platformInstanceId, apiInfoLocation, originatingIdentityString,
+				requestIdentity)
 				.cast(AsyncServiceBrokerRequest.class);
 	}
 

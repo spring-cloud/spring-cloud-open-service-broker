@@ -40,6 +40,7 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
+ * @author Roy Clarkson
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-2">Open Service
  * 		Broker API specification</a>
  */
@@ -79,7 +80,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * Construct a new {@link CreateServiceInstanceRequest}
 	 */
 	public CreateServiceInstanceRequest() {
-		this(null, null, null, null, null, null, null, false, null, null, null);
+		this(null, null, null, null, null, null, null, false, null, null, null, null);
 	}
 
 	/**
@@ -96,21 +97,22 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 */
 	public CreateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
-			ServiceDefinition serviceDefinition, Plan plan,
-			Map<String, Object> parameters, Context context, boolean asyncAccepted,
-			String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
+			ServiceDefinition serviceDefinition, Plan plan, Map<String, Object> parameters, Context context,
+			boolean asyncAccepted, String platformInstanceId, String apiInfoLocation, Context originatingIdentity,
+			String requestIdentity) {
 		this(serviceDefinitionId, serviceInstanceId, planId, serviceDefinition, plan, parameters, context,
-				asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity, null, null);
+				asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity, null, null);
 	}
 
 	private CreateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
-			ServiceDefinition serviceDefinition, Plan plan,
-			Map<String, Object> parameters, Context context, boolean asyncAccepted,
-			String platformInstanceId, String apiInfoLocation,
-			Context originatingIdentity, String organizationGuid, String spaceGuid) {
-		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity);
+			ServiceDefinition serviceDefinition, Plan plan, Map<String, Object> parameters, Context context,
+			boolean asyncAccepted, String platformInstanceId, String apiInfoLocation, Context originatingIdentity,
+			String requestIdentity, String organizationGuid, String spaceGuid) {
+		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity,
+				requestIdentity);
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.serviceInstanceId = serviceInstanceId;
 		this.planId = planId;
@@ -371,6 +373,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 		private Context originatingIdentity;
 
+		private String requestIdentity;
+
 		private CreateServiceInstanceRequestBuilder() {
 		}
 
@@ -521,14 +525,26 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		}
 
 		/**
+		 * Set the identity of the request sent from the platform
+		 *
+		 * @param requestIdentity the request identity
+		 * @return the builder
+		 * @see #getRequestIdentity()
+		 */
+		public CreateServiceInstanceRequestBuilder requestIdentity(String requestIdentity) {
+			this.requestIdentity = requestIdentity;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link CreateServiceInstanceRequest} from the provided values.
 		 *
 		 * @return the newly constructed {@literal CreateServiceInstanceRequest}
 		 */
 		public CreateServiceInstanceRequest build() {
 			return new CreateServiceInstanceRequest(serviceDefinitionId, serviceInstanceId, planId,
-					serviceDefinition, plan, parameters, context, asyncAccepted,
-					platformInstanceId, apiInfoLocation, originatingIdentity);
+					serviceDefinition, plan, parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation
+					, originatingIdentity, requestIdentity);
 		}
 
 	}

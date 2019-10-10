@@ -54,6 +54,7 @@ public class CreateServiceInstanceBindingRequestTest {
 		assertThat(request.getApiInfoLocation()).isNull();
 		assertThat(request.getPlatformInstanceId()).isNull();
 		assertThat(request.getOriginatingIdentity()).isNull();
+		assertThat(request.getRequestIdentity()).isNull();
 	}
 
 	@Test
@@ -83,6 +84,7 @@ public class CreateServiceInstanceBindingRequestTest {
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("https://api.example.com")
 				.originatingIdentity(originatingIdentity)
+				.requestIdentity("request-id")
 				.build();
 
 		assertThat(request.getServiceDefinitionId()).isEqualTo("service-definition-id");
@@ -109,6 +111,7 @@ public class CreateServiceInstanceBindingRequestTest {
 		assertThat(request.getPlatformInstanceId()).isEqualTo("platform-instance-id");
 		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.example.com");
 		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);
+		assertThat(request.getRequestIdentity()).isEqualTo("request-id");
 	}
 
 	@Test

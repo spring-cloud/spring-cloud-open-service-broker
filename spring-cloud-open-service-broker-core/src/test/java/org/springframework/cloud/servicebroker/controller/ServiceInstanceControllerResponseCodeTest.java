@@ -128,7 +128,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 				.build();
 
 		ResponseEntity<CreateServiceInstanceResponse> responseEntity = controller
-				.createServiceInstance(pathVariables, null, false, null, null,
+				.createServiceInstance(pathVariables, null, false, null, null, null,
 						createRequest)
 				.block();
 
@@ -164,7 +164,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 				.willReturn(responseMono);
 
 		ResponseEntity<GetServiceInstanceResponse> responseEntity = controller
-				.getServiceInstance(pathVariables, null, null, null)
+				.getServiceInstance(pathVariables, null, null, null, null)
 				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
@@ -177,7 +177,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 				.willReturn(Mono.error(new ServiceInstanceDoesNotExistException("instance does not exist")));
 
 		ResponseEntity<GetServiceInstanceResponse> responseEntity = controller
-				.getServiceInstance(pathVariables, null, "service-definition-id", null)
+				.getServiceInstance(pathVariables, null, "service-definition-id", null, null)
 				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -217,7 +217,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 
 		ResponseEntity<DeleteServiceInstanceResponse> responseEntity = controller
 				.deleteServiceInstance(pathVariables, null, "service-definition-id", "service-definition-plan-id",
-						false, null, null)
+						false, null, null,null)
 				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
@@ -231,7 +231,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 
 		ResponseEntity<DeleteServiceInstanceResponse> responseEntity = controller
 				.deleteServiceInstance(pathVariables, null, "service-definition-id", "service-definition-plan-id",
-						false, null, null)
+						false, null, null,null)
 				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
@@ -274,7 +274,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 				.build();
 
 		ResponseEntity<UpdateServiceInstanceResponse> responseEntity = controller
-				.updateServiceInstance(pathVariables, null, false, null, null,
+				.updateServiceInstance(pathVariables, null, false, null, null, null,
 						updateRequest)
 				.block();
 
@@ -320,7 +320,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 
 		ResponseEntity<GetLastServiceOperationResponse> responseEntity = controller
 				.getServiceInstanceLastOperation(pathVariables, null, null, null, null,
-						null, null).block();
+						null, null, null)
+				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(response);

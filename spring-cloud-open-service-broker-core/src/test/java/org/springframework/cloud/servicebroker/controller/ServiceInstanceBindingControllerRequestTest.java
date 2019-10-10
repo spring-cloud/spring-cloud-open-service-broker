@@ -50,12 +50,13 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("api-info-location")
 				.originatingIdentity(identityContext)
+				.requestIdentity("request-id")
 				.build();
 
 		ServiceInstanceBindingController controller = createControllerUnderTest(expectedRequest);
 
 		controller.createServiceInstanceBinding(pathVariables, "service-instance-id", "binding-id",
-				true, "api-info-location", encodeOriginatingIdentity(identityContext), parsedRequest);
+				true, "api-info-location", encodeOriginatingIdentity(identityContext), "request-id", parsedRequest);
 	}
 
 	@Test
@@ -67,7 +68,8 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 		ServiceInstanceBindingController controller = createControllerUnderTest();
 
 		assertThrows(ServiceDefinitionDoesNotExistException.class, () ->
-				controller.createServiceInstanceBinding(pathVariables, null, null, false, null, null, createRequest)
+				controller.createServiceInstanceBinding(pathVariables, null, null, false, null, null,
+						null, createRequest)
 						.block());
 	}
 
@@ -83,7 +85,8 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 
 		assertThrows(ServiceDefinitionPlanDoesNotExistException.class, () ->
 				controller.createServiceInstanceBinding(pathVariables, null, null,
-						false, null, encodeOriginatingIdentity(identityContext), createRequest).block());
+						false, null, encodeOriginatingIdentity(identityContext), "request-id", createRequest)
+						.block());
 	}
 
 
@@ -105,12 +108,13 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("api-info-location")
 				.originatingIdentity(identityContext)
+				.requestIdentity("request-id")
 				.build();
 
 		ServiceInstanceBindingController controller = createControllerUnderTest(expectedRequest);
 
 		controller.getServiceInstanceBinding(pathVariables, "service-instance-id", "binding-id",
-				"api-info-location", encodeOriginatingIdentity(identityContext));
+				"api-info-location", encodeOriginatingIdentity(identityContext), "request-id");
 	}
 
 	@Test
@@ -124,6 +128,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("api-info-location")
 				.originatingIdentity(identityContext)
+				.requestIdentity("request-id")
 				.serviceDefinition(serviceDefinition)
 				.plan(plan)
 				.build();
@@ -132,7 +137,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 
 		controller.deleteServiceInstanceBinding(pathVariables, "service-instance-id", "binding-id",
 				serviceDefinition.getId(), "plan-id", true,
-				"api-info-location", encodeOriginatingIdentity(identityContext));
+				"api-info-location", encodeOriginatingIdentity(identityContext), "request-id");
 	}
 
 	@Test
@@ -142,7 +147,8 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 		assertThrows(ServiceDefinitionDoesNotExistException.class, () ->
 				controller
 						.deleteServiceInstanceBinding(pathVariables, null, null, "unknown-service-definition-id", null,
-								false, null, null).block());
+								false, null, null, null)
+						.block());
 	}
 
 	@Test
@@ -151,7 +157,8 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 
 		assertThrows(ServiceDefinitionPlanDoesNotExistException.class, () ->
 				controller.deleteServiceInstanceBinding(pathVariables, null, null, "service-definition-id",
-						"unknown-plan-id", false, null, null).block());
+						"unknown-plan-id", false, null, null, null)
+						.block());
 	}
 
 	private ServiceInstanceBindingController createControllerUnderTest(ServiceBrokerRequest expectedRequest) {

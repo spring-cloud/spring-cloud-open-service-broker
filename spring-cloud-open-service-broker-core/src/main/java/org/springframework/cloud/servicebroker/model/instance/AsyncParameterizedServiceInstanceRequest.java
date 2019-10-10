@@ -31,6 +31,7 @@ import org.springframework.util.CollectionUtils;
  * Details of a request that supports arbitrary parameters and asynchronous behavior.
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServiceBrokerRequest {
@@ -43,7 +44,7 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 * Construct a new {@link AsyncParameterizedServiceInstanceRequest}
 	 */
 	protected AsyncParameterizedServiceInstanceRequest() {
-		this(null, null, false, null, null, null);
+		this(null, null, false, null, null, null, null);
 	}
 
 	/**
@@ -55,11 +56,12 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 */
 	protected AsyncParameterizedServiceInstanceRequest(Map<String, Object> parameters, Context context,
-			boolean asyncAccepted, String platformInstanceId,
-			String apiInfoLocation, Context originatingIdentity) {
-		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity);
+			boolean asyncAccepted, String platformInstanceId, String apiInfoLocation, Context originatingIdentity,
+			String requestIdentity) {
+		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		if (!CollectionUtils.isEmpty(parameters)) {
 			this.parameters.putAll(parameters);
 		}

@@ -118,4 +118,14 @@ public class ServiceBrokerWebFluxAutoConfiguration {
 		return new ServiceBrokerWebFluxExceptionHandler();
 	}
 
+	/**
+	 * Provide a {@link RequestIdentityWebFilter} bean
+	 *
+	 * @return the bean
+	 */
+	@Bean
+	public RequestIdentityWebFilter requestIdentityWebFilter() {
+		return new RequestIdentityWebFilter();
+	}
+
 }

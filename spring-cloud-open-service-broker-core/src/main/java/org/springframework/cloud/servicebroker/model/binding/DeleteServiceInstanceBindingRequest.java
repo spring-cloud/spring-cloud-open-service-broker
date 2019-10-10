@@ -72,12 +72,12 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * @param requestIdentity identity of the request sent from the platform
 	 */
 	public DeleteServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
-			String bindingId, ServiceDefinition serviceDefinition, Plan plan,
-			boolean acceptsAsync, String platformInstanceId, String apiInfoLocation,
-			Context originatingIdentity) {
-		super(acceptsAsync, platformInstanceId, apiInfoLocation, originatingIdentity);
+			String bindingId, ServiceDefinition serviceDefinition, Plan plan, boolean acceptsAsync,
+			String platformInstanceId, String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
+		super(acceptsAsync, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
@@ -247,6 +247,8 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 
 		private Context originatingIdentity;
 
+		private String requestIdentity;
+
 		private ServiceDefinition serviceDefinition;
 
 		private Plan plan;
@@ -376,14 +378,26 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		}
 
 		/**
+		 * Set the identity of the request sent from the platform
+		 *
+		 * @param requestIdentity the request identity
+		 * @return the builder
+		 * @see #getRequestIdentity()
+		 */
+		public DeleteServiceInstanceBindingRequestBuilder requestIdentity(String requestIdentity) {
+			this.requestIdentity = requestIdentity;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link DeleteServiceInstanceBindingRequest} from the provided values.
 		 *
 		 * @return the newly constructed {@literal DeleteServiceInstanceBindingRequest}
 		 */
 		public DeleteServiceInstanceBindingRequest build() {
 			return new DeleteServiceInstanceBindingRequest(serviceInstanceId, serviceDefinitionId, planId,
-					bindingId, serviceDefinition, plan, asyncAccepted,
-					platformInstanceId, apiInfoLocation, originatingIdentity);
+					bindingId, serviceDefinition, plan, asyncAccepted, platformInstanceId, apiInfoLocation,
+					originatingIdentity, requestIdentity);
 		}
 
 	}
