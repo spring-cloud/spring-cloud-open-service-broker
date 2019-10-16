@@ -51,8 +51,4 @@ dependencies {
 	testImplementation("org.apache.commons:commons-lang3")
 }
 
-test {
-	useJUnitPlatform()
-}
-
 compileJava.dependsOn(processResources)

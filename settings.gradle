@@ -11,4 +11,5 @@ project(":spring-cloud-open-service-broker-docs").projectDir = "$rootDir/spring-
 project(":spring-cloud-open-service-broker-core").projectDir = "$rootDir/spring-cloud-open-service-broker-core" as File
 project(":spring-cloud-open-service-broker-autoconfigure").projectDir = "$rootDir/spring-cloud-open-service-broker-autoconfigure" as File
 project(":spring-cloud-starter-open-service-broker").projectDir = "$rootDir/spring-cloud-starter-open-service-broker" as File
-
+project(":spring-cloud-open-service-broker-acceptance-webflux").projectDir = "$rootDir/spring-cloud-open-service-broker-acceptance-webflux" as File
+project(":spring-cloud-open-service-broker-acceptance-webmvc").projectDir = "$rootDir/spring-cloud-open-service-broker-acceptance-webmvc" as File

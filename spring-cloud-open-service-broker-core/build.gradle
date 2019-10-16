@@ -70,10 +70,6 @@ dependencies {
 	testImplementation("javax.servlet:javax.servlet-api:${javaxServletApiVersion}")
 }
 
-test {
-	useJUnitPlatform()
-}
-
 configurations {
 	testOutput
 }

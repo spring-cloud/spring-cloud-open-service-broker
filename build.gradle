@@ -122,6 +122,14 @@ configure(allprojects - [project(":spring-cloud-open-service-broker-docs")]) {
 		ruleSetFiles = files("${project.rootDir}/config/pmdTestRuleSet.xml")
 		source = "src/test/java"
 	}
+
+	test {
+		useJUnitPlatform()
+		testLogging {
+			events "passed", "skipped", "failed"
+		}
+		reports.junitXml.enabled = true
+	}
 }
 
 subprojects {
@@ -188,10 +196,6 @@ configure(subprojects - [project(":spring-cloud-starter-open-service-broker")]) 
 		archives sourcesJar
 		archives javadocJar
 		archives testsJar
-	}
-
-	test {
-		reports.junitXml.enabled = true
 	}
 }
 
