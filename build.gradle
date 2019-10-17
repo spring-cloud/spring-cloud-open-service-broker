@@ -30,7 +30,7 @@ buildscript {
 }
 
 ext {
-	springBootVersion = project.findProperty("springBootVersion") ?: "2.2.0.RC1"
+	springBootVersion = project.findProperty("springBootVersion") ?: "2.2.0.RELEASE"
 	springFrameworkVersion = project.findProperty("springFrameworkVersion") ?: "5.2.0.RELEASE"
 	// deprecated in favor of `springFrameworkVersion`
 	if (project.hasProperty("springVersion")) {
