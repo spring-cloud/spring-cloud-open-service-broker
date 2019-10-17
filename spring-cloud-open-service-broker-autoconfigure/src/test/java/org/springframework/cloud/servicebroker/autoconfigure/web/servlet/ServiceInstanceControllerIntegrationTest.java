@@ -16,10 +16,10 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractServiceInstanceControllerIntegrationTest;
 import org.springframework.cloud.servicebroker.controller.ServiceBrokerWebMvcExceptionHandler;
@@ -67,12 +67,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceControllerIntegrationTest {
 
 	private MockMvc mockMvc;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(this.controller)
 				.setControllerAdvice(ServiceBrokerWebMvcExceptionHandler.class)
@@ -544,8 +544,6 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 	@Test
 	public void deleteServiceInstanceWithMissingQueryParamsFails() throws Exception {
-		setupCatalogService(null);
-
 		final String url = buildDeleteUrl(null, false).replace("plan_id", "plan-1");
 
 		mockMvc.perform(delete(url)

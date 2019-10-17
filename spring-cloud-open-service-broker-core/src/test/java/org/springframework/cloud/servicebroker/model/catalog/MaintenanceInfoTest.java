@@ -16,15 +16,17 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MaintenanceInfoTest {
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void incorrectVersion() {
-		constructInfoAndValidate("157.2", "description");
+		assertThrows(IllegalArgumentException.class, () ->
+				constructInfoAndValidate("157.2", "description"));
 	}
 
 	@Test

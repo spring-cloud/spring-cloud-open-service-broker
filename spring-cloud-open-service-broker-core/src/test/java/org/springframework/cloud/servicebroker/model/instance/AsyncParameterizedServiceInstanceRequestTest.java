@@ -16,22 +16,24 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import java.util.Map;
+
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.cloud.servicebroker.JsonPathAssert;
+import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.KubernetesContext;
-import org.springframework.cloud.servicebroker.JsonUtils;
-
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM;
 import static org.springframework.cloud.servicebroker.model.KubernetesContext.KUBERNETES_PLATFORM;
 
 public class AsyncParameterizedServiceInstanceRequestTest {
+
 	@Test
 	public void requestWithCloudFoundryContextIsDeserializedFromJson() {
 		AsyncParameterizedServiceInstanceRequest request =

@@ -18,13 +18,14 @@ package org.springframework.cloud.servicebroker.model;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.instance.AsyncParameterizedServiceInstanceRequest;
 
 public class AsyncServiceBrokerRequestTest {
+
 	@Test
 	public void equalsAndHashCode() {
 		EqualsVerifier

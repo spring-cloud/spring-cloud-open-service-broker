@@ -16,16 +16,18 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
-import org.springframework.cloud.servicebroker.JsonUtils;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BindResourceTest {
+
 	@Test
 	public void bindResourceIsBuiltWithDefaults() {
 		BindResource bindResource = BindResource.builder()

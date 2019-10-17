@@ -21,14 +21,13 @@ import java.util.Map;
 
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
-
 
 public class GetServiceInstanceRouteBindingResponseTest {
 

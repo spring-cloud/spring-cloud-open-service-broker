@@ -16,11 +16,11 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 
 public class OperationStateTest {
 

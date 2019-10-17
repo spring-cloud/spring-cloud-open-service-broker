@@ -16,7 +16,7 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;

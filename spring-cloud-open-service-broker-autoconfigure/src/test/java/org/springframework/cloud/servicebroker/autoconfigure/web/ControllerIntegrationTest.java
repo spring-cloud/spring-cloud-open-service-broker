@@ -23,7 +23,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import reactor.core.publisher.Mono;
 
@@ -64,7 +64,7 @@ public abstract class ControllerIntegrationTest {
 
 	protected ServiceDefinition serviceDefinition;
 
-	@Before
+	@BeforeEach
 	public void setUpControllerIntegrationTest() {
 		serviceDefinition = ServiceFixture.getSimpleService();
 	}

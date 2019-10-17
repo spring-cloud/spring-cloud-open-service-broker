@@ -24,15 +24,17 @@ import java.util.Map;
 import com.jayway.jsonpath.DocumentContext;
 import net.bytebuddy.utility.RandomString;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class CreateServiceInstanceAppBindingResponseTest {
+
 	@Test
 	public void responseWithDefaultsIsBuilt() {
 		CreateServiceInstanceAppBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
@@ -163,11 +165,12 @@ public class CreateServiceInstanceAppBindingResponseTest {
 				.build();
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void exceedsOperationCharacterLimit() throws Exception {
+		assertThrows(IllegalArgumentException.class, () ->
 		CreateServiceInstanceAppBindingResponse.builder()
 				.operation(RandomString.make(10_001))
-				.build();
+				.build());
 	}
 
 	@Test

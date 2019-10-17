@@ -16,20 +16,22 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest.PreviousValues;
-import org.springframework.cloud.servicebroker.JsonUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UpdateServiceInstanceRequestTest {
+
 	@Test
 	public void requestWithDefaultsIsBuilt() {
 		UpdateServiceInstanceRequest request = UpdateServiceInstanceRequest.builder()

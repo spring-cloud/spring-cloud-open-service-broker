@@ -19,11 +19,12 @@ package org.springframework.cloud.servicebroker.model.instance;
 import com.jayway.jsonpath.DocumentContext;
 import net.bytebuddy.utility.RandomString;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class CreateServiceInstanceResponseTest {
@@ -88,11 +89,12 @@ public class CreateServiceInstanceResponseTest {
 				.build();
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void exceedsOperationCharacterLimit() throws Exception {
-		CreateServiceInstanceResponse.builder()
-				.operation(RandomString.make(10_001))
-				.build();
+		assertThrows(IllegalArgumentException.class, () ->
+				CreateServiceInstanceResponse.builder()
+						.operation(RandomString.make(10_001))
+						.build());
 	}
 
 	@Test

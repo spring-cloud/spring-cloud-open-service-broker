@@ -16,7 +16,7 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
@@ -39,6 +39,7 @@ import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInsta
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ServiceInstanceControllerRequestTest extends ControllerRequestTest {
 
@@ -72,7 +73,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 				.context(requestContext);
 	}
 
-	@Test(expected = ServiceDefinitionDoesNotExistException.class)
+	@Test
 	public void createServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
 		CreateServiceInstanceRequest createRequest = CreateServiceInstanceRequest.builder()
 				.serviceDefinitionId("unknown-service-definition-id")
@@ -80,12 +81,13 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		ServiceInstanceController controller = createControllerUnderTest();
 
+		assertThrows(ServiceDefinitionDoesNotExistException.class, () ->
 		controller.createServiceInstance(pathVariables, null, false,
 				null, null, createRequest)
-				.block();
+				.block());
 	}
 
-	@Test(expected = ServiceDefinitionPlanDoesNotExistException.class)
+	@Test
 	public void createServiceInstanceWithInvalidPlanIdThrowsException() {
 		CreateServiceInstanceRequest createRequest = CreateServiceInstanceRequest.builder()
 				.serviceDefinitionId("service-definition-id")
@@ -94,9 +96,10 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		ServiceInstanceController controller = createControllerUnderTest();
 
-		controller.createServiceInstance(pathVariables, null, false,
-				null, null, createRequest)
-				.block();
+		assertThrows(ServiceDefinitionPlanDoesNotExistException.class, () ->
+				controller.createServiceInstance(pathVariables, null, false,
+						null, null, createRequest)
+						.block());
 	}
 
 	@Test
@@ -157,7 +160,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 				.block();
 	}
 
-	@Test(expected = ServiceDefinitionDoesNotExistException.class)
+	@Test
 	public void deleteServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
 		DeleteServiceInstanceRequest expectedRequest = DeleteServiceInstanceRequest.builder()
 				.asyncAccepted(true)
@@ -167,11 +170,13 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
-		controller.deleteServiceInstance(pathVariables, null, "unknown-service-definition-id", null, true, null,
-				encodeOriginatingIdentity(identityContext)).block();
+		assertThrows(ServiceDefinitionDoesNotExistException.class, () ->
+				controller.deleteServiceInstance(pathVariables, null, "unknown-service-definition-id", null, true, null,
+						encodeOriginatingIdentity(identityContext))
+						.block());
 	}
 
-	@Test(expected = ServiceDefinitionPlanDoesNotExistException.class)
+	@Test
 	public void deleteServiceInstanceWithInvalidPlanIdThrowsException() {
 		DeleteServiceInstanceRequest expectedRequest = DeleteServiceInstanceRequest.builder()
 				.asyncAccepted(true)
@@ -181,8 +186,11 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
-		controller.deleteServiceInstance(pathVariables, null, "service-definition-id", "unknown-plan-id", true, null,
-				encodeOriginatingIdentity(identityContext)).block();
+		assertThrows(ServiceDefinitionPlanDoesNotExistException.class, () ->
+				controller.deleteServiceInstance(pathVariables, null, "service-definition-id", "unknown-plan-id", true,
+						null,
+						encodeOriginatingIdentity(identityContext))
+						.block());
 	}
 
 	@Test
@@ -217,7 +225,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 				.context(requestContext);
 	}
 
-	@Test(expected = ServiceDefinitionDoesNotExistException.class)
+	@Test
 	public void updateServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
 		UpdateServiceInstanceRequest updateRequest = UpdateServiceInstanceRequest.builder()
 				.serviceDefinitionId("unknown-service-definition-id")
@@ -225,9 +233,10 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		ServiceInstanceController controller = createControllerUnderTest();
 
-		controller.updateServiceInstance(pathVariables, null, false,
-				null, null, updateRequest)
-				.block();
+		assertThrows(ServiceDefinitionDoesNotExistException.class, () ->
+				controller.updateServiceInstance(pathVariables, null, false,
+						null, null, updateRequest)
+						.block());
 	}
 
 	private ServiceInstanceController createControllerUnderTest(ServiceBrokerRequest expectedRequest) {

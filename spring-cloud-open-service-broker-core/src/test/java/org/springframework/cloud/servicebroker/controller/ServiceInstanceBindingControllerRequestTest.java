@@ -16,7 +16,7 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
@@ -33,6 +33,7 @@ import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceB
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ServiceInstanceBindingControllerRequestTest extends ControllerRequestTest {
 
@@ -57,7 +58,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 				true, "api-info-location", encodeOriginatingIdentity(identityContext), parsedRequest);
 	}
 
-	@Test(expected = ServiceDefinitionDoesNotExistException.class)
+	@Test
 	public void createServiceBindingWithInvalidServiceDefinitionIdThrowsException() {
 		CreateServiceInstanceBindingRequest createRequest = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId("unknown-service-definition-id")
@@ -65,11 +66,13 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 
 		ServiceInstanceBindingController controller = createControllerUnderTest();
 
-		controller.createServiceInstanceBinding(pathVariables, null, null, false, null, null, createRequest).block();
+		assertThrows(ServiceDefinitionDoesNotExistException.class, () ->
+				controller.createServiceInstanceBinding(pathVariables, null, null, false, null, null, createRequest)
+						.block());
 	}
 
 
-	@Test(expected = ServiceDefinitionPlanDoesNotExistException.class)
+	@Test
 	public void createServiceBindingWithInvalidPlanIdThrowsException() {
 		CreateServiceInstanceBindingRequest createRequest = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId("service-definition-id")
@@ -78,8 +81,9 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 
 		ServiceInstanceBindingController controller = createControllerUnderTest();
 
-		controller.createServiceInstanceBinding(pathVariables, null, null,
-				false, null, encodeOriginatingIdentity(identityContext), createRequest).block();
+		assertThrows(ServiceDefinitionPlanDoesNotExistException.class, () ->
+				controller.createServiceInstanceBinding(pathVariables, null, null,
+						false, null, encodeOriginatingIdentity(identityContext), createRequest).block());
 	}
 
 
@@ -132,20 +136,22 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 				"api-info-location", encodeOriginatingIdentity(identityContext));
 	}
 
-	@Test(expected = ServiceDefinitionDoesNotExistException.class)
+	@Test
 	public void deleteServiceBindingWithInvalidServiceDefinitionIdThrowsException() {
 		ServiceInstanceBindingController controller = createControllerUnderTest();
 
-		controller.deleteServiceInstanceBinding(pathVariables, null, null, "unknown-service-definition-id", null,
-				false, null, null).block();
+		assertThrows(ServiceDefinitionDoesNotExistException.class, () ->
+				controller.deleteServiceInstanceBinding(pathVariables, null, null, "unknown-service-definition-id", null,
+								false, null, null).block());
 	}
 
-	@Test(expected = ServiceDefinitionPlanDoesNotExistException.class)
+	@Test
 	public void deleteServiceBindingWithInvalidPlanIdThrowsException() {
 		ServiceInstanceBindingController controller = createControllerUnderTest();
 
+		assertThrows(ServiceDefinitionPlanDoesNotExistException.class, () ->
 		controller.deleteServiceInstanceBinding(pathVariables, null, null, "service-definition-id",
-				"unknown-plan-id", false, null, null).block();
+				"unknown-plan-id", false, null, null).block());
 	}
 
 	private ServiceInstanceBindingController createControllerUnderTest(ServiceBrokerRequest expectedRequest) {

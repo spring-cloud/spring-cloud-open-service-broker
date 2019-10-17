@@ -19,12 +19,12 @@ package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.fixture.ServiceFixture;
@@ -41,7 +41,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_ROUTE_FORWARDING;
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_SYSLOG_DRAIN;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class CatalogControllerIntegrationTest {
 
 	private WebTestClient client;
@@ -54,7 +54,7 @@ public class CatalogControllerIntegrationTest {
 
 	private ServiceDefinition serviceDefinition;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.client = WebTestClient.bindToController(this.controller).build();
 		this.serviceDefinition = ServiceFixture.getSimpleService();

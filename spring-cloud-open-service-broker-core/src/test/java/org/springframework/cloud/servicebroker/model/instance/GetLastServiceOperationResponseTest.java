@@ -18,7 +18,7 @@ package org.springframework.cloud.servicebroker.model.instance;
 
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
 

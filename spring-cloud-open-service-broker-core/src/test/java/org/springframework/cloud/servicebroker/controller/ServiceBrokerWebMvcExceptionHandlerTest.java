@@ -19,8 +19,8 @@ package org.springframework.cloud.servicebroker.controller;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.core.MethodParameter;
@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ServiceBrokerWebMvcExceptionHandlerTest extends ServiceBrokerExceptionHandlerTest {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		exceptionHandler = new ServiceBrokerWebMvcExceptionHandler();
 	}

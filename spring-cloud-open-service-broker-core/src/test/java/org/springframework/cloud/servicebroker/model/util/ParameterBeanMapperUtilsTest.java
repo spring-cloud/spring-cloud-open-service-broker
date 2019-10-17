@@ -19,11 +19,12 @@ package org.springframework.cloud.servicebroker.model.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ParameterBeanMapperUtilsTest {
+
 	@Test
 	@SuppressWarnings("serial")
 	public void mapParametersToBean() {

@@ -16,31 +16,35 @@
 
 package org.springframework.cloud.servicebroker.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class NonBindableServiceInstanceBindingServiceTest {
 
 	private NonBindableServiceInstanceBindingService service;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		service = new NonBindableServiceInstanceBindingService();
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void createServiceInstanceBinding() {
-		service.createServiceInstanceBinding(CreateServiceInstanceBindingRequest.builder().build())
-				.block();
+		assertThrows(UnsupportedOperationException.class, () ->
+				service.createServiceInstanceBinding(CreateServiceInstanceBindingRequest.builder().build())
+						.block());
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void deleteServiceInstanceBinding() {
-		service.deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest.builder().build())
-				.block();
+		assertThrows(UnsupportedOperationException.class, () ->
+				service.deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest.builder().build())
+						.block());
 	}
 
 }

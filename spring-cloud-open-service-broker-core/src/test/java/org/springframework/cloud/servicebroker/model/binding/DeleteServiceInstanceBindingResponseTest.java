@@ -17,13 +17,15 @@
 package org.springframework.cloud.servicebroker.model.binding;
 
 import net.bytebuddy.utility.RandomString;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DeleteServiceInstanceBindingResponseTest {
+
 	@Test
 	public void responseWithDefaultsIsBuilt() {
 		DeleteServiceInstanceBindingResponse response = DeleteServiceInstanceBindingResponse.builder()
@@ -59,11 +61,12 @@ public class DeleteServiceInstanceBindingResponseTest {
 				.build();
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void exceedsOperationCharacterLimit() throws Exception {
-		DeleteServiceInstanceBindingResponse.builder()
-				.operation(RandomString.make(10_001))
-				.build();
+		assertThrows(IllegalArgumentException.class, () ->
+				DeleteServiceInstanceBindingResponse.builder()
+						.operation(RandomString.make(10_001))
+						.build());
 	}
 
 	@Test

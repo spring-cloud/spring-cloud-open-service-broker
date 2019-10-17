@@ -65,6 +65,7 @@ dependencies {
 	testImplementation("org.assertj:assertj-core:${assertjVersion}")
 	testImplementation("org.hamcrest:hamcrest-library:${hamcrestVersion}")
 	testImplementation("org.mockito:mockito-core:${mockitoVersion}")
+	testImplementation("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
 	testImplementation("com.jayway.jsonpath:json-path:${jsonPathVersion}")
 	testImplementation("nl.jqno.equalsverifier:equalsverifier:${equalsVerifierVersion}")
 	testImplementation("javax.servlet:javax.servlet-api:${javaxServletApiVersion}")

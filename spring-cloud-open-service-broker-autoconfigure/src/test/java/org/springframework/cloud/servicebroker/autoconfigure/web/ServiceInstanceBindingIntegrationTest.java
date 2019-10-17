@@ -16,7 +16,7 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
@@ -30,7 +30,7 @@ public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIn
 
 	protected String createRequestBody;
 
-	@Before
+	@BeforeEach
 	public void setupBase() {
 		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId(serviceDefinition.getId())

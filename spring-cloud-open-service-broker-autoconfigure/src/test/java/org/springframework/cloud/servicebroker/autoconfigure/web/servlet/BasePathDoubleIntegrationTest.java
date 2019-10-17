@@ -16,7 +16,8 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = "spring.cloud.openservicebroker.base-path=/api/broker")

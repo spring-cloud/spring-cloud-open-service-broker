@@ -18,7 +18,7 @@ package org.springframework.cloud.servicebroker.model.binding;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
@@ -26,6 +26,7 @@ import org.springframework.cloud.servicebroker.model.PlatformContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GetServiceInstanceBindingRequestTest {
+
 	@Test
 	public void requestWithDefaultsIsBuilt() {
 		GetServiceInstanceBindingRequest request = GetServiceInstanceBindingRequest.builder()

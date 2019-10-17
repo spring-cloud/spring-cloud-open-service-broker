@@ -19,12 +19,12 @@ package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.fixture.ServiceFixture;
@@ -55,7 +55,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class CatalogControllerIntegrationTest {
 
 	private MockMvc mockMvc;
@@ -68,7 +68,7 @@ public class CatalogControllerIntegrationTest {
 
 	private ServiceDefinition serviceDefinition;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(this.controller)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter())

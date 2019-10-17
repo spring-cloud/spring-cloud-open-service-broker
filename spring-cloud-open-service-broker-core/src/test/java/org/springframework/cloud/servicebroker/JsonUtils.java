@@ -30,9 +30,10 @@ import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.fail;
 
 public final class JsonUtils {
+
 	private JsonUtils() {
 	}
 
@@ -40,7 +41,8 @@ public final class JsonUtils {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			return mapper.writeValueAsString(object);
-		} catch (JsonProcessingException e) {
+		}
+		catch (JsonProcessingException e) {
 			fail("Error creating JSON string from object: " + e);
 			throw new IllegalStateException(e);
 		}
@@ -59,7 +61,8 @@ public final class JsonUtils {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			return mapper.readerFor(contentType).readValue(json);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			fail("Error creating object from JSON: " + e);
 			throw new IllegalStateException(e);
 		}
@@ -69,7 +72,8 @@ public final class JsonUtils {
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
 			return objectMapper.readValue(getTestDataFileReader(filename), contentType);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			fail("Error reading test JSON file: " + e);
 			throw new IllegalStateException(e);
 		}

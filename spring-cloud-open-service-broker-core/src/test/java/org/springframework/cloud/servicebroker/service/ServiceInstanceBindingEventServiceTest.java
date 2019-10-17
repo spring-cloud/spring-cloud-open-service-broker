@@ -18,8 +18,8 @@ package org.springframework.cloud.servicebroker.service;
 
 import java.util.ArrayList;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -65,7 +65,7 @@ public class ServiceInstanceBindingEventServiceTest {
 
 	private EventFlowTestResults results;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.eventFlowRegistries = new EventFlowRegistries(
 				new CreateServiceInstanceEventFlowRegistry(new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),

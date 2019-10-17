@@ -18,7 +18,7 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import org.springframework.boot.autoconfigure.AutoConfigurations;

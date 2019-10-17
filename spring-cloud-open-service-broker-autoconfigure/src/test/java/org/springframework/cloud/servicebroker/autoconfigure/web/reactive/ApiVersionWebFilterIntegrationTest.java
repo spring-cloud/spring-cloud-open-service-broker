@@ -19,12 +19,11 @@ package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 import java.nio.charset.Charset;
 
 import com.jayway.jsonpath.JsonPath;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.controller.CatalogController;
@@ -38,7 +37,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ApiVersionWebFilterIntegrationTest {
 
 	private static final String CATALOG_PATH = "/v2/catalog";
@@ -51,13 +50,6 @@ public class ApiVersionWebFilterIntegrationTest {
 	@Mock
 	@SuppressWarnings("unused")
 	private CatalogService catalogService;
-
-	@Before
-	public void setUp() {
-		Catalog expectedCatalog = Catalog.builder().build();
-		given(catalogService.getCatalog())
-				.willReturn(Mono.just(expectedCatalog));
-	}
 
 	@Test
 	public void noHeaderSent() throws Exception {
@@ -91,6 +83,9 @@ public class ApiVersionWebFilterIntegrationTest {
 
 	@Test
 	public void matchingHeaderSent() throws Exception {
+		given(catalogService.getCatalog())
+				.willReturn(Mono.just(Catalog.builder().build()));
+
 		mockWithExpectedVersion().get().uri(CATALOG_PATH)
 				.header(BrokerApiVersion.DEFAULT_API_VERSION_HEADER, "expected-version")
 				.accept(MediaType.APPLICATION_JSON)
@@ -100,6 +95,9 @@ public class ApiVersionWebFilterIntegrationTest {
 
 	@Test
 	public void anyHeaderNotSent() throws Exception {
+		given(catalogService.getCatalog())
+				.willReturn(Mono.just(Catalog.builder().build()));
+
 		mockWithDefaultVersion().get().uri(CATALOG_PATH)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
@@ -108,6 +106,9 @@ public class ApiVersionWebFilterIntegrationTest {
 
 	@Test
 	public void anyHeaderSent() throws Exception {
+		given(catalogService.getCatalog())
+				.willReturn(Mono.just(Catalog.builder().build()));
+
 		mockWithDefaultVersion().get().uri(CATALOG_PATH)
 				.header(BrokerApiVersion.DEFAULT_API_VERSION_HEADER, "ignored-version")
 				.accept(MediaType.APPLICATION_JSON)

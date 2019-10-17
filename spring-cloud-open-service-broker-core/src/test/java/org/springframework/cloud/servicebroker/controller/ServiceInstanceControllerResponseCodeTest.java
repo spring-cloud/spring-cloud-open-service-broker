@@ -17,21 +17,15 @@
 package org.springframework.cloud.servicebroker.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
-import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
@@ -56,156 +50,19 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(Theories.class)
 public class ServiceInstanceControllerResponseCodeTest {
 
 	private final CatalogService catalogService = mock(CatalogService.class);
+
 	private final ServiceInstanceService serviceInstanceService = mock(ServiceInstanceService.class);
 
 	private final Map<String, String> pathVariables = Collections.emptyMap();
 
 	private ServiceInstanceController controller;
 
-	@DataPoints("createResponsesWithExpectedStatus")
-	public static List<CreateResponseAndExpectedStatus> createDataPoints() {
-		return Arrays.asList(
-				new CreateResponseAndExpectedStatus(
-						null,
-						HttpStatus.CREATED
-				),
-				new CreateResponseAndExpectedStatus(
-						CreateServiceInstanceResponse.builder()
-								.async(false)
-								.instanceExisted(false)
-								.dashboardUrl("https://dashboard.example.com")
-								.build(),
-						HttpStatus.CREATED
-				),
-				new CreateResponseAndExpectedStatus(
-						CreateServiceInstanceResponse.builder()
-								.async(false)
-								.instanceExisted(true)
-								.build(),
-						HttpStatus.OK
-				),
-				new CreateResponseAndExpectedStatus(
-						CreateServiceInstanceResponse.builder()
-								.async(true)
-								.instanceExisted(false)
-								.operation("creating")
-								.build(),
-						HttpStatus.ACCEPTED
-				),
-				new CreateResponseAndExpectedStatus(
-						CreateServiceInstanceResponse.builder()
-								.async(true)
-								.instanceExisted(true)
-								.build(),
-						HttpStatus.ACCEPTED
-				)
-		);
-	}
-
-	@DataPoints("getResponsesWithExpectedStatus")
-	public static List<GetResponseAndExpectedStatus> getDataPoints() {
-		return Arrays.asList(
-				new GetResponseAndExpectedStatus(
-						null,
-						HttpStatus.OK
-				),
-				new GetResponseAndExpectedStatus(
-						GetServiceInstanceResponse.builder()
-								.serviceDefinitionId("service-definition-id")
-								.planId("plan-id")
-								.build(),
-						HttpStatus.OK
-				)
-		);
-	}
-
-	@DataPoints("updateResponsesWithExpectedStatus")
-	public static List<UpdateResponseAndExpectedStatus> updateDataPoints() {
-		return Arrays.asList(
-				new UpdateResponseAndExpectedStatus(
-						null,
-						HttpStatus.OK
-				),
-				new UpdateResponseAndExpectedStatus(
-						UpdateServiceInstanceResponse.builder()
-								.async(false)
-								.build(),
-						HttpStatus.OK
-				),
-				new UpdateResponseAndExpectedStatus(
-						UpdateServiceInstanceResponse.builder()
-								.async(true)
-								.operation("updating")
-								.build(),
-						HttpStatus.ACCEPTED
-				)
-		);
-	}
-
-	@DataPoints("deleteResponsesWithExpectedStatus")
-	public static List<DeleteResponseAndExpectedStatus> deleteDataPoints() {
-		return Arrays.asList(
-				new DeleteResponseAndExpectedStatus(
-						null,
-						HttpStatus.OK
-				),
-				new DeleteResponseAndExpectedStatus(
-						DeleteServiceInstanceResponse.builder()
-								.async(false)
-								.build(),
-						HttpStatus.OK
-				),
-				new DeleteResponseAndExpectedStatus(
-						DeleteServiceInstanceResponse.builder()
-								.async(true)
-								.operation("deleting")
-								.build(),
-						HttpStatus.ACCEPTED
-				)
-		);
-	}
-
-	@DataPoints("lastOperationResponsesWithExpectedStatus")
-	public static List<GetLastOperationResponseAndExpectedStatus> lastOperationDataPoints() {
-		return Arrays.asList(
-				new GetLastOperationResponseAndExpectedStatus(
-						GetLastServiceOperationResponse.builder()
-								.operationState(OperationState.IN_PROGRESS)
-								.description("in progress")
-								.build(),
-						HttpStatus.OK
-				),
-				new GetLastOperationResponseAndExpectedStatus(
-						GetLastServiceOperationResponse.builder()
-								.operationState(OperationState.SUCCEEDED)
-								.deleteOperation(false)
-								.build(),
-						HttpStatus.OK
-				),
-				new GetLastOperationResponseAndExpectedStatus(
-						GetLastServiceOperationResponse.builder()
-								.operationState(OperationState.SUCCEEDED)
-								.deleteOperation(true)
-								.build(),
-						HttpStatus.GONE
-				),
-				new GetLastOperationResponseAndExpectedStatus(
-						GetLastServiceOperationResponse.builder()
-								.operationState(OperationState.FAILED)
-								.build(),
-						HttpStatus.OK
-				)
-		);
-	}
-
-	@Before
+	@BeforeEach
 	public void setUp() {
 		controller = new ServiceInstanceController(catalogService, serviceInstanceService);
-
 		ServiceDefinition serviceDefinition = mock(ServiceDefinition.class);
 		List<Plan> plans = new ArrayList<>();
 		plans.add(Plan.builder().id("service-definition-plan-id").build());
@@ -214,14 +71,53 @@ public class ServiceInstanceControllerResponseCodeTest {
 		when(catalogService.getServiceDefinition(any())).thenReturn(Mono.just(serviceDefinition));
 	}
 
-	@Theory
-	public void createServiceInstanceWithResponseGivesExpectedStatus(CreateResponseAndExpectedStatus data) {
+	@Test
+	public void createServiceInstanceWithNullResponseGivesExpectedStatus() {
+		validateCreateServiceInstanceWithResponseStatus(null, HttpStatus.CREATED);
+	}
+
+	@Test
+	public void createServiceInstanceWithResponseGivesExpectedStatus() {
+		validateCreateServiceInstanceWithResponseStatus(CreateServiceInstanceResponse.builder()
+				.async(false)
+				.instanceExisted(false)
+				.dashboardUrl("https://dashboard.example.com")
+				.build(), HttpStatus.CREATED);
+	}
+
+	@Test
+	public void createServiceInstanceWithInstanceExistResponseGivesExpectedStatus() {
+		validateCreateServiceInstanceWithResponseStatus(CreateServiceInstanceResponse.builder()
+				.async(false)
+				.instanceExisted(true)
+				.build(), HttpStatus.OK);
+	}
+
+	@Test
+	public void createServiceInstanceWithAsyncResponseGivesExpectedStatus() {
+		validateCreateServiceInstanceWithResponseStatus(CreateServiceInstanceResponse.builder()
+				.async(true)
+				.instanceExisted(false)
+				.operation("creating")
+				.build(), HttpStatus.ACCEPTED);
+	}
+
+	@Test
+	public void createServiceInstanceWithResponseAsyncInstanceExistGivesExpectedStatus() {
+		validateCreateServiceInstanceWithResponseStatus(CreateServiceInstanceResponse.builder()
+				.async(true)
+				.instanceExisted(true)
+				.build(), HttpStatus.ACCEPTED);
+	}
+
+	private void validateCreateServiceInstanceWithResponseStatus(CreateServiceInstanceResponse response,
+														   HttpStatus expectedStatus) {
 		Mono<CreateServiceInstanceResponse> responseMono;
-		if (data.response == null) {
+		if (response == null) {
 			responseMono = Mono.empty();
 		}
 		else {
-			responseMono = Mono.just(data.response);
+			responseMono = Mono.just(response);
 		}
 		when(serviceInstanceService.createServiceInstance(any(CreateServiceInstanceRequest.class)))
 				.thenReturn(responseMono);
@@ -237,18 +133,30 @@ public class ServiceInstanceControllerResponseCodeTest {
 				.block();
 
 		verify(serviceInstanceService).createServiceInstance(any(CreateServiceInstanceRequest.class));
-		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
-		assertThat(responseEntity.getBody()).isEqualTo(data.response);
+		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
+		assertThat(responseEntity.getBody()).isEqualTo(response);
 	}
 
-	@Theory
-	public void getServiceInstanceWithResponseGivesExpectedStatus(GetResponseAndExpectedStatus data) {
+	@Test
+	public void getServiceInstanceWithNullResponseGivesExpectedStatus() {
+		validateGetServiceInstanceWithResponseStatus(null, HttpStatus.OK);
+	}
+
+	@Test
+	public void getServiceInstanceWithResponseGivesExpectedStatus() {
+		validateGetServiceInstanceWithResponseStatus(GetServiceInstanceResponse.builder()
+				.serviceDefinitionId("service-definition-id")
+				.planId("plan-id")
+				.build(), HttpStatus.OK);
+	}
+
+	private void validateGetServiceInstanceWithResponseStatus(GetServiceInstanceResponse response, HttpStatus expectedStatus) {
 		Mono<GetServiceInstanceResponse> responseMono;
-		if (data.response == null) {
+		if (response == null) {
 			responseMono = Mono.empty();
 		}
 		else {
-			responseMono = Mono.just(data.response);
+			responseMono = Mono.just(response);
 		}
 		when(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
 				.thenReturn(responseMono);
@@ -257,8 +165,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 				.getServiceInstance(pathVariables, null, null, null)
 				.block();
 
-		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
-		assertThat(responseEntity.getBody()).isEqualTo(data.response);
+		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
+		assertThat(responseEntity.getBody()).isEqualTo(response);
 	}
 
 	@Test
@@ -273,14 +181,34 @@ public class ServiceInstanceControllerResponseCodeTest {
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
-	@Theory
-	public void deleteServiceInstanceWithResponseGivesExpectedStatus(DeleteResponseAndExpectedStatus data) {
+	@Test
+	public void deleteServiceInstanceWithNullResponseGivesExpectedStatus() {
+		validateDeleteServiceInstanceWithResponseStatus(null, HttpStatus.OK);
+	}
+
+	@Test
+	public void deleteServiceInstanceWithResponseGivesExpectedStatus() {
+		validateDeleteServiceInstanceWithResponseStatus(DeleteServiceInstanceResponse.builder()
+				.async(false)
+				.build(), HttpStatus.OK);
+	}
+
+	@Test
+	public void deleteServiceInstanceWithAsyncResponseGivesExpectedStatus() {
+		validateDeleteServiceInstanceWithResponseStatus(DeleteServiceInstanceResponse.builder()
+				.async(true)
+				.operation("deleting")
+				.build(), HttpStatus.ACCEPTED);
+	}
+
+	private void validateDeleteServiceInstanceWithResponseStatus(DeleteServiceInstanceResponse response,
+																	 HttpStatus expectedStatus) {
 		Mono<DeleteServiceInstanceResponse> responseMono;
-		if (data.response == null) {
+		if (response == null) {
 			responseMono = Mono.empty();
 		}
 		else {
-			responseMono = Mono.just(data.response);
+			responseMono = Mono.just(response);
 		}
 		when(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
 				.thenReturn(responseMono);
@@ -290,8 +218,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 						false, null, null)
 				.block();
 
-		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
-		assertThat(responseEntity.getBody()).isEqualTo(data.response);
+		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
+		assertThat(responseEntity.getBody()).isEqualTo(response);
 	}
 
 	@Test
@@ -307,14 +235,34 @@ public class ServiceInstanceControllerResponseCodeTest {
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
 	}
 
-	@Theory
-	public void updateServiceInstanceWithResponseGivesExpectedStatus(UpdateResponseAndExpectedStatus data) {
+	@Test
+	public void updateServiceInstanceWithNullResponseGivesExpectedStatus() {
+		validateUpdateServiceInstanceWithResponseStatus(null, HttpStatus.OK);
+	}
+
+	@Test
+	public void updateServiceInstanceWithResponseGivesExpectedStatus() {
+		validateUpdateServiceInstanceWithResponseStatus(UpdateServiceInstanceResponse.builder()
+				.async(false)
+				.build(), HttpStatus.OK);
+	}
+
+	@Test
+	public void updateServiceInstanceWithAsyncResponseGivesExpectedStatus() {
+		validateUpdateServiceInstanceWithResponseStatus(UpdateServiceInstanceResponse.builder()
+				.async(true)
+				.operation("updating")
+				.build(), HttpStatus.ACCEPTED);
+	}
+
+	private void validateUpdateServiceInstanceWithResponseStatus(UpdateServiceInstanceResponse response,
+																 HttpStatus expectedStatus) {
 		Mono<UpdateServiceInstanceResponse> responseMono;
-		if (data.response == null) {
+		if (response == null) {
 			responseMono = Mono.empty();
 		}
 		else {
-			responseMono = Mono.just(data.response);
+			responseMono = Mono.just(response);
 		}
 		when(serviceInstanceService.updateServiceInstance(any(UpdateServiceInstanceRequest.class)))
 				.thenReturn(responseMono);
@@ -328,111 +276,52 @@ public class ServiceInstanceControllerResponseCodeTest {
 						updateRequest)
 				.block();
 
-		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
-		assertThat(responseEntity.getBody()).isEqualTo(data.response);
+		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
+		assertThat(responseEntity.getBody()).isEqualTo(response);
 	}
 
-	@Theory
-	public void getLastOperationWithResponseGivesExpectedStatus(GetLastOperationResponseAndExpectedStatus data) {
+	@Test
+	public void getLastOperationWithInProgressResponseGivesExpectedStatus() {
+		validateGetLastOperationWithResponseStatus(GetLastServiceOperationResponse.builder()
+				.operationState(OperationState.IN_PROGRESS)
+				.description("in progress")
+				.build(), HttpStatus.OK);
+	}
+
+	@Test
+	public void getLastOperationWithSucceededResponseGivesExpectedStatus() {
+		validateGetLastOperationWithResponseStatus(GetLastServiceOperationResponse.builder()
+				.operationState(OperationState.SUCCEEDED)
+				.deleteOperation(false)
+				.build(), HttpStatus.OK);
+	}
+
+	@Test
+	public void getLastOperationWithDeleteSucceededResponseGivesExpectedStatus() {
+		validateGetLastOperationWithResponseStatus(GetLastServiceOperationResponse.builder()
+				.operationState(OperationState.SUCCEEDED)
+				.deleteOperation(true)
+				.build(), HttpStatus.GONE);
+	}
+
+	@Test
+	public void getLastOperationWithFailedResponseGivesExpectedStatus() {
+		validateGetLastOperationWithResponseStatus(GetLastServiceOperationResponse.builder()
+				.operationState(OperationState.FAILED)
+				.build(), HttpStatus.OK);
+	}
+
+	private void validateGetLastOperationWithResponseStatus(GetLastServiceOperationResponse response,
+																 HttpStatus expectedStatus) {
 		when(serviceInstanceService.getLastOperation(any(GetLastServiceOperationRequest.class)))
-				.thenReturn(Mono.just(data.response));
+				.thenReturn(Mono.just(response));
 
 		ResponseEntity<GetLastServiceOperationResponse> responseEntity = controller
 				.getServiceInstanceLastOperation(pathVariables, null, null, null, null,
 						null, null).block();
 
-		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
-		assertThat(responseEntity.getBody()).isEqualTo(data.response);
-	}
-
-	public static class AsyncResponseAndExpectedStatus<T extends AsyncServiceBrokerResponse> {
-		public final T response;
-		public final HttpStatus expectedStatus;
-
-		public AsyncResponseAndExpectedStatus(T response, HttpStatus expectedStatus) {
-			this.response = response;
-			this.expectedStatus = expectedStatus;
-		}
-
-		@Override
-		public String toString() {
-			String responseValue = response == null ? "null" :
-					"{" +
-							"async=" + response.isAsync() +
-							"}";
-
-			return "response=" + responseValue +
-					", expectedStatus=" + expectedStatus;
-		}
-	}
-
-	public static class CreateResponseAndExpectedStatus
-			extends AsyncResponseAndExpectedStatus<CreateServiceInstanceResponse> {
-		public CreateResponseAndExpectedStatus(CreateServiceInstanceResponse response, HttpStatus expectedStatus) {
-			super(response, expectedStatus);
-		}
-
-		@Override
-		public String toString() {
-			String responseValue = response == null ? "null" :
-					"{" +
-							"async=" + response.isAsync() +
-							", instanceExisted=" + response.isInstanceExisted() +
-							"}";
-
-			return "response=" + responseValue +
-					", expectedStatus=" + expectedStatus;
-		}
-
-	}
-
-	public static class GetResponseAndExpectedStatus {
-		public final GetServiceInstanceResponse response;
-		public final HttpStatus expectedStatus;
-
-		public GetResponseAndExpectedStatus(GetServiceInstanceResponse response,
-											HttpStatus expectedStatus) {
-			this.response = response;
-			this.expectedStatus = expectedStatus;
-		}
-	}
-
-	public static class UpdateResponseAndExpectedStatus
-			extends AsyncResponseAndExpectedStatus<UpdateServiceInstanceResponse> {
-		public UpdateResponseAndExpectedStatus(UpdateServiceInstanceResponse response, HttpStatus expectedStatus) {
-			super(response, expectedStatus);
-		}
-	}
-
-	public static class DeleteResponseAndExpectedStatus
-			extends AsyncResponseAndExpectedStatus<DeleteServiceInstanceResponse> {
-		public DeleteResponseAndExpectedStatus(DeleteServiceInstanceResponse response, HttpStatus expectedStatus) {
-			super(response, expectedStatus);
-		}
-	}
-
-	public static class GetLastOperationResponseAndExpectedStatus {
-		public final GetLastServiceOperationResponse response;
-		public final HttpStatus expectedStatus;
-
-		public GetLastOperationResponseAndExpectedStatus(GetLastServiceOperationResponse response,
-														 HttpStatus expectedStatus) {
-			this.response = response;
-			this.expectedStatus = expectedStatus;
-		}
-
-		@Override
-		public String toString() {
-			String responseValue = response == null ? "null" :
-					"{" +
-							"state=" + response.getState() +
-							", description=" + response.getDescription() +
-							", deleteOperation=" + response.isDeleteOperation() +
-							"}";
-
-			return "response=" + responseValue +
-					", expectedStatus=" + expectedStatus;
-		}
+		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
+		assertThat(responseEntity.getBody()).isEqualTo(response);
 	}
 
 }

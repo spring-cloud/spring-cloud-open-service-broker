@@ -22,7 +22,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ServiceMetadataTest {
 
@@ -47,7 +46,7 @@ public class ServiceMetadataTest {
 	public void imageUrlResourceMissing() {
 		metadata.setImageUrlResource("missing.png");
 		Map<String, Object> model = metadata.toModel();
-		assertNull(model.get("imageUrl"));
+		assertThat(model.get("imageUrl")).isNull();
 	}
 
 	@Test

@@ -16,10 +16,10 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractServiceInstanceBindingControllerIntegrationTest;
 import org.springframework.cloud.servicebroker.controller.ServiceBrokerWebFluxExceptionHandler;
@@ -53,12 +53,12 @@ import static org.mockito.Mockito.when;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceInstanceBindingControllerIntegrationTest {
 
 	private WebTestClient client;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.client = WebTestClient.bindToController(this.controller)
 				.controllerAdvice(ServiceBrokerWebFluxExceptionHandler.class)
@@ -510,8 +510,6 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 	@Test
 	public void deleteBindingWithMissingQueryParamsFails() throws Exception {
-		setupCatalogService(null);
-
 		final String url = buildDeleteUrl(null, false).replace("plan_id", "plan-1");
 
 		client.delete().uri(url)

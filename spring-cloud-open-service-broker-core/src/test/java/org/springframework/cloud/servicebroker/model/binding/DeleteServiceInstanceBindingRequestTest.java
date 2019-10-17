@@ -19,7 +19,8 @@ package org.springframework.cloud.servicebroker.model.binding;
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.cloud.servicebroker.JsonPathAssert;
 import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.Context;
@@ -30,6 +31,7 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DeleteServiceInstanceBindingRequestTest {
+
 	@Test
 	public void requestWithDefaultsIsBuilt() {
 		DeleteServiceInstanceBindingRequest request = DeleteServiceInstanceBindingRequest.builder()
@@ -108,7 +110,7 @@ public class DeleteServiceInstanceBindingRequestTest {
 
 	}
 
-		@Test
+	@Test
 	public void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(DeleteServiceInstanceBindingRequest.class)

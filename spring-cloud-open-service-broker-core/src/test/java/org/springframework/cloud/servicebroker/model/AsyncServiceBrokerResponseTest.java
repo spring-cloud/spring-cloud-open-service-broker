@@ -17,7 +17,7 @@
 package org.springframework.cloud.servicebroker.model;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
@@ -25,6 +25,7 @@ import org.springframework.cloud.servicebroker.model.instance.CreateServiceInsta
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
 
 public class AsyncServiceBrokerResponseTest {
+
 	@Test
 	public void equalsAndHashCode() {
 		EqualsVerifier

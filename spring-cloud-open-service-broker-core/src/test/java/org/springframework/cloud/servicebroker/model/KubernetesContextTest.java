@@ -17,7 +17,8 @@
 package org.springframework.cloud.servicebroker.model;
 
 import com.jayway.jsonpath.DocumentContext;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.cloud.servicebroker.JsonPathAssert;
 import org.springframework.cloud.servicebroker.JsonUtils;
 
@@ -28,6 +29,7 @@ import static org.springframework.cloud.servicebroker.model.KubernetesContext.KU
 import static org.springframework.cloud.servicebroker.model.KubernetesContext.NAMESPACE_KEY;
 
 public class KubernetesContextTest {
+
 	@Test
 	public void emptyContext() {
 		KubernetesContext context = KubernetesContext.builder()

@@ -18,7 +18,7 @@ package org.springframework.cloud.servicebroker.model.binding;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
@@ -27,6 +27,7 @@ import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOper
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GetLastServiceBindingOperationRequestTest {
+
 	@Test
 	public void requestWithDefaultsIsBuilt() {
 		GetLastServiceBindingOperationRequest request = GetLastServiceBindingOperationRequest.builder()

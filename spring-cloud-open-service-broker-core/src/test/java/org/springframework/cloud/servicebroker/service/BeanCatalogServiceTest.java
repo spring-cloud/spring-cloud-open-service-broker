@@ -16,8 +16,8 @@
 
 package org.springframework.cloud.servicebroker.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
@@ -34,7 +34,7 @@ public class BeanCatalogServiceTest {
 
 	private ServiceDefinition serviceDefinition;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		serviceDefinition = ServiceDefinition.builder()
 				.id(SVC_DEF_ID)

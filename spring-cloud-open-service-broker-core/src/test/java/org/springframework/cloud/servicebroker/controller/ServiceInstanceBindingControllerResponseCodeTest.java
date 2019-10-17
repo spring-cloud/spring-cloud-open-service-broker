@@ -17,23 +17,16 @@
 package org.springframework.cloud.servicebroker.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
-import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
-import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
@@ -42,6 +35,7 @@ import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
@@ -55,7 +49,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(Theories.class)
 public class ServiceInstanceBindingControllerResponseCodeTest {
 
 	private final CatalogService catalogService = mock(CatalogService.class);
@@ -66,70 +59,9 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 
 	private ServiceInstanceBindingController controller;
 
-	@DataPoints("createResponsesWithExpectedStatus")
-	public static List<CreateResponseAndExpectedStatus> createDataPoints() {
-		return Arrays.asList(
-				new CreateResponseAndExpectedStatus(
-						null,
-						HttpStatus.CREATED
-				),
-				new CreateResponseAndExpectedStatus(
-						CreateServiceInstanceAppBindingResponse.builder()
-								.bindingExisted(false)
-								.build(),
-						HttpStatus.CREATED
-				),
-				new CreateResponseAndExpectedStatus(
-						CreateServiceInstanceAppBindingResponse.builder()
-								.bindingExisted(true)
-								.build(),
-						HttpStatus.OK
-				)
-		);
-	}
-
-	@DataPoints("getResponsesWithExpectedStatus")
-	public static List<GetResponseAndExpectedStatus> getDataPoints() {
-		return Arrays.asList(
-				new GetResponseAndExpectedStatus(
-						null,
-						HttpStatus.OK
-				),
-				new GetResponseAndExpectedStatus(
-						GetServiceInstanceAppBindingResponse.builder()
-								.build(),
-						HttpStatus.OK
-				)
-		);
-	}
-
-	@DataPoints("deleteResponsesWithExpectedStatus")
-	public static List<DeleteResponseAndExpectedStatus> deleteDataPoints() {
-		return Arrays.asList(
-				new DeleteResponseAndExpectedStatus(
-						null,
-						HttpStatus.OK
-				),
-				new DeleteResponseAndExpectedStatus(
-						DeleteServiceInstanceBindingResponse.builder()
-								.async(false)
-								.build(),
-						HttpStatus.OK
-				),
-				new DeleteResponseAndExpectedStatus(
-						DeleteServiceInstanceBindingResponse.builder()
-								.async(true)
-								.operation("deleting")
-								.build(),
-						HttpStatus.ACCEPTED
-				)
-		);
-	}
-
-	@Before
+	@BeforeEach
 	public void setUp() {
 		controller = new ServiceInstanceBindingController(catalogService, bindingService);
-
 		ServiceDefinition serviceDefinition = mock(ServiceDefinition.class);
 		List<Plan> plans = new ArrayList<>();
 		plans.add(Plan.builder().id("service-definition-plan-id").build());
@@ -139,14 +71,35 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 				.thenReturn(Mono.just(serviceDefinition));
 	}
 
-	@Theory
-	public void createServiceBindingWithResponseGivesExpectedStatus(CreateResponseAndExpectedStatus data) {
+	@Test
+	public void createServiceBindingWithNullResponseGivesExpectedStatus() {
+		validateCreateServiceBindingResponseStatus(null, HttpStatus.CREATED);
+	}
+
+	@Test
+	public void createServiceBindingWithNoExistingBindingResponseGivesExpectedStatus() {
+		CreateServiceInstanceBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
+				.bindingExisted(false)
+				.build();
+		validateCreateServiceBindingResponseStatus(response, HttpStatus.CREATED);
+	}
+
+	@Test
+	public void createServiceBindingWithExistingBindingResponseGivesExpectedStatus() {
+		CreateServiceInstanceBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
+				.bindingExisted(true)
+				.build();
+		validateCreateServiceBindingResponseStatus(response, HttpStatus.OK);
+	}
+
+	private void validateCreateServiceBindingResponseStatus(CreateServiceInstanceBindingResponse response,
+													   HttpStatus httpStatus) {
 		Mono<CreateServiceInstanceBindingResponse> responseMono;
-		if (data.response == null) {
+		if (response == null) {
 			responseMono = Mono.empty();
 		}
 		else {
-			responseMono = Mono.just(data.response);
+			responseMono = Mono.just(response);
 		}
 		when(bindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
 				.thenReturn(responseMono);
@@ -162,18 +115,30 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 				.block();
 
 		assertThat(responseEntity).isNotNull();
-		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
-		assertThat(responseEntity.getBody()).isEqualTo(data.response);
+		assertThat(responseEntity.getStatusCode()).isEqualTo(httpStatus);
+		assertThat(responseEntity.getBody()).isEqualTo(response);
 	}
 
-	@Theory
-	public void getServiceBindingWithResponseGivesExpectedStatus(GetResponseAndExpectedStatus data) {
+	@Test
+	public void getServiceBindingWithResponseGivesExpectedStatus() {
+		validateGetServiceBindingResponseStatus(null, HttpStatus.OK);
+	}
+
+	@Test
+	public void getServiceBindingWithResponseGivesExpectedStatus2() {
+		GetServiceInstanceBindingResponse response = GetServiceInstanceAppBindingResponse.builder()
+				.build();
+		validateGetServiceBindingResponseStatus(response, HttpStatus.OK);
+	}
+
+	private void validateGetServiceBindingResponseStatus(GetServiceInstanceBindingResponse response,
+																  HttpStatus httpStatus) {
 		Mono<GetServiceInstanceBindingResponse> responseMono;
-		if (data.response == null) {
+		if (response == null) {
 			responseMono = Mono.empty();
 		}
 		else {
-			responseMono = Mono.just(data.response);
+			responseMono = Mono.just(response);
 		}
 		when(bindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
 				.thenReturn(responseMono);
@@ -183,8 +148,8 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 				.block();
 
 		assertThat(responseEntity).isNotNull();
-		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
-		assertThat(responseEntity.getBody()).isEqualTo(data.response);
+		assertThat(responseEntity.getStatusCode()).isEqualTo(httpStatus);
+		assertThat(responseEntity.getBody()).isEqualTo(response);
 	}
 
 	@Test
@@ -211,14 +176,33 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
-	@Theory
-	public void deleteServiceBindingWithResponseGivesExpectedStatus(DeleteResponseAndExpectedStatus data) {
+	@Test
+	public void deleteServiceBindingWithNullResponseGivesExpectedStatus() {
+		validateDeleteServiceBindingWithResponseStatus(null, HttpStatus.OK);
+	}
+
+	@Test
+	public void deleteServiceBindingWithResponseGivesExpectedStatus() {
+		validateDeleteServiceBindingWithResponseStatus(DeleteServiceInstanceBindingResponse.builder()
+				.async(false)
+				.build(), HttpStatus.OK);
+	}
+
+	@Test
+	public void deleteServiceBindingWithResponseGivesExpectedStatus2() {
+		validateDeleteServiceBindingWithResponseStatus(DeleteServiceInstanceBindingResponse.builder()
+				.async(true)
+				.build(), HttpStatus.ACCEPTED);
+	}
+
+	private void validateDeleteServiceBindingWithResponseStatus(DeleteServiceInstanceBindingResponse response,
+																	HttpStatus expectedStatus) {
 		Mono<DeleteServiceInstanceBindingResponse> responseMono;
-		if (data.response == null) {
+		if (response == null) {
 			responseMono = Mono.empty();
 		}
 		else {
-			responseMono = Mono.just(data.response);
+			responseMono = Mono.just(response);
 		}
 		when(bindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
 				.thenReturn(responseMono);
@@ -228,8 +212,8 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 				.block();
 
 		assertThat(responseEntity).isNotNull();
-		assertThat(responseEntity.getStatusCode()).isEqualTo(data.expectedStatus);
-		assertThat(responseEntity.getBody()).isEqualTo(data.response);
+		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
+		assertThat(responseEntity.getBody()).isEqualTo(response);
 
 		verify(bindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 	}
@@ -244,63 +228,6 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
-	}
-
-	public static class AsyncResponseAndExpectedStatus<T extends AsyncServiceBrokerResponse> {
-		public final T response;
-		public final HttpStatus expectedStatus;
-
-		public AsyncResponseAndExpectedStatus(T response, HttpStatus expectedStatus) {
-			this.response = response;
-			this.expectedStatus = expectedStatus;
-		}
-
-		@Override
-		public String toString() {
-			String responseValue = response == null ? "null" :
-					"{" +
-							"async=" + response.isAsync() +
-							"}";
-
-			return "response=" + responseValue +
-					", expectedStatus=" + expectedStatus;
-		}
-	}
-
-	public static class CreateResponseAndExpectedStatus extends
-			AsyncResponseAndExpectedStatus<CreateServiceInstanceBindingResponse> {
-
-		public CreateResponseAndExpectedStatus(CreateServiceInstanceBindingResponse response, HttpStatus expectedStatus) {
-			super(response, expectedStatus);
-		}
-
-		@Override
-		public String toString() {
-			String responseValue = response == null ? "null" :
-					"{" +
-							"bindingExisted=" + response.isBindingExisted() +
-							"}";
-
-			return "response=" + responseValue +
-					", expectedStatus=" + expectedStatus;
-		}
-	}
-
-	public static class GetResponseAndExpectedStatus {
-		protected final GetServiceInstanceBindingResponse response;
-		protected final HttpStatus expectedStatus;
-
-		public GetResponseAndExpectedStatus(GetServiceInstanceBindingResponse response, HttpStatus expectedStatus) {
-			this.response = response;
-			this.expectedStatus = expectedStatus;
-		}
-	}
-
-	public static class DeleteResponseAndExpectedStatus
-			extends AsyncResponseAndExpectedStatus<DeleteServiceInstanceBindingResponse> {
-		public DeleteResponseAndExpectedStatus(DeleteServiceInstanceBindingResponse response, HttpStatus expectedStatus) {
-			super(response, expectedStatus);
-		}
 	}
 
 }

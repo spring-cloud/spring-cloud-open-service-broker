@@ -16,13 +16,14 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
-import com.jayway.jsonpath.DocumentContext;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
-import org.springframework.cloud.servicebroker.JsonUtils;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.jayway.jsonpath.DocumentContext;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
@@ -30,6 +31,7 @@ import static org.springframework.cloud.servicebroker.model.binding.VolumeMount.
 import static org.springframework.cloud.servicebroker.model.binding.VolumeMount.Mode.READ_ONLY;
 
 public class VolumeMountTest {
+
 	@Test
 	public void volumeMountIsBuiltWithDefaults() {
 		VolumeMount mount = VolumeMount.builder()

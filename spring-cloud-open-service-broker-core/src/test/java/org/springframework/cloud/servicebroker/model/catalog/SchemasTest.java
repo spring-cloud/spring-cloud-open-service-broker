@@ -16,19 +16,21 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
-import com.jayway.jsonpath.DocumentContext;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
-import org.springframework.cloud.servicebroker.JsonUtils;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.jayway.jsonpath.DocumentContext;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class SchemasTest {
+
 	@Test
 	public void noSchemasIsSerializedToJson() {
 		Schemas schemas = Schemas.builder().build();

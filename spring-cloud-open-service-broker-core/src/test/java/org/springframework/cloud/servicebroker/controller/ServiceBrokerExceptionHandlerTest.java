@@ -16,7 +16,7 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;

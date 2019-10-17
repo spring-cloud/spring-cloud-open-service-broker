@@ -22,7 +22,7 @@ import java.util.Map;
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.JsonPathAssert;
 import org.springframework.cloud.servicebroker.JsonUtils;
@@ -37,6 +37,7 @@ import static org.springframework.cloud.servicebroker.JsonUtils.toJson;
 
 @SuppressWarnings({"deprecation", "DeprecatedIsStillUsed"})
 public class CreateServiceInstanceBindingRequestTest {
+
 	@Test
 	public void requestWithDefaultsIsBuilt() {
 		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder().build();

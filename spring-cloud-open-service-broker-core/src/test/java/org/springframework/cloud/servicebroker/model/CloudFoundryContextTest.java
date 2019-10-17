@@ -17,7 +17,8 @@
 package org.springframework.cloud.servicebroker.model;
 
 import com.jayway.jsonpath.DocumentContext;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.cloud.servicebroker.JsonPathAssert;
 import org.springframework.cloud.servicebroker.JsonUtils;
 
@@ -31,6 +32,7 @@ import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.SPACE_NAME_KEY;
 
 public class CloudFoundryContextTest {
+
 	@Test
 	public void emptyContext() {
 		CloudFoundryContext context = CloudFoundryContext.builder()

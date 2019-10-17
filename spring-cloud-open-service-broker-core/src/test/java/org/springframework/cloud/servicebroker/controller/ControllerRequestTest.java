@@ -20,10 +20,10 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
@@ -34,10 +34,10 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public abstract class ControllerRequestTest {
 
 	@Mock
@@ -53,7 +53,7 @@ public abstract class ControllerRequestTest {
 
 	protected Map<String, String> pathVariables = Collections.singletonMap("platformInstanceId", "platform-instance-id");
 
-	@Before
+	@BeforeEach
 	public void setUpControllerRequestTest() {
 		initMocks(this);
 
@@ -66,10 +66,10 @@ public abstract class ControllerRequestTest {
 				.plans(plan)
 				.build();
 
-		when(catalogService.getServiceDefinition(anyString()))
+		lenient().when(catalogService.getServiceDefinition(anyString()))
 				.thenReturn(Mono.empty());
 
-		when(catalogService.getServiceDefinition("service-definition-id"))
+		lenient().when(catalogService.getServiceDefinition("service-definition-id"))
 				.thenReturn(Mono.just(serviceDefinition));
 
 		identityContext = PlatformContext.builder()

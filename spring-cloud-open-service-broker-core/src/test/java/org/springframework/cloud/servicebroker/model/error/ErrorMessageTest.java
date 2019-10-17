@@ -18,12 +18,14 @@ package org.springframework.cloud.servicebroker.model.error;
 
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class ErrorMessageTest {
+
 	@Test
 	public void errorWithCodeAndDescriptionIsBuilt() {
 		ErrorMessage errorMessage = new ErrorMessage("ErrorCode", "error description");

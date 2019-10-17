@@ -21,7 +21,7 @@ import java.util.Map;
 
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
 
@@ -33,6 +33,7 @@ import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefin
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_VOLUME_MOUNT;
 
 public class ServiceDefinitionTest {
+
 	@Test
 	public void serviceDefinitionWithDefaultsIsSerializedToJson() {
 		ServiceDefinition serviceDefinition = ServiceDefinition.builder()

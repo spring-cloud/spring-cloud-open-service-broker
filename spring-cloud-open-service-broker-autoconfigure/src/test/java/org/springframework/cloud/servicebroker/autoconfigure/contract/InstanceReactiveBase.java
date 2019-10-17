@@ -16,9 +16,8 @@
 package org.springframework.cloud.servicebroker.autoconfigure.contract;
 
 import io.restassured.RestAssured;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -34,12 +33,10 @@ import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.Service
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = InstanceReactiveBase.TestApplication.class,
 		properties = "spring.main.web-application-type=reactive",
 		webEnvironment = RANDOM_PORT)
@@ -51,7 +48,7 @@ public class InstanceReactiveBase {
 	@Autowired
 	private ReactiveWebApplicationContext context;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		RestAssured.baseURI = "http://localhost";
 		RestAssured.port = this.port;
@@ -65,7 +62,7 @@ public class InstanceReactiveBase {
 	@SpringBootApplication(scanBasePackageClasses = {
 			ServiceBrokerAutoConfiguration.class,
 			ServiceBrokerWebFluxAutoConfiguration.class }, exclude = ServiceBrokerWebMvcAutoConfiguration.class)
-	public static class TestApplication {
+	protected static class TestApplication {
 
 		@Bean
 		public Catalog catalog() {

@@ -19,12 +19,10 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.After;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.boot.context.properties.ConfigurationPropertiesBindException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.env.YamlPropertySourceLoader;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -36,15 +34,13 @@ import org.springframework.test.context.support.TestPropertySourceUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ServiceBrokerPropertiesBindingTest {
 
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
-
 	private final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 
-	@After
+	@AfterEach
 	public void closeContext() {
 		this.context.close();
 	}
@@ -97,8 +93,8 @@ public class ServiceBrokerPropertiesBindingTest {
 		this.context.register(ServiceBrokerPropertiesConfiguration.class);
 		TestPropertyValues.of("spring.cloud.openservicebroker.catalog.services[0].id:service-one-id")
 				.applyTo(this.context);
-		this.thrown.expect(BeanCreationException.class);
-		this.context.refresh();
+		assertThrows(ConfigurationPropertiesBindException.class, () ->
+				this.context.refresh());
 	}
 
 	@Test

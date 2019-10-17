@@ -18,13 +18,15 @@ package org.springframework.cloud.servicebroker.model.catalog;
 
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 public class DashboardClientTest {
+
 	@Test
 	public void dashboardClientIsBuiltWithDefaults() {
 		DashboardClient client = DashboardClient.builder()

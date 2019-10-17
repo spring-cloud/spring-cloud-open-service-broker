@@ -16,8 +16,8 @@
 
 package org.springframework.cloud.servicebroker.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -56,7 +56,7 @@ public class ServiceInstanceEventServiceTest {
 
 	private EventFlowTestResults results;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.eventFlowRegistries = new EventFlowRegistries();
 		this.serviceInstanceEventService = new ServiceInstanceEventService(

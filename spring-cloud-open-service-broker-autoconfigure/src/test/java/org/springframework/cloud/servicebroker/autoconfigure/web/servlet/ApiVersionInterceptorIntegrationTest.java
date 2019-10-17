@@ -16,12 +16,11 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.controller.CatalogController;
@@ -40,7 +39,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ApiVersionInterceptorIntegrationTest {
 
 	private final static String CATALOG_PATH = "/v2/catalog";
@@ -51,13 +50,6 @@ public class ApiVersionInterceptorIntegrationTest {
 	@Mock
 	@SuppressWarnings("unused")
 	private CatalogService catalogService;
-
-	@Before
-	public void setUp() {
-		Catalog catalog = Catalog.builder().build();
-		given(catalogService.getCatalog())
-				.willReturn(Mono.just(catalog));
-	}
 
 	@Test
 	public void noHeaderSent() throws Exception {
@@ -79,6 +71,8 @@ public class ApiVersionInterceptorIntegrationTest {
 
 	@Test
 	public void matchingHeaderSent() throws Exception {
+		given(catalogService.getCatalog())
+				.willReturn(Mono.just(Catalog.builder().build()));
 		mockWithExpectedVersion().perform(get(CATALOG_PATH)
 				.header(BrokerApiVersion.DEFAULT_API_VERSION_HEADER, "expected-version")
 				.accept(MediaType.APPLICATION_JSON))
@@ -87,6 +81,8 @@ public class ApiVersionInterceptorIntegrationTest {
 
 	@Test
 	public void anyHeaderNotSent() throws Exception {
+		given(catalogService.getCatalog())
+				.willReturn(Mono.just(Catalog.builder().build()));
 		mockWithDefaultVersion().perform(get(CATALOG_PATH)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
@@ -94,6 +90,8 @@ public class ApiVersionInterceptorIntegrationTest {
 
 	@Test
 	public void anyHeaderSent() throws Exception {
+		given(catalogService.getCatalog())
+				.willReturn(Mono.just(Catalog.builder().build()));
 		mockWithDefaultVersion().perform(get(CATALOG_PATH)
 				.header(BrokerApiVersion.DEFAULT_API_VERSION_HEADER, "ignored-version")
 				.accept(MediaType.APPLICATION_JSON))

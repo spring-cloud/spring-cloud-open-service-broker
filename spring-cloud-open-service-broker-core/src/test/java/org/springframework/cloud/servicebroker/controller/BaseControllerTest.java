@@ -18,7 +18,7 @@ package org.springframework.cloud.servicebroker.controller;
 
 import java.util.Base64;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidOriginatingIdentityException;
 import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
@@ -28,6 +28,7 @@ import org.springframework.cloud.servicebroker.model.PlatformContext;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BaseControllerTest {
 
@@ -38,21 +39,23 @@ public class BaseControllerTest {
 
 	private final TestBaseController controller = new TestBaseController();
 
-	@Test(expected = ServiceBrokerInvalidOriginatingIdentityException.class)
+	@Test
 	public void originatingIdentityWithNoPropertiesThrowsException() {
-		controller.validateOriginatingIdentity("platform");
+		assertThrows(ServiceBrokerInvalidOriginatingIdentityException.class, () ->
+				controller.validateOriginatingIdentity("platform"));
 	}
 
-	@Test(expected = ServiceBrokerInvalidOriginatingIdentityException.class)
+	@Test
 	public void originatingIdentityWithNonEncodedPropertiesThrowsException() {
-		controller.validateOriginatingIdentity("platform some-properties");
+		assertThrows(ServiceBrokerInvalidOriginatingIdentityException.class, () ->
+				controller.validateOriginatingIdentity("platform some-properties"));
 	}
 
-	@Test(expected = ServiceBrokerInvalidOriginatingIdentityException.class)
+	@Test
 	public void originatingIdentityWithNonJsonPropertiesThrowsException() {
 		String encodedProperties = encode("some-properties");
-
-		controller.validateOriginatingIdentity("platform " + encodedProperties);
+		assertThrows(ServiceBrokerInvalidOriginatingIdentityException.class, () ->
+				controller.validateOriginatingIdentity("platform " + encodedProperties));
 	}
 
 	@Test

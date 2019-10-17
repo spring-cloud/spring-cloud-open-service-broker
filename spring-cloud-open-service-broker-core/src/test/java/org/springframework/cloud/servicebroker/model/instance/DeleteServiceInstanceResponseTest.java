@@ -17,11 +17,12 @@
 package org.springframework.cloud.servicebroker.model.instance;
 
 import net.bytebuddy.utility.RandomString;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DeleteServiceInstanceResponseTest {
 
@@ -60,11 +61,12 @@ public class DeleteServiceInstanceResponseTest {
 				.build();
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void exceedsOperationCharacterLimit() throws Exception {
-		DeleteServiceInstanceResponse.builder()
-				.operation(RandomString.make(10_001))
-				.build();
+		assertThrows(IllegalArgumentException.class, () ->
+				DeleteServiceInstanceResponse.builder()
+						.operation(RandomString.make(10_001))
+						.build());
 	}
 
 	@Test

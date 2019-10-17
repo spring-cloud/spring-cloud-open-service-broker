@@ -19,10 +19,10 @@ package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 import java.nio.charset.Charset;
 
 import com.jayway.jsonpath.JsonPath;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractServiceInstanceControllerIntegrationTest;
 import org.springframework.cloud.servicebroker.controller.ServiceBrokerWebFluxExceptionHandler;
@@ -55,14 +55,14 @@ import static org.springframework.cloud.servicebroker.exception.ServiceBrokerAsy
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceControllerIntegrationTest {
 
 	private static final Charset UTF_8 = Charset.forName("UTF-8");
 
 	private WebTestClient client;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.client = WebTestClient.bindToController(this.controller)
 				.controllerAdvice(ServiceBrokerWebFluxExceptionHandler.class)
@@ -481,8 +481,6 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 	@Test
 	public void deleteBindingWithMissingQueryParamsFails() throws Exception {
-		setupCatalogService(null);
-
 		final String url = buildDeleteUrl(null, false).replace("plan_id", "plan-1");
 
 		client.delete().uri(url)

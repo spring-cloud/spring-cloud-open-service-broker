@@ -19,8 +19,8 @@ package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -28,7 +28,8 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersion
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionMissingException;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 public class ApiVersionInterceptorTest {
@@ -39,7 +40,7 @@ public class ApiVersionInterceptorTest {
 	@Mock
 	private HttpServletResponse response;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 	}
@@ -47,7 +48,7 @@ public class ApiVersionInterceptorTest {
 	@Test
 	public void noBrokerApiVersionConfigured() {
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor();
-		assertTrue(interceptor.preHandle(request, response, null));
+		assertThat(interceptor.preHandle(request, response, null)).isTrue();
 	}
 
 	@Test
@@ -56,7 +57,7 @@ public class ApiVersionInterceptorTest {
 		when(request.getHeader("header")).thenReturn("9.9");
 
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(brokerApiVersion);
-		assertTrue(interceptor.preHandle(request, response, null));
+		assertThat(interceptor.preHandle(request, response, null)).isTrue();
 	}
 
 	@Test
@@ -65,24 +66,25 @@ public class ApiVersionInterceptorTest {
 		when(request.getHeader("header")).thenReturn("9.9");
 
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(brokerApiVersion);
-		assertTrue(interceptor.preHandle(request, response, null));
+		assertThat(interceptor.preHandle(request, response, null)).isTrue();
 	}
 
-	@Test(expected = ServiceBrokerApiVersionException.class)
+	@Test
 	public void versionMismatch() {
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", "9.9");
 		when(request.getHeader("header")).thenReturn("8.8");
-
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(brokerApiVersion);
-		interceptor.preHandle(request, response, null);
+		assertThrows(ServiceBrokerApiVersionException.class, () ->
+				interceptor.preHandle(request, response, null));
 	}
 
-	@Test(expected = ServiceBrokerApiVersionMissingException.class)
+	@Test
 	public void versionHeaderIsMissing() {
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", "9.9");
 		when(request.getHeader("header")).thenReturn(null);
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(brokerApiVersion);
-		interceptor.preHandle(request, response, null);
+		assertThrows(ServiceBrokerApiVersionMissingException.class, () ->
+				interceptor.preHandle(request, response, null));
 	}
 
 	@Test
@@ -90,6 +92,6 @@ public class ApiVersionInterceptorTest {
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", BrokerApiVersion.API_VERSION_ANY);
 		when(request.getHeader("header")).thenReturn(null);
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(brokerApiVersion);
-		assertTrue(interceptor.preHandle(request, response, null));
+		assertThat(interceptor.preHandle(request, response, null)).isTrue();
 	}
 }

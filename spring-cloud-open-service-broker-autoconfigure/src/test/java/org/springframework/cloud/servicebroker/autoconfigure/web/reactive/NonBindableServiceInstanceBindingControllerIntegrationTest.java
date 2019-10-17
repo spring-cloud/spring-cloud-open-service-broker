@@ -16,10 +16,10 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceInstanceBindingIntegrationTest;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
@@ -29,12 +29,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class NonBindableServiceInstanceBindingControllerIntegrationTest extends ServiceInstanceBindingIntegrationTest {
 
 	private WebTestClient client;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		ServiceInstanceBindingService serviceInstanceBindingService = new NonBindableServiceInstanceBindingService();
 		ServiceInstanceBindingController controller =

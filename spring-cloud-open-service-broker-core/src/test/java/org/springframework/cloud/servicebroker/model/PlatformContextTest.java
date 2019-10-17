@@ -16,15 +16,15 @@
 
 package org.springframework.cloud.servicebroker.model;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PlatformContextTest {
+
 	@Test
 	public void contextIsBuildWithDefaults() {
 		PlatformContext context = PlatformContext.builder()

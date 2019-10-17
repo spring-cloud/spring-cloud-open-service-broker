@@ -17,9 +17,10 @@
 package org.springframework.cloud.servicebroker.model.binding;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class CreateServiceInstanceBindingResponseTest {
+
 	@Test
 	public void equalsAndHashCode() {
 		EqualsVerifier

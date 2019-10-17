@@ -16,7 +16,7 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -63,7 +63,7 @@ public abstract class AbstractServiceInstanceControllerIntegrationTest extends C
 
 	protected String updateRequestBodyWithPlan;
 
-	@Before
+	@BeforeEach
 	public void setUpCommonFixtures() {
 		this.createRequestBody = JsonUtils.toJson(CreateServiceInstanceRequest
 				.builder()

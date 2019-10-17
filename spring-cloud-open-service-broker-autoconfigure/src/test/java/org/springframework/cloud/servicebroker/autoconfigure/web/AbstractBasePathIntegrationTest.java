@@ -16,7 +16,6 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
-import org.junit.runner.RunWith;
 import reactor.core.publisher.Mono;
 import wiremock.com.google.common.base.Objects;
 
@@ -24,6 +23,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
@@ -35,12 +35,9 @@ import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInsta
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static java.lang.String.format;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(
 		webEnvironment = WebEnvironment.MOCK,
 		classes = AbstractBasePathIntegrationTest.ServiceBrokerApplication.class
@@ -60,7 +57,7 @@ public abstract class AbstractBasePathIntegrationTest {
 	}
 
 	@SpringBootApplication
-	@Configuration
+	@TestConfiguration
 	protected static class ServiceBrokerApplication {
 
 		@Bean
