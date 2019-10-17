@@ -23,7 +23,7 @@ package org.springframework.cloud.servicebroker.exception;
  * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY}
  * being returned to the platform.
  */
-public class ServiceInstanceBindingDoesNotExistException extends RuntimeException {
+public class ServiceInstanceBindingDoesNotExistException extends ServiceBrokerException {
 
 	private static final long serialVersionUID = -1879753092397657116L;
 
@@ -34,6 +34,16 @@ public class ServiceInstanceBindingDoesNotExistException extends RuntimeExceptio
 	 */
 	public ServiceInstanceBindingDoesNotExistException(String bindingId) {
 		super(buildMessage(bindingId));
+	}
+
+	/**
+	 * Construct an exception with a default message that includes the provided IDs.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param bindingId the ID of the service binding
+	 */
+	public ServiceInstanceBindingDoesNotExistException(String errorCode, String bindingId) {
+		super(errorCode, buildMessage(bindingId));
 	}
 
 	private static String buildMessage(String bindingId) {
