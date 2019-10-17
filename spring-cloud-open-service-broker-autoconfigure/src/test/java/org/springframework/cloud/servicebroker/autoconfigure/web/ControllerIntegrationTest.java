@@ -39,7 +39,7 @@ import org.springframework.util.Base64Utils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 
 public abstract class ControllerIntegrationTest {
 
@@ -70,10 +70,10 @@ public abstract class ControllerIntegrationTest {
 	}
 
 	protected void setupCatalogService() {
-		when(catalogService.getServiceDefinition(isNull()))
-				.thenReturn(Mono.empty());
-		when(catalogService.getServiceDefinition(eq(serviceDefinition.getId())))
-				.thenReturn(Mono.just(serviceDefinition));
+		given(catalogService.getServiceDefinition(isNull()))
+				.willReturn(Mono.empty());
+		given(catalogService.getServiceDefinition(eq(serviceDefinition.getId())))
+				.willReturn(Mono.just(serviceDefinition));
 	}
 
 	protected void setupCatalogService(ServiceDefinition serviceDefinition) {
@@ -84,10 +84,10 @@ public abstract class ControllerIntegrationTest {
 		else {
 			serviceDefinitionMono = Mono.just(serviceDefinition);
 		}
-		when(catalogService.getServiceDefinition(isNull()))
-				.thenReturn(Mono.empty());
-		when(catalogService.getServiceDefinition(eq(this.serviceDefinition.getId())))
-				.thenReturn(serviceDefinitionMono);
+		given(catalogService.getServiceDefinition(isNull()))
+				.willReturn(Mono.empty());
+		given(catalogService.getServiceDefinition(eq(this.serviceDefinition.getId())))
+				.willReturn(serviceDefinitionMono);
 	}
 
 	protected String buildOriginatingIdentityHeader() throws JsonProcessingException {

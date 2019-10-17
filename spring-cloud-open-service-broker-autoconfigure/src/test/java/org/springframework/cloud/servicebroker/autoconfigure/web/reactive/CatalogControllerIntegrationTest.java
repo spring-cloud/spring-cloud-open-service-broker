@@ -37,7 +37,7 @@ import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_ROUTE_FORWARDING;
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_SYSLOG_DRAIN;
 
@@ -63,7 +63,8 @@ public class CatalogControllerIntegrationTest {
 				.serviceDefinitions(this.serviceDefinition)
 				.build();
 
-		when(this.catalogService.getCatalog()).thenReturn(Mono.just(catalog));
+		given(this.catalogService.getCatalog())
+				.willReturn(Mono.just(catalog));
 	}
 
 	@Test

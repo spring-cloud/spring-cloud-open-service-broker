@@ -51,9 +51,9 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.doThrow;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
@@ -279,8 +279,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	public void createBindingWithUnknownServiceInstanceIdFails() throws Exception {
 		setupCatalogService();
 
-		when(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
-				.thenThrow(new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID));
+		given(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
+				.willThrow(new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID));
 
 		MvcResult mvcResult = mockMvc.perform(put(buildCreateUrl())
 				.content(createRequestBody)
@@ -314,8 +314,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	public void createBindingWithDuplicateIdFails() throws Exception {
 		setupCatalogService();
 
-		when(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
-				.thenThrow(new ServiceInstanceBindingExistsException(SERVICE_INSTANCE_ID, SERVICE_INSTANCE_BINDING_ID));
+		given(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
+				.willThrow(new ServiceInstanceBindingExistsException(SERVICE_INSTANCE_ID, SERVICE_INSTANCE_BINDING_ID));
 
 		MvcResult mvcResult = mockMvc.perform(put(buildCreateUrl())
 				.content(createRequestBody)
@@ -398,8 +398,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 
 	@Test
 	public void getBindingWithOperationInProgressFails() throws Exception {
-		when(serviceInstanceBindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
-				.thenThrow(new ServiceBrokerOperationInProgressException("still working"));
+		given(serviceInstanceBindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
+				.willThrow(new ServiceBrokerOperationInProgressException("still working"));
 
 		MvcResult mvcResult = mockMvc.perform(get(buildCreateUrl())
 				.accept(MediaType.APPLICATION_JSON)
@@ -430,7 +430,9 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.andExpect(status().isOk())
 				.andExpect(content().string("{}"));
 
-		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
+		then(serviceInstanceBindingService)
+				.should()
+				.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 
 		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
@@ -455,7 +457,9 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.andExpect(status().isAccepted())
 				.andExpect(jsonPath("$.description", containsString("still working")));
 
-		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
+		then(serviceInstanceBindingService)
+				.should()
+				.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 
 		verifyDeleteBinding();
 	}
@@ -482,7 +486,9 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.andExpect(status().isAccepted())
 				.andExpect(jsonPath("$.operation", equalTo("working")));
 
-		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
+		then(serviceInstanceBindingService)
+				.should()
+				.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 
 		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
@@ -511,7 +517,9 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 			   .andExpect(status().isOk())
 			   .andExpect(content().string("{}"));
 
-		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
+		then(serviceInstanceBindingService)
+				.should()
+				.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 
 		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);

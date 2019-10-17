@@ -27,7 +27,7 @@ import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,7 +45,7 @@ public class CatalogControllerTest {
 	public void catalogIsReturned() {
 		Catalog expectedCatalog = Catalog.builder().build();
 
-		when(catalogService.getCatalog()).thenReturn(Mono.just(expectedCatalog));
+		given(catalogService.getCatalog()).willReturn(Mono.just(expectedCatalog));
 
 		CatalogController controller = new CatalogController(catalogService);
 

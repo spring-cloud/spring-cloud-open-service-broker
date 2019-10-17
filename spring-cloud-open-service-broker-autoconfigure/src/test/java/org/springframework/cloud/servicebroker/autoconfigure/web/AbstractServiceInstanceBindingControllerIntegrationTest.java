@@ -35,8 +35,8 @@ import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceB
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.given;
 
 public abstract class AbstractServiceInstanceBindingControllerIntegrationTest extends ServiceInstanceBindingIntegrationTest {
 
@@ -47,56 +47,64 @@ public abstract class AbstractServiceInstanceBindingControllerIntegrationTest ex
 	protected ServiceInstanceBindingService serviceInstanceBindingService;
 
 	protected void setupServiceInstanceBindingService(CreateServiceInstanceBindingResponse createResponse) {
-		when(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
-				.thenReturn(Mono.just(createResponse));
+		given(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
+				.willReturn(Mono.just(createResponse));
 	}
 
 	protected void setupServiceInstanceBindingService(GetServiceInstanceBindingResponse getResponse) {
-		when(serviceInstanceBindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
-				.thenReturn(Mono.just(getResponse));
+		given(serviceInstanceBindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
+				.willReturn(Mono.just(getResponse));
 	}
 
 	protected void setupServiceInstanceBindingService(DeleteServiceInstanceBindingResponse deleteResponse) {
-		when(serviceInstanceBindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
-				.thenReturn(Mono.just(deleteResponse));
+		given(serviceInstanceBindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
+				.willReturn(Mono.just(deleteResponse));
 	}
 
 	protected void setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse response) {
-		when(serviceInstanceBindingService.getLastOperation(any(GetLastServiceBindingOperationRequest.class)))
-				.thenReturn(Mono.just(response));
+		given(serviceInstanceBindingService.getLastOperation(any(GetLastServiceBindingOperationRequest.class)))
+				.willReturn(Mono.just(response));
 	}
 
 	protected void setupServiceInstanceBindingService(ServiceBrokerCreateOperationInProgressException exception) {
-		when(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
-				.thenReturn(Mono.error(exception));
+		given(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
+				.willReturn(Mono.error(exception));
 	}
 
 	protected void setupServiceInstanceBindingService(ServiceBrokerDeleteOperationInProgressException exception) {
-		when(serviceInstanceBindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
-				.thenReturn(Mono.error(exception));
+		given(serviceInstanceBindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
+				.willReturn(Mono.error(exception));
 	}
 
 	protected CreateServiceInstanceBindingRequest verifyCreateBinding() {
 		ArgumentCaptor<CreateServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor.forClass(CreateServiceInstanceBindingRequest.class);
-		verify(serviceInstanceBindingService).createServiceInstanceBinding(argumentCaptor.capture());
+		then(serviceInstanceBindingService)
+				.should()
+				.createServiceInstanceBinding(argumentCaptor.capture());
 		return argumentCaptor.getValue();
 	}
 
 	protected GetServiceInstanceBindingRequest verifyGetBinding() {
 		ArgumentCaptor<GetServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor.forClass(GetServiceInstanceBindingRequest.class);
-		verify(serviceInstanceBindingService).getServiceInstanceBinding(argumentCaptor.capture());
+		then(serviceInstanceBindingService)
+				.should()
+				.getServiceInstanceBinding(argumentCaptor.capture());
 		return argumentCaptor.getValue();
 	}
 
 	protected DeleteServiceInstanceBindingRequest verifyDeleteBinding() {
 		ArgumentCaptor<DeleteServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor.forClass(DeleteServiceInstanceBindingRequest.class);
-		verify(serviceInstanceBindingService).deleteServiceInstanceBinding(argumentCaptor.capture());
+		then(serviceInstanceBindingService)
+				.should()
+				.deleteServiceInstanceBinding(argumentCaptor.capture());
 		return argumentCaptor.getValue();
 	}
 
 	protected GetLastServiceBindingOperationRequest verifyLastOperation() {
 		ArgumentCaptor<GetLastServiceBindingOperationRequest> argumentCaptor = ArgumentCaptor.forClass(GetLastServiceBindingOperationRequest.class);
-		verify(serviceInstanceBindingService).getLastOperation(argumentCaptor.capture());
+		then(serviceInstanceBindingService)
+				.should()
+				.getLastOperation(argumentCaptor.capture());
 		return argumentCaptor.getValue();
 	}
 }

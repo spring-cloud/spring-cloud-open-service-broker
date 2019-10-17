@@ -45,7 +45,7 @@ import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 
 public abstract class AbstractServiceInstanceControllerIntegrationTest extends ControllerIntegrationTest {
 
@@ -84,63 +84,63 @@ public abstract class AbstractServiceInstanceControllerIntegrationTest extends C
 	}
 
 	protected void setupServiceInstanceService(CreateServiceInstanceResponse response) {
-		when(serviceInstanceService.createServiceInstance(any(CreateServiceInstanceRequest.class)))
-				.thenReturn(Mono.just(response));
+		given(serviceInstanceService.createServiceInstance(any(CreateServiceInstanceRequest.class)))
+				.willReturn(Mono.just(response));
 	}
 
 	protected void setupServiceInstanceService(Exception exception) {
-		when(serviceInstanceService.createServiceInstance(any(CreateServiceInstanceRequest.class)))
-				.thenReturn(Mono.error(exception));
+		given(serviceInstanceService.createServiceInstance(any(CreateServiceInstanceRequest.class)))
+				.willReturn(Mono.error(exception));
 	}
 
 	protected void setupServiceInstanceService(GetServiceInstanceResponse response) {
-		when(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
-				.thenReturn(Mono.just(response));
+		given(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
+				.willReturn(Mono.just(response));
 	}
 
 	protected void setupServiceInstanceService(ServiceBrokerOperationInProgressException exception) {
-		when(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
-				.thenReturn(Mono.error(exception));
+		given(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
+				.willReturn(Mono.error(exception));
 	}
 
 	protected void setupServiceInstanceService(ServiceBrokerCreateOperationInProgressException exception) {
-		when(serviceInstanceService.createServiceInstance(any(CreateServiceInstanceRequest.class)))
-				.thenReturn(Mono.error(exception));
+		given(serviceInstanceService.createServiceInstance(any(CreateServiceInstanceRequest.class)))
+				.willReturn(Mono.error(exception));
 	}
 
 	protected void setupServiceInstanceService(ServiceBrokerUpdateOperationInProgressException exception) {
-		when(serviceInstanceService.updateServiceInstance(any(UpdateServiceInstanceRequest.class)))
-				.thenReturn(Mono.error(exception));
+		given(serviceInstanceService.updateServiceInstance(any(UpdateServiceInstanceRequest.class)))
+				.willReturn(Mono.error(exception));
 	}
 
 	protected void setupServiceInstanceService(ServiceBrokerDeleteOperationInProgressException exception) {
-		when(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
-				.thenReturn(Mono.error(exception));
+		given(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
+				.willReturn(Mono.error(exception));
 	}
 
 	protected void setupServiceInstanceService(DeleteServiceInstanceResponse response) {
-		when(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
-				.thenReturn(Mono.just(response));
+		given(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
+				.willReturn(Mono.just(response));
 	}
 
 	protected void setupServiceInstanceService(ServiceInstanceDoesNotExistException exception) {
-		when(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
-				.thenReturn(Mono.error(exception));
+		given(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
+				.willReturn(Mono.error(exception));
 	}
 
 	protected void setupServiceInstanceService(UpdateServiceInstanceResponse response) {
-		when(serviceInstanceService.updateServiceInstance(any(UpdateServiceInstanceRequest.class)))
-				.thenReturn(Mono.just(response));
+		given(serviceInstanceService.updateServiceInstance(any(UpdateServiceInstanceRequest.class)))
+				.willReturn(Mono.just(response));
 	}
 
 	protected void setupServiceInstanceService(ServiceInstanceUpdateNotSupportedException exception) {
-		when(serviceInstanceService.updateServiceInstance(any(UpdateServiceInstanceRequest.class)))
-				.thenReturn(Mono.error(exception));
+		given(serviceInstanceService.updateServiceInstance(any(UpdateServiceInstanceRequest.class)))
+				.willReturn(Mono.error(exception));
 	}
 
 	protected void setupServiceInstanceService(GetLastServiceOperationResponse response) {
-		when(serviceInstanceService.getLastOperation(any(GetLastServiceOperationRequest.class)))
-				.thenReturn(Mono.just(response));
+		given(serviceInstanceService.getLastOperation(any(GetLastServiceOperationRequest.class)))
+				.willReturn(Mono.just(response));
 	}
 
 	protected String buildCreateUpdateUrl() {

@@ -47,8 +47,8 @@ import org.springframework.http.ResponseEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.given;
 
 public class ServiceInstanceControllerResponseCodeTest {
 
@@ -66,9 +66,9 @@ public class ServiceInstanceControllerResponseCodeTest {
 		ServiceDefinition serviceDefinition = mock(ServiceDefinition.class);
 		List<Plan> plans = new ArrayList<>();
 		plans.add(Plan.builder().id("service-definition-plan-id").build());
-		when(serviceDefinition.getPlans()).thenReturn(plans);
-		when(serviceDefinition.getId()).thenReturn("service-definition-id");
-		when(catalogService.getServiceDefinition(any())).thenReturn(Mono.just(serviceDefinition));
+		given(serviceDefinition.getPlans()).willReturn(plans);
+		given(serviceDefinition.getId()).willReturn("service-definition-id");
+		given(catalogService.getServiceDefinition(any())).willReturn(Mono.just(serviceDefinition));
 	}
 
 	@Test
@@ -119,8 +119,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 		else {
 			responseMono = Mono.just(response);
 		}
-		when(serviceInstanceService.createServiceInstance(any(CreateServiceInstanceRequest.class)))
-				.thenReturn(responseMono);
+		given(serviceInstanceService.createServiceInstance(any(CreateServiceInstanceRequest.class)))
+				.willReturn(responseMono);
 
 		CreateServiceInstanceRequest createRequest = CreateServiceInstanceRequest.builder()
 				.serviceDefinitionId("service-definition-id")
@@ -132,7 +132,9 @@ public class ServiceInstanceControllerResponseCodeTest {
 						createRequest)
 				.block();
 
-		verify(serviceInstanceService).createServiceInstance(any(CreateServiceInstanceRequest.class));
+		then(serviceInstanceService)
+				.should()
+				.createServiceInstance(any(CreateServiceInstanceRequest.class));
 		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(response);
 	}
@@ -158,8 +160,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 		else {
 			responseMono = Mono.just(response);
 		}
-		when(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
-				.thenReturn(responseMono);
+		given(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
+				.willReturn(responseMono);
 
 		ResponseEntity<GetServiceInstanceResponse> responseEntity = controller
 				.getServiceInstance(pathVariables, null, null, null)
@@ -171,8 +173,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 
 	@Test
 	public void getServiceInstanceWithMissingInstanceGivesExpectedStatus() {
-		when(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
-				.thenReturn(Mono.error(new ServiceInstanceDoesNotExistException("instance does not exist")));
+		given(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
+				.willReturn(Mono.error(new ServiceInstanceDoesNotExistException("instance does not exist")));
 
 		ResponseEntity<GetServiceInstanceResponse> responseEntity = controller
 				.getServiceInstance(pathVariables, null, "service-definition-id", null)
@@ -210,8 +212,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 		else {
 			responseMono = Mono.just(response);
 		}
-		when(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
-				.thenReturn(responseMono);
+		given(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
+				.willReturn(responseMono);
 
 		ResponseEntity<DeleteServiceInstanceResponse> responseEntity = controller
 				.deleteServiceInstance(pathVariables, null, "service-definition-id", "service-definition-plan-id",
@@ -224,8 +226,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 
 	@Test
 	public void deleteServiceInstanceWithMissingInstanceGivesExpectedStatus() {
-		when(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
-				.thenReturn(Mono.error(new ServiceInstanceDoesNotExistException("instance does not exist")));
+		given(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
+				.willReturn(Mono.error(new ServiceInstanceDoesNotExistException("instance does not exist")));
 
 		ResponseEntity<DeleteServiceInstanceResponse> responseEntity = controller
 				.deleteServiceInstance(pathVariables, null, "service-definition-id", "service-definition-plan-id",
@@ -264,8 +266,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 		else {
 			responseMono = Mono.just(response);
 		}
-		when(serviceInstanceService.updateServiceInstance(any(UpdateServiceInstanceRequest.class)))
-				.thenReturn(responseMono);
+		given(serviceInstanceService.updateServiceInstance(any(UpdateServiceInstanceRequest.class)))
+				.willReturn(responseMono);
 
 		UpdateServiceInstanceRequest updateRequest = UpdateServiceInstanceRequest.builder()
 				.serviceDefinitionId("service-definition-id")
@@ -313,8 +315,8 @@ public class ServiceInstanceControllerResponseCodeTest {
 
 	private void validateGetLastOperationWithResponseStatus(GetLastServiceOperationResponse response,
 																 HttpStatus expectedStatus) {
-		when(serviceInstanceService.getLastOperation(any(GetLastServiceOperationRequest.class)))
-				.thenReturn(Mono.just(response));
+		given(serviceInstanceService.getLastOperation(any(GetLastServiceOperationRequest.class)))
+				.willReturn(Mono.just(response));
 
 		ResponseEntity<GetLastServiceOperationResponse> responseEntity = controller
 				.getServiceInstanceLastOperation(pathVariables, null, null, null, null,

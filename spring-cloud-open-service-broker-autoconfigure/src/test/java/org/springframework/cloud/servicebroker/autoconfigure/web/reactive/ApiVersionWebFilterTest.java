@@ -28,7 +28,7 @@ import org.springframework.mock.web.server.MockServerWebExchange;
 import org.springframework.web.server.WebFilterChain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 
 public class ApiVersionWebFilterTest {
 
@@ -108,7 +108,8 @@ public class ApiVersionWebFilterTest {
 		this.exchange = MockServerWebExchange.from(request);
 		MockitoAnnotations.initMocks(this);
 		exchange.getResponse().setStatusCode(HttpStatus.OK);
-		when(chain.filter(exchange)).thenReturn(Mono.empty());
+		given(chain.filter(exchange))
+				.willReturn(Mono.empty());
 	}
 
 }

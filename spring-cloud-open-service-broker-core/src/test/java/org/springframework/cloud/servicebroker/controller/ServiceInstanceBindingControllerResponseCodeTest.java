@@ -44,10 +44,9 @@ import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class ServiceInstanceBindingControllerResponseCodeTest {
 
@@ -65,10 +64,9 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		ServiceDefinition serviceDefinition = mock(ServiceDefinition.class);
 		List<Plan> plans = new ArrayList<>();
 		plans.add(Plan.builder().id("service-definition-plan-id").build());
-		when(serviceDefinition.getPlans()).thenReturn(plans);
-		when(serviceDefinition.getId()).thenReturn("service-definition-id");
-		when(catalogService.getServiceDefinition(any()))
-				.thenReturn(Mono.just(serviceDefinition));
+		given(serviceDefinition.getPlans()).willReturn(plans);
+		given(serviceDefinition.getId()).willReturn("service-definition-id");
+		given(catalogService.getServiceDefinition(any())).willReturn(Mono.just(serviceDefinition));
 	}
 
 	@Test
@@ -101,8 +99,8 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		else {
 			responseMono = Mono.just(response);
 		}
-		when(bindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
-				.thenReturn(responseMono);
+		given(bindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
+				.willReturn(responseMono);
 
 		CreateServiceInstanceBindingRequest createRequest = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId("service-definition-id")
@@ -140,8 +138,8 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		else {
 			responseMono = Mono.just(response);
 		}
-		when(bindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
-				.thenReturn(responseMono);
+		given(bindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
+				.willReturn(responseMono);
 
 		ResponseEntity<GetServiceInstanceBindingResponse> responseEntity = controller
 				.getServiceInstanceBinding(pathVariables, null, null, null, null)
@@ -154,8 +152,8 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 
 	@Test
 	public void getServiceBindingWithMissingBindingGivesExpectedStatus() {
-		doThrow(new ServiceInstanceBindingDoesNotExistException("binding-id"))
-				.when(bindingService).getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class));
+		given(bindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
+				.willThrow(new ServiceInstanceBindingDoesNotExistException("binding-id"));
 
 		ResponseEntity<GetServiceInstanceBindingResponse> responseEntity = controller
 				.getServiceInstanceBinding(pathVariables, null, null, null, null)
@@ -166,8 +164,8 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 
 	@Test
 	public void getServiceBindingWithMissingServiceInstanceGivesExpectedStatus() {
-		doThrow(new ServiceInstanceDoesNotExistException("nonexistent-service-id"))
-				.when(bindingService).getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class));
+		given(bindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
+				.willThrow(new ServiceInstanceDoesNotExistException("nonexistent-service-id"));
 
 		ResponseEntity<GetServiceInstanceBindingResponse> responseEntity = controller
 				.getServiceInstanceBinding(pathVariables, "nonexistent-service-id", "nonexistent-binding-id", null, null)
@@ -204,8 +202,8 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		else {
 			responseMono = Mono.just(response);
 		}
-		when(bindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
-				.thenReturn(responseMono);
+		given(bindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
+				.willReturn(responseMono);
 
 		ResponseEntity<DeleteServiceInstanceBindingResponse> responseEntity = controller
 				.deleteServiceInstanceBinding(pathVariables, null, null, "service-definition-id", "service-definition-plan-id", false, null, null)
@@ -215,13 +213,15 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(response);
 
-		verify(bindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
+		then(bindingService)
+				.should()
+				.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 	}
 
 	@Test
 	public void deleteServiceBindingWithMissingBindingGivesExpectedStatus() {
-		doThrow(new ServiceInstanceBindingDoesNotExistException("binding-id"))
-				.when(bindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
+		given(bindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
+				.willThrow(new ServiceInstanceBindingDoesNotExistException("binding-id"));
 
 		ResponseEntity<DeleteServiceInstanceBindingResponse> responseEntity = controller
 				.deleteServiceInstanceBinding(pathVariables, null, null, "service-definition-id", "service-definition-plan-id", false, null, null)
