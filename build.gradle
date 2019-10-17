@@ -99,7 +99,7 @@ configure(allprojects - [project(":spring-cloud-open-service-broker-docs")]) {
 	apply plugin: "pmd"
 
 	checkstyle {
-		configFile = file("${project.rootDir}/config/checkstyle-header.xml")
+		configFile = file("${project.rootDir}/config/checkstyle.xml")
 		toolVersion = "${checkstyleVersion}"
 	}
 	checkstyleMain {
