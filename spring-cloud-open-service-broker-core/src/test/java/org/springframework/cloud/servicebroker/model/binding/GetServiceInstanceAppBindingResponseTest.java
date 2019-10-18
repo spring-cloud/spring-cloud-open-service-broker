@@ -49,6 +49,7 @@ public class GetServiceInstanceAppBindingResponseTest {
 		assertThat(json).hasNoPath("$.credentials");
 		assertThat(json).hasNoPath("$.syslog_drain_url");
 		assertThat(json).hasNoPath("$.volume_mounts");
+		assertThat(json).hasNoPath("$.endpoints");
 	}
 
 	@Test
@@ -69,6 +70,11 @@ public class GetServiceInstanceAppBindingResponseTest {
 				VolumeMount.builder().build()
 		);
 
+		List<Endpoint> endpoints = Arrays.asList(
+				Endpoint.builder().build(),
+				Endpoint.builder().build()
+		);
+
 		GetServiceInstanceAppBindingResponse response = GetServiceInstanceAppBindingResponse.builder()
 				.parameters("field1", "value1")
 				.parameters("field2", 2)
@@ -82,6 +88,8 @@ public class GetServiceInstanceAppBindingResponseTest {
 				.volumeMounts(VolumeMount.builder().build())
 				.volumeMounts(VolumeMount.builder().build())
 				.volumeMounts(volumeMounts)
+				.endpoints(Endpoint.builder().build())
+				.endpoints(endpoints)
 				.build();
 
 		assertThat(response.getParameters()).hasSize(5);
@@ -101,6 +109,7 @@ public class GetServiceInstanceAppBindingResponseTest {
 		assertThat(response.getSyslogDrainUrl()).isEqualTo("https://logs.example.com");
 
 		assertThat(response.getVolumeMounts()).hasSize(4);
+		assertThat(response.getEndpoints()).hasSize(3);
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
@@ -119,6 +128,7 @@ public class GetServiceInstanceAppBindingResponseTest {
 		assertThat(json).hasPath("$.syslog_drain_url").isEqualTo("https://logs.example.com");
 
 		assertThat(json).hasListAtPath("$.volume_mounts").hasSize(4);
+		assertThat(json).hasListAtPath("$.endpoints").hasSize(3);
 	}
 
 	@Test
@@ -141,6 +151,11 @@ public class GetServiceInstanceAppBindingResponseTest {
 		assertThat(sharedVolumeDevice.getVolumeId()).isEqualTo("volume-id");
 		assertThat(sharedVolumeDevice.getMountConfig())
 				.containsOnly(entry("field1", "mount-config-1"), entry("field2", "mount-config-2"));
+
+		Endpoint endpoint = response.getEndpoints().get(0);
+		assertThat(endpoint.getHost()).isEqualTo("endpoint-host1");
+		assertThat(endpoint.getPorts()).containsExactly("8080", "9999");
+		assertThat(endpoint.getProtocol()).isEqualTo(Endpoint.Protocol.TCP);
 	}
 
 	@Test

@@ -22,5 +22,12 @@
         }
       }
     }
+  ],
+  "endpoints": [
+    {
+      "host": "endpoint-host1",
+      "ports": ["8080", "9999"],
+      "protocol": "tcp"
+    }
   ]
 }

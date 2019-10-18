@@ -31,6 +31,7 @@ import java.util.Objects;
  * platform.
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API
  * 		specification</a>
  */
@@ -42,11 +43,13 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 
 	private final List<VolumeMount> volumeMounts;
 
+	private final List<Endpoint> endpoints;
+
 	/**
 	 * Construct a new {@link GetServiceInstanceAppBindingResponse}
 	 */
 	public GetServiceInstanceAppBindingResponse() {
-		this(new HashMap<>(), new HashMap<>(), null, new ArrayList<>());
+		this(new HashMap<>(), new HashMap<>(), null, new ArrayList<>(), new ArrayList<>());
 	}
 
 	/**
@@ -56,13 +59,15 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 	 * @param credentials the service binding credentials
 	 * @param syslogDrainUrl the syslog drain URL
 	 * @param volumeMounts the set of volume mounts
+	 * @param endpoints the set of endpoints
 	 */
 	public GetServiceInstanceAppBindingResponse(Map<String, Object> parameters, Map<String, Object> credentials,
-			String syslogDrainUrl, List<VolumeMount> volumeMounts) {
+			String syslogDrainUrl, List<VolumeMount> volumeMounts, List<Endpoint> endpoints) {
 		super(parameters);
 		this.credentials = credentials;
 		this.syslogDrainUrl = syslogDrainUrl;
 		this.volumeMounts = volumeMounts;
+		this.endpoints = endpoints;
 	}
 
 	/**
@@ -93,6 +98,15 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 	}
 
 	/**
+	 * Get the set of endpoints that can be used by an application to connect to the service instance.
+	 *
+	 * @return the set of endpoints
+	 */
+	public List<Endpoint> getEndpoints() {
+		return this.endpoints;
+	}
+
+	/**
 	 * Create a builder that provides a fluent API for constructing a {@literal GetServiceInstanceAppBindingResponse}.
 	 *
 	 * @return the builder
@@ -116,7 +130,8 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		return that.canEqual(this) &&
 				Objects.equals(credentials, that.credentials) &&
 				Objects.equals(syslogDrainUrl, that.syslogDrainUrl) &&
-				Objects.equals(volumeMounts, that.volumeMounts);
+				Objects.equals(volumeMounts, that.volumeMounts) &&
+				Objects.equals(endpoints, that.endpoints);
 	}
 
 	@Override
@@ -126,7 +141,7 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(super.hashCode(), credentials, syslogDrainUrl, volumeMounts);
+		return Objects.hash(super.hashCode(), credentials, syslogDrainUrl, volumeMounts, endpoints);
 	}
 
 	@Override
@@ -136,6 +151,7 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 				"credentials=" + credentials +
 				", syslogDrainUrl='" + syslogDrainUrl + '\'' +
 				", volumeMounts=" + volumeMounts +
+				", endpoints=" + endpoints +
 				'}';
 	}
 
@@ -149,6 +165,8 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		private String syslogDrainUrl;
 
 		private final List<VolumeMount> volumeMounts = new ArrayList<>();
+
+		private final List<Endpoint> endpoints = new ArrayList<>();
 
 		private final Map<String, Object> parameters = new HashMap<>();
 
@@ -231,6 +249,36 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		}
 
 		/**
+		 * Add a set of endpoints from the provided {@literal List} to the endpoints that can be used by an application
+		 * to connect to the service instance.
+		 *
+		 * <p>
+		 * This value will set the {@literal endpoints} field in the body of the response to the platform.
+		 *
+		 * @param endpoints one more endpoints
+		 * @return the builder
+		 */
+		public GetServiceInstanceAppBindingResponseBuilder endpoints(List<Endpoint> endpoints) {
+			this.endpoints.addAll(endpoints);
+			return this;
+		}
+
+		/**
+		 * Add a set of endpoints from the provided array to the endpoints that can be used by an application to connect
+		 * to the service instance.
+		 *
+		 * <p>
+		 * This value will set the {@literal endpoints} field in the body of the response to the platform.
+		 *
+		 * @param endpoints one more endpoints
+		 * @return the builder
+		 */
+		public GetServiceInstanceAppBindingResponseBuilder endpoints(Endpoint... endpoints) {
+			Collections.addAll(this.endpoints, endpoints);
+			return this;
+		}
+
+		/**
 		 * Add a set of parameters from the provided {@literal Map} to the request parameters as were provided by the
 		 * platform at service binding creation.
 		 *
@@ -269,7 +317,8 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		 * @return the newly constructed {@literal GetServiceInstanceAppBindingResponse}
 		 */
 		public GetServiceInstanceAppBindingResponse build() {
-			return new GetServiceInstanceAppBindingResponse(parameters, credentials, syslogDrainUrl, volumeMounts);
+			return new GetServiceInstanceAppBindingResponse(parameters, credentials, syslogDrainUrl, volumeMounts,
+					endpoints);
 		}
 
 	}

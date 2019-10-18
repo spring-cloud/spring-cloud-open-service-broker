@@ -102,6 +102,11 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		return this.volumeMounts;
 	}
 
+	/**
+	 * Get the set of endpoints that can be used by an application to connect to the service instance.
+	 *
+	 * @return the set of endpoints
+	 */
 	public List<Endpoint> getEndpoints() {
 		return this.endpoints;
 	}
