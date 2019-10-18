@@ -31,12 +31,12 @@ import org.springframework.util.CollectionUtils;
  * Details of any platform resources that a service binding will be associated with.
  *
  * <p>
- * Objects of this type are constructed by the framework from the message body passed to the
- * service broker by the platform in a service binding request.
- *
- * @see <a href=https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#bind-resource-object>Open Service Broker API specification</a>
+ * Objects of this type are constructed by the framework from the message body passed to the service broker by the
+ * platform in a service binding request.
  *
  * @author Scott Frederick
+ * @see <a href=https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#bind-resource-object>Open
+ * 		Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class BindResource {
@@ -109,8 +109,8 @@ public class BindResource {
 	 * Create a builder that provides a fluent API for constructing a {@link BindResource}.
 	 *
 	 * <p>
-	 * This builder is provided to support testing of
-	 * {@link org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService} implementations.
+	 * This builder is provided to support testing of {@link org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService}
+	 * implementations.
 	 *
 	 * @return the builder
 	 */
@@ -149,9 +149,12 @@ public class BindResource {
 	/**
 	 * Provides a fluent API for constructing a {@literal BindResource}.
 	 */
-	public static class BindResourceBuilder {
+	public static final class BindResourceBuilder {
+
 		private String appGuid;
+
 		private String route;
+
 		private final Map<String, Object> properties = new HashMap<>();
 
 		private BindResourceBuilder() {
@@ -180,8 +183,8 @@ public class BindResource {
 		}
 
 		/**
-		 * Add a set of properties from the provided {@literal Map} to the bind resource properties
-		 * as would be provided in the request from the platform.
+		 * Add a set of properties from the provided {@literal Map} to the bind resource properties as would be provided
+		 * in the request from the platform.
 		 *
 		 * @param properties the properties to add
 		 * @return the builder
@@ -213,5 +216,7 @@ public class BindResource {
 		public BindResource build() {
 			return new BindResource(appGuid, route, properties);
 		}
+
 	}
+
 }

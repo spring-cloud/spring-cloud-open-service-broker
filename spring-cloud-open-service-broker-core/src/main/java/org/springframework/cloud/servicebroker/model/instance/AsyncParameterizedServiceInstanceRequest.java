@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapperUtils;
@@ -56,8 +57,8 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
 	 */
 	protected AsyncParameterizedServiceInstanceRequest(Map<String, Object> parameters, Context context,
-													   boolean asyncAccepted, String platformInstanceId,
-													   String apiInfoLocation, Context originatingIdentity) {
+			boolean asyncAccepted, String platformInstanceId,
+			String apiInfoLocation, Context originatingIdentity) {
 		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity);
 		if (!CollectionUtils.isEmpty(parameters)) {
 			this.parameters.putAll(parameters);
@@ -89,8 +90,8 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 * This value is set from the {@literal parameters} field in the body of the request from the platform.
 	 *
 	 * <p>
-	 * An object of the specified type will be instantiated, and value from the parameters JSON will be mapped
-	 * to the object using Java Bean mapping rules.
+	 * An object of the specified type will be instantiated, and value from the parameters JSON will be mapped to the
+	 * object using Java Bean mapping rules.
 	 *
 	 * <p>
 	 * The platform will pass the user-supplied JSON structure to the service broker as-is. The service broker is
@@ -151,4 +152,5 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 				", context=" + context +
 				'}';
 	}
+
 }

@@ -82,9 +82,9 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 		ServiceInstanceController controller = createControllerUnderTest();
 
 		assertThrows(ServiceDefinitionDoesNotExistException.class, () ->
-		controller.createServiceInstance(pathVariables, null, false,
-				null, null, createRequest)
-				.block());
+				controller.createServiceInstance(pathVariables, null, false,
+						null, null, createRequest)
+						.block());
 	}
 
 	@Test
@@ -248,6 +248,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 	}
 
 	private static class VerifyingService implements ServiceInstanceService {
+
 		private final ServiceBrokerRequest expectedRequest;
 
 		public VerifyingService(ServiceBrokerRequest expectedRequest) {
@@ -285,6 +286,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 			assertThat(request).isEqualTo(expectedRequest);
 			return Mono.empty();
 		}
+
 	}
 
 }

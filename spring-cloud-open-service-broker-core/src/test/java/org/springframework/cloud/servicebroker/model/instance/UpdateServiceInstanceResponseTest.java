@@ -73,4 +73,5 @@ public class UpdateServiceInstanceResponseTest {
 				.withRedefinedSuperclass()
 				.verify();
 	}
+
 }

@@ -22,12 +22,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Details of an error reported to the platform from a service broker. 
- *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-broker-errors">Open Service Broker API specification</a>
+ * Details of an error reported to the platform from a service broker.
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-broker-errors">Open
+ * 		Service Broker API specification</a>
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ErrorMessage {

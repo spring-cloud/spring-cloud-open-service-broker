@@ -28,10 +28,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 /**
  * Provide endpoints for the catalog API.
  *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#catalog-management">Open Service Broker API specification</a>
- *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#catalog-management">Open
+ * 		Service Broker API specification</a>
  */
 @ServiceBrokerRestController
 public class CatalogController extends BaseController {

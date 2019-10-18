@@ -20,12 +20,13 @@ package org.springframework.cloud.servicebroker.exception;
  * Thrown to indicate that a request to update a service instance can not be fulfilled by the service broker.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY}
- * being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY} being returned to the
+ * platform.
  */
 public class ServiceInstanceUpdateNotSupportedException extends ServiceBrokerException {
 
 	private static final long serialVersionUID = 4719676639792071582L;
+
 	private static final String MESSAGE_PREFIX = "Service instance update not supported";
 
 	/**

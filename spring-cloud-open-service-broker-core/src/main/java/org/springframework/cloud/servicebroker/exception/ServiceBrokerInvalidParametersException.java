@@ -20,13 +20,15 @@ package org.springframework.cloud.servicebroker.exception;
  * Thrown to indicate that parameters passed in a create or update request are not understood by the service broker.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY}
- * being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY} being returned to the
+ * platform.
  *
  * @author Scott Frederick
  */
 public class ServiceBrokerInvalidParametersException extends ServiceBrokerException {
+
 	private static final long serialVersionUID = 4719676639792071582L;
+
 	private static final String MESSAGE_PREFIX = "Service broker parameters are invalid";
 
 	/**
@@ -81,4 +83,5 @@ public class ServiceBrokerInvalidParametersException extends ServiceBrokerExcept
 	private static String prependMessagePrefix(String message) {
 		return MESSAGE_PREFIX + ": " + message;
 	}
+
 }

@@ -50,8 +50,10 @@ public final class ParameterBeanMapperUtils {
 			beanUtils.populate(bean, parameters);
 
 			return bean;
-		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+		}
+		catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
 			throw new IllegalArgumentException("Error mapping parameters to class of type " + cls.getName(), e);
 		}
 	}
+
 }

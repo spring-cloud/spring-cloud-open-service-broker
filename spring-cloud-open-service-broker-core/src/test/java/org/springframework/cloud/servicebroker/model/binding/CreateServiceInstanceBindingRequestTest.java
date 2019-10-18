@@ -137,7 +137,8 @@ public class CreateServiceInstanceBindingRequestTest {
 	@Test
 	public void minimalRequiredRequestIsDeserializedFromJson() {
 		CreateServiceInstanceBindingRequest request =
-				JsonUtils.readTestDataFile("bindRequestWithOnlyRequiredFields.json", CreateServiceInstanceBindingRequest.class);
+				JsonUtils.readTestDataFile("bindRequestWithOnlyRequiredFields.json",
+						CreateServiceInstanceBindingRequest.class);
 
 		//ensure required fields are present
 		assertThat(request.getServiceDefinitionId()).isEqualTo("test-service-id");
@@ -249,8 +250,11 @@ public class CreateServiceInstanceBindingRequestTest {
 	}
 
 	public static class Parameters {
+
 		private String field1;
+
 		private Integer field2;
+
 		private Boolean field3;
 
 		public String getField1() {
@@ -276,5 +280,7 @@ public class CreateServiceInstanceBindingRequestTest {
 		public void setField3(Boolean value) {
 			this.field3 = value;
 		}
+
 	}
+
 }

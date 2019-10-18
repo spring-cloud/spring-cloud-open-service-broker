@@ -26,8 +26,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 /**
- * {@link HandlerInterceptor} that inspects the service broker API version passed in all request headers
- * and compares it to the API version supported by the broker.
+ * {@link HandlerInterceptor} that inspects the service broker API version passed in all request headers and compares it
+ * to the API version supported by the broker.
  *
  * @author Scott Frederick
  */
@@ -43,8 +43,7 @@ public class ApiVersionInterceptor extends HandlerInterceptorAdapter {
 	}
 
 	/**
-	 * Construct an interceptor that validates the API version passed in request headers to the
-	 * configured version.
+	 * Construct an interceptor that validates the API version passed in request headers to the configured version.
 	 *
 	 * @param version the API version supported by the broker.
 	 */
@@ -59,8 +58,8 @@ public class ApiVersionInterceptor extends HandlerInterceptorAdapter {
 	 * @param request {@inheritDoc}
 	 * @param response {@inheritDoc}
 	 * @param handler {@inheritDoc}
-	 * @throws ServiceBrokerApiVersionException if the API version header value does not match the version
-	 *         supported by the broker
+	 * @throws ServiceBrokerApiVersionException if the API version header value does not match the version supported
+	 * 		by the broker
 	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {

@@ -28,13 +28,13 @@ import org.springframework.cloud.servicebroker.model.instance.OperationState;
  * Details of a response to a request to get the state of the last operation on a service instance binding.
  *
  * <p>
- * Objects of this type are constructed by the service broker application,
- * and used to build the response to the platform.
- *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-2">Open Service Broker API specification</a>
+ * Objects of this type are constructed by the service broker application, and used to build the response to the
+ * platform.
  *
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-2">Open Service
+ * 		Broker API specification</a>
  */
 @JsonAutoDetect
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -56,6 +56,7 @@ public class GetLastServiceBindingOperationResponse {
 
 	/**
 	 * Construct a new {@link GetLastServiceBindingOperationResponse}
+	 *
 	 * @param state the current state
 	 * @param description the description
 	 * @param deleteOperation is delete operation
@@ -133,9 +134,12 @@ public class GetLastServiceBindingOperationResponse {
 	/**
 	 * Provides a fluent API for constructing a {@link GetLastServiceBindingOperationResponse}.
 	 */
-	public static class GetLastServiceBindingOperationResponseBuilder {
+	public static final class GetLastServiceBindingOperationResponseBuilder {
+
 		private OperationState state;
+
 		private String description;
+
 		private boolean deleteOperation;
 
 		private GetLastServiceBindingOperationResponseBuilder() {
@@ -145,9 +149,9 @@ public class GetLastServiceBindingOperationResponse {
 		 * Set the current state of the asynchronous operation.
 		 *
 		 * <p>
-		 * A value of {@link OperationState#IN_PROGRESS} will cause the platform to continue polling the service
-		 * broker for status. A value of {@link OperationState#SUCCEEDED} or {@link OperationState#FAILED} will
-		 * cause the platform to stop polling the service broker.
+		 * A value of {@link OperationState#IN_PROGRESS} will cause the platform to continue polling the service broker
+		 * for status. A value of {@link OperationState#SUCCEEDED} or {@link OperationState#FAILED} will cause the
+		 * platform to stop polling the service broker.
 		 *
 		 * <p>
 		 * This value will set the {@literal state} field in the body of the response to the platform.
@@ -161,8 +165,8 @@ public class GetLastServiceBindingOperationResponse {
 		}
 
 		/**
-		 * Set a user-facing description of the operation that the platform can display to the API client.
-		 * Can be {@literal null}.
+		 * Set a user-facing description of the operation that the platform can display to the API client. Can be
+		 * {@literal null}.
 		 *
 		 * <p>
 		 * This value will set the {@literal description} field in the body of the response to the platform.
@@ -176,15 +180,15 @@ public class GetLastServiceBindingOperationResponse {
 		}
 
 		/**
-		 * Set a boolean value indicating whether the current asynchronous operation is a delete operation.
-		 * Should be set to <code>true</code> in response to a request for the status of an asynchronous
-		 * delete request, and <code>false</code> otherwise.
+		 * Set a boolean value indicating whether the current asynchronous operation is a delete operation. Should be
+		 * set to <code>true</code> in response to a request for the status of an asynchronous delete request, and
+		 * <code>false</code> otherwise.
 		 *
 		 * <p>
-		 * This value is used to determine the HTTP response code to the platform. If the
-		 * {@link #operationState(OperationState)} is {@link OperationState#SUCCEEDED} and the value provided
-		 * here is {@literal true} will result in a response code {@literal 410 GONE}. Otherwise the response
-		 * code will be {@literal 200 OK}.
+		 * This value is used to determine the HTTP response code to the platform. If the {@link
+		 * #operationState(OperationState)} is {@link OperationState#SUCCEEDED} and the value provided here is {@literal
+		 * true} will result in a response code {@literal 410 GONE}. Otherwise the response code will be {@literal 200
+		 * OK}.
 		 *
 		 * @param deleteOperation the boolean value
 		 * @return the builder
@@ -202,5 +206,7 @@ public class GetLastServiceBindingOperationResponse {
 		public GetLastServiceBindingOperationResponse build() {
 			return new GetLastServiceBindingOperationResponse(state, description, deleteOperation);
 		}
+
 	}
+
 }

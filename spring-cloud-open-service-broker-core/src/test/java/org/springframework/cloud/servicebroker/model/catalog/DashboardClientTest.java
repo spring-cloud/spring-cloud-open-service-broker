@@ -68,4 +68,5 @@ public class DashboardClientTest {
 				.forClass(DashboardClient.class)
 				.verify();
 	}
+
 }

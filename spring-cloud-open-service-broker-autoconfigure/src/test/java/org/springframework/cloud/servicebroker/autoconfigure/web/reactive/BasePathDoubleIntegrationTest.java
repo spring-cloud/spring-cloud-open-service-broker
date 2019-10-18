@@ -47,4 +47,5 @@ public class BasePathDoubleIntegrationTest extends AbstractBasePathWebApplicatio
 	public void basePathWithAdditionalSegmentsNotFound() {
 		assertNotFound("/api/broker/123/456");
 	}
+
 }

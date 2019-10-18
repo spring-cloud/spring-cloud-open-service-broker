@@ -56,6 +56,7 @@ public class BaseController {
 
 	/**
 	 * Construct a new {@link BaseController}
+	 *
 	 * @param catalogService the catalog service
 	 */
 	public BaseController(CatalogService catalogService) {
@@ -64,6 +65,7 @@ public class BaseController {
 
 	/**
 	 * Sets common headers for the request
+	 *
 	 * @param request the request in which to set the headers
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
@@ -71,7 +73,7 @@ public class BaseController {
 	 * @return the request with the applied headers
 	 */
 	protected Mono<ServiceBrokerRequest> configureCommonRequestFields(ServiceBrokerRequest request, String platformInstanceId,
-																	  String apiInfoLocation, String originatingIdentityString) {
+			String apiInfoLocation, String originatingIdentityString) {
 		request.setPlatformInstanceId(platformInstanceId);
 		request.setApiInfoLocation(apiInfoLocation);
 		request.setOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
@@ -80,6 +82,7 @@ public class BaseController {
 
 	/**
 	 * Sets common headers for the request
+	 *
 	 * @param request the request in which to set the headers
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
@@ -88,8 +91,7 @@ public class BaseController {
 	 * @return the request with the applied headers
 	 */
 	protected Mono<AsyncServiceBrokerRequest> configureCommonRequestFields(AsyncServiceBrokerRequest request, String platformInstanceId,
-																		   String apiInfoLocation, String originatingIdentityString,
-																		   boolean asyncAccepted) {
+			String apiInfoLocation, String originatingIdentityString, boolean asyncAccepted) {
 		request.setAsyncAccepted(asyncAccepted);
 		return configureCommonRequestFields(request, platformInstanceId, apiInfoLocation, originatingIdentityString)
 				.cast(AsyncServiceBrokerRequest.class);
@@ -97,6 +99,7 @@ public class BaseController {
 
 	/**
 	 * Find the Service Definition for the provided ID. Emits an error if not found.
+	 *
 	 * @param serviceDefinitionId the service definition ID
 	 * @return the Service Definition
 	 */
@@ -107,6 +110,7 @@ public class BaseController {
 
 	/**
 	 * Find the Service Definition for the provided ID, or empty if not found.
+	 *
 	 * @param serviceDefinitionId the service definition ID
 	 * @return the Service Definition
 	 */
@@ -116,6 +120,7 @@ public class BaseController {
 
 	/**
 	 * Find the Plan for the Service Definition and Plan ID, or empty if not found.
+	 *
 	 * @param serviceDefinition the Service Definition
 	 * @param planId the plan ID
 	 * @return the Plan
@@ -130,6 +135,7 @@ public class BaseController {
 
 	/**
 	 * Find the Plan for the Service Definition and Plan ID. Emits an error if not found.
+	 *
 	 * @param serviceDefinition the Service Definition
 	 * @param planId the plan ID
 	 * @return the Plan
@@ -204,11 +210,12 @@ public class BaseController {
 
 	private Map<String, Object> readJsonFromString(String value) throws IOException {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
-		return objectMapper.readValue(value, new TypeReference<Map<String,Object>>() {});
+		return objectMapper.readValue(value, new TypeReference<Map<String, Object>>() {});
 	}
 
 	/**
 	 * If an asynchronous request is received, then return HTTP 202 Accepted, otherwise HTTP 200 OK
+	 *
 	 * @param response the response
 	 * @return the HTTP status
 	 */

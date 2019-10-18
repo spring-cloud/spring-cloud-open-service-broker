@@ -20,13 +20,18 @@ package org.springframework.cloud.servicebroker.exception;
  * Thrown to indicate that the service broker received concurrent requests to modify a resource.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY}
- * being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY} being returned to the
+ * platform.
  *
  * @author Scott Frederick
  */
 public class ServiceBrokerConcurrencyException extends ServiceBrokerException {
+
 	private static final long serialVersionUID = -2521415489841815405L;
+
+	/**
+	 * Error code indicating the service broker received concurrent requests to modify a resource
+	 */
 	public final static String CONCURRENCY_ERROR = "ConcurrencyError";
 
 	/**
@@ -47,4 +52,5 @@ public class ServiceBrokerConcurrencyException extends ServiceBrokerException {
 	public ServiceBrokerConcurrencyException(String message, Throwable cause) {
 		super(CONCURRENCY_ERROR, message, cause);
 	}
+
 }

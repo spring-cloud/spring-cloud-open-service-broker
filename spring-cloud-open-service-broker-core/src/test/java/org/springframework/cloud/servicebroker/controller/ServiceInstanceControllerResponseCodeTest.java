@@ -46,9 +46,9 @@ import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mock;
 
 public class ServiceInstanceControllerResponseCodeTest {
 
@@ -111,7 +111,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 	}
 
 	private void validateCreateServiceInstanceWithResponseStatus(CreateServiceInstanceResponse response,
-														   HttpStatus expectedStatus) {
+			HttpStatus expectedStatus) {
 		Mono<CreateServiceInstanceResponse> responseMono;
 		if (response == null) {
 			responseMono = Mono.empty();
@@ -204,7 +204,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 	}
 
 	private void validateDeleteServiceInstanceWithResponseStatus(DeleteServiceInstanceResponse response,
-																	 HttpStatus expectedStatus) {
+			HttpStatus expectedStatus) {
 		Mono<DeleteServiceInstanceResponse> responseMono;
 		if (response == null) {
 			responseMono = Mono.empty();
@@ -258,7 +258,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 	}
 
 	private void validateUpdateServiceInstanceWithResponseStatus(UpdateServiceInstanceResponse response,
-																 HttpStatus expectedStatus) {
+			HttpStatus expectedStatus) {
 		Mono<UpdateServiceInstanceResponse> responseMono;
 		if (response == null) {
 			responseMono = Mono.empty();
@@ -314,7 +314,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 	}
 
 	private void validateGetLastOperationWithResponseStatus(GetLastServiceOperationResponse response,
-																 HttpStatus expectedStatus) {
+			HttpStatus expectedStatus) {
 		given(serviceInstanceService.getLastOperation(any(GetLastServiceOperationRequest.class)))
 				.willReturn(Mono.just(response));
 

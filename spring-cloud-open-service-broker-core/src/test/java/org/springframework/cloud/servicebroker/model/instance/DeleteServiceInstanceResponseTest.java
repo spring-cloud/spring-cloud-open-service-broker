@@ -75,4 +75,5 @@ public class DeleteServiceInstanceResponseTest {
 				.operation(RandomString.make(10_000))
 				.build();
 	}
+
 }

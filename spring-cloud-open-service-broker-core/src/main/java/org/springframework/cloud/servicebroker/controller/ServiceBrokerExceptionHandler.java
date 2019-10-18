@@ -318,6 +318,7 @@ public abstract class ServiceBrokerExceptionHandler {
 
 	/**
 	 * Format an error message for the exception
+	 *
 	 * @param ex the exception
 	 * @return the error message
 	 */
@@ -328,6 +329,7 @@ public abstract class ServiceBrokerExceptionHandler {
 
 	/**
 	 * Format an error message for the exception
+	 *
 	 * @param ex the exception
 	 * @return the error message
 	 */
@@ -337,6 +339,7 @@ public abstract class ServiceBrokerExceptionHandler {
 
 	/**
 	 * Create an error message object
+	 *
 	 * @param message the text of the message
 	 * @return the error message
 	 */
@@ -346,6 +349,7 @@ public abstract class ServiceBrokerExceptionHandler {
 
 	/**
 	 * Creates an error message for binding errors
+	 *
 	 * @param ex the exception
 	 * @param result the binding result
 	 * @return the error message
@@ -358,6 +362,5 @@ public abstract class ServiceBrokerExceptionHandler {
 		}
 		return getErrorResponse(message.toString());
 	}
-
 
 }

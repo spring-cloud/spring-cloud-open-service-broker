@@ -124,7 +124,7 @@ public class ServiceBrokerAutoConfigurationTest {
 		this.contextRunner
 				.withUserConfiguration(MissingInstanceServiceConfiguration.class)
 				.run(context -> assertThat(context.getStartupFailure())
-							.isExactlyInstanceOf(UnsatisfiedDependencyException.class));
+						.isExactlyInstanceOf(UnsatisfiedDependencyException.class));
 	}
 
 	@Test
@@ -171,11 +171,15 @@ public class ServiceBrokerAutoConfigurationTest {
 					assertThat(catalog.getServiceDefinitions()).hasSize(1);
 					assertThat(catalog.getServiceDefinitions().get(0).getId()).isEqualTo("service-one-id");
 					assertThat(catalog.getServiceDefinitions().get(0).getName()).isEqualTo("Service One");
-					assertThat(catalog.getServiceDefinitions().get(0).getDescription()).isEqualTo("Description for Service One");
+					assertThat(catalog.getServiceDefinitions().get(0).getDescription())
+							.isEqualTo("Description for Service One");
 					assertThat(catalog.getServiceDefinitions().get(0).getPlans()).hasSize(1);
-					assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(0).getId()).isEqualTo("plan-one-id");
-					assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(0).getName()).isEqualTo("Plan One");
-					assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
+					assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(0).getId())
+							.isEqualTo("plan-one-id");
+					assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(0).getName())
+							.isEqualTo("Plan One");
+					assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(0).getDescription())
+							.isEqualTo("Description for Plan One");
 					assertThat(context)
 							.getBean(CatalogService.class)
 							.isExactlyInstanceOf(BeanCatalogService.class);
@@ -192,6 +196,7 @@ public class ServiceBrokerAutoConfigurationTest {
 
 	@TestConfiguration
 	public static class MinimalWithCatalogConfiguration {
+
 		@Bean
 		public Catalog catalog() {
 			return Catalog.builder().build();
@@ -201,10 +206,12 @@ public class ServiceBrokerAutoConfigurationTest {
 		public ServiceInstanceService serviceInstanceService() {
 			return new TestServiceInstanceService();
 		}
+
 	}
 
 	@TestConfiguration
 	public static class FullServicesWithCatalogConfiguration {
+
 		@Bean
 		public Catalog catalog() {
 			return Catalog.builder().build();
@@ -219,10 +226,12 @@ public class ServiceBrokerAutoConfigurationTest {
 		public ServiceInstanceBindingService serviceInstanceBindingService() {
 			return new TestServiceInstanceBindingService();
 		}
+
 	}
 
 	@TestConfiguration
 	public static class FullServicesConfiguration {
+
 		@Bean
 		public CatalogService catalogService() {
 			return new TestCatalogService();
@@ -237,10 +246,12 @@ public class ServiceBrokerAutoConfigurationTest {
 		public ServiceInstanceBindingService serviceInstanceBindingService() {
 			return new TestServiceInstanceBindingService();
 		}
+
 	}
 
 	@TestConfiguration
 	public static class CatalogAndCatalogServiceConfiguration {
+
 		@Bean
 		public Catalog catalog() {
 			return Catalog.builder().build();
@@ -255,6 +266,7 @@ public class ServiceBrokerAutoConfigurationTest {
 		public ServiceInstanceService serviceInstanceService() {
 			return new TestServiceInstanceService();
 		}
+
 	}
 
 	@TestConfiguration
@@ -270,6 +282,7 @@ public class ServiceBrokerAutoConfigurationTest {
 		public Catalog catalog() {
 			return Catalog.builder().build();
 		}
+
 	}
 
 	@TestConfiguration
@@ -285,6 +298,7 @@ public class ServiceBrokerAutoConfigurationTest {
 		public ServiceInstanceService serviceInstanceService() {
 			return new TestServiceInstanceService();
 		}
+
 	}
 
 	@TestConfiguration
@@ -298,6 +312,7 @@ public class ServiceBrokerAutoConfigurationTest {
 			this.catalogService = catalogService;
 			this.serviceInstanceService = serviceInstanceService;
 		}
+
 	}
 
 }

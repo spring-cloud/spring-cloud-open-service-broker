@@ -36,4 +36,5 @@ public class AsyncServiceBrokerResponseTest {
 				.withRedefinedSubclass(DeleteServiceInstanceBindingResponse.class)
 				.verify();
 	}
+
 }

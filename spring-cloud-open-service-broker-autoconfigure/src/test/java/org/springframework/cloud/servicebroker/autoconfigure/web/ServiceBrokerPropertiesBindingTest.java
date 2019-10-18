@@ -74,7 +74,8 @@ public class ServiceBrokerPropertiesBindingTest {
 		assertThat(catalog.getServices().get(0).getPlans()).hasSize(1);
 		assertThat(catalog.getServices().get(0).getPlans().get(0).getId()).isEqualTo("plan-one-id");
 		assertThat(catalog.getServices().get(0).getPlans().get(0).getName()).isEqualTo("Plan One");
-		assertThat(catalog.getServices().get(0).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
+		assertThat(catalog.getServices().get(0).getPlans().get(0).getDescription())
+				.isEqualTo("Description for Plan One");
 
 		//Mandatory fields should have a default set when unspecified in configuration
 		assertThat(catalog.getServices().get(0).isBindable()).isNotNull();
@@ -138,15 +139,19 @@ public class ServiceBrokerPropertiesBindingTest {
 		assertThat(catalog.getServices().get(0).getTags()).containsOnly("tag1", "tag2");
 		assertThat(catalog.getServices().get(0).getDashboardClient().getId()).isEqualTo("dashboard-id");
 		assertThat(catalog.getServices().get(0).getDashboardClient().getSecret()).isEqualTo("dashboard-secret");
-		assertThat(catalog.getServices().get(0).getDashboardClient().getRedirectUri()).isEqualTo("dashboard-redirect-uri");
+		assertThat(catalog.getServices().get(0).getDashboardClient().getRedirectUri())
+				.isEqualTo("dashboard-redirect-uri");
 	}
 
 	private void validateServiceOneMetadata(Catalog catalog) {
 		assertThat(catalog.getServices().get(0).getMetadata().getDisplayName()).isEqualTo("service display name");
 		assertThat(catalog.getServices().get(0).getMetadata().getImageUrl()).isEqualTo("image-uri");
-		assertThat(catalog.getServices().get(0).getMetadata().getLongDescription()).isEqualTo("service long description");
-		assertThat(catalog.getServices().get(0).getMetadata().getProviderDisplayName()).isEqualTo("service provider display name");
-		assertThat(catalog.getServices().get(0).getMetadata().getDocumentationUrl()).isEqualTo("service-documentation-url");
+		assertThat(catalog.getServices().get(0).getMetadata().getLongDescription())
+				.isEqualTo("service long description");
+		assertThat(catalog.getServices().get(0).getMetadata().getProviderDisplayName())
+				.isEqualTo("service provider display name");
+		assertThat(catalog.getServices().get(0).getMetadata().getDocumentationUrl())
+				.isEqualTo("service-documentation-url");
 		assertThat(catalog.getServices().get(0).getMetadata().getSupportUrl()).isEqualTo("service-support-url");
 
 		Object licenses = catalog.getServices().get(0).getMetadata().getProperties().get("licenses");
@@ -169,32 +174,44 @@ public class ServiceBrokerPropertiesBindingTest {
 		assertThat(catalog.getServices().get(0).getPlans()).hasSize(2);
 		assertThat(catalog.getServices().get(0).getPlans().get(0).getId()).isEqualTo("plan-one-id");
 		assertThat(catalog.getServices().get(0).getPlans().get(0).getName()).isEqualTo("Plan One");
-		assertThat(catalog.getServices().get(0).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
+		assertThat(catalog.getServices().get(0).getPlans().get(0).getDescription())
+				.isEqualTo("Description for Plan One");
 		assertThat(catalog.getServices().get(0).getPlans().get(0).getMaintenanceInfo().getVersion()).isEqualTo("1.0.1");
-		assertThat(catalog.getServices().get(0).getPlans().get(0).getMaintenanceInfo().getDescription()).isEqualTo("Description for maintenance info");
+		assertThat(catalog.getServices().get(0).getPlans().get(0).getMaintenanceInfo().getDescription())
+				.isEqualTo("Description for maintenance info");
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getId()).isEqualTo("plan-two-id");
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getName()).isEqualTo("Plan Two");
-		assertThat(catalog.getServices().get(0).getPlans().get(1).getDescription()).isEqualTo("Description for Plan Two");
-		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getProperties()).containsOnly(entry("key1", "value1"), entry("key2", "value2"));
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getDescription())
+				.isEqualTo("Description for Plan Two");
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getProperties())
+				.containsOnly(entry("key1", "value1"), entry("key2", "value2"));
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getCosts()).hasSize(1);
-		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getCosts().get(0).getUnit()).isEqualTo("MONTHLY");
-		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getCosts().get(0).getAmount()).contains(entry("usd", 649.0));
-		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getDisplayName()).isEqualTo("sample display name");
-		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getBullets()).containsExactlyInAnyOrder("bullet1", "bullet2");
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getCosts().get(0).getUnit())
+				.isEqualTo("MONTHLY");
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getCosts().get(0).getAmount())
+				.contains(entry("usd", 649.0));
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getDisplayName())
+				.isEqualTo("sample display name");
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getMetadata().getBullets())
+				.containsExactlyInAnyOrder("bullet1", "bullet2");
 		assertThat(catalog.getServices().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(catalog.getServices().get(0).getPlans().get(1).isFree()).isTrue();
 		assertThat(catalog.getServices().get(0).getPlans().get(1).isPlanUpdateable()).isTrue();
-		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate().getParameters())
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate()
+				.getParameters())
 				.contains(entry("$schema", "https://json-schema.org/draft-04/schema#"),
 						entry("type", "string"));
-		Object enumMap = catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate().getParameters().get("enum");
+		Object enumMap = catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getCreate()
+				.getParameters().get("enum");
 		assertThat(enumMap).isInstanceOf(Map.class);
 		@SuppressWarnings("unchecked")
-		Map<String, Object>  castedMap = (Map<String, Object> ) enumMap;
-		assertThat(castedMap).containsOnly(entry("0","one"),entry("1", "two"), entry("2", "three"));
-		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getUpdate().getParameters())
+		Map<String, Object> castedMap = (Map<String, Object>) enumMap;
+		assertThat(castedMap).containsOnly(entry("0", "one"), entry("1", "two"), entry("2", "three"));
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance().getUpdate()
+				.getParameters())
 				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
-		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceBinding().getCreate().getParameters())
+		assertThat(catalog.getServices().get(0).getPlans().get(1).getSchemas().getServiceBinding().getCreate()
+				.getParameters())
 				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(catalog.getServices().get(0).getPlans().get(1).getMaximumPollingDuration()).isEqualTo(120);
 	}
@@ -206,7 +223,8 @@ public class ServiceBrokerPropertiesBindingTest {
 		assertThat(catalog.getServices().get(1).getPlans()).hasSize(1);
 		assertThat(catalog.getServices().get(1).getPlans().get(0).getId()).isEqualTo("plan-one-id");
 		assertThat(catalog.getServices().get(1).getPlans().get(0).getName()).isEqualTo("Plan One");
-		assertThat(catalog.getServices().get(1).getPlans().get(0).getDescription()).isEqualTo("Description for Plan One");
+		assertThat(catalog.getServices().get(1).getPlans().get(0).getDescription())
+				.isEqualTo("Description for Plan One");
 	}
 
 	@Configuration

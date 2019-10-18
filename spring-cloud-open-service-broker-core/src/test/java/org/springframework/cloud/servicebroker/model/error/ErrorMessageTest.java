@@ -52,4 +52,5 @@ public class ErrorMessageTest {
 				.forClass(ErrorMessage.class)
 				.verify();
 	}
+
 }

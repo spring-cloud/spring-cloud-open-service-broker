@@ -35,10 +35,9 @@ import org.springframework.util.StringUtils;
  * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties that describes a service
  * offered by this broker.
  *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/profile.md#service-metadata">
- *     Service Metadata API Specification</a>
- *
  * @author Roy Clarkson
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/profile.md#service-metadata">
+ * 		Service Metadata API Specification</a>
  * @see org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition
  */
 public class ServiceMetadata {
@@ -204,7 +203,7 @@ public class ServiceMetadata {
 	private String base64EncodeImageData(String filename) {
 		String formattedImageData = null;
 		ClassPathResource resource = new ClassPathResource(filename);
-		try(InputStream stream = resource.getInputStream()) {
+		try (InputStream stream = resource.getInputStream()) {
 			byte[] imageBytes = StreamUtils.copyToByteArray(stream);
 			String imageData = Base64Utils.encodeToString(imageBytes);
 			formattedImageData = String.format(IMAGE_DATA_FORMAT, imageData);

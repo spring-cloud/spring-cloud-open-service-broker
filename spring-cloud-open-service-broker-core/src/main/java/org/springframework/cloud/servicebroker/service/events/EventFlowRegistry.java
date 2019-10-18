@@ -26,12 +26,12 @@ import reactor.core.publisher.Mono;
 /**
  * Abstract class for defining an event flow registry
  *
+ * @author Roy Clarkson
  * @param <I> type of initialization flow
  * @param <C> type of completion flow
  * @param <E> type of error flow
  * @param <R> type of request
  * @param <S> type of response
- * @author Roy Clarkson
  */
 public abstract class EventFlowRegistry<I, C, E, R, S> {
 

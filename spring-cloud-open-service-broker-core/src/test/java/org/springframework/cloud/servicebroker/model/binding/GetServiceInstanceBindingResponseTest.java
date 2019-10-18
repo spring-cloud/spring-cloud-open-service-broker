@@ -29,4 +29,5 @@ public class GetServiceInstanceBindingResponseTest {
 				.withRedefinedSubclass(GetServiceInstanceRouteBindingResponse.class)
 				.verify();
 	}
+
 }

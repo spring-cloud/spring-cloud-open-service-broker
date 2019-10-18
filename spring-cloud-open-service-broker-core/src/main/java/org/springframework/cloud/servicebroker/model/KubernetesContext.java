@@ -34,10 +34,19 @@ import org.springframework.util.StringUtils;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public final class KubernetesContext extends Context {
 
+	/**
+	 * Kubernetes platform name
+	 */
 	public static final String KUBERNETES_PLATFORM = "kubernetes";
 
+	/**
+	 * Kubernetes Namespace key
+	 */
 	public static final String NAMESPACE_KEY = "namespace";
 
+	/**
+	 * Kubernetes Cluster ID key
+	 */
 	public static final String CLUSTERID_KEY = "clusterid";
 
 	private KubernetesContext() {
@@ -46,6 +55,7 @@ public final class KubernetesContext extends Context {
 
 	/**
 	 * Create a new KubernetesContext
+	 *
 	 * @param namespace the kubernetes namespace
 	 * @param clusterid the kubernetes clusterid
 	 * @param properties a collection of properties
@@ -115,7 +125,7 @@ public final class KubernetesContext extends Context {
 	/**
 	 * Builder class for KubernetesContext
 	 */
-	public static class KubernetesContextBuilder extends ContextBaseBuilder<KubernetesContext, KubernetesContextBuilder> {
+	public static final class KubernetesContextBuilder extends ContextBaseBuilder<KubernetesContext, KubernetesContextBuilder> {
 
 		private String namespace;
 
@@ -156,4 +166,7 @@ public final class KubernetesContext extends Context {
 		public KubernetesContext build() {
 			return new KubernetesContext(namespace, clusterid, properties);
 		}
-	}}
+
+	}
+
+}

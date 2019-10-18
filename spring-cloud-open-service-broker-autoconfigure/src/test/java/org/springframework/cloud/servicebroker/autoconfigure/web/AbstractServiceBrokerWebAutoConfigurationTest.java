@@ -90,6 +90,7 @@ public abstract class AbstractServiceBrokerWebAutoConfigurationTest {
 		public EventFlowRegistries eventFlowRegistries() {
 			return new EventFlowRegistries();
 		}
+
 	}
 
 	@TestConfiguration
@@ -110,6 +111,7 @@ public abstract class AbstractServiceBrokerWebAutoConfigurationTest {
 		public EventFlowRegistries eventFlowRegistries() {
 			return new EventFlowRegistries();
 		}
+
 	}
 
 }

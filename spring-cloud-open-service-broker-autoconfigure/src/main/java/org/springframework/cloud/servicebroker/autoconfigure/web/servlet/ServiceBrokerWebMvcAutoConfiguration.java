@@ -38,8 +38,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for the service broker REST API
- * endpoints.
+ * {@link EnableAutoConfiguration Auto-configuration} for the service broker REST API endpoints.
  *
  * @author Benjamin Ihrig
  * @author Roy Clarkson

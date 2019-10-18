@@ -61,13 +61,13 @@ public class KubernetesContextTest {
 		assertThat(context.getProperty("key1")).isEqualTo("value1");
 		assertThat(context.getProperty("key2")).isEqualTo("value2");
 
-        //ensure we don't break super class contract
-        assertThat(context.getProperties()).containsOnly(
-                entry("key1", "value1"),
-                entry("key2", "value2"),
-                entry("namespace", "namespace"),
+		//ensure we don't break super class contract
+		assertThat(context.getProperties()).containsOnly(
+				entry("key1", "value1"),
+				entry("key2", "value2"),
+				entry("namespace", "namespace"),
 				entry("clusterid", "clusterid"));
-    }
+	}
 
 	@Test
 	public void partialContextIsSerialized() {
@@ -85,7 +85,7 @@ public class KubernetesContextTest {
 		JsonPathAssert.assertThat(json).hasPath("$.key2").isEqualTo("value2");
 		// detect any double serialization due to inheritance and naming mismatch
 		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(4);
-		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 4+1);//still have duplicated platform property
+		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 4 + 1);//still have duplicated platform property
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class KubernetesContextTest {
 		JsonPathAssert.assertThat(json).hasPath("$.key2").isEqualTo("value2");
 		// detect any double serialization due to inheritance and naming mismatch
 		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(5);
-		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 5+1);//still have duplicated platform property
+		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 5 + 1);//still have duplicated platform property
 	}
 
 }

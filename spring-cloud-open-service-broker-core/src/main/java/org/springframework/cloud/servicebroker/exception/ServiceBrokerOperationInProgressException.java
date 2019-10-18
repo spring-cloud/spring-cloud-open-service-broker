@@ -17,17 +17,18 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a request for a service instance or binding was received while
- * asynchronous creation of the service instance or binding is in progress.
+ * Thrown to indicate that a request for a service instance or binding was received while asynchronous creation of the
+ * service instance or binding is in progress.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 404 NOT FOUND}
- * being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 404 NOT FOUND} being returned to the platform.
  *
  * @author Scott Frederick
  */
 public class ServiceBrokerOperationInProgressException extends ServiceBrokerException {
+
 	private static final long serialVersionUID = -1879753092397657116L;
+
 	private static final String MESSAGE_PREFIX = "Service broker operation is in progress " +
 			"for the requested service instance or binding";
 
@@ -60,4 +61,5 @@ public class ServiceBrokerOperationInProgressException extends ServiceBrokerExce
 	private static String prependMessagePrefix(String operation) {
 		return MESSAGE_PREFIX + ": operation=" + operation;
 	}
+
 }

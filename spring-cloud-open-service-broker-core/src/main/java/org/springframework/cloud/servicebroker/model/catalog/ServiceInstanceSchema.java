@@ -24,11 +24,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Service instance JSON Schemas.
  *
- * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-instance-schema-object">Open
- * Service Broker API specification</a>
- *
  * @author Sam Gunaratne
+ * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-instance-schema-object">Open
+ * 		Service Broker API specification</a>
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceInstanceSchema {
@@ -48,6 +46,7 @@ public class ServiceInstanceSchema {
 
 	/**
 	 * Construct a new {@link ServiceInstanceSchema}
+	 *
 	 * @param createMethodSchema the schema
 	 * @param updateMethodSchema the schema
 	 */
@@ -113,8 +112,10 @@ public class ServiceInstanceSchema {
 	/**
 	 * Provides a fluent API for constructing a {@literal ServiceInstanceSchema}.
 	 */
-	public static class ServiceInstanceSchemaBuilder {
+	public static final class ServiceInstanceSchemaBuilder {
+
 		private MethodSchema createMethodSchema;
+
 		private MethodSchema updateMethodSchema;
 
 		private ServiceInstanceSchemaBuilder() {
@@ -150,5 +151,7 @@ public class ServiceInstanceSchema {
 		public ServiceInstanceSchema build() {
 			return new ServiceInstanceSchema(createMethodSchema, updateMethodSchema);
 		}
+
 	}
+
 }

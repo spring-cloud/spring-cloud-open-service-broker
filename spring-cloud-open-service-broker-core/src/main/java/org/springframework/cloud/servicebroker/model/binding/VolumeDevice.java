@@ -22,8 +22,10 @@ package org.springframework.cloud.servicebroker.model.binding;
  * @author Scott Frederick
  */
 public class VolumeDevice {
+
 	@Override
 	public String toString() {
 		return "VolumeDevice()";
 	}
+
 }

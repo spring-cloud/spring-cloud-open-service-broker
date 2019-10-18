@@ -110,15 +110,15 @@ public class ServiceDefinitionTest {
 		assertThat(serviceDefinition.isBindingsRetrievable()).isEqualTo(true);
 		assertThat(serviceDefinition.getTags()).contains("tag1", "tag2");
 		assertThat(serviceDefinition.getRequires()).contains(
-							SERVICE_REQUIRES_ROUTE_FORWARDING.toString(),
-							SERVICE_REQUIRES_SYSLOG_DRAIN.toString(),
-							SERVICE_REQUIRES_VOLUME_MOUNT.toString(),
-							"another_requires");
+				SERVICE_REQUIRES_ROUTE_FORWARDING.toString(),
+				SERVICE_REQUIRES_SYSLOG_DRAIN.toString(),
+				SERVICE_REQUIRES_VOLUME_MOUNT.toString(),
+				"another_requires");
 		assertThat(serviceDefinition.getMetadata()).contains(
-							entry("field1", "value1"),
-							entry("field2", "value2"),
-							entry("field3", "value3"),
-							entry("field4", "value4"));
+				entry("field1", "value1"),
+				entry("field2", "value2"),
+				entry("field3", "value3"),
+				entry("field4", "value4"));
 		assertThat(serviceDefinition.getDashboardClient()).isNotNull();
 
 		DocumentContext json = JsonUtils.toJsonPath(serviceDefinition);
@@ -135,15 +135,15 @@ public class ServiceDefinitionTest {
 		assertThat(json).hasPath("$.bindings_retrievable").isEqualTo(true);
 		assertThat(json).hasListAtPath("$.tags[*]").contains("tag1", "tag2");
 		assertThat(json).hasListAtPath("$.requires[*]").contains(
-								SERVICE_REQUIRES_ROUTE_FORWARDING.toString(),
-								SERVICE_REQUIRES_SYSLOG_DRAIN.toString(),
-								SERVICE_REQUIRES_VOLUME_MOUNT.toString(),
-								"another_requires");
+				SERVICE_REQUIRES_ROUTE_FORWARDING.toString(),
+				SERVICE_REQUIRES_SYSLOG_DRAIN.toString(),
+				SERVICE_REQUIRES_VOLUME_MOUNT.toString(),
+				"another_requires");
 		assertThat(json).hasMapAtPath("$.metadata").contains(
-								entry("field1", "value1"),
-								entry("field2", "value2"),
-								entry("field3", "value3"),
-								entry("field4", "value4"));
+				entry("field1", "value1"),
+				entry("field2", "value2"),
+				entry("field3", "value3"),
+				entry("field4", "value4"));
 		assertThat(json).hasPath("$.dashboard_client");
 	}
 

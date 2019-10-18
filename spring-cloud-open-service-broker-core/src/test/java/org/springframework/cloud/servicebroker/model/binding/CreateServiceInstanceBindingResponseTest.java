@@ -30,4 +30,5 @@ public class CreateServiceInstanceBindingResponseTest {
 				.withRedefinedSubclass(CreateServiceInstanceRouteBindingResponse.class)
 				.verify();
 	}
+
 }

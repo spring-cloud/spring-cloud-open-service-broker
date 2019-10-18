@@ -91,7 +91,7 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 	}
 
 	private void validateCreateServiceBindingResponseStatus(CreateServiceInstanceBindingResponse response,
-													   HttpStatus httpStatus) {
+			HttpStatus httpStatus) {
 		Mono<CreateServiceInstanceBindingResponse> responseMono;
 		if (response == null) {
 			responseMono = Mono.empty();
@@ -130,7 +130,7 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 	}
 
 	private void validateGetServiceBindingResponseStatus(GetServiceInstanceBindingResponse response,
-																  HttpStatus httpStatus) {
+			HttpStatus httpStatus) {
 		Mono<GetServiceInstanceBindingResponse> responseMono;
 		if (response == null) {
 			responseMono = Mono.empty();
@@ -168,7 +168,8 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 				.willThrow(new ServiceInstanceDoesNotExistException("nonexistent-service-id"));
 
 		ResponseEntity<GetServiceInstanceBindingResponse> responseEntity = controller
-				.getServiceInstanceBinding(pathVariables, "nonexistent-service-id", "nonexistent-binding-id", null, null)
+				.getServiceInstanceBinding(pathVariables, "nonexistent-service-id", "nonexistent-binding-id", null,
+						null)
 				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -194,7 +195,7 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 	}
 
 	private void validateDeleteServiceBindingWithResponseStatus(DeleteServiceInstanceBindingResponse response,
-																	HttpStatus expectedStatus) {
+			HttpStatus expectedStatus) {
 		Mono<DeleteServiceInstanceBindingResponse> responseMono;
 		if (response == null) {
 			responseMono = Mono.empty();
@@ -206,7 +207,8 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 				.willReturn(responseMono);
 
 		ResponseEntity<DeleteServiceInstanceBindingResponse> responseEntity = controller
-				.deleteServiceInstanceBinding(pathVariables, null, null, "service-definition-id", "service-definition-plan-id", false, null, null)
+				.deleteServiceInstanceBinding(pathVariables, null, null, "service-definition-id",
+						"service-definition-plan-id", false, null, null)
 				.block();
 
 		assertThat(responseEntity).isNotNull();
@@ -224,7 +226,8 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 				.willThrow(new ServiceInstanceBindingDoesNotExistException("binding-id"));
 
 		ResponseEntity<DeleteServiceInstanceBindingResponse> responseEntity = controller
-				.deleteServiceInstanceBinding(pathVariables, null, null, "service-definition-id", "service-definition-plan-id", false, null, null)
+				.deleteServiceInstanceBinding(pathVariables, null, null, "service-definition-id",
+						"service-definition-plan-id", false, null, null)
 				.block();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);

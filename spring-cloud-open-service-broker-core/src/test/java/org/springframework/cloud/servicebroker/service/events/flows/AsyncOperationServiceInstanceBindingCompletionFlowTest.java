@@ -26,14 +26,15 @@ import static org.mockito.Mockito.mock;
 
 public class AsyncOperationServiceInstanceBindingCompletionFlowTest {
 
-    @Test
-    public void complete() {
-        AsyncOperationServiceInstanceBindingCompletionFlow flow =
-                new AsyncOperationServiceInstanceBindingCompletionFlow() {};
-        StepVerifier.create(
-                flow.complete(
-                        mock(GetLastServiceBindingOperationRequest.class),
-                        mock(GetLastServiceBindingOperationResponse.class)))
-                .verifyComplete();
-    }
+	@Test
+	public void complete() {
+		AsyncOperationServiceInstanceBindingCompletionFlow flow =
+				new AsyncOperationServiceInstanceBindingCompletionFlow() {};
+		StepVerifier.create(
+				flow.complete(
+						mock(GetLastServiceBindingOperationRequest.class),
+						mock(GetLastServiceBindingOperationResponse.class)))
+				.verifyComplete();
+	}
+
 }

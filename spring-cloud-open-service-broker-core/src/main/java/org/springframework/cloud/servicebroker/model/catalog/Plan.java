@@ -16,10 +16,11 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -31,13 +32,11 @@ import org.springframework.util.CollectionUtils;
 /**
  * A service plan available for a ServiceDefinition
  *
- * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-plan-object">Open
- * Service Broker API specification</a>
- *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-plan-object">Open
+ * 		Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonInclude(Include.NON_NULL)
@@ -89,8 +88,8 @@ public class Plan {
 	 * @param maintenanceInfo the maintentance information
 	 */
 	public Plan(String id, String name, String description, Map<String, Object> metadata, Boolean free,
-				Boolean bindable, Boolean planUpdateable, Schemas schemas, Integer maximumPollingDuration,
-				MaintenanceInfo maintenanceInfo) {
+			Boolean bindable, Boolean planUpdateable, Schemas schemas, Integer maximumPollingDuration,
+			MaintenanceInfo maintenanceInfo) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -104,8 +103,8 @@ public class Plan {
 	}
 
 	/**
-	 * An identifier used to correlate this plan in future requests to the catalog. This
-	 * must be unique within the platform. Using a GUID is recommended.
+	 * An identifier used to correlate this plan in future requests to the catalog. This must be unique within the
+	 * platform. Using a GUID is recommended.
 	 *
 	 * @return the plan ID
 	 */
@@ -114,8 +113,8 @@ public class Plan {
 	}
 
 	/**
-	 * A CLI-friendly name of the plan that will appear in the catalog. The value should
-	 * be all lowercase, with no spaces.
+	 * A CLI-friendly name of the plan that will appear in the catalog. The value should be all lowercase, with no
+	 * spaces.
 	 *
 	 * @return the plan name
 	 */
@@ -136,17 +135,15 @@ public class Plan {
 	 * A map of metadata to further describe a service plan.
 	 *
 	 * @return the plan metadata
-	 * @see <a href=
-	 * "https://github.com/openservicebrokerapi/servicebroker/blob/master/profile.md#service-metadata">Service
-	 * metadata conventions</a>
+	 * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/profile.md#service-metadata">Service
+	 * 		metadata conventions</a>
 	 */
 	public Map<String, Object> getMetadata() {
 		return this.metadata;
 	}
 
 	/**
-	 * Indicates whether the plan can be limited by the non_basic_services_allowed field
-	 * in a platform quota.
+	 * Indicates whether the plan can be limited by the non_basic_services_allowed field in a platform quota.
 	 *
 	 * @return true if the plan has no cost
 	 */
@@ -155,9 +152,8 @@ public class Plan {
 	}
 
 	/**
-	 * Indicates whether the service with this plan can be bound to applications. This is
-	 * an optional field. If the value is <code>null</code>, the field will be omitted
-	 * from the serialized JSON.
+	 * Indicates whether the service with this plan can be bound to applications. This is an optional field. If the
+	 * value is <code>null</code>, the field will be omitted from the serialized JSON.
 	 *
 	 * @return true if the service with this plan may be bound
 	 */
@@ -166,10 +162,10 @@ public class Plan {
 	}
 
 	/**
-	 * Whether the Plan supports upgrade/downgrade/sidegrade to another version. This field is OPTIONAL. If
-	 * specified, this takes precedence over the Service Offering's plan_updateable field. If not specified, the
-	 * default is derived from the Service Offering. If the value is <code>null</code>, the field will be omitted
-	 * from the serialized JSON.
+	 * Whether the Plan supports upgrade/downgrade/sidegrade to another version. This field is OPTIONAL. If specified,
+	 * this takes precedence over the Service Offering's plan_updateable field. If not specified, the default is derived
+	 * from the Service Offering. If the value is <code>null</code>, the field will be omitted from the serialized
+	 * JSON.
 	 *
 	 * @return true if the plan may be updated
 	 */
@@ -187,9 +183,9 @@ public class Plan {
 	}
 
 	/**
-	 * A duration, in seconds, that the Platform SHOULD use as the Service's maximum polling duration. If the
-	 * maximum polling duration is reached, the platform should cease polling and the operation state MUST be
-	 * considered failed. If the value is <code>null</code>, the field will be omitted from the serialized JSON.
+	 * A duration, in seconds, that the Platform SHOULD use as the Service's maximum polling duration. If the maximum
+	 * polling duration is reached, the platform should cease polling and the operation state MUST be considered failed.
+	 * If the value is <code>null</code>, the field will be omitted from the serialized JSON.
 	 *
 	 * @return the maximum polling duration
 	 */
@@ -198,8 +194,8 @@ public class Plan {
 	}
 
 	/**
-	 * Maintenance information for a Service Instance which is provisioned using the Service Plan. If provided,
-	 * a version string MUST be provided and platforms MAY use this when Provisioning or Updating a Service Instance.
+	 * Maintenance information for a Service Instance which is provisioned using the Service Plan. If provided, a
+	 * version string MUST be provided and platforms MAY use this when Provisioning or Updating a Service Instance.
 	 *
 	 * @return the maintenance info
 	 */
@@ -262,24 +258,34 @@ public class Plan {
 	/**
 	 * Provides a fluent API for constructing a {@literal Plan}.
 	 */
-	public static class PlanBuilder {
+	public static final class PlanBuilder {
+
 		private String id;
+
 		private String name;
+
 		private String description;
+
 		private Map<String, Object> metadata;
+
 		private Boolean free = true;
+
 		private Boolean bindable;
+
 		private Boolean planUpdateable;
+
 		private Schemas schemas;
+
 		private Integer maximumPollingDuration;
+
 		private MaintenanceInfo maintenanceInfo;
 
 		private PlanBuilder() {
 		}
 
 		/**
-		 * An identifier used to correlate this plan in future requests to the catalog.
-		 * This must be unique within the platform. Using a GUID is recommended.
+		 * An identifier used to correlate this plan in future requests to the catalog. This must be unique within the
+		 * platform. Using a GUID is recommended.
 		 *
 		 * @param id the unique identifier of the plan
 		 * @return the builder instance
@@ -290,8 +296,8 @@ public class Plan {
 		}
 
 		/**
-		 * A CLI-friendly name of the plan that will appear in the catalog. The value
-		 * should be all lowercase, with no spaces.
+		 * A CLI-friendly name of the plan that will appear in the catalog. The value should be all lowercase, with no
+		 * spaces.
 		 *
 		 * @param name plan name
 		 * @return the builder instance
@@ -317,9 +323,8 @@ public class Plan {
 		 *
 		 * @param metadata plan metadata
 		 * @return the builder instance
-		 * @see <a href=
-		 * "https://github.com/openservicebrokerapi/servicebroker/blob/master/profile.md#service-metadata">Service
-		 * metadata conventions</a>
+		 * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/profile.md#service-metadata">Service
+		 * 		metadata conventions</a>
 		 */
 		public PlanBuilder metadata(Map<String, Object> metadata) {
 			if (CollectionUtils.isEmpty(metadata)) {
@@ -338,9 +343,8 @@ public class Plan {
 		 * @param key a unique key
 		 * @param value the value
 		 * @return the builder instance
-		 * @see <a href=
-		 * "https://github.com/openservicebrokerapi/servicebroker/blob/master/profile.md#service-metadata">Service
-		 * metadata conventions</a>
+		 * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/profile.md#service-metadata">Service
+		 * 		metadata conventions</a>
 		 */
 		public PlanBuilder metadata(String key, Object value) {
 			if (key == null || value == null) {
@@ -365,9 +369,8 @@ public class Plan {
 		}
 
 		/**
-		 * Indicates whether the service with this plan can be bound to applications. This
-		 * is an optional field. If the value is <code>null</code>, the field will be
-		 * omitted from the serialized JSON.
+		 * Indicates whether the service with this plan can be bound to applications. This is an optional field. If the
+		 * value is <code>null</code>, the field will be omitted from the serialized JSON.
 		 *
 		 * @param bindable true if the service with this plan may be bound
 		 * @return the builder instance
@@ -401,8 +404,8 @@ public class Plan {
 		}
 
 		/**
-		 * A duration, in seconds, that the Platform SHOULD use as the Service's maximum polling duration. If the
-		 * value is <code>null</code>, the field will be omitted from the serialized JSON.
+		 * A duration, in seconds, that the Platform SHOULD use as the Service's maximum polling duration. If the value
+		 * is <code>null</code>, the field will be omitted from the serialized JSON.
 		 *
 		 * @param maximumPollingDuration the maximum polling duration
 		 * @return the builder instance
@@ -433,5 +436,7 @@ public class Plan {
 			return new Plan(id, name, description, metadata, free, bindable,
 					planUpdateable, schemas, maximumPollingDuration, maintenanceInfo);
 		}
+
 	}
+
 }

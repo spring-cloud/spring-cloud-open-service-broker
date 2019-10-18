@@ -121,10 +121,10 @@ public class CreateServiceInstanceRequestTest {
 				.serviceDefinitionId("service-definition-id")
 				.planId("plan-id")
 				.context(context)
-					.parameters("field1", "value1")
-					.parameters("field2", 2)
-					.parameters("field3", true)
-				    .parameters(parameters)
+				.parameters("field1", "value1")
+				.parameters("field2", 2)
+				.parameters("field3", true)
+				.parameters(parameters)
 				.asyncAccepted(true)
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("https://api.example.com")
@@ -193,4 +193,5 @@ public class CreateServiceInstanceRequestTest {
 				.suppress(Warning.TRANSIENT_FIELDS)
 				.verify();
 	}
+
 }

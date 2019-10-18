@@ -27,12 +27,12 @@ import java.util.Objects;
  * Details of a response to a request to retrieve a service instance binding associated with an application.
  *
  * <p>
- * Objects of this type are constructed by the service broker application,
- * and used to build the response to the platform.
- *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API specification</a>
+ * Objects of this type are constructed by the service broker application, and used to build the response to the
+ * platform.
  *
  * @author Scott Frederick
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API
+ * 		specification</a>
  */
 public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBindingResponse {
 
@@ -58,7 +58,7 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 	 * @param volumeMounts the set of volume mounts
 	 */
 	public GetServiceInstanceAppBindingResponse(Map<String, Object> parameters, Map<String, Object> credentials,
-										 String syslogDrainUrl, List<VolumeMount> volumeMounts) {
+			String syslogDrainUrl, List<VolumeMount> volumeMounts) {
 		super(parameters);
 		this.credentials = credentials;
 		this.syslogDrainUrl = syslogDrainUrl;
@@ -142,18 +142,22 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 	/**
 	 * Provides a fluent API for constructing a {@link GetServiceInstanceAppBindingResponse}.
 	 */
-	public static class GetServiceInstanceAppBindingResponseBuilder {
+	public static final class GetServiceInstanceAppBindingResponseBuilder {
+
 		private final Map<String, Object> credentials = new HashMap<>();
+
 		private String syslogDrainUrl;
+
 		private final List<VolumeMount> volumeMounts = new ArrayList<>();
+
 		private final Map<String, Object> parameters = new HashMap<>();
 
 		private GetServiceInstanceAppBindingResponseBuilder() {
 		}
 
 		/**
-		 * Add a set of credentials from the provided {@literal Map} to the credentials that the bound application
-		 * can use to access the service instance.
+		 * Add a set of credentials from the provided {@literal Map} to the credentials that the bound application can
+		 * use to access the service instance.
 		 *
 		 * <p>
 		 * This value will set the {@literal credentials} field in the body of the response to the platform
@@ -197,8 +201,8 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		}
 
 		/**
-		 * Add a set of volume mounts from the provided {@literal List} to the volume mounts that can be used in
-		 * an application container file system.
+		 * Add a set of volume mounts from the provided {@literal List} to the volume mounts that can be used in an
+		 * application container file system.
 		 *
 		 * <p>
 		 * This value will set the {@literal volume_mounts} field in the body of the response to the platform.
@@ -212,8 +216,8 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		}
 
 		/**
-		 * Add a set of volume mounts from the provided array to the volume mounts that can be used in
-		 * an application container file system.
+		 * Add a set of volume mounts from the provided array to the volume mounts that can be used in an application
+		 * container file system.
 		 *
 		 * <p>
 		 * This value will set the {@literal volume_mounts} field in the body of the response to the platform.
@@ -227,8 +231,8 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		}
 
 		/**
-		 * Add a set of parameters from the provided {@literal Map} to the request parameters
-		 * as were provided by the platform at service binding creation.
+		 * Add a set of parameters from the provided {@literal Map} to the request parameters as were provided by the
+		 * platform at service binding creation.
 		 *
 		 * <p>
 		 * This value will set the {@literal parameters} field in the body of the response to the platform.
@@ -243,8 +247,8 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		}
 
 		/**
-		 * Add a key/value pair to the request parameters as were provided in the request from the platform at
-		 * service binding creation.
+		 * Add a key/value pair to the request parameters as were provided in the request from the platform at service
+		 * binding creation.
 		 *
 		 * <p>
 		 * This value will set the {@literal parameters} field in the body of the response to the platform.
@@ -267,5 +271,7 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		public GetServiceInstanceAppBindingResponse build() {
 			return new GetServiceInstanceAppBindingResponse(parameters, credentials, syslogDrainUrl, volumeMounts);
 		}
+
 	}
+
 }

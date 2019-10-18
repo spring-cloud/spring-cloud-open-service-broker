@@ -16,7 +16,6 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -35,12 +36,10 @@ import org.springframework.util.CollectionUtils;
 /**
  * A service offered by this broker.
  *
- * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-offering-object">Open
- * Service Broker API specification</a>
- *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
+ * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-offering-object">Open
+ * 		Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -102,9 +101,9 @@ public class ServiceDefinition {
 	 * @param dashboardClient the service dashboard URI
 	 */
 	public ServiceDefinition(String id, String name, String description, boolean bindable, Boolean planUpdateable,
-							 Boolean instancesRetrievable, Boolean bindingsRetrievable, Boolean allowContextUpdates,
-							 List<Plan> plans, List<String> tags, Map<String, Object> metadata, List<String> requires,
-							 DashboardClient dashboardClient) {
+			Boolean instancesRetrievable, Boolean bindingsRetrievable, Boolean allowContextUpdates,
+			List<Plan> plans, List<String> tags, Map<String, Object> metadata, List<String> requires,
+			DashboardClient dashboardClient) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -121,8 +120,8 @@ public class ServiceDefinition {
 	}
 
 	/**
-	 * An identifier used to correlate this service in future requests to the catalog.
-	 * This must be unique within the platform. Using a GUID is recommended.
+	 * An identifier used to correlate this service in future requests to the catalog. This must be unique within the
+	 * platform. Using a GUID is recommended.
 	 *
 	 * @return the service ID
 	 */
@@ -131,8 +130,8 @@ public class ServiceDefinition {
 	}
 
 	/**
-	 * A CLI-friendly name of the service that will appear in the catalog. The value
-	 * should be all lowercase, with no spaces.
+	 * A CLI-friendly name of the service that will appear in the catalog. The value should be all lowercase, with no
+	 * spaces.
 	 *
 	 * @return the service name
 	 */
@@ -159,8 +158,8 @@ public class ServiceDefinition {
 	}
 
 	/**
-	 * Indicates whether the service supports requests to update instances to use a
-	 * different plan from the one used to provision a service instance.
+	 * Indicates whether the service supports requests to update instances to use a different plan from the one used to
+	 * provision a service instance.
 	 *
 	 * @return true if the plan may be updated
 	 */
@@ -187,8 +186,8 @@ public class ServiceDefinition {
 	}
 
 	/**
-	 * Indicates whether a service instance supports update requests when contextual data for the service instance
-	 * in the platform changes.
+	 * Indicates whether a service instance supports update requests when contextual data for the service instance in
+	 * the platform changes.
 	 *
 	 * @return true if the service instances supports context updates
 	 */
@@ -206,8 +205,7 @@ public class ServiceDefinition {
 	}
 
 	/**
-	 * A list of tags to aid in categorizing and classifying services with similar
-	 * characteristics.
+	 * A list of tags to aid in categorizing and classifying services with similar characteristics.
 	 *
 	 * @return the tags
 	 */
@@ -225,10 +223,10 @@ public class ServiceDefinition {
 	}
 
 	/**
-	 * A list of permissions that the user would have to give the service, if they
-	 * provision it. See {@link ServiceDefinitionRequires} for supported permissions.
+	 * A list of permissions that the user would have to give the service, if they provision it.
 	 *
 	 * @return the required permissions
+	 * @see ServiceDefinitionRequires supported permissions
 	 */
 	public List<String> getRequires() {
 		return this.requires;
@@ -305,27 +303,40 @@ public class ServiceDefinition {
 	/**
 	 * Provides a fluent API for constructing a {@literal ServiceDefinition}.
 	 */
-	public static class ServiceDefinitionBuilder {
+	public static final class ServiceDefinitionBuilder {
+
 		private String id;
+
 		private String name;
+
 		private String description;
+
 		private boolean bindable;
+
 		private Boolean planUpdateable;
+
 		private Boolean instancesRetrievable;
+
 		private Boolean bindingsRetrievable;
+
 		private Boolean allowContextUpdates;
+
 		private final List<Plan> plans = new ArrayList<>();
+
 		private List<String> tags;
+
 		private Map<String, Object> metadata;
+
 		private List<String> requires;
+
 		private DashboardClient dashboardClient;
 
 		private ServiceDefinitionBuilder() {
 		}
 
 		/**
-		 * An identifier used to correlate this service in future requests to the catalog.
-		 * This must be unique within the platform. Using a GUID is recommended.
+		 * An identifier used to correlate this service in future requests to the catalog. This must be unique within
+		 * the platform. Using a GUID is recommended.
 		 *
 		 * @param id the service ID
 		 * @return the binder instance
@@ -336,8 +347,8 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * A CLI-friendly name of the service that will appear in the catalog. The value
-		 * should be all lowercase, with no spaces.
+		 * A CLI-friendly name of the service that will appear in the catalog. The value should be all lowercase, with
+		 * no spaces.
 		 *
 		 * @param name the service name
 		 * @return the binder instance
@@ -370,8 +381,8 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * Indicates whether the service supports requests to update instances to use a
-		 * different plan from the one used to provision a service instance.
+		 * Indicates whether the service supports requests to update instances to use a different plan from the one used
+		 * to provision a service instance.
 		 *
 		 * @param planUpdateable true if the plan may be updated
 		 * @return the binder instance
@@ -437,8 +448,7 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * A list of tags to aid in categorizing and classifying services with similar
-		 * characteristics.
+		 * A list of tags to aid in categorizing and classifying services with similar characteristics.
 		 *
 		 * @param tags the tags
 		 * @return the binder instance
@@ -452,8 +462,7 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * A list of tags to aid in categorizing and classifying services with similar
-		 * characteristics.
+		 * A list of tags to aid in categorizing and classifying services with similar characteristics.
 		 *
 		 * @param tags the tags
 		 * @return the binder instance
@@ -498,11 +507,11 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * A list of permissions that the user would have to give the service, if they
-		 * provision it. See {@link ServiceDefinitionRequires} for supported permissions.
+		 * A list of permissions that the user would have to give the service, if they provision it.
 		 *
 		 * @param requires the required permissions
 		 * @return the binder instance
+		 * @see ServiceDefinitionRequires supported permissions
 		 */
 		public ServiceDefinitionBuilder requires(String... requires) {
 			if (this.requires == null) {
@@ -513,11 +522,11 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * A list of permissions that the user would have to give the service, if they
-		 * provision it. See {@link ServiceDefinitionRequires} for supported permissions.
+		 * A list of permissions that the user would have to give the service, if they provision it.
 		 *
 		 * @param requires the required permissions
 		 * @return the binder instance
+		 * @see ServiceDefinitionRequires supported permissions
 		 */
 		public ServiceDefinitionBuilder requires(List<String> requires) {
 			if (this.requires == null) {
@@ -528,11 +537,11 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * A list of permissions that the user would have to give the service, if they
-		 * provision it. See {@link ServiceDefinitionRequires} for supported permissions.
+		 * A list of permissions that the user would have to give the service, if they provision it.
 		 *
 		 * @param requires the required permissions
 		 * @return the binder instance
+		 * @see ServiceDefinitionRequires supported permissions
 		 */
 		public ServiceDefinitionBuilder requires(ServiceDefinitionRequires... requires) {
 			if (this.requires == null) {
@@ -565,5 +574,7 @@ public class ServiceDefinition {
 					instancesRetrievable, bindingsRetrievable, allowContextUpdates,
 					plans, tags, metadata, requires, dashboardClient);
 		}
+
 	}
+
 }

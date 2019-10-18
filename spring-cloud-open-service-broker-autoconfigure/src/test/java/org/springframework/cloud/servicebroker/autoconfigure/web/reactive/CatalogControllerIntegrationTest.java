@@ -81,9 +81,12 @@ public class CatalogControllerIntegrationTest {
 	private void assertCatalog(final String uri) {
 		List<Plan> plans = serviceDefinition.getPlans();
 		Schemas schemas = plans.get(1).getSchemas();
-		Map<String, Object> createServiceInstanceSchema = schemas.getServiceInstanceSchema().getCreateMethodSchema().getParameters();
-		Map<String, Object> updateServiceInstanceSchema = schemas.getServiceInstanceSchema().getUpdateMethodSchema().getParameters();
-		Map<String, Object> createServiceBindingSchema = schemas.getServiceBindingSchema().getCreateMethodSchema().getParameters();
+		Map<String, Object> createServiceInstanceSchema = schemas.getServiceInstanceSchema().getCreateMethodSchema()
+				.getParameters();
+		Map<String, Object> updateServiceInstanceSchema = schemas.getServiceInstanceSchema().getUpdateMethodSchema()
+				.getParameters();
+		Map<String, Object> createServiceBindingSchema = schemas.getServiceBindingSchema().getCreateMethodSchema()
+				.getParameters();
 
 		client.get().uri(uri)
 				.accept(MediaType.APPLICATION_JSON)
@@ -114,7 +117,8 @@ public class CatalogControllerIntegrationTest {
 				.jsonPath("$.services[0].plans[0].free").isEqualTo(plans.get(0).isFree())
 				.jsonPath("$.services[0].plans[0].maintenance_info").isNotEmpty()
 				.jsonPath("$.services[0].plans[0].maintenance_info.version").isEqualTo("1.0.0-alpha+001")
-				.jsonPath("$.services[0].plans[0].maintenance_info.description").isEqualTo("Description for maintenance info")
+				.jsonPath("$.services[0].plans[0].maintenance_info.description")
+				.isEqualTo("Description for maintenance info")
 				.jsonPath("$.services[0].plans[1].id").isEqualTo(plans.get(1).getId())
 				.jsonPath("$.services[0].plans[1].name").isEqualTo(plans.get(1).getName())
 				.jsonPath("$.services[0].plans[1].description").isEqualTo(plans.get(1).getDescription())
@@ -122,17 +126,21 @@ public class CatalogControllerIntegrationTest {
 				.jsonPath("$.services[0].plans[1].bindable").isEqualTo(plans.get(1).isBindable())
 				.jsonPath("$.services[0].plans[1].free").isEqualTo(plans.get(1).isFree())
 				.jsonPath("$.services[0].plans[1].plan_updateable").isEqualTo(plans.get(1).isPlanUpdateable())
-				.jsonPath("$.services[0].plans[1].schemas.service_instance.create.parameters").isEqualTo(createServiceInstanceSchema)
-				.jsonPath("$.services[0].plans[1].schemas.service_instance.update.parameters").isEqualTo(updateServiceInstanceSchema)
-				.jsonPath("$.services[0].plans[1].schemas.service_binding.create.parameters").isEqualTo(createServiceBindingSchema)
-				.jsonPath("$.services[0].plans[1].maximum_polling_duration").isEqualTo(plans.get(1).getMaximumPollingDuration())
+				.jsonPath("$.services[0].plans[1].schemas.service_instance.create.parameters")
+				.isEqualTo(createServiceInstanceSchema)
+				.jsonPath("$.services[0].plans[1].schemas.service_instance.update.parameters")
+				.isEqualTo(updateServiceInstanceSchema)
+				.jsonPath("$.services[0].plans[1].schemas.service_binding.create.parameters")
+				.isEqualTo(createServiceBindingSchema)
+				.jsonPath("$.services[0].plans[1].maximum_polling_duration")
+				.isEqualTo(plans.get(1).getMaximumPollingDuration())
 				.jsonPath("$.services[0].plans[1].maintenance_info").doesNotExist()
-			  	.jsonPath("$.services[0].plans[2].id").isEqualTo(plans.get(2).getId())
-			  	.jsonPath("$.services[0].plans[2].name").isEqualTo(plans.get(2).getName())
-			  	.jsonPath("$.services[0].plans[2].description").isEqualTo(plans.get(2).getDescription())
-			  	.jsonPath("$.services[0].plans[2].free").isEqualTo(plans.get(2).isFree())
+				.jsonPath("$.services[0].plans[2].id").isEqualTo(plans.get(2).getId())
+				.jsonPath("$.services[0].plans[2].name").isEqualTo(plans.get(2).getName())
+				.jsonPath("$.services[0].plans[2].description").isEqualTo(plans.get(2).getDescription())
+				.jsonPath("$.services[0].plans[2].free").isEqualTo(plans.get(2).isFree())
 				.jsonPath("$.services[0].plans[2].maintenance_info").doesNotExist()
-			  	.jsonPath("$.services[0].plans[3]").doesNotExist()
+				.jsonPath("$.services[0].plans[3]").doesNotExist()
 				.jsonPath("$.services[1]").doesNotExist();
 	}
 

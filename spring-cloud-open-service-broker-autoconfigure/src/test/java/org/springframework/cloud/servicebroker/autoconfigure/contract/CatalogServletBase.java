@@ -61,7 +61,7 @@ public class CatalogServletBase {
 
 	@SpringBootApplication(scanBasePackageClasses = {
 			ServiceBrokerAutoConfiguration.class,
-			ServiceBrokerWebMvcAutoConfiguration.class }, exclude = ServiceBrokerWebFluxAutoConfiguration.class)
+			ServiceBrokerWebMvcAutoConfiguration.class}, exclude = ServiceBrokerWebFluxAutoConfiguration.class)
 	protected static class TestApplication {
 
 		@Bean

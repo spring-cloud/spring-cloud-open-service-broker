@@ -25,9 +25,9 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
  * Details of a response to a request to retrieve a service instance binding.
- *
+ * <p>
  * Service brokers will typically construct one of the subtypes of this class to build a response.
- * 
+ *
  * @author Scott Frederick
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
@@ -88,4 +88,5 @@ public class GetServiceInstanceBindingResponse {
 				"parameters=" + parameters +
 				'}';
 	}
+
 }

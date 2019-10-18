@@ -58,4 +58,5 @@ public class BasePathSimpleIntegrationTest extends AbstractBasePathWebApplicatio
 	public void basePathWithPrefixAndMultipleSuffixSegmentsNotFound() {
 		assertNotFound("/api/broker/123/456");
 	}
+
 }

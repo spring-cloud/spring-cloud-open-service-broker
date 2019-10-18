@@ -24,12 +24,12 @@ import java.util.Objects;
  * Details of a response to a request to create a new service instance binding associated with a route.
  *
  * <p>
- * Objects of this type are constructed by the service broker application,
- * and used to build the response to the platform.
+ * Objects of this type are constructed by the service broker application, and used to build the response to the
+ * platform.
  *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API specification</a>
- * 
  * @author Scott Frederick
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API
+ * 		specification</a>
  */
 public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBindingResponse {
 
@@ -63,8 +63,7 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a
-	 * {@literal GetServiceInstanceRouteBindingResponse}.
+	 * Create a builder that provides a fluent API for constructing a {@literal GetServiceInstanceRouteBindingResponse}.
 	 *
 	 * @return the builder
 	 */
@@ -108,8 +107,10 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 	/**
 	 * Provides a fluent API for constructing a {@link GetServiceInstanceRouteBindingResponse}.
 	 */
-	public static class GetServiceInstanceRouteBindingResponseBuilder {
+	public static final class GetServiceInstanceRouteBindingResponseBuilder {
+
 		private String routeServiceUrl;
+
 		private final Map<String, Object> parameters = new HashMap<>();
 
 		private GetServiceInstanceRouteBindingResponseBuilder() {
@@ -130,8 +131,8 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 		}
 
 		/**
-		 * Add a set of parameters from the provided {@literal Map} to the request parameters
-		 * as were provided by the platform at service binding creation.
+		 * Add a set of parameters from the provided {@literal Map} to the request parameters as were provided by the
+		 * platform at service binding creation.
 		 *
 		 * <p>
 		 * This value will set the {@literal parameters} field in the body of the response to the platform.
@@ -146,8 +147,8 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 		}
 
 		/**
-		 * Add a key/value pair to the request parameters as were provided in the request from the platform at
-		 * service binding creation.
+		 * Add a key/value pair to the request parameters as were provided in the request from the platform at service
+		 * binding creation.
 		 *
 		 * <p>
 		 * This value will set the {@literal parameters} field in the body of the response to the platform.
@@ -170,5 +171,7 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 		public GetServiceInstanceRouteBindingResponse build() {
 			return new GetServiceInstanceRouteBindingResponse(parameters, routeServiceUrl);
 		}
+
 	}
+
 }

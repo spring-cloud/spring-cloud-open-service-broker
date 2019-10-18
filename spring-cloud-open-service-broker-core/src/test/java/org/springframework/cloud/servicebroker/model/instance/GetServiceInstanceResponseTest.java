@@ -107,4 +107,5 @@ public class GetServiceInstanceResponseTest {
 				.forClass(GetServiceInstanceResponse.class)
 				.verify();
 	}
+
 }

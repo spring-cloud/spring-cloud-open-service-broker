@@ -38,10 +38,13 @@ import org.springframework.util.CollectionUtils;
 		property = Context.PLATFORM_KEY, visible = true, defaultImpl = PlatformContext.class)
 @JsonSubTypes({
 		@JsonSubTypes.Type(value = CloudFoundryContext.class, name = CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM),
-		@JsonSubTypes.Type(value = KubernetesContext.class, name = KubernetesContext.KUBERNETES_PLATFORM),
+		@JsonSubTypes.Type(value = KubernetesContext.class, name = KubernetesContext.KUBERNETES_PLATFORM)
 })
 public class Context {
 
+	/**
+	 * Platform key
+	 */
 	public static final String PLATFORM_KEY = "platform";
 
 	protected final String platform;
@@ -58,6 +61,7 @@ public class Context {
 
 	/**
 	 * Create a new Context
+	 *
 	 * @param platform the name of the platform
 	 * @param properties collection of properties
 	 */
@@ -99,6 +103,7 @@ public class Context {
 
 	/**
 	 * Get the String value of a property in the context with the given key.
+	 *
 	 * @param key the key of the property to retrieve
 	 * @return the value of the property, or {@literal null} if the key is not present in the request
 	 */
@@ -169,6 +174,7 @@ public class Context {
 
 		/**
 		 * Construct a builder
+		 *
 		 * @return the builder
 		 */
 		protected abstract B createBuilder();
@@ -185,8 +191,8 @@ public class Context {
 		}
 
 		/**
-		 * Add a set of properties from the provided {@literal Map} to the context properties
-		 * as would be provided in the request from the platform.
+		 * Add a set of properties from the provided {@literal Map} to the context properties as would be provided in
+		 * the request from the platform.
 		 *
 		 * @param properties the properties to add
 		 * @return the builder
@@ -216,5 +222,7 @@ public class Context {
 		 * @return the newly constructed {@link Context} implementation
 		 */
 		public abstract R build();
+
 	}
+
 }

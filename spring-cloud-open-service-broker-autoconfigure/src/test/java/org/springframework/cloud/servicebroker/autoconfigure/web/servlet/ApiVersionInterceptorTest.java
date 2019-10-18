@@ -94,4 +94,5 @@ public class ApiVersionInterceptorTest {
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(brokerApiVersion);
 		assertThat(interceptor.preHandle(request, response, null)).isTrue();
 	}
+
 }

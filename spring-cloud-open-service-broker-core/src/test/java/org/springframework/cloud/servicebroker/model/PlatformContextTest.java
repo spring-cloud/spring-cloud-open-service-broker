@@ -56,4 +56,5 @@ public class PlatformContextTest {
 		assertThat(context.getProperty("property3")).isEqualTo("value3");
 		assertThat(context.getProperty("property4")).isEqualTo(true);
 	}
+
 }

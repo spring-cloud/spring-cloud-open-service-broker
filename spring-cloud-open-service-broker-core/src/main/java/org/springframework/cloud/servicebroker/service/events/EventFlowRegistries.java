@@ -35,7 +35,7 @@ public class EventFlowRegistries {
 
 	private final DeleteServiceInstanceBindingEventFlowRegistry deleteInstanceBindingRegistry;
 
-    private final AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry;
+	private final AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry;
 
 	/**
 	 * Construct a new {@link EventFlowRegistries}
@@ -63,12 +63,12 @@ public class EventFlowRegistries {
 	 * @param asyncOperationBindingRegistry the instance binding last operation flow registry
 	 */
 	public EventFlowRegistries(CreateServiceInstanceEventFlowRegistry createInstanceRegistry,
-							   UpdateServiceInstanceEventFlowRegistry updateInstanceRegistry,
-							   DeleteServiceInstanceEventFlowRegistry deleteInstanceRegistry,
-							   AsyncOperationServiceInstanceEventFlowRegistry asyncOperationRegistry,
-							   CreateServiceInstanceBindingEventFlowRegistry createInstanceBindingRegistry,
-							   DeleteServiceInstanceBindingEventFlowRegistry deleteInstanceBindingRegistry,
-							   AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry) {
+			UpdateServiceInstanceEventFlowRegistry updateInstanceRegistry,
+			DeleteServiceInstanceEventFlowRegistry deleteInstanceRegistry,
+			AsyncOperationServiceInstanceEventFlowRegistry asyncOperationRegistry,
+			CreateServiceInstanceBindingEventFlowRegistry createInstanceBindingRegistry,
+			DeleteServiceInstanceBindingEventFlowRegistry deleteInstanceBindingRegistry,
+			AsyncOperationServiceInstanceBindingEventFlowRegistry asyncOperationBindingRegistry) {
 		this.createInstanceRegistry = createInstanceRegistry;
 		this.updateInstanceRegistry = updateInstanceRegistry;
 		this.deleteInstanceRegistry = deleteInstanceRegistry;

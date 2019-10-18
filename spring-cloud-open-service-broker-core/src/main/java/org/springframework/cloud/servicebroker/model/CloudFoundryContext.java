@@ -37,16 +37,34 @@ import org.springframework.util.StringUtils;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public final class CloudFoundryContext extends Context {
 
+	/**
+	 * Cloud Foundry platform key
+	 */
 	public static final String CLOUD_FOUNDRY_PLATFORM = "cloudfoundry";
 
+	/**
+	 * Organization GUID key
+	 */
 	public static final String ORGANIZATION_GUID_KEY = "organizationGuid";
 
+	/**
+	 * Organization Name key
+	 */
 	public static final String ORGANIZATION_NAME_KEY = "organizationName";
 
+	/**
+	 * Space GUID key
+	 */
 	public static final String SPACE_GUID_KEY = "spaceGuid";
 
+	/**
+	 * Space Name key
+	 */
 	public static final String SPACE_NAME_KEY = "spaceName";
 
+	/**
+	 * Instance Name key
+	 */
 	public static final String INSTANCE_NAME_KEY = "instanceName";
 
 	private CloudFoundryContext() {
@@ -55,6 +73,7 @@ public final class CloudFoundryContext extends Context {
 
 	/**
 	 * Create a new CloudFoundryContext
+	 *
 	 * @param organizationGuid the organization GUID
 	 * @param organizationName the organization name
 	 * @param spaceGuid the space GUID
@@ -63,7 +82,7 @@ public final class CloudFoundryContext extends Context {
 	 * @param properties additional properties
 	 */
 	public CloudFoundryContext(String organizationGuid, String organizationName, String spaceGuid, String spaceName,
-							   String instanceName, Map<String, Object> properties) {
+			String instanceName, Map<String, Object> properties) {
 		super(CLOUD_FOUNDRY_PLATFORM, properties);
 		if (StringUtils.hasText(organizationGuid)) {
 			setOrganizationGuid(organizationGuid);
@@ -82,12 +101,13 @@ public final class CloudFoundryContext extends Context {
 		}
 	}
 
-    /**
-     * Avoid polluting the serialized context with duplicated keys
+	/**
+	 * Avoid polluting the serialized context with duplicated keys
+	 *
 	 * @return a map of properties
-     */
+	 */
 	@JsonAnyGetter
-    public Map<String, Object> getSerializableProperties() {
+	public Map<String, Object> getSerializableProperties() {
 		HashMap<String, Object> properties = new HashMap<>(super.getProperties());
 		properties.remove(ORGANIZATION_GUID_KEY);
 		properties.remove(ORGANIZATION_NAME_KEY);
@@ -180,7 +200,7 @@ public final class CloudFoundryContext extends Context {
 	/**
 	 * Provides a fluent API for constructing a {@link CloudFoundryContext}
 	 */
-	public static class CloudFoundryContextBuilder extends ContextBaseBuilder<CloudFoundryContext, CloudFoundryContextBuilder> {
+	public static final class CloudFoundryContextBuilder extends ContextBaseBuilder<CloudFoundryContext, CloudFoundryContextBuilder> {
 
 		private String organizationGuid;
 
@@ -261,5 +281,7 @@ public final class CloudFoundryContext extends Context {
 			return new CloudFoundryContext(organizationGuid, organizationName, spaceGuid, spaceName, instanceName,
 					properties);
 		}
+
 	}
+
 }

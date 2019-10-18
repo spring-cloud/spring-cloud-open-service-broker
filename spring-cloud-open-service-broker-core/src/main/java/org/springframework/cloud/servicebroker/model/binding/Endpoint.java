@@ -16,12 +16,13 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
-import javax.validation.constraints.NotEmpty;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -31,13 +32,13 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 /**
- * The network endpoints that the Application uses to connect to the Service Instance. If present, all Service
- * Instance endpoints that are relevant for the Application MUST be in this list, even if endpoints are not
- * reachable or host names are not resolvable from outside the service network.
+ * The network endpoints that the Application uses to connect to the Service Instance. If present, all Service Instance
+ * endpoints that are relevant for the Application MUST be in this list, even if endpoints are not reachable or host
+ * names are not resolvable from outside the service network.
  *
  * @author Roy Clarkson
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#endpoint-object">Open Service
- * Broker API specification</a>
+ * 		Broker API specification</a>
  */
 public class Endpoint {
 
@@ -112,8 +113,19 @@ public class Endpoint {
 	 * Values designating the network protocol
 	 */
 	public enum Protocol {
+		/**
+		 * Supports TCP network protocol
+		 */
 		TCP("tcp"),
+
+		/**
+		 * Supports UDP network protocol
+		 */
 		UDP("udp"),
+
+		/**
+		 * Accepts all network protocols
+		 */
 		ALL("all");
 
 		private final String value;
@@ -168,7 +180,7 @@ public class Endpoint {
 	/**
 	 * Provides a fluid API for constructing an {@link Endpoint}
 	 */
-	public static class EndpointBuilder {
+	public static final class EndpointBuilder {
 
 		private String host;
 
@@ -253,7 +265,7 @@ public class Endpoint {
 		/**
 		 * Construct a new {@link ProtocolDeserializer}
 		 */
-		public ProtocolDeserializer(){
+		public ProtocolDeserializer() {
 			this(null);
 		}
 
@@ -262,20 +274,21 @@ public class Endpoint {
 		 *
 		 * @param c the type
 		 */
-		public ProtocolDeserializer(Class<?> c){
+		public ProtocolDeserializer(Class<?> c) {
 			super(c);
 		}
 
 		@Override
 		public Protocol deserialize(JsonParser jsonParser, DeserializationContext
 				deserializationContext) throws IOException {
-			for(Protocol m : Protocol.values()) {
+			for (Protocol m : Protocol.values()) {
 				if (m.toString().equalsIgnoreCase(jsonParser.getText())) {
 					return m;
 				}
 			}
 			throw new IllegalArgumentException("Protocol not defined");
 		}
+
 	}
 
 }

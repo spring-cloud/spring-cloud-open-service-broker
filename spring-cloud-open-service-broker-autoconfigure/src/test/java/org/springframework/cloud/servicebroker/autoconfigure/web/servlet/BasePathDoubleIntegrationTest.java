@@ -37,7 +37,7 @@ public class BasePathDoubleIntegrationTest extends AbstractBasePathWebApplicatio
 	public void noBasePathNotFound() throws Exception {
 		assertNotFound("");
 	}
-	
+
 	@Test
 	public void noBasePathWithPlatformIdNotFound() throws Exception {
 		assertNotFound("/123");
@@ -47,4 +47,5 @@ public class BasePathDoubleIntegrationTest extends AbstractBasePathWebApplicatio
 	public void basePathWithAdditionalSegmentsNotFound() throws Exception {
 		assertNotFound("/api/broker/123/456");
 	}
+
 }

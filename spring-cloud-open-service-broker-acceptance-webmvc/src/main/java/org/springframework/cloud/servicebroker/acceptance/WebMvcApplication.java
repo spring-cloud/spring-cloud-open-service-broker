@@ -47,4 +47,5 @@ public class WebMvcApplication {
 	public ServiceInstanceService serviceInstanceService() {
 		return new NoOpServiceInstanceService();
 	}
+
 }

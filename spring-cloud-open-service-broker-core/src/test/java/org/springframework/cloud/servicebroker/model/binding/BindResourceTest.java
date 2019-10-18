@@ -81,4 +81,5 @@ public class BindResourceTest {
 				.forClass(BindResource.class)
 				.verify();
 	}
+
 }

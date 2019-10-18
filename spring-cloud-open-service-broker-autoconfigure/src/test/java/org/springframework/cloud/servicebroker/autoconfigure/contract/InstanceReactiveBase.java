@@ -61,7 +61,7 @@ public class InstanceReactiveBase {
 
 	@SpringBootApplication(scanBasePackageClasses = {
 			ServiceBrokerAutoConfiguration.class,
-			ServiceBrokerWebFluxAutoConfiguration.class }, exclude = ServiceBrokerWebMvcAutoConfiguration.class)
+			ServiceBrokerWebFluxAutoConfiguration.class}, exclude = ServiceBrokerWebMvcAutoConfiguration.class)
 	protected static class TestApplication {
 
 		@Bean

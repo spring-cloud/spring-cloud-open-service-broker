@@ -38,4 +38,5 @@ public class AsyncServiceBrokerRequestTest {
 				.suppress(Warning.TRANSIENT_FIELDS)
 				.verify();
 	}
+
 }

@@ -18,6 +18,7 @@ package org.springframework.cloud.servicebroker.model.catalog;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
+
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -26,9 +27,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * Maintenance info available for a Plan.
  *
  * @author ilyavy
- * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#maintenance-info-object">Open
- * Service Broker API specification</a>
+ * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#maintenance-info-object">Open
+ * 		Service Broker API specification</a>
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MaintenanceInfo {
@@ -45,10 +45,10 @@ public class MaintenanceInfo {
 	/**
 	 * Constructs a new {@link MaintenanceInfo}
 	 *
-	 * @param version     maintenance version (conforming to a semantic version 2.0)
+	 * @param version maintenance version (conforming to a semantic version 2.0)
 	 * @param description description of the impact of the maintenance update
-	 * @throws IllegalArgumentException if the provided to the builder version does not comply to semantic
-	 *                                  versioning v2 specification
+	 * @throws IllegalArgumentException if the provided to the builder version does not comply to semantic versioning
+	 * 		v2 specification
 	 */
 	public MaintenanceInfo(String version, String description) {
 		if (!SEMANTIC_VERSION_V2_PATTERN.matcher(version).matches()) {
@@ -115,7 +115,8 @@ public class MaintenanceInfo {
 	/**
 	 * Provides a fluent API for constructing a {@literal MaintenanceInfo}.
 	 */
-	public static class MaintenanceInfoBuilder {
+	public static final class MaintenanceInfoBuilder {
+
 		private String version;
 
 		private String description;
@@ -137,9 +138,9 @@ public class MaintenanceInfo {
 		/**
 		 * The version of the maintenance update available for a plan.
 		 *
-		 * @param major     MAJOR version when you make incompatible API changes
-		 * @param minor     MINOR version when you add functionality in a backwards-compatible manner
-		 * @param patch     PATCH version when you make backwards-compatible bug fixes
+		 * @param major MAJOR version when you make incompatible API changes
+		 * @param minor MINOR version when you add functionality in a backwards-compatible manner
+		 * @param patch PATCH version when you make backwards-compatible bug fixes
 		 * @param extension additional labels for pre-release and build metadata
 		 * @return the builder instance
 		 */
@@ -163,10 +164,12 @@ public class MaintenanceInfo {
 		 *
 		 * @return the newly constructed {@literal MaintenanceInfo}
 		 * @throws IllegalArgumentException if the provided to the builder version does not comply to semantic
-		 *                                  versioning v2 specification
+		 * 		versioning v2 specification
 		 */
 		public MaintenanceInfo build() {
 			return new MaintenanceInfo(version, description);
 		}
+
 	}
+
 }

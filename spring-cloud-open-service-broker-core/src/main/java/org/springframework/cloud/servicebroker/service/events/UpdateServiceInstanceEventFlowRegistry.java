@@ -74,4 +74,5 @@ public class UpdateServiceInstanceEventFlowRegistry extends EventFlowRegistry<Up
 		return getErrorFlowsInternal()
 				.flatMap(flow -> flow.error(request, t));
 	}
+
 }

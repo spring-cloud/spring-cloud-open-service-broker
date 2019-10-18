@@ -24,12 +24,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class OperationStateTest {
 
-    @Test
-    public void enumValueIsDeserialized() {
-        OperationState state = JsonUtils.readTestDataFile(
-                "operationState.json", OperationState.class);
+	@Test
+	public void enumValueIsDeserialized() {
+		OperationState state = JsonUtils.readTestDataFile(
+				"operationState.json", OperationState.class);
 
-        assertThat(state).isEqualTo(OperationState.SUCCEEDED);
-    }
+		assertThat(state).isEqualTo(OperationState.SUCCEEDED);
+	}
 
 }

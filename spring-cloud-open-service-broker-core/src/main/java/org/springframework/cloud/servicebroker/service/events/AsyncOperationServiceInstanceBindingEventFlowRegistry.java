@@ -32,48 +32,48 @@ import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperati
  * @author ilyavy
  */
 public class AsyncOperationServiceInstanceBindingEventFlowRegistry
-        extends EventFlowRegistry<AsyncOperationServiceInstanceBindingInitializationFlow,
-        AsyncOperationServiceInstanceBindingCompletionFlow, AsyncOperationServiceInstanceBindingErrorFlow,
-        GetLastServiceBindingOperationRequest, GetLastServiceBindingOperationResponse> {
+		extends EventFlowRegistry<AsyncOperationServiceInstanceBindingInitializationFlow,
+		AsyncOperationServiceInstanceBindingCompletionFlow, AsyncOperationServiceInstanceBindingErrorFlow,
+		GetLastServiceBindingOperationRequest, GetLastServiceBindingOperationResponse> {
 
-    /**
-     * Construct a new {@link AsyncOperationServiceInstanceBindingEventFlowRegistry}
-     */
-    @Deprecated
-    public AsyncOperationServiceInstanceBindingEventFlowRegistry() {
-        super();
-    }
+	/**
+	 * Construct a new {@link AsyncOperationServiceInstanceBindingEventFlowRegistry}
+	 */
+	@Deprecated
+	public AsyncOperationServiceInstanceBindingEventFlowRegistry() {
+		super();
+	}
 
-    /**
-     *
-     * @param initializationFlows the initialization flows
-     * @param completionFlows the completion flows
-     * @param errorFlows the error flows
-     */
-    public AsyncOperationServiceInstanceBindingEventFlowRegistry(
-            final List<AsyncOperationServiceInstanceBindingInitializationFlow> initializationFlows,
-            final List<AsyncOperationServiceInstanceBindingCompletionFlow> completionFlows,
-            final List<AsyncOperationServiceInstanceBindingErrorFlow> errorFlows) {
-        super(initializationFlows, completionFlows, errorFlows);
-    }
+	/**
+	 * @param initializationFlows the initialization flows
+	 * @param completionFlows the completion flows
+	 * @param errorFlows the error flows
+	 */
+	public AsyncOperationServiceInstanceBindingEventFlowRegistry(
+			final List<AsyncOperationServiceInstanceBindingInitializationFlow> initializationFlows,
+			final List<AsyncOperationServiceInstanceBindingCompletionFlow> completionFlows,
+			final List<AsyncOperationServiceInstanceBindingErrorFlow> errorFlows) {
+		super(initializationFlows, completionFlows, errorFlows);
+	}
 
-    @Override
-    public Flux<Void> getInitializationFlows(GetLastServiceBindingOperationRequest request) {
-        return getInitializationFlowsInternal()
-                .flatMap(flow -> flow.initialize(request));
-    }
+	@Override
+	public Flux<Void> getInitializationFlows(GetLastServiceBindingOperationRequest request) {
+		return getInitializationFlowsInternal()
+				.flatMap(flow -> flow.initialize(request));
+	}
 
-    @Override
-    public Flux<Void> getCompletionFlows(
-            GetLastServiceBindingOperationRequest request, GetLastServiceBindingOperationResponse response) {
+	@Override
+	public Flux<Void> getCompletionFlows(
+			GetLastServiceBindingOperationRequest request, GetLastServiceBindingOperationResponse response) {
 
-        return getCompletionFlowsInternal()
-                .flatMap(flow -> flow.complete(request, response));
-    }
+		return getCompletionFlowsInternal()
+				.flatMap(flow -> flow.complete(request, response));
+	}
 
-    @Override
-    public Flux<Void> getErrorFlows(GetLastServiceBindingOperationRequest request, Throwable t) {
-        return getErrorFlowsInternal()
-                .flatMap(flow -> flow.error(request, t));
-    }
+	@Override
+	public Flux<Void> getErrorFlows(GetLastServiceBindingOperationRequest request, Throwable t) {
+		return getErrorFlowsInternal()
+				.flatMap(flow -> flow.error(request, t));
+	}
+
 }

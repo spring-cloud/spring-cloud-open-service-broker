@@ -28,6 +28,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
 
+	/**
+	 * Async request parameter key
+	 */
 	public final static String ASYNC_REQUEST_PARAMETER = "accepts_incomplete";
 
 	@JsonIgnore //accepts_incomplete Osb field passed as query param in most subclasses
@@ -49,14 +52,13 @@ public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
 	 */
 	protected AsyncServiceBrokerRequest(boolean asyncAccepted, String platformInstanceId,
-										String apiInfoLocation, Context originatingIdentity) {
+			String apiInfoLocation, Context originatingIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.asyncAccepted = asyncAccepted;
 	}
 
 	/**
-	 * Get the value indicating whether the platform allows the broker to complete the request
-	 * asynchronously.
+	 * Get the value indicating whether the platform allows the broker to complete the request asynchronously.
 	 *
 	 * <p>
 	 * This value is set from the {@literal async_accepted} request parameter of the request from the platform.
@@ -72,11 +74,11 @@ public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
 	}
 
 	/**
-	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this
-	 * type and set all field values.
+	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this type
+	 * and set all field values.
 	 *
 	 * @param asyncAccepted the value indicating whether the platform allows the broker to complete the request
-	 * asynchronously
+	 * 		asynchronously
 	 */
 	public void setAsyncAccepted(boolean asyncAccepted) {
 		this.asyncAccepted = asyncAccepted;

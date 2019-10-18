@@ -177,7 +177,8 @@ public class EventFlowsAutoConfiguration {
 			@Autowired(required = false) List<AsyncOperationServiceInstanceBindingInitializationFlow> initializationFlows,
 			@Autowired(required = false) List<AsyncOperationServiceInstanceBindingCompletionFlow> completionFlows,
 			@Autowired(required = false) List<AsyncOperationServiceInstanceBindingErrorFlow> errorFlows) {
-		return new AsyncOperationServiceInstanceBindingEventFlowRegistry(initializationFlows, completionFlows, errorFlows);
+		return new AsyncOperationServiceInstanceBindingEventFlowRegistry(initializationFlows, completionFlows,
+				errorFlows);
 	}
 
 	/**

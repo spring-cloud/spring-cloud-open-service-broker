@@ -52,8 +52,8 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.doThrow;
-import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
@@ -122,7 +122,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.andReturn();
 
 		mockMvc.perform(asyncDispatch(mvcResult))
-			   .andExpect(status().isCreated());
+				.andExpect(status().isCreated());
 
 		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
@@ -279,7 +279,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	public void createBindingWithUnknownServiceInstanceIdFails() throws Exception {
 		setupCatalogService();
 
-		given(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
+		given(serviceInstanceBindingService
+				.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
 				.willThrow(new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID));
 
 		MvcResult mvcResult = mockMvc.perform(put(buildCreateUrl())
@@ -314,7 +315,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	public void createBindingWithDuplicateIdFails() throws Exception {
 		setupCatalogService();
 
-		given(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
+		given(serviceInstanceBindingService
+				.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
 				.willThrow(new ServiceInstanceBindingExistsException(SERVICE_INSTANCE_ID, SERVICE_INSTANCE_BINDING_ID));
 
 		MvcResult mvcResult = mockMvc.perform(put(buildCreateUrl())
@@ -514,8 +516,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.andReturn();
 
 		mockMvc.perform(asyncDispatch(mvcResult))
-			   .andExpect(status().isOk())
-			   .andExpect(content().string("{}"));
+				.andExpect(status().isOk())
+				.andExpect(content().string("{}"));
 
 		then(serviceInstanceBindingService)
 				.should()
@@ -532,7 +534,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		setupCatalogService();
 
 		doThrow(new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID))
-				.when(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
+				.when(serviceInstanceBindingService)
+				.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 
 		MvcResult mvcResult = mockMvc.perform(delete(buildDeleteUrl())
 				.contentType(MediaType.APPLICATION_JSON))
@@ -549,7 +552,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		setupCatalogService();
 
 		doThrow(new ServiceInstanceBindingDoesNotExistException(SERVICE_INSTANCE_BINDING_ID))
-				.when(serviceInstanceBindingService).deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
+				.when(serviceInstanceBindingService)
+				.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class));
 
 		MvcResult mvcResult = mockMvc.perform(delete(buildDeleteUrl())
 				.contentType(MediaType.APPLICATION_JSON))

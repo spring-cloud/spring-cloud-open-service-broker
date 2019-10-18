@@ -185,32 +185,38 @@ public abstract class AbstractServiceInstanceControllerIntegrationTest extends C
 	}
 
 	protected CreateServiceInstanceRequest verifyCreateServiceInstance() {
-		ArgumentCaptor<CreateServiceInstanceRequest> argumentCaptor = ArgumentCaptor.forClass(CreateServiceInstanceRequest.class);
+		ArgumentCaptor<CreateServiceInstanceRequest> argumentCaptor = ArgumentCaptor
+				.forClass(CreateServiceInstanceRequest.class);
 		Mockito.verify(serviceInstanceService).createServiceInstance(argumentCaptor.capture());
 		return argumentCaptor.getValue();
 	}
 
 	protected GetServiceInstanceRequest verifyGetServiceInstance() {
-		ArgumentCaptor<GetServiceInstanceRequest> argumentCaptor = ArgumentCaptor.forClass(GetServiceInstanceRequest.class);
+		ArgumentCaptor<GetServiceInstanceRequest> argumentCaptor = ArgumentCaptor
+				.forClass(GetServiceInstanceRequest.class);
 		Mockito.verify(serviceInstanceService).getServiceInstance(argumentCaptor.capture());
 		return argumentCaptor.getValue();
 	}
 
 	protected DeleteServiceInstanceRequest verifyDeleteServiceInstance() {
-		ArgumentCaptor<DeleteServiceInstanceRequest> argumentCaptor = ArgumentCaptor.forClass(DeleteServiceInstanceRequest.class);
+		ArgumentCaptor<DeleteServiceInstanceRequest> argumentCaptor = ArgumentCaptor
+				.forClass(DeleteServiceInstanceRequest.class);
 		Mockito.verify(serviceInstanceService).deleteServiceInstance(argumentCaptor.capture());
 		return argumentCaptor.getValue();
 	}
 
 	protected UpdateServiceInstanceRequest verifyUpdateServiceInstance() {
-		ArgumentCaptor<UpdateServiceInstanceRequest> argumentCaptor = ArgumentCaptor.forClass(UpdateServiceInstanceRequest.class);
+		ArgumentCaptor<UpdateServiceInstanceRequest> argumentCaptor = ArgumentCaptor
+				.forClass(UpdateServiceInstanceRequest.class);
 		Mockito.verify(serviceInstanceService).updateServiceInstance(argumentCaptor.capture());
 		return argumentCaptor.getValue();
 	}
 
 	protected GetLastServiceOperationRequest verifyLastOperation() {
-		ArgumentCaptor<GetLastServiceOperationRequest> argumentCaptor = ArgumentCaptor.forClass(GetLastServiceOperationRequest.class);
+		ArgumentCaptor<GetLastServiceOperationRequest> argumentCaptor = ArgumentCaptor
+				.forClass(GetLastServiceOperationRequest.class);
 		Mockito.verify(serviceInstanceService).getLastOperation(argumentCaptor.capture());
 		return argumentCaptor.getValue();
 	}
+
 }

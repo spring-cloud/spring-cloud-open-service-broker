@@ -91,6 +91,7 @@ public class BaseControllerTest {
 	}
 
 	private static class TestBaseController extends BaseController {
+
 		public TestBaseController() {
 			super(null);
 		}
@@ -99,10 +100,13 @@ public class BaseControllerTest {
 			ServiceBrokerRequest request = new ServiceBrokerRequest() {
 			};
 
-			configureCommonRequestFields(request, "platform-instance-id", "api-info-location", originatingIdentityString)
+			configureCommonRequestFields(request, "platform-instance-id", "api-info-location",
+					originatingIdentityString)
 					.block();
 
 			return request.getOriginatingIdentity();
 		}
+
 	}
+
 }

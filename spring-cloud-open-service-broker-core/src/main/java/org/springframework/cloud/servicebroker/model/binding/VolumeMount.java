@@ -33,23 +33,31 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 /**
  * Details of a volume mount in a service binding response.
- * 
- * <p>
- * Objects of this type are constructed by the service broker application,
- * and used to build the response to the platform.
  *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#volume-mount-object">Open Service Broker API specification</a>
+ * <p>
+ * Objects of this type are constructed by the service broker application, and used to build the response to the
+ * platform.
  *
  * @author Scott Frederick
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#volume-mount-object">Open
+ * 		Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VolumeMount {
+
 	/**
 	 * Values designating whether the mounted volume can be written to or read from.
 	 */
 	public enum Mode {
+		/**
+		 * Volume is Read-Only
+		 */
 		READ_ONLY("r"),
+
+		/**
+		 * Volume is Read-Write
+		 */
 		READ_WRITE("rw");
 
 		private final String value;
@@ -98,7 +106,7 @@ public class VolumeMount {
 	private final DeviceType deviceType;
 
 	@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "device_type")
-	@JsonSubTypes({@JsonSubTypes.Type(value = SharedVolumeDevice.class, name = "shared") })
+	@JsonSubTypes({@JsonSubTypes.Type(value = SharedVolumeDevice.class, name = "shared")})
 	private final VolumeDevice device;
 
 	/**
@@ -214,11 +222,16 @@ public class VolumeMount {
 	/**
 	 * Provides a fluent API for constructing a {@link VolumeMount}.
 	 */
-	public static class VolumeMountBuilder {
+	public static final class VolumeMountBuilder {
+
 		private String driver;
+
 		private String containerDir;
+
 		private Mode mode;
+
 		private DeviceType deviceType;
+
 		private VolumeDevice device;
 
 		private VolumeMountBuilder() {
@@ -240,7 +253,7 @@ public class VolumeMount {
 
 		/**
 		 * Set the directory to mount inside the application container.
-		 * 
+		 *
 		 * <p>
 		 * This value will set the {@literal container_dir} field in the body of the response to the platform.
 		 *
@@ -302,6 +315,7 @@ public class VolumeMount {
 		public VolumeMount build() {
 			return new VolumeMount(driver, containerDir, mode, deviceType, device);
 		}
+
 	}
 
 	/**
@@ -314,7 +328,7 @@ public class VolumeMount {
 		/**
 		 * Construct a new {@link DeviceTypeDeserializer}
 		 */
-		public DeviceTypeDeserializer(){
+		public DeviceTypeDeserializer() {
 			this(null);
 		}
 
@@ -323,20 +337,21 @@ public class VolumeMount {
 		 *
 		 * @param c the type
 		 */
-		public DeviceTypeDeserializer(Class<?> c){
+		public DeviceTypeDeserializer(Class<?> c) {
 			super(c);
 		}
 
 		@Override
 		public DeviceType deserialize(JsonParser jsonParser,
 				DeserializationContext deserializationContext) throws IOException {
-			for(DeviceType d : DeviceType.values()) {
+			for (DeviceType d : DeviceType.values()) {
 				if (d.toString().equalsIgnoreCase(jsonParser.getText())) {
 					return d;
 				}
 			}
 			throw new IllegalArgumentException("DeviceType is not defined");
 		}
+
 	}
 
 	/**
@@ -349,7 +364,7 @@ public class VolumeMount {
 		/**
 		 * Construct a new {@link ModeDeserializer}
 		 */
-		public ModeDeserializer(){
+		public ModeDeserializer() {
 			this(null);
 		}
 
@@ -358,20 +373,21 @@ public class VolumeMount {
 		 *
 		 * @param c the type
 		 */
-		public ModeDeserializer(Class<?> c){
+		public ModeDeserializer(Class<?> c) {
 			super(c);
 		}
 
 		@Override
 		public Mode deserialize(JsonParser jsonParser, DeserializationContext
 				deserializationContext) throws IOException {
-			for(Mode m : Mode.values()) {
+			for (Mode m : Mode.values()) {
 				if (m.toString().equalsIgnoreCase(jsonParser.getText())) {
 					return m;
 				}
 			}
 			throw new IllegalArgumentException("Mode not defined");
 		}
+
 	}
 
 }

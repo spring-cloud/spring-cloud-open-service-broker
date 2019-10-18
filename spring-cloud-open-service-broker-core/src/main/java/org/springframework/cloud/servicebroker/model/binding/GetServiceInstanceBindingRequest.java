@@ -25,12 +25,12 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
  * Details of a request to retrieve a service instance binding.
  *
  * <p>
- * Objects of this type are constructed by the framework from the headers, path variables, query parameters
- * and message body passed to the service broker by the platform.
- *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API specification</a>
+ * Objects of this type are constructed by the framework from the headers, path variables, query parameters and message
+ * body passed to the service broker by the platform.
  *
  * @author Scott Frederick
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API
+ * 		specification</a>
  */
 public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 
@@ -48,16 +48,15 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
 	 */
 	public GetServiceInstanceBindingRequest(String serviceInstanceId, String bindingId,
-									String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
+			String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.bindingId = bindingId;
 	}
 
 	/**
-	 * Get the ID of the service instance associated with the binding. This value is assigned by the platform.
-	 * It must be unique within the platform and can be used to correlate any resources associated with the
-	 * service instance.
+	 * Get the ID of the service instance associated with the binding. This value is assigned by the platform. It must
+	 * be unique within the platform and can be used to correlate any resources associated with the service instance.
 	 *
 	 * <p>
 	 * This value is set from the {@literal :instance_id} path element of the request from the platform.
@@ -69,9 +68,8 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	}
 
 	/**
-	 * Get the ID of the service binding to create. This value is assigned by the platform.
-	 * It must be unique within the platform and can be used to correlate any resources associated with the
-	 * service binding.
+	 * Get the ID of the service binding to create. This value is assigned by the platform. It must be unique within the
+	 * platform and can be used to correlate any resources associated with the service binding.
 	 *
 	 * <p>
 	 * This value is set from the {@literal :binding_id} path element of the request from the platform.
@@ -86,8 +84,8 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 * Create a builder that provides a fluent API for constructing a {@literal GetServiceInstanceBindingRequest}.
 	 *
 	 * <p>
-	 * This builder is provided to support testing of
-	 * {@link org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService} implementations.
+	 * This builder is provided to support testing of {@link org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService}
+	 * implementations.
 	 *
 	 * @return the builder
 	 */
@@ -133,11 +131,16 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	/**
 	 * Provides a fluent API for constructing a {@link CreateServiceInstanceBindingRequest}.
 	 */
-	public static class GetServiceInstanceBindingRequestBuilder {
+	public static final class GetServiceInstanceBindingRequestBuilder {
+
 		private String serviceInstanceId;
+
 		private String bindingId;
+
 		private String platformInstanceId;
+
 		private String apiInfoLocation;
+
 		private Context originatingIdentity;
 
 		private GetServiceInstanceBindingRequestBuilder() {
@@ -212,5 +215,7 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 			return new GetServiceInstanceBindingRequest(serviceInstanceId, bindingId,
 					platformInstanceId, apiInfoLocation, originatingIdentity);
 		}
+
 	}
+
 }

@@ -31,15 +31,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for the service broker
- * implementation beans.
+ * {@link EnableAutoConfiguration Auto-configuration} for the service broker implementation beans.
  * <p>
- * Provides a default {@link CatalogService} bean if a {@link Catalog} bean is provided. A
- * catalog may be defined in external configuration, or via a Spring bean.
+ * Provides a default {@link CatalogService} bean if a {@link Catalog} bean is provided. A catalog may be defined in
+ * external configuration, or via a Spring bean.
  * <p>
- * Provides a {@link NonBindableServiceInstanceBindingService} if a
- * {@link ServiceInstanceBindingService} is not provided, indicating that the service
- * broker provides no bindable services.
+ * Provides a {@link NonBindableServiceInstanceBindingService} if a {@link ServiceInstanceBindingService} is not
+ * provided, indicating that the service broker provides no bindable services.
  *
  * @author Scott Frederick
  * @author Roy Clarkson
@@ -47,6 +45,32 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class ServiceBrokerAutoConfiguration {
+
+	/**
+	 * Conditionally provides a {@link CatalogService} bean
+	 *
+	 * @param catalog the catalog
+	 * @return the bean
+	 */
+	@Bean
+	@ConditionalOnMissingBean(CatalogService.class)
+	public CatalogService beanCatalogService(@Autowired(required = false) Catalog catalog) {
+		if (catalog == null) {
+			throw new CatalogDefinitionDoesNotExistException();
+		}
+		return new BeanCatalogService(catalog);
+	}
+
+	/**
+	 * Conditionally provides a {@link ServiceInstanceBindingService} bean
+	 *
+	 * @return the bean
+	 */
+	@Bean
+	@ConditionalOnMissingBean(ServiceInstanceBindingService.class)
+	public ServiceInstanceBindingService nonBindableServiceInstanceBindingService() {
+		return new NonBindableServiceInstanceBindingService();
+	}
 
 	/**
 	 * Provides a {@link Catalog} bean when catalog properties are available in external configuration
@@ -77,32 +101,6 @@ public class ServiceBrokerAutoConfiguration {
 		public Catalog catalog() {
 			return this.serviceBrokerProperties.getCatalog().toModel();
 		}
-	}
 
-	/**
-	 * Conditionally provides a {@link CatalogService} bean
-	 *
-	 * @param catalog the catalog
-	 * @return the bean
-	 */
-	@Bean
-	@ConditionalOnMissingBean(CatalogService.class)
-	public CatalogService beanCatalogService(@Autowired(required = false) Catalog catalog) {
-		if (catalog == null) {
-			throw new CatalogDefinitionDoesNotExistException();
-		}
-		return new BeanCatalogService(catalog);
 	}
-
-	/**
-	 * Conditionally provides a {@link ServiceInstanceBindingService} bean
-	 *
-	 * @return the bean
-	 */
-	@Bean
-	@ConditionalOnMissingBean(ServiceInstanceBindingService.class)
-	public ServiceInstanceBindingService nonBindableServiceInstanceBindingService() {
-		return new NonBindableServiceInstanceBindingService();
-	}
-
 }

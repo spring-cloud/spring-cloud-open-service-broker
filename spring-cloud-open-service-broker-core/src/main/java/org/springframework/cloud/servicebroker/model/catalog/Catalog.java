@@ -16,11 +16,12 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -28,15 +29,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The catalog of services offered by the service broker.
  *
  * <p>
- * Objects of this type are constructed by the service broker application, and used to
- * build the response to the platform.
- *
- * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#catalog-management">Open
- * Service Broker API specification</a>
+ * Objects of this type are constructed by the service broker application, and used to build the response to the
+ * platform.
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
+ * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#catalog-management">Open
+ * 		Service Broker API specification</a>
  */
 public class Catalog {
 
@@ -53,6 +52,7 @@ public class Catalog {
 
 	/**
 	 * Construct a new {@link Catalog}
+	 *
 	 * @param serviceDefinitions a collection of services
 	 */
 	public Catalog(List<ServiceDefinition> serviceDefinitions) {
@@ -104,15 +104,16 @@ public class Catalog {
 	/**
 	 * Provides a fluent API for constructing a {@literal Catalog}.
 	 */
-	public static class CatalogBuilder {
+	public static final class CatalogBuilder {
+
 		private final List<ServiceDefinition> serviceDefinitions = new ArrayList<>();
 
 		private CatalogBuilder() {
 		}
 
 		/**
-		 * Add a set of service offerings from the provided {@literal List} to the
-		 * service offerings provided by the service broker.
+		 * Add a set of service offerings from the provided {@literal List} to the service offerings provided by the
+		 * service broker.
 		 *
 		 * <p>
 		 * This value sets the {@literal services} field in the response to the platform.
@@ -126,8 +127,8 @@ public class Catalog {
 		}
 
 		/**
-		 * Add a set of service offerings from the provided array to the
-		 * service offerings provided by the service broker.
+		 * Add a set of service offerings from the provided array to the service offerings provided by the service
+		 * broker.
 		 *
 		 * <p>
 		 * This value sets the {@literal services} field in the response to the platform.
@@ -148,5 +149,7 @@ public class Catalog {
 		public Catalog build() {
 			return new Catalog(serviceDefinitions);
 		}
+
 	}
+
 }

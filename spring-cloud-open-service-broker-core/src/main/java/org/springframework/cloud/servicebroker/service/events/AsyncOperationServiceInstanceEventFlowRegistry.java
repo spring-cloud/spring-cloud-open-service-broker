@@ -45,6 +45,7 @@ public class AsyncOperationServiceInstanceEventFlowRegistry extends EventFlowReg
 
 	/**
 	 * Construct a new {@link AsyncOperationServiceInstanceEventFlowRegistry}
+	 *
 	 * @param initializationFlows the initialization flows
 	 * @param completionFlows the completion flows
 	 * @param errorFlows the error flows
@@ -73,4 +74,5 @@ public class AsyncOperationServiceInstanceEventFlowRegistry extends EventFlowReg
 		return getErrorFlowsInternal()
 				.flatMap(flow -> flow.error(request, t));
 	}
+
 }

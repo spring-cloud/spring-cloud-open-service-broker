@@ -16,15 +16,15 @@
 
 package org.springframework.cloud.servicebroker.annotation;
 
-import org.springframework.core.annotation.AliasFor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import org.springframework.core.annotation.AliasFor;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -32,6 +32,8 @@ import java.lang.annotation.Target;
 @RestController
 @RequestMapping("${spring.cloud.openservicebroker.base-path:}")
 public @interface ServiceBrokerRestController {
+
 	@AliasFor(annotation = RestController.class)
 	String value() default "";
+
 }

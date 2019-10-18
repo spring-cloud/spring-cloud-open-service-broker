@@ -28,12 +28,12 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
  * Details of a response to a request to update a service instance.
  *
  * <p>
- * Objects of this type are constructed by the service broker application,
- * and used to build the response to the platform.
+ * Objects of this type are constructed by the service broker application, and used to build the response to the
+ * platform.
  *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-3">Open Service Broker API specification</a>
- * 
  * @author Scott Frederick
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-3">Open Service
+ * 		Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
@@ -115,17 +115,20 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	/**
 	 * Provides a fluent API for constructing an {@link UpdateServiceInstanceResponse}.
 	 */
-	public static class UpdateServiceInstanceResponseBuilder {
+	public static final class UpdateServiceInstanceResponseBuilder {
+
 		private String dashboardUrl;
+
 		private boolean async;
+
 		private String operation;
 
 		private UpdateServiceInstanceResponseBuilder() {
 		}
 
 		/**
-		 * Set the URL of a web-based management user interface provided by the service broker for the service
-		 * instance. Can be {@literal null} to indicate that a management dashboard is not provided.
+		 * Set the URL of a web-based management user interface provided by the service broker for the service instance.
+		 * Can be {@literal null} to indicate that a management dashboard is not provided.
 		 *
 		 * <p>
 		 * This value will set the {@literal dashboard_url} field in the body of the response to the platform.
@@ -143,12 +146,12 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * asynchronously.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value
-		 * will result in a response code {@literal 202 ACCEPTED}, and a {@literal false} value will result
-		 * in a response code {@literal 200 OK}.
+		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
+		 * result in a response code {@literal 202 ACCEPTED}, and a {@literal false} value will result in a response
+		 * code {@literal 200 OK}.
 		 *
-		 * @param async {@literal true} to indicate that the operation is being performed asynchronously,
-		 * {@literal false} to indicate that the operation was completed
+		 * @param async {@literal true} to indicate that the operation is being performed asynchronously, {@literal
+		 * 		false} to indicate that the operation was completed
 		 * @return the builder
 		 */
 		public UpdateServiceInstanceResponseBuilder async(boolean async) {
@@ -157,8 +160,8 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		}
 
 		/**
-		 * Set a value to inform the user of the operation being performed in support of an asynchronous response.
-		 * This value will be passed back to the service broker in subsequent {@link GetLastServiceOperationRequest}
+		 * Set a value to inform the user of the operation being performed in support of an asynchronous response. This
+		 * value will be passed back to the service broker in subsequent {@link GetLastServiceOperationRequest}
 		 * requests.
 		 *
 		 * <p>
@@ -180,5 +183,7 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		public UpdateServiceInstanceResponse build() {
 			return new UpdateServiceInstanceResponse(async, operation, dashboardUrl);
 		}
+
 	}
+
 }

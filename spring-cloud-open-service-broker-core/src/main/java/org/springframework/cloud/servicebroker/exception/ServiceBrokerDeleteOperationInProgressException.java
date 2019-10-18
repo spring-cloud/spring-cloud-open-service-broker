@@ -17,12 +17,11 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a request to delete a service instance or binding was received while
- * asynchronous deletion of the identical service instance or binding is in progress.
+ * Thrown to indicate that a request to delete a service instance or binding was received while asynchronous deletion of
+ * the identical service instance or binding is in progress.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 202 ACCEPTED}
- * being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 202 ACCEPTED} being returned to the platform.
  *
  * @author Roy Clarkson
  */
@@ -62,4 +61,5 @@ public class ServiceBrokerDeleteOperationInProgressException extends ServiceBrok
 	private static String prependMessagePrefix(String operation) {
 		return MESSAGE_PREFIX + ": operation=" + operation;
 	}
+
 }

@@ -49,15 +49,16 @@ public interface ServiceInstanceBindingService {
 	 * @param request containing the details of the request
 	 * @return a {@link CreateServiceInstanceBindingResponse} on successful processing of the request
 	 * @throws ServiceInstanceBindingExistsException if a binding with the given ID is already known to the broker
-	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
-	 * @throws ServiceBrokerBindingRequiresAppException if the broker only supports application binding but an
-	 *                                                  app GUID is not provided in the request
+	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the
+	 * 		broker
+	 * @throws ServiceBrokerBindingRequiresAppException if the broker only supports application binding but an app
+	 * 		GUID is not provided in the request
 	 * @throws ServiceBrokerCreateOperationInProgressException if a an operation is in progress for the service
-	 * binding
-	 *
+	 * 		binding
 	 */
 	default Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
-		return Mono.error(new UnsupportedOperationException("This service broker does not support creating service bindings."));
+		return Mono.error(new UnsupportedOperationException(
+				"This service broker does not support creating service bindings."));
 	}
 
 	/**
@@ -65,14 +66,16 @@ public interface ServiceInstanceBindingService {
 	 *
 	 * @param request containing the details of the request
 	 * @return a {@link GetServiceInstanceBindingResponse} on successful processing of the request
-	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
+	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the
+	 * 		broker
 	 * @throws ServiceInstanceBindingDoesNotExistException if a binding with the given ID is not known to the broker
 	 * @throws ServiceBrokerOperationInProgressException if a an operation is in progress for the service binding
 	 */
 	default Mono<GetServiceInstanceBindingResponse> getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
-		return Mono.error(new UnsupportedOperationException("This service broker does not support retrieving service bindings. " +
-				"The service broker should set 'bindings_retrievable:false' in the service catalog, " +
-				"or provide an implementation of the fetch binding API."));
+		return Mono.error(new UnsupportedOperationException(
+				"This service broker does not support retrieving service bindings. " +
+						"The service broker should set 'bindings_retrievable:false' in the service catalog, " +
+						"or provide an implementation of the fetch binding API."));
 	}
 
 	/**
@@ -80,14 +83,16 @@ public interface ServiceInstanceBindingService {
 	 *
 	 * @param request containing the details of the request
 	 * @return a {@link GetLastServiceBindingOperationResponse} on successful processing of the request
-	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
+	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the
+	 * 		broker
 	 * @throws ServiceInstanceBindingDoesNotExistException if a binding with the given ID is not known to the broker
 	 */
 	default Mono<GetLastServiceBindingOperationResponse> getLastOperation(GetLastServiceBindingOperationRequest request) {
-		return Mono.error(new UnsupportedOperationException("This service broker does not support getting the status of " +
-				"an asynchronous operation. " +
-				"If the service broker returns '202 Accepted' in response to a bind or unbind request, " +
-				"it must also provide an implementation of the get last operation API."));
+		return Mono
+				.error(new UnsupportedOperationException("This service broker does not support getting the status of " +
+						"an asynchronous operation. " +
+						"If the service broker returns '202 Accepted' in response to a bind or unbind request, " +
+						"it must also provide an implementation of the get last operation API."));
 	}
 
 	/**
@@ -95,11 +100,15 @@ public interface ServiceInstanceBindingService {
 	 *
 	 * @param request containing the details of the request
 	 * @return a {@link DeleteServiceInstanceBindingResponse} on successful processing of the request
-	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the broker
+	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the
+	 * 		broker
 	 * @throws ServiceInstanceBindingDoesNotExistException if a binding with the given ID is not known to the broker
-	 * @throws ServiceBrokerDeleteOperationInProgressException if a an operation is in progress for the service binding
+	 * @throws ServiceBrokerDeleteOperationInProgressException if a an operation is in progress for the service
+	 * 		binding
 	 */
 	default Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
-		return Mono.error(new UnsupportedOperationException("This service broker does not support deleting service bindings."));
+		return Mono.error(new UnsupportedOperationException(
+				"This service broker does not support deleting service bindings."));
 	}
+
 }

@@ -35,8 +35,8 @@ import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceB
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 public abstract class AbstractServiceInstanceBindingControllerIntegrationTest extends ServiceInstanceBindingIntegrationTest {
 
@@ -47,7 +47,8 @@ public abstract class AbstractServiceInstanceBindingControllerIntegrationTest ex
 	protected ServiceInstanceBindingService serviceInstanceBindingService;
 
 	protected void setupServiceInstanceBindingService(CreateServiceInstanceBindingResponse createResponse) {
-		given(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
+		given(serviceInstanceBindingService
+				.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
 				.willReturn(Mono.just(createResponse));
 	}
 
@@ -57,7 +58,8 @@ public abstract class AbstractServiceInstanceBindingControllerIntegrationTest ex
 	}
 
 	protected void setupServiceInstanceBindingService(DeleteServiceInstanceBindingResponse deleteResponse) {
-		given(serviceInstanceBindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
+		given(serviceInstanceBindingService
+				.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
 				.willReturn(Mono.just(deleteResponse));
 	}
 
@@ -67,17 +69,20 @@ public abstract class AbstractServiceInstanceBindingControllerIntegrationTest ex
 	}
 
 	protected void setupServiceInstanceBindingService(ServiceBrokerCreateOperationInProgressException exception) {
-		given(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
+		given(serviceInstanceBindingService
+				.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
 				.willReturn(Mono.error(exception));
 	}
 
 	protected void setupServiceInstanceBindingService(ServiceBrokerDeleteOperationInProgressException exception) {
-		given(serviceInstanceBindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
+		given(serviceInstanceBindingService
+				.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
 				.willReturn(Mono.error(exception));
 	}
 
 	protected CreateServiceInstanceBindingRequest verifyCreateBinding() {
-		ArgumentCaptor<CreateServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor.forClass(CreateServiceInstanceBindingRequest.class);
+		ArgumentCaptor<CreateServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor
+				.forClass(CreateServiceInstanceBindingRequest.class);
 		then(serviceInstanceBindingService)
 				.should()
 				.createServiceInstanceBinding(argumentCaptor.capture());
@@ -85,7 +90,8 @@ public abstract class AbstractServiceInstanceBindingControllerIntegrationTest ex
 	}
 
 	protected GetServiceInstanceBindingRequest verifyGetBinding() {
-		ArgumentCaptor<GetServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor.forClass(GetServiceInstanceBindingRequest.class);
+		ArgumentCaptor<GetServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor
+				.forClass(GetServiceInstanceBindingRequest.class);
 		then(serviceInstanceBindingService)
 				.should()
 				.getServiceInstanceBinding(argumentCaptor.capture());
@@ -93,7 +99,8 @@ public abstract class AbstractServiceInstanceBindingControllerIntegrationTest ex
 	}
 
 	protected DeleteServiceInstanceBindingRequest verifyDeleteBinding() {
-		ArgumentCaptor<DeleteServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor.forClass(DeleteServiceInstanceBindingRequest.class);
+		ArgumentCaptor<DeleteServiceInstanceBindingRequest> argumentCaptor = ArgumentCaptor
+				.forClass(DeleteServiceInstanceBindingRequest.class);
 		then(serviceInstanceBindingService)
 				.should()
 				.deleteServiceInstanceBinding(argumentCaptor.capture());
@@ -101,10 +108,12 @@ public abstract class AbstractServiceInstanceBindingControllerIntegrationTest ex
 	}
 
 	protected GetLastServiceBindingOperationRequest verifyLastOperation() {
-		ArgumentCaptor<GetLastServiceBindingOperationRequest> argumentCaptor = ArgumentCaptor.forClass(GetLastServiceBindingOperationRequest.class);
+		ArgumentCaptor<GetLastServiceBindingOperationRequest> argumentCaptor = ArgumentCaptor
+				.forClass(GetLastServiceBindingOperationRequest.class);
 		then(serviceInstanceBindingService)
 				.should()
 				.getLastOperation(argumentCaptor.capture());
 		return argumentCaptor.getValue();
 	}
+
 }

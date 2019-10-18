@@ -17,14 +17,15 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that the version of the API supported by the broker doesn't match the version
- * provided by the platform.
+ * Thrown to indicate that the version of the API supported by the broker doesn't match the version provided by the
+ * platform.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 412 PRECONDITION FAILED}
- * being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 412 PRECONDITION FAILED} being returned to the
+ * platform.
  */
 public class ServiceBrokerApiVersionException extends ServiceBrokerException {
+
 	private static final long serialVersionUID = -6792404679608443775L;
 
 	/**
@@ -47,4 +48,5 @@ public class ServiceBrokerApiVersionException extends ServiceBrokerException {
 	public ServiceBrokerApiVersionException(String errorCode, String expectedVersion, String providedVersion) {
 		super(errorCode, ServiceBrokerApiVersionErrorMessage.from(expectedVersion, providedVersion).toString());
 	}
+
 }

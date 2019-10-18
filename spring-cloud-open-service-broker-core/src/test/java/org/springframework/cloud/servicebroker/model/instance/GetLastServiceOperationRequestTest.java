@@ -77,4 +77,5 @@ public class GetLastServiceOperationRequestTest {
 				.suppress(Warning.TRANSIENT_FIELDS)
 				.verify();
 	}
+
 }

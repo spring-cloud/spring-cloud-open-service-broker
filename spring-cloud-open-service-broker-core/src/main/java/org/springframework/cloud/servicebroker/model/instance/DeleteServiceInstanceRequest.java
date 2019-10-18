@@ -30,13 +30,13 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
  * Details of a request to delete a service instance.
  *
  * <p>
- * Objects of this type are constructed by the framework from the headers, path variables, query parameters
- * and message body passed to the service broker by the platform.
- *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-6">Open Service Broker API specification</a>
+ * Objects of this type are constructed by the framework from the headers, path variables, query parameters and message
+ * body passed to the service broker by the platform.
  *
  * @author krujos
  * @author Scott Frederick
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-6">Open Service
+ * 		Broker API specification</a>
  */
 public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 
@@ -69,9 +69,9 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
 	 */
 	public DeleteServiceInstanceRequest(String serviceInstanceId, String serviceDefinitionId,
-								 String planId, ServiceDefinition serviceDefinition, Plan plan,
-								 boolean asyncAccepted, String platformInstanceId,
-								 String apiInfoLocation, Context originatingIdentity) {
+			String planId, ServiceDefinition serviceDefinition, Plan plan,
+			boolean asyncAccepted, String platformInstanceId,
+			String apiInfoLocation, Context originatingIdentity) {
 		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.serviceDefinitionId = serviceDefinitionId;
@@ -107,9 +107,9 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	}
 
 	/**
-	 * Get the ID of the plan for to the service instance to delete. This will match one of the plan IDs provided
-	 * in the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} within the specified
-	 * {@link ServiceDefinition}.
+	 * Get the ID of the plan for to the service instance to delete. This will match one of the plan IDs provided in the
+	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} within the specified {@link
+	 * ServiceDefinition}.
 	 *
 	 * <p>
 	 * This value is set from the {@literal plan_id} request parameter of the request from the platform.
@@ -124,8 +124,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	 * Get the service definition of the service to delete.
 	 *
 	 * <p>
-	 * The service definition is retrieved from the
-	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a convenience.
+	 * The service definition is retrieved from the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog}
+	 * as a convenience.
 	 *
 	 * @return the service definition
 	 */
@@ -133,7 +133,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		return this.serviceDefinition;
 	}
 
-	@JsonProperty(ASYNC_REQUEST_PARAMETER) //in base class field is excluded, as other requests are passing this as query params
+	@JsonProperty(ASYNC_REQUEST_PARAMETER)
+	//in base class field is excluded, as other requests are passing this as query params
 	@Override
 	public boolean isAsyncAccepted() {
 		return super.isAsyncAccepted();
@@ -143,8 +144,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	 * Get the plan for the service definition to delete
 	 *
 	 * <p>
-	 * The plan is retrieved from the
-	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a convenience.
+	 * The plan is retrieved from the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a
+	 * convenience.
 	 *
 	 * @return the plan
 	 */
@@ -156,8 +157,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	 * Create a builder that provides a fluent API for constructing a {@literal DeleteServiceInstanceRequest}.
 	 *
 	 * <p>
-	 * This builder is provided to support testing of
-	 * {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService} implementations.
+	 * This builder is provided to support testing of {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService}
+	 * implementations.
 	 *
 	 * @return the builder
 	 */
@@ -209,15 +210,24 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	/**
 	 * Provides a fluent API for constructing a {@link DeleteServiceInstanceRequest}.
 	 */
-	public static class DeleteServiceInstanceRequestBuilder {
+	public static final class DeleteServiceInstanceRequestBuilder {
+
 		private String serviceInstanceId;
+
 		private String serviceDefinitionId;
+
 		private ServiceDefinition serviceDefinition;
+
 		private Plan plan;
+
 		private String planId;
+
 		private boolean asyncAccepted;
+
 		private String platformInstanceId;
+
 		private String apiInfoLocation;
+
 		private Context originatingIdentity;
 
 		private DeleteServiceInstanceRequestBuilder() {
@@ -284,8 +294,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the value of the flag indicating whether the platform supports asynchronous operations
-		 * as would be provided in the request from the platform.
+		 * Set the value of the flag indicating whether the platform supports asynchronous operations as would be
+		 * provided in the request from the platform.
 		 *
 		 * @param asyncAccepted the boolean value of the flag
 		 * @return the builder
@@ -342,6 +352,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 					serviceDefinition, plan, asyncAccepted,
 					platformInstanceId, apiInfoLocation, originatingIdentity);
 		}
+
 	}
 
 }

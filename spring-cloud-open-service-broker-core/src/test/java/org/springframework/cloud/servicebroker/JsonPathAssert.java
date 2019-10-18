@@ -79,4 +79,5 @@ public class JsonPathAssert extends AbstractAssert<JsonPathAssert, DocumentConte
 		};
 		return Assertions.assertThat(actual.read(path, mapTypeRef));
 	}
+
 }

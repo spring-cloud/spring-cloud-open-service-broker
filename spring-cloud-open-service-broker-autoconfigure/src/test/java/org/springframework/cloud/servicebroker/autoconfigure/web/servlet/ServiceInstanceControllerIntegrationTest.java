@@ -255,7 +255,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.andReturn();
 
 		mockMvc.perform(asyncDispatch(mvcResult))
-			   .andExpect(status().isCreated());
+				.andExpect(status().isCreated());
 
 		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
@@ -388,7 +388,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	@Test
 	public void getServiceInstanceSucceeds() throws Exception {
 		setupServiceInstanceService(GetServiceInstanceResponse.builder()
-			.build());
+				.build());
 
 		MvcResult mvcResult = mockMvc.perform(get(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, false))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
@@ -504,8 +504,8 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.andReturn();
 
 		mockMvc.perform(asyncDispatch(mvcResult))
-			   .andExpect(status().isOk())
-			   .andExpect(content().string("{}"));
+				.andExpect(status().isOk())
+				.andExpect(content().string("{}"));
 
 		DeleteServiceInstanceRequest actualRequest = verifyDeleteServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
@@ -646,8 +646,8 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.andReturn();
 
 		mockMvc.perform(asyncDispatch(mvcResult))
-			   .andExpect(status().isOk())
-			   .andExpect(content().string("{}"));
+				.andExpect(status().isOk())
+				.andExpect(content().string("{}"));
 
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);

@@ -95,7 +95,7 @@ public class CreateServiceInstanceAppBindingResponseTest {
 		assertThat(response.getCredentials().get("credential5")).isEqualTo("value5");
 
 		assertThat(response.getSyslogDrainUrl()).isEqualTo("https://logs.example.com");
-		
+
 		assertThat(response.getVolumeMounts()).hasSize(4);
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
@@ -128,7 +128,7 @@ public class CreateServiceInstanceAppBindingResponseTest {
 		assertThat(volumeMount.getMode()).isEqualTo(VolumeMount.Mode.READ_ONLY);
 		assertThat(volumeMount.getDeviceType()).isEqualTo(VolumeMount.DeviceType.SHARED);
 
-		SharedVolumeDevice sharedVolumeDevice = (SharedVolumeDevice)volumeMount.getDevice();
+		SharedVolumeDevice sharedVolumeDevice = (SharedVolumeDevice) volumeMount.getDevice();
 		assertThat(sharedVolumeDevice.getVolumeId()).isEqualTo("volume-id");
 		assertThat(sharedVolumeDevice.getMountConfig())
 				.containsOnly(entry("field1", "mount-config-1"), entry("field2", "mount-config-2"));
@@ -168,9 +168,9 @@ public class CreateServiceInstanceAppBindingResponseTest {
 	@Test
 	public void exceedsOperationCharacterLimit() throws Exception {
 		assertThrows(IllegalArgumentException.class, () ->
-		CreateServiceInstanceAppBindingResponse.builder()
-				.operation(RandomString.make(10_001))
-				.build());
+				CreateServiceInstanceAppBindingResponse.builder()
+						.operation(RandomString.make(10_001))
+						.build());
 	}
 
 	@Test
@@ -179,4 +179,5 @@ public class CreateServiceInstanceAppBindingResponseTest {
 				.operation(RandomString.make(10_000))
 				.build();
 	}
+
 }

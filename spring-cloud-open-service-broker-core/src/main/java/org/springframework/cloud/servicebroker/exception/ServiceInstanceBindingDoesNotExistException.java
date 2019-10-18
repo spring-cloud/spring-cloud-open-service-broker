@@ -20,8 +20,8 @@ package org.springframework.cloud.servicebroker.exception;
  * Thrown to indicate that a request includes a service binding ID that is not known to the service broker.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY}
- * being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY} being returned to the
+ * platform.
  */
 public class ServiceInstanceBindingDoesNotExistException extends ServiceBrokerException {
 
@@ -49,4 +49,5 @@ public class ServiceInstanceBindingDoesNotExistException extends ServiceBrokerEx
 	private static String buildMessage(String bindingId) {
 		return "Service binding does not exist: id=" + bindingId;
 	}
+
 }

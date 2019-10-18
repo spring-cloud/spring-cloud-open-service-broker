@@ -84,12 +84,14 @@ public final class JsonUtils {
 	}
 
 	/**
-	 * Detect duplicate properties in json object through searching ":" in json string
-	 * (reading into a map would remove such duplicate, preventing effective duplicate detection)
+	 * Detect duplicate properties in json object through searching ":" in json string (reading into a map would remove
+	 * such duplicate, preventing effective duplicate detection)
 	 */
 	public static void assertThatJsonHasExactNumberOfProperties(Object object, int expectedNbProperties) {
 		//
 		String jsonString = toJson(object);
-		assertThat(jsonString.split(":")).as("extra duplicate properties in json object: " + jsonString).hasSize(1+expectedNbProperties);
+		assertThat(jsonString.split(":")).as("extra duplicate properties in json object: " + jsonString)
+				.hasSize(1 + expectedNbProperties);
 	}
+
 }

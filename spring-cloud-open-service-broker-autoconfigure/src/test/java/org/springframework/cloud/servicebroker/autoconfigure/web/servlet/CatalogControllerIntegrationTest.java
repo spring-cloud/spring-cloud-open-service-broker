@@ -109,9 +109,12 @@ public class CatalogControllerIntegrationTest {
 		List<Plan> plans = serviceDefinition.getPlans();
 		Schemas schemas = plans.get(1).getSchemas();
 
-		Map<String, Object> createServiceInstanceSchema = schemas.getServiceInstanceSchema().getCreateMethodSchema().getParameters();
-		Map<String, Object> updateServiceInstanceSchema = schemas.getServiceInstanceSchema().getUpdateMethodSchema().getParameters();
-		Map<String, Object> createServiceBindingSchema = schemas.getServiceBindingSchema().getCreateMethodSchema().getParameters();
+		Map<String, Object> createServiceInstanceSchema = schemas.getServiceInstanceSchema().getCreateMethodSchema()
+				.getParameters();
+		Map<String, Object> updateServiceInstanceSchema = schemas.getServiceInstanceSchema().getUpdateMethodSchema()
+				.getParameters();
+		Map<String, Object> createServiceBindingSchema = schemas.getServiceBindingSchema().getCreateMethodSchema()
+				.getParameters();
 
 		ResultActions resultActions = this.mockMvc.perform(asyncDispatch(mvcResult));
 
@@ -130,20 +133,32 @@ public class CatalogControllerIntegrationTest {
 				))
 				.andExpect(jsonPath("$.services[*].metadata.features[*]", contains(features.get(0), features.get(1))))
 				.andExpect(jsonPath("$.services[*].plans[*]", hasSize(3)))
-				.andExpect(jsonPath("$.services[*].plans[*].id", containsInAnyOrder(plans.get(0).getId(), plans.get(1).getId(), plans.get(2).getId())))
-				.andExpect(jsonPath("$.services[*].plans[*].name", containsInAnyOrder(plans.get(0).getName(), plans.get(1).getName(), plans.get(2).getName())))
-				.andExpect(jsonPath("$.services[*].plans[*].description", containsInAnyOrder(plans.get(0).getDescription(), plans.get(1).getDescription(), plans.get(2).getDescription())))
+				.andExpect(jsonPath("$.services[*].plans[*].id",
+						containsInAnyOrder(plans.get(0).getId(), plans.get(1).getId(), plans.get(2).getId())))
+				.andExpect(jsonPath("$.services[*].plans[*].name",
+						containsInAnyOrder(plans.get(0).getName(), plans.get(1).getName(), plans.get(2).getName())))
+				.andExpect(jsonPath("$.services[*].plans[*].description",
+						containsInAnyOrder(plans.get(0).getDescription(), plans.get(1).getDescription(),
+								plans.get(2).getDescription())))
 				.andExpect(jsonPath("$.services[*].plans[*].metadata", contains(plans.get(1).getMetadata())))
 				.andExpect(jsonPath("$.services[*].plans[*].bindable", hasSize(1)))
 				.andExpect(jsonPath("$.services[*].plans[*].bindable", contains(plans.get(1).isBindable())))
-				.andExpect(jsonPath("$.services[*].plans[*].free", containsInAnyOrder(plans.get(0).isFree(), plans.get(1).isFree(), plans.get(2).isFree())))
-				.andExpect(jsonPath("$.services[*].plans[*].plan_updateable", contains(plans.get(1).isPlanUpdateable())))
-				.andExpect(jsonPath("$.services[*].plans[*].maximum_polling_duration", contains(plans.get(1).getMaximumPollingDuration())))
-				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_instance.create.parameters", contains(createServiceInstanceSchema)))
-				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_instance.update.parameters", contains(updateServiceInstanceSchema)))
-				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_binding.create.parameters", contains(createServiceBindingSchema)))
-				.andExpect(jsonPath("$.services[*].plans[*].maintenance_info.version", contains(plans.get(0).getMaintenanceInfo().getVersion())))
-				.andExpect(jsonPath("$.services[*].plans[*].maintenance_info.description", contains(plans.get(0).getMaintenanceInfo().getDescription())));
+				.andExpect(jsonPath("$.services[*].plans[*].free",
+						containsInAnyOrder(plans.get(0).isFree(), plans.get(1).isFree(), plans.get(2).isFree())))
+				.andExpect(
+						jsonPath("$.services[*].plans[*].plan_updateable", contains(plans.get(1).isPlanUpdateable())))
+				.andExpect(jsonPath("$.services[*].plans[*].maximum_polling_duration",
+						contains(plans.get(1).getMaximumPollingDuration())))
+				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_instance.create.parameters",
+						contains(createServiceInstanceSchema)))
+				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_instance.update.parameters",
+						contains(updateServiceInstanceSchema)))
+				.andExpect(jsonPath("$.services[*].plans[*].schemas.service_binding.create.parameters",
+						contains(createServiceBindingSchema)))
+				.andExpect(jsonPath("$.services[*].plans[*].maintenance_info.version",
+						contains(plans.get(0).getMaintenanceInfo().getVersion())))
+				.andExpect(jsonPath("$.services[*].plans[*].maintenance_info.description",
+						contains(plans.get(0).getMaintenanceInfo().getDescription())));
 	}
 
 }

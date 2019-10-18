@@ -19,18 +19,19 @@ package org.springframework.cloud.servicebroker.exception;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 
 /**
- * Thrown to indicate underlying service broker errors (like connectivity to the service
- * being brokered) not covered by a more specific exception.
+ * Thrown to indicate underlying service broker errors (like connectivity to the service being brokered) not covered by
+ * a more specific exception.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 500 INTERNAL SERVER ERROR}
- * being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 500 INTERNAL SERVER ERROR} being returned to the
+ * platform.
  *
  * @author sgreenberg@pivotal.io
  */
 public class ServiceBrokerException extends RuntimeException {
 
 	private static final long serialVersionUID = -5544859893499349135L;
+
 	private final ErrorMessage errorMessage;
 
 	/**
@@ -90,4 +91,5 @@ public class ServiceBrokerException extends RuntimeException {
 	public ErrorMessage getErrorMessage() {
 		return errorMessage;
 	}
+
 }

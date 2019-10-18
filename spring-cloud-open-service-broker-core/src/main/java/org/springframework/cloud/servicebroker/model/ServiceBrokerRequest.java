@@ -29,12 +29,40 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ServiceBrokerRequest {
+
+	/**
+	 * API Info Location header
+	 */
 	public final static String API_INFO_LOCATION_HEADER = "X-Api-Info-Location";
+
+	/**
+	 * API Originating Identity header
+	 */
 	public final static String ORIGINATING_IDENTITY_HEADER = "X-Broker-API-Originating-Identity";
+
+	/**
+	 * Instance ID path variable name
+	 */
 	public static final String INSTANCE_ID_PATH_VARIABLE = "instanceId";
+
+	/**
+	 * Binding ID path variable name
+	 */
 	public static final String BINDING_ID_PATH_VARIABLE = "bindingId";
+
+	/**
+	 * Service ID parameter name
+	 */
 	public static final String SERVICE_ID_PARAMETER = "service_id";
+
+	/**
+	 * Plan ID parameter name
+	 */
 	public static final String PLAN_ID_PARAMETER = "plan_id";
+
+	/**
+	 * Platform Instance ID variable name
+	 */
 	public static final String PLATFORM_INSTANCE_ID_VARIABLE = "platformInstanceId";
 
 	@JsonIgnore //relative path to Osb query path, not to include in Json body
@@ -68,11 +96,11 @@ public class ServiceBrokerRequest {
 
 	/**
 	 * Get the ID used to identify the platform instance.
-	 *
+	 * <p>
 	 * This is useful when the service broker is registered to multiple instances of a platform.
-	 *
-	 * This value is set from any path element that precedes {@literal /v2} in the request from the platform.
-	 * Will be {@literal null} if the service broker is not registered with an instance ID in the registration URL.
+	 * <p>
+	 * This value is set from any path element that precedes {@literal /v2} in the request from the platform. Will be
+	 * {@literal null} if the service broker is not registered with an instance ID in the registration URL.
 	 *
 	 * @return the platform instance ID, or {@literal null} if not provided
 	 */
@@ -81,8 +109,8 @@ public class ServiceBrokerRequest {
 	}
 
 	/**
-	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this
-	 * type and set all field values.
+	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this type
+	 * and set all field values.
 	 *
 	 * @param platformInstanceId the platform instance ID
 	 */
@@ -92,10 +120,10 @@ public class ServiceBrokerRequest {
 
 	/**
 	 * Get the location of the API info endpoint of the platform instance.
-	 *
+	 * <p>
 	 * This endpoint can be used to retrieve additional information about the platform making the request on platforms
 	 * that support the header.
-	 *
+	 * <p>
 	 * This value is set from the {@literal X-Api-Info-Location} header in the request from the platform.
 	 *
 	 * @return the API info endpoint location, or {@literal null} if not provided
@@ -105,8 +133,8 @@ public class ServiceBrokerRequest {
 	}
 
 	/**
-	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this
-	 * type and set all field values.
+	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this type
+	 * and set all field values.
 	 *
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 */
@@ -116,7 +144,7 @@ public class ServiceBrokerRequest {
 
 	/**
 	 * Get the identity of the user that initiated the request from the platform.
-	 *
+	 * <p>
 	 * This value is set from the {@literal X-Broker-API-Originating-Identity} header in the request from the platform.
 	 *
 	 * @return the user identity, or {@literal null} if not provided
@@ -126,8 +154,8 @@ public class ServiceBrokerRequest {
 	}
 
 	/**
-	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this
-	 * type and set all field values.
+	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this type
+	 * and set all field values.
 	 *
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
 	 */

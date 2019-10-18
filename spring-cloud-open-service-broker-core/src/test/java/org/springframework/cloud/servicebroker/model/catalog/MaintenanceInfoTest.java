@@ -73,4 +73,5 @@ public class MaintenanceInfoTest {
 		assertThat(info.getVersion()).isEqualTo(version);
 		assertThat(info.getDescription()).isEqualTo(description);
 	}
+
 }

@@ -27,17 +27,17 @@ import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 /**
- *  Details of a request to delete a service instance binding.
+ * Details of a request to delete a service instance binding.
  *
  * <p>
- * Objects of this type are constructed by the framework from the headers, path variables, query parameters
- * and message body passed to the service broker by the platform.
- *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-5">Open Service Broker API specification</a>
+ * Objects of this type are constructed by the framework from the headers, path variables, query parameters and message
+ * body passed to the service broker by the platform.
  *
  * @author krujos
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-5">Open Service
+ * 		Broker API specification</a>
  */
 public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerRequest {
 
@@ -61,6 +61,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 
 	/**
 	 * Construct a new {@link DeleteServiceInstanceBindingRequest}
+	 *
 	 * @param serviceInstanceId the service instance ID
 	 * @param serviceDefinitionId the service definition ID
 	 * @param planId the plan ID
@@ -73,9 +74,9 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
 	 */
 	public DeleteServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
-										String bindingId, ServiceDefinition serviceDefinition, Plan plan,
-										boolean acceptsAsync, String platformInstanceId, String apiInfoLocation,
-										Context originatingIdentity) {
+			String bindingId, ServiceDefinition serviceDefinition, Plan plan,
+			boolean acceptsAsync, String platformInstanceId, String apiInfoLocation,
+			Context originatingIdentity) {
 		super(acceptsAsync, platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.serviceDefinitionId = serviceDefinitionId;
@@ -85,7 +86,8 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		this.plan = plan;
 	}
 
-	@JsonProperty(ASYNC_REQUEST_PARAMETER) //in base class field is excluded, as other requests are passing this as query params
+	@JsonProperty(ASYNC_REQUEST_PARAMETER)
+	//in base class field is excluded, as other requests are passing this as query params
 	@Override
 	public boolean isAsyncAccepted() {
 		return super.isAsyncAccepted();
@@ -116,9 +118,8 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	}
 
 	/**
-	 * Get the ID of the service definition for the service instance associated with the binding. This will match one
-	 * of the service definition IDs provided in the
-	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog}.
+	 * Get the ID of the service definition for the service instance associated with the binding. This will match one of
+	 * the service definition IDs provided in the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog}.
 	 *
 	 * <p>
 	 * This value is set from the {@literal service_id} field in the body of the request from the platform
@@ -130,9 +131,9 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	}
 
 	/**
-	 * Get the ID of the plan for to the service instance associated with the binding. This will match one of the
-	 * plan IDs provided in the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} within
-	 * the specified {@link ServiceDefinition}.
+	 * Get the ID of the plan for to the service instance associated with the binding. This will match one of the plan
+	 * IDs provided in the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} within the specified
+	 * {@link ServiceDefinition}.
 	 *
 	 * <p>
 	 * This value is set from the {@literal plan_id} field in the body of the request from the platform.
@@ -147,8 +148,8 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 * Get the service definition of the service instance associated with the binding.
 	 *
 	 * <p>
-	 * The service definition is retrieved from the
-	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a convenience.
+	 * The service definition is retrieved from the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog}
+	 * as a convenience.
 	 *
 	 * @return the service definition
 	 */
@@ -160,8 +161,8 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 * Get the plan of the service instance associated with the binding.
 	 *
 	 * <p>
-	 * The plan is retrieved from the
-	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a convenience.
+	 * The plan is retrieved from the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a
+	 * convenience.
 	 *
 	 * @return the plan
 	 */
@@ -173,8 +174,8 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 * Create a builder that provides a fluent API for constructing a {@literal DeleteServiceInstanceBindingRequest}.
 	 *
 	 * <p>
-	 * This builder is provided to support testing of
-	 * {@link org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService} implementations.
+	 * This builder is provided to support testing of {@link org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService}
+	 * implementations.
 	 *
 	 * @return the builder
 	 */
@@ -228,16 +229,26 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	/**
 	 * Provides a fluent API for constructing a {@link DeleteServiceInstanceBindingRequest}.
 	 */
-	public static class DeleteServiceInstanceBindingRequestBuilder {
+	public static final class DeleteServiceInstanceBindingRequestBuilder {
+
 		private String serviceInstanceId;
+
 		private String serviceDefinitionId;
+
 		private String planId;
+
 		private String bindingId;
+
 		private boolean asyncAccepted;
+
 		private String platformInstanceId;
+
 		private String apiInfoLocation;
+
 		private Context originatingIdentity;
+
 		private ServiceDefinition serviceDefinition;
+
 		private Plan plan;
 
 		private DeleteServiceInstanceBindingRequestBuilder() {
@@ -292,8 +303,8 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		}
 
 		/**
-		 * Set the value of the flag indicating whether the platform supports asynchronous operations
-		 * as would be provided in the request from the platform.
+		 * Set the value of the flag indicating whether the platform supports asynchronous operations as would be
+		 * provided in the request from the platform.
 		 *
 		 * @param asyncAccepted the boolean value of the flag
 		 * @return the builder
@@ -374,5 +385,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 					bindingId, serviceDefinition, plan, asyncAccepted,
 					platformInstanceId, apiInfoLocation, originatingIdentity);
 		}
+
 	}
+
 }

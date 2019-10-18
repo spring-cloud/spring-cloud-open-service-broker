@@ -20,8 +20,8 @@ package org.springframework.cloud.servicebroker.exception;
  * Thrown to indicate that the API version header is missing from the request.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 400 BAD REQUEST}
- * being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 400 BAD REQUEST} being returned to the
+ * platform.
  */
 public class ServiceBrokerApiVersionMissingException extends ServiceBrokerException {
 
@@ -45,4 +45,5 @@ public class ServiceBrokerApiVersionMissingException extends ServiceBrokerExcept
 	public ServiceBrokerApiVersionMissingException(String errorCode, String expectedVersion) {
 		super(errorCode, ServiceBrokerApiVersionErrorMessage.from(expectedVersion, "null").toString());
 	}
+
 }

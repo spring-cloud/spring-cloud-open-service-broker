@@ -25,13 +25,13 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
  * Details of a request to get the state of the last operation on a service instance binding.
  *
  * <p>
- * Objects of this type are constructed by the framework from the headers, path variables, query parameters
- * and message body passed to the service broker by the platform.
- *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-2">Open Service Broker API specification</a>
+ * Objects of this type are constructed by the framework from the headers, path variables, query parameters and message
+ * body passed to the service broker by the platform.
  *
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-2">Open Service
+ * 		Broker API specification</a>
  */
 public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest {
 
@@ -58,8 +58,8 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
 	 */
 	public GetLastServiceBindingOperationRequest(String serviceInstanceId, String bindingId, String serviceDefinitionId,
-										  String planId, String operation, String platformInstanceId,
-										  String apiInfoLocation, Context originatingIdentity) {
+			String planId, String operation, String platformInstanceId,
+			String apiInfoLocation, Context originatingIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.bindingId = bindingId;
@@ -69,9 +69,8 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 	}
 
 	/**
-	 * Get the ID of the service instance associated with the binding. This value is assigned by the platform.
-	 * It must be unique within the platform and can be used to correlate any resources associated with the
-	 * service instance.
+	 * Get the ID of the service instance associated with the binding. This value is assigned by the platform. It must
+	 * be unique within the platform and can be used to correlate any resources associated with the service instance.
 	 *
 	 * <p>
 	 * This value is set from the {@literal :instance_id} path element of the request from the platform.
@@ -83,9 +82,8 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 	}
 
 	/**
-	 * Get the ID of the service binding. This value is assigned by the platform.
-	 * It must be unique within the platform and can be used to correlate any resources associated with the
-	 * service binding.
+	 * Get the ID of the service binding. This value is assigned by the platform. It must be unique within the platform
+	 * and can be used to correlate any resources associated with the service binding.
 	 *
 	 * <p>
 	 * This value is set from the {@literal :binding_id} path element of the request from the platform.
@@ -122,9 +120,9 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 
 	/**
 	 * Get the value of the {@literal operation} field previously provided to the platform.
-	 *
-	 * Service brokers can optionally return an {@literal operation} value to the platform in the response from an
-	 * async create, update, or delete request. The platform will pass this value back to the broker if provided.
+	 * <p>
+	 * Service brokers can optionally return an {@literal operation} value to the platform in the response from an async
+	 * create, update, or delete request. The platform will pass this value back to the broker if provided.
 	 *
 	 * <p>
 	 * This value is set from the {@literal operation} request parameter of the request from the platform.
@@ -139,8 +137,8 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 	 * Create a builder that provides a fluent API for constructing a {@literal GetLastServiceOperationRequestBuilder}.
 	 *
 	 * <p>
-	 * This builder is provided to support testing of
-	 * {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService} implementations.
+	 * This builder is provided to support testing of {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService}
+	 * implementations.
 	 *
 	 * @return the builder
 	 */
@@ -192,14 +190,22 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 	/**
 	 * Provides a fluent API for constructing a {@link GetLastServiceBindingOperationRequest}.
 	 */
-	public static class GetLastServiceBindingOperationRequestBuilder {
+	public static final class GetLastServiceBindingOperationRequestBuilder {
+
 		private String serviceInstanceId;
+
 		private String bindingId;
+
 		private String serviceDefinitionId;
+
 		private String planId;
+
 		private String operation;
+
 		private String platformInstanceId;
+
 		private String apiInfoLocation;
+
 		private Context originatingIdentity;
 
 		private GetLastServiceBindingOperationRequestBuilder() {
@@ -309,6 +315,7 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 			return new GetLastServiceBindingOperationRequest(serviceInstanceId, bindingId, serviceDefinitionId, planId,
 					operation, platformInstanceId, apiInfoLocation, originatingIdentity);
 		}
+
 	}
 
 }

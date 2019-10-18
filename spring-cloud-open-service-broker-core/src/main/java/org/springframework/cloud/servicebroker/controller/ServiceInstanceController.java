@@ -16,8 +16,9 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
-import javax.validation.Valid;
 import java.util.Map;
+
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,11 +55,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * Provide endpoints for the service instances API.
  *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#provisioning">Open Service Broker API specification</a>
- *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#provisioning">Open Service
+ * 		Broker API specification</a>
  */
 @ServiceBrokerRestController
 public class ServiceInstanceController extends BaseController {
@@ -112,7 +113,8 @@ public class ServiceInstanceController extends BaseController {
 							req.setServiceDefinition(serviceDefinition);
 							return req;
 						}))
-				.flatMap(req -> configureCommonRequestFields(req, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
+				.flatMap(req -> configureCommonRequestFields(req,
+						pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
 						originatingIdentityString, acceptsIncomplete))
 				.cast(CreateServiceInstanceRequest.class)
 				.flatMap(req -> service.createServiceInstance(req)
@@ -160,8 +162,9 @@ public class ServiceInstanceController extends BaseController {
 				.build())
 				.flatMap(request -> service.getServiceInstance(request)
 						.doOnRequest(v -> LOG.debug("Getting service instance: request={}", request))
-						.doOnSuccess(response -> LOG.debug("Getting service instance succeeded: serviceInstanceId={}, response={}",
-								serviceInstanceId, response)))
+						.doOnSuccess(response -> LOG
+								.debug("Getting service instance succeeded: serviceInstanceId={}, response={}",
+										serviceInstanceId, response)))
 				.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
 				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
 				.onErrorResume(e -> {
@@ -206,11 +209,13 @@ public class ServiceInstanceController extends BaseController {
 				.build())
 				.flatMap(request -> service.getLastOperation(request)
 						.doOnRequest(v -> LOG.debug("Getting service instance last operation: request={}", request))
-						.doOnSuccess(response -> LOG.debug("Getting service instance last operation succeeded: serviceInstanceId={}, response={}",
-								serviceInstanceId, response))
+						.doOnSuccess(response -> LOG
+								.debug("Getting service instance last operation succeeded: serviceInstanceId={}, response={}",
+										serviceInstanceId, response))
 				)
 				.map(response -> {
-					boolean isSuccessfulDelete = response.getState().equals(OperationState.SUCCEEDED) && response.isDeleteOperation();
+					boolean isSuccessfulDelete = response.getState().equals(OperationState.SUCCEEDED) && response
+							.isDeleteOperation();
 					return new ResponseEntity<>(response, isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK);
 				});
 	}
@@ -245,14 +250,16 @@ public class ServiceInstanceController extends BaseController {
 								.planId(planId)
 								.serviceDefinition(serviceDefinition)
 								.asyncAccepted(acceptsIncomplete)
-								.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
+								.platformInstanceId(
+										pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
 								.apiInfoLocation(apiInfoLocation)
 								.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
 								.build()))
 				.flatMap(request -> service.deleteServiceInstance(request)
 						.doOnRequest(v -> LOG.debug("Deleting a service instance: request={}", request))
-						.doOnSuccess(response -> LOG.debug("Deleting a service instance succeeded: serviceInstanceId={}, response={}",
-								serviceInstanceId, response))
+						.doOnSuccess(response -> LOG
+								.debug("Deleting a service instance succeeded: serviceInstanceId={}, response={}",
+										serviceInstanceId, response))
 						.doOnError(e -> LOG.debug("Service instance does not exist: ", e)))
 				.map(response -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
 				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
@@ -297,13 +304,15 @@ public class ServiceInstanceController extends BaseController {
 							req.setServiceDefinition(serviceDefinition);
 							return req;
 						}))
-				.flatMap(req -> configureCommonRequestFields(req, pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
+				.flatMap(req -> configureCommonRequestFields(req,
+						pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
 						originatingIdentityString, acceptsIncomplete))
 				.cast(UpdateServiceInstanceRequest.class)
 				.flatMap(req -> service.updateServiceInstance(req)
 						.doOnRequest(v -> LOG.debug("Updating a service instance: request={}", request))
-						.doOnSuccess(response -> LOG.debug("Updating a service instance succeeded: serviceInstanceId={}, response={}",
-								serviceInstanceId, response)))
+						.doOnSuccess(response -> LOG
+								.debug("Updating a service instance succeeded: serviceInstanceId={}, response={}",
+										serviceInstanceId, response)))
 				.map(response -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
 				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)));
 	}

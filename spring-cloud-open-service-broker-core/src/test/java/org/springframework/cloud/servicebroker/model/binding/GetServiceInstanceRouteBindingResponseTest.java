@@ -99,4 +99,5 @@ public class GetServiceInstanceRouteBindingResponseTest {
 				.withRedefinedSuperclass()
 				.verify();
 	}
+
 }

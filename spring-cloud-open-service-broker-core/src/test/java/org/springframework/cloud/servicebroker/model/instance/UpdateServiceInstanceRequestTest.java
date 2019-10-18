@@ -120,4 +120,5 @@ public class UpdateServiceInstanceRequestTest {
 				.suppress(Warning.TRANSIENT_FIELDS)
 				.verify();
 	}
+
 }

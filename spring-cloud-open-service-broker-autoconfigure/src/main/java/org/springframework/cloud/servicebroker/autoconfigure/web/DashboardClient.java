@@ -17,8 +17,8 @@
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 /**
- * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
- * that describe the dashboard URI for a {@link ServiceDefinition}.
+ * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties that describe the dashboard
+ * URI for a {@link ServiceDefinition}.
  *
  * @author Roy Clarkson
  * @see org.springframework.cloud.servicebroker.model.catalog.DashboardClient
@@ -26,9 +26,9 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 public class DashboardClient {
 
 	/**
-	 * The client ID of the dashboard OAuth2 client that the service intends to use. The
-	 * name must be unique within the platform. If the name is already in use, the
-	 * platform will return an error to the operator when the service is registered.
+	 * The client ID of the dashboard OAuth2 client that the service intends to use. The name must be unique within the
+	 * platform. If the name is already in use, the platform will return an error to the operator when the service is
+	 * registered.
 	 */
 	private String id;
 
@@ -38,8 +38,7 @@ public class DashboardClient {
 	private String secret;
 
 	/**
-	 * A domain for the service dashboard that will be whitelisted by the UAA to enable
-	 * dashboard SSO.
+	 * A domain for the service dashboard that will be whitelisted by the UAA to enable dashboard SSO.
 	 */
 	private String redirectUri;
 

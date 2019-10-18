@@ -25,10 +25,10 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
  * Represents a type of distributed {@link VolumeDevice} which can be mounted on multiple app instances simultaneously.
- * 
+ *
  * <p>
- * Objects of this type are constructed by the service broker application,
- * and used to build the response to the platform.
+ * Objects of this type are constructed by the service broker application, and used to build the response to the
+ * platform.
  *
  * @author Scott Frederick
  */
@@ -114,8 +114,10 @@ public class SharedVolumeDevice extends VolumeDevice {
 	/**
 	 * Provides a fluent API for constructing a {@link SharedVolumeDevice}.
 	 */
-	public static class SharedVolumeDeviceBuilder {
+	public static final class SharedVolumeDeviceBuilder {
+
 		private String volumeId;
+
 		private final Map<String, Object> mountConfig = new HashMap<>();
 
 		private SharedVolumeDeviceBuilder() {
@@ -172,5 +174,7 @@ public class SharedVolumeDevice extends VolumeDevice {
 		public SharedVolumeDevice build() {
 			return new SharedVolumeDevice(volumeId, mountConfig);
 		}
+
 	}
+
 }

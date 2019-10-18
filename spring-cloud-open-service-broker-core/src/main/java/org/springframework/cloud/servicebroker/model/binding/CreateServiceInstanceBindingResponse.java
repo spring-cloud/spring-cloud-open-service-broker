@@ -28,7 +28,7 @@ import org.springframework.cloud.servicebroker.model.instance.CreateServiceInsta
 
 /**
  * Details of a response to a service instance binding create request.
- *
+ * <p>
  * Service brokers will typically construct one of the subtypes of this class to build a response.
  *
  * @author Scott Frederick
@@ -99,9 +99,12 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	/**
 	 * Provides a fluent API for constructing a {@link CreateServiceInstanceResponse}.
 	 */
-	public static class CreateServiceInstanceBindingResponseBuilder {
+	public static final class CreateServiceInstanceBindingResponseBuilder {
+
 		private boolean bindingExisted;
+
 		private boolean async;
+
 		private String operation;
 
 		private CreateServiceInstanceBindingResponseBuilder() {
@@ -114,10 +117,9 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 * resources were created.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. If the service broker
-		 * indicates that it performed the operation synchronously, a {@literal true} value will result in a
-		 * response code {@literal 200 OK}, and a {@literal false} value will result in a response code
-		 * {@literal 201 CREATED}.
+		 * This value will be used to determine the HTTP response code to the platform. If the service broker indicates
+		 * that it performed the operation synchronously, a {@literal true} value will result in a response code
+		 * {@literal 200 OK}, and a {@literal false} value will result in a response code {@literal 201 CREATED}.
 		 *
 		 * @param bindingExisted {@literal true} to indicate that the binding exists, {@literal false} otherwise
 		 * @return the builder
@@ -133,12 +135,12 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 * asynchronously.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value
-		 * will result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be
-		 * determined by the value of {@link #bindingExisted(boolean)}.
+		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
+		 * result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be determined by the
+		 * value of {@link #bindingExisted(boolean)}.
 		 *
-		 * @param async {@literal true} to indicate that the operation is being performed asynchronously,
-		 * {@literal false} to indicate that the operation was completed
+		 * @param async {@literal true} to indicate that the operation is being performed asynchronously, {@literal
+		 * 		false} to indicate that the operation was completed
 		 * @return the builder
 		 * @see #bindingExisted(boolean)
 		 */
@@ -148,9 +150,9 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		}
 
 		/**
-		 * Set a value to inform the user of the operation being performed in support of an asynchronous response.
-		 * This value will be passed back to the service broker in subsequent
-		 * {@link GetLastServiceBindingOperationRequest} requests.
+		 * Set a value to inform the user of the operation being performed in support of an asynchronous response. This
+		 * value will be passed back to the service broker in subsequent {@link GetLastServiceBindingOperationRequest}
+		 * requests.
 		 *
 		 * <p>
 		 * This value will set the {@literal operation} field in the body of the response to the platform.
@@ -171,6 +173,7 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		public CreateServiceInstanceBindingResponse build() {
 			return new CreateServiceInstanceBindingResponse(async, operation, bindingExisted);
 		}
+
 	}
 
 }

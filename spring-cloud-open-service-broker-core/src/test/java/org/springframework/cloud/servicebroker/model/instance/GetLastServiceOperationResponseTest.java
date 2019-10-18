@@ -118,4 +118,5 @@ public class GetLastServiceOperationResponseTest {
 				.forClass(GetLastServiceOperationResponse.class)
 				.verify();
 	}
+
 }

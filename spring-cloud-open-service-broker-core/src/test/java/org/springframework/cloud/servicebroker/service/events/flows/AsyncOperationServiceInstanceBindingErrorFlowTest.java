@@ -25,12 +25,13 @@ import static org.mockito.Mockito.mock;
 
 public class AsyncOperationServiceInstanceBindingErrorFlowTest {
 
-    @Test
-    public void error() {
-        AsyncOperationServiceInstanceBindingErrorFlow flow =
-                new AsyncOperationServiceInstanceBindingErrorFlow() {};
-        StepVerifier.create(
-                flow.error(mock(GetLastServiceBindingOperationRequest.class), mock(Exception.class)))
-                .verifyComplete();
-    }
+	@Test
+	public void error() {
+		AsyncOperationServiceInstanceBindingErrorFlow flow =
+				new AsyncOperationServiceInstanceBindingErrorFlow() {};
+		StepVerifier.create(
+				flow.error(mock(GetLastServiceBindingOperationRequest.class), mock(Exception.class)))
+				.verifyComplete();
+	}
+
 }

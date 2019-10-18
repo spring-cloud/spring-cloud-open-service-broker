@@ -17,12 +17,11 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a request includes a plan ID that does not exist in the
- * service broker catalog.
+ * Thrown to indicate that a request includes a plan ID that does not exist in the service broker catalog.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 400 BAD REQUEST}
- * being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 400 BAD REQUEST} being returned to the
+ * platform.
  *
  * @author vvpishh2
  */
@@ -40,8 +39,7 @@ public class ServiceDefinitionPlanDoesNotExistException extends ServiceBrokerExc
 	}
 
 	/**
-	 * Construct an exception with an error code and default message that includes the
-	 * provided plan ID.
+	 * Construct an exception with an error code and default message that includes the provided plan ID.
 	 *
 	 * @param errorCode a single word in camel case that uniquely identifies the error condition
 	 * @param planId the plan ID
@@ -53,4 +51,5 @@ public class ServiceDefinitionPlanDoesNotExistException extends ServiceBrokerExc
 	private static String buildMessage(String planId) {
 		return "Service Definition Plan does not exist: id=" + planId;
 	}
+
 }

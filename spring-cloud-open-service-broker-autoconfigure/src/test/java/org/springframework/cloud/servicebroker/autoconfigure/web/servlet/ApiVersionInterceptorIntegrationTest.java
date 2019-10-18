@@ -111,4 +111,5 @@ public class ApiVersionInterceptorIntegrationTest {
 				.setControllerAdvice(ServiceBrokerWebMvcExceptionHandler.class)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
 	}
+
 }

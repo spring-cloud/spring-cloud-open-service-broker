@@ -111,4 +111,5 @@ public class DeleteServiceInstanceRequestTest {
 				.suppress(Warning.TRANSIENT_FIELDS)
 				.verify();
 	}
+
 }

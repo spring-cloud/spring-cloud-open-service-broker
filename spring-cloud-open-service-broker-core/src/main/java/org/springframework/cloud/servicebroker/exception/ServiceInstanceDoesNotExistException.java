@@ -20,8 +20,8 @@ package org.springframework.cloud.servicebroker.exception;
  * Thrown to indicate that a request includes a service instance ID that is not known to the service broker.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY}
- * being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY} being returned to the
+ * platform.
  *
  * @author sgreenberg@pivotal.io
  */
@@ -39,8 +39,7 @@ public class ServiceInstanceDoesNotExistException extends ServiceBrokerException
 	}
 
 	/**
-	 * Construct an exception with an error code and default message that includes the
-	 * provided service instance ID.
+	 * Construct an exception with an error code and default message that includes the provided service instance ID.
 	 *
 	 * @param errorCode a single word in camel case that uniquely identifies the error condition
 	 * @param serviceInstanceId the service instance ID

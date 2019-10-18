@@ -43,7 +43,7 @@ public class SchemasTest {
 		assertThat(json).hasNoPath("$.service_instance");
 		assertThat(json).hasNoPath("$.service_binding");
 	}
-	
+
 	@Test
 	public void emptySchemasIsSerializedToJson() {
 		Schemas schemas = Schemas.builder()
@@ -123,25 +123,25 @@ public class SchemasTest {
 		DocumentContext json = JsonUtils.toJsonPath(schemas);
 
 		assertThat(json).hasPath("$.service_instance.create.parameters.$schema")
-						.isEqualTo("https://json-schema.org/draft-04/schema#");
+				.isEqualTo("https://json-schema.org/draft-04/schema#");
 		assertThat(json).hasPath("$.service_instance.create.parameters.type")
-						.isEqualTo("object");
+				.isEqualTo("object");
 		assertThat(json).hasPath("$.service_instance.create.parameters.properties.billing-account.description")
-						.isEqualTo("Billing account number.");
+				.isEqualTo("Billing account number.");
 		assertThat(json).hasPath("$.service_instance.create.parameters.properties.billing-account.type")
-						.isEqualTo("string");
+				.isEqualTo("string");
 		assertThat(json).hasPath("$.service_instance.create.parameters.description")
-						.isEqualTo("create time schema");
+				.isEqualTo("create time schema");
 
 		assertThat(json).hasMapAtPath("$.service_instance.update.parameters").contains(
-						entry("$schema", "https://json-schema.org/draft-04/schema#"),
-						entry("type", "object"),
-						entry("description", "update time schema")
+				entry("$schema", "https://json-schema.org/draft-04/schema#"),
+				entry("type", "object"),
+				entry("description", "update time schema")
 		);
 		assertThat(json).hasMapAtPath("$.service_binding.create.parameters").contains(
-						entry("$schema", "https://json-schema.org/draft-04/schema#"),
-						entry("type", "object"),
-						entry("description", "bind create time schema")
+				entry("$schema", "https://json-schema.org/draft-04/schema#"),
+				entry("type", "object"),
+				entry("description", "bind create time schema")
 		);
 	}
 
@@ -151,4 +151,5 @@ public class SchemasTest {
 				.forClass(Schemas.class)
 				.verify();
 	}
+
 }

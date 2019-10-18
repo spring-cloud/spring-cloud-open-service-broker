@@ -47,4 +47,5 @@ public class WebFluxApplication {
 	public ServiceInstanceService serviceInstanceService() {
 		return new NoOpServiceInstanceService();
 	}
+
 }

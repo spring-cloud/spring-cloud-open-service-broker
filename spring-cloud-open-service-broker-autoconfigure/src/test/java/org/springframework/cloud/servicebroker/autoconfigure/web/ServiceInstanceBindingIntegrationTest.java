@@ -24,9 +24,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIntegrationTest {
 
-	public static final String SERVICE_INSTANCE_BINDING_ID = "service-instance-binding-id";
+	protected static final String SERVICE_INSTANCE_BINDING_ID = "service-instance-binding-id";
 
-	protected static final String SERVICE_INSTANCES_ROOT_PATH = "/v2/service_instances/";
+	private static final String SERVICE_INSTANCES_ROOT_PATH = "/v2/service_instances/";
 
 	protected String createRequestBody;
 

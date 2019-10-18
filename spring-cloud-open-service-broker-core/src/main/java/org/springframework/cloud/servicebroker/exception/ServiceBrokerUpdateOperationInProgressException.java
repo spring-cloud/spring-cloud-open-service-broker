@@ -17,12 +17,11 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a request to update a service instance was received while
- * asynchronous updating of the identical service instance is in progress.
+ * Thrown to indicate that a request to update a service instance was received while asynchronous updating of the
+ * identical service instance is in progress.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 202 ACCEPTED}
- * being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 202 ACCEPTED} being returned to the platform.
  *
  * @author Roy Clarkson
  */
@@ -62,4 +61,5 @@ public class ServiceBrokerUpdateOperationInProgressException extends ServiceBrok
 	private static String prependMessagePrefix(String operation) {
 		return MESSAGE_PREFIX + ": operation=" + operation;
 	}
+
 }

@@ -17,16 +17,16 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a service instance create request was received for an instance that already exists
- * with parameters that are different from the existing instance.
+ * Thrown to indicate that a service instance create request was received for an instance that already exists with
+ * parameters that are different from the existing instance.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 409 CONFLICT}
- * being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 409 CONFLICT} being returned to the platform.
  *
  * @author sgreenberg@pivotal.io
  */
 public class ServiceInstanceExistsException extends ServiceBrokerException {
+
 	private static final long serialVersionUID = -914571358227517785L;
 
 	/**
@@ -55,4 +55,5 @@ public class ServiceInstanceExistsException extends ServiceBrokerException {
 				"serviceInstanceId=" + serviceInstanceId +
 				", serviceDefinitionId=" + serviceDefinitionId;
 	}
+
 }

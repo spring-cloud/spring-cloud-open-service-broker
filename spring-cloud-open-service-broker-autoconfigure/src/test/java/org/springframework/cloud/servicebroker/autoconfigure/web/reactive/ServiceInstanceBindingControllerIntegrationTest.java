@@ -95,13 +95,13 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.build());
 
 		client.put().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, false))
-			  .contentType(MediaType.APPLICATION_JSON)
-			  .bodyValue(createRequestBody)
-			  .header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
-			  .header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
-			  .accept(MediaType.APPLICATION_JSON)
-			  .exchange()
-			  .expectStatus().isCreated();
+				.contentType(MediaType.APPLICATION_JSON)
+				.bodyValue(createRequestBody)
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isCreated();
 
 		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
 		assertThat(actualRequest.getPlan().getId()).isEqualTo(actualRequest.getPlanId());
@@ -203,11 +203,11 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.build());
 
 		client.put().uri(buildCreateUrl())
-			  .contentType(MediaType.APPLICATION_JSON)
-			  .bodyValue(createRequestBody)
-			  .accept(MediaType.APPLICATION_JSON)
-			  .exchange()
-			  .expectStatus().isCreated();
+				.contentType(MediaType.APPLICATION_JSON)
+				.bodyValue(createRequestBody)
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isCreated();
 
 		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
@@ -259,7 +259,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	public void createBindingWithUnknownServiceInstanceIdFails() throws Exception {
 		setupCatalogService();
 
-		given(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
+		given(serviceInstanceBindingService
+				.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
 				.willThrow(new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID));
 
 		client.put().uri(buildCreateUrl())
@@ -294,7 +295,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	public void createBindingWithDuplicateIdFails() throws Exception {
 		setupCatalogService();
 
-		given(serviceInstanceBindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
+		given(serviceInstanceBindingService
+				.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
 				.willThrow(new ServiceInstanceBindingExistsException(SERVICE_INSTANCE_ID, SERVICE_INSTANCE_BINDING_ID));
 
 		client.put().uri(buildCreateUrl())
@@ -306,7 +308,9 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 				.expectStatus().isEqualTo(HttpStatus.CONFLICT)
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
-				.consumeWith(result -> assertDescriptionContains(result, String.format("serviceInstanceId=%s, bindingId=%s", SERVICE_INSTANCE_ID, SERVICE_INSTANCE_BINDING_ID)));
+				.consumeWith(result -> assertDescriptionContains(result,
+						String.format("serviceInstanceId=%s, bindingId=%s", SERVICE_INSTANCE_ID,
+								SERVICE_INSTANCE_BINDING_ID)));
 	}
 
 	@Test
@@ -412,15 +416,15 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(DeleteServiceInstanceBindingResponse.builder()
-																			   .build());
+				.build());
 
 		client.delete().uri(buildDeleteUrl(PLATFORM_INSTANCE_ID, false))
-			  .header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
-			  .header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
-			  .exchange()
-			  .expectStatus().isOk()
-			  .expectBody()
-			  .json("{}");
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody()
+				.json("{}");
 
 		then(serviceInstanceBindingService)
 				.should()
@@ -480,7 +484,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	public void deleteBindingWithUnknownInstanceIdFails() throws Exception {
 		setupCatalogService();
 
-		given(serviceInstanceBindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
+		given(serviceInstanceBindingService
+				.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
 				.willThrow(new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID));
 
 		client.delete().uri(buildDeleteUrl())
@@ -496,7 +501,8 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	public void deleteBindingWithUnknownBindingIdFails() throws Exception {
 		setupCatalogService();
 
-		given(serviceInstanceBindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
+		given(serviceInstanceBindingService
+				.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
 				.willThrow(new ServiceInstanceBindingDoesNotExistException(SERVICE_INSTANCE_BINDING_ID));
 
 		client.delete().uri(buildDeleteUrl())

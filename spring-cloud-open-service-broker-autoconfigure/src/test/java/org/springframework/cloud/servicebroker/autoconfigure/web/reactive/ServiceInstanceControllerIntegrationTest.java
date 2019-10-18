@@ -218,11 +218,11 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.build());
 
 		client.put().uri(buildCreateUpdateUrl())
-			  .contentType(MediaType.APPLICATION_JSON)
-			  .bodyValue(createRequestBody)
-			  .accept(MediaType.APPLICATION_JSON)
-			  .exchange()
-			  .expectStatus().isCreated();
+				.contentType(MediaType.APPLICATION_JSON)
+				.bodyValue(createRequestBody)
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isCreated();
 
 		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
@@ -243,7 +243,8 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.expectStatus().isEqualTo(HttpStatus.BAD_REQUEST)
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
-				.consumeWith(result -> assertDescriptionContains(result, String.format("id=%s", serviceDefinition.getId())));
+				.consumeWith(
+						result -> assertDescriptionContains(result, String.format("id=%s", serviceDefinition.getId())));
 	}
 
 	@Test
@@ -262,7 +263,8 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> assertDescriptionContains(result,
-						String.format("serviceInstanceId=%s, serviceDefinitionId=%s", SERVICE_INSTANCE_ID, serviceDefinition.getId())));
+						String.format("serviceInstanceId=%s, serviceDefinitionId=%s", SERVICE_INSTANCE_ID,
+								serviceDefinition.getId())));
 	}
 
 	@Test
@@ -440,11 +442,11 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.build());
 
 		client.delete().uri(buildDeleteUrl())
-			  .accept(MediaType.APPLICATION_JSON)
-			  .exchange()
-			  .expectStatus().isOk()
-			  .expectBody()
-			  .json("{}");
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody()
+				.json("{}");
 
 		DeleteServiceInstanceRequest actualRequest = verifyDeleteServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
@@ -476,7 +478,8 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.expectStatus().isEqualTo(HttpStatus.BAD_REQUEST)
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
-				.consumeWith(result -> assertDescriptionContains(result, String.format("id=%s", serviceDefinition.getId())));
+				.consumeWith(
+						result -> assertDescriptionContains(result, String.format("id=%s", serviceDefinition.getId())));
 	}
 
 	@Test
@@ -568,16 +571,16 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 		setupCatalogService();
 
 		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
-																 .build());
+				.build());
 
 		client.patch().uri(buildCreateUpdateUrl())
-			  .contentType(MediaType.APPLICATION_JSON)
-			  .bodyValue(updateRequestBodyWithPlan)
-			  .accept(MediaType.APPLICATION_JSON)
-			  .exchange()
-			  .expectStatus().isOk()
-			  .expectBody()
-			  .json("{}");
+				.contentType(MediaType.APPLICATION_JSON)
+				.bodyValue(updateRequestBodyWithPlan)
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody()
+				.json("{}");
 
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
@@ -639,7 +642,8 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
-				.consumeWith(result -> assertDescriptionContains(result, String.format("id=%s", serviceDefinition.getId())));
+				.consumeWith(
+						result -> assertDescriptionContains(result, String.format("id=%s", serviceDefinition.getId())));
 	}
 
 	@Test

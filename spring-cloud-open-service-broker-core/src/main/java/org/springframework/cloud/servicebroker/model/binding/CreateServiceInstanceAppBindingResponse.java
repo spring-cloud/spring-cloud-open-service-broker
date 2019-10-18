@@ -27,15 +27,15 @@ import java.util.Objects;
  * Details of a response to a request to create a new service instance binding associated with an application.
  *
  * <p>
- * Objects of this type are constructed by the service broker application,
- * and used to build the response to the platform.
+ * Objects of this type are constructed by the service broker application, and used to build the response to the
+ * platform.
  *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-6">Open Service Broker API specification</a>
- * 
  * @author sgreenberg@pivotal.io
  * @author Josh Long
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-6">Open Service
+ * 		Broker API specification</a>
  */
 public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstanceBindingResponse {
 
@@ -66,8 +66,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	 * @param endpoints the set of endpoints
 	 */
 	public CreateServiceInstanceAppBindingResponse(boolean async, String operation, boolean bindingExisted,
-												   Map<String, Object> credentials, String syslogDrainUrl,
-												   List<VolumeMount> volumeMounts, List<Endpoint> endpoints) {
+			Map<String, Object> credentials, String syslogDrainUrl,
+			List<VolumeMount> volumeMounts, List<Endpoint> endpoints) {
 		super(async, operation, bindingExisted);
 		this.credentials = credentials;
 		this.syslogDrainUrl = syslogDrainUrl;
@@ -98,12 +98,12 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	 *
 	 * @return the set of volume mounts
 	 */
-	 public List<VolumeMount> getVolumeMounts() {
+	public List<VolumeMount> getVolumeMounts() {
 		return this.volumeMounts;
 	}
 
 	public List<Endpoint> getEndpoints() {
-	 	return this.endpoints;
+		return this.endpoints;
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	/**
 	 * Provides a fluent API for constructing a {@link CreateServiceInstanceAppBindingResponse}.
 	 */
-	public static class CreateServiceInstanceAppBindingResponseBuilder {
+	public static final class CreateServiceInstanceAppBindingResponseBuilder {
 
 		private final Map<String, Object> credentials = new HashMap<>();
 
@@ -178,8 +178,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
-		 * Add a set of credentials from the provided {@literal Map} to the credentials that the bound application
-		 * can use to access the service instance.
+		 * Add a set of credentials from the provided {@literal Map} to the credentials that the bound application can
+		 * use to access the service instance.
 		 *
 		 * <p>
 		 * This value will set the {@literal credentials} field in the body of the response to the platform
@@ -223,8 +223,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
-		 * Add a set of volume mounts from the provided {@literal List} to the volume mounts that can be used in
-		 * an application container file system.
+		 * Add a set of volume mounts from the provided {@literal List} to the volume mounts that can be used in an
+		 * application container file system.
 		 *
 		 * <p>
 		 * This value will set the {@literal volume_mounts} field in the body of the response to the platform.
@@ -238,8 +238,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
-		 * Add a set of volume mounts from the provided array to the volume mounts that can be used in
-		 * an application container file system.
+		 * Add a set of volume mounts from the provided array to the volume mounts that can be used in an application
+		 * container file system.
 		 *
 		 * <p>
 		 * This value will set the {@literal volume_mounts} field in the body of the response to the platform.
@@ -254,8 +254,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 
 		/**
 		 * Add a set of endpoints from the provided {@literal List} to the endpoints that can be used by an application
-		 * to
-		 * connect to the service instance.
+		 * to connect to the service instance.
 		 *
 		 * <p>
 		 * This value will set the {@literal endpoints} field in the body of the response to the platform.
@@ -269,8 +268,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
-		 * Add a set of endpoints from the provided array to the endpoints that can be used by an application to
-		 * connect to the service instance.
+		 * Add a set of endpoints from the provided array to the endpoints that can be used by an application to connect
+		 * to the service instance.
 		 *
 		 * <p>
 		 * This value will set the {@literal endpoints} field in the body of the response to the platform.
@@ -306,12 +305,12 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		 * asynchronously.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value
-		 * will result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be
-		 * determined by the value of {@link #bindingExisted(boolean)}.
+		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
+		 * result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be determined by the
+		 * value of {@link #bindingExisted(boolean)}.
 		 *
-		 * @param async {@literal true} to indicate that the operation is being performed asynchronously,
-		 * {@literal false} to indicate that the operation was completed
+		 * @param async {@literal true} to indicate that the operation is being performed asynchronously, {@literal
+		 * 		false} to indicate that the operation was completed
 		 * @return the builder
 		 * @see #bindingExisted(boolean)
 		 */
@@ -321,9 +320,9 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
-		 * Set a value to inform the user of the operation being performed in support of an asynchronous response.
-		 * This value will be passed back to the service broker in subsequent
-		 * {@link GetLastServiceBindingOperationRequest} requests.
+		 * Set a value to inform the user of the operation being performed in support of an asynchronous response. This
+		 * value will be passed back to the service broker in subsequent {@link GetLastServiceBindingOperationRequest}
+		 * requests.
 		 *
 		 * <p>
 		 * This value will set the {@literal operation} field in the body of the response to the platform.
@@ -345,5 +344,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 			return new CreateServiceInstanceAppBindingResponse(async, operation, bindingExisted, credentials,
 					syslogDrainUrl, volumeMounts, endpoints);
 		}
+
 	}
+
 }

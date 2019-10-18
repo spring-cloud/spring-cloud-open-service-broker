@@ -31,8 +31,8 @@ import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInsta
 import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 
 /**
- * Internal implementation of {@link ServiceInstanceService} that attaches event hooks to
- * requests related to provisioning, updating, and deprovisioning service instances.
+ * Internal implementation of {@link ServiceInstanceService} that attaches event hooks to requests related to
+ * provisioning, updating, and deprovisioning service instances.
  *
  * @author Roy Clarkson
  */
@@ -49,7 +49,7 @@ public class ServiceInstanceEventService implements ServiceInstanceService {
 	 * @param eventFlowRegistries the event flow registries
 	 */
 	public ServiceInstanceEventService(ServiceInstanceService serviceInstanceService,
-									   EventFlowRegistries eventFlowRegistries) {
+			EventFlowRegistries eventFlowRegistries) {
 		this.service = serviceInstanceService;
 		this.flows = eventFlowRegistries;
 	}
@@ -98,4 +98,5 @@ public class ServiceInstanceEventService implements ServiceInstanceService {
 				.flatMap(response -> flows.getUpdateInstanceRegistry().getCompletionFlows(request, response)
 						.then(Mono.just(response)));
 	}
+
 }

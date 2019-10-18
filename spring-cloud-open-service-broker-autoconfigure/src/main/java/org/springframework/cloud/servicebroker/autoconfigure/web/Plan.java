@@ -21,8 +21,8 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
- * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
- * that describe a service plan available for a {@link ServiceDefinition}.
+ * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties that describe a service plan
+ * available for a {@link ServiceDefinition}.
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
@@ -32,15 +32,15 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 public class Plan {
 
 	/**
-	 * An identifier used to correlate this plan in future requests to the catalog. This
-	 * must be unique within the platform. Using a GUID is recommended.
+	 * An identifier used to correlate this plan in future requests to the catalog. This must be unique within the
+	 * platform. Using a GUID is recommended.
 	 */
 	@NotEmpty
 	private String id;
 
 	/**
-	 * A CLI-friendly name of the plan that will appear in the catalog. The value should
-	 * be all lowercase, with no spaces.
+	 * A CLI-friendly name of the plan that will appear in the catalog. The value should be all lowercase, with no
+	 * spaces.
 	 */
 	@NotEmpty
 	private String name;
@@ -64,15 +64,13 @@ public class Plan {
 	private Schemas schemas;
 
 	/**
-	 * Indicates whether the service with this plan can be bound to applications. This is
-	 * an optional field. If the value is <code>null</code>, the field will be omitted
-	 * from the serialized JSON.
+	 * Indicates whether the service with this plan can be bound to applications. This is an optional field. If the
+	 * value is <code>null</code>, the field will be omitted from the serialized JSON.
 	 */
 	private Boolean bindable;
 
 	/**
-	 * Indicates whether the plan can be limited by the non_basic_services_allowed field
-	 * in a platform quota.
+	 * Indicates whether the plan can be limited by the non_basic_services_allowed field in a platform quota.
 	 */
 	private Boolean free;
 
@@ -83,14 +81,14 @@ public class Plan {
 	private Boolean planUpdateable;
 
 	/**
-	 * A duration, in seconds, that the Platform SHOULD use as the Service's maximum polling duration. If the
-	 * value is <code>null</code>, the field will be omitted from the serialized JSON.
+	 * A duration, in seconds, that the Platform SHOULD use as the Service's maximum polling duration. If the value is
+	 * <code>null</code>, the field will be omitted from the serialized JSON.
 	 */
 	private Integer maximumPollingDuration;
 
 	/**
-	 * Maintenance information for a Service Instance which is provisioned using the Service Plan. If provided,
-	 * a version string MUST be provided and platforms MAY use this when Provisioning or Updating a Service Instance.
+	 * Maintenance information for a Service Instance which is provisioned using the Service Plan. If provided, a
+	 * version string MUST be provided and platforms MAY use this when Provisioning or Updating a Service Instance.
 	 */
 	private MaintenanceInfo maintenanceInfo;
 

@@ -92,7 +92,7 @@ public class PlanTest {
 			{
 				put("field3", "value3");
 				put("field4", "value4");
-				put("bullets", new String[] { "bullet1", "bullet2" });
+				put("bullets", new String[] {"bullet1", "bullet2"});
 				put("costs", costs);
 				put("displayName", "sample display name");
 			}
@@ -129,7 +129,7 @@ public class PlanTest {
 				entry("field3", "value3"),
 				entry("field4", "value4"),
 				entry("displayName", "sample display name"),
-				entry("bullets", new String[]{"bullet1", "bullet2"}),
+				entry("bullets", new String[] {"bullet1", "bullet2"}),
 				entry("costs", costs)
 		);
 		assertThat(plan.getSchemas()).isNotNull();
@@ -169,4 +169,5 @@ public class PlanTest {
 				.forClass(Plan.class)
 				.verify();
 	}
+
 }

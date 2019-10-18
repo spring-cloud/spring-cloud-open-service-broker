@@ -195,7 +195,7 @@ public class ServiceInstanceBindingEventServiceTest {
 						.addErrorFlow(new AsyncOperationServiceInstanceBindingErrorFlow() {
 							@Override
 							public Mono<Void> error(GetLastServiceBindingOperationRequest request,
-													Throwable t) {
+									Throwable t) {
 								return results.setErrorLastOperation("error " + request.getBindingId());
 							}
 						}))
@@ -323,5 +323,7 @@ public class ServiceInstanceBindingEventServiceTest {
 			}
 			return Mono.just(GetLastServiceBindingOperationResponse.builder().build());
 		}
+
 	}
+
 }

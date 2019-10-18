@@ -29,8 +29,8 @@ import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceB
 import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 
 /**
- * Internal implementation of {@link ServiceInstanceBindingService} that attaches event
- * hooks to the requests to create and delete service instance bindings
+ * Internal implementation of {@link ServiceInstanceBindingService} that attaches event hooks to the requests to create
+ * and delete service instance bindings
  *
  * @author Roy Clarkson
  */
@@ -85,4 +85,5 @@ public class ServiceInstanceBindingEventService implements ServiceInstanceBindin
 				.flatMap(response -> flows.getDeleteInstanceBindingRegistry().getCompletionFlows(request, response)
 						.then(Mono.just(response)));
 	}
+
 }

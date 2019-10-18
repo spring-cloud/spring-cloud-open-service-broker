@@ -17,12 +17,11 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a service binding create request was received for a binding that already exists
- * with parameters that are different from the existing binding.
+ * Thrown to indicate that a service binding create request was received for a binding that already exists with
+ * parameters that are different from the existing binding.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 409 CONFLICT}
- * being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 409 CONFLICT} being returned to the platform.
  *
  * @author sgreenberg@pivotal.io
  */
@@ -56,4 +55,5 @@ public class ServiceInstanceBindingExistsException extends ServiceBrokerExceptio
 				+ "serviceInstanceId=" + serviceInstanceId
 				+ ", bindingId=" + bindingId;
 	}
+
 }

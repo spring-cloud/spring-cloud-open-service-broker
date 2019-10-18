@@ -25,20 +25,20 @@ import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOper
  * Details of a response to a request to delete a service instance binding.
  *
  * <p>
- * Objects of this type are constructed by the service broker application,
- * and used to build the response to the platform.
- *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-8">Open Service Broker API specification</a>
+ * Objects of this type are constructed by the service broker application, and used to build the response to the
+ * platform.
  *
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-8">Open Service
+ * 		Broker API specification</a>
  */
 public class DeleteServiceInstanceBindingResponse extends AsyncServiceBrokerResponse {
 
 	/**
 	 * Construct a new {@link DeleteServiceInstanceBindingResponse}
 	 */
-	public 	DeleteServiceInstanceBindingResponse() {
+	public DeleteServiceInstanceBindingResponse() {
 		this(false, null);
 	}
 
@@ -96,8 +96,10 @@ public class DeleteServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	/**
 	 * Provides a fluent API for constructing a {@link DeleteServiceInstanceBindingResponse}.
 	 */
-	public static class DeleteServiceInstanceBindingResponseBuilder {
+	public static final class DeleteServiceInstanceBindingResponseBuilder {
+
 		private boolean async;
+
 		private String operation;
 
 		private DeleteServiceInstanceBindingResponseBuilder() {
@@ -108,12 +110,12 @@ public class DeleteServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 * asynchronously.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value
-		 * will result in a response code {@literal 202 ACCEPTED}, and a {@literal false} value will result
-		 * in a response code {@literal 200 OK}.
+		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
+		 * result in a response code {@literal 202 ACCEPTED}, and a {@literal false} value will result in a response
+		 * code {@literal 200 OK}.
 		 *
-		 * @param async {@literal true} to indicate that the operation is being performed asynchronously,
-		 * {@literal false} to indicate that the operation was completed
+		 * @param async {@literal true} to indicate that the operation is being performed asynchronously, {@literal
+		 * 		false} to indicate that the operation was completed
 		 * @return the builder
 		 */
 		public DeleteServiceInstanceBindingResponseBuilder async(boolean async) {
@@ -122,8 +124,8 @@ public class DeleteServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		}
 
 		/**
-		 * Set a value to inform the user of the operation being performed in support of an asynchronous response.
-		 * This value will be passed back to the service broker in subsequent {@link GetLastServiceOperationRequest}
+		 * Set a value to inform the user of the operation being performed in support of an asynchronous response. This
+		 * value will be passed back to the service broker in subsequent {@link GetLastServiceOperationRequest}
 		 * requests.
 		 *
 		 * <p>
@@ -145,5 +147,7 @@ public class DeleteServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		public DeleteServiceInstanceBindingResponse build() {
 			return new DeleteServiceInstanceBindingResponse(async, operation);
 		}
+
 	}
+
 }

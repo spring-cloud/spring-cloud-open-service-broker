@@ -33,6 +33,7 @@ public class ApiVersionWebMvcConfigurerAdapter implements WebMvcConfigurer {
 
 	/**
 	 * Auto-wire the expected beans
+	 *
 	 * @param apiVersionInterceptor the ApiVersionInterceptor bean
 	 */
 	protected ApiVersionWebMvcConfigurerAdapter(ApiVersionInterceptor apiVersionInterceptor) {

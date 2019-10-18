@@ -17,17 +17,22 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that the service broker received a binding request without an application resource,
- * but only supports binding to applications.
+ * Thrown to indicate that the service broker received a binding request without an application resource, but only
+ * supports binding to applications.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY}
- * being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY} being returned to the
+ * platform.
  *
  * @author Scott Frederick
  */
 public class ServiceBrokerBindingRequiresAppException extends ServiceBrokerException {
+
 	private static final long serialVersionUID = -5605297457258622988L;
+
+	/**
+	 * Error code representing that the service broker received a binding request without an application resource
+	 */
 	public final static String APP_REQUIRED_ERROR = "RequiresApp";
 
 	/**
@@ -48,4 +53,5 @@ public class ServiceBrokerBindingRequiresAppException extends ServiceBrokerExcep
 	public ServiceBrokerBindingRequiresAppException(String message, Throwable cause) {
 		super(APP_REQUIRED_ERROR, message, cause);
 	}
+
 }

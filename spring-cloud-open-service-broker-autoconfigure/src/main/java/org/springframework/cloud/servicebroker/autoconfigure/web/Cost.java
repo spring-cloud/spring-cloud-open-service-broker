@@ -51,6 +51,7 @@ public class Cost {
 
 	/**
 	 * Set a single amount key-value pair
+	 *
 	 * @param amount currency code
 	 * @param value currency amount
 	 */
@@ -90,4 +91,5 @@ public class Cost {
 		}
 		return model;
 	}
+
 }

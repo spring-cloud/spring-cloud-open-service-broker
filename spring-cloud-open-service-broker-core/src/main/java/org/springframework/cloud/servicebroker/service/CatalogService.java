@@ -38,7 +38,7 @@ public interface CatalogService {
 	/**
 	 * Get a service definition from the catalog by ID.
 	 *
-	 * @param serviceId  The ID of the service definition in the catalog
+	 * @param serviceId The ID of the service definition in the catalog
 	 * @return the service definition, or null if it doesn't exist
 	 */
 	Mono<ServiceDefinition> getServiceDefinition(String serviceId);

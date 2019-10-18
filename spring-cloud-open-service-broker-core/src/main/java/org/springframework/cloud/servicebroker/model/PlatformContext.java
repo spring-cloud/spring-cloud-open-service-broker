@@ -33,6 +33,7 @@ public class PlatformContext extends Context {
 
 	/**
 	 * Construct a new {@link PlatformContext}
+	 *
 	 * @param platform the name of the platform
 	 * @param properties collection of properties
 	 */
@@ -61,7 +62,7 @@ public class PlatformContext extends Context {
 	/**
 	 * Provides a fluent API for constructing a {@link PlatformContext}.
 	 */
-	public static class PlatformContextBuilder extends ContextBaseBuilder<PlatformContext, PlatformContextBuilder> {
+	public static final class PlatformContextBuilder extends ContextBaseBuilder<PlatformContext, PlatformContextBuilder> {
 
 		private PlatformContextBuilder() {
 			super();
@@ -81,5 +82,7 @@ public class PlatformContext extends Context {
 		public PlatformContext build() {
 			return new PlatformContext(platform, properties);
 		}
+
 	}
+
 }

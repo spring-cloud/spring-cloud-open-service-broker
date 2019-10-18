@@ -100,7 +100,7 @@ public class CloudFoundryContextTest {
 		JsonPathAssert.assertThat(json).hasPath("$.platform").isEqualTo("cloudfoundry");
 		// detect any double serialization due to inheritance and naming mismatch
 		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(3);
-		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 3+1); //still have duplicated platform property
+		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 3 + 1); //still have duplicated platform property
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class CloudFoundryContextTest {
 		JsonPathAssert.assertThat(json).hasPath("$.platform").isEqualTo("cloudfoundry");
 		// detect any double serialization due to inheritance and naming mismatch
 		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(6);
-		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 6+1); //still have duplicated platform property
+		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 6 + 1); //still have duplicated platform property
 	}
 
 }

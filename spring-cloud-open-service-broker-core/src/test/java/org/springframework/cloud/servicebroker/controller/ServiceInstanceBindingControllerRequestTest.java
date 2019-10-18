@@ -87,7 +87,6 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 	}
 
 
-
 	private CreateServiceInstanceBindingRequestBuilder buildCreateRequest() {
 		return CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId(serviceDefinition.getId())
@@ -126,7 +125,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 				.apiInfoLocation("api-info-location")
 				.originatingIdentity(identityContext)
 				.serviceDefinition(serviceDefinition)
-			 	.plan(plan)
+				.plan(plan)
 				.build();
 
 		ServiceInstanceBindingController controller = createControllerUnderTest(expectedRequest);
@@ -141,7 +140,8 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 		ServiceInstanceBindingController controller = createControllerUnderTest();
 
 		assertThrows(ServiceDefinitionDoesNotExistException.class, () ->
-				controller.deleteServiceInstanceBinding(pathVariables, null, null, "unknown-service-definition-id", null,
+				controller
+						.deleteServiceInstanceBinding(pathVariables, null, null, "unknown-service-definition-id", null,
 								false, null, null).block());
 	}
 
@@ -150,8 +150,8 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 		ServiceInstanceBindingController controller = createControllerUnderTest();
 
 		assertThrows(ServiceDefinitionPlanDoesNotExistException.class, () ->
-		controller.deleteServiceInstanceBinding(pathVariables, null, null, "service-definition-id",
-				"unknown-plan-id", false, null, null).block());
+				controller.deleteServiceInstanceBinding(pathVariables, null, null, "service-definition-id",
+						"unknown-plan-id", false, null, null).block());
 	}
 
 	private ServiceInstanceBindingController createControllerUnderTest(ServiceBrokerRequest expectedRequest) {
@@ -164,6 +164,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 
 
 	private class VerifyingService implements ServiceInstanceBindingService {
+
 		private final ServiceBrokerRequest expectedRequest;
 
 		public VerifyingService(ServiceBrokerRequest expectedRequest) {
@@ -187,6 +188,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 			assertThat(request).isEqualTo(expectedRequest);
 			return Mono.empty();
 		}
+
 	}
 
 }

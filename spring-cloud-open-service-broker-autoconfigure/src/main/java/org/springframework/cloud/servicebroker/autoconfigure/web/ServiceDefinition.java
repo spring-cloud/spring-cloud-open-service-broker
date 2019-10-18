@@ -16,17 +16,17 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.NotEmpty;
+
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
-import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires;
 
 /**
- * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
- * that describes a service offered by this broker.
+ * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties that describes a service
+ * offered by this broker.
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
@@ -36,15 +36,15 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRe
 public class ServiceDefinition {
 
 	/**
-	 * An identifier used to correlate this service in future requests to the catalog. This must be unique within
-	 * the platform. Using a GUID is recommended.
+	 * An identifier used to correlate this service in future requests to the catalog. This must be unique within the
+	 * platform. Using a GUID is recommended.
 	 */
 	@NotEmpty
 	private String id;
 
 	/**
-	 * A CLI-friendly name of the service that will appear in the catalog. The value should be all lowercase,
-	 * with no spaces.
+	 * A CLI-friendly name of the service that will appear in the catalog. The value should be all lowercase, with no
+	 * spaces.
 	 */
 	@NotEmpty
 	private String name;
@@ -61,8 +61,8 @@ public class ServiceDefinition {
 	private Boolean bindable = false;
 
 	/**
-	 * Indicates whether the service supports requests to update instances to use a different plan from the one
-	 * used to provision a service instance.
+	 * Indicates whether the service supports requests to update instances to use a different plan from the one used to
+	 * provision a service instance.
 	 */
 	private Boolean planUpdateable;
 
@@ -77,8 +77,8 @@ public class ServiceDefinition {
 	private Boolean bindingsRetrievable;
 
 	/**
-	 * Specifies whether a Service Instance supports Update requests when contextual data for the Service Instance
-	 * in the Platform changes.
+	 * Specifies whether a Service Instance supports Update requests when contextual data for the Service Instance in
+	 * the Platform changes.
 	 */
 	private Boolean allowContextUpdates;
 
@@ -94,8 +94,8 @@ public class ServiceDefinition {
 	private ServiceMetadata metadata;
 
 	/**
-	 * A list of permissions that the user would have to give the service, if they provision it. See
-	 * {@link ServiceDefinitionRequires} for supported permissions.
+	 * A list of permissions that the user would have to give the service, if they provision it.
+	 * @see org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires supported permissions
 	 */
 	private final List<String> requires = new ArrayList<>();
 
@@ -232,4 +232,5 @@ public class ServiceDefinition {
 				.plans(modelPlans)
 				.build();
 	}
+
 }

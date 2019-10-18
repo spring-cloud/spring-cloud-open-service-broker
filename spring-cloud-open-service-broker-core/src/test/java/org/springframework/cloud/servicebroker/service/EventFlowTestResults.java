@@ -151,4 +151,5 @@ public class EventFlowTestResults {
 		return Mono.fromCallable(() -> this.errorLastOperation = s)
 				.then();
 	}
+
 }

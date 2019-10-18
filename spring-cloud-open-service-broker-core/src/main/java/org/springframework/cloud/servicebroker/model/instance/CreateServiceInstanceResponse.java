@@ -29,12 +29,12 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
  * Details of a response to a request to create a new service instance.
  *
  * <p>
- * Objects of this type are constructed by the service broker application,
- * and used to build the response to the platform.
- *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-2">Open Service Broker API specification</a>
+ * Objects of this type are constructed by the service broker application, and used to build the response to the
+ * platform.
  *
  * @author Scott Frederick
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-2">Open Service
+ * 		Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
@@ -61,7 +61,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 * @param instanceExisted true if the instance exists
 	 */
 	public CreateServiceInstanceResponse(boolean async, String operation, String dashboardUrl,
-										 boolean instanceExisted) {
+			boolean instanceExisted) {
 		super(async, operation);
 		this.dashboardUrl = dashboardUrl;
 		this.instanceExisted = instanceExisted;
@@ -134,18 +134,22 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	/**
 	 * Provides a fluent API for constructing a {@link CreateServiceInstanceResponse}.
 	 */
-	public static class CreateServiceInstanceResponseBuilder {
+	public static final class CreateServiceInstanceResponseBuilder {
+
 		private String dashboardUrl;
+
 		private boolean instanceExisted;
+
 		private boolean async;
+
 		private String operation;
 
 		private CreateServiceInstanceResponseBuilder() {
 		}
 
 		/**
-		 * Set the URL of a web-based management user interface provided by the service broker for the service
-		 * instance. Can be {@literal null} to indicate that a management dashboard is not provided.
+		 * Set the URL of a web-based management user interface provided by the service broker for the service instance.
+		 * Can be {@literal null} to indicate that a management dashboard is not provided.
 		 *
 		 * <p>
 		 * This value will set the {@literal dashboard_url} field in the body of the response to the platform.
@@ -164,14 +168,13 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * were created by the service broker, <code>false</code> indicates that new resources were created.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. If the service broker
-		 * indicates that it performed the operation synchronously, a {@literal true} value will result in a
-		 * response code {@literal 200 OK}, and a {@literal false} value will result in a response code
-		 * {@literal 201 CREATED}.
+		 * This value will be used to determine the HTTP response code to the platform. If the service broker indicates
+		 * that it performed the operation synchronously, a {@literal true} value will result in a response code
+		 * {@literal 200 OK}, and a {@literal false} value will result in a response code {@literal 201 CREATED}.
 		 *
 		 * @param instanceExisted {@literal true} to indicate that the instance exists, {@literal false} otherwise
 		 * @return the builder
-		 * @see #async(boolean) 
+		 * @see #async(boolean)
 		 */
 		public CreateServiceInstanceResponseBuilder instanceExisted(boolean instanceExisted) {
 			this.instanceExisted = instanceExisted;
@@ -183,12 +186,12 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * asynchronously.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value
-		 * will result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be
-		 * determined by the value of {@link #instanceExisted(boolean)}.
+		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
+		 * result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be determined by the
+		 * value of {@link #instanceExisted(boolean)}.
 		 *
-		 * @param async {@literal true} to indicate that the operation is being performed asynchronously,
-		 * {@literal false} to indicate that the operation was completed
+		 * @param async {@literal true} to indicate that the operation is being performed asynchronously, {@literal
+		 * 		false} to indicate that the operation was completed
 		 * @return the builder
 		 * @see #instanceExisted(boolean)
 		 */
@@ -198,8 +201,8 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		}
 
 		/**
-		 * Set a value to inform the user of the operation being performed in support of an asynchronous response.
-		 * This value will be passed back to the service broker in subsequent {@link GetLastServiceOperationRequest}
+		 * Set a value to inform the user of the operation being performed in support of an asynchronous response. This
+		 * value will be passed back to the service broker in subsequent {@link GetLastServiceOperationRequest}
 		 * requests.
 		 *
 		 * <p>
@@ -221,5 +224,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		public CreateServiceInstanceResponse build() {
 			return new CreateServiceInstanceResponse(async, operation, dashboardUrl, instanceExisted);
 		}
+
 	}
+
 }

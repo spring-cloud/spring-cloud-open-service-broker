@@ -16,10 +16,11 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,13 +35,13 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
  * Details of a request to create a new service instance.
  *
  * <p>
- * Objects of this type are constructed by the framework from the headers, path variables, query parameters
- * and message body passed to the service broker by the platform.
- *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-2">Open Service Broker API specification</a>
+ * Objects of this type are constructed by the framework from the headers, path variables, query parameters and message
+ * body passed to the service broker by the platform.
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-2">Open Service
+ * 		Broker API specification</a>
  */
 @SuppressWarnings({"deprecation", "DeprecatedIsStillUsed"})
 public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
@@ -54,13 +55,13 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	private final String planId;
 
 	/**
-	 * 	remains in the model for marshalling support but test harnesses should not use
+	 * remains in the model for marshalling support but test harnesses should not use
 	 */
 	@Deprecated
 	private final String organizationGuid;
 
 	/**
-	 * 	remains in the model for marshalling support but test harnesses should not use
+	 * remains in the model for marshalling support but test harnesses should not use
 	 */
 	@Deprecated
 	private final String spaceGuid;
@@ -71,7 +72,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@JsonIgnore /*internal field*/
 	private transient ServiceDefinition serviceDefinition;
 
-    @JsonIgnore /*internal field*/
+	@JsonIgnore /*internal field*/
 	private transient Plan plan;
 
 	/**
@@ -97,18 +98,18 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
 	 */
 	public CreateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
-								 ServiceDefinition serviceDefinition, Plan plan,
-								 Map<String, Object> parameters, Context context, boolean asyncAccepted,
-								 String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
+			ServiceDefinition serviceDefinition, Plan plan,
+			Map<String, Object> parameters, Context context, boolean asyncAccepted,
+			String platformInstanceId, String apiInfoLocation, Context originatingIdentity) {
 		this(serviceDefinitionId, serviceInstanceId, planId, serviceDefinition, plan, parameters, context,
 				asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity, null, null);
 	}
 
 	private CreateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
-										ServiceDefinition serviceDefinition, Plan plan,
-										Map<String, Object> parameters, Context context, boolean asyncAccepted,
-										String platformInstanceId, String apiInfoLocation,
-										 Context originatingIdentity, String organizationGuid, String spaceGuid) {
+			ServiceDefinition serviceDefinition, Plan plan,
+			Map<String, Object> parameters, Context context, boolean asyncAccepted,
+			String platformInstanceId, String apiInfoLocation,
+			Context originatingIdentity, String organizationGuid, String spaceGuid) {
 		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.serviceInstanceId = serviceInstanceId;
@@ -133,8 +134,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	/**
-	 * This method is intended to be used internally only; use {@link #builder()} to construct an object of this
-	 * type and set all field values.
+	 * This method is intended to be used internally only; use {@link #builder()} to construct an object of this type
+	 * and set all field values.
 	 *
 	 * @param serviceInstanceId the service instance ID to create
 	 */
@@ -156,9 +157,9 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	/**
-	 * Get the ID of the plan for to the service instance to create. This will match one of the plan IDs provided
-	 * in the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} within the specified
-	 * {@link ServiceDefinition}.
+	 * Get the ID of the plan for to the service instance to create. This will match one of the plan IDs provided in the
+	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} within the specified {@link
+	 * ServiceDefinition}.
 	 *
 	 * <p>
 	 * This value is set from the {@literal plan_id} field in the body of the request from the platform.
@@ -241,8 +242,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * Get the service definition of the service to create.
 	 *
 	 * <p>
-	 * The service definition is retrieved from the
-	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a convenience.
+	 * The service definition is retrieved from the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog}
+	 * as a convenience.
 	 *
 	 * @return the service definition
 	 */
@@ -251,8 +252,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	/**
-	 * This method is intended to be used internally only; use {@link #builder()} to construct an object of this
-	 * type and set all field values.
+	 * This method is intended to be used internally only; use {@link #builder()} to construct an object of this type
+	 * and set all field values.
 	 *
 	 * @param serviceDefinition the service definition of the service to create
 	 */
@@ -264,8 +265,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * Get the plan of the service to create
 	 *
 	 * <p>
-	 * The plan is retreved from the
-	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a convenience.
+	 * The plan is retreved from the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a
+	 * convenience.
 	 *
 	 * @return the plan
 	 */
@@ -286,8 +287,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * Create a builder that provides a fluent API for constructing a {@literal CreateServiceInstanceRequest}.
 	 *
 	 * <p>
-	 * This builder is provided to support testing of
-	 * {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService} implementations.
+	 * This builder is provided to support testing of {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService}
+	 * implementations.
 	 *
 	 * @return the builder
 	 */
@@ -346,17 +347,28 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	/**
 	 * Provides a fluent API for constructing a {@link CreateServiceInstanceRequest}.
 	 */
-	public static class CreateServiceInstanceRequestBuilder {
+	public static final class CreateServiceInstanceRequestBuilder {
+
 		private String serviceInstanceId;
+
 		private String serviceDefinitionId;
+
 		private String planId;
+
 		private ServiceDefinition serviceDefinition;
+
 		private Plan plan;
+
 		private Context context;
+
 		private final Map<String, Object> parameters = new HashMap<>();
+
 		private boolean asyncAccepted;
+
 		private String platformInstanceId;
+
 		private String apiInfoLocation;
+
 		private Context originatingIdentity;
 
 		private CreateServiceInstanceRequestBuilder() {
@@ -423,8 +435,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		}
 
 		/**
-		 * Add a set of parameters from the provided {@literal Map} to the request parameters
-		 * as would be provided in the request from the platform.
+		 * Add a set of parameters from the provided {@literal Map} to the request parameters as would be provided in
+		 * the request from the platform.
 		 *
 		 * @param parameters the parameters to add
 		 * @return the builder
@@ -477,7 +489,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 *
 		 * @param platformInstanceId the platform instance ID
 		 * @return the builder
-		 * @see #getPlatformInstanceId() 
+		 * @see #getPlatformInstanceId()
 		 */
 		public CreateServiceInstanceRequestBuilder platformInstanceId(String platformInstanceId) {
 			this.platformInstanceId = platformInstanceId;
@@ -518,5 +530,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 					serviceDefinition, plan, parameters, context, asyncAccepted,
 					platformInstanceId, apiInfoLocation, originatingIdentity);
 		}
+
 	}
+
 }

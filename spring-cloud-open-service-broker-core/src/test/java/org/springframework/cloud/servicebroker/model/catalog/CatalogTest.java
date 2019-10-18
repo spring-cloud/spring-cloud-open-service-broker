@@ -101,11 +101,11 @@ public class CatalogTest {
 		@SuppressWarnings("unchecked")
 		Map<String, Object> cost =
 				((List<Map<String, Object>>) catalog.getServiceDefinitions().get(0).getPlans().get(1).getMetadata().get(
-		 		"costs")).get(0);
+						"costs")).get(0);
 		assertThat(cost.get("unit")).isEqualTo("MONTHLY");
 
 		@SuppressWarnings("unchecked")
-		Map<String, Object> amount = (Map<String, Object>)cost.get("amount");
+		Map<String, Object> amount = (Map<String, Object>) cost.get("amount");
 		assertThat(amount).containsOnly(entry("usd", 649.0));
 	}
 
@@ -113,4 +113,5 @@ public class CatalogTest {
 	public void equalsAndHashCode() {
 		EqualsVerifier.forClass(Catalog.class).verify();
 	}
+
 }

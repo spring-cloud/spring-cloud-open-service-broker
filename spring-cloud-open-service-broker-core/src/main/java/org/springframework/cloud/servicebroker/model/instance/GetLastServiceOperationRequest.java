@@ -25,14 +25,15 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
  * Details of a request to get the state of the last operation on a service instance.
  *
  * <p>
- * Objects of this type are constructed by the framework from the headers, path variables, query parameters
- * and message body passed to the service broker by the platform.
- *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-1">Open Service Broker API specification</a>
+ * Objects of this type are constructed by the framework from the headers, path variables, query parameters and message
+ * body passed to the service broker by the platform.
  *
  * @author Scott Frederick
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-1">Open Service
+ * 		Broker API specification</a>
  */
 public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
+
 	private transient final String serviceInstanceId;
 
 	private transient final String serviceDefinitionId;
@@ -53,9 +54,9 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
 	 */
 	public GetLastServiceOperationRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
-										  String operation,
-										  String platformInstanceId, String apiInfoLocation,
-										  Context originatingIdentity) {
+			String operation,
+			String platformInstanceId, String apiInfoLocation,
+			Context originatingIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.serviceDefinitionId = serviceDefinitionId;
@@ -101,9 +102,9 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 
 	/**
 	 * Get the value of the {@literal operation} field previously provided to the platform.
-	 *
-	 * Service brokers can optionally return an {@literal operation} value to the platform in the response from an
-	 * async create, update, or delete request. The platform will pass this value back to the broker if provided.
+	 * <p>
+	 * Service brokers can optionally return an {@literal operation} value to the platform in the response from an async
+	 * create, update, or delete request. The platform will pass this value back to the broker if provided.
 	 *
 	 * <p>
 	 * This value is set from the {@literal operation} request parameter of the request from the platform.
@@ -118,8 +119,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	 * Create a builder that provides a fluent API for constructing a {@literal GetLastServiceOperationRequestBuilder}.
 	 *
 	 * <p>
-	 * This builder is provided to support testing of
-	 * {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService} implementations.
+	 * This builder is provided to support testing of {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService}
+	 * implementations.
 	 *
 	 * @return the builder
 	 */
@@ -169,13 +170,20 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	/**
 	 * Provides a fluent API for constructing a {@link GetLastServiceOperationRequest}.
 	 */
-	public static class GetLastServiceOperationRequestBuilder {
+	public static final class GetLastServiceOperationRequestBuilder {
+
 		private String serviceInstanceId;
+
 		private String serviceDefinitionId;
+
 		private String planId;
+
 		private String operation;
+
 		private String platformInstanceId;
+
 		private String apiInfoLocation;
+
 		private Context originatingIdentity;
 
 		private GetLastServiceOperationRequestBuilder() {
@@ -274,6 +282,7 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 					operation,
 					platformInstanceId, apiInfoLocation, originatingIdentity);
 		}
+
 	}
 
 }

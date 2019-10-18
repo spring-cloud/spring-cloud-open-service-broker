@@ -44,8 +44,11 @@ public class ParameterBeanMapperUtilsTest {
 
 	@SuppressWarnings("unused")
 	public static final class TestBean {
+
 		private String stringProperty;
+
 		private int intProperty;
+
 		private String unusedProperty;
 
 		private final NestedBean nestedBean;
@@ -81,10 +84,12 @@ public class ParameterBeanMapperUtilsTest {
 		public NestedBean getNestedBean() {
 			return nestedBean;
 		}
+
 	}
 
 	@SuppressWarnings("unused")
 	public static final class NestedBean {
+
 		private boolean booleanProperty;
 
 		public boolean isBooleanProperty() {
@@ -94,5 +99,7 @@ public class ParameterBeanMapperUtilsTest {
 		public void setBooleanProperty(boolean booleanProperty) {
 			this.booleanProperty = booleanProperty;
 		}
+
 	}
+
 }

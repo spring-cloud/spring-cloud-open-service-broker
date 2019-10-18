@@ -17,12 +17,12 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that parameters passed in the originating identity header are not
- * understood by the service broker.
+ * Thrown to indicate that parameters passed in the originating identity header are not understood by the service
+ * broker.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code
- * {@literal 422 UNPROCESSABLE ENTITY} being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY} being returned to the
+ * platform.
  *
  * @author Roy Clarkson
  */
@@ -56,4 +56,5 @@ public class ServiceBrokerInvalidOriginatingIdentityException
 	private static String prependMessagePrefix(String message) {
 		return MESSAGE_PREFIX + ": " + message;
 	}
+
 }

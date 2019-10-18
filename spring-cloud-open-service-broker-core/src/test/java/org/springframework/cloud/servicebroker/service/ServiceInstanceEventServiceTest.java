@@ -94,7 +94,7 @@ public class ServiceInstanceEventServiceTest {
 						.addCompletionFlow(new CreateServiceInstanceCompletionFlow() {
 							@Override
 							public Mono<Void> complete(CreateServiceInstanceRequest request,
-													   CreateServiceInstanceResponse response) {
+									CreateServiceInstanceResponse response) {
 								return results.setAfterCreate("after " + request.getServiceInstanceId());
 							}
 						}))
@@ -163,7 +163,7 @@ public class ServiceInstanceEventServiceTest {
 						.addErrorFlow(new DeleteServiceInstanceErrorFlow() {
 							@Override
 							public Mono<Void> error(DeleteServiceInstanceRequest request,
-													Throwable t) {
+									Throwable t) {
 								return results.setErrorDelete("error " + request.getServiceInstanceId());
 							}
 						}))
@@ -226,7 +226,7 @@ public class ServiceInstanceEventServiceTest {
 						.addErrorFlow(new UpdateServiceInstanceErrorFlow() {
 							@Override
 							public Mono<Void> error(UpdateServiceInstanceRequest request,
-													Throwable t) {
+									Throwable t) {
 								return results.setErrorUpdate("error " + request.getServiceInstanceId());
 							}
 						}))
@@ -240,8 +240,8 @@ public class ServiceInstanceEventServiceTest {
 		StepVerifier
 				.create(serviceInstanceEventService.updateServiceInstance(
 						UpdateServiceInstanceRequest.builder()
-						.serviceInstanceId("service-instance-id")
-						.build()))
+								.serviceInstanceId("service-instance-id")
+								.build()))
 				.expectError()
 				.verify();
 
@@ -308,7 +308,7 @@ public class ServiceInstanceEventServiceTest {
 						.addErrorFlow(new AsyncOperationServiceInstanceErrorFlow() {
 							@Override
 							public Mono<Void> error(GetLastServiceOperationRequest request,
-													Throwable t) {
+									Throwable t) {
 								return results.setErrorLastOperation("error " + request.getServiceInstanceId());
 							}
 						}))
@@ -351,6 +351,7 @@ public class ServiceInstanceEventServiceTest {
 			}
 			return Mono.just(GetLastServiceOperationResponse.builder().build());
 		}
+
 	}
 
 }

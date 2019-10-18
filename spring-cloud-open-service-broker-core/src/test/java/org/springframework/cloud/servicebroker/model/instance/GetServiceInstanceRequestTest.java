@@ -67,4 +67,5 @@ public class GetServiceInstanceRequestTest {
 				.suppress(Warning.TRANSIENT_FIELDS)
 				.verify();
 	}
+
 }

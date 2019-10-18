@@ -119,4 +119,5 @@ public class GetLastServiceBindingOperationResponseTest {
 				.forClass(GetLastServiceBindingOperationResponse.class)
 				.verify();
 	}
+
 }

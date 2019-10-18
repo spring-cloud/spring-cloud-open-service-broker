@@ -22,15 +22,16 @@ import java.util.Objects;
  * Details of a response to a request to create a new service instance binding associated with a route.
  *
  * <p>
- * Objects of this type are constructed by the service broker application,
- * and used to build the response to the platform.
+ * Objects of this type are constructed by the service broker application, and used to build the response to the
+ * platform.
  *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-6">Open Service Broker API specification</a>
- * 
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-6">Open Service
+ * 		Broker API specification</a>
  */
 public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInstanceBindingResponse {
+
 	private final String routeServiceUrl;
 
 	/**
@@ -49,7 +50,7 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 	 * @param routeServiceUrl the route service URL
 	 */
 	public CreateServiceInstanceRouteBindingResponse(boolean async, String operation, boolean bindingExisted,
-											  String routeServiceUrl) {
+			String routeServiceUrl) {
 		super(async, operation, bindingExisted);
 		this.routeServiceUrl = routeServiceUrl;
 	}
@@ -64,8 +65,7 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a
-	 * {@literal CreateServiceInstanceRouteBindingResponse}.
+	 * Create a builder that provides a fluent API for constructing a {@literal CreateServiceInstanceRouteBindingResponse}.
 	 *
 	 * @return the builder
 	 */
@@ -109,10 +109,14 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 	/**
 	 * Provides a fluent API for constructing a {@link CreateServiceInstanceAppBindingResponse}.
 	 */
-	public static class CreateServiceInstanceRouteBindingResponseBuilder {
+	public static final class CreateServiceInstanceRouteBindingResponseBuilder {
+
 		private String routeServiceUrl;
+
 		private boolean bindingExisted;
+
 		private boolean async;
+
 		private String operation;
 
 		private CreateServiceInstanceRouteBindingResponseBuilder() {
@@ -155,12 +159,12 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 		 * asynchronously.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value
-		 * will result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be
-		 * determined by the value of {@link #bindingExisted(boolean)}.
+		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
+		 * result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be determined by the
+		 * value of {@link #bindingExisted(boolean)}.
 		 *
-		 * @param async {@literal true} to indicate that the operation is being performed asynchronously,
-		 * {@literal false} to indicate that the operation was completed
+		 * @param async {@literal true} to indicate that the operation is being performed asynchronously, {@literal
+		 * 		false} to indicate that the operation was completed
 		 * @return the builder
 		 * @see #bindingExisted(boolean)
 		 */
@@ -170,9 +174,9 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 		}
 
 		/**
-		 * Set a value to inform the user of the operation being performed in support of an asynchronous response.
-		 * This value will be passed back to the service broker in subsequent
-		 * {@link GetLastServiceBindingOperationRequest} requests.
+		 * Set a value to inform the user of the operation being performed in support of an asynchronous response. This
+		 * value will be passed back to the service broker in subsequent {@link GetLastServiceBindingOperationRequest}
+		 * requests.
 		 *
 		 * <p>
 		 * This value will set the {@literal operation} field in the body of the response to the platform.
@@ -193,5 +197,7 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 		public CreateServiceInstanceRouteBindingResponse build() {
 			return new CreateServiceInstanceRouteBindingResponse(async, operation, bindingExisted, routeServiceUrl);
 		}
+
 	}
+
 }

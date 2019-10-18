@@ -55,8 +55,7 @@ public class ApiVersionWebFilter implements WebFilter {
 	}
 
 	/**
-	 * Construct a filter that validates the API version passed in request headers to the
-	 * configured version.
+	 * Construct a filter that validates the API version passed in request headers to the configured version.
 	 *
 	 * @param version the API version supported by the broker.
 	 */
@@ -65,8 +64,8 @@ public class ApiVersionWebFilter implements WebFilter {
 	}
 
 	/**
-	 * Process the web request and validate the API version in the header. If the API version
-	 * does not match, then set an HTTP 412 status and write the error message to the response.
+	 * Process the web request and validate the API version in the header. If the API version does not match, then set
+	 * an HTTP 412 status and write the error message to the response.
 	 *
 	 * @param exchange {@inheritDoc}
 	 * @param chain {@inheritDoc}

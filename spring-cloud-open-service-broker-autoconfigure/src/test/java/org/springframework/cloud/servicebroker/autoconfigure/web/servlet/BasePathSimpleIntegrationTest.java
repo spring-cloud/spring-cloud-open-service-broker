@@ -37,12 +37,12 @@ public class BasePathSimpleIntegrationTest extends AbstractBasePathWebApplicatio
 	public void noBasePathNotFound() throws Exception {
 		assertNotFound("");
 	}
-	
+
 	@Test
 	public void alternativePathNotFound() throws Exception {
 		assertNotFound("/123");
 	}
-	
+
 	@Test
 	public void basePathWithPrefixSegmentNotFound() throws Exception {
 		assertNotFound("/api/broker");

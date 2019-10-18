@@ -17,8 +17,8 @@
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 /**
- * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
- * that describes a maintenance info available for a {@link Plan}.
+ * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties that describes a maintenance
+ * info available for a {@link Plan}.
  *
  * @author ilyavy
  * @see org.springframework.cloud.servicebroker.model.catalog.MaintenanceInfo
@@ -63,4 +63,5 @@ public class MaintenanceInfo {
 				.description(this.description)
 				.build();
 	}
+
 }

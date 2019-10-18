@@ -106,4 +106,5 @@ public class AsyncParameterizedServiceInstanceRequestTest {
 				.suppress(Warning.TRANSIENT_FIELDS)
 				.verify();
 	}
+
 }

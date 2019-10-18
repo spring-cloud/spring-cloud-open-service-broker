@@ -41,6 +41,7 @@ public class MethodSchema {
 
 	/**
 	 * Construct a new {@link MethodSchema}
+	 *
 	 * @param parameters a collection of parameters
 	 */
 	public MethodSchema(Map<String, Object> parameters) {
@@ -57,8 +58,7 @@ public class MethodSchema {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a
-	 * {@literal MethodSchema}.
+	 * Create a builder that provides a fluent API for constructing a {@literal MethodSchema}.
 	 *
 	 * @return the builder
 	 */
@@ -93,7 +93,8 @@ public class MethodSchema {
 	/**
 	 * Provides a fluent API for constructing a {@literal MethodSchema}.
 	 */
-	public static class MethodSchemaBuilder {
+	public static final class MethodSchemaBuilder {
+
 		private final Map<String, Object> parameters = new HashMap<>();
 
 		private MethodSchemaBuilder() {
@@ -130,5 +131,7 @@ public class MethodSchema {
 		public MethodSchema build() {
 			return new MethodSchema(parameters);
 		}
+
 	}
+
 }

@@ -30,12 +30,12 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  * Details of a response to a request to get the details a service instance.
  *
  * <p>
- * Objects of this type are constructed by the service broker application,
- * and used to build the response to the platform.
- *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API specification</a>
+ * Objects of this type are constructed by the service broker application, and used to build the response to the
+ * platform.
  *
  * @author Scott Frederick
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API
+ * 		specification</a>
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -43,7 +43,7 @@ public class GetServiceInstanceResponse {
 
 	@JsonProperty("service_id")
 	private final String serviceDefinitionId;
-	
+
 	private final String planId;
 
 	private final String dashboardUrl;
@@ -66,7 +66,7 @@ public class GetServiceInstanceResponse {
 	 * @param parameters the parameters
 	 */
 	public GetServiceInstanceResponse(String serviceDefinitionId, String planId, String dashboardUrl,
-								Map<String, Object> parameters) {
+			Map<String, Object> parameters) {
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
 		this.dashboardUrl = dashboardUrl;
@@ -103,8 +103,8 @@ public class GetServiceInstanceResponse {
 	/**
 	 * Get any parameters provided to the service broker when the service instance was created.
 	 *
-	 * @return the parameters, or {@literal null} if parameters were not provided at creation or retrieval
-	 * of parameters is not supported by the service broker
+	 * @return the parameters, or {@literal null} if parameters were not provided at creation or retrieval of parameters
+	 * 		is not supported by the service broker
 	 */
 	public Map<String, Object> getParameters() {
 		return parameters;
@@ -163,10 +163,14 @@ public class GetServiceInstanceResponse {
 	/**
 	 * Provides a fluent API for constructing a {@link GetServiceInstanceResponse}.
 	 */
-	public static class GetServiceInstanceResponseBuilder {
+	public static final class GetServiceInstanceResponseBuilder {
+
 		private String serviceDefinitionId;
+
 		private String planId;
+
 		private String dashboardUrl;
+
 		private final Map<String, Object> parameters = new HashMap<>();
 
 		private GetServiceInstanceResponseBuilder() {
@@ -201,8 +205,8 @@ public class GetServiceInstanceResponse {
 		}
 
 		/**
-		 * Set the URL of a web-based management user interface provided by the service broker for the service
-		 * instance. Can be {@literal null} to indicate that a management dashboard is not provided.
+		 * Set the URL of a web-based management user interface provided by the service broker for the service instance.
+		 * Can be {@literal null} to indicate that a management dashboard is not provided.
 		 *
 		 * <p>
 		 * This value will set the {@literal dashboard_url} field in the body of the response to the platform.
@@ -216,8 +220,8 @@ public class GetServiceInstanceResponse {
 		}
 
 		/**
-		 * Add a set of parameters from the provided {@literal Map} to the parameters
-		 * as were provided to the service broker at service instance creation.
+		 * Add a set of parameters from the provided {@literal Map} to the parameters as were provided to the service
+		 * broker at service instance creation.
 		 *
 		 * <p>
 		 * This value will set the {@literal parameters} field in the body of the response to the platform
@@ -253,5 +257,7 @@ public class GetServiceInstanceResponse {
 		public GetServiceInstanceResponse build() {
 			return new GetServiceInstanceResponse(serviceDefinitionId, planId, dashboardUrl, parameters);
 		}
+
 	}
+
 }

@@ -232,7 +232,7 @@ public class EventFlowsAutoConfigurationTest {
 	}
 
 	private void assertEventFlowBeans(EventFlowRegistry<?, ?, ?, ?, ?> registry, int initializationFlowCount,
-									  int completionFlowCount, int errorFlowCount) {
+			int completionFlowCount, int errorFlowCount) {
 		List<?> initializationFlows = (List<?>) ReflectionTestUtils
 				.getField(registry, "initializationFlows");
 		assertThat(initializationFlows.size()).isEqualTo(initializationFlowCount);
@@ -307,7 +307,7 @@ public class EventFlowsAutoConfigurationTest {
 			return new CreateServiceInstanceCompletionFlow() {
 				@Override
 				public Mono<Void> complete(CreateServiceInstanceRequest request,
-										   CreateServiceInstanceResponse response) {
+						CreateServiceInstanceResponse response) {
 					return Mono.empty();
 				}
 			};
@@ -322,6 +322,7 @@ public class EventFlowsAutoConfigurationTest {
 				}
 			};
 		}
+
 	}
 
 	@TestConfiguration
@@ -342,7 +343,7 @@ public class EventFlowsAutoConfigurationTest {
 			return new UpdateServiceInstanceCompletionFlow() {
 				@Override
 				public Mono<Void> complete(UpdateServiceInstanceRequest request,
-										   UpdateServiceInstanceResponse response) {
+						UpdateServiceInstanceResponse response) {
 					return Mono.empty();
 				}
 			};
@@ -357,6 +358,7 @@ public class EventFlowsAutoConfigurationTest {
 				}
 			};
 		}
+
 	}
 
 	@TestConfiguration
@@ -377,7 +379,7 @@ public class EventFlowsAutoConfigurationTest {
 			return new DeleteServiceInstanceCompletionFlow() {
 				@Override
 				public Mono<Void> complete(DeleteServiceInstanceRequest request,
-										   DeleteServiceInstanceResponse response) {
+						DeleteServiceInstanceResponse response) {
 					return Mono.empty();
 				}
 			};
@@ -402,6 +404,7 @@ public class EventFlowsAutoConfigurationTest {
 				}
 			};
 		}
+
 	}
 
 	@TestConfiguration
@@ -422,7 +425,7 @@ public class EventFlowsAutoConfigurationTest {
 			return new AsyncOperationServiceInstanceCompletionFlow() {
 				@Override
 				public Mono<Void> complete(GetLastServiceOperationRequest request,
-										   GetLastServiceOperationResponse response) {
+						GetLastServiceOperationResponse response) {
 					return Mono.empty();
 				}
 			};
@@ -433,7 +436,7 @@ public class EventFlowsAutoConfigurationTest {
 			return new AsyncOperationServiceInstanceCompletionFlow() {
 				@Override
 				public Mono<Void> complete(GetLastServiceOperationRequest request,
-										   GetLastServiceOperationResponse response) {
+						GetLastServiceOperationResponse response) {
 					return Mono.empty();
 				}
 			};
@@ -448,6 +451,7 @@ public class EventFlowsAutoConfigurationTest {
 				}
 			};
 		}
+
 	}
 
 	@TestConfiguration
@@ -468,7 +472,7 @@ public class EventFlowsAutoConfigurationTest {
 			return new CreateServiceInstanceBindingCompletionFlow() {
 				@Override
 				public Mono<Void> complete(CreateServiceInstanceBindingRequest request,
-										   CreateServiceInstanceBindingResponse response) {
+						CreateServiceInstanceBindingResponse response) {
 					return Mono.empty();
 				}
 			};
@@ -483,6 +487,7 @@ public class EventFlowsAutoConfigurationTest {
 				}
 			};
 		}
+
 	}
 
 	@TestConfiguration
@@ -503,7 +508,7 @@ public class EventFlowsAutoConfigurationTest {
 			return new DeleteServiceInstanceBindingCompletionFlow() {
 				@Override
 				public Mono<Void> complete(DeleteServiceInstanceBindingRequest request,
-										   DeleteServiceInstanceBindingResponse response) {
+						DeleteServiceInstanceBindingResponse response) {
 					return Mono.empty();
 				}
 			};
@@ -518,6 +523,7 @@ public class EventFlowsAutoConfigurationTest {
 				}
 			};
 		}
+
 	}
 
 	@TestConfiguration
@@ -538,7 +544,7 @@ public class EventFlowsAutoConfigurationTest {
 			return new AsyncOperationServiceInstanceBindingCompletionFlow() {
 				@Override
 				public Mono<Void> complete(GetLastServiceBindingOperationRequest request,
-										   GetLastServiceBindingOperationResponse response) {
+						GetLastServiceBindingOperationResponse response) {
 					return Mono.empty();
 				}
 			};
@@ -549,7 +555,7 @@ public class EventFlowsAutoConfigurationTest {
 			return new AsyncOperationServiceInstanceBindingCompletionFlow() {
 				@Override
 				public Mono<Void> complete(GetLastServiceBindingOperationRequest request,
-										   GetLastServiceBindingOperationResponse response) {
+						GetLastServiceBindingOperationResponse response) {
 					return Mono.empty();
 				}
 			};
@@ -564,5 +570,7 @@ public class EventFlowsAutoConfigurationTest {
 				}
 			};
 		}
+
 	}
+
 }

@@ -24,12 +24,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * JSON Schemas available for a Plan.
  *
- * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#schemas-object">Open
- * Service Broker API specification</a>
- *
  * @author sgunaratne@pivotal.io
  * @author Sam Gunaratne
+ * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#schemas-object">Open Service
+ * 		Broker API specification</a>
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Schemas {
@@ -115,8 +113,10 @@ public class Schemas {
 	/**
 	 * Provides a fluent API for constructing a {@literal Schemas}.
 	 */
-	public static class SchemasBuilder {
+	public static final class SchemasBuilder {
+
 		private ServiceInstanceSchema serviceInstanceSchema;
+
 		private ServiceBindingSchema serviceBindingSchema;
 
 		private SchemasBuilder() {
@@ -152,5 +152,7 @@ public class Schemas {
 		public Schemas build() {
 			return new Schemas(serviceInstanceSchema, serviceBindingSchema);
 		}
+
 	}
+
 }

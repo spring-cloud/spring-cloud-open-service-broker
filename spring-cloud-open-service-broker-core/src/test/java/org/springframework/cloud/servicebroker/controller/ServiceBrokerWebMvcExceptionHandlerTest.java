@@ -72,4 +72,5 @@ public class ServiceBrokerWebMvcExceptionHandlerTest extends ServiceBrokerExcept
 		assertThat(errorMessage.getMessage()).contains(parameterType);
 		assertThat(errorMessage.getMessage()).contains(parameterName);
 	}
+
 }

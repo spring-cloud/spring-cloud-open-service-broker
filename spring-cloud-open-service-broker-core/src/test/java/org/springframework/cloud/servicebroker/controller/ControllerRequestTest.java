@@ -51,15 +51,16 @@ public abstract class ControllerRequestTest {
 
 	protected Context requestContext;
 
-	protected Map<String, String> pathVariables = Collections.singletonMap("platformInstanceId", "platform-instance-id");
+	protected Map<String, String> pathVariables = Collections
+			.singletonMap("platformInstanceId", "platform-instance-id");
 
 	@BeforeEach
 	public void setUpControllerRequestTest() {
 		initMocks(this);
 
 		plan = Plan.builder()
-				   .id("plan-id")
-				   .build();
+				.id("plan-id")
+				.build();
 
 		serviceDefinition = ServiceDefinition.builder()
 				.id("service-definition-id")

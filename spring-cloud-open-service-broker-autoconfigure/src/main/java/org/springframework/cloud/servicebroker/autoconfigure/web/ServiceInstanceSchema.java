@@ -19,8 +19,8 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
- * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
- * that describes service instance JSON Schemas.
+ * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties that describes service
+ * instance JSON Schemas.
  *
  * @author Sam Gunaratne
  * @author Roy Clarkson

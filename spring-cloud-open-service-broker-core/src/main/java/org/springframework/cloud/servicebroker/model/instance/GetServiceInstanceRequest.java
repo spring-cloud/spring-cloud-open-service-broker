@@ -25,12 +25,12 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
  * Details of a request to retrieve a service instance.
  *
  * <p>
- * Objects of this type are constructed by the framework from the headers, path variables, query parameters
- * and message body passed to the service broker by the platform.
- *
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API specification</a>
+ * Objects of this type are constructed by the framework from the headers, path variables, query parameters and message
+ * body passed to the service broker by the platform.
  *
  * @author Scott Frederick
+ * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API
+ * 		specification</a>
  */
 public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 
@@ -45,7 +45,7 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
 	 */
 	public GetServiceInstanceRequest(String serviceInstanceId, String platformInstanceId,
-									 String apiInfoLocation, Context originatingIdentity) {
+			String apiInfoLocation, Context originatingIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 	}
@@ -67,8 +67,8 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 	 * Create a builder that provides a fluent API for constructing a {@literal GetServiceInstanceRequest}.
 	 *
 	 * <p>
-	 * This builder is provided to support testing of
-	 * {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService} implementations.
+	 * This builder is provided to support testing of {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService}
+	 * implementations.
 	 *
 	 * @return the builder
 	 */
@@ -112,10 +112,14 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 	/**
 	 * Provides a fluent API for constructing a {@link GetServiceInstanceRequest}.
 	 */
-	public static class GetServiceInstanceRequestBuilder {
+	public static final class GetServiceInstanceRequestBuilder {
+
 		private String serviceInstanceId;
+
 		private String platformInstanceId;
+
 		private String apiInfoLocation;
+
 		private Context originatingIdentity;
 
 		private GetServiceInstanceRequestBuilder() {
@@ -178,6 +182,7 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 			return new GetServiceInstanceRequest(serviceInstanceId,
 					platformInstanceId, apiInfoLocation, originatingIdentity);
 		}
+
 	}
 
 }
