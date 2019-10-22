@@ -56,10 +56,8 @@ dependencies {
 		exclude group:"commons-logging", module:"commons-logging"
 	}
 	testImplementation("io.projectreactor:reactor-test")
-	testImplementation("junit:junit:${junitVersion}") {
-		exclude group:"org.hamcrest", module:"hamcrest-core"
-	}
-	testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${junitJupiterVersion}")
+	testImplementation("io.projectreactor.tools:blockhound-junit-platform:${blockHoundVersion}")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher:${junitPlatformLauncherVersion}")
 	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
 	testImplementation("org.junit.jupiter:junit-jupiter:${junitJupiterVersion}")
 	testImplementation("org.assertj:assertj-core:${assertjVersion}")

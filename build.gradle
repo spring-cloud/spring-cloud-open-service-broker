@@ -38,6 +38,8 @@ ext {
 	}
 	reactorVersion = project.findProperty("reactorVersion") ?: "Dysprosium-RELEASE"
 	springCloudContractVersion = "2.1.3.RELEASE"
+	blockHoundVersion = "1.0.1.RELEASE"
+	junitPlatformLauncherVersion = "1.5.2"
 	checkstyleVersion = "8.21"
 
 	javadocLinks = [
