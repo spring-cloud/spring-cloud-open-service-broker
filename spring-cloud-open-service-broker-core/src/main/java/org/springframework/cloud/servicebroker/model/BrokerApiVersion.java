@@ -34,7 +34,7 @@ public class BrokerApiVersion {
 	/**
 	 * Current API Version supported by this library
 	 */
-	public final static String API_VERSION_CURRENT = "2.14";
+	public final static String API_VERSION_CURRENT = "2.15";
 
 	private final String brokerApiVersionHeader;
 
