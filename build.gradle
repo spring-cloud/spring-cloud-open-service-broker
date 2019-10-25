@@ -41,6 +41,7 @@ ext {
 	blockHoundVersion = "1.0.1.RELEASE"
 	junitPlatformLauncherVersion = "1.5.2"
 	checkstyleVersion = "8.21"
+	pmdVersion = "6.17.0"
 
 	javadocLinks = [
 			"https://docs.oracle.com/javase/8/docs/api/",
@@ -112,7 +113,7 @@ configure(allprojects - [project(":spring-cloud-open-service-broker-docs")]) {
 	}
 
 	pmd {
-		toolVersion = "6.17.0"
+		toolVersion = "${pmdVersion}"
 	}
 	pmdMain {
 		ruleSets = []
