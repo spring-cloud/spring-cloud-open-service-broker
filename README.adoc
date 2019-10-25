@@ -8,12 +8,26 @@ image:https://codecov.io/gh/spring-cloud/spring-cloud-open-service-broker/branch
 Spring Cloud Open Service Broker is a framework for building https://projects.spring.io/spring-boot/[Spring Boot] applications that implement the https://www.openservicebrokerapi.org/[Open Service Broker API].
 
 [NOTE]
-This project was formerly named *Spring Cloud - Cloud Foundry Service Broker*. View the https://github.com/spring-cloud/spring-cloud-open-service-broker/tree/1.0.x[1.0.x] branch of this repository for information on using the released versions of the project with artifacts using that name. The `master` branch of is currently in active development and has been released as version `3.0.0.RELEASE`.
+This project was formerly named *Spring Cloud - Cloud Foundry Service Broker*. View the https://github.com/spring-cloud/spring-cloud-open-service-broker/tree/1.0.x[1.0.x] branch of this repository for information on using the released versions of the project with artifacts using that name.
 
 == Compatibility
 
+=== v3.1.x
+
+* https://projects.spring.io/spring-framework/[Spring Framework] 5.2.x
+* https://projects.spring.io/spring-boot/[Spring Boot] 2.2.x
+* https://github.com/openservicebrokerapi/servicebroker/[Open Service Broker API] 2.15
+
+=== v3.0.x
+
 * https://projects.spring.io/spring-framework/[Spring Framework] 5.1.x
 * https://projects.spring.io/spring-boot/[Spring Boot] 2.1.x
+* https://github.com/openservicebrokerapi/servicebroker/[Open Service Broker API] 2.14
+
+=== v2.1.x
+
+* https://projects.spring.io/spring-framework/[Spring Framework] 5.0.x
+* https://projects.spring.io/spring-boot/[Spring Boot] 2.0.x
 * https://github.com/openservicebrokerapi/servicebroker/[Open Service Broker API] 2.14
 
 == Getting Started
@@ -24,7 +38,7 @@ See the https://github.com/spring-cloud/spring-cloud-open-service-broker/wiki/2.
 
 == Build
 
-This project requires Java 8 at a minimum. 
+This project requires Java 8.
 
 The project is built with Gradle. The https://docs.gradle.org/current/userguide/gradle_wrapper.html[Gradle wrapper] allows you to build the project on multiple platforms and even if you do not have Gradle installed; run it in place of the `gradle` command (as `./gradlew`) from the root of the main project directory.
 
@@ -34,7 +48,7 @@ The project is built with Gradle. The https://docs.gradle.org/current/userguide/
 
 You may also build and run tests against the latest versions or specific version of Spring Framework and Spring Boot by using the following parameters, either individually or together.
 
-    ./gradlew build -PspringBootVersion=latest.integration -PspringVersion=latest.integration
+    ./gradlew build -PspringBootVersion=latest.integration -PspringFrameworkVersion=latest.integration
 
 == Working with the code
 If you don't have an IDE preference we would recommend that you use
