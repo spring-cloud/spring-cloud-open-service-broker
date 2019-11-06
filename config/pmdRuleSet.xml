@@ -37,7 +37,6 @@
 		</properties>
 	</rule>
 	<rule ref="category/java/design.xml">
-		<exclude name="CouplingBetweenObjects" />
 		<exclude name="DataClass" />
 		<exclude name="ExcessiveImports" />
 		<exclude name="ExcessiveParameterList"/>

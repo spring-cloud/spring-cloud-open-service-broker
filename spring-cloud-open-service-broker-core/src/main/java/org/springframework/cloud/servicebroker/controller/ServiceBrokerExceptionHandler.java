@@ -51,6 +51,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Scott Frederick
  * @author Roy Clarkson
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public abstract class ServiceBrokerExceptionHandler {
 
 	protected static final String UNPROCESSABLE_REQUEST = "Unprocessable request received: ";
