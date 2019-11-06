@@ -28,15 +28,13 @@
 		<exclude name="JUnitTestsShouldIncludeAssert" />
 	</rule>
 	<rule ref="category/java/codestyle.xml">
-		<exclude name="LongVariable" />
-		<exclude name="ShortVariable" />
-		<exclude name="AbstractNaming"/>
-		<exclude name="IfStmtsMustUseBraces"/>
+		<exclude name="AtLeastOneConstructor" />
 		<exclude name="LocalVariableCouldBeFinal"/>
+		<exclude name="LongVariable" />
 		<exclude name="MethodArgumentCouldBeFinal"/>
 		<exclude name="OnlyOneReturn" />
+		<exclude name="ShortVariable" />
 		<exclude name="TooManyStaticImports"/>
-		<exclude name="AtLeastOneConstructor" />
 	</rule>
 	<rule ref="category/java/codestyle.xml/LinguisticNaming">
 		<properties>
