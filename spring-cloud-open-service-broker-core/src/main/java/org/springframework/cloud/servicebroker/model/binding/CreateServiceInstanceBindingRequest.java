@@ -26,11 +26,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapperUtils;
+import org.springframework.cloud.servicebroker.model.instance.AsyncParameterizedServiceInstanceRequest;
 
 /**
  * Details of a request to create a service instance binding.
@@ -45,9 +44,9 @@ import org.springframework.cloud.servicebroker.model.util.ParameterBeanMapperUti
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-4">Open Service
  * 		Broker API specification</a>
  */
-@SuppressWarnings({"deprecation", "DeprecatedIsStillUsed"})
+@SuppressWarnings({"DeprecatedIsStillUsed"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerRequest {
+public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServiceInstanceRequest {
 
 	@JsonIgnore //OSB field passed as path param
 	private transient String serviceInstanceId;
@@ -67,11 +66,6 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 
 	private final BindResource bindResource;
 
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	private final Map<String, Object> parameters;
-
-	private final Context context;
-
 	@JsonIgnore //internal field
 	private transient ServiceDefinition serviceDefinition;
 
@@ -87,8 +81,6 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		planId = null;
 		appGuid = null;
 		bindResource = null;
-		context = null;
-		parameters = new HashMap<>();
 	}
 
 	/**
@@ -113,17 +105,15 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 			String bindingId, ServiceDefinition serviceDefinition, Plan plan, boolean asyncAccepted,
 			BindResource bindResource, Map<String, Object> parameters, Context context, String platformInstanceId,
 			String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
-		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
+		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
 		this.bindingId = bindingId;
 		this.serviceDefinition = serviceDefinition;
 		this.plan = plan;
-		this.parameters = parameters;
 		this.bindResource = bindResource;
 		this.appGuid = bindResource == null ? null : bindResource.getAppGuid();
-		this.context = context;
 	}
 
 	/**
@@ -227,57 +217,6 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	}
 
 	/**
-	 * Get any parameters passed by the user, with the user-supplied JSON structure converted to a {@literal Map}.
-	 *
-	 * <p>
-	 * This value is set from the {@literal parameters} field in the body of the request from the platform.
-	 *
-	 * <p>
-	 * The platform will pass the user-supplied JSON structure to the service broker as-is. The service broker is
-	 * responsible for validating the contents of the parameters for correctness or applicability.
-	 *
-	 * @return the populated {@literal Map}
-	 */
-	public Map<String, Object> getParameters() {
-		return this.parameters;
-	}
-
-	/**
-	 * Get any parameters passed by the user, with the user-supplied JSON structure mapped to fields of the specified
-	 * object type.
-	 *
-	 * <p>
-	 * This value is set from the {@literal parameters} field in the body of the request from the platform.
-	 *
-	 * <p>
-	 * An object of the specified type will be instantiated, and value from the parameters JSON will be mapped to the
-	 * object using Java Bean mapping rules.
-	 *
-	 * <p>
-	 * The platform will pass the user-supplied JSON structure to the service broker as-is. The service broker is
-	 * responsible for validating the contents of the parameters for correctness or applicability.
-	 *
-	 * @param cls the {@link Class} representing the type of object to map the parameter key/value pairs to
-	 * @param <T> the type of the object to instantiate and populate
-	 * @return the instantiated and populated object
-	 */
-	public <T> T getParameters(Class<T> cls) {
-		return ParameterBeanMapperUtils.mapParametersToBean(parameters, cls);
-	}
-
-	/**
-	 * Get the platform-specific contextual information for the service binding.
-	 *
-	 * <p>
-	 * This value is set from the {@literal context} field in the body of the request from the platform.
-	 *
-	 * @return the contextual information
-	 */
-	public Context getContext() {
-		return this.context;
-	}
-
-	/**
 	 * Get the service definition of the service instance associated with the binding.
 	 *
 	 * <p>
@@ -355,8 +294,6 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 				Objects.equals(bindingId, that.bindingId) &&
 				Objects.equals(appGuid, that.appGuid) &&
 				Objects.equals(bindResource, that.bindResource) &&
-				Objects.equals(parameters, that.parameters) &&
-				Objects.equals(context, that.context) &&
 				Objects.equals(serviceDefinition, that.serviceDefinition) &&
 				Objects.equals(plan, that.plan);
 	}
@@ -369,7 +306,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	@Override
 	public final int hashCode() {
 		return Objects.hash(super.hashCode(), serviceDefinitionId, serviceInstanceId, planId, bindingId,
-				appGuid, bindResource, parameters, context, serviceDefinition, plan);
+				appGuid, bindResource, serviceDefinition, plan);
 	}
 
 	@Override
@@ -380,8 +317,6 @@ public class CreateServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 				", planId='" + planId + '\'' +
 				", appGuid='" + appGuid + '\'' +
 				", bindResource=" + bindResource +
-				", parameters=" + parameters +
-				", context=" + context +
 				", serviceInstanceId='" + serviceInstanceId + '\'' +
 				", bindingId='" + bindingId + '\'' +
 				'}';
