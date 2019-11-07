@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-apply plugin: "base"
-
 buildscript {
 	repositories {
 		maven { url "https://repo.spring.io/plugins-release" }
@@ -67,7 +65,6 @@ configure(allprojects) {
 	apply plugin: "idea"
 	apply plugin: "jacoco"
 	apply plugin: "propdeps"
-	apply plugin: "propdeps-maven"
 	apply plugin: "propdeps-idea"
 	apply plugin: "propdeps-eclipse"
 	apply plugin: "io.spring.dependency-management"
