@@ -8,6 +8,12 @@ If the `bindable` field is set to `true` for any plan in the service catalog, th
 Otherwise, the binding methods of the service broker are not called by the platform, and a default implementation of this interface can be used.
 Each method receives a single Java object parameter that contains all details of the request from the platform and returns a Java object value that provides details of the operation to the platform.
 
+The service binding create and delete operations can be performed synchronously or asynchronously.
+
+* When a service broker creates or deletes a service binding synchronously, the appropriate interface method should block and only return a response to the platform when the operation completes successfully or when a failure occurs.
+* When performing an operation asynchronously, the service broker can return a response to the platform before the operation is complete and indicate in the response that the operation is in progress.
+The platform link:#service-instance-binding-status[polls the service broker] to get the status of the operation when an asynchronous operation is indicated.
+
 === Service Binding Creation
 The service broker must provide an implementation of the {scosb-api-services}ServiceInstanceBindingService.html#createServiceInstanceBinding-org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest-[createServiceInstanceBinding()].
 
@@ -21,7 +27,7 @@ The response from this method lets one of two Java object types be returned, ref
 Service brokers can generate one set of credentials for all binding requests or provide unique credentials for each binding request.
 
 ==== Event Registry
-Service binding creation can be further customized by utilizing events. Autowire the {scosb-api-service-events}/EventFlowRegistries.html[EventFlowRegistries] bean and retrieve the {scosb-api-service-events}/CreateServiceInstanceBindingEventFlowRegistry.html[CreateServiceInstanceBindingEventFlowRegistry] via the {scosb-api-service-events}/EventFlowRegistries.html#getCreateInstanceBindingRegistry--[getCreateInstanceBindingRegistry()] accessor. Use the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I-[addInitializationFlow()], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C-[addCompletionFlow()] or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E-[addErrorFlow()] methods to register custom reactive flows for execution during the various stages of creating a service binding.
+Service binding creation can be further customized by utilizing events. Autowire the {scosb-api-service-events}/CreateServiceInstanceBindingEventFlowRegistry.html[CreateServiceInstanceBindingEventFlowRegistry] bean. Use the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I-[addInitializationFlow()], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C-[addCompletionFlow()] or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E-[addErrorFlow()] methods to register custom reactive flows for execution during the various stages of creating a service binding.
 
 === Service Binding Deletion
 The service broker must provide an implementation of the {scosb-api-services}ServiceInstanceBindingService.html#deleteServiceInstanceBinding-org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest-[deleteServiceInstanceBinding()].
@@ -29,7 +35,16 @@ The service broker must provide an implementation of the {scosb-api-services}Ser
 Any credentials provisioned in the create operation should be deprovisioned by the delete operation.
 
 ==== Event Registry
-Service binding deletion can be further customized by utilizing events. Autowire the {scosb-api-service-events}/EventFlowRegistries.html[EventFlowRegistries] bean and retrieve the {scosb-api-service-events}/DeleteServiceInstanceBindingEventFlowRegistry.html[DeleteServiceInstanceBindingEventFlowRegistry] via the {scosb-api-service-events}/EventFlowRegistries.html#getDeleteInstanceBindingRegistry--[getDeleteInstanceBindingRegistry()] accessor. Use the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I-[addInitializationFlow()], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C-[addCompletionFlow()] or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E-[addErrorFlow()] methods to register custom reactive flows for execution during the various stages of deleting a service binding.
+Service binding deletion can be further customized by utilizing events. Autowire the {scosb-api-service-events}/DeleteServiceInstanceBindingEventFlowRegistry.html[DeleteServiceInstanceBindingEventFlowRegistry] bean. Use the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I-[addInitializationFlow()], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C-[addCompletionFlow()] or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E-[addErrorFlow()] methods to register custom reactive flows for execution during the various stages of deleting a service binding.
+
+[#service-instance-binding-status]
+=== Service Binding Operation Status Retrieval
+If any create or delete operation can return an asynchronous "`operation in progress`" response to the platform, the service broker must provide an implementation of the {scosb-api-services}ServiceInstanceBindingService.html#getLastOperation-org.springframework.cloud.servicebroker.model.instance.GetLastServiceBindingOperationRequest-[getLastOperation()]. Otherwise, this method is never called by the platform, and the default implementation in the interface can be used.
+
+The platform polls this method of the service broker for a service instance that has an asynchronous operation in progress until the service broker indicates that the operation has completed successfully or a failure has occurred.
+
+==== Event Registry
+Service binding last operation requests can be further customized by utilizing events. Autowire the {scosb-api-service-events}/AsyncOperationServiceInstanceBindingEventFlowRegistry.html[AsyncOperationServiceInstanceBindingEventFlowRegistry] bean. Use the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I-[addInitializationFlow()], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C-[addCompletionFlow()] or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E-[addErrorFlow()] methods to register custom reactive flows for execution during the various stages of last operation retrieval.
 
 === Service Binding Retrieval
 If the `bindings_retrievable` field is set to `true` in the services catalog, the service catalog must provide an implementation of the {scosb-api-services}ServiceInstanceBindingService.html#getServiceInstanceBinding-org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest-[getServiceInstanceBinding()].
@@ -48,9 +63,22 @@ include::{examples-dir}/ExampleServiceBindingService.java[]
 
 === Example Event Flow Configuration
 
-The following example shows a configuration of a service binding event flows:
+There are multiple ways to configure service binding event flows. One option is to autowire one or more registries and interact with the registry directly. Another option is to define beans for specific flows. These beans will be identified and added to the appropriate registry automatically. A final option is to declare a new registry bean itself, however be aware that defining a new registry bean will override the provided auto-configuration.
+
+==== Option 1: Autowire Registries
+
+The following example shows a configuration for service binding event flows:
 
 [source,java,%autofit]
 ----
 include::{examples-dir}/ExampleServiceBindingEventFlowsConfiguration.java[]
+----
+
+==== Option 2: Event Flow Beans
+
+Optionally configure beans for the individual flows as seen in the following example:
+
+[source,java,%autofit]
+----
+include::{examples-dir}/ExampleServiceBindingEventFlowsConfiguration2.java[]
 ----

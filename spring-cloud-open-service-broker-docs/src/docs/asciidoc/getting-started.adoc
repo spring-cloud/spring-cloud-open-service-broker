@@ -3,8 +3,9 @@
 
 Most service broker applications implement API or web UI endpoints beyond the Open Service Broker API endpoints.
 These additional endpoints might provide information about the application, provide a dashboard UI, or provide controls over application behavior.
-Developers may implement these additional endpoints with https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html[Spring MVC].
-Spring WebFlux is currently not supported.
+Developers may implement these additional endpoints with https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html[Spring WebFlux] or https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html[Spring MVC].
+
+NOTE: The Spring Cloud Open Service Broker starter does not include a transitive dependency on Spring WebFlux or Spring MVC. A Spring Boot web starter is required to activate the auto-configuration.
 
 === Maven dependencies
 
@@ -43,3 +44,13 @@ To start, use the `@SpringBootApplication` annotation on the service broker's ma
     }
 
 This will trigger the inclusion of the default configuration.
+
+=== Customizing the Service Broker Endpoints Path
+
+Sometimes, it is useful to customize the prefix for the service broker endpoints. For example, your application might be serving conflicting endpoints for another purpose. You can use the `spring.cloud.openservicebroker.base-path` property to change the prefix for your broker endpoints, as shown in the following example:
+
+```
+spring.cloud.openservicebroker.base-path=/broker
+```
+
+The preceding application.properties example changes the endpoint from `/` to `/broker/` (for example, /broker/v2/catalog).

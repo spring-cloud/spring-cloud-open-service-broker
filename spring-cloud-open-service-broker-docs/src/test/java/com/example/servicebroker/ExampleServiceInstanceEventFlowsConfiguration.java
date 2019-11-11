@@ -10,7 +10,10 @@ import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOper
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationResponse;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
-import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
+import org.springframework.cloud.servicebroker.service.events.AsyncOperationServiceInstanceEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.CreateServiceInstanceEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.DeleteServiceInstanceEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.UpdateServiceInstanceEventFlowRegistry;
 import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceCompletionFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceErrorFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceInitializationFlow;
@@ -28,11 +31,22 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ExampleServiceInstanceEventFlowsConfiguration {
 
-	// Autowire the EventFlowRegistries bean
-	private final EventFlowRegistries eventFlowRegistries;
+	private final CreateServiceInstanceEventFlowRegistry createRegistry;
 
-	public ExampleServiceInstanceEventFlowsConfiguration(EventFlowRegistries eventFlowRegistries) {
-		this.eventFlowRegistries = eventFlowRegistries;
+	private final UpdateServiceInstanceEventFlowRegistry updateRegistry;
+
+	private final DeleteServiceInstanceEventFlowRegistry deleteRegistry;
+
+	private final AsyncOperationServiceInstanceEventFlowRegistry asyncRegistry;
+
+	public ExampleServiceInstanceEventFlowsConfiguration(CreateServiceInstanceEventFlowRegistry createRegistry,
+			UpdateServiceInstanceEventFlowRegistry updateRegistry,
+			DeleteServiceInstanceEventFlowRegistry deleteRegistry,
+			AsyncOperationServiceInstanceEventFlowRegistry asyncRegistry) {
+		this.createRegistry = createRegistry;
+		this.updateRegistry = updateRegistry;
+		this.deleteRegistry = deleteRegistry;
+		this.asyncRegistry = asyncRegistry;
 
 		prepareCreateEventFlows()
 				.then(prepareUpdateEventFlows())
@@ -42,7 +56,7 @@ public class ExampleServiceInstanceEventFlowsConfiguration {
 	}
 
 	private Mono<Void> prepareCreateEventFlows() {
-		return Mono.just(eventFlowRegistries.getCreateInstanceRegistry())
+		return Mono.just(createRegistry)
 				.map(registry -> registry.addInitializationFlow(new CreateServiceInstanceInitializationFlow() {
 					@Override
 					public Mono<Void> initialize(CreateServiceInstanceRequest request) {
@@ -55,7 +69,7 @@ public class ExampleServiceInstanceEventFlowsConfiguration {
 						.then(registry.addCompletionFlow(new CreateServiceInstanceCompletionFlow() {
 							@Override
 							public Mono<Void> complete(CreateServiceInstanceRequest request,
-													   CreateServiceInstanceResponse response) {
+									CreateServiceInstanceResponse response) {
 								//
 								// do something after the instance is created
 								//
@@ -75,7 +89,7 @@ public class ExampleServiceInstanceEventFlowsConfiguration {
 	}
 
 	private Mono<Void> prepareUpdateEventFlows() {
-		return Mono.just(eventFlowRegistries.getUpdateInstanceRegistry())
+		return Mono.just(updateRegistry)
 				.map(registry -> registry.addInitializationFlow(new UpdateServiceInstanceInitializationFlow() {
 					@Override
 					public Mono<Void> initialize(UpdateServiceInstanceRequest request) {
@@ -88,7 +102,7 @@ public class ExampleServiceInstanceEventFlowsConfiguration {
 						.then(registry.addCompletionFlow(new UpdateServiceInstanceCompletionFlow() {
 							@Override
 							public Mono<Void> complete(UpdateServiceInstanceRequest request,
-													   UpdateServiceInstanceResponse response) {
+									UpdateServiceInstanceResponse response) {
 								//
 								// do something after the instance is updated
 								//
@@ -108,7 +122,7 @@ public class ExampleServiceInstanceEventFlowsConfiguration {
 	}
 
 	private Mono<Void> prepareDeleteEventFlows() {
-		return Mono.just(eventFlowRegistries.getDeleteInstanceRegistry())
+		return Mono.just(deleteRegistry)
 				.map(registry -> registry.addInitializationFlow(new DeleteServiceInstanceInitializationFlow() {
 					@Override
 					public Mono<Void> initialize(DeleteServiceInstanceRequest request) {
@@ -121,7 +135,7 @@ public class ExampleServiceInstanceEventFlowsConfiguration {
 						.then(registry.addCompletionFlow(new DeleteServiceInstanceCompletionFlow() {
 							@Override
 							public Mono<Void> complete(DeleteServiceInstanceRequest request,
-													   DeleteServiceInstanceResponse response) {
+									DeleteServiceInstanceResponse response) {
 								//
 								// do something after the instance is deleted
 								//
@@ -141,7 +155,7 @@ public class ExampleServiceInstanceEventFlowsConfiguration {
 	}
 
 	private Mono<Void> prepareLastOperationEventFlows() {
-		return Mono.just(eventFlowRegistries.getAsyncOperationRegistry())
+		return Mono.just(asyncRegistry)
 				.map(registry -> registry.addInitializationFlow(new AsyncOperationServiceInstanceInitializationFlow() {
 					@Override
 					public Mono<Void> initialize(GetLastServiceOperationRequest request) {
@@ -154,7 +168,7 @@ public class ExampleServiceInstanceEventFlowsConfiguration {
 						.then(registry.addCompletionFlow(new AsyncOperationServiceInstanceCompletionFlow() {
 							@Override
 							public Mono<Void> complete(GetLastServiceOperationRequest request,
-													   GetLastServiceOperationResponse response) {
+									GetLastServiceOperationResponse response) {
 								//
 								// do something after returning the last operation
 								//
