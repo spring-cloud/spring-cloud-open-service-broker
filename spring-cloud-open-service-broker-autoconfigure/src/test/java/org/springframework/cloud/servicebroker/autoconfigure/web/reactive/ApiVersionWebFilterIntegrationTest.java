@@ -17,6 +17,8 @@
 package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
@@ -38,35 +40,34 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class ApiVersionWebFilterIntegrationTest {
+class ApiVersionWebFilterIntegrationTest {
 
 	private static final String CATALOG_PATH = "/v2/catalog";
 
-	private static final Charset UTF_8 = Charset.forName("UTF-8");
+	private static final Charset UTF_8 = StandardCharsets.UTF_8;
 
 	@InjectMocks
 	private CatalogController controller;
 
 	@Mock
-	@SuppressWarnings("unused")
 	private CatalogService catalogService;
 
 	@Test
-	public void noHeaderSent() throws Exception {
+	void noHeaderSent() {
 		mockWithExpectedVersion().get().uri(CATALOG_PATH)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isBadRequest()
 				.expectBody()
 				.consumeWith(result -> {
-					String responseBody = new String(result.getResponseBody(), UTF_8);
+					String responseBody = new String(Objects.requireNonNull(result.getResponseBody()), UTF_8);
 					String description = JsonPath.read(responseBody, "$.description");
 					assertThat(description).contains("expected-version");
 				});
 	}
 
 	@Test
-	public void incorrectHeaderSent() throws Exception {
+	void incorrectHeaderSent() {
 		mockWithExpectedVersion().get().uri(CATALOG_PATH)
 				.header(BrokerApiVersion.DEFAULT_API_VERSION_HEADER, "wrong-version")
 				.accept(MediaType.APPLICATION_JSON)
@@ -74,7 +75,7 @@ public class ApiVersionWebFilterIntegrationTest {
 				.expectStatus().isEqualTo(HttpStatus.PRECONDITION_FAILED)
 				.expectBody()
 				.consumeWith(result -> {
-					String responseBody = new String(result.getResponseBody(), UTF_8);
+					String responseBody = new String(Objects.requireNonNull(result.getResponseBody()), UTF_8);
 					String description = JsonPath.read(responseBody, "$.description");
 					assertThat(description).contains("expected-version");
 					assertThat(description).contains("wrong-version");
@@ -82,7 +83,7 @@ public class ApiVersionWebFilterIntegrationTest {
 	}
 
 	@Test
-	public void matchingHeaderSent() throws Exception {
+	void matchingHeaderSent() {
 		given(catalogService.getCatalog())
 				.willReturn(Mono.just(Catalog.builder().build()));
 
@@ -94,7 +95,7 @@ public class ApiVersionWebFilterIntegrationTest {
 	}
 
 	@Test
-	public void anyHeaderNotSent() throws Exception {
+	void anyHeaderNotSent() {
 		given(catalogService.getCatalog())
 				.willReturn(Mono.just(Catalog.builder().build()));
 
@@ -105,7 +106,7 @@ public class ApiVersionWebFilterIntegrationTest {
 	}
 
 	@Test
-	public void anyHeaderSent() throws Exception {
+	void anyHeaderSent() {
 		given(catalogService.getCatalog())
 				.willReturn(Mono.just(Catalog.builder().build()));
 

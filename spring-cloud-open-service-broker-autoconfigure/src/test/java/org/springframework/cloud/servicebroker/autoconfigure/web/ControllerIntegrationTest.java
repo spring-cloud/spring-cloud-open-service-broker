@@ -16,9 +16,10 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,15 +46,15 @@ public abstract class ControllerIntegrationTest {
 
 	protected static final String API_INFO_LOCATION = "https://api.platform.example.com";
 
-	protected static final String ORIGINATING_IDENTITY_PLATFORM = "test-platform";
+	private static final String ORIGINATING_IDENTITY_PLATFORM = "test-platform";
 
-	protected static final String ORIGINATING_USER_KEY = "user_id";
+	private static final String ORIGINATING_USER_KEY = "user_id";
 
-	protected static final String ORIGINATING_USER_VALUE = "user_id";
+	private static final String ORIGINATING_USER_VALUE = "user_id";
 
-	protected static final String ORIGINATING_EMAIL_KEY = "email";
+	private static final String ORIGINATING_EMAIL_KEY = "email";
 
-	protected static final String ORIGINATING_EMAIL_VALUE = "user@example.com";
+	private static final String ORIGINATING_EMAIL_VALUE = "user@example.com";
 
 	protected static final String PLATFORM_INSTANCE_ID = "platform-abc";
 
@@ -119,7 +120,7 @@ public abstract class ControllerIntegrationTest {
 	}
 
 	protected void assertDescriptionContains(EntityExchangeResult<byte[]> result, String value) {
-		String responseBody = new String(result.getResponseBody(), Charset.forName("UTF-8"));
+		String responseBody = new String(Objects.requireNonNull(result.getResponseBody()), StandardCharsets.UTF_8);
 		String description = JsonPath.read(responseBody, "$.description");
 		assertThat(description).contains(value);
 	}

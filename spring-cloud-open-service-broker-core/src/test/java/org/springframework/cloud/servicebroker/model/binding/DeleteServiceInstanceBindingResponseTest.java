@@ -24,10 +24,10 @@ import org.springframework.cloud.servicebroker.JsonUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class DeleteServiceInstanceBindingResponseTest {
+class DeleteServiceInstanceBindingResponseTest {
 
 	@Test
-	public void responseWithDefaultsIsBuilt() {
+	void responseWithDefaultsIsBuilt() {
 		DeleteServiceInstanceBindingResponse response = DeleteServiceInstanceBindingResponse.builder()
 				.build();
 
@@ -36,7 +36,7 @@ public class DeleteServiceInstanceBindingResponseTest {
 	}
 
 	@Test
-	public void responseWithAllValuesIsBuilt() {
+	void responseWithAllValuesIsBuilt() {
 		DeleteServiceInstanceBindingResponse response = DeleteServiceInstanceBindingResponse.builder()
 				.async(true)
 				.operation("in progress")
@@ -47,7 +47,7 @@ public class DeleteServiceInstanceBindingResponseTest {
 	}
 
 	@Test
-	public void responseWithAllValuesIsDeserialized() {
+	void responseWithAllValuesIsDeserialized() {
 		DeleteServiceInstanceBindingResponse response = JsonUtils.readTestDataFile(
 				"deleteResponse.json", DeleteServiceInstanceBindingResponse.class);
 
@@ -55,14 +55,14 @@ public class DeleteServiceInstanceBindingResponseTest {
 	}
 
 	@Test
-	public void withinOperationCharacterLimit() throws Exception {
+	void withinOperationCharacterLimit() {
 		DeleteServiceInstanceBindingResponse.builder()
 				.operation(RandomString.make(9_999))
 				.build();
 	}
 
 	@Test
-	public void exceedsOperationCharacterLimit() throws Exception {
+	void exceedsOperationCharacterLimit() {
 		assertThrows(IllegalArgumentException.class, () ->
 				DeleteServiceInstanceBindingResponse.builder()
 						.operation(RandomString.make(10_001))
@@ -70,7 +70,7 @@ public class DeleteServiceInstanceBindingResponseTest {
 	}
 
 	@Test
-	public void exactlyOperationCharacterLimit() throws Exception {
+	void exactlyOperationCharacterLimit() {
 		DeleteServiceInstanceBindingResponse.builder()
 				.operation(RandomString.make(10_000))
 				.build();

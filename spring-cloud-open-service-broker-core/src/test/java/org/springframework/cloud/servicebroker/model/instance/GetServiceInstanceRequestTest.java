@@ -25,10 +25,10 @@ import org.springframework.cloud.servicebroker.model.PlatformContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GetServiceInstanceRequestTest {
+class GetServiceInstanceRequestTest {
 
 	@Test
-	public void requestWithDefaultsIsBuilt() {
+	void requestWithDefaultsIsBuilt() {
 		GetServiceInstanceRequest request = GetServiceInstanceRequest.builder()
 				.build();
 
@@ -40,7 +40,7 @@ public class GetServiceInstanceRequestTest {
 	}
 
 	@Test
-	public void requestWithAllValuesIsBuilt() {
+	void requestWithAllValuesIsBuilt() {
 		Context originatingIdentity = PlatformContext.builder()
 				.platform("test-platform")
 				.build();
@@ -61,7 +61,7 @@ public class GetServiceInstanceRequestTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(GetServiceInstanceRequest.class)
 				.withRedefinedSuperclass()

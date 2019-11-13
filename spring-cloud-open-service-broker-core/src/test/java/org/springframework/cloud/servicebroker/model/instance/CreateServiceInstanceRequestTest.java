@@ -34,10 +34,10 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CreateServiceInstanceRequestTest {
+class CreateServiceInstanceRequestTest {
 
 	@Test
-	public void requestWithDefaultsIsBuilt() {
+	void requestWithDefaultsIsBuilt() {
 		CreateServiceInstanceRequest request = CreateServiceInstanceRequest.builder()
 				.build();
 
@@ -55,12 +55,11 @@ public class CreateServiceInstanceRequestTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void requestWithAllValuesIsBuilt() {
-		Map<String, Object> parameters = new HashMap<String, Object>() {{
-			put("field4", "value4");
-			put("field5", "value5");
-		}};
+	void requestWithAllValuesIsBuilt() {
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("field4", "value4");
+		parameters.put("field5", "value5");
+
 		Context context = PlatformContext.builder().build();
 
 		Context originatingIdentity = PlatformContext.builder()
@@ -104,14 +103,11 @@ public class CreateServiceInstanceRequestTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void serializesAccordingToOsbSpecs() {
-		Map<String, Object> parameters = new HashMap<String, Object>() {
-			{
-				put("field4", "value4");
-				put("field5", "value5");
-			}
-		};
+	void serializesAccordingToOsbSpecs() {
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("field4", "value4");
+		parameters.put("field5", "value5");
+
 		Context context = CloudFoundryContext.builder()
 				.organizationGuid("org-guid")
 				.spaceGuid("space-guid").build();
@@ -156,8 +152,7 @@ public class CreateServiceInstanceRequestTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void serializesWithoutContextAccordingToOsbSpecs() {
+	void serializesWithoutContextAccordingToOsbSpecs() {
 		CreateServiceInstanceRequest request = CreateServiceInstanceRequest.builder()
 				.serviceInstanceId("service-instance-id")
 				.serviceDefinitionId("service-definition-id")
@@ -180,7 +175,7 @@ public class CreateServiceInstanceRequestTest {
 
 	@Test
 	@SuppressWarnings("deprecation")
-	public void requestIsDeserializedFromJson() {
+	void requestIsDeserializedFromJson() {
 		CreateServiceInstanceRequest request =
 				JsonUtils.readTestDataFile("createRequest.json",
 						CreateServiceInstanceRequest.class);
@@ -192,7 +187,7 @@ public class CreateServiceInstanceRequestTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(CreateServiceInstanceRequest.class)
 				.withRedefinedSuperclass()

@@ -29,7 +29,7 @@ import org.springframework.web.server.WebFilterChain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-public class RequestIdentityWebFilterTest {
+class RequestIdentityWebFilterTest {
 
 	private static final String V2_API_PATH_PATTERN = "/v2/**";
 
@@ -39,7 +39,7 @@ public class RequestIdentityWebFilterTest {
 	private WebFilterChain chain;
 
 	@Test
-	public void requestIdentityHeader() {
+	void requestIdentityHeader() {
 		MockServerHttpRequest request = MockServerHttpRequest
 				.get(V2_API_PATH_PATTERN)
 				.header(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, "request-id")
@@ -54,7 +54,7 @@ public class RequestIdentityWebFilterTest {
 	}
 
 	@Test
-	public void requestIdentityHeaderMissing() {
+	void requestIdentityHeaderMissing() {
 		MockServerHttpRequest request = MockServerHttpRequest
 				.get(V2_API_PATH_PATTERN)
 				.build();

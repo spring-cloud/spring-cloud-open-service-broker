@@ -49,7 +49,7 @@ import static org.mockito.BDDMockito.given;
 
 public abstract class AbstractServiceInstanceControllerIntegrationTest extends ControllerIntegrationTest {
 
-	protected static final String SERVICE_INSTANCES_ROOT_PATH = "/v2/service_instances/";
+	private static final String SERVICE_INSTANCES_ROOT_PATH = "/v2/service_instances/";
 
 	@InjectMocks
 	protected ServiceInstanceController controller;

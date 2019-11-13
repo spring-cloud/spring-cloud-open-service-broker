@@ -24,10 +24,10 @@ import org.springframework.cloud.servicebroker.JsonUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class DeleteServiceInstanceResponseTest {
+class DeleteServiceInstanceResponseTest {
 
 	@Test
-	public void responseWithDefaultsIsBuilt() {
+	void responseWithDefaultsIsBuilt() {
 		DeleteServiceInstanceResponse response = DeleteServiceInstanceResponse.builder()
 				.build();
 
@@ -36,7 +36,7 @@ public class DeleteServiceInstanceResponseTest {
 	}
 
 	@Test
-	public void responseWithAllValuesIsBuilt() {
+	void responseWithAllValuesIsBuilt() {
 		DeleteServiceInstanceResponse response = DeleteServiceInstanceResponse.builder()
 				.async(true)
 				.operation("in progress")
@@ -47,7 +47,7 @@ public class DeleteServiceInstanceResponseTest {
 	}
 
 	@Test
-	public void responseWithAllValuesIsDeserialized() {
+	void responseWithAllValuesIsDeserialized() {
 		DeleteServiceInstanceResponse response = JsonUtils.readTestDataFile(
 				"deleteResponse.json", DeleteServiceInstanceResponse.class);
 
@@ -55,14 +55,14 @@ public class DeleteServiceInstanceResponseTest {
 	}
 
 	@Test
-	public void withinOperationCharacterLimit() throws Exception {
+	void withinOperationCharacterLimit() {
 		DeleteServiceInstanceResponse.builder()
 				.operation(RandomString.make(9_999))
 				.build();
 	}
 
 	@Test
-	public void exceedsOperationCharacterLimit() throws Exception {
+	void exceedsOperationCharacterLimit() {
 		assertThrows(IllegalArgumentException.class, () ->
 				DeleteServiceInstanceResponse.builder()
 						.operation(RandomString.make(10_001))
@@ -70,7 +70,7 @@ public class DeleteServiceInstanceResponseTest {
 	}
 
 	@Test
-	public void exactlyOperationCharacterLimit() throws Exception {
+	void exactlyOperationCharacterLimit() {
 		DeleteServiceInstanceResponse.builder()
 				.operation(RandomString.make(10_000))
 				.build();

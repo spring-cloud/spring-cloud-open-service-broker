@@ -22,17 +22,20 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.controller.CatalogController;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
+import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class RequestIdentityWebFilterIntegrationTest {
+class RequestIdentityWebFilterIntegrationTest {
 
 	private static final String CATALOG_PATH = "/v2/catalog";
 
@@ -40,20 +43,21 @@ public class RequestIdentityWebFilterIntegrationTest {
 	private CatalogController controller;
 
 	@Mock
-	@SuppressWarnings("unused")
 	private CatalogService catalogService;
 
 	private WebTestClient client;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		this.client = WebTestClient.bindToController(controller)
 				.webFilter(new RequestIdentityWebFilter())
 				.build();
+		given(catalogService.getCatalog())
+				.willReturn(Mono.just(Catalog.builder().build()));
 	}
 
 	@Test
-	public void noHeaderSent() throws Exception {
+	void noHeaderSent() {
 		client.get().uri(CATALOG_PATH)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
@@ -64,7 +68,7 @@ public class RequestIdentityWebFilterIntegrationTest {
 	}
 
 	@Test
-	public void headerSent() throws Exception {
+	void headerSent() {
 		client.get().uri(CATALOG_PATH)
 				.header(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, "request-id")
 				.accept(MediaType.APPLICATION_JSON)

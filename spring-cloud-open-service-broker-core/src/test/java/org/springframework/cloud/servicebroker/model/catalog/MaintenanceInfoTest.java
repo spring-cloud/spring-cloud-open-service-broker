@@ -21,36 +21,36 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class MaintenanceInfoTest {
+class MaintenanceInfoTest {
 
 	@Test
-	public void incorrectVersion() {
+	void incorrectVersion() {
 		assertThrows(IllegalArgumentException.class, () ->
 				constructInfoAndValidate("157.2", "description"));
 	}
 
 	@Test
-	public void simpleVersion() {
+	void simpleVersion() {
 		constructInfoAndValidate("1.1.1", "description");
 	}
 
 	@Test
-	public void simpleVersionDescriptionIsNull() {
+	void simpleVersionDescriptionIsNull() {
 		constructInfoAndValidate("1.1.1", null);
 	}
 
 	@Test
-	public void versionWithExtension() {
+	void versionWithExtension() {
 		constructInfoAndValidate("1.0.0-beta+exp.sha.5114f85", "description");
 	}
 
 	@Test
-	public void simpleVersionCompoundVersionConstructor() {
+	void simpleVersionCompoundVersionConstructor() {
 		constructInfoAndValidate(1, 1, 1, "", "description");
 	}
 
 	@Test
-	public void versionWithExtensionCompoundVersionConstructor() {
+	void versionWithExtensionCompoundVersionConstructor() {
 		constructInfoAndValidate(1, 0, 0, "-beta+exp.sha.5114f85", "description");
 	}
 

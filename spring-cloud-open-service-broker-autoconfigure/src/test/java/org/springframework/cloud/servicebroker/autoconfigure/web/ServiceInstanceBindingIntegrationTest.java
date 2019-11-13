@@ -31,7 +31,7 @@ public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIn
 	protected String createRequestBody;
 
 	@BeforeEach
-	public void setupBase() {
+	void setupBase() {
 		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId(serviceDefinition.getId())
 				.planId("plan-one-id")

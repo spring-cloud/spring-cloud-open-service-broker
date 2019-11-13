@@ -30,7 +30,7 @@ import org.springframework.web.server.WebFilterChain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-public class ApiVersionWebFilterTest {
+class ApiVersionWebFilterTest {
 
 	private static final String V2_API_PATH_PATTERN = "/v2/**";
 
@@ -40,15 +40,15 @@ public class ApiVersionWebFilterTest {
 	private WebFilterChain chain;
 
 	@Test
-	public void noBrokerApiVersionConfigured() {
+	void noBrokerApiVersionConfigured() {
 		setUpVersionResponse("9.9");
 		ApiVersionWebFilter webFilter = new ApiVersionWebFilter();
-		webFilter.filter(exchange, chain);
+		webFilter.filter(exchange, chain).block();
 		assertThat(exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 	@Test
-	public void anyVersionAccepted() {
+	void anyVersionAccepted() {
 		setUpVersionResponse("9.9");
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", BrokerApiVersion.API_VERSION_ANY);
 		ApiVersionWebFilter webFilter = new ApiVersionWebFilter(brokerApiVersion);
@@ -57,7 +57,7 @@ public class ApiVersionWebFilterTest {
 	}
 
 	@Test
-	public void versionsMatch() {
+	void versionsMatch() {
 		setUpVersionResponse("9.9");
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", "9.9");
 		ApiVersionWebFilter webFilter = new ApiVersionWebFilter(brokerApiVersion);
@@ -66,7 +66,7 @@ public class ApiVersionWebFilterTest {
 	}
 
 	@Test
-	public void versionMismatch() {
+	void versionMismatch() {
 		setUpVersionResponse("9.9");
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", "8.8");
 		ApiVersionWebFilter webFilter = new ApiVersionWebFilter(brokerApiVersion);
@@ -75,7 +75,7 @@ public class ApiVersionWebFilterTest {
 	}
 
 	@Test
-	public void versionHeaderIsMissing() {
+	void versionHeaderIsMissing() {
 		setUpVersionResponse(null);
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", "9.9");
 		ApiVersionWebFilter webFilter = new ApiVersionWebFilter(brokerApiVersion);
@@ -84,7 +84,7 @@ public class ApiVersionWebFilterTest {
 	}
 
 	@Test
-	public void versionHeaderIsMissingAnyVersionAccepted() {
+	void versionHeaderIsMissingAnyVersionAccepted() {
 		setUpVersionResponse(null);
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", BrokerApiVersion.API_VERSION_ANY);
 		ApiVersionWebFilter webFilter = new ApiVersionWebFilter(brokerApiVersion);
@@ -93,7 +93,7 @@ public class ApiVersionWebFilterTest {
 	}
 
 	private void setUpVersionResponse(String version) {
-		MockServerHttpRequest request = null;
+		MockServerHttpRequest request;
 		if (version == null) {
 			request = MockServerHttpRequest
 					.get(V2_API_PATH_PATTERN)

@@ -28,10 +28,10 @@ import static org.springframework.cloud.servicebroker.model.KubernetesContext.CL
 import static org.springframework.cloud.servicebroker.model.KubernetesContext.KUBERNETES_PLATFORM;
 import static org.springframework.cloud.servicebroker.model.KubernetesContext.NAMESPACE_KEY;
 
-public class KubernetesContextTest {
+class KubernetesContextTest {
 
 	@Test
-	public void emptyContext() {
+	void emptyContext() {
 		KubernetesContext context = KubernetesContext.builder()
 				.build();
 
@@ -43,7 +43,7 @@ public class KubernetesContextTest {
 	}
 
 	@Test
-	public void populatedContext() {
+	void populatedContext() {
 		KubernetesContext context = KubernetesContext.builder()
 				.property("key1", "value1")
 				.namespace("namespace")
@@ -70,7 +70,7 @@ public class KubernetesContextTest {
 	}
 
 	@Test
-	public void partialContextIsSerialized() {
+	void partialContextIsSerialized() {
 		KubernetesContext context = KubernetesContext.builder()
 				.property("key1", "value1")
 				.namespace("namespace")
@@ -89,7 +89,7 @@ public class KubernetesContextTest {
 	}
 
 	@Test
-	public void fullContextIsSerialized() {
+	void fullContextIsSerialized() {
 		KubernetesContext context = KubernetesContext.builder()
 				.property("key1", "value1")
 				.namespace("namespace")

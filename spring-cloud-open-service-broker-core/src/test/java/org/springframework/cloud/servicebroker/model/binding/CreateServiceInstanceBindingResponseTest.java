@@ -19,10 +19,10 @@ package org.springframework.cloud.servicebroker.model.binding;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 
-public class CreateServiceInstanceBindingResponseTest {
+class CreateServiceInstanceBindingResponseTest {
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(CreateServiceInstanceBindingResponse.class)
 				.withRedefinedSuperclass()

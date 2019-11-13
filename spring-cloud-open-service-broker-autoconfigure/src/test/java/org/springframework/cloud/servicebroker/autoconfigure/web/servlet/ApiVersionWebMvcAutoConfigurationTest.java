@@ -34,10 +34,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.model.BrokerApiVersion.API_VERSION_ANY;
 import static org.springframework.cloud.servicebroker.model.BrokerApiVersion.API_VERSION_CURRENT;
 
-public class ApiVersionWebMvcAutoConfigurationTest {
+class ApiVersionWebMvcAutoConfigurationTest {
 
 	@Test
-	public void apiVersionBeansAreNotCreatedWithNonWebConfiguration() {
+	void apiVersionBeansAreNotCreatedWithNonWebConfiguration() {
 		nonWebApplicationContextRunner()
 				.withUserConfiguration(ServicesConfiguration.class)
 				.run((context) -> {
@@ -48,7 +48,7 @@ public class ApiVersionWebMvcAutoConfigurationTest {
 	}
 
 	@Test
-	public void apiVersionBeansAreNotCreatedWithoutServiceBeans() {
+	void apiVersionBeansAreNotCreatedWithoutServiceBeans() {
 		webApplicationContextRunner()
 				.run((context) -> {
 					assertThat(context).doesNotHaveBean(BrokerApiVersion.class);
@@ -58,7 +58,7 @@ public class ApiVersionWebMvcAutoConfigurationTest {
 	}
 
 	@Test
-	public void apiVersionBeansAreCreatedWithDefault() {
+	void apiVersionBeansAreCreatedWithDefault() {
 		webApplicationContextRunner()
 				.withUserConfiguration(ServicesConfiguration.class)
 				.run((context) -> {
@@ -70,7 +70,7 @@ public class ApiVersionWebMvcAutoConfigurationTest {
 	}
 
 	@Test
-	public void apiVersionCheckIsDisabled() {
+	void apiVersionCheckIsDisabled() {
 		webApplicationContextRunner()
 				.withUserConfiguration(ServicesConfiguration.class)
 				.withPropertyValues("spring.cloud.openservicebroker.api-version-check-enabled=false")
@@ -78,7 +78,7 @@ public class ApiVersionWebMvcAutoConfigurationTest {
 	}
 
 	@Test
-	public void apiVersionBeansAreCreatedFromCustomVersionBean() {
+	void apiVersionBeansAreCreatedFromCustomVersionBean() {
 		webApplicationContextRunner()
 				.withUserConfiguration(ServicesConfiguration.class, CustomBrokerApiVersionConfigurationFromBean.class)
 				.run((context) -> {
@@ -90,7 +90,7 @@ public class ApiVersionWebMvcAutoConfigurationTest {
 	}
 
 	@Test
-	public void apiVersionBeansAreCreatedFromCustomVersionProperty() {
+	void apiVersionBeansAreCreatedFromCustomVersionProperty() {
 		webApplicationContextRunner()
 				.withUserConfiguration(ServicesConfiguration.class,
 						CustomBrokerApiVersionConfigurationFromProperty.class)
@@ -103,7 +103,7 @@ public class ApiVersionWebMvcAutoConfigurationTest {
 	}
 
 	@Test
-	public void apiVersionBeansAreCreatedFromCustomVersionBeanOverridesProperty() {
+	void apiVersionBeansAreCreatedFromCustomVersionBeanOverridesProperty() {
 		webApplicationContextRunner()
 				.withUserConfiguration(ServicesConfiguration.class,
 						CustomBrokerApiVersionConfigurationFromBeanAndProperty.class)

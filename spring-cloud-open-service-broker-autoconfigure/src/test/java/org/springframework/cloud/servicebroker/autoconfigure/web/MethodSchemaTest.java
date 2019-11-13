@@ -26,10 +26,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 
 @SuppressWarnings("unchecked")
-public class MethodSchemaTest {
+class MethodSchemaTest {
 
 	@Test
-	public void convertsParametersNumberedMapToArray() {
+	void convertsParametersNumberedMapToArray() {
 		//given the properties converted from yml, with array converted to numbered map
 
 		// Simplified example adapted from https://json-schema.org/understanding-json-schema/UnderstandingJSONSchema.pdf
@@ -83,7 +83,7 @@ public class MethodSchemaTest {
 	}
 
 	@Test
-	public void convertsNestedParametersNumberedMapToArray() {
+	void convertsNestedParametersNumberedMapToArray() {
 		//given the properties converted from yml, with array converted to numbered map
 
 		// Simplified example adapted from https://json-schema.org/understanding-json-schema/UnderstandingJSONSchema.pdf
@@ -130,7 +130,7 @@ public class MethodSchemaTest {
 	}
 
 	@Test
-	public void doesNotConvertOthersParameters() {
+	void doesNotConvertOthersParameters() {
 		//given the properties converted from yml, with array converted to numbered map
 		MethodSchema methodSchema = new MethodSchema();
 		methodSchema.getParameters().put("type", "Object");

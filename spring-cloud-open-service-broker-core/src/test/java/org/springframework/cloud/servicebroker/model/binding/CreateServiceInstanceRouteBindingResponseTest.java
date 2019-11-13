@@ -27,10 +27,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
-public class CreateServiceInstanceRouteBindingResponseTest {
+class CreateServiceInstanceRouteBindingResponseTest {
 
 	@Test
-	public void responseWithDefaultsIsBuilt() {
+	void responseWithDefaultsIsBuilt() {
 		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
 				.build();
 
@@ -43,7 +43,7 @@ public class CreateServiceInstanceRouteBindingResponseTest {
 	}
 
 	@Test
-	public void responseWithValuesIsBuilt() {
+	void responseWithValuesIsBuilt() {
 		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
 				.bindingExisted(true)
 				.routeServiceUrl("https://routes.example.com")
@@ -58,7 +58,7 @@ public class CreateServiceInstanceRouteBindingResponseTest {
 	}
 
 	@Test
-	public void responseWithValuesIsDeserialized() {
+	void responseWithValuesIsDeserialized() {
 		CreateServiceInstanceRouteBindingResponse response = JsonUtils.readTestDataFile(
 				"createRouteBindingResponse.json",
 				CreateServiceInstanceRouteBindingResponse.class);
@@ -67,7 +67,7 @@ public class CreateServiceInstanceRouteBindingResponseTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(CreateServiceInstanceRouteBindingResponse.class)
 				.withRedefinedSuperclass()
@@ -75,14 +75,14 @@ public class CreateServiceInstanceRouteBindingResponseTest {
 	}
 
 	@Test
-	public void withinOperationCharacterLimit() throws Exception {
+	void withinOperationCharacterLimit() {
 		CreateServiceInstanceRouteBindingResponse.builder()
 				.operation(RandomString.make(9_999))
 				.build();
 	}
 
 	@Test
-	public void exceedsOperationCharacterLimit() throws Exception {
+	void exceedsOperationCharacterLimit() {
 		assertThrows(IllegalArgumentException.class, () ->
 				CreateServiceInstanceRouteBindingResponse.builder()
 						.operation(RandomString.make(10_001))
@@ -90,7 +90,7 @@ public class CreateServiceInstanceRouteBindingResponseTest {
 	}
 
 	@Test
-	public void exactlyOperationCharacterLimit() throws Exception {
+	void exactlyOperationCharacterLimit() {
 		CreateServiceInstanceRouteBindingResponse.builder()
 				.operation(RandomString.make(10_000))
 				.build();

@@ -50,7 +50,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 
-public class ServiceInstanceControllerResponseCodeTest {
+class ServiceInstanceControllerResponseCodeTest {
 
 	private final CatalogService catalogService = mock(CatalogService.class);
 
@@ -61,7 +61,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 	private ServiceInstanceController controller;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		controller = new ServiceInstanceController(catalogService, serviceInstanceService);
 		ServiceDefinition serviceDefinition = mock(ServiceDefinition.class);
 		List<Plan> plans = new ArrayList<>();
@@ -72,12 +72,12 @@ public class ServiceInstanceControllerResponseCodeTest {
 	}
 
 	@Test
-	public void createServiceInstanceWithNullResponseGivesExpectedStatus() {
+	void createServiceInstanceWithNullResponseGivesExpectedStatus() {
 		validateCreateServiceInstanceWithResponseStatus(null, HttpStatus.CREATED);
 	}
 
 	@Test
-	public void createServiceInstanceWithResponseGivesExpectedStatus() {
+	void createServiceInstanceWithResponseGivesExpectedStatus() {
 		validateCreateServiceInstanceWithResponseStatus(CreateServiceInstanceResponse.builder()
 				.async(false)
 				.instanceExisted(false)
@@ -86,7 +86,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 	}
 
 	@Test
-	public void createServiceInstanceWithInstanceExistResponseGivesExpectedStatus() {
+	void createServiceInstanceWithInstanceExistResponseGivesExpectedStatus() {
 		validateCreateServiceInstanceWithResponseStatus(CreateServiceInstanceResponse.builder()
 				.async(false)
 				.instanceExisted(true)
@@ -94,7 +94,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 	}
 
 	@Test
-	public void createServiceInstanceWithAsyncResponseGivesExpectedStatus() {
+	void createServiceInstanceWithAsyncResponseGivesExpectedStatus() {
 		validateCreateServiceInstanceWithResponseStatus(CreateServiceInstanceResponse.builder()
 				.async(true)
 				.instanceExisted(false)
@@ -103,7 +103,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 	}
 
 	@Test
-	public void createServiceInstanceWithResponseAsyncInstanceExistGivesExpectedStatus() {
+	void createServiceInstanceWithResponseAsyncInstanceExistGivesExpectedStatus() {
 		validateCreateServiceInstanceWithResponseStatus(CreateServiceInstanceResponse.builder()
 				.async(true)
 				.instanceExisted(true)
@@ -135,17 +135,18 @@ public class ServiceInstanceControllerResponseCodeTest {
 		then(serviceInstanceService)
 				.should()
 				.createServiceInstance(any(CreateServiceInstanceRequest.class));
+		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(response);
 	}
 
 	@Test
-	public void getServiceInstanceWithNullResponseGivesExpectedStatus() {
+	void getServiceInstanceWithNullResponseGivesExpectedStatus() {
 		validateGetServiceInstanceWithResponseStatus(null, HttpStatus.OK);
 	}
 
 	@Test
-	public void getServiceInstanceWithResponseGivesExpectedStatus() {
+	void getServiceInstanceWithResponseGivesExpectedStatus() {
 		validateGetServiceInstanceWithResponseStatus(GetServiceInstanceResponse.builder()
 				.serviceDefinitionId("service-definition-id")
 				.planId("plan-id")
@@ -167,12 +168,13 @@ public class ServiceInstanceControllerResponseCodeTest {
 				.getServiceInstance(pathVariables, null, null, null, null)
 				.block();
 
+		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(response);
 	}
 
 	@Test
-	public void getServiceInstanceWithMissingInstanceGivesExpectedStatus() {
+	void getServiceInstanceWithMissingInstanceGivesExpectedStatus() {
 		given(serviceInstanceService.getServiceInstance(any(GetServiceInstanceRequest.class)))
 				.willReturn(Mono.error(new ServiceInstanceDoesNotExistException("instance does not exist")));
 
@@ -180,23 +182,24 @@ public class ServiceInstanceControllerResponseCodeTest {
 				.getServiceInstance(pathVariables, null, "service-definition-id", null, null)
 				.block();
 
+		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
 	@Test
-	public void deleteServiceInstanceWithNullResponseGivesExpectedStatus() {
+	void deleteServiceInstanceWithNullResponseGivesExpectedStatus() {
 		validateDeleteServiceInstanceWithResponseStatus(null, HttpStatus.OK);
 	}
 
 	@Test
-	public void deleteServiceInstanceWithResponseGivesExpectedStatus() {
+	void deleteServiceInstanceWithResponseGivesExpectedStatus() {
 		validateDeleteServiceInstanceWithResponseStatus(DeleteServiceInstanceResponse.builder()
 				.async(false)
 				.build(), HttpStatus.OK);
 	}
 
 	@Test
-	public void deleteServiceInstanceWithAsyncResponseGivesExpectedStatus() {
+	void deleteServiceInstanceWithAsyncResponseGivesExpectedStatus() {
 		validateDeleteServiceInstanceWithResponseStatus(DeleteServiceInstanceResponse.builder()
 				.async(true)
 				.operation("deleting")
@@ -220,12 +223,13 @@ public class ServiceInstanceControllerResponseCodeTest {
 						false, null, null,null)
 				.block();
 
+		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(response);
 	}
 
 	@Test
-	public void deleteServiceInstanceWithMissingInstanceGivesExpectedStatus() {
+	void deleteServiceInstanceWithMissingInstanceGivesExpectedStatus() {
 		given(serviceInstanceService.deleteServiceInstance(any(DeleteServiceInstanceRequest.class)))
 				.willReturn(Mono.error(new ServiceInstanceDoesNotExistException("instance does not exist")));
 
@@ -234,23 +238,24 @@ public class ServiceInstanceControllerResponseCodeTest {
 						false, null, null,null)
 				.block();
 
+		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
 	}
 
 	@Test
-	public void updateServiceInstanceWithNullResponseGivesExpectedStatus() {
+	void updateServiceInstanceWithNullResponseGivesExpectedStatus() {
 		validateUpdateServiceInstanceWithResponseStatus(null, HttpStatus.OK);
 	}
 
 	@Test
-	public void updateServiceInstanceWithResponseGivesExpectedStatus() {
+	void updateServiceInstanceWithResponseGivesExpectedStatus() {
 		validateUpdateServiceInstanceWithResponseStatus(UpdateServiceInstanceResponse.builder()
 				.async(false)
 				.build(), HttpStatus.OK);
 	}
 
 	@Test
-	public void updateServiceInstanceWithAsyncResponseGivesExpectedStatus() {
+	void updateServiceInstanceWithAsyncResponseGivesExpectedStatus() {
 		validateUpdateServiceInstanceWithResponseStatus(UpdateServiceInstanceResponse.builder()
 				.async(true)
 				.operation("updating")
@@ -278,12 +283,13 @@ public class ServiceInstanceControllerResponseCodeTest {
 						updateRequest)
 				.block();
 
+		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(response);
 	}
 
 	@Test
-	public void getLastOperationWithInProgressResponseGivesExpectedStatus() {
+	void getLastOperationWithInProgressResponseGivesExpectedStatus() {
 		validateGetLastOperationWithResponseStatus(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.IN_PROGRESS)
 				.description("in progress")
@@ -291,7 +297,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 	}
 
 	@Test
-	public void getLastOperationWithSucceededResponseGivesExpectedStatus() {
+	void getLastOperationWithSucceededResponseGivesExpectedStatus() {
 		validateGetLastOperationWithResponseStatus(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.SUCCEEDED)
 				.deleteOperation(false)
@@ -299,7 +305,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 	}
 
 	@Test
-	public void getLastOperationWithDeleteSucceededResponseGivesExpectedStatus() {
+	void getLastOperationWithDeleteSucceededResponseGivesExpectedStatus() {
 		validateGetLastOperationWithResponseStatus(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.SUCCEEDED)
 				.deleteOperation(true)
@@ -307,7 +313,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 	}
 
 	@Test
-	public void getLastOperationWithFailedResponseGivesExpectedStatus() {
+	void getLastOperationWithFailedResponseGivesExpectedStatus() {
 		validateGetLastOperationWithResponseStatus(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.FAILED)
 				.build(), HttpStatus.OK);
@@ -323,6 +329,7 @@ public class ServiceInstanceControllerResponseCodeTest {
 						null, null, null)
 				.block();
 
+		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(response);
 	}

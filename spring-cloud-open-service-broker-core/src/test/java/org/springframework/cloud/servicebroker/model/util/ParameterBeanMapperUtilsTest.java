@@ -23,17 +23,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ParameterBeanMapperUtilsTest {
+class ParameterBeanMapperUtilsTest {
 
 	@Test
-	@SuppressWarnings("serial")
-	public void mapParametersToBean() {
-		Map<String, Object> parameters = new HashMap<String, Object>() {{
-			put("stringProperty", "value1");
-			put("intProperty", 2);
-			put("extraProperty", "extra");
-			put("nestedBean.booleanProperty", true);
-		}};
+	void mapParametersToBean() {
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("stringProperty", "value1");
+		parameters.put("intProperty", 2);
+		parameters.put("extraProperty", "extra");
+		parameters.put("nestedBean.booleanProperty", true);
+
 		TestBean testBean = ParameterBeanMapperUtils.mapParametersToBean(parameters, TestBean.class);
 
 		assertThat(testBean.getStringProperty()).isEqualTo("value1");
@@ -42,7 +41,6 @@ public class ParameterBeanMapperUtilsTest {
 		assertThat(testBean.getNestedBean().isBooleanProperty()).isEqualTo(true);
 	}
 
-	@SuppressWarnings("unused")
 	public static final class TestBean {
 
 		private String stringProperty;
@@ -87,7 +85,6 @@ public class ParameterBeanMapperUtilsTest {
 
 	}
 
-	@SuppressWarnings("unused")
 	public static final class NestedBean {
 
 		private boolean booleanProperty;

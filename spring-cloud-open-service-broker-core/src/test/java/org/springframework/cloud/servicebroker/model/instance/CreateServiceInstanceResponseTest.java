@@ -27,10 +27,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
-public class CreateServiceInstanceResponseTest {
+class CreateServiceInstanceResponseTest {
 
 	@Test
-	public void responseWithDefaultsIsBuilt() {
+	void responseWithDefaultsIsBuilt() {
 		CreateServiceInstanceResponse response = CreateServiceInstanceResponse.builder()
 				.build();
 
@@ -46,7 +46,7 @@ public class CreateServiceInstanceResponseTest {
 	}
 
 	@Test
-	public void responseWithAllValuesIsBuilt() {
+	void responseWithAllValuesIsBuilt() {
 		CreateServiceInstanceResponse response = CreateServiceInstanceResponse.builder()
 				.async(true)
 				.operation("in progress")
@@ -66,7 +66,7 @@ public class CreateServiceInstanceResponseTest {
 	}
 
 	@Test
-	public void responseWithAllValuesIsDeserialized() {
+	void responseWithAllValuesIsDeserialized() {
 		CreateServiceInstanceResponse response = JsonUtils.readTestDataFile(
 				"createResponse.json", CreateServiceInstanceResponse.class);
 
@@ -75,7 +75,7 @@ public class CreateServiceInstanceResponseTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(CreateServiceInstanceResponse.class)
 				.withRedefinedSuperclass()
@@ -83,14 +83,14 @@ public class CreateServiceInstanceResponseTest {
 	}
 
 	@Test
-	public void withinOperationCharacterLimit() throws Exception {
+	void withinOperationCharacterLimit() {
 		CreateServiceInstanceResponse.builder()
 				.operation(RandomString.make(9_999))
 				.build();
 	}
 
 	@Test
-	public void exceedsOperationCharacterLimit() throws Exception {
+	void exceedsOperationCharacterLimit() {
 		assertThrows(IllegalArgumentException.class, () ->
 				CreateServiceInstanceResponse.builder()
 						.operation(RandomString.make(10_001))
@@ -98,7 +98,7 @@ public class CreateServiceInstanceResponseTest {
 	}
 
 	@Test
-	public void exactlyOperationCharacterLimit() throws Exception {
+	void exactlyOperationCharacterLimit() {
 		CreateServiceInstanceResponse.builder()
 				.operation(RandomString.make(10_000))
 				.build();

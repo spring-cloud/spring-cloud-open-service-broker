@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
-public class ApiVersionInterceptorTest {
+class ApiVersionInterceptorTest {
 
 	@Mock
 	private HttpServletRequest request;
@@ -41,18 +41,18 @@ public class ApiVersionInterceptorTest {
 	private HttpServletResponse response;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		MockitoAnnotations.initMocks(this);
 	}
 
 	@Test
-	public void noBrokerApiVersionConfigured() {
+	void noBrokerApiVersionConfigured() {
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor();
 		assertThat(interceptor.preHandle(request, response, null)).isTrue();
 	}
 
 	@Test
-	public void anyVersionAccepted() {
+	void anyVersionAccepted() {
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", BrokerApiVersion.API_VERSION_ANY);
 		given(request.getHeader("header")).willReturn("9.9");
 
@@ -61,7 +61,7 @@ public class ApiVersionInterceptorTest {
 	}
 
 	@Test
-	public void versionsMatch() {
+	void versionsMatch() {
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", "9.9");
 		given(request.getHeader("header")).willReturn("9.9");
 
@@ -70,7 +70,7 @@ public class ApiVersionInterceptorTest {
 	}
 
 	@Test
-	public void versionMismatch() {
+	void versionMismatch() {
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", "9.9");
 		given(request.getHeader("header")).willReturn("8.8");
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(brokerApiVersion);
@@ -79,7 +79,7 @@ public class ApiVersionInterceptorTest {
 	}
 
 	@Test
-	public void versionHeaderIsMissing() {
+	void versionHeaderIsMissing() {
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", "9.9");
 		given(request.getHeader("header")).willReturn(null);
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(brokerApiVersion);
@@ -88,7 +88,7 @@ public class ApiVersionInterceptorTest {
 	}
 
 	@Test
-	public void versionHeaderIsMissingAnyVersionAccepted() {
+	void versionHeaderIsMissingAnyVersionAccepted() {
 		BrokerApiVersion brokerApiVersion = new BrokerApiVersion("header", BrokerApiVersion.API_VERSION_ANY);
 		given(request.getHeader("header")).willReturn(null);
 		ApiVersionInterceptor interceptor = new ApiVersionInterceptor(brokerApiVersion);

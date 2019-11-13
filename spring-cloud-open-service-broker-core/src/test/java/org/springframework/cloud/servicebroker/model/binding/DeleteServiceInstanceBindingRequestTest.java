@@ -30,10 +30,10 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DeleteServiceInstanceBindingRequestTest {
+class DeleteServiceInstanceBindingRequestTest {
 
 	@Test
-	public void requestWithDefaultsIsBuilt() {
+	void requestWithDefaultsIsBuilt() {
 		DeleteServiceInstanceBindingRequest request = DeleteServiceInstanceBindingRequest.builder()
 				.build();
 
@@ -50,7 +50,7 @@ public class DeleteServiceInstanceBindingRequestTest {
 	}
 
 	@Test
-	public void requestWithAllValuesIsBuilt() {
+	void requestWithAllValuesIsBuilt() {
 		Context originatingIdentity = PlatformContext.builder()
 				.platform("test-platform")
 				.build();
@@ -80,8 +80,7 @@ public class DeleteServiceInstanceBindingRequestTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void serializesAccordingToOsbSpecs() {
+	void serializesAccordingToOsbSpecs() {
 		Context originatingIdentity = PlatformContext.builder()
 				.platform("test-platform")
 				.build();
@@ -111,11 +110,10 @@ public class DeleteServiceInstanceBindingRequestTest {
 		// fields mapped outside of json body (typically http headers or request paths)
 		// should be excluded
 		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(3);
-
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(DeleteServiceInstanceBindingRequest.class)
 				.withRedefinedSuperclass()

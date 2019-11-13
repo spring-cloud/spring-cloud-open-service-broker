@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class ApiVersionInterceptorIntegrationTest {
+class ApiVersionInterceptorIntegrationTest {
 
 	private final static String CATALOG_PATH = "/v2/catalog";
 
@@ -48,11 +48,10 @@ public class ApiVersionInterceptorIntegrationTest {
 	private CatalogController controller;
 
 	@Mock
-	@SuppressWarnings("unused")
 	private CatalogService catalogService;
 
 	@Test
-	public void noHeaderSent() throws Exception {
+	void noHeaderSent() throws Exception {
 		mockWithExpectedVersion().perform(get(CATALOG_PATH)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest())
@@ -60,7 +59,7 @@ public class ApiVersionInterceptorIntegrationTest {
 	}
 
 	@Test
-	public void incorrectHeaderSent() throws Exception {
+	void incorrectHeaderSent() throws Exception {
 		mockWithExpectedVersion().perform(get(CATALOG_PATH)
 				.header(BrokerApiVersion.DEFAULT_API_VERSION_HEADER, "wrong-version")
 				.accept(MediaType.APPLICATION_JSON))
@@ -70,7 +69,7 @@ public class ApiVersionInterceptorIntegrationTest {
 	}
 
 	@Test
-	public void matchingHeaderSent() throws Exception {
+	void matchingHeaderSent() throws Exception {
 		given(catalogService.getCatalog())
 				.willReturn(Mono.just(Catalog.builder().build()));
 		mockWithExpectedVersion().perform(get(CATALOG_PATH)
@@ -80,7 +79,7 @@ public class ApiVersionInterceptorIntegrationTest {
 	}
 
 	@Test
-	public void anyHeaderNotSent() throws Exception {
+	void anyHeaderNotSent() throws Exception {
 		given(catalogService.getCatalog())
 				.willReturn(Mono.just(Catalog.builder().build()));
 		mockWithDefaultVersion().perform(get(CATALOG_PATH)
@@ -89,7 +88,7 @@ public class ApiVersionInterceptorIntegrationTest {
 	}
 
 	@Test
-	public void anyHeaderSent() throws Exception {
+	void anyHeaderSent() throws Exception {
 		given(catalogService.getCatalog())
 				.willReturn(Mono.just(Catalog.builder().build()));
 		mockWithDefaultVersion().perform(get(CATALOG_PATH)

@@ -32,10 +32,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM;
 import static org.springframework.cloud.servicebroker.model.KubernetesContext.KUBERNETES_PLATFORM;
 
-public class AsyncParameterizedServiceInstanceRequestTest {
+class AsyncParameterizedServiceInstanceRequestTest {
 
 	@Test
-	public void requestWithCloudFoundryContextIsDeserializedFromJson() {
+	void requestWithCloudFoundryContextIsDeserializedFromJson() {
 		AsyncParameterizedServiceInstanceRequest request =
 				JsonUtils.readTestDataFile("requestWithParametersAndCloudFoundryContext.json",
 						CreateServiceInstanceRequest.class);
@@ -57,7 +57,7 @@ public class AsyncParameterizedServiceInstanceRequestTest {
 	}
 
 	@Test
-	public void requestWithKubernetesContextIsDeserializedFromJson() {
+	void requestWithKubernetesContextIsDeserializedFromJson() {
 		AsyncParameterizedServiceInstanceRequest request =
 				JsonUtils.readTestDataFile("requestWithEmptyParametersAndKubernetesContext.json",
 						CreateServiceInstanceRequest.class);
@@ -74,7 +74,7 @@ public class AsyncParameterizedServiceInstanceRequestTest {
 	}
 
 	@Test
-	public void requestWithUnknownContextIsDeserializedFromJson() {
+	void requestWithUnknownContextIsDeserializedFromJson() {
 		AsyncParameterizedServiceInstanceRequest request =
 				JsonUtils.readTestDataFile("requestWithCustomContext.json",
 						CreateServiceInstanceRequest.class);
@@ -89,14 +89,14 @@ public class AsyncParameterizedServiceInstanceRequestTest {
 	}
 
 	@Test
-	public void requestWithNoParametersIsSerializedWithoutParametersField() {
+	void requestWithNoParametersIsSerializedWithoutParametersField() {
 		CreateServiceInstanceRequest request = CreateServiceInstanceRequest.builder().build();
 		DocumentContext json = JsonUtils.toJsonPath(request);
 		JsonPathAssert.assertThat(json).hasNoPath("$.parameters");
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(AsyncParameterizedServiceInstanceRequest.class)
 				.withRedefinedSuperclass()

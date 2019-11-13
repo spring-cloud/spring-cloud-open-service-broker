@@ -19,10 +19,10 @@ package org.springframework.cloud.servicebroker.model.binding;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 
-public class SharedVolumeDeviceTest {
+class SharedVolumeDeviceTest {
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(SharedVolumeDevice.class)
 				.verify();

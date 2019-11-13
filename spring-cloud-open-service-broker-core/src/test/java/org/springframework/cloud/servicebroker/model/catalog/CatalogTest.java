@@ -31,10 +31,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
-public class CatalogTest {
+class CatalogTest {
 
 	@Test
-	public void emptyCatalogIsSerializedToJson() {
+	void emptyCatalogIsSerializedToJson() {
 		Catalog catalog = Catalog.builder().build();
 
 		assertThat(catalog.getServiceDefinitions()).hasSize(0);
@@ -45,7 +45,7 @@ public class CatalogTest {
 	}
 
 	@Test
-	public void catalogWithServicesIsSerializedToJson() {
+	void catalogWithServicesIsSerializedToJson() {
 		List<ServiceDefinition> serviceDefinitions = Collections.singletonList(ServiceDefinition.builder()
 				.id("service-definition-id-two")
 				.name("service-definition-two")
@@ -87,7 +87,7 @@ public class CatalogTest {
 	}
 
 	@Test
-	public void catalogWithServicesIsDeserializedFromJson() {
+	void catalogWithServicesIsDeserializedFromJson() {
 		Catalog catalog = JsonUtils.readTestDataFile("catalog.json", Catalog.class);
 
 		assertThat(catalog.getServiceDefinitions().get(0).getId()).isEqualTo("service-one-id");
@@ -110,7 +110,7 @@ public class CatalogTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier.forClass(Catalog.class).verify();
 	}
 

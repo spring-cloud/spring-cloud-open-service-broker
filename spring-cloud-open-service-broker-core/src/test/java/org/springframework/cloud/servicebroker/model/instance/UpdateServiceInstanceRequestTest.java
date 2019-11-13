@@ -52,12 +52,11 @@ public class UpdateServiceInstanceRequestTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void requestWithAllValuesIsBuilt() {
-		Map<String, Object> parameters = new HashMap<String, Object>() {{
-			put("field4", "value4");
-			put("field5", "value5");
-		}};
+	void requestWithAllValuesIsBuilt() {
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("field4", "value4");
+		parameters.put("field5", "value5");
+
 		Context context = PlatformContext.builder().build();
 
 		Context originatingIdentity = PlatformContext.builder()

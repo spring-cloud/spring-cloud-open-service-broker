@@ -53,19 +53,19 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 
 @ExtendWith(MockitoExtension.class)
-public class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceInstanceBindingControllerIntegrationTest {
+class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceInstanceBindingControllerIntegrationTest {
 
 	private WebTestClient client;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		this.client = WebTestClient.bindToController(this.controller)
 				.controllerAdvice(ServiceBrokerWebFluxExceptionHandler.class)
 				.build();
 	}
 
 	@Test
-	public void createBindingToAppWithoutAsyncAndHeadersSucceeds() throws Exception {
+	void createBindingToAppWithoutAsyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse.builder()
@@ -86,7 +86,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void createBindingToAppFiltersPlansSucceeds() throws Exception {
+	void createBindingToAppFiltersPlansSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse
@@ -109,7 +109,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void createBindingToAppWithAsyncAndHeadersSucceeds() throws Exception {
+	void createBindingToAppWithAsyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse.builder()
@@ -135,7 +135,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void createBindingToAppWithAsyncAndHeadersOperationInProgress() throws Exception {
+	void createBindingToAppWithAsyncAndHeadersOperationInProgress() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(new ServiceBrokerCreateOperationInProgressException("still working"));
@@ -155,7 +155,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void createBindingToAppWithExistingSucceeds() throws Exception {
+	void createBindingToAppWithExistingSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse.builder()
@@ -174,7 +174,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void createBindingToRouteWithoutAsyncAndHeadersSucceeds() throws Exception {
+	void createBindingToRouteWithoutAsyncAndHeadersSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceRouteBindingResponse.builder()
@@ -194,7 +194,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void createBindingToRouteFiltersPlansSucceeds() throws Exception {
+	void createBindingToRouteFiltersPlansSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceRouteBindingResponse
@@ -216,7 +216,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void createBindingToRouteWithAsyncAndHeadersSucceeds() throws Exception {
+	void createBindingToRouteWithAsyncAndHeadersSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceRouteBindingResponse.builder()
@@ -240,7 +240,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void createBindingToRouteWithExistingSucceeds() throws Exception {
+	void createBindingToRouteWithExistingSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceRouteBindingResponse.builder()
@@ -256,7 +256,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void createBindingWithUnknownServiceInstanceIdFails() throws Exception {
+	void createBindingWithUnknownServiceInstanceIdFails() {
 		setupCatalogService();
 
 		given(serviceInstanceBindingService
@@ -276,7 +276,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void createBindingWithUnknownServiceDefinitionIdFails() throws Exception {
+	void createBindingWithUnknownServiceDefinitionIdFails() {
 		setupCatalogService(null);
 
 		client.put().uri(buildCreateUrl())
@@ -292,7 +292,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void createBindingWithDuplicateIdFails() throws Exception {
+	void createBindingWithDuplicateIdFails() {
 		setupCatalogService();
 
 		given(serviceInstanceBindingService
@@ -314,7 +314,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void createBindingWithInvalidFieldsFails() throws Exception {
+	void createBindingWithInvalidFieldsFails() {
 		String body = createRequestBody.replace("service_id", "service-1");
 
 		client.put().uri(buildCreateUrl())
@@ -328,7 +328,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void createBindingWithMissingFieldsFails() throws Exception {
+	void createBindingWithMissingFieldsFails() {
 		String body = "{}";
 
 		client.put().uri(buildCreateUrl())
@@ -344,7 +344,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void getBindingToAppSucceeds() throws Exception {
+	void getBindingToAppSucceeds() throws Exception {
 		setupServiceInstanceBindingService(GetServiceInstanceAppBindingResponse.builder()
 				.build());
 
@@ -360,7 +360,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void getBindingToRouteSucceeds() throws Exception {
+	void getBindingToRouteSucceeds() throws Exception {
 		setupServiceInstanceBindingService(GetServiceInstanceRouteBindingResponse.builder()
 				.build());
 
@@ -376,7 +376,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void getBindingWithOperationInProgressFails() throws Exception {
+	void getBindingWithOperationInProgressFails() {
 		given(serviceInstanceBindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
 				.willThrow(new ServiceBrokerOperationInProgressException("still working"));
 
@@ -387,7 +387,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void deleteBindingWithoutAsyncAndHeadersSucceeds() throws Exception {
+	void deleteBindingWithoutAsyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(DeleteServiceInstanceBindingResponse.builder()
@@ -412,7 +412,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void deleteBindingFiltersPlansSucceeds() throws Exception {
+	void deleteBindingFiltersPlansSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(DeleteServiceInstanceBindingResponse.builder()
@@ -437,7 +437,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void deleteBindingWithAsyncAndHeadersSucceeds() throws Exception {
+	void deleteBindingWithAsyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(DeleteServiceInstanceBindingResponse.builder()
@@ -463,7 +463,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void deleteBindingWithAsyncAndHeadersOperationInProgress() throws Exception {
+	void deleteBindingWithAsyncAndHeadersOperationInProgress() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(new ServiceBrokerDeleteOperationInProgressException("still working"));
@@ -481,7 +481,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void deleteBindingWithUnknownInstanceIdFails() throws Exception {
+	void deleteBindingWithUnknownInstanceIdFails() {
 		setupCatalogService();
 
 		given(serviceInstanceBindingService
@@ -498,7 +498,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void deleteBindingWithUnknownBindingIdFails() throws Exception {
+	void deleteBindingWithUnknownBindingIdFails() {
 		setupCatalogService();
 
 		given(serviceInstanceBindingService
@@ -512,7 +512,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void deleteBindingWithUnknownServiceDefinitionIdFails() throws Exception {
+	void deleteBindingWithUnknownServiceDefinitionIdFails() {
 		setupCatalogService(null);
 
 		client.delete().uri(buildDeleteUrl())
@@ -521,7 +521,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void deleteBindingWithMissingQueryParamsFails() throws Exception {
+	void deleteBindingWithMissingQueryParamsFails() {
 		final String url = buildDeleteUrl(null, false).replace("plan_id", "plan-1");
 
 		client.delete().uri(url)
@@ -534,7 +534,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void lastOperationHasInProgressStatus() throws Exception {
+	void lastOperationHasInProgressStatus() {
 		setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse.builder()
 				.operationState(OperationState.IN_PROGRESS)
 				.description("working on it")
@@ -556,7 +556,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void lastOperationHasSucceededStatus() throws Exception {
+	void lastOperationHasSucceededStatus() throws Exception {
 		setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse.builder()
 				.operationState(OperationState.SUCCEEDED)
 				.description("all good")
@@ -580,7 +580,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void lastOperationHasSucceededStatusWithDeletionComplete() throws Exception {
+	void lastOperationHasSucceededStatusWithDeletionComplete() {
 		setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse.builder()
 				.operationState(OperationState.SUCCEEDED)
 				.description("all good")
@@ -604,7 +604,7 @@ public class ServiceInstanceBindingControllerIntegrationTest extends AbstractSer
 	}
 
 	@Test
-	public void lastOperationHasFailedStatus() throws Exception {
+	void lastOperationHasFailedStatus() {
 		setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse.builder()
 				.operationState(OperationState.FAILED)
 				.description("not so good")

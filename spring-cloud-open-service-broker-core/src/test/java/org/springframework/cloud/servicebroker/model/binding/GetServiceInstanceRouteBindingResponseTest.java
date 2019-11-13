@@ -29,10 +29,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
-public class GetServiceInstanceRouteBindingResponseTest {
+class GetServiceInstanceRouteBindingResponseTest {
 
 	@Test
-	public void responseWithDefaultsIsBuilt() {
+	void responseWithDefaultsIsBuilt() {
 		GetServiceInstanceRouteBindingResponse response = GetServiceInstanceRouteBindingResponse.builder()
 				.build();
 
@@ -45,12 +45,10 @@ public class GetServiceInstanceRouteBindingResponseTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void responseWithValuesIsBuilt() {
-		Map<String, Object> parameters = new HashMap<String, Object>() {{
-			put("field4", "value4");
-			put("field5", "value5");
-		}};
+	void responseWithValuesIsBuilt() {
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("field4", "value4");
+		parameters.put("field5", "value5");
 
 		GetServiceInstanceRouteBindingResponse response = GetServiceInstanceRouteBindingResponse.builder()
 				.parameters("field1", "value1")
@@ -81,7 +79,7 @@ public class GetServiceInstanceRouteBindingResponseTest {
 	}
 
 	@Test
-	public void responseWithValuesIsDeserialized() {
+	void responseWithValuesIsDeserialized() {
 		GetServiceInstanceRouteBindingResponse response = JsonUtils.readTestDataFile(
 				"getRouteBindingResponse.json",
 				GetServiceInstanceRouteBindingResponse.class);
@@ -93,7 +91,7 @@ public class GetServiceInstanceRouteBindingResponseTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(GetServiceInstanceRouteBindingResponse.class)
 				.withRedefinedSuperclass()

@@ -41,10 +41,10 @@ import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ServiceInstanceControllerRequestTest extends ControllerRequestTest {
+class ServiceInstanceControllerRequestTest extends ControllerRequestTest {
 
 	@Test
-	public void createServiceInstanceParametersAreMappedToRequest() {
+	void createServiceInstanceParametersAreMappedToRequest() {
 		CreateServiceInstanceRequest parsedRequest = buildCreateRequest().build();
 
 		CreateServiceInstanceRequest expectedRequest = buildCreateRequest()
@@ -75,7 +75,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 	}
 
 	@Test
-	public void createServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
+	void createServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
 		CreateServiceInstanceRequest createRequest = CreateServiceInstanceRequest.builder()
 				.serviceDefinitionId("unknown-service-definition-id")
 				.build();
@@ -89,7 +89,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 	}
 
 	@Test
-	public void createServiceInstanceWithInvalidPlanIdThrowsException() {
+	void createServiceInstanceWithInvalidPlanIdThrowsException() {
 		CreateServiceInstanceRequest createRequest = CreateServiceInstanceRequest.builder()
 				.serviceDefinitionId("service-definition-id")
 				.planId("unknown-plan-id")
@@ -104,7 +104,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 	}
 
 	@Test
-	public void getServiceInstanceParametersAreMappedToRequest() {
+	void getServiceInstanceParametersAreMappedToRequest() {
 		GetServiceInstanceRequest expectedRequest = GetServiceInstanceRequest.builder()
 				.serviceInstanceId("service-instance-id")
 				.platformInstanceId("platform-instance-id")
@@ -121,7 +121,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 	}
 
 	@Test
-	public void getServiceInstanceLastOperationParametersAreMappedToRequest() {
+	void getServiceInstanceLastOperationParametersAreMappedToRequest() {
 		GetLastServiceOperationRequest expectedRequest = GetLastServiceOperationRequest.builder()
 				.serviceInstanceId("service-instance-id")
 				.serviceDefinitionId("service-definition-id")
@@ -142,7 +142,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 	}
 
 	@Test
-	public void deleteServiceInstanceParametersAreMappedToRequest() {
+	void deleteServiceInstanceParametersAreMappedToRequest() {
 		DeleteServiceInstanceRequest expectedRequest = DeleteServiceInstanceRequest.builder()
 				.asyncAccepted(true)
 				.serviceInstanceId("service-instance-id")
@@ -165,7 +165,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 	}
 
 	@Test
-	public void deleteServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
+	void deleteServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
 		DeleteServiceInstanceRequest expectedRequest = DeleteServiceInstanceRequest.builder()
 				.asyncAccepted(true)
 				.serviceDefinitionId("service-definition-id")
@@ -181,7 +181,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 	}
 
 	@Test
-	public void deleteServiceInstanceWithInvalidPlanIdThrowsException() {
+	void deleteServiceInstanceWithInvalidPlanIdThrowsException() {
 		DeleteServiceInstanceRequest expectedRequest = DeleteServiceInstanceRequest.builder()
 				.asyncAccepted(true)
 				.serviceDefinitionId("service-definition-id")
@@ -197,7 +197,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 	}
 
 	@Test
-	public void updateServiceInstanceParametersAreMappedToRequest() {
+	void updateServiceInstanceParametersAreMappedToRequest() {
 		UpdateServiceInstanceRequest parsedRequest = buildUpdateRequest().build();
 
 		UpdateServiceInstanceRequest expectedRequest = buildUpdateRequest()
@@ -230,7 +230,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 	}
 
 	@Test
-	public void updateServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
+	void updateServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
 		UpdateServiceInstanceRequest updateRequest = UpdateServiceInstanceRequest.builder()
 				.serviceDefinitionId("unknown-service-definition-id")
 				.build();
@@ -255,7 +255,7 @@ public class ServiceInstanceControllerRequestTest extends ControllerRequestTest 
 
 		private final ServiceBrokerRequest expectedRequest;
 
-		public VerifyingService(ServiceBrokerRequest expectedRequest) {
+		VerifyingService(ServiceBrokerRequest expectedRequest) {
 			this.expectedRequest = expectedRequest;
 		}
 

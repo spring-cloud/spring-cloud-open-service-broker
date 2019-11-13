@@ -35,10 +35,10 @@ import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingSer
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ServiceInstanceBindingControllerRequestTest extends ControllerRequestTest {
+class ServiceInstanceBindingControllerRequestTest extends ControllerRequestTest {
 
 	@Test
-	public void createServiceBindingParametersAreMappedToRequest() {
+	void createServiceBindingParametersAreMappedToRequest() {
 		CreateServiceInstanceBindingRequest parsedRequest = buildCreateRequest().build();
 
 		CreateServiceInstanceBindingRequest expectedRequest = buildCreateRequest()
@@ -60,7 +60,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 	}
 
 	@Test
-	public void createServiceBindingWithInvalidServiceDefinitionIdThrowsException() {
+	void createServiceBindingWithInvalidServiceDefinitionIdThrowsException() {
 		CreateServiceInstanceBindingRequest createRequest = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId("unknown-service-definition-id")
 				.build();
@@ -75,7 +75,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 
 
 	@Test
-	public void createServiceBindingWithInvalidPlanIdThrowsException() {
+	void createServiceBindingWithInvalidPlanIdThrowsException() {
 		CreateServiceInstanceBindingRequest createRequest = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId("service-definition-id")
 				.planId("unknown-plan-id")
@@ -101,7 +101,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 	}
 
 	@Test
-	public void getServiceBindingParametersAreMappedToRequest() {
+	void getServiceBindingParametersAreMappedToRequest() {
 		GetServiceInstanceBindingRequest expectedRequest = GetServiceInstanceBindingRequest.builder()
 				.serviceInstanceId("service-instance-id")
 				.bindingId("binding-id")
@@ -118,7 +118,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 	}
 
 	@Test
-	public void deleteServiceBindingParametersAreMappedToRequest() {
+	void deleteServiceBindingParametersAreMappedToRequest() {
 		DeleteServiceInstanceBindingRequest expectedRequest = DeleteServiceInstanceBindingRequest.builder()
 				.asyncAccepted(true)
 				.serviceInstanceId("service-instance-id")
@@ -141,7 +141,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 	}
 
 	@Test
-	public void deleteServiceBindingWithInvalidServiceDefinitionIdThrowsException() {
+	void deleteServiceBindingWithInvalidServiceDefinitionIdThrowsException() {
 		ServiceInstanceBindingController controller = createControllerUnderTest();
 
 		assertThrows(ServiceDefinitionDoesNotExistException.class, () ->
@@ -152,7 +152,7 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 	}
 
 	@Test
-	public void deleteServiceBindingWithInvalidPlanIdThrowsException() {
+	void deleteServiceBindingWithInvalidPlanIdThrowsException() {
 		ServiceInstanceBindingController controller = createControllerUnderTest();
 
 		assertThrows(ServiceDefinitionPlanDoesNotExistException.class, () ->
@@ -170,11 +170,11 @@ public class ServiceInstanceBindingControllerRequestTest extends ControllerReque
 	}
 
 
-	private class VerifyingService implements ServiceInstanceBindingService {
+	private static class VerifyingService implements ServiceInstanceBindingService {
 
 		private final ServiceBrokerRequest expectedRequest;
 
-		public VerifyingService(ServiceBrokerRequest expectedRequest) {
+		VerifyingService(ServiceBrokerRequest expectedRequest) {
 			this.expectedRequest = expectedRequest;
 		}
 

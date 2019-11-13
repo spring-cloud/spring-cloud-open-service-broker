@@ -32,10 +32,10 @@ import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefin
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_SYSLOG_DRAIN;
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_VOLUME_MOUNT;
 
-public class ServiceDefinitionTest {
+class ServiceDefinitionTest {
 
 	@Test
-	public void serviceDefinitionWithDefaultsIsSerializedToJson() {
+	void serviceDefinitionWithDefaultsIsSerializedToJson() {
 		ServiceDefinition serviceDefinition = ServiceDefinition.builder()
 				.id("service-definition-id-one")
 				.name("service-definition-one")
@@ -73,12 +73,10 @@ public class ServiceDefinitionTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void serviceDefinitionWithAllFieldsIsSerializedToJson() {
-		Map<String, Object> metadata = new HashMap<String, Object>() {{
-			put("field3", "value3");
-			put("field4", "value4");
-		}};
+	void serviceDefinitionWithAllFieldsIsSerializedToJson() {
+		Map<String, Object> metadata = new HashMap<>();
+		metadata.put("field3", "value3");
+		metadata.put("field4", "value4");
 
 		ServiceDefinition serviceDefinition = ServiceDefinition.builder()
 				.id("service-definition-id-one")
@@ -148,7 +146,7 @@ public class ServiceDefinitionTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(ServiceDefinition.class)
 				.verify();

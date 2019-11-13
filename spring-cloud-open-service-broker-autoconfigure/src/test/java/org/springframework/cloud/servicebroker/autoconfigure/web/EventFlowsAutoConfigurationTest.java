@@ -74,25 +74,25 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EventFlowsAutoConfigurationTest {
+class EventFlowsAutoConfigurationTest {
 
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(EventFlowsAutoConfiguration.class));
 
 	@Test
-	public void servicesAreCreatedWithMinimalConfiguration() {
+	void servicesAreCreatedWithMinimalConfiguration() {
 		this.contextRunner.run(this::assertBeans);
 	}
 
 	@Test
-	public void servicesAreCreatedWithAlternateFlowBeansConfiguration() {
+	void servicesAreCreatedWithAlternateFlowBeansConfiguration() {
 		this.contextRunner
 				.withUserConfiguration(AlternateEventFlowRegistryBeansConfiguration.class)
 				.run(this::assertBeans);
 	}
 
 	@Test
-	public void createInstanceEventFlowBeansAreConfigured() {
+	void createInstanceEventFlowBeansAreConfigured() {
 		this.contextRunner
 				.withUserConfiguration(CreateInstanceEventFlowBeansConfiguration.class)
 				.run(context -> {
@@ -104,7 +104,7 @@ public class EventFlowsAutoConfigurationTest {
 	}
 
 	@Test
-	public void updateInstanceEventFlowBeansAreConfigured() {
+	void updateInstanceEventFlowBeansAreConfigured() {
 		this.contextRunner
 				.withUserConfiguration(UpdateInstanceEventFlowBeansConfiguration.class)
 				.run(context -> {
@@ -116,7 +116,7 @@ public class EventFlowsAutoConfigurationTest {
 	}
 
 	@Test
-	public void deleteInstanceEventFlowBeansAreConfigured() {
+	void deleteInstanceEventFlowBeansAreConfigured() {
 		this.contextRunner
 				.withUserConfiguration(DeleteInstanceEventFlowBeansConfiguration.class)
 				.run(context -> {
@@ -128,7 +128,7 @@ public class EventFlowsAutoConfigurationTest {
 	}
 
 	@Test
-	public void asyncOperationEventFlowBeansAreConfigured() {
+	void asyncOperationEventFlowBeansAreConfigured() {
 		this.contextRunner
 				.withUserConfiguration(AsyncOperationServiceInstanceEventFlowBeansConfiguration.class)
 				.run(context -> {
@@ -140,7 +140,7 @@ public class EventFlowsAutoConfigurationTest {
 	}
 
 	@Test
-	public void createInstanceBindingEventFlowBeansAreConfigured() {
+	void createInstanceBindingEventFlowBeansAreConfigured() {
 		this.contextRunner
 				.withUserConfiguration(CreateInstanceBindingEventFlowBeansConfiguration.class)
 				.run(context -> {
@@ -152,7 +152,7 @@ public class EventFlowsAutoConfigurationTest {
 	}
 
 	@Test
-	public void deleteInstanceBindingEventFlowBeansAreConfigured() {
+	void deleteInstanceBindingEventFlowBeansAreConfigured() {
 		this.contextRunner
 				.withUserConfiguration(DeleteInstanceBindingEventFlowBeansConfiguration.class)
 				.run(context -> {
@@ -164,7 +164,7 @@ public class EventFlowsAutoConfigurationTest {
 	}
 
 	@Test
-	public void asyncBindingOperationEventFlowBeansAreConfigured() {
+	void asyncBindingOperationEventFlowBeansAreConfigured() {
 		this.contextRunner
 				.withUserConfiguration(AsyncOperationServiceInstanceBindingEventFlowBeansConfiguration.class)
 				.run(context -> {
@@ -235,12 +235,15 @@ public class EventFlowsAutoConfigurationTest {
 			int completionFlowCount, int errorFlowCount) {
 		List<?> initializationFlows = (List<?>) ReflectionTestUtils
 				.getField(registry, "initializationFlows");
+		assertThat(initializationFlows).isNotNull();
 		assertThat(initializationFlows.size()).isEqualTo(initializationFlowCount);
 
 		List<?> completionFlows = (List<?>) ReflectionTestUtils.getField(registry, "completionFlows");
+		assertThat(completionFlows).isNotNull();
 		assertThat(completionFlows.size()).isEqualTo(completionFlowCount);
 
 		List<?> errorFlows = (List<?>) ReflectionTestUtils.getField(registry, "errorFlows");
+		assertThat(errorFlows).isNotNull();
 		assertThat(errorFlows.size()).isEqualTo(errorFlowCount);
 	}
 

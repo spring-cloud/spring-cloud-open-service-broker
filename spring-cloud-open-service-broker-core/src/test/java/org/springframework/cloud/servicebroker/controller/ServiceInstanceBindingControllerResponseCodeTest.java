@@ -48,7 +48,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 
-public class ServiceInstanceBindingControllerResponseCodeTest {
+class ServiceInstanceBindingControllerResponseCodeTest {
 
 	private final CatalogService catalogService = mock(CatalogService.class);
 
@@ -59,7 +59,7 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 	private ServiceInstanceBindingController controller;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		controller = new ServiceInstanceBindingController(catalogService, bindingService);
 		ServiceDefinition serviceDefinition = mock(ServiceDefinition.class);
 		List<Plan> plans = new ArrayList<>();
@@ -70,12 +70,12 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 	}
 
 	@Test
-	public void createServiceBindingWithNullResponseGivesExpectedStatus() {
+	void createServiceBindingWithNullResponseGivesExpectedStatus() {
 		validateCreateServiceBindingResponseStatus(null, HttpStatus.CREATED);
 	}
 
 	@Test
-	public void createServiceBindingWithNoExistingBindingResponseGivesExpectedStatus() {
+	void createServiceBindingWithNoExistingBindingResponseGivesExpectedStatus() {
 		CreateServiceInstanceBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
 				.bindingExisted(false)
 				.build();
@@ -83,7 +83,7 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 	}
 
 	@Test
-	public void createServiceBindingWithExistingBindingResponseGivesExpectedStatus() {
+	void createServiceBindingWithExistingBindingResponseGivesExpectedStatus() {
 		CreateServiceInstanceBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
 				.bindingExisted(true)
 				.build();
@@ -118,12 +118,12 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 	}
 
 	@Test
-	public void getServiceBindingWithResponseGivesExpectedStatus() {
+	void getServiceBindingWithResponseGivesExpectedStatus() {
 		validateGetServiceBindingResponseStatus(null, HttpStatus.OK);
 	}
 
 	@Test
-	public void getServiceBindingWithResponseGivesExpectedStatus2() {
+	void getServiceBindingWithResponseGivesExpectedStatus2() {
 		GetServiceInstanceBindingResponse response = GetServiceInstanceAppBindingResponse.builder()
 				.build();
 		validateGetServiceBindingResponseStatus(response, HttpStatus.OK);
@@ -151,7 +151,7 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 	}
 
 	@Test
-	public void getServiceBindingWithMissingBindingGivesExpectedStatus() {
+	void getServiceBindingWithMissingBindingGivesExpectedStatus() {
 		given(bindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
 				.willThrow(new ServiceInstanceBindingDoesNotExistException("binding-id"));
 
@@ -159,11 +159,12 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 				.getServiceInstanceBinding(pathVariables, null, null, null, null, null)
 				.block();
 
+		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
 	@Test
-	public void getServiceBindingWithMissingServiceInstanceGivesExpectedStatus() {
+	void getServiceBindingWithMissingServiceInstanceGivesExpectedStatus() {
 		given(bindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
 				.willThrow(new ServiceInstanceDoesNotExistException("nonexistent-service-id"));
 
@@ -172,23 +173,24 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 						null, null)
 				.block();
 
+		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
 	@Test
-	public void deleteServiceBindingWithNullResponseGivesExpectedStatus() {
+	void deleteServiceBindingWithNullResponseGivesExpectedStatus() {
 		validateDeleteServiceBindingWithResponseStatus(null, HttpStatus.OK);
 	}
 
 	@Test
-	public void deleteServiceBindingWithResponseGivesExpectedStatus() {
+	void deleteServiceBindingWithResponseGivesExpectedStatus() {
 		validateDeleteServiceBindingWithResponseStatus(DeleteServiceInstanceBindingResponse.builder()
 				.async(false)
 				.build(), HttpStatus.OK);
 	}
 
 	@Test
-	public void deleteServiceBindingWithResponseGivesExpectedStatus2() {
+	void deleteServiceBindingWithResponseGivesExpectedStatus2() {
 		validateDeleteServiceBindingWithResponseStatus(DeleteServiceInstanceBindingResponse.builder()
 				.async(true)
 				.build(), HttpStatus.ACCEPTED);
@@ -221,7 +223,7 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 	}
 
 	@Test
-	public void deleteServiceBindingWithMissingBindingGivesExpectedStatus() {
+	void deleteServiceBindingWithMissingBindingGivesExpectedStatus() {
 		given(bindingService.deleteServiceInstanceBinding(any(DeleteServiceInstanceBindingRequest.class)))
 				.willThrow(new ServiceInstanceBindingDoesNotExistException("binding-id"));
 
@@ -230,6 +232,7 @@ public class ServiceInstanceBindingControllerResponseCodeTest {
 						"service-definition-plan-id", false, null, null, null)
 				.block();
 
+		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
 	}
 

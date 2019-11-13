@@ -32,7 +32,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ServiceBrokerWebMvcExceptionHandlerTest extends ServiceBrokerExceptionHandlerTest {
+class ServiceBrokerWebMvcExceptionHandlerTest extends ServiceBrokerExceptionHandlerTest {
 
 	@BeforeEach
 	public void setUp() {
@@ -40,7 +40,7 @@ public class ServiceBrokerWebMvcExceptionHandlerTest extends ServiceBrokerExcept
 	}
 
 	@Test
-	public void methodArgumentNotValidException() throws NoSuchMethodException {
+	void methodArgumentNotValidException() throws NoSuchMethodException {
 		BindingResult bindingResult = new MapBindingResult(new HashMap<>(), "objectName");
 		bindingResult.addError(new FieldError("objectName", "field1", "message"));
 		bindingResult.addError(new FieldError("objectName", "field2", "message"));
@@ -59,7 +59,7 @@ public class ServiceBrokerWebMvcExceptionHandlerTest extends ServiceBrokerExcept
 	}
 
 	@Test
-	public void stringParameterIsNotPresent() {
+	void stringParameterIsNotPresent() {
 		final String parameterType = "String";
 		final String parameterName = "plan_id";
 

@@ -26,13 +26,13 @@ import org.springframework.boot.web.reactive.context.ReactiveWebApplicationConte
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class WebFluxApplicationTest {
+class WebFluxApplicationTest {
 
 	@Autowired
 	private ReactiveWebApplicationContext context;
 
 	@Test
-	public void contextLoads() {
+	void contextLoads() {
 		assertThat(context).isNotNull();
 	}
 

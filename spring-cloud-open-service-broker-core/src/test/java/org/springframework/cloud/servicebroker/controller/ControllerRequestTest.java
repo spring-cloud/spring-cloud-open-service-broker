@@ -47,11 +47,11 @@ public abstract class ControllerRequestTest {
 
 	protected Plan plan;
 
-	protected Context identityContext;
+	Context identityContext;
 
-	protected Context requestContext;
+	Context requestContext;
 
-	protected Map<String, String> pathVariables = Collections
+	Map<String, String> pathVariables = Collections
 			.singletonMap("platformInstanceId", "platform-instance-id");
 
 	@BeforeEach
@@ -84,7 +84,7 @@ public abstract class ControllerRequestTest {
 				.build();
 	}
 
-	protected String encodeOriginatingIdentity(Context context) {
+	String encodeOriginatingIdentity(Context context) {
 		Map<String, Object> properties = context.getProperties();
 		String propertiesJson = JsonUtils.toJson(properties);
 

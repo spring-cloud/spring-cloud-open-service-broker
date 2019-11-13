@@ -33,10 +33,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.model.BrokerApiVersion.API_VERSION_ANY;
 import static org.springframework.cloud.servicebroker.model.BrokerApiVersion.API_VERSION_CURRENT;
 
-public class ApiVersionWebFluxAutoConfigurationTest {
+class ApiVersionWebFluxAutoConfigurationTest {
 
 	@Test
-	public void apiVersionBeansAreNotCreatedWithNonWebConfiguration() {
+	void apiVersionBeansAreNotCreatedWithNonWebConfiguration() {
 		nonWebApplicationContextRunner()
 				.withUserConfiguration(ServicesConfiguration.class)
 				.run((context) -> {
@@ -46,7 +46,7 @@ public class ApiVersionWebFluxAutoConfigurationTest {
 	}
 
 	@Test
-	public void apiVersionBeansAreNotCreatedWithoutServiceBeans() {
+	void apiVersionBeansAreNotCreatedWithoutServiceBeans() {
 		webApplicationContextRunner()
 				.run((context) -> {
 					assertThat(context).doesNotHaveBean(BrokerApiVersion.class);
@@ -55,7 +55,7 @@ public class ApiVersionWebFluxAutoConfigurationTest {
 	}
 
 	@Test
-	public void apiVersionCheckIsDisabled() {
+	void apiVersionCheckIsDisabled() {
 		webApplicationContextRunner()
 				.withUserConfiguration(ServicesConfiguration.class)
 				.withPropertyValues("spring.cloud.openservicebroker.api-version-check-enabled=false")
@@ -66,7 +66,7 @@ public class ApiVersionWebFluxAutoConfigurationTest {
 	}
 
 	@Test
-	public void apiVersionBeansAreCreatedWithDefault() {
+	void apiVersionBeansAreCreatedWithDefault() {
 		webApplicationContextRunner()
 				.withUserConfiguration(ServicesConfiguration.class)
 				.run((context) -> {
@@ -77,7 +77,7 @@ public class ApiVersionWebFluxAutoConfigurationTest {
 	}
 
 	@Test
-	public void apiVersionBeansAreCreatedWithCustomVersion() {
+	void apiVersionBeansAreCreatedWithCustomVersion() {
 		webApplicationContextRunner()
 				.withUserConfiguration(ServicesConfiguration.class, CustomBrokerApiVersionConfigurationFromBean.class)
 				.run((context) -> {
@@ -88,7 +88,7 @@ public class ApiVersionWebFluxAutoConfigurationTest {
 	}
 
 	@Test
-	public void apiVersionBeansAreCreatedFromCustomVersionProperty() {
+	void apiVersionBeansAreCreatedFromCustomVersionProperty() {
 		webApplicationContextRunner()
 				.withUserConfiguration(ServicesConfiguration.class,
 						CustomBrokerApiVersionConfigurationFromProperty.class)
@@ -100,7 +100,7 @@ public class ApiVersionWebFluxAutoConfigurationTest {
 	}
 
 	@Test
-	public void apiVersionBeansAreCreatedFromCustomVersionBeanOverridesProperty() {
+	void apiVersionBeansAreCreatedFromCustomVersionBeanOverridesProperty() {
 		webApplicationContextRunner()
 				.withUserConfiguration(ServicesConfiguration.class,
 						CustomBrokerApiVersionConfigurationFromBeanAndProperty.class)
@@ -124,7 +124,7 @@ public class ApiVersionWebFluxAutoConfigurationTest {
 	}
 
 	@Configuration
-	public static class ServicesConfiguration {
+	static class ServicesConfiguration {
 
 		@Bean
 		public ServiceInstanceService serviceInstanceService() {
@@ -134,7 +134,7 @@ public class ApiVersionWebFluxAutoConfigurationTest {
 	}
 
 	@Configuration
-	public static class CustomBrokerApiVersionConfigurationFromBean {
+	static class CustomBrokerApiVersionConfigurationFromBean {
 
 		@Bean
 		public BrokerApiVersion version() {
@@ -145,13 +145,13 @@ public class ApiVersionWebFluxAutoConfigurationTest {
 
 	@Configuration
 	@PropertySource("classpath:apiversion.properties")
-	public static class CustomBrokerApiVersionConfigurationFromProperty {
+	static class CustomBrokerApiVersionConfigurationFromProperty {
 
 	}
 
 	@Configuration
 	@PropertySource("classpath:apiversion.properties")
-	public static class CustomBrokerApiVersionConfigurationFromBeanAndProperty {
+	static class CustomBrokerApiVersionConfigurationFromBeanAndProperty {
 
 		@Bean
 		public BrokerApiVersion version() {

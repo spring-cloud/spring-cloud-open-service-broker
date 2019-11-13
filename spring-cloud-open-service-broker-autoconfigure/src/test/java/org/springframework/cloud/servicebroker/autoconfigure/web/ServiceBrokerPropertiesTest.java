@@ -33,33 +33,33 @@ import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 
-public class ServiceBrokerPropertiesTest {
+class ServiceBrokerPropertiesTest {
 
 	private static final String PREFIX = "spring.cloud.openservicebroker";
 
 	private Map<String, String> map;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		this.map = new HashMap<>();
 	}
 
 	@Test
-	public void empty() {
+	void empty() {
 		ServiceBrokerProperties properties = bindProperties();
 		assertThat(properties.getApiVersion()).isNull();
 		assertThat(properties.getCatalog()).isNull();
 	}
 
 	@Test
-	public void apiVersion() {
+	void apiVersion() {
 		map.put("spring.cloud.openservicebroker.apiVersion", "42.42");
 		ServiceBrokerProperties properties = bindProperties();
 		assertThat(properties.getApiVersion()).isEqualTo("42.42");
 	}
 
 	@Test
-	public void catalog() {
+	void catalog() {
 		setUpCatalogProperties();
 
 		ServiceBrokerProperties properties = bindProperties();
@@ -265,7 +265,7 @@ public class ServiceBrokerPropertiesTest {
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(0).getDescription())
 				.isEqualTo("Description for Plan One");
 		assertThat(
-				catalog.getServiceDefinitions().get(0).getPlans().get(0).getMaintenanceInfo().getVersion().toString())
+				catalog.getServiceDefinitions().get(0).getPlans().get(0).getMaintenanceInfo().getVersion())
 				.isEqualTo("1.0.1");
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(0).getMaintenanceInfo().getDescription())
 				.isEqualTo("Description for maintenance info");

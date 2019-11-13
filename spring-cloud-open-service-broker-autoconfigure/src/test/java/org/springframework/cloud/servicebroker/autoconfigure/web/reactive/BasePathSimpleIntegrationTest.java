@@ -16,46 +16,45 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
-
 import org.junit.jupiter.api.Test;
 
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = "spring.cloud.openservicebroker.base-path=/broker")
-public class BasePathSimpleIntegrationTest extends AbstractBasePathWebApplicationIntegrationTest {
+class BasePathSimpleIntegrationTest extends AbstractBasePathWebApplicationIntegrationTest {
 
 	@Test
-	public void basePathFound() {
+	void basePathFound() {
 		assertFound("/broker", null);
 	}
 
 	@Test
-	public void basePathWithPlatformIdFound() {
+	void basePathWithPlatformIdFound() {
 		assertFound("/broker/123", "123");
 	}
 
 	@Test
-	public void noBasePathNotFound() {
+	void noBasePathNotFound() {
 		assertNotFound("");
 	}
 
 	@Test
-	public void alternativePathNotFound() {
+	void alternativePathNotFound() {
 		assertNotFound("/123");
 	}
 
 	@Test
-	public void basePathWithPrefixSegmentNotFound() {
+	void basePathWithPrefixSegmentNotFound() {
 		assertNotFound("/api/broker");
 	}
 
 	@Test
-	public void basePathWithPrefixAndSuffixSegmentsNotFound() {
+	void basePathWithPrefixAndSuffixSegmentsNotFound() {
 		assertNotFound("/api/broker/123");
 	}
 
 	@Test
-	public void basePathWithPrefixAndMultipleSuffixSegmentsNotFound() {
+	void basePathWithPrefixAndMultipleSuffixSegmentsNotFound() {
 		assertNotFound("/api/broker/123/456");
 	}
 

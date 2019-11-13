@@ -17,6 +17,7 @@
 package org.springframework.cloud.servicebroker.model.binding;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +34,10 @@ import static org.assertj.core.api.Assertions.entry;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
-public class CreateServiceInstanceAppBindingResponseTest {
+class CreateServiceInstanceAppBindingResponseTest {
 
 	@Test
-	public void responseWithDefaultsIsBuilt() {
+	void responseWithDefaultsIsBuilt() {
 		CreateServiceInstanceAppBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
 				.build();
 
@@ -55,21 +56,17 @@ public class CreateServiceInstanceAppBindingResponseTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void responseWithDiscreteValuesIsBuilt() {
-		Map<String, Object> credentials = new HashMap<String, Object>() {{
-			put("credential4", "value4");
-			put("credential5", "value5");
-		}};
+	void responseWithDiscreteValuesIsBuilt() {
+		Map<String, Object> credentials = new HashMap<>();
+		credentials.put("credential4", "value4");
+		credentials.put("credential5", "value5");
 
 		List<VolumeMount> volumeMounts = Arrays.asList(
 				VolumeMount.builder().build(),
 				VolumeMount.builder().build()
 		);
 
-		List<Endpoint> endpoints = Arrays.asList(
-				Endpoint.builder().build()
-		);
+		List<Endpoint> endpoints = Collections.singletonList(Endpoint.builder().build());
 
 		CreateServiceInstanceAppBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
 				.bindingExisted(true)
@@ -113,7 +110,7 @@ public class CreateServiceInstanceAppBindingResponseTest {
 	}
 
 	@Test
-	public void responseWithValuesIsDeserialized() {
+	void responseWithValuesIsDeserialized() {
 		CreateServiceInstanceAppBindingResponse response = JsonUtils.readTestDataFile(
 				"createAppBindingResponse.json",
 				CreateServiceInstanceAppBindingResponse.class);
@@ -151,7 +148,7 @@ public class CreateServiceInstanceAppBindingResponseTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(CreateServiceInstanceAppBindingResponse.class)
 				.withRedefinedSuperclass()
@@ -159,14 +156,14 @@ public class CreateServiceInstanceAppBindingResponseTest {
 	}
 
 	@Test
-	public void withinOperationCharacterLimit() throws Exception {
+	void withinOperationCharacterLimit() {
 		CreateServiceInstanceAppBindingResponse.builder()
 				.operation(RandomString.make(9_999))
 				.build();
 	}
 
 	@Test
-	public void exceedsOperationCharacterLimit() throws Exception {
+	void exceedsOperationCharacterLimit() {
 		assertThrows(IllegalArgumentException.class, () ->
 				CreateServiceInstanceAppBindingResponse.builder()
 						.operation(RandomString.make(10_001))
@@ -174,7 +171,7 @@ public class CreateServiceInstanceAppBindingResponseTest {
 	}
 
 	@Test
-	public void exactlyOperationCharacterLimit() throws Exception {
+	void exactlyOperationCharacterLimit() {
 		CreateServiceInstanceAppBindingResponse.builder()
 				.operation(RandomString.make(10_000))
 				.build();

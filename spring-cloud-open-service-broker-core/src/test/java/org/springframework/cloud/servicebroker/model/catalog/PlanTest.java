@@ -31,10 +31,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
-public class PlanTest {
+class PlanTest {
 
 	@Test
-	public void planWithDefaultsIsSerializedToJson() {
+	void planWithDefaultsIsSerializedToJson() {
 		Plan plan = Plan.builder()
 				.id("plan-id-one")
 				.name("plan-one")
@@ -74,29 +74,23 @@ public class PlanTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void planWithAllFieldsIsSerializedToJson() {
-		HashMap<String, Object> standardCost = new HashMap<String, Object>() {
-			{
-				put("unit", "MONTHLY");
-				put("amount", new HashMap<String, Object>() {
-					{
-						put("usd", 649.0d);
-					}
-				});
-			}
-		};
-		List<HashMap<String, Object>> costs = new ArrayList<>();
+	void planWithAllFieldsIsSerializedToJson() {
+		Map<String, Object> amount = new HashMap<>();
+		amount.put("usd", 649.0d);
+
+		Map<String, Object> standardCost = new HashMap<>();
+		standardCost.put("unit", "MONTHLY");
+		standardCost.put("amount", amount);
+
+		List<Map<String, Object>> costs = new ArrayList<>();
 		costs.add(standardCost);
-		Map<String, Object> metadata = new HashMap<String, Object>() {
-			{
-				put("field3", "value3");
-				put("field4", "value4");
-				put("bullets", new String[] {"bullet1", "bullet2"});
-				put("costs", costs);
-				put("displayName", "sample display name");
-			}
-		};
+
+		Map<String, Object> metadata = new HashMap<>();
+		metadata.put("field3", "value3");
+		metadata.put("field4", "value4");
+		metadata.put("bullets", new String[] {"bullet1", "bullet2"});
+		metadata.put("costs", costs);
+		metadata.put("displayName", "sample display name");
 
 		Plan plan = Plan.builder()
 				.id("plan-id-one")
@@ -164,7 +158,7 @@ public class PlanTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(Plan.class)
 				.verify();

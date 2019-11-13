@@ -20,17 +20,17 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ServiceBrokerApiVersionErrorMessageTest {
+class ServiceBrokerApiVersionErrorMessageTest {
 
 	@Test
-	public void nulls() {
+	void nulls() {
 		ServiceBrokerApiVersionErrorMessage message = ServiceBrokerApiVersionErrorMessage.from(null, null);
 		assertThat(message.toString()).isEqualTo(
 				"The provided service broker API version is not supported: expected version=null, provided version=null");
 	}
 
 	@Test
-	public void message() {
+	void message() {
 		ServiceBrokerApiVersionErrorMessage message = ServiceBrokerApiVersionErrorMessage
 				.from("expected-version", "actual-version");
 		assertThat(message.toString()).isEqualTo(
@@ -38,7 +38,7 @@ public class ServiceBrokerApiVersionErrorMessageTest {
 	}
 
 	@Test
-	public void from() {
+	void from() {
 		ServiceBrokerApiVersionErrorMessage message = ServiceBrokerApiVersionErrorMessage
 				.from("expected-version2", "actual-version2");
 		assertThat(message.toString()).isEqualTo(

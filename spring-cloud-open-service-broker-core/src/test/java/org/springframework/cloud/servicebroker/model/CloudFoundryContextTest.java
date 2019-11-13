@@ -31,10 +31,10 @@ import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.SPACE_GUID_KEY;
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.SPACE_NAME_KEY;
 
-public class CloudFoundryContextTest {
+class CloudFoundryContextTest {
 
 	@Test
-	public void emptyContext() {
+	void emptyContext() {
 		CloudFoundryContext context = CloudFoundryContext.builder()
 				.build();
 
@@ -47,7 +47,7 @@ public class CloudFoundryContextTest {
 	}
 
 	@Test
-	public void populatedContext() {
+	void populatedContext() {
 		CloudFoundryContext context = CloudFoundryContext.builder()
 				.property("key1", "value1")
 				.organizationGuid("org-guid")
@@ -89,7 +89,7 @@ public class CloudFoundryContextTest {
 	 * OSB API 2.14 and older context properties
 	 */
 	@Test
-	public void partialContextIsSerialized() {
+	void partialContextIsSerialized() {
 		Context context = CloudFoundryContext.builder().organizationGuid("org-guid")
 				.spaceGuid("space-guid").build();
 
@@ -107,7 +107,7 @@ public class CloudFoundryContextTest {
 	 * OSB API 2.15 and newer supports additional properties in the CloudFoundry context
 	 */
 	@Test
-	public void fullContextIsSerialized() {
+	void fullContextIsSerialized() {
 		Context context = CloudFoundryContext.builder()
 				.organizationGuid("org-guid")
 				.organizationName("org-name")

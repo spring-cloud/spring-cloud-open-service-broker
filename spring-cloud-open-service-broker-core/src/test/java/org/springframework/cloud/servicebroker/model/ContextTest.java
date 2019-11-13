@@ -19,10 +19,10 @@ package org.springframework.cloud.servicebroker.model;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 
-public class ContextTest {
+class ContextTest {
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(Context.class)
 				.verify();

@@ -35,12 +35,10 @@ public class PlatformContextTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void contextIsBuildWithAllValues() {
-		Map<String, Object> properties = new HashMap<String, Object>() {{
-			put("property3", "value3");
-			put("property4", true);
-		}};
+	void contextIsBuildWithAllValues() {
+		Map<String, Object> properties = new HashMap<>();
+		properties.put("property3", "value3");
+		properties.put("property4", true);
 
 		PlatformContext context = PlatformContext.builder()
 				.platform("test-platform")

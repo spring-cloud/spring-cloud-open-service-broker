@@ -50,12 +50,10 @@ public class GetServiceInstanceResponseTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void responseWithAllValuesIsBuilt() {
-		Map<String, Object> parameters = new HashMap<String, Object>() {{
-			put("field4", "value4");
-			put("field5", "value5");
-		}};
+	void responseWithAllValuesIsBuilt() {
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("field4", "value4");
+		parameters.put("field5", "value5");
 
 		GetServiceInstanceResponse response = GetServiceInstanceResponse.builder()
 				.serviceDefinitionId("service-definition-id")

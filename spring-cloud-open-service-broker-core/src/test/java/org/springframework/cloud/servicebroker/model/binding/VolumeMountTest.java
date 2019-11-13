@@ -30,10 +30,10 @@ import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 import static org.springframework.cloud.servicebroker.model.binding.VolumeMount.DeviceType.SHARED;
 import static org.springframework.cloud.servicebroker.model.binding.VolumeMount.Mode.READ_ONLY;
 
-public class VolumeMountTest {
+class VolumeMountTest {
 
 	@Test
-	public void volumeMountIsBuiltWithDefaults() {
+	void volumeMountIsBuiltWithDefaults() {
 		VolumeMount mount = VolumeMount.builder()
 				.build();
 
@@ -53,12 +53,10 @@ public class VolumeMountTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void volumeMountIsBuiltWithAllValues() {
-		Map<String, Object> config = new HashMap<String, Object>() {{
-			put("config3", "value3");
-			put("config4", true);
-		}};
+	void volumeMountIsBuiltWithAllValues() {
+		Map<String, Object> config = new HashMap<>();
+		config.put("config3", "value3");
+		config.put("config4", true);
 
 		VolumeMount mount = VolumeMount.builder()
 				.driver("test-driver")
@@ -100,7 +98,7 @@ public class VolumeMountTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(VolumeMount.class)
 				.verify();

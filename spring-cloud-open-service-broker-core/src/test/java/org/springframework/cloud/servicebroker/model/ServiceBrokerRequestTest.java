@@ -20,10 +20,10 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.Test;
 
-public class ServiceBrokerRequestTest {
+class ServiceBrokerRequestTest {
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(ServiceBrokerRequest.class)
 				.withRedefinedSuperclass()

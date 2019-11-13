@@ -24,10 +24,10 @@ import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
-public class ErrorMessageTest {
+class ErrorMessageTest {
 
 	@Test
-	public void errorWithCodeAndDescriptionIsBuilt() {
+	void errorWithCodeAndDescriptionIsBuilt() {
 		ErrorMessage errorMessage = new ErrorMessage("ErrorCode", "error description");
 
 		DocumentContext json = JsonUtils.toJsonPath(errorMessage);
@@ -37,7 +37,7 @@ public class ErrorMessageTest {
 	}
 
 	@Test
-	public void errorWithDescriptionIsBuilt() {
+	void errorWithDescriptionIsBuilt() {
 		ErrorMessage errorMessage = new ErrorMessage("error description");
 
 		DocumentContext json = JsonUtils.toJsonPath(errorMessage);
@@ -47,7 +47,7 @@ public class ErrorMessageTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(ErrorMessage.class)
 				.verify();

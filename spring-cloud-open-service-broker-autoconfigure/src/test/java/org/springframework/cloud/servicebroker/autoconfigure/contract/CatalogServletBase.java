@@ -49,13 +49,13 @@ public class CatalogServletBase {
 	private WebApplicationContext context;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		RestAssured.baseURI = "http://localhost";
 		RestAssured.port = this.port;
 	}
 
 	@Test
-	public void contextLoads() {
+	void contextLoads() {
 		assertThat(context).isNotNull();
 	}
 
@@ -65,14 +65,14 @@ public class CatalogServletBase {
 	protected static class TestApplication {
 
 		@Bean
-		public Catalog catalog() {
+		protected Catalog catalog() {
 			return Catalog.builder()
 					.serviceDefinitions(ServiceFixture.getSimpleService())
 					.build();
 		}
 
 		@Bean
-		public ServiceInstanceService serviceInstanceService() {
+		protected ServiceInstanceService serviceInstanceService() {
 			return new TestServiceInstanceService();
 		}
 

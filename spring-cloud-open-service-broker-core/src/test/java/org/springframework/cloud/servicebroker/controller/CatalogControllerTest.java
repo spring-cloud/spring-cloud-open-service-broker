@@ -31,26 +31,22 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @ExtendWith(MockitoExtension.class)
-public class CatalogControllerTest {
+class CatalogControllerTest {
 
 	@Mock
 	private CatalogService catalogService;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		initMocks(this);
 	}
 
 	@Test
-	public void catalogIsReturned() {
+	void catalogIsReturned() {
 		Catalog expectedCatalog = Catalog.builder().build();
-
 		given(catalogService.getCatalog()).willReturn(Mono.just(expectedCatalog));
-
 		CatalogController controller = new CatalogController(catalogService);
-
 		Catalog actualCatalog = controller.getCatalog().block();
-
 		assertThat(actualCatalog).isEqualTo(expectedCatalog);
 	}
 

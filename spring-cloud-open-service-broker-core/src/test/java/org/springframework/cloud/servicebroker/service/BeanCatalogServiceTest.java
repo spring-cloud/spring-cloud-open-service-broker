@@ -24,7 +24,7 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BeanCatalogServiceTest {
+class BeanCatalogServiceTest {
 
 	private static final String SVC_DEF_ID = "svc-def-id";
 
@@ -35,7 +35,7 @@ public class BeanCatalogServiceTest {
 	private ServiceDefinition serviceDefinition;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		serviceDefinition = ServiceDefinition.builder()
 				.id(SVC_DEF_ID)
 				.name("Name")

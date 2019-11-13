@@ -111,6 +111,7 @@ configure(allprojects - [project(":spring-cloud-open-service-broker-docs")]) {
 
 	pmd {
 		toolVersion = "${pmdVersion}"
+		consoleOutput(true)
 	}
 	pmdMain {
 		ruleSets = []

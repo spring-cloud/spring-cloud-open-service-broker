@@ -48,7 +48,7 @@ import org.springframework.cloud.servicebroker.service.events.flows.UpdateServic
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SuppressWarnings("deprecation")
-public class ServiceInstanceEventServiceTest {
+class ServiceInstanceEventServiceTest {
 
 	private ServiceInstanceEventService serviceInstanceEventService;
 
@@ -57,7 +57,7 @@ public class ServiceInstanceEventServiceTest {
 	private EventFlowTestResults results;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		this.eventFlowRegistries = new EventFlowRegistries();
 		this.serviceInstanceEventService = new ServiceInstanceEventService(
 				new TestServiceInstanceService(), eventFlowRegistries);
@@ -65,7 +65,7 @@ public class ServiceInstanceEventServiceTest {
 	}
 
 	@Test
-	public void createServiceInstanceSucceeds() {
+	void createServiceInstanceSucceeds() {
 		prepareCreateEventFlows();
 
 		StepVerifier
@@ -109,7 +109,7 @@ public class ServiceInstanceEventServiceTest {
 	}
 
 	@Test
-	public void createServiceInstanceFails() {
+	void createServiceInstanceFails() {
 		prepareCreateEventFlows();
 
 		StepVerifier.create(serviceInstanceEventService.createServiceInstance(
@@ -125,7 +125,7 @@ public class ServiceInstanceEventServiceTest {
 	}
 
 	@Test
-	public void deleteServiceInstanceSucceeds() {
+	void deleteServiceInstanceSucceeds() {
 		prepareDeleteEventFlows();
 
 		StepVerifier
@@ -171,7 +171,7 @@ public class ServiceInstanceEventServiceTest {
 	}
 
 	@Test
-	public void deleteServiceInstanceFails() {
+	void deleteServiceInstanceFails() {
 		prepareDeleteEventFlows();
 
 		StepVerifier
@@ -188,7 +188,7 @@ public class ServiceInstanceEventServiceTest {
 	}
 
 	@Test
-	public void updateServiceInstanceSucceeds() {
+	void updateServiceInstanceSucceeds() {
 		prepareUpdateEventFlows();
 
 		StepVerifier
@@ -234,7 +234,7 @@ public class ServiceInstanceEventServiceTest {
 	}
 
 	@Test
-	public void updateServiceInstanceFails() {
+	void updateServiceInstanceFails() {
 		prepareUpdateEventFlows();
 
 		StepVerifier
@@ -251,11 +251,11 @@ public class ServiceInstanceEventServiceTest {
 	}
 
 	@Test
-	public void getServiceInstance() {
+	void getServiceInstance() {
 	}
 
 	@Test
-	public void getLastOperationSucceeds() {
+	void getLastOperationSucceeds() {
 		prepareLastOperationEventFlows();
 
 		StepVerifier
@@ -272,7 +272,7 @@ public class ServiceInstanceEventServiceTest {
 	}
 
 	@Test
-	public void getLastOperationFails() {
+	void getLastOperationFails() {
 		prepareLastOperationEventFlows();
 
 		StepVerifier

@@ -24,24 +24,24 @@ import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstan
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class NonBindableServiceInstanceBindingServiceTest {
+class NonBindableServiceInstanceBindingServiceTest {
 
 	private NonBindableServiceInstanceBindingService service;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		service = new NonBindableServiceInstanceBindingService();
 	}
 
 	@Test
-	public void createServiceInstanceBinding() {
+	void createServiceInstanceBinding() {
 		assertThrows(UnsupportedOperationException.class, () ->
 				service.createServiceInstanceBinding(CreateServiceInstanceBindingRequest.builder().build())
 						.block());
 	}
 
 	@Test
-	public void deleteServiceInstanceBinding() {
+	void deleteServiceInstanceBinding() {
 		assertThrows(UnsupportedOperationException.class, () ->
 				service.deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest.builder().build())
 						.block());

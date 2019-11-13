@@ -21,40 +21,40 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = "spring.cloud.openservicebroker.base-path=/broker")
-public class BasePathSimpleIntegrationTest extends AbstractBasePathWebApplicationIntegrationTest {
+class BasePathSimpleIntegrationTest extends AbstractBasePathWebApplicationIntegrationTest {
 
 	@Test
-	public void basePathFound() throws Exception {
+	void basePathFound() throws Exception {
 		assertFound("/broker", null);
 	}
 
 	@Test
-	public void basePathWithPlatformIdFound() throws Exception {
+	void basePathWithPlatformIdFound() throws Exception {
 		assertFound("/broker/123", "123");
 	}
 
 	@Test
-	public void noBasePathNotFound() throws Exception {
+	void noBasePathNotFound() throws Exception {
 		assertNotFound("");
 	}
 
 	@Test
-	public void alternativePathNotFound() throws Exception {
+	void alternativePathNotFound() throws Exception {
 		assertNotFound("/123");
 	}
 
 	@Test
-	public void basePathWithPrefixSegmentNotFound() throws Exception {
+	void basePathWithPrefixSegmentNotFound() throws Exception {
 		assertNotFound("/api/broker");
 	}
 
 	@Test
-	public void basePathWithPrefixAndSuffixSegmentsNotFound() throws Exception {
+	void basePathWithPrefixAndSuffixSegmentsNotFound() throws Exception {
 		assertNotFound("/api/broker/123");
 	}
 
 	@Test
-	public void basePathWithPrefixAndMultipleSuffixSegmentsNotFound() throws Exception {
+	void basePathWithPrefixAndMultipleSuffixSegmentsNotFound() throws Exception {
 		assertNotFound("/api/broker/123/456");
 	}
 

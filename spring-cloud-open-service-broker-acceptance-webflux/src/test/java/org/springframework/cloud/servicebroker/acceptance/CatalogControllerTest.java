@@ -30,14 +30,14 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class CatalogControllerTest {
+class CatalogControllerTest {
 
 	@Autowired
 	private WebTestClient client;
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void fullCatalog() {
+	void fullCatalog() {
 		String body = this.client.get().uri("/v2/catalog")
 				.exchange()
 				.expectStatus().isOk()

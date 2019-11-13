@@ -25,10 +25,10 @@ import org.springframework.cloud.servicebroker.JsonUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
-public class GetLastServiceOperationResponseTest {
+class GetLastServiceOperationResponseTest {
 
 	@Test
-	public void responseWithDefaultsIsBuilt() {
+	void responseWithDefaultsIsBuilt() {
 		GetLastServiceOperationResponse response = GetLastServiceOperationResponse.builder()
 				.build();
 
@@ -43,7 +43,7 @@ public class GetLastServiceOperationResponseTest {
 	}
 
 	@Test
-	public void responseWithEmptyDescriptionIsBuilt() {
+	void responseWithEmptyDescriptionIsBuilt() {
 		GetLastServiceOperationResponse response = GetLastServiceOperationResponse.builder()
 				.description("")
 				.build();
@@ -59,7 +59,7 @@ public class GetLastServiceOperationResponseTest {
 	}
 
 	@Test
-	public void responseWithAllValuesIsBuilt() {
+	void responseWithAllValuesIsBuilt() {
 		GetLastServiceOperationResponse response = GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.SUCCEEDED)
 				.description("description")
@@ -77,22 +77,22 @@ public class GetLastServiceOperationResponseTest {
 	}
 
 	@Test
-	public void responseWithSuccessIsSerializedToJson() {
+	void responseWithSuccessIsSerializedToJson() {
 		responseWithStateIsSerializedToJson(OperationState.SUCCEEDED, "succeeded");
 	}
 
 	@Test
-	public void responseWithFailureIsSerializedToJson() {
+	void responseWithFailureIsSerializedToJson() {
 		responseWithStateIsSerializedToJson(OperationState.FAILED, "failed");
 	}
 
 	@Test
-	public void responseWithInProgressIsSerializedToJson() {
+	void responseWithInProgressIsSerializedToJson() {
 		responseWithStateIsSerializedToJson(OperationState.IN_PROGRESS, "in progress");
 	}
 
 	@Test
-	public void responseWithAllValuesIsDeserialized() {
+	void responseWithAllValuesIsDeserialized() {
 		GetLastServiceOperationResponse response = JsonUtils.readTestDataFile(
 				"getLastOperationResponse.json", GetLastServiceOperationResponse.class);
 
@@ -113,7 +113,7 @@ public class GetLastServiceOperationResponseTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(GetLastServiceOperationResponse.class)
 				.verify();

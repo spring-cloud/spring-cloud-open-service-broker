@@ -41,12 +41,12 @@ import static org.springframework.cloud.servicebroker.exception.ServiceBrokerAsy
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerBindingRequiresAppException.APP_REQUIRED_ERROR;
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerConcurrencyException.CONCURRENCY_ERROR;
 
-public abstract class ServiceBrokerExceptionHandlerTest {
+abstract class ServiceBrokerExceptionHandlerTest {
 
-	protected ServiceBrokerExceptionHandler exceptionHandler;
+	ServiceBrokerExceptionHandler exceptionHandler;
 
 	@Test
-	public void serviceBrokerApiVersionException() {
+	void serviceBrokerApiVersionException() {
 		ServiceBrokerApiVersionException exception =
 				new ServiceBrokerApiVersionException("expected-version", "actual-version");
 
@@ -58,7 +58,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void serviceInstanceDoesNotExistException() {
+	void serviceInstanceDoesNotExistException() {
 		ServiceInstanceDoesNotExistException exception =
 				new ServiceInstanceDoesNotExistException("service-instance-id");
 
@@ -69,7 +69,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void serviceDefinitionDoesNotExistException() {
+	void serviceDefinitionDoesNotExistException() {
 		ServiceDefinitionDoesNotExistException exception =
 				new ServiceDefinitionDoesNotExistException("service-definition-id");
 
@@ -80,7 +80,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void serviceDefinitionPlanDoesNotExistException() {
+	void serviceDefinitionPlanDoesNotExistException() {
 		ServiceDefinitionPlanDoesNotExistException exception =
 				new ServiceDefinitionPlanDoesNotExistException("service-definition-plan-id");
 
@@ -92,7 +92,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void serviceDefinitionPlanDoesNotExistExceptionWithCustomCode() {
+	void serviceDefinitionPlanDoesNotExistExceptionWithCustomCode() {
 		final String errorCode = "error";
 		ServiceDefinitionPlanDoesNotExistException exception =
 				new ServiceDefinitionPlanDoesNotExistException(errorCode, "service-definition-plan-id");
@@ -105,7 +105,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void serviceBrokerAsyncRequiredException() {
+	void serviceBrokerAsyncRequiredException() {
 		ServiceBrokerAsyncRequiredException exception =
 				new ServiceBrokerAsyncRequiredException("test message");
 
@@ -116,7 +116,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void serviceBrokerInvalidParametersException() {
+	void serviceBrokerInvalidParametersException() {
 		ServiceBrokerInvalidParametersException exception =
 				new ServiceBrokerInvalidParametersException("test message");
 
@@ -127,7 +127,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void serviceBrokerInvalidOriginatingIdentityException() {
+	void serviceBrokerInvalidOriginatingIdentityException() {
 		ServiceBrokerInvalidOriginatingIdentityException exception =
 				new ServiceBrokerInvalidOriginatingIdentityException("test message");
 
@@ -138,7 +138,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void operationInProgressException() {
+	void operationInProgressException() {
 		ServiceBrokerOperationInProgressException exception =
 				new ServiceBrokerOperationInProgressException("still working");
 
@@ -149,7 +149,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void serviceBrokerUnavailableException() {
+	void serviceBrokerUnavailableException() {
 		ServiceBrokerUnavailableException exception = new ServiceBrokerUnavailableException("maintenance in progress");
 
 		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
@@ -159,7 +159,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void serviceBrokerConcurrencyException() {
+	void serviceBrokerConcurrencyException() {
 		ServiceBrokerConcurrencyException exception = new ServiceBrokerConcurrencyException("operation in progress");
 
 		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
@@ -169,7 +169,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void serviceBrokerException() {
+	void serviceBrokerException() {
 		ServiceBrokerException exception = new ServiceBrokerException("test message");
 
 		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
@@ -179,7 +179,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void serviceBrokerExceptionWithErrorCode() {
+	void serviceBrokerExceptionWithErrorCode() {
 		ServiceBrokerException exception = new ServiceBrokerException("ErrorCode", "test message");
 
 		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
@@ -189,7 +189,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void unknownException() {
+	void unknownException() {
 		Exception exception = new Exception("test message");
 
 		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
@@ -199,7 +199,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void serviceInstanceExistsException() {
+	void serviceInstanceExistsException() {
 		ServiceInstanceExistsException exception =
 				new ServiceInstanceExistsException("service-instance-id", "service-definition-id");
 
@@ -210,7 +210,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void serviceInstanceUpdateNotSupportedException() {
+	void serviceInstanceUpdateNotSupportedException() {
 		ServiceInstanceUpdateNotSupportedException exception = new
 				ServiceInstanceUpdateNotSupportedException("test exception");
 
@@ -220,7 +220,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void bindingExistsException() {
+	void bindingExistsException() {
 		ErrorMessage errorMessage = exceptionHandler
 				.handleException(new ServiceInstanceBindingExistsException("service-instance-id", "binding-id"));
 
@@ -231,7 +231,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void bindingDoesNotExistException() {
+	void bindingDoesNotExistException() {
 		ErrorMessage errorMessage = exceptionHandler
 				.handleException(new ServiceInstanceBindingDoesNotExistException("binding-id"));
 
@@ -241,7 +241,7 @@ public abstract class ServiceBrokerExceptionHandlerTest {
 	}
 
 	@Test
-	public void appRequiredException() {
+	void appRequiredException() {
 		ErrorMessage errorMessage = exceptionHandler
 				.handleException(new ServiceBrokerBindingRequiresAppException("app GUID is required"));
 

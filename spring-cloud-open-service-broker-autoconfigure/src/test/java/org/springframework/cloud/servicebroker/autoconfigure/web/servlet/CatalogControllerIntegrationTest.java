@@ -56,7 +56,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class CatalogControllerIntegrationTest {
+class CatalogControllerIntegrationTest {
 
 	private MockMvc mockMvc;
 
@@ -69,7 +69,7 @@ public class CatalogControllerIntegrationTest {
 	private ServiceDefinition serviceDefinition;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(this.controller)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter())
 				.build();
@@ -83,8 +83,7 @@ public class CatalogControllerIntegrationTest {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
-	public void catalogIsRetrieved() throws Exception {
+	void catalogIsRetrieved() throws Exception {
 		MvcResult mvcResult = this.mockMvc.perform(get("/v2/catalog")
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(request().asyncStarted())
@@ -93,7 +92,7 @@ public class CatalogControllerIntegrationTest {
 	}
 
 	@Test
-	public void catalogIsRetrievedWithPlatformInstanceId() throws Exception {
+	void catalogIsRetrievedWithPlatformInstanceId() throws Exception {
 		MvcResult mvcResult = this.mockMvc.perform(get("/123/v2/catalog")
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(request().asyncStarted())

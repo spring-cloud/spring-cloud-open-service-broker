@@ -29,10 +29,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
-public class SchemasTest {
+class SchemasTest {
 
 	@Test
-	public void noSchemasIsSerializedToJson() {
+	void noSchemasIsSerializedToJson() {
 		Schemas schemas = Schemas.builder().build();
 
 		assertThat(schemas.getServiceInstanceSchema()).isNull();
@@ -45,7 +45,7 @@ public class SchemasTest {
 	}
 
 	@Test
-	public void emptySchemasIsSerializedToJson() {
+	void emptySchemasIsSerializedToJson() {
 		Schemas schemas = Schemas.builder()
 				.serviceInstanceSchema(ServiceInstanceSchema.builder().build())
 				.serviceBindingSchema(ServiceBindingSchema.builder().build())
@@ -65,16 +65,16 @@ public class SchemasTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void allSchemaFieldsIsSerializedToJson() {
-		Map<String, Object> schemaProperties = new HashMap<String, Object>() {{
-			put("properties", new HashMap<String, Object>() {{
-				put("billing-account", new HashMap<String, String>() {{
-					put("description", "Billing account number.");
-					put("type", "string");
-				}});
-			}});
-		}};
+	void allSchemaFieldsIsSerializedToJson() {
+		Map<String, Object> account = new HashMap<>();
+		account.put("description", "Billing account number.");
+		account.put("type", "string");
+
+		Map<String, Object> properties = new HashMap<>();
+		properties.put("billing-account", account);
+
+		Map<String, Object> schemaProperties = new HashMap<>();
+		schemaProperties.put("properties", properties);
 
 		Schemas schemas = Schemas.builder()
 				.serviceInstanceSchema(ServiceInstanceSchema.builder()
@@ -146,7 +146,7 @@ public class SchemasTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(Schemas.class)
 				.verify();

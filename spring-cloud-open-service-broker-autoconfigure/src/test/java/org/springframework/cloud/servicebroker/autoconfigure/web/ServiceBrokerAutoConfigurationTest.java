@@ -35,7 +35,7 @@ import org.springframework.context.annotation.Bean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ServiceBrokerAutoConfigurationTest {
+class ServiceBrokerAutoConfigurationTest {
 
 	private static final String ANALYZER_DESCRIPTION = "A 'service broker catalog' is required for Spring Cloud Open" +
 			" Service Broker applications";
@@ -44,7 +44,7 @@ public class ServiceBrokerAutoConfigurationTest {
 			.withConfiguration(AutoConfigurations.of(ServiceBrokerAutoConfiguration.class));
 
 	@Test
-	public void servicesAreCreatedWithMinimalConfiguration() {
+	void servicesAreCreatedWithMinimalConfiguration() {
 		this.contextRunner
 				.withUserConfiguration(MinimalWithCatalogConfiguration.class)
 				.run((context) -> {
@@ -63,7 +63,7 @@ public class ServiceBrokerAutoConfigurationTest {
 	}
 
 	@Test
-	public void servicesAreCreatedWithCatalogAndFullConfiguration() {
+	void servicesAreCreatedWithCatalogAndFullConfiguration() {
 		this.contextRunner
 				.withUserConfiguration(FullServicesWithCatalogConfiguration.class)
 				.run((context) -> {
@@ -82,7 +82,7 @@ public class ServiceBrokerAutoConfigurationTest {
 	}
 
 	@Test
-	public void servicesAreCreatedWithFullConfiguration() {
+	void servicesAreCreatedWithFullConfiguration() {
 		this.contextRunner
 				.withUserConfiguration(FullServicesConfiguration.class)
 				.run((context) -> {
@@ -101,7 +101,7 @@ public class ServiceBrokerAutoConfigurationTest {
 	}
 
 	@Test
-	public void servicesAreCreatedWithCatalogAndCatalogServiceConfiguration() {
+	void servicesAreCreatedWithCatalogAndCatalogServiceConfiguration() {
 		this.contextRunner
 				.withUserConfiguration(CatalogAndCatalogServiceConfiguration.class)
 				.run((context) -> {
@@ -120,7 +120,7 @@ public class ServiceBrokerAutoConfigurationTest {
 	}
 
 	@Test
-	public void servicesAreNotCreatedWithoutInstanceService() {
+	void servicesAreNotCreatedWithoutInstanceService() {
 		this.contextRunner
 				.withUserConfiguration(MissingInstanceServiceConfiguration.class)
 				.run(context -> assertThat(context.getStartupFailure())
@@ -128,7 +128,7 @@ public class ServiceBrokerAutoConfigurationTest {
 	}
 
 	@Test
-	public void servicesAreNotCreatedWhenMissingCatalogAndCatalogServiceConfiguration() {
+	void servicesAreNotCreatedWhenMissingCatalogAndCatalogServiceConfiguration() {
 		this.contextRunner
 				.withUserConfiguration(MissingCatalogServiceConfiguration.class)
 				.run((context) -> {
@@ -147,7 +147,7 @@ public class ServiceBrokerAutoConfigurationTest {
 	}
 
 	@Test
-	public void servicesAreNotCreatedWhenMissingAllConfiguration() {
+	void servicesAreNotCreatedWhenMissingAllConfiguration() {
 		this.contextRunner
 				.withUserConfiguration(MissingAllConfiguration.class)
 				.run((context) -> assertThat(context.getStartupFailure())
@@ -155,7 +155,7 @@ public class ServiceBrokerAutoConfigurationTest {
 	}
 
 	@Test
-	public void servicesAreCreatedFromCatalogProperties() {
+	void servicesAreCreatedFromCatalogProperties() {
 		this.contextRunner
 				.withUserConfiguration(MissingCatalogServiceConfiguration.class)
 				.withPropertyValues(
@@ -195,120 +195,120 @@ public class ServiceBrokerAutoConfigurationTest {
 	}
 
 	@TestConfiguration
-	public static class MinimalWithCatalogConfiguration {
+	protected static class MinimalWithCatalogConfiguration {
 
 		@Bean
-		public Catalog catalog() {
+		protected Catalog catalog() {
 			return Catalog.builder().build();
 		}
 
 		@Bean
-		public ServiceInstanceService serviceInstanceService() {
+		protected ServiceInstanceService serviceInstanceService() {
 			return new TestServiceInstanceService();
 		}
 
 	}
 
 	@TestConfiguration
-	public static class FullServicesWithCatalogConfiguration {
+	protected static class FullServicesWithCatalogConfiguration {
 
 		@Bean
-		public Catalog catalog() {
+		protected Catalog catalog() {
 			return Catalog.builder().build();
 		}
 
 		@Bean
-		public ServiceInstanceService serviceInstanceService() {
+		protected ServiceInstanceService serviceInstanceService() {
 			return new TestServiceInstanceService();
 		}
 
 		@Bean
-		public ServiceInstanceBindingService serviceInstanceBindingService() {
+		protected ServiceInstanceBindingService serviceInstanceBindingService() {
 			return new TestServiceInstanceBindingService();
 		}
 
 	}
 
 	@TestConfiguration
-	public static class FullServicesConfiguration {
+	protected static class FullServicesConfiguration {
 
 		@Bean
-		public CatalogService catalogService() {
+		protected CatalogService catalogService() {
 			return new TestCatalogService();
 		}
 
 		@Bean
-		public ServiceInstanceService serviceInstanceService() {
+		protected ServiceInstanceService serviceInstanceService() {
 			return new TestServiceInstanceService();
 		}
 
 		@Bean
-		public ServiceInstanceBindingService serviceInstanceBindingService() {
+		protected ServiceInstanceBindingService serviceInstanceBindingService() {
 			return new TestServiceInstanceBindingService();
 		}
 
 	}
 
 	@TestConfiguration
-	public static class CatalogAndCatalogServiceConfiguration {
+	protected static class CatalogAndCatalogServiceConfiguration {
 
 		@Bean
-		public Catalog catalog() {
+		protected Catalog catalog() {
 			return Catalog.builder().build();
 		}
 
 		@Bean
-		public CatalogService catalogService() {
+		protected CatalogService catalogService() {
 			return new TestCatalogService();
 		}
 
 		@Bean
-		public ServiceInstanceService serviceInstanceService() {
+		protected ServiceInstanceService serviceInstanceService() {
 			return new TestServiceInstanceService();
 		}
 
 	}
 
 	@TestConfiguration
-	public static class MissingInstanceServiceConfiguration {
+	protected static class MissingInstanceServiceConfiguration {
 
 		private final ServiceInstanceService serviceInstanceService;
 
-		public MissingInstanceServiceConfiguration(ServiceInstanceService serviceInstanceService) {
+		protected MissingInstanceServiceConfiguration(ServiceInstanceService serviceInstanceService) {
 			this.serviceInstanceService = serviceInstanceService;
 		}
 
 		@Bean
-		public Catalog catalog() {
+		protected Catalog catalog() {
 			return Catalog.builder().build();
 		}
 
 	}
 
 	@TestConfiguration
-	public static class MissingCatalogServiceConfiguration {
+	protected static class MissingCatalogServiceConfiguration {
 
 		private final CatalogService catalogService;
 
-		public MissingCatalogServiceConfiguration(CatalogService catalogService) {
+		protected MissingCatalogServiceConfiguration(CatalogService catalogService) {
 			this.catalogService = catalogService;
 		}
 
 		@Bean
-		public ServiceInstanceService serviceInstanceService() {
+		protected ServiceInstanceService serviceInstanceService() {
 			return new TestServiceInstanceService();
 		}
 
 	}
 
 	@TestConfiguration
-	public static class MissingAllConfiguration {
+	protected static class MissingAllConfiguration {
 
 		private final CatalogService catalogService;
 
 		private final ServiceInstanceService serviceInstanceService;
 
-		public MissingAllConfiguration(CatalogService catalogService, ServiceInstanceService serviceInstanceService) {
+		protected MissingAllConfiguration(CatalogService catalogService, ServiceInstanceService serviceInstanceService) {
 			this.catalogService = catalogService;
 			this.serviceInstanceService = serviceInstanceService;
 		}

@@ -36,24 +36,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ServiceBrokerPropertiesBindingTest {
+class ServiceBrokerPropertiesBindingTest {
 
 	private final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 
 	@AfterEach
-	public void closeContext() {
+	void closeContext() {
 		this.context.close();
 	}
 
 	@Test
-	public void bindMinimumValidProperties() {
+	void bindMinimumValidProperties() {
 		this.context.register(ServiceBrokerPropertiesConfiguration.class);
 		TestPropertySourceUtils.addPropertiesFilesToEnvironment(this.context, "classpath:catalog-minimal.properties");
 		validateMinimumCatalog();
 	}
 
 	@Test
-	public void bindMinimumValidYaml() throws Exception {
+	void bindMinimumValidYaml() throws Exception {
 		this.context.register(ServiceBrokerPropertiesConfiguration.class);
 		Resource resource = context.getResource("classpath:catalog-minimal.yml");
 		YamlPropertySourceLoader sourceLoader = new YamlPropertySourceLoader();
@@ -90,16 +90,15 @@ public class ServiceBrokerPropertiesBindingTest {
 	}
 
 	@Test
-	public void bindInvalidProperties() {
+	void bindInvalidProperties() {
 		this.context.register(ServiceBrokerPropertiesConfiguration.class);
 		TestPropertyValues.of("spring.cloud.openservicebroker.catalog.services[0].id:service-one-id")
 				.applyTo(this.context);
-		assertThrows(ConfigurationPropertiesBindException.class, () ->
-				this.context.refresh());
+		assertThrows(ConfigurationPropertiesBindException.class, this.context::refresh);
 	}
 
 	@Test
-	public void bindFullValidYaml() throws Exception {
+	void bindFullValidYaml() throws Exception {
 		this.context.register(ServiceBrokerPropertiesConfiguration.class);
 		Resource resource = context.getResource("classpath:catalog-full.yml");
 		YamlPropertySourceLoader sourceLoader = new YamlPropertySourceLoader();
@@ -109,7 +108,7 @@ public class ServiceBrokerPropertiesBindingTest {
 	}
 
 	@Test
-	public void bindFullValidProperties() {
+	void bindFullValidProperties() {
 		this.context.register(ServiceBrokerPropertiesConfiguration.class);
 		TestPropertySourceUtils.addPropertiesFilesToEnvironment(this.context, "classpath:catalog-full.properties");
 		validateFullCatalog();

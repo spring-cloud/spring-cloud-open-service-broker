@@ -30,14 +30,14 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class CatalogControllerTest {
+class CatalogControllerTest {
 
 	@Autowired
 	private TestRestTemplate rest;
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void fullCatalog() {
+	void fullCatalog() {
 		String body = this.rest.getForObject("/v2/catalog", String.class);
 
 		assertThat(body).isNotNull();

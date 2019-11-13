@@ -25,10 +25,10 @@ import org.springframework.cloud.servicebroker.JsonUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
-public class UpdateServiceInstanceResponseTest {
+class UpdateServiceInstanceResponseTest {
 
 	@Test
-	public void responseWithDefaultsIsBuilt() {
+	void responseWithDefaultsIsBuilt() {
 		UpdateServiceInstanceResponse response = UpdateServiceInstanceResponse.builder()
 				.build();
 
@@ -41,7 +41,7 @@ public class UpdateServiceInstanceResponseTest {
 	}
 
 	@Test
-	public void responseWithAllValuesIsBuilt() {
+	void responseWithAllValuesIsBuilt() {
 		UpdateServiceInstanceResponse response = UpdateServiceInstanceResponse.builder()
 				.async(true)
 				.dashboardUrl("https://dashboard.example.com")
@@ -58,7 +58,7 @@ public class UpdateServiceInstanceResponseTest {
 	}
 
 	@Test
-	public void responseWithAllValuesIsDeserialized() {
+	void responseWithAllValuesIsDeserialized() {
 		UpdateServiceInstanceResponse response = JsonUtils.readTestDataFile(
 				"updateResponse.json", UpdateServiceInstanceResponse.class);
 
@@ -67,7 +67,7 @@ public class UpdateServiceInstanceResponseTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(UpdateServiceInstanceResponse.class)
 				.withRedefinedSuperclass()

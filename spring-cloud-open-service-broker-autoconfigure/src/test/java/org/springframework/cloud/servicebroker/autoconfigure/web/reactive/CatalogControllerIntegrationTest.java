@@ -42,7 +42,7 @@ import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefin
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_SYSLOG_DRAIN;
 
 @ExtendWith(MockitoExtension.class)
-public class CatalogControllerIntegrationTest {
+class CatalogControllerIntegrationTest {
 
 	private WebTestClient client;
 
@@ -55,7 +55,7 @@ public class CatalogControllerIntegrationTest {
 	private ServiceDefinition serviceDefinition;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		this.client = WebTestClient.bindToController(this.controller).build();
 		this.serviceDefinition = ServiceFixture.getSimpleService();
 
@@ -68,13 +68,12 @@ public class CatalogControllerIntegrationTest {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
-	public void catalogIsRetrieved() {
+	void catalogIsRetrieved() {
 		assertCatalog("/v2/catalog");
 	}
 
 	@Test
-	public void catalogIsRetrievedWithPlatformInstanceId() {
+	void catalogIsRetrievedWithPlatformInstanceId() {
 		assertCatalog("/123/v2/catalog");
 	}
 

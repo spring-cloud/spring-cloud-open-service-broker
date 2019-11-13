@@ -22,10 +22,10 @@ import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OperationStateTest {
+class OperationStateTest {
 
 	@Test
-	public void enumValueIsDeserialized() {
+	void enumValueIsDeserialized() {
 		OperationState state = JsonUtils.readTestDataFile(
 				"operationState.json", OperationState.class);
 

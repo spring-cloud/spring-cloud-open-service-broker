@@ -37,7 +37,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @ExtendWith(MockitoExtension.class)
-public class RequestIdentityInterceptorIntegrationTest {
+class RequestIdentityInterceptorIntegrationTest {
 
 	private final static String CATALOG_PATH = "/v2/catalog";
 
@@ -45,13 +45,12 @@ public class RequestIdentityInterceptorIntegrationTest {
 	private CatalogController controller;
 
 	@Mock
-	@SuppressWarnings("unused")
 	private CatalogService catalogService;
 
 	private MockMvc mvc;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		this.mvc = MockMvcBuilders.standaloneSetup(controller)
 				.addInterceptors(new RequestIdentityInterceptor())
 				.build();
@@ -60,7 +59,7 @@ public class RequestIdentityInterceptorIntegrationTest {
 	}
 
 	@Test
-	public void noHeaderSent() throws Exception {
+	void noHeaderSent() throws Exception {
 		mvc.perform(get(CATALOG_PATH)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(result -> assertThat(
@@ -69,7 +68,7 @@ public class RequestIdentityInterceptorIntegrationTest {
 	}
 
 	@Test
-	public void headerSent() throws Exception {
+	void headerSent() throws Exception {
 		mvc.perform(get(CATALOG_PATH)
 				.header(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, "request-id")
 				.accept(MediaType.APPLICATION_JSON))

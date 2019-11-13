@@ -35,11 +35,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.JsonUtils.fromJson;
 import static org.springframework.cloud.servicebroker.JsonUtils.toJson;
 
-@SuppressWarnings({"deprecation", "DeprecatedIsStillUsed"})
-public class CreateServiceInstanceBindingRequestTest {
+@SuppressWarnings("deprecation")
+class CreateServiceInstanceBindingRequestTest {
 
 	@Test
-	public void requestWithDefaultsIsBuilt() {
+	void requestWithDefaultsIsBuilt() {
 		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder().build();
 
 		assertThat(request.getServiceDefinitionId()).isNull();
@@ -58,14 +58,12 @@ public class CreateServiceInstanceBindingRequestTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void requestWithAllValuesIsBuilt() {
+	void requestWithAllValuesIsBuilt() {
 		BindResource bindResource = BindResource.builder().build();
 		Context context = PlatformContext.builder().build();
-		Map<String, Object> parameters = new HashMap<String, Object>() {{
-			put("field4", "value4");
-			put("field5", "value5");
-		}};
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("field4", "value4");
+		parameters.put("field5", "value5");
 
 		Context originatingIdentity = PlatformContext.builder()
 				.platform("test-platform")
@@ -115,7 +113,7 @@ public class CreateServiceInstanceBindingRequestTest {
 	}
 
 	@Test
-	public void requestIsDeserializedFromJson() {
+	void requestIsDeserializedFromJson() {
 		CreateServiceInstanceBindingRequest request =
 				JsonUtils.readTestDataFile("bindRequest.json", CreateServiceInstanceBindingRequest.class);
 
@@ -138,7 +136,7 @@ public class CreateServiceInstanceBindingRequestTest {
 	}
 
 	@Test
-	public void minimalRequiredRequestIsDeserializedFromJson() {
+	void minimalRequiredRequestIsDeserializedFromJson() {
 		CreateServiceInstanceBindingRequest request =
 				JsonUtils.readTestDataFile("bindRequestWithOnlyRequiredFields.json",
 						CreateServiceInstanceBindingRequest.class);
@@ -160,7 +158,7 @@ public class CreateServiceInstanceBindingRequestTest {
 	}
 
 	@Test
-	public void requestMatchesWithJsonRoundTrip() {
+	void requestMatchesWithJsonRoundTrip() {
 		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId("definition-id")
 				.planId("plan-id")
@@ -186,7 +184,7 @@ public class CreateServiceInstanceBindingRequestTest {
 	}
 
 	@Test
-	public void minimalRequestMatchesWithJsonRoundTrip() {
+	void minimalRequestMatchesWithJsonRoundTrip() {
 		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder()
 				.serviceDefinitionId("definition-id")
 				.planId("plan-id")
@@ -200,7 +198,7 @@ public class CreateServiceInstanceBindingRequestTest {
 	}
 
 	@Test
-	public void requestSerializesToJsonExcludingTransients() {
+	void requestSerializesToJsonExcludingTransients() {
 		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest.builder()
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("api-info-location")
@@ -223,7 +221,7 @@ public class CreateServiceInstanceBindingRequestTest {
 	}
 
 	@Test
-	public void minimalRequestSerializesToJsonWithoutMissingExcludingTransients() {
+	void minimalRequestSerializesToJsonWithoutMissingExcludingTransients() {
 		CreateServiceInstanceBindingRequest request = CreateServiceInstanceBindingRequest
 				.builder().platformInstanceId("platform-instance-id")
 				.apiInfoLocation("api-info-location")
@@ -243,7 +241,7 @@ public class CreateServiceInstanceBindingRequestTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(CreateServiceInstanceBindingRequest.class)
 				.withRedefinedSuperclass()

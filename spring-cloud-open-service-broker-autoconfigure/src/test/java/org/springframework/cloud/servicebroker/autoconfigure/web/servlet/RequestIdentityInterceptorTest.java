@@ -31,7 +31,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class RequestIdentityInterceptorTest {
+class RequestIdentityInterceptorTest {
 
 	@Mock
 	private HttpServletRequest request;
@@ -40,18 +40,18 @@ public class RequestIdentityInterceptorTest {
 	private HttpServletResponse response;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		MockitoAnnotations.initMocks(this);
 	}
 
 	@Test
-	public void defaultBehaviorReturnsTrue() {
+	void defaultBehaviorReturnsTrue() {
 		RequestIdentityInterceptor interceptor = new RequestIdentityInterceptor();
 		assertThat(interceptor.preHandle(request, response, null)).isTrue();
 	}
 
 	@Test
-	public void requestIdentityHeader() {
+	void requestIdentityHeader() {
 		given(request.getHeader(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER)).willReturn("request-id");
 		RequestIdentityInterceptor interceptor = new RequestIdentityInterceptor();
 		assertThat(interceptor.preHandle(request, response, null)).isTrue();
@@ -60,7 +60,7 @@ public class RequestIdentityInterceptorTest {
 	}
 
 	@Test
-	public void requestIdentityHeaderIsMissing() {
+	void requestIdentityHeaderIsMissing() {
 		given(request.getHeader(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER)).willReturn(null);
 		RequestIdentityInterceptor interceptor = new RequestIdentityInterceptor();
 		assertThat(interceptor.preHandle(request, response, null)).isTrue();

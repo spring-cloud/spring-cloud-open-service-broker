@@ -57,7 +57,7 @@ import org.springframework.cloud.servicebroker.service.events.flows.DeleteServic
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ServiceInstanceBindingEventServiceTest {
+class ServiceInstanceBindingEventServiceTest {
 
 	private ServiceInstanceBindingEventService serviceInstanceBindingEventService;
 
@@ -66,7 +66,7 @@ public class ServiceInstanceBindingEventServiceTest {
 	private EventFlowTestResults results;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		this.eventFlowRegistries = new EventFlowRegistries(
 				new CreateServiceInstanceEventFlowRegistry(new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),
 				new UpdateServiceInstanceEventFlowRegistry(new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),
@@ -87,7 +87,7 @@ public class ServiceInstanceBindingEventServiceTest {
 	}
 
 	@Test
-	public void createServiceInstanceBindingSucceeds() {
+	void createServiceInstanceBindingSucceeds() {
 		prepareBindingFlows();
 
 		StepVerifier
@@ -108,7 +108,7 @@ public class ServiceInstanceBindingEventServiceTest {
 	}
 
 	@Test
-	public void createServiceInstanceBindingFails() {
+	void createServiceInstanceBindingFails() {
 		prepareBindingFlows();
 
 		StepVerifier
@@ -128,7 +128,7 @@ public class ServiceInstanceBindingEventServiceTest {
 	}
 
 	@Test
-	public void getServiceInstanceBinding() {
+	void getServiceInstanceBinding() {
 		StepVerifier
 				.create(serviceInstanceBindingEventService.getServiceInstanceBinding(
 						GetServiceInstanceBindingRequest.builder()
@@ -140,7 +140,7 @@ public class ServiceInstanceBindingEventServiceTest {
 	}
 
 	@Test
-	public void getLastOperationSucceeds() {
+	void getLastOperationSucceeds() {
 		prepareLastOperationEventFlows();
 
 		StepVerifier
@@ -158,7 +158,7 @@ public class ServiceInstanceBindingEventServiceTest {
 	}
 
 	@Test
-	public void getLastOperationFails() {
+	void getLastOperationFails() {
 		prepareLastOperationEventFlows();
 
 		StepVerifier
@@ -203,7 +203,7 @@ public class ServiceInstanceBindingEventServiceTest {
 	}
 
 	@Test
-	public void deleteServiceInstanceBindingSucceeds() {
+	void deleteServiceInstanceBindingSucceeds() {
 		prepareBindingFlows();
 
 		StepVerifier
@@ -224,7 +224,7 @@ public class ServiceInstanceBindingEventServiceTest {
 	}
 
 	@Test
-	public void deleteServiceInstanceBindingFails() {
+	void deleteServiceInstanceBindingFails() {
 		prepareBindingFlows();
 
 		StepVerifier

@@ -26,10 +26,10 @@ import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
-public class GetLastServiceBindingOperationResponseTest {
+class GetLastServiceBindingOperationResponseTest {
 
 	@Test
-	public void responseWithDefaultsIsBuilt() {
+	void responseWithDefaultsIsBuilt() {
 		GetLastServiceBindingOperationResponse response = GetLastServiceBindingOperationResponse.builder()
 				.build();
 
@@ -44,7 +44,7 @@ public class GetLastServiceBindingOperationResponseTest {
 	}
 
 	@Test
-	public void responseWithEmptyDescriptionIsBuilt() {
+	void responseWithEmptyDescriptionIsBuilt() {
 		GetLastServiceBindingOperationResponse response = GetLastServiceBindingOperationResponse.builder()
 				.description("")
 				.build();
@@ -60,7 +60,7 @@ public class GetLastServiceBindingOperationResponseTest {
 	}
 
 	@Test
-	public void responseWithAllValuesIsBuilt() {
+	void responseWithAllValuesIsBuilt() {
 		GetLastServiceBindingOperationResponse response = GetLastServiceBindingOperationResponse.builder()
 				.operationState(OperationState.SUCCEEDED)
 				.description("description")
@@ -78,22 +78,22 @@ public class GetLastServiceBindingOperationResponseTest {
 	}
 
 	@Test
-	public void responseWithSuccessIsSerializedToJson() {
+	void responseWithSuccessIsSerializedToJson() {
 		responseWithStateIsSerializedToJson(OperationState.SUCCEEDED, "succeeded");
 	}
 
 	@Test
-	public void responseWithFailureIsSerializedToJson() {
+	void responseWithFailureIsSerializedToJson() {
 		responseWithStateIsSerializedToJson(OperationState.FAILED, "failed");
 	}
 
 	@Test
-	public void responseWithInProgressIsSerializedToJson() {
+	void responseWithInProgressIsSerializedToJson() {
 		responseWithStateIsSerializedToJson(OperationState.IN_PROGRESS, "in progress");
 	}
 
 	@Test
-	public void responseWithAllValuesIsDeserialized() {
+	void responseWithAllValuesIsDeserialized() {
 		GetLastServiceBindingOperationResponse response = JsonUtils.readTestDataFile(
 				"getLastOperationResponse.json", GetLastServiceBindingOperationResponse.class);
 
@@ -114,7 +114,7 @@ public class GetLastServiceBindingOperationResponseTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(GetLastServiceBindingOperationResponse.class)
 				.verify();

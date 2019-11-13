@@ -25,10 +25,10 @@ import org.springframework.cloud.servicebroker.JsonUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
-public class DashboardClientTest {
+class DashboardClientTest {
 
 	@Test
-	public void dashboardClientIsBuiltWithDefaults() {
+	void dashboardClientIsBuiltWithDefaults() {
 		DashboardClient client = DashboardClient.builder()
 				.build();
 
@@ -44,7 +44,7 @@ public class DashboardClientTest {
 	}
 
 	@Test
-	public void dashboardClientIsBuiltWithAllValues() {
+	void dashboardClientIsBuiltWithAllValues() {
 		DashboardClient client = DashboardClient.builder()
 				.id("client-id")
 				.secret("client-secret")
@@ -63,7 +63,7 @@ public class DashboardClientTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(DashboardClient.class)
 				.verify();

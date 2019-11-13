@@ -30,10 +30,10 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DeleteServiceInstanceRequestTest {
+class DeleteServiceInstanceRequestTest {
 
 	@Test
-	public void requestWithDefaultsIsBuilt() {
+	void requestWithDefaultsIsBuilt() {
 		DeleteServiceInstanceRequest request = DeleteServiceInstanceRequest.builder()
 				.build();
 
@@ -49,8 +49,7 @@ public class DeleteServiceInstanceRequestTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void requestWithAllValuesIsBuilt() {
+	void requestWithAllValuesIsBuilt() {
 		Context originatingIdentity = PlatformContext.builder()
 				.platform("test-platform")
 				.build();
@@ -78,7 +77,7 @@ public class DeleteServiceInstanceRequestTest {
 	}
 
 	@Test
-	public void serializesAccordingToOsbSpecs() {
+	void serializesAccordingToOsbSpecs() {
 		Context originatingIdentity = PlatformContext.builder()
 				.platform("test-platform")
 				.build();
@@ -108,7 +107,7 @@ public class DeleteServiceInstanceRequestTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(DeleteServiceInstanceRequest.class)
 				.withRedefinedSuperclass()

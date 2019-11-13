@@ -31,17 +31,17 @@ import org.springframework.cloud.servicebroker.controller.ServiceInstanceControl
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ServiceBrokerWebMvcAutoConfigurationTest extends AbstractServiceBrokerWebAutoConfigurationTest {
+class ServiceBrokerWebMvcAutoConfigurationTest extends AbstractServiceBrokerWebAutoConfigurationTest {
 
 	@Test
-	public void controllersAreNotCreatedWithoutRequiredServices() {
+	void controllersAreNotCreatedWithoutRequiredServices() {
 		webApplicationContextRunner()
 				.run(context -> assertThat(context.getStartupFailure())
 						.isExactlyInstanceOf(UnsatisfiedDependencyException.class));
 	}
 
 	@Test
-	public void controllersAreCreated() {
+	void controllersAreCreated() {
 		webApplicationContextRunner()
 				.withUserConfiguration(FullServicesConfiguration.class)
 				.run(context -> assertThat(context).hasSingleBean(CatalogController.class)
@@ -51,7 +51,7 @@ public class ServiceBrokerWebMvcAutoConfigurationTest extends AbstractServiceBro
 	}
 
 	@Test
-	public void controllersAreNotCreatedWithMissingInstanceService() {
+	void controllersAreNotCreatedWithMissingInstanceService() {
 		webApplicationContextRunner()
 				.withUserConfiguration(MissingServiceInstanceServiceConfiguration.class)
 				.run(context -> {

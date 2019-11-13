@@ -43,7 +43,7 @@ public abstract class AbstractServiceBrokerWebAutoConfigurationTest {
 			"provide implementations of the required methods of that interface.", ServiceInstanceService.class);
 
 	@Test
-	public void controllersAreNotCreatedWithNonWebConfiguration() {
+	void controllersAreNotCreatedWithNonWebConfiguration() {
 		nonWebApplicationContextRunner()
 				.withUserConfiguration(FullServicesConfiguration.class)
 				.run(context -> assertThat(context).doesNotHaveBean(CatalogController.class)
@@ -68,47 +68,47 @@ public abstract class AbstractServiceBrokerWebAutoConfigurationTest {
 	}
 
 	@TestConfiguration
-	public static class FullServicesConfiguration {
+	protected static class FullServicesConfiguration {
 
 		@Bean
-		public CatalogService catalogService() {
+		protected CatalogService catalogService() {
 			return new TestCatalogService();
 		}
 
 		@Bean
-		public ServiceInstanceService serviceInstanceService() {
+		protected ServiceInstanceService serviceInstanceService() {
 			return new TestServiceInstanceService();
 		}
 
 		@Bean
-		public ServiceInstanceBindingService serviceInstanceBindingService() {
+		protected ServiceInstanceBindingService serviceInstanceBindingService() {
 			return new TestServiceInstanceBindingService();
 		}
 
 		@SuppressWarnings("deprecation")
 		@Bean
-		public EventFlowRegistries eventFlowRegistries() {
+		protected EventFlowRegistries eventFlowRegistries() {
 			return new EventFlowRegistries();
 		}
 
 	}
 
 	@TestConfiguration
-	public static class MissingServiceInstanceServiceConfiguration {
+	protected static class MissingServiceInstanceServiceConfiguration {
 
 		@Bean
-		public CatalogService catalogService() {
+		protected CatalogService catalogService() {
 			return new TestCatalogService();
 		}
 
 		@Bean
-		public ServiceInstanceBindingService serviceInstanceBindingService() {
+		protected ServiceInstanceBindingService serviceInstanceBindingService() {
 			return new TestServiceInstanceBindingService();
 		}
 
 		@SuppressWarnings("deprecation")
 		@Bean
-		public EventFlowRegistries eventFlowRegistries() {
+		protected EventFlowRegistries eventFlowRegistries() {
 			return new EventFlowRegistries();
 		}
 

@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ServiceMetadataTest {
+class ServiceMetadataTest {
 
 	private static final String BASE64_ENCODED_IMAGE_DATA = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB" +
 			"AAAAAQCAYAAAAf8/9hAAAB10lEQVQ4T32TyS8DYRiHEVcnXP0BEjcJQiSIGyci4SLR9GBJCIcKehCa2OJE4maP2GKLrTHBQR" +
@@ -38,19 +38,19 @@ public class ServiceMetadataTest {
 	private ServiceMetadata metadata;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		this.metadata = new ServiceMetadata();
 	}
 
 	@Test
-	public void imageUrlResourceMissing() {
+	void imageUrlResourceMissing() {
 		metadata.setImageUrlResource("missing.png");
 		Map<String, Object> model = metadata.toModel();
 		assertThat(model.get("imageUrl")).isNull();
 	}
 
 	@Test
-	public void imageUrlPriorityOverResource() {
+	void imageUrlPriorityOverResource() {
 		metadata.setImageUrl("image-url");
 		metadata.setImageUrlResource("missing.png");
 		Map<String, Object> model = metadata.toModel();
@@ -59,7 +59,7 @@ public class ServiceMetadataTest {
 	}
 
 	@Test
-	public void imageUrlResource() throws Exception {
+	void imageUrlResource() throws Exception {
 		metadata.setImageUrlResource("spring-logo.png");
 		Map<String, Object> model = metadata.toModel();
 		String actual = (String) model.get("imageUrl");

@@ -24,10 +24,10 @@ import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindi
 
 import static org.mockito.Mockito.mock;
 
-public class AsyncOperationServiceInstanceBindingCompletionFlowTest {
+class AsyncOperationServiceInstanceBindingCompletionFlowTest {
 
 	@Test
-	public void complete() {
+	void complete() {
 		AsyncOperationServiceInstanceBindingCompletionFlow flow =
 				new AsyncOperationServiceInstanceBindingCompletionFlow() {};
 		StepVerifier.create(

@@ -40,12 +40,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class NonBindableServiceInstanceBindingControllerIntegrationTest extends ServiceInstanceBindingIntegrationTest {
+class NonBindableServiceInstanceBindingControllerIntegrationTest extends ServiceInstanceBindingIntegrationTest {
 
 	private MockMvc mockMvc;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		ServiceInstanceBindingService serviceInstanceBindingService = new NonBindableServiceInstanceBindingService();
 		ServiceInstanceBindingController controller =
 				new ServiceInstanceBindingController(catalogService, serviceInstanceBindingService);
@@ -56,7 +56,7 @@ public class NonBindableServiceInstanceBindingControllerIntegrationTest extends 
 	}
 
 	@Test
-	public void createBindingToAppFails() throws Exception {
+	void createBindingToAppFails() throws Exception {
 		setupCatalogService();
 
 		MvcResult mvcResult = mockMvc.perform(put(buildCreateUrl())
@@ -71,7 +71,7 @@ public class NonBindableServiceInstanceBindingControllerIntegrationTest extends 
 	}
 
 	@Test
-	public void deleteBindingFails() throws Exception {
+	void deleteBindingFails() throws Exception {
 		mockMvc.perform(delete(buildDeleteUrl()))
 				.andExpect(request().asyncNotStarted())
 				.andExpect(status().isInternalServerError())

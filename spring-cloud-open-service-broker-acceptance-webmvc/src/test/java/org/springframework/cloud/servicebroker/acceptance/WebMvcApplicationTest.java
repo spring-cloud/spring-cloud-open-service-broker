@@ -26,13 +26,13 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class WebMvcApplicationTest {
+class WebMvcApplicationTest {
 
 	@Autowired
 	private WebApplicationContext context;
 
 	@Test
-	public void contextLoads() {
+	void contextLoads() {
 		assertThat(context).isNotNull();
 	}
 

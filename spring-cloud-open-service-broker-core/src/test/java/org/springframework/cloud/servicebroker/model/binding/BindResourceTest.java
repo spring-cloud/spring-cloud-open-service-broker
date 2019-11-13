@@ -26,10 +26,10 @@ import org.springframework.cloud.servicebroker.JsonUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BindResourceTest {
+class BindResourceTest {
 
 	@Test
-	public void bindResourceIsBuiltWithDefaults() {
+	void bindResourceIsBuiltWithDefaults() {
 		BindResource bindResource = BindResource.builder()
 				.build();
 
@@ -39,12 +39,10 @@ public class BindResourceTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void bindResourceIsBuiltWithAllValues() {
-		Map<String, Object> parameters = new HashMap<String, Object>() {{
-			put("parameter3", "value3");
-			put("parameter4", true);
-		}};
+	void bindResourceIsBuiltWithAllValues() {
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("parameter3", "value3");
+		parameters.put("parameter4", true);
 
 		BindResource bindResource = BindResource.builder()
 				.appGuid("app-guid")
@@ -64,7 +62,7 @@ public class BindResourceTest {
 	}
 
 	@Test
-	public void bindResourceIsDeserializedFromJson() {
+	void bindResourceIsDeserializedFromJson() {
 		BindResource bindResource = JsonUtils.readTestDataFile("bindResource.json", BindResource.class);
 
 		assertThat(bindResource.getAppGuid()).isEqualTo("test-app-guid");
@@ -76,7 +74,7 @@ public class BindResourceTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(BindResource.class)
 				.verify();

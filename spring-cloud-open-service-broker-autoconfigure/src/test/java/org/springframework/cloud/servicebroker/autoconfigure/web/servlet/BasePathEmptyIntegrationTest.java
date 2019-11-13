@@ -16,33 +16,32 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
-
 import org.junit.jupiter.api.Test;
 
-public class BasePathEmptyIntegrationTest extends AbstractBasePathWebApplicationIntegrationTest {
+class BasePathEmptyIntegrationTest extends AbstractBasePathWebApplicationIntegrationTest {
 
 	@Test
-	public void noBasePathFound() throws Exception {
+	void noBasePathFound() throws Exception {
 		assertFound("", "null");
 	}
 
 	@Test
-	public void noBasePathWithPlatformIdFound() throws Exception {
+	void noBasePathWithPlatformIdFound() throws Exception {
 		assertFound("/123", "123");
 	}
 
 	@Test
-	public void alternativeDoublePathNotFound() throws Exception {
+	void alternativeDoublePathNotFound() throws Exception {
 		assertNotFound("/api/broker");
 	}
 
 	@Test
-	public void alternativeTriplePathNotFound() throws Exception {
+	void alternativeTriplePathNotFound() throws Exception {
 		assertNotFound("/api/broker/123");
 	}
 
 	@Test
-	public void alternativeQuadruplePathNotFound() throws Exception {
+	void alternativeQuadruplePathNotFound() throws Exception {
 		assertNotFound("/api/broker/123/456");
 	}
 

@@ -17,6 +17,8 @@
 package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,21 +58,21 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 
 @ExtendWith(MockitoExtension.class)
-public class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceControllerIntegrationTest {
+class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceControllerIntegrationTest {
 
-	private static final Charset UTF_8 = Charset.forName("UTF-8");
+	private static final Charset UTF_8 = StandardCharsets.UTF_8;
 
 	private WebTestClient client;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		this.client = WebTestClient.bindToController(this.controller)
 				.controllerAdvice(ServiceBrokerWebFluxExceptionHandler.class)
 				.build();
 	}
 
 	@Test
-	public void createServiceInstanceWithAsyncAndHeadersSucceeds() throws Exception {
+	void createServiceInstanceWithAsyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
@@ -92,7 +94,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceWithAsyncAndHeadersOperationInProgress() throws Exception {
+	void createServiceInstanceWithAsyncAndHeadersOperationInProgress() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceBrokerCreateOperationInProgressException("still working"));
@@ -113,7 +115,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceResponseShouldNotContainEmptyValuesWhenNull() throws Exception {
+	void createServiceInstanceResponseShouldNotContainEmptyValuesWhenNull() {
 		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
@@ -133,7 +135,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceResponseShouldNotContainEmptyValuesWhenEmpty() throws Exception {
+	void createServiceInstanceResponseShouldNotContainEmptyValuesWhenEmpty() {
 		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
@@ -153,7 +155,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceWithEmptyPlatformInstanceIdSucceeds() {
+	void createServiceInstanceWithEmptyPlatformInstanceIdSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
@@ -175,7 +177,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceWithoutAsyncAndHeadersSucceeds() {
+	void createServiceInstanceWithoutAsyncAndHeadersSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
@@ -194,7 +196,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceWithExistingInstanceSucceeds() {
+	void createServiceInstanceWithExistingInstanceSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
@@ -210,7 +212,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceFiltersPlanSucceeds() {
+	void createServiceInstanceFiltersPlanSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse
@@ -231,7 +233,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceWithUnknownServiceDefinitionIdFails() {
+	void createServiceInstanceWithUnknownServiceDefinitionIdFails() {
 		setupCatalogService(null);
 
 		client.put().uri(buildCreateUpdateUrl())
@@ -248,7 +250,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createDuplicateServiceInstanceIdFails() {
+	void createDuplicateServiceInstanceIdFails() {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceInstanceExistsException(SERVICE_INSTANCE_ID, serviceDefinition.getId()));
@@ -268,7 +270,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceWithAsyncRequiredFails() {
+	void createServiceInstanceWithAsyncRequiredFails() {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceBrokerAsyncRequiredException("async required description"));
@@ -287,7 +289,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceWithInvalidParametersFails() {
+	void createServiceInstanceWithInvalidParametersFails() {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceBrokerInvalidParametersException("invalid parameters description"));
@@ -305,7 +307,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceWithInvalidFieldsFails() throws Exception {
+	void createServiceInstanceWithInvalidFieldsFails() throws Exception {
 		String body = createRequestBody.replace("service_id", "service-1");
 
 		client.put().uri(buildCreateUpdateUrl())
@@ -322,7 +324,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void createServiceInstanceWithMissingFieldsFails() throws Exception {
+	void createServiceInstanceWithMissingFieldsFails() throws Exception {
 		String body = "{}";
 
 		client.put().uri(buildCreateUpdateUrl())
@@ -336,14 +338,14 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> {
-					String responseBody = new String(result.getResponseBody(), UTF_8);
+					String responseBody = new String(Objects.requireNonNull(result.getResponseBody()), UTF_8);
 					String description = JsonPath.read(responseBody, "$.description");
 					assertThat(description).contains("planId", "serviceDefinitionId");
 				});
 	}
 
 	@Test
-	public void getServiceInstanceSucceeds() throws Exception {
+	void getServiceInstanceSucceeds() throws Exception {
 		setupServiceInstanceService(GetServiceInstanceResponse.builder()
 				.build());
 
@@ -359,7 +361,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void getServiceInstanceWithOperationInProgressFails() throws Exception {
+	void getServiceInstanceWithOperationInProgressFails() throws Exception {
 		setupServiceInstanceService(new ServiceBrokerOperationInProgressException("still working"));
 
 		client.get().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, false))
@@ -373,7 +375,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void deleteServiceInstanceWithAsyncAndHeadersSucceeds() throws Exception {
+	void deleteServiceInstanceWithAsyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(DeleteServiceInstanceResponse.builder()
@@ -396,7 +398,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void deleteServiceInstanceWithAsyncAndHeadersOperationInProgress() throws Exception {
+	void deleteServiceInstanceWithAsyncAndHeadersOperationInProgress() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceBrokerDeleteOperationInProgressException("still working"));
@@ -415,7 +417,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void deleteServiceInstanceWithoutAsyncAndHeadersSucceeds() {
+	void deleteServiceInstanceWithoutAsyncAndHeadersSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceService(DeleteServiceInstanceResponse.builder()
@@ -434,7 +436,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void deleteServiceInstanceFiltersPlansSucceeds() {
+	void deleteServiceInstanceFiltersPlansSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceService(DeleteServiceInstanceResponse
@@ -455,7 +457,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void deleteServiceInstanceWithUnknownIdFails() {
+	void deleteServiceInstanceWithUnknownIdFails() {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceInstanceDoesNotExistException(SERVICE_INSTANCE_ID));
@@ -468,7 +470,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void deleteServiceInstanceWithUnknownServiceDefinitionIdFails() {
+	void deleteServiceInstanceWithUnknownServiceDefinitionIdFails() {
 		setupCatalogService(null);
 
 		client.delete().uri(buildDeleteUrl())
@@ -483,7 +485,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void deleteBindingWithMissingQueryParamsFails() throws Exception {
+	void deleteBindingWithMissingQueryParamsFails() {
 		final String url = buildDeleteUrl(null, false).replace("plan_id", "plan-1");
 
 		client.delete().uri(url)
@@ -497,7 +499,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 
 
 	@Test
-	public void updateServiceInstanceWithAsyncAndHeadersSucceeds() throws Exception {
+	void updateServiceInstanceWithAsyncAndHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
@@ -524,7 +526,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void updateServiceInstanceWithAsyncAndHeadersOperationInProgress() throws Exception {
+	void updateServiceInstanceWithAsyncAndHeadersOperationInProgress() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceBrokerUpdateOperationInProgressException("still working"));
@@ -545,7 +547,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void updateServiceInstanceWithoutAsyncAndHeadersSucceeds() {
+	void updateServiceInstanceWithoutAsyncAndHeadersSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
@@ -567,7 +569,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void updateServiceInstanceFiltersPlansSucceeds() {
+	void updateServiceInstanceFiltersPlansSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
@@ -589,7 +591,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void updateServiceInstanceResponseShouldNotContainEmptyValuesWhenNull() {
+	void updateServiceInstanceResponseShouldNotContainEmptyValuesWhenNull() {
 		setupCatalogService();
 
 		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
@@ -609,7 +611,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void updateServiceInstanceResponseShouldNotContainEmptyValuesWhenEmpty() {
+	void updateServiceInstanceResponseShouldNotContainEmptyValuesWhenEmpty() {
 		setupCatalogService();
 
 		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
@@ -629,7 +631,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void updateServiceInstanceWithUnknownServiceDefinitionIdFails() {
+	void updateServiceInstanceWithUnknownServiceDefinitionIdFails() {
 		setupCatalogService(null);
 
 		client.patch().uri(buildCreateUpdateUrl())
@@ -647,7 +649,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void updateServiceInstanceWithUnsupportedOperationFails() {
+	void updateServiceInstanceWithUnsupportedOperationFails() {
 		setupCatalogService();
 
 		setupServiceInstanceService(new ServiceInstanceUpdateNotSupportedException("description"));
@@ -666,7 +668,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void lastOperationHasInProgressStatus() {
+	void lastOperationHasInProgressStatus() {
 		setupServiceInstanceService(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.IN_PROGRESS)
 				.description("working on it")
@@ -684,7 +686,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void lastOperationHasSucceededStatus() throws Exception {
+	void lastOperationHasSucceededStatus() throws Exception {
 		setupServiceInstanceService(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.SUCCEEDED)
 				.description("all good")
@@ -704,7 +706,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void lastOperationHasSucceededStatusWithDeletionComplete() {
+	void lastOperationHasSucceededStatusWithDeletionComplete() {
 		setupServiceInstanceService(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.SUCCEEDED)
 				.description("all gone")
@@ -721,7 +723,7 @@ public class ServiceInstanceControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	public void lastOperationHasFailedStatus() {
+	void lastOperationHasFailedStatus() {
 		setupServiceInstanceService(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.FAILED)
 				.description("not so good")

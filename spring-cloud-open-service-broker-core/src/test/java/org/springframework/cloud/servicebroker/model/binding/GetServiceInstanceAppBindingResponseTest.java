@@ -31,10 +31,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
-public class GetServiceInstanceAppBindingResponseTest {
+class GetServiceInstanceAppBindingResponseTest {
 
 	@Test
-	public void responseWithDefaultsIsBuilt() {
+	void responseWithDefaultsIsBuilt() {
 		GetServiceInstanceAppBindingResponse response = GetServiceInstanceAppBindingResponse.builder()
 				.build();
 
@@ -53,17 +53,14 @@ public class GetServiceInstanceAppBindingResponseTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void responseWithDiscreteValuesIsBuilt() {
-		Map<String, Object> parameters = new HashMap<String, Object>() {{
-			put("field4", "value4");
-			put("field5", "value5");
-		}};
+	void responseWithDiscreteValuesIsBuilt() {
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("field4", "value4");
+		parameters.put("field5", "value5");
 
-		Map<String, Object> credentials = new HashMap<String, Object>() {{
-			put("credential4", "value4");
-			put("credential5", "value5");
-		}};
+		Map<String, Object> credentials = new HashMap<>();
+		credentials.put("credential4", "value4");
+		credentials.put("credential5", "value5");
 
 		List<VolumeMount> volumeMounts = Arrays.asList(
 				VolumeMount.builder().build(),
@@ -132,7 +129,7 @@ public class GetServiceInstanceAppBindingResponseTest {
 	}
 
 	@Test
-	public void responseWithValuesIsDeserialized() {
+	void responseWithValuesIsDeserialized() {
 		GetServiceInstanceAppBindingResponse response = JsonUtils.readTestDataFile(
 				"getAppBindingResponse.json", GetServiceInstanceAppBindingResponse.class);
 
@@ -159,7 +156,7 @@ public class GetServiceInstanceAppBindingResponseTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(GetServiceInstanceAppBindingResponse.class)
 				.withRedefinedSuperclass()

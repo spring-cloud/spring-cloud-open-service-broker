@@ -30,12 +30,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @ExtendWith(MockitoExtension.class)
-public class NonBindableServiceInstanceBindingControllerIntegrationTest extends ServiceInstanceBindingIntegrationTest {
+class NonBindableServiceInstanceBindingControllerIntegrationTest extends ServiceInstanceBindingIntegrationTest {
 
 	private WebTestClient client;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		ServiceInstanceBindingService serviceInstanceBindingService = new NonBindableServiceInstanceBindingService();
 		ServiceInstanceBindingController controller =
 				new ServiceInstanceBindingController(catalogService, serviceInstanceBindingService);
@@ -45,7 +45,7 @@ public class NonBindableServiceInstanceBindingControllerIntegrationTest extends 
 	}
 
 	@Test
-	public void createBindingToAppFails() throws Exception {
+	void createBindingToAppFails() {
 		setupCatalogService();
 
 		client.put().uri(buildCreateUrl())
@@ -58,7 +58,7 @@ public class NonBindableServiceInstanceBindingControllerIntegrationTest extends 
 	}
 
 	@Test
-	public void deleteBindingFails() throws Exception {
+	void deleteBindingFails() {
 		client.delete().uri(buildDeleteUrl())
 				.exchange()
 				.expectStatus().is5xxServerError()

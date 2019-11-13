@@ -61,7 +61,7 @@ public abstract class AbstractBasePathIntegrationTest {
 	protected static class ServiceBrokerApplication {
 
 		@Bean
-		public CatalogService catalogService() {
+		protected CatalogService catalogService() {
 			return new CatalogService() {
 
 				@Override
@@ -88,12 +88,12 @@ public abstract class AbstractBasePathIntegrationTest {
 		}
 
 		@Bean
-		public ServiceInstanceService serviceInstanceService() {
+		protected ServiceInstanceService serviceInstanceService() {
 			return new ServiceInstanceService() {
 
 				@Override
 				public Mono<DeleteServiceInstanceResponse> deleteServiceInstance(DeleteServiceInstanceRequest request) {
-					return Mono.error(() -> new UnsupportedOperationException());
+					return Mono.error(UnsupportedOperationException::new);
 				}
 
 				@Override

@@ -21,30 +21,30 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = "spring.cloud.openservicebroker.base-path=/api/broker")
-public class BasePathDoubleIntegrationTest extends AbstractBasePathWebApplicationIntegrationTest {
+class BasePathDoubleIntegrationTest extends AbstractBasePathWebApplicationIntegrationTest {
 
 	@Test
-	public void basePathFound() {
+	void basePathFound() {
 		assertFound("/api/broker", "null");
 	}
 
 	@Test
-	public void basePathWithPlatformIdFound() {
+	void basePathWithPlatformIdFound() {
 		assertFound("/api/broker/123", "123");
 	}
 
 	@Test
-	public void noBasePathNotFound() {
+	void noBasePathNotFound() {
 		assertNotFound("");
 	}
 
 	@Test
-	public void noBasePathWithPlatformIdNotFound() {
+	void noBasePathWithPlatformIdNotFound() {
 		assertNotFound("/123");
 	}
 
 	@Test
-	public void basePathWithAdditionalSegmentsNotFound() {
+	void basePathWithAdditionalSegmentsNotFound() {
 		assertNotFound("/api/broker/123/456");
 	}
 

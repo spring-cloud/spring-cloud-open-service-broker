@@ -26,10 +26,10 @@ import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOper
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GetLastServiceBindingOperationRequestTest {
+class GetLastServiceBindingOperationRequestTest {
 
 	@Test
-	public void requestWithDefaultsIsBuilt() {
+	void requestWithDefaultsIsBuilt() {
 		GetLastServiceBindingOperationRequest request = GetLastServiceBindingOperationRequest.builder()
 				.build();
 
@@ -45,8 +45,7 @@ public class GetLastServiceBindingOperationRequestTest {
 	}
 
 	@Test
-	@SuppressWarnings("serial")
-	public void requestWithAllValuesIsBuilt() {
+	void requestWithAllValuesIsBuilt() {
 		Context originatingIdentity = PlatformContext.builder()
 				.platform("test-platform")
 				.build();
@@ -76,7 +75,7 @@ public class GetLastServiceBindingOperationRequestTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(GetLastServiceOperationRequest.class)
 				.withRedefinedSuperclass()

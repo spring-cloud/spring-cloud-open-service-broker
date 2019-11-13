@@ -29,7 +29,7 @@ import org.springframework.util.Base64Utils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class BaseControllerTest {
+class BaseControllerTest {
 
 	private static final String JSON_STRING = "{" +
 			"\"key1\":\"value1\"," +
@@ -39,26 +39,26 @@ public class BaseControllerTest {
 	private final TestBaseController controller = new TestBaseController();
 
 	@Test
-	public void originatingIdentityWithNoPropertiesThrowsException() {
+	void originatingIdentityWithNoPropertiesThrowsException() {
 		assertThrows(ServiceBrokerInvalidOriginatingIdentityException.class, () ->
 				controller.validateOriginatingIdentity("platform"));
 	}
 
 	@Test
-	public void originatingIdentityWithNonEncodedPropertiesThrowsException() {
+	void originatingIdentityWithNonEncodedPropertiesThrowsException() {
 		assertThrows(ServiceBrokerInvalidOriginatingIdentityException.class, () ->
 				controller.validateOriginatingIdentity("platform some-properties"));
 	}
 
 	@Test
-	public void originatingIdentityWithNonJsonPropertiesThrowsException() {
+	void originatingIdentityWithNonJsonPropertiesThrowsException() {
 		String encodedProperties = encode("some-properties");
 		assertThrows(ServiceBrokerInvalidOriginatingIdentityException.class, () ->
 				controller.validateOriginatingIdentity("platform " + encodedProperties));
 	}
 
 	@Test
-	public void originatingIdentityWithCloudFoundryPlatform() {
+	void originatingIdentityWithCloudFoundryPlatform() {
 		Context context = controller.validateOriginatingIdentity("cloudfoundry " + encode(JSON_STRING));
 
 		assertThat(context).isInstanceOf(CloudFoundryContext.class);
@@ -67,7 +67,7 @@ public class BaseControllerTest {
 	}
 
 	@Test
-	public void originatingIdentityWithKubernetesPlatform() {
+	void originatingIdentityWithKubernetesPlatform() {
 		Context context = controller.validateOriginatingIdentity("kubernetes " + encode(JSON_STRING));
 
 		assertThat(context).isInstanceOf(KubernetesContext.class);
@@ -76,7 +76,7 @@ public class BaseControllerTest {
 	}
 
 	@Test
-	public void originatingIdentityWithUnknownPlatform() {
+	void originatingIdentityWithUnknownPlatform() {
 		Context context = controller.validateOriginatingIdentity("test-platform " + encode(JSON_STRING));
 
 		assertThat(context).isInstanceOf(PlatformContext.class);
@@ -91,11 +91,11 @@ public class BaseControllerTest {
 
 	private static class TestBaseController extends BaseController {
 
-		public TestBaseController() {
+		TestBaseController() {
 			super(null);
 		}
 
-		public Context validateOriginatingIdentity(String originatingIdentityString) {
+		Context validateOriginatingIdentity(String originatingIdentityString) {
 			ServiceBrokerRequest request = new ServiceBrokerRequest() {
 			};
 

@@ -32,7 +32,7 @@ import org.springframework.web.server.ServerWebInputException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ServiceBrokerWebFluxExceptionHandlerTest extends ServiceBrokerExceptionHandlerTest {
+class ServiceBrokerWebFluxExceptionHandlerTest extends ServiceBrokerExceptionHandlerTest {
 
 	@BeforeEach
 	public void setUp() {
@@ -40,7 +40,7 @@ public class ServiceBrokerWebFluxExceptionHandlerTest extends ServiceBrokerExcep
 	}
 
 	@Test
-	public void webExchangeBindException() throws NoSuchMethodException {
+	void webExchangeBindException() throws NoSuchMethodException {
 		BindingResult bindingResult = new MapBindingResult(new HashMap<>(), "objectName");
 		bindingResult.addError(new FieldError("objectName", "field1", "message"));
 		bindingResult.addError(new FieldError("objectName", "field2", "message"));
@@ -59,7 +59,7 @@ public class ServiceBrokerWebFluxExceptionHandlerTest extends ServiceBrokerExcep
 	}
 
 	@Test
-	public void stringParameterIsNotPresent() throws NoSuchMethodException {
+	void stringParameterIsNotPresent() throws NoSuchMethodException {
 		Method method = this.getClass().getMethod("setUp", (Class<?>[]) null);
 		MethodParameter parameter = new MethodParameter(method, -1);
 

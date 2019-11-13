@@ -18,7 +18,7 @@ package org.springframework.cloud.servicebroker.service;
 
 import reactor.core.publisher.Mono;
 
-public class EventFlowTestResults {
+class EventFlowTestResults {
 
 	private String beforeCreate;
 

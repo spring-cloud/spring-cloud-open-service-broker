@@ -24,10 +24,10 @@ import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.instance.AsyncParameterizedServiceInstanceRequest;
 
-public class AsyncServiceBrokerRequestTest {
+class AsyncServiceBrokerRequestTest {
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(AsyncServiceBrokerRequest.class)
 				.withRedefinedSuperclass()
