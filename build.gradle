@@ -89,7 +89,7 @@ configure(allprojects) {
 
     // nohttp requires a valid checkstyle configuration
     checkstyle {
-        configFile = file("${project.rootDir}/config/checkstyle-nohttp.xml")
+        configFile = file("${project.rootDir}/src/checkstyle/checkstyle-nohttp.xml")
         toolVersion = "${checkstyleVersion}"
     }
 }
@@ -99,7 +99,7 @@ configure(allprojects - [project(":spring-cloud-open-service-broker-docs")]) {
 	apply plugin: "pmd"
 
 	checkstyle {
-		configFile = file("${project.rootDir}/config/checkstyle.xml")
+		configFile = file("${project.rootDir}/src/checkstyle/checkstyle.xml")
 		toolVersion = "${checkstyleVersion}"
 	}
 	checkstyleMain {
@@ -115,12 +115,12 @@ configure(allprojects - [project(":spring-cloud-open-service-broker-docs")]) {
 	}
 	pmdMain {
 		ruleSets = []
-		ruleSetFiles = files("${project.rootDir}/config/pmdRuleSet.xml")
+		ruleSetFiles = files("${project.rootDir}/src/pmd/pmdRuleSet.xml")
 		source = "src/main/java"
 	}
 	pmdTest {
 		ruleSets = []
-		ruleSetFiles = files("${project.rootDir}/config/pmdTestRuleSet.xml")
+		ruleSetFiles = files("${project.rootDir}/src/pmd/pmdTestRuleSet.xml")
 		source = "src/test/java"
 	}
 
