@@ -200,7 +200,8 @@ public final class CloudFoundryContext extends Context {
 	/**
 	 * Provides a fluent API for constructing a {@link CloudFoundryContext}
 	 */
-	public static final class CloudFoundryContextBuilder extends ContextBaseBuilder<CloudFoundryContext, CloudFoundryContextBuilder> {
+	public static final class CloudFoundryContextBuilder
+			extends ContextBaseBuilder<CloudFoundryContext, CloudFoundryContextBuilder> {
 
 		private String organizationGuid;
 

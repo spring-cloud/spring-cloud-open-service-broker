@@ -38,7 +38,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
-public abstract class AbstractServiceInstanceBindingControllerIntegrationTest extends ServiceInstanceBindingIntegrationTest {
+public abstract class AbstractServiceInstanceBindingControllerIntegrationTest
+		extends ServiceInstanceBindingIntegrationTest {
 
 	@InjectMocks
 	protected ServiceInstanceBindingController controller;

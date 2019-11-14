@@ -35,7 +35,8 @@ public interface CreateServiceInstanceBindingCompletionFlow {
 	 * @param response the service broker response
 	 * @return an empty Mono
 	 */
-	default Mono<Void> complete(CreateServiceInstanceBindingRequest request, CreateServiceInstanceBindingResponse response) {
+	default Mono<Void> complete(CreateServiceInstanceBindingRequest request,
+			CreateServiceInstanceBindingResponse response) {
 		return Mono.empty();
 	}
 

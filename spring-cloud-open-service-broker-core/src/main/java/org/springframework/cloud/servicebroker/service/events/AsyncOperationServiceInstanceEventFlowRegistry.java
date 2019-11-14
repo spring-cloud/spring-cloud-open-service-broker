@@ -31,7 +31,8 @@ import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperati
  *
  * @author Roy Clarkson
  */
-public class AsyncOperationServiceInstanceEventFlowRegistry extends EventFlowRegistry<AsyncOperationServiceInstanceInitializationFlow,
+public class AsyncOperationServiceInstanceEventFlowRegistry
+		extends EventFlowRegistry<AsyncOperationServiceInstanceInitializationFlow,
 		AsyncOperationServiceInstanceCompletionFlow, AsyncOperationServiceInstanceErrorFlow, GetLastServiceOperationRequest,
 		GetLastServiceOperationResponse> {
 
@@ -64,7 +65,8 @@ public class AsyncOperationServiceInstanceEventFlowRegistry extends EventFlowReg
 	}
 
 	@Override
-	public Flux<Void> getCompletionFlows(GetLastServiceOperationRequest request, GetLastServiceOperationResponse response) {
+	public Flux<Void> getCompletionFlows(GetLastServiceOperationRequest request,
+			GetLastServiceOperationResponse response) {
 		return getCompletionFlowsInternal()
 				.flatMap(flow -> flow.complete(request, response));
 	}

@@ -308,7 +308,8 @@ class ServiceBrokerAutoConfigurationTest {
 
 		private final ServiceInstanceService serviceInstanceService;
 
-		protected MissingAllConfiguration(CatalogService catalogService, ServiceInstanceService serviceInstanceService) {
+		protected MissingAllConfiguration(CatalogService catalogService,
+				ServiceInstanceService serviceInstanceService) {
 			this.catalogService = catalogService;
 			this.serviceInstanceService = serviceInstanceService;
 		}

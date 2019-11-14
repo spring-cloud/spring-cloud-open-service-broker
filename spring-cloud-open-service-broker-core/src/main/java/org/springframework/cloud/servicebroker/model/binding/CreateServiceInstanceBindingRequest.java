@@ -105,7 +105,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 			String bindingId, ServiceDefinition serviceDefinition, Plan plan, boolean asyncAccepted,
 			BindResource bindResource, Map<String, Object> parameters, Context context, String platformInstanceId,
 			String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
-		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
+		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity,
+				requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;

@@ -73,7 +73,8 @@ public class BaseController {
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the request with the applied headers
 	 */
-	protected Mono<ServiceBrokerRequest> configureCommonRequestFields(ServiceBrokerRequest request, String platformInstanceId,
+	protected Mono<ServiceBrokerRequest> configureCommonRequestFields(ServiceBrokerRequest request,
+			String platformInstanceId,
 			String apiInfoLocation, String originatingIdentityString, String requestIdentity) {
 		request.setPlatformInstanceId(platformInstanceId);
 		request.setApiInfoLocation(apiInfoLocation);
@@ -93,7 +94,8 @@ public class BaseController {
 	 * @param asyncAccepted does the platform accept asynchronous requests
 	 * @return the request with the applied headers
 	 */
-	protected Mono<AsyncServiceBrokerRequest> configureCommonRequestFields(AsyncServiceBrokerRequest request, String platformInstanceId,
+	protected Mono<AsyncServiceBrokerRequest> configureCommonRequestFields(AsyncServiceBrokerRequest request,
+			String platformInstanceId,
 			String apiInfoLocation, String originatingIdentityString, String requestIdentity, boolean asyncAccepted) {
 		request.setAsyncAccepted(asyncAccepted);
 		return configureCommonRequestFields(request, platformInstanceId, apiInfoLocation, originatingIdentityString,

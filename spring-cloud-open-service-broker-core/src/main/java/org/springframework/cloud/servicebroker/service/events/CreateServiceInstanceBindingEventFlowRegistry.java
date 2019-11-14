@@ -31,7 +31,8 @@ import org.springframework.cloud.servicebroker.service.events.flows.CreateServic
  *
  * @author Roy Clarkson
  */
-public class CreateServiceInstanceBindingEventFlowRegistry extends EventFlowRegistry<CreateServiceInstanceBindingInitializationFlow,
+public class CreateServiceInstanceBindingEventFlowRegistry
+		extends EventFlowRegistry<CreateServiceInstanceBindingInitializationFlow,
 		CreateServiceInstanceBindingCompletionFlow, CreateServiceInstanceBindingErrorFlow, CreateServiceInstanceBindingRequest,
 		CreateServiceInstanceBindingResponse> {
 
@@ -64,7 +65,8 @@ public class CreateServiceInstanceBindingEventFlowRegistry extends EventFlowRegi
 	}
 
 	@Override
-	public Flux<Void> getCompletionFlows(CreateServiceInstanceBindingRequest request, CreateServiceInstanceBindingResponse response) {
+	public Flux<Void> getCompletionFlows(CreateServiceInstanceBindingRequest request,
+			CreateServiceInstanceBindingResponse response) {
 		return getCompletionFlowsInternal()
 				.flatMap(flow -> flow.complete(request, response));
 	}

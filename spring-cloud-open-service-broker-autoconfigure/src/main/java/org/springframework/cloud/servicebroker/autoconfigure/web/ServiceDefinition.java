@@ -95,6 +95,7 @@ public class ServiceDefinition {
 
 	/**
 	 * A list of permissions that the user would have to give the service, if they provision it.
+	 *
 	 * @see org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires supported permissions
 	 */
 	private final List<String> requires = new ArrayList<>();

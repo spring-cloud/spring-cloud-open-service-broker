@@ -35,7 +35,8 @@ public interface AsyncOperationServiceInstanceBindingCompletionFlow {
 	 * @param response the service broker response
 	 * @return an empty Mono
 	 */
-	default Mono<Void> complete(GetLastServiceBindingOperationRequest request, GetLastServiceBindingOperationResponse response) {
+	default Mono<Void> complete(GetLastServiceBindingOperationRequest request,
+			GetLastServiceBindingOperationResponse response) {
 		return Mono.empty();
 	}
 

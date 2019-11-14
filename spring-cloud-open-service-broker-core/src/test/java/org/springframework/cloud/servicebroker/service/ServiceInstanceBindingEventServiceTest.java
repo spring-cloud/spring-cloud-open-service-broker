@@ -262,7 +262,8 @@ class ServiceInstanceBindingEventServiceTest {
 				.then(eventFlowRegistries.getCreateInstanceBindingRegistry()
 						.addCompletionFlow(new CreateServiceInstanceBindingCompletionFlow() {
 							@Override
-							public Mono<Void> complete(CreateServiceInstanceBindingRequest request, CreateServiceInstanceBindingResponse response) {
+							public Mono<Void> complete(CreateServiceInstanceBindingRequest request,
+									CreateServiceInstanceBindingResponse response) {
 								return results.setAfterCreate("after create " + request.getServiceInstanceId());
 							}
 						}))
@@ -283,7 +284,8 @@ class ServiceInstanceBindingEventServiceTest {
 				.then(eventFlowRegistries.getDeleteInstanceBindingRegistry()
 						.addCompletionFlow(new DeleteServiceInstanceBindingCompletionFlow() {
 							@Override
-							public Mono<Void> complete(DeleteServiceInstanceBindingRequest request, DeleteServiceInstanceBindingResponse response) {
+							public Mono<Void> complete(DeleteServiceInstanceBindingRequest request,
+									DeleteServiceInstanceBindingResponse response) {
 								return results.setAfterDelete("after delete " + request.getServiceInstanceId());
 							}
 						}))
@@ -293,7 +295,8 @@ class ServiceInstanceBindingEventServiceTest {
 	private static class TestServiceInstanceBindingService implements ServiceInstanceBindingService {
 
 		@Override
-		public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
+		public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(
+				CreateServiceInstanceBindingRequest request) {
 			if (request.getServiceDefinitionId() == null) {
 				return Mono.error(new ServiceInstanceBindingExistsException("service-instance-id", "arrrr"));
 			}
@@ -301,7 +304,8 @@ class ServiceInstanceBindingEventServiceTest {
 		}
 
 		@Override
-		public Mono<GetServiceInstanceBindingResponse> getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
+		public Mono<GetServiceInstanceBindingResponse> getServiceInstanceBinding(
+				GetServiceInstanceBindingRequest request) {
 			if (request.getBindingId() == null) {
 				return Mono.error(new ServiceInstanceDoesNotExistException("service-instance-id"));
 			}
@@ -309,7 +313,8 @@ class ServiceInstanceBindingEventServiceTest {
 		}
 
 		@Override
-		public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+		public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(
+				DeleteServiceInstanceBindingRequest request) {
 			if (request.getBindingId() == null) {
 				return Mono.error(new ServiceInstanceBindingDoesNotExistException("service-binding-id"));
 			}
@@ -317,7 +322,8 @@ class ServiceInstanceBindingEventServiceTest {
 		}
 
 		@Override
-		public Mono<GetLastServiceBindingOperationResponse> getLastOperation(GetLastServiceBindingOperationRequest request) {
+		public Mono<GetLastServiceBindingOperationResponse> getLastOperation(
+				GetLastServiceBindingOperationRequest request) {
 			if (request.getServiceInstanceId() == null) {
 				return Mono.error(new ServiceBrokerInvalidParametersException("service instance id cannot be null"));
 			}

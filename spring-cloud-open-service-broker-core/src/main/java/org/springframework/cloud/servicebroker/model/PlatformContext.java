@@ -62,7 +62,8 @@ public class PlatformContext extends Context {
 	/**
 	 * Provides a fluent API for constructing a {@link PlatformContext}.
 	 */
-	public static final class PlatformContextBuilder extends ContextBaseBuilder<PlatformContext, PlatformContextBuilder> {
+	public static final class PlatformContextBuilder
+			extends ContextBaseBuilder<PlatformContext, PlatformContextBuilder> {
 
 		private PlatformContextBuilder() {
 			super();

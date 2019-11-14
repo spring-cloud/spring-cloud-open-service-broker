@@ -179,19 +179,22 @@ class ServiceInstanceBindingControllerRequestTest extends ControllerRequestTest 
 		}
 
 		@Override
-		public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
+		public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(
+				CreateServiceInstanceBindingRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
 			return Mono.empty();
 		}
 
 		@Override
-		public Mono<GetServiceInstanceBindingResponse> getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
+		public Mono<GetServiceInstanceBindingResponse> getServiceInstanceBinding(
+				GetServiceInstanceBindingRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
 			return Mono.empty();
 		}
 
 		@Override
-		public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+		public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(
+				DeleteServiceInstanceBindingRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
 			return Mono.empty();
 		}

@@ -35,7 +35,8 @@ public interface DeleteServiceInstanceBindingCompletionFlow {
 	 * @param response the service broker response
 	 * @return an empty Mono
 	 */
-	default Mono<Void> complete(DeleteServiceInstanceBindingRequest request, DeleteServiceInstanceBindingResponse response) {
+	default Mono<Void> complete(DeleteServiceInstanceBindingRequest request,
+			DeleteServiceInstanceBindingResponse response) {
 		return Mono.empty();
 	}
 

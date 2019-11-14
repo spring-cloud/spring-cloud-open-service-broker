@@ -27,12 +27,14 @@ import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingSer
 public class TestServiceInstanceBindingService implements ServiceInstanceBindingService {
 
 	@Override
-	public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
+	public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(
+			CreateServiceInstanceBindingRequest request) {
 		return Mono.empty();
 	}
 
 	@Override
-	public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+	public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(
+			DeleteServiceInstanceBindingRequest request) {
 		return Mono.empty();
 	}
 

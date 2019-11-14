@@ -52,7 +52,8 @@ public class ServiceInstanceBindingEventService implements ServiceInstanceBindin
 	}
 
 	@Override
-	public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
+	public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(
+			CreateServiceInstanceBindingRequest request) {
 		return flows.getCreateInstanceBindingRegistry().getInitializationFlows(request)
 				.then(service.createServiceInstanceBinding(request))
 				.onErrorResume(e -> flows.getCreateInstanceBindingRegistry().getErrorFlows(request, e)
@@ -67,7 +68,8 @@ public class ServiceInstanceBindingEventService implements ServiceInstanceBindin
 	}
 
 	@Override
-	public Mono<GetLastServiceBindingOperationResponse> getLastOperation(GetLastServiceBindingOperationRequest request) {
+	public Mono<GetLastServiceBindingOperationResponse> getLastOperation(
+			GetLastServiceBindingOperationRequest request) {
 		return flows.getAsyncOperationBindingRegistry().getInitializationFlows(request)
 				.then(service.getLastOperation(request))
 				.onErrorResume(e -> flows.getAsyncOperationBindingRegistry().getErrorFlows(request, e)
@@ -77,7 +79,8 @@ public class ServiceInstanceBindingEventService implements ServiceInstanceBindin
 	}
 
 	@Override
-	public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+	public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(
+			DeleteServiceInstanceBindingRequest request) {
 		return flows.getDeleteInstanceBindingRegistry().getInitializationFlows(request)
 				.then(service.deleteServiceInstanceBinding(request))
 				.onErrorResume(e -> flows.getDeleteInstanceBindingRegistry().getErrorFlows(request, e)

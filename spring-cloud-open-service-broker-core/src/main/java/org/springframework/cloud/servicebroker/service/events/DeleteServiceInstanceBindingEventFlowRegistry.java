@@ -31,7 +31,8 @@ import org.springframework.cloud.servicebroker.service.events.flows.DeleteServic
  *
  * @author Roy Clarkson
  */
-public class DeleteServiceInstanceBindingEventFlowRegistry extends EventFlowRegistry<DeleteServiceInstanceBindingInitializationFlow,
+public class DeleteServiceInstanceBindingEventFlowRegistry
+		extends EventFlowRegistry<DeleteServiceInstanceBindingInitializationFlow,
 		DeleteServiceInstanceBindingCompletionFlow, DeleteServiceInstanceBindingErrorFlow, DeleteServiceInstanceBindingRequest,
 		DeleteServiceInstanceBindingResponse> {
 
@@ -64,7 +65,8 @@ public class DeleteServiceInstanceBindingEventFlowRegistry extends EventFlowRegi
 	}
 
 	@Override
-	public Flux<Void> getCompletionFlows(DeleteServiceInstanceBindingRequest request, DeleteServiceInstanceBindingResponse response) {
+	public Flux<Void> getCompletionFlows(DeleteServiceInstanceBindingRequest request,
+			DeleteServiceInstanceBindingResponse response) {
 		return getCompletionFlowsInternal()
 				.flatMap(flow -> flow.complete(request, response));
 	}

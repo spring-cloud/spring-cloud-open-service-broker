@@ -125,7 +125,8 @@ public final class KubernetesContext extends Context {
 	/**
 	 * Builder class for KubernetesContext
 	 */
-	public static final class KubernetesContextBuilder extends ContextBaseBuilder<KubernetesContext, KubernetesContextBuilder> {
+	public static final class KubernetesContextBuilder
+			extends ContextBaseBuilder<KubernetesContext, KubernetesContextBuilder> {
 
 		private String namespace;
 

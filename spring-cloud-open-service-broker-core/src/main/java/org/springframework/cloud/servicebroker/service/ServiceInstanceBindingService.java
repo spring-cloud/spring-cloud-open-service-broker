@@ -56,7 +56,8 @@ public interface ServiceInstanceBindingService {
 	 * @throws ServiceBrokerCreateOperationInProgressException if a an operation is in progress for the service
 	 * 		binding
 	 */
-	default Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
+	default Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(
+			CreateServiceInstanceBindingRequest request) {
 		return Mono.error(new UnsupportedOperationException(
 				"This service broker does not support creating service bindings."));
 	}
@@ -71,7 +72,8 @@ public interface ServiceInstanceBindingService {
 	 * @throws ServiceInstanceBindingDoesNotExistException if a binding with the given ID is not known to the broker
 	 * @throws ServiceBrokerOperationInProgressException if a an operation is in progress for the service binding
 	 */
-	default Mono<GetServiceInstanceBindingResponse> getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
+	default Mono<GetServiceInstanceBindingResponse> getServiceInstanceBinding(
+			GetServiceInstanceBindingRequest request) {
 		return Mono.error(new UnsupportedOperationException(
 				"This service broker does not support retrieving service bindings. " +
 						"The service broker should set 'bindings_retrievable:false' in the service catalog, " +
@@ -87,7 +89,8 @@ public interface ServiceInstanceBindingService {
 	 * 		broker
 	 * @throws ServiceInstanceBindingDoesNotExistException if a binding with the given ID is not known to the broker
 	 */
-	default Mono<GetLastServiceBindingOperationResponse> getLastOperation(GetLastServiceBindingOperationRequest request) {
+	default Mono<GetLastServiceBindingOperationResponse> getLastOperation(
+			GetLastServiceBindingOperationRequest request) {
 		return Mono
 				.error(new UnsupportedOperationException("This service broker does not support getting the status of " +
 						"an asynchronous operation. " +
@@ -106,7 +109,8 @@ public interface ServiceInstanceBindingService {
 	 * @throws ServiceBrokerDeleteOperationInProgressException if a an operation is in progress for the service
 	 * 		binding
 	 */
-	default Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+	default Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(
+			DeleteServiceInstanceBindingRequest request) {
 		return Mono.error(new UnsupportedOperationException(
 				"This service broker does not support deleting service bindings."));
 	}

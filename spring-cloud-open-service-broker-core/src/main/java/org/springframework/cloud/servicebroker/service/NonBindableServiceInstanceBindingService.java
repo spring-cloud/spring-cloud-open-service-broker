@@ -38,7 +38,8 @@ public class NonBindableServiceInstanceBindingService implements ServiceInstance
 	 * @return this implementation will always throw a {@literal UnsupportedOperationException}
 	 */
 	@Override
-	public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(CreateServiceInstanceBindingRequest request) {
+	public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(
+			CreateServiceInstanceBindingRequest request) {
 		return Mono.error(nonBindableException());
 	}
 
@@ -48,7 +49,8 @@ public class NonBindableServiceInstanceBindingService implements ServiceInstance
 	 * @param request containing the details of the request
 	 */
 	@Override
-	public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(DeleteServiceInstanceBindingRequest request) {
+	public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(
+			DeleteServiceInstanceBindingRequest request) {
 		return Mono.error(nonBindableException());
 	}
 

@@ -25,7 +25,8 @@ import org.springframework.cloud.servicebroker.service.CatalogService;
 /**
  * @author Roy Clarkson
  */
-public class RequiredCatalogBeanFailureAnalyzer extends AbstractFailureAnalyzer<CatalogDefinitionDoesNotExistException> {
+public class RequiredCatalogBeanFailureAnalyzer
+		extends AbstractFailureAnalyzer<CatalogDefinitionDoesNotExistException> {
 
 	private static final String REFERENCE_DOC = "https://docs.spring.io/spring-cloud-open-service-broker/docs/current" +
 			"/reference/html5/#service-catalog";
