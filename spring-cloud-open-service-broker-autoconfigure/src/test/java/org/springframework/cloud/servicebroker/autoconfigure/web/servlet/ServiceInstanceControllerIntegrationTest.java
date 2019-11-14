@@ -330,7 +330,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.andReturn();
 
 		mockMvc.perform(asyncDispatch(mvcResult))
-				.andExpect(status().isUnprocessableEntity())
+				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.description", endsWith("invalid parameters description")));
 	}
 
