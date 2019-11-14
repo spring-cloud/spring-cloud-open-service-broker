@@ -27,6 +27,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequi
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerCreateOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerDeleteOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerMaintenanceInfoConflictException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerUpdateOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
@@ -55,6 +56,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException.ASYNC_REQUIRED_ERROR;
+import static org.springframework.cloud.servicebroker.exception.ServiceBrokerMaintenanceInfoConflictException.MAINTENANCE_INFO_CONFLICT_ERROR;
+import static org.springframework.cloud.servicebroker.exception.ServiceBrokerMaintenanceInfoConflictException.MAINTENANCE_INFO_CONFLICT_MESSAGE;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
@@ -314,6 +317,44 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.error", is(ASYNC_REQUIRED_ERROR)))
 				.andExpect(jsonPath("$.description", endsWith("async required description")));
+	}
+
+	@Test
+	void createServiceInstanceWithMaintenanceInfoConflictFails() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(new ServiceBrokerMaintenanceInfoConflictException());
+
+		MvcResult mvcResult = mockMvc.perform(put(buildCreateUpdateUrl())
+				.content(createRequestBody)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
+				.andExpect(status().isUnprocessableEntity())
+				.andExpect(jsonPath("$.error", is(MAINTENANCE_INFO_CONFLICT_ERROR)))
+				.andExpect(jsonPath("$.description", equalTo(MAINTENANCE_INFO_CONFLICT_MESSAGE)));
+	}
+
+	@Test
+	void createServiceInstanceWithMaintenanceInfoConflictWithCustomMessageFails() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceService(new ServiceBrokerMaintenanceInfoConflictException("nope old version"));
+
+		MvcResult mvcResult = mockMvc.perform(put(buildCreateUpdateUrl())
+				.content(createRequestBody)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
+				.andExpect(status().isUnprocessableEntity())
+				.andExpect(jsonPath("$.error", is(MAINTENANCE_INFO_CONFLICT_ERROR)))
+				.andExpect(jsonPath("$.description", endsWith("nope old version")));
 	}
 
 	@Test
