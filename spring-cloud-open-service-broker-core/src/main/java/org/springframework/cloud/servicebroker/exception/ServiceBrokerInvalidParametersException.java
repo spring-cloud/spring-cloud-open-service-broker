@@ -20,7 +20,7 @@ package org.springframework.cloud.servicebroker.exception;
  * Thrown to indicate that parameters passed in a create or update request are not understood by the service broker.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY} being returned to the
+ * Throwing this exception will result in an HTTP status code {@literal 400 BAD REQUEST} being returned to the
  * platform.
  *
  * @author Scott Frederick

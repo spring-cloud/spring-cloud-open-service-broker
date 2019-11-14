@@ -300,7 +300,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectStatus().isBadRequest()
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> assertDescriptionContains(result, "invalid parameters description"));

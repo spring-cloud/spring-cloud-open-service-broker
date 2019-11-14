@@ -142,7 +142,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	 * @return an error message
 	 */
 	@ExceptionHandler(ServiceBrokerInvalidParametersException.class)
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(ServiceBrokerInvalidParametersException ex) {
 		return getErrorResponse(ex);
 	}
