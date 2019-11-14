@@ -28,6 +28,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerDeleteOper
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidOriginatingIdentityException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerMaintenanceInfoConflictException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerUnavailableException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerUpdateOperationInProgressException;
@@ -132,6 +133,18 @@ public abstract class ServiceBrokerExceptionHandler {
 	@ExceptionHandler(ServiceBrokerAsyncRequiredException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public ErrorMessage handleException(ServiceBrokerAsyncRequiredException ex) {
+		return getErrorResponse(ex);
+	}
+
+	/**
+	 * Handle a {@link ServiceBrokerMaintenanceInfoConflictException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
+	@ExceptionHandler(ServiceBrokerMaintenanceInfoConflictException.class)
+	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	public ErrorMessage handleException(ServiceBrokerMaintenanceInfoConflictException ex) {
 		return getErrorResponse(ex);
 	}
 

@@ -32,6 +32,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequi
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerCreateOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerDeleteOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidParametersException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerMaintenanceInfoConflictException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerUpdateOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
@@ -54,6 +55,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException.ASYNC_REQUIRED_ERROR;
+import static org.springframework.cloud.servicebroker.exception.ServiceBrokerMaintenanceInfoConflictException.MAINTENANCE_INFO_CONFLICT_ERROR;
+import static org.springframework.cloud.servicebroker.exception.ServiceBrokerMaintenanceInfoConflictException.MAINTENANCE_INFO_CONFLICT_MESSAGE;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.API_INFO_LOCATION_HEADER;
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 
@@ -286,6 +289,43 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.jsonPath("$.error").isEqualTo(ASYNC_REQUIRED_ERROR)
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> assertDescriptionContains(result, "async required description"));
+	}
+
+	@Test
+	void createServiceInstanceWithMaintenanceInfoConflictFails() {
+		setupCatalogService();
+
+		setupServiceInstanceService(new ServiceBrokerMaintenanceInfoConflictException());
+
+		client.put().uri(buildCreateUpdateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.bodyValue(createRequestBody)
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().is4xxClientError()
+				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectBody()
+				.jsonPath("$.error").isEqualTo(MAINTENANCE_INFO_CONFLICT_ERROR)
+				.jsonPath("$.description").isEqualTo(MAINTENANCE_INFO_CONFLICT_MESSAGE);
+	}
+
+	@Test
+	void createServiceInstanceWithMaintenanceInfoConflictWithCustomMessageFails() {
+		setupCatalogService();
+
+		setupServiceInstanceService(new ServiceBrokerMaintenanceInfoConflictException("nope old version"));
+
+		client.put().uri(buildCreateUpdateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.bodyValue(createRequestBody)
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().is4xxClientError()
+				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectBody()
+				.jsonPath("$.error").isEqualTo(MAINTENANCE_INFO_CONFLICT_ERROR)
+				.jsonPath("$.description").isNotEmpty()
+				.consumeWith(result -> assertDescriptionContains(result, "nope old version"));
 	}
 
 	@Test
