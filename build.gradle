@@ -179,17 +179,17 @@ configure(subprojects - [project(":spring-cloud-starter-open-service-broker")]) 
 
 	task sourcesJar(type: Jar, dependsOn: classes) {
 		duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-		classifier = "sources"
+		archiveClassifier = "sources"
 		from sourceSets.main.allSource
 	}
 
 	task javadocJar(type: Jar) {
-		classifier = "javadoc"
+		archiveClassifier = "javadoc"
 		from javadoc
 	}
 
 	task testsJar(type: Jar) {
-		classifier = "tests"
+		archiveClassifier = "tests"
 		from sourceSets.test.output
 	}
 
@@ -202,12 +202,12 @@ configure(subprojects - [project(":spring-cloud-starter-open-service-broker")]) 
 
 configure(rootProject) {
 	task sourcesJar(type: Jar, dependsOn: classes) {
-		classifier = "sources"
+		archiveClassifier = "sources"
 		from sourceSets.main.allSource
 	}
 
 	task javadocJar(type: Jar, dependsOn: javadoc) {
-		classifier = "javadoc"
+		archiveClassifier = "javadoc"
 		from javadoc
 	}
 
@@ -235,8 +235,8 @@ configure(rootProject) {
 
 	task docsZip(type: Zip, dependsOn: [':spring-cloud-open-service-broker-docs:asciidoctor']) {
 		group = "Distribution"
-		classifier = "docs"
-		description = "Builds -${classifier} archive containing api and reference " +
+		archiveClassifier = "docs"
+		description = "Builds -${archiveClassifier} archive containing api and reference " +
 				"for deployment."
 
 		from(apidocs) {
