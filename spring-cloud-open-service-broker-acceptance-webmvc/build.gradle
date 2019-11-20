@@ -31,8 +31,8 @@ configurations.archives.artifacts.clear()
 apply plugin: 'org.springframework.boot'
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter")
-    compile("org.springframework.boot:spring-boot-starter-web")
-    compile project(":spring-cloud-starter-open-service-broker")
+    implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation project(":spring-cloud-starter-open-service-broker")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
