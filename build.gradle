@@ -34,7 +34,7 @@ ext {
 	if (project.hasProperty("springVersion")) {
 		springFrameworkVersion = project.findProperty("springVersion")
 	}
-	reactorVersion = project.findProperty("reactorVersion") ?: "Dysprosium-RELEASE"
+	reactorVersion = project.findProperty("reactorVersion") ?: "Dysprosium-SR1"
 	springCloudContractVersion = "2.1.3.RELEASE"
 	blockHoundVersion = "1.0.1.RELEASE"
 	junitPlatformLauncherVersion = "1.5.2"
