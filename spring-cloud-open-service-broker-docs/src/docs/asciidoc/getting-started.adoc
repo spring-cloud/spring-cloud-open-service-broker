@@ -24,7 +24,7 @@ To use Spring Cloud Open Service Broker in a Spring web application, add the sta
 To use Spring Cloud Open Service Broker in a Spring web application, add the starter:
 
     dependencies {
-        compile("org.springframework.cloud:spring-cloud-starter-open-service-broker:${version}")
+        api 'org.springframework.cloud:spring-cloud-starter-open-service-broker:${version}'
     }
 
 === Configuring the service broker
