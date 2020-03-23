@@ -98,7 +98,7 @@ configure(allprojects - [project(":spring-cloud-open-service-broker-docs")]) {
 	apply plugin: "pmd"
 
 	checkstyle {
-		configFile = file("${project.rootDir}/src/checkstyle/checkstyle.xml")
+		configFile = rootProject.file("src/checkstyle/checkstyle.xml")
 		toolVersion = "${checkstyleVersion}"
 	}
 	checkstyleMain {
@@ -114,12 +114,12 @@ configure(allprojects - [project(":spring-cloud-open-service-broker-docs")]) {
 	}
 	pmdMain {
 		ruleSets = []
-		ruleSetFiles = files("${project.rootDir}/src/pmd/pmdRuleSet.xml")
+		ruleSetFiles = rootProject.files("src/pmd/pmdRuleSet.xml")
 		source = "src/main/java"
 	}
 	pmdTest {
 		ruleSets = []
-		ruleSetFiles = files("${project.rootDir}/src/pmd/pmdTestRuleSet.xml")
+		ruleSetFiles = rootProject.files("src/pmd/pmdTestRuleSet.xml")
 		source = "src/test/java"
 	}
 
