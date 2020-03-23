@@ -1,0 +1,2 @@
+// JSON schema URL used in tests
+^http://json-schema.org/.*$

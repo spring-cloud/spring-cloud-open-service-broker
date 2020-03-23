@@ -109,7 +109,7 @@ class CatalogControllerTest {
 		assertThat(ctx.read("$.services[0].plans[1].free", Boolean.class)).isEqualTo(true);
 		assertThat(ctx.read("$.services[0].plans[1].plan_updateable", Boolean.class)).isEqualTo(true);
 		assertThat(ctx.read("$.services[0].plans[1].schemas.service_instance.create.parameters.$schema",
-				String.class)).isEqualTo("https://json-schema.org/draft-04/schema#");
+				String.class)).isEqualTo("http://json-schema.org/draft-04/schema#");
 		assertThat(ctx.read("$.services[0].plans[1].schemas.service_instance.create.parameters.type", String.class))
 				.isEqualTo("string");
 		assertThat(ctx.read("$.services[0].plans[1].schemas.service_instance.create.parameters.enum[0]",
@@ -119,11 +119,11 @@ class CatalogControllerTest {
 		assertThat(ctx.read("$.services[0].plans[1].schemas.service_instance.create.parameters.enum[2]",
 				String.class)).isEqualTo("three");
 		assertThat(ctx.read("$.services[0].plans[1].schemas.service_instance.update.parameters.$schema",
-				String.class)).isEqualTo("https://json-schema.org/draft-04/schema#");
+				String.class)).isEqualTo("http://json-schema.org/draft-04/schema#");
 		assertThat(ctx.read("$.services[0].plans[1].schemas.service_instance.update.parameters.type", String.class))
 				.isEqualTo("object");
 		assertThat(ctx.read("$.services[0].plans[1].schemas.service_binding.create.parameters.$schema",
-				String.class)).isEqualTo("https://json-schema.org/draft-04/schema#");
+				String.class)).isEqualTo("http://json-schema.org/draft-04/schema#");
 		assertThat(ctx.read("$.services[0].plans[1].schemas.service_binding.create.parameters.type", String.class))
 				.isEqualTo("object");
 		assertThat(ctx.read("$.services[0].plans[1].maximum_polling_duration", Integer.class)).isEqualTo(120);

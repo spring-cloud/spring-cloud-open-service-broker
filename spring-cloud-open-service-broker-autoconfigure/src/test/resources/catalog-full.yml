@@ -65,7 +65,7 @@ spring:
             schemas:
               serviceinstance:
                 create:
-                  parameters[$schema]: "https://json-schema.org/draft-04/schema#"
+                  parameters[$schema]: "http://json-schema.org/draft-04/schema#"
                   parameters:
                     type: string
                     enum:
@@ -73,12 +73,12 @@ spring:
                       - two
                       - three
                 update:
-                  parameters[$schema]: "https://json-schema.org/draft-04/schema#"
+                  parameters[$schema]: "http://json-schema.org/draft-04/schema#"
                   parameters:
                     type: object
               servicebinding:
                 create:
-                  parameters[$schema]: "https://json-schema.org/draft-04/schema#"
+                  parameters[$schema]: "http://json-schema.org/draft-04/schema#"
                   parameters:
                     type: object
             maximumPollingDuration: 120

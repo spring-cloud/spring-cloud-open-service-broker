@@ -118,7 +118,7 @@ class ServiceBrokerPropertiesTest {
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].free", "true");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].planUpdateable", "true");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[$schema]",
-				"https://json-schema.org/draft-04/schema#");
+				"http://json-schema.org/draft-04/schema#");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[type]",
 				"string");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[enum].0",
@@ -128,11 +128,11 @@ class ServiceBrokerPropertiesTest {
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[enum].2",
 				"three");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.update.parameters[$schema]",
-				"https://json-schema.org/draft-04/schema#");
+				"http://json-schema.org/draft-04/schema#");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.update.parameters[type]",
 				"object");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.servicebinding.create.parameters[$schema]",
-				"https://json-schema.org/draft-04/schema#");
+				"http://json-schema.org/draft-04/schema#");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.servicebinding.create.parameters[type]",
 				"object");
 		map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].maximumPollingDuration", "200");
@@ -204,7 +204,7 @@ class ServiceBrokerPropertiesTest {
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isPlanUpdateable()).isTrue();
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance()
 				.getCreate().getParameters())
-				.contains(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "string"));
+				.contains(entry("$schema", "http://json-schema.org/draft-04/schema#"), entry("type", "string"));
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance()
 				.getCreate().getParameters().get("enum")).isInstanceOf(Map.class);
 		@SuppressWarnings("unchecked") Map<String, String> enumMap = (Map<String, String>) properties.getCatalog()
@@ -213,10 +213,10 @@ class ServiceBrokerPropertiesTest {
 		assertThat(enumMap).containsOnly(entry("0", "one"), entry("1", "two"), entry("2", "three"));
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getSchemas().getServiceInstance()
 				.getUpdate().getParameters())
-				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
+				.containsOnly(entry("$schema", "http://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getSchemas().getServiceBinding()
 				.getCreate().getParameters())
-				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
+				.containsOnly(entry("$schema", "http://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).getMaximumPollingDuration())
 				.isEqualTo(200);
 		assertThat(properties.getCatalog().getServices().get(1).getId()).isEqualTo("service-two-id");
@@ -295,7 +295,7 @@ class ServiceBrokerPropertiesTest {
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).isPlanUpdateable()).isTrue();
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getSchemas().getServiceInstanceSchema()
 				.getCreateMethodSchema().getParameters())
-				.contains(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "string"));
+				.contains(entry("$schema", "http://json-schema.org/draft-04/schema#"), entry("type", "string"));
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getSchemas().getServiceInstanceSchema()
 				.getCreateMethodSchema().getParameters().get("enum")).isInstanceOf(List.class);
 		@SuppressWarnings("unchecked")
@@ -304,10 +304,10 @@ class ServiceBrokerPropertiesTest {
 		assertThat(enumList).containsOnly("one", "two", "three");
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getSchemas().getServiceInstanceSchema()
 				.getUpdateMethodSchema().getParameters())
-				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
+				.containsOnly(entry("$schema", "http://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getSchemas().getServiceBindingSchema()
 				.getCreateMethodSchema().getParameters())
-				.containsOnly(entry("$schema", "https://json-schema.org/draft-04/schema#"), entry("type", "object"));
+				.containsOnly(entry("$schema", "http://json-schema.org/draft-04/schema#"), entry("type", "object"));
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).getMaximumPollingDuration()).isEqualTo(200);
 		assertThat(catalog.getServiceDefinitions().get(1).getId()).isEqualTo("service-two-id");
 		assertThat(catalog.getServiceDefinitions().get(1).getName()).isEqualTo("Service Two");
