@@ -69,6 +69,8 @@ public class ServiceInstanceBindingController extends BaseController {
 
 	private static final String PATH_MAPPING = "/v2/service_instances/{instanceId}/service_bindings/{bindingId}";
 
+	private static final String DEBUG_REQUEST = "request={}";
+
 	private final ServiceInstanceBindingService service;
 
 	/**
@@ -124,10 +126,19 @@ public class ServiceInstanceBindingController extends BaseController {
 						apiInfoLocation, originatingIdentityString, requestIdentity, acceptsIncomplete))
 				.cast(CreateServiceInstanceBindingRequest.class)
 				.flatMap(req -> service.createServiceInstanceBinding(req)
-						.doOnRequest(v -> LOG.debug("Creating a service instance binding: request={}", req))
-						.doOnSuccess(response -> LOG
-								.debug("Creating a service instance binding succeeded: serviceInstanceId={}, bindingId={}, response={}",
-										serviceInstanceId, bindingId, response)))
+						.doOnRequest(v -> {
+							LOG.info("Creating a service instance binding");
+							LOG.debug(DEBUG_REQUEST, req);
+						})
+						.doOnSuccess(response -> {
+							LOG.info("Creating a service instance binding succeeded");
+							LOG.debug("serviceInstanceId={}, bindingId={}, response={}", serviceInstanceId, bindingId,
+									response);
+						})
+						.doOnError(e -> {
+							LOG.error("Error creating service instance binding");
+							LOG.debug(e.getMessage(), e);
+						}))
 				.map(response -> new ResponseEntity<>(response, getCreateResponseCode(response)))
 				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.CREATED)));
 	}
@@ -173,9 +184,18 @@ public class ServiceInstanceBindingController extends BaseController {
 				.requestIdentity(requestIdentity)
 				.build())
 				.flatMap(req -> service.getServiceInstanceBinding(req)
-						.doOnRequest(v -> LOG.debug("Getting a service instance binding: request={}", req))
-						.doOnSuccess(response -> LOG
-								.debug("Getting a service instance binding succeeded: bindingId={}", bindingId)))
+						.doOnRequest(v -> {
+							LOG.info("Getting a service instance binding");
+							LOG.debug(DEBUG_REQUEST, req);
+						})
+						.doOnSuccess(response -> {
+							LOG.info("Getting a service instance binding succeeded");
+							LOG.debug("bindingId={}", bindingId);
+						})
+						.doOnError(e -> {
+							LOG.error("Error getting service instance binding");
+							LOG.debug(e.getMessage(), e);
+						}))
 				.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
 				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
 				.onErrorResume(e -> {
@@ -226,12 +246,18 @@ public class ServiceInstanceBindingController extends BaseController {
 				.requestIdentity(requestIdentity)
 				.build())
 				.flatMap(request -> service.getLastOperation(request)
-						.doOnRequest(
-								v -> LOG.debug("Getting service instance binding last operation: request={}", request))
-						.doOnSuccess(aVoid -> LOG
-								.debug("Getting service instance binding last operation succeeded: serviceInstanceId={}, bindingId={}",
-										serviceInstanceId, bindingId))
-						.doOnError(e -> LOG.debug(e.getMessage(), e)))
+						.doOnRequest(v -> {
+							LOG.info("Getting service instance binding last operation");
+							LOG.debug(DEBUG_REQUEST, request);
+						})
+						.doOnSuccess(aVoid -> {
+							LOG.info("Getting service instance binding last operation succeeded");
+							LOG.debug("serviceInstanceId={}, bindingId={}", serviceInstanceId, bindingId);
+						})
+						.doOnError(e -> {
+							LOG.error("Error getting service instance binding last operation");
+							LOG.debug(e.getMessage(), e);
+						}))
 				.flatMap(response -> Mono
 						.just(response.getState().equals(OperationState.SUCCEEDED) && response.isDeleteOperation())
 						.flatMap(isSuccessfulDelete ->
@@ -283,10 +309,18 @@ public class ServiceInstanceBindingController extends BaseController {
 								.requestIdentity(requestIdentity)
 								.build()))
 				.flatMap(req -> service.deleteServiceInstanceBinding(req)
-						.doOnRequest(v -> LOG.debug("Deleting a service instance binding: request={}", req))
-						.doOnSuccess(aVoid -> LOG
-								.debug("Deleting a service instance binding succeeded: bindingId={}", bindingId))
-						.doOnError(e -> LOG.debug(e.getMessage(), e)))
+						.doOnRequest(v -> {
+							LOG.info("Deleting a service instance binding");
+							LOG.debug(DEBUG_REQUEST, req);
+						})
+						.doOnSuccess(aVoid -> {
+							LOG.info("Deleting a service instance binding succeeded");
+							LOG.debug("bindingId={}", bindingId);
+						})
+						.doOnError(e -> {
+							LOG.error("Error deleting a service instance binding");
+							LOG.debug(e.getMessage(), e);
+						}))
 				.map(response -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
 				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
 				.onErrorResume(e -> {

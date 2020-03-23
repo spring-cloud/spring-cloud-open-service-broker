@@ -70,6 +70,10 @@ public class ServiceInstanceController extends BaseController {
 
 	private static final String PATH_MAPPING = "/v2/service_instances/{instanceId}";
 
+	private static final String DEBUG_REQUEST = "request={}";
+
+	private static final String DEBUG_RESPONSE = "serviceInstanceId={}, response={}";
+
 	private final ServiceInstanceService service;
 
 	/**
@@ -120,10 +124,18 @@ public class ServiceInstanceController extends BaseController {
 						originatingIdentityString, requestIdentity, acceptsIncomplete))
 				.cast(CreateServiceInstanceRequest.class)
 				.flatMap(req -> service.createServiceInstance(req)
-						.doOnRequest(v -> LOG.debug("Creating a service instance: request={}", req))
-						.doOnSuccess(response ->
-								LOG.debug("Creating a service instance succeeded: serviceInstanceId={}, response={}",
-										serviceInstanceId, response)))
+						.doOnRequest(v -> {
+							LOG.info("Creating a service instance");
+							LOG.debug(DEBUG_REQUEST, req);
+						})
+						.doOnSuccess(response -> {
+							LOG.info("Creating a service instance succeeded");
+							LOG.debug(DEBUG_RESPONSE, serviceInstanceId, response);
+						})
+						.doOnError(e -> {
+							LOG.error("Error creating service instance");
+							LOG.debug(e.getMessage(), e);
+						}))
 				.map(response -> new ResponseEntity<>(response, getCreateResponseCode(response)))
 				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.CREATED)));
 	}
@@ -166,10 +178,18 @@ public class ServiceInstanceController extends BaseController {
 				.requestIdentity(requestIdentity)
 				.build())
 				.flatMap(request -> service.getServiceInstance(request)
-						.doOnRequest(v -> LOG.debug("Getting service instance: request={}", request))
-						.doOnSuccess(response -> LOG
-								.debug("Getting service instance succeeded: serviceInstanceId={}, response={}",
-										serviceInstanceId, response)))
+						.doOnRequest(v -> {
+							LOG.info("Getting service instance");
+							LOG.debug(DEBUG_REQUEST, request);
+						})
+						.doOnSuccess(response -> {
+							LOG.info("Getting service instance succeeded");
+							LOG.debug(DEBUG_RESPONSE, serviceInstanceId, response);
+						})
+						.doOnError(e -> {
+							LOG.error("Error getting service instance");
+							LOG.debug(e.getMessage(), e);
+						}))
 				.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
 				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
 				.onErrorResume(e -> {
@@ -216,11 +236,18 @@ public class ServiceInstanceController extends BaseController {
 				.requestIdentity(requestIdentity)
 				.build())
 				.flatMap(request -> service.getLastOperation(request)
-						.doOnRequest(v -> LOG.debug("Getting service instance last operation: request={}", request))
-						.doOnSuccess(response -> LOG
-								.debug("Getting service instance last operation succeeded: serviceInstanceId={}, response={}",
-										serviceInstanceId, response))
-				)
+						.doOnRequest(v -> {
+							LOG.info("Getting service instance last operation");
+							LOG.debug(DEBUG_REQUEST, request);
+						})
+						.doOnSuccess(response -> {
+							LOG.info("Getting service instance last operation succeeded");
+							LOG.debug(DEBUG_RESPONSE, serviceInstanceId, response);
+						})
+						.doOnError(e -> {
+							LOG.error("Error getting service instance last operation");
+							LOG.debug(e.getMessage(), e);
+						}))
 				.map(response -> {
 					boolean isSuccessfulDelete = response.getState().equals(OperationState.SUCCEEDED) && response
 							.isDeleteOperation();
@@ -267,11 +294,18 @@ public class ServiceInstanceController extends BaseController {
 								.requestIdentity(requestIdentity)
 								.build()))
 				.flatMap(request -> service.deleteServiceInstance(request)
-						.doOnRequest(v -> LOG.debug("Deleting a service instance: request={}", request))
-						.doOnSuccess(response -> LOG
-								.debug("Deleting a service instance succeeded: serviceInstanceId={}, response={}",
-										serviceInstanceId, response))
-						.doOnError(e -> LOG.debug("Service instance does not exist: ", e)))
+						.doOnRequest(v -> {
+							LOG.info("Deleting a service instance");
+							LOG.debug(DEBUG_REQUEST, request);
+						})
+						.doOnSuccess(response -> {
+							LOG.info("Deleting a service instance succeeded");
+							LOG.debug(DEBUG_RESPONSE, serviceInstanceId, response);
+						})
+						.doOnError(e -> {
+							LOG.error("Error deleting a service instance");
+							LOG.debug(e.getMessage(), e);
+						}))
 				.map(response -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
 				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
 				.onErrorResume(e -> {
@@ -322,10 +356,18 @@ public class ServiceInstanceController extends BaseController {
 						originatingIdentityString, requestIdentity, acceptsIncomplete))
 				.cast(UpdateServiceInstanceRequest.class)
 				.flatMap(req -> service.updateServiceInstance(req)
-						.doOnRequest(v -> LOG.debug("Updating a service instance: request={}", request))
-						.doOnSuccess(response -> LOG
-								.debug("Updating a service instance succeeded: serviceInstanceId={}, response={}",
-										serviceInstanceId, response)))
+						.doOnRequest(v -> {
+							LOG.info("Updating service instance");
+							LOG.debug(DEBUG_REQUEST, request);
+						})
+						.doOnSuccess(response -> {
+							LOG.info("Updating service instance succeeded");
+							LOG.debug(DEBUG_RESPONSE, serviceInstanceId, response);
+						})
+						.doOnError(e -> {
+							LOG.error("Error updating service instance");
+							LOG.debug(e.getMessage(), e);
+						}))
 				.map(response -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
 				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)));
 	}

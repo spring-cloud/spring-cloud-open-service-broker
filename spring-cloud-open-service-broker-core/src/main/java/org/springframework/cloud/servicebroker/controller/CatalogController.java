@@ -55,7 +55,15 @@ public class CatalogController extends BaseController {
 	@GetMapping({"/v2/catalog", "{platformInstanceId}/v2/catalog"})
 	public Mono<Catalog> getCatalog() {
 		return catalogService.getCatalog()
-				.doOnRequest(v -> LOG.debug("Retrieving catalog"));
+				.doOnRequest(v -> LOG.info("Retrieving catalog"))
+				.doOnSuccess(catalog -> {
+					LOG.info("Success retrieving catalog");
+					LOG.debug("catalog={}", catalog);
+				})
+				.doOnError(e -> {
+					LOG.error("Error retrieving catalog");
+					LOG.debug(e.getMessage(), e);
+				});
 	}
 
 }
