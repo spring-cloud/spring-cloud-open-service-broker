@@ -45,12 +45,36 @@ To start, use the `@SpringBootApplication` annotation on the service broker's ma
 
 This will trigger the inclusion of the default configuration.
 
-=== Customizing the Service Broker Endpoints Path
+=== Utilizing a unique platform Id
 
-Sometimes, it is useful to customize the prefix for the service broker endpoints. For example, your application might be serving conflicting endpoints for another purpose. You can use the `spring.cloud.openservicebroker.base-path` property to change the prefix for your broker endpoints, as shown in the following example:
+Every request to the service broker is able to receive a `platformInstanceId` via a path variable. This allows a service broker to detect the identity of a platform to which it has been registered, as described in the https://docs.cloudfoundry.org/services/supporting-multiple-cf-instances.html#routing-auth[Cloud Foundry documentation].
 
-```
+For example, an operator may register a service broker to one CF platform instance as follows:
+
+[source,bash,%autofit]
+----
+$ cf create-service-broker mybroker username password https://mybroker.app.local/east
+----
+
+The operator may also register the same service broker to another CF platform instance:
+
+[source,bash,%autofit]
+----
+$ cf create-service-broker mybroker username password https://mybroker.app.local/west
+----
+
+The broker could then expect requests to the following paths where the `platformInstanceId` field in the request object contains the value "east" or "west".
+
+- https://username:password@mybroker.app.local/east/v2/catalog
+- https://username:password@mybroker.app.local/west/v2/catalog
+
+=== Customizing the service broker path
+
+Sometimes, it is useful to customize the prefix for the service broker path. For example, your application might be serving conflicting endpoints for another purpose. You can use the `spring.cloud.openservicebroker.base-path` property to change the prefix for your broker path, as shown in the following example:
+
+[source,properties,%autofit]
+----
 spring.cloud.openservicebroker.base-path=/broker
-```
+----
 
-The preceding application.properties example changes the endpoint from `/` to `/broker/` (for example, /broker/v2/catalog).
+The preceding `application.properties` example changes the endpoint from `/` to `/broker/` (for example, /broker/v2/catalog).
