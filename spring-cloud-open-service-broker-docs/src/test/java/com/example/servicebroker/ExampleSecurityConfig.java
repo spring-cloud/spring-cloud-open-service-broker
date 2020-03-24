@@ -16,6 +16,7 @@ public class ExampleSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
+				.csrf().disable()
 				.authorizeRequests()
 				.antMatchers("/v2/**").hasRole("ADMIN")
 				.and()
@@ -30,7 +31,7 @@ public class ExampleSecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetails adminUser() {
 		return User
 				.withUsername("admin")
-				.password("supersecret")
+				.password("{noop}supersecret")
 				.roles("ADMIN")
 				.build();
 	}
