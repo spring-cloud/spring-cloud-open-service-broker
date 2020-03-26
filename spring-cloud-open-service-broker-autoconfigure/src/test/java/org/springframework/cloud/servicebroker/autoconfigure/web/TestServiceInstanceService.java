@@ -18,36 +18,132 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import reactor.core.publisher.Mono;
 
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerCreateOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerDeleteOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerUpdateOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationRequest;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationResponse;
+import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceRequest;
+import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceResponse;
+import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 
 public class TestServiceInstanceService implements ServiceInstanceService {
 
+	private static final String IN_PROGRESS_SERVICE_INSTANCE_ID = "service-instance-two-id";
+
+	private static final String EXISTING_SERVICE_INSTANCE_ID = "service-instance-three-id";
+
+	private static final String UNKNOWN_SERVICE_INSTANCE_ID = "service-instance-four-id";
+
 	@Override
 	public Mono<CreateServiceInstanceResponse> createServiceInstance(CreateServiceInstanceRequest request) {
-		return Mono.empty();
+		if (IN_PROGRESS_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
+			return Mono.error(new ServiceBrokerCreateOperationInProgressException("still working"));
+		}
+		if (EXISTING_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
+			return Mono.just(CreateServiceInstanceResponse.builder()
+					.instanceExisted(true)
+					.build());
+		}
+		if (request.isAsyncAccepted()) {
+			return Mono.just(CreateServiceInstanceResponse.builder()
+					.async(true)
+					.operation("working")
+					.build());
+		}
+		else {
+			return Mono.just(CreateServiceInstanceResponse.builder()
+					.build());
+		}
+	}
+
+	@Override
+	public Mono<GetServiceInstanceResponse> getServiceInstance(GetServiceInstanceRequest request) {
+		if (IN_PROGRESS_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
+			return Mono.error(new ServiceBrokerOperationInProgressException("still working"));
+		}
+		return Mono.just(GetServiceInstanceResponse.builder()
+				.build());
 	}
 
 	@Override
 	public Mono<GetLastServiceOperationResponse> getLastOperation(GetLastServiceOperationRequest request) {
-		return Mono.empty();
+		if (IN_PROGRESS_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
+			return Mono.just(GetLastServiceOperationResponse.builder()
+					.operationState(OperationState.IN_PROGRESS)
+					.description("working on it")
+					.build());
+		}
+		// deleted service instance status
+		if (EXISTING_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
+			return Mono.just(GetLastServiceOperationResponse.builder()
+					.operationState(OperationState.SUCCEEDED)
+					.description("all gone")
+					.deleteOperation(true)
+					.build());
+		}
+		// failed service instance status
+		if (UNKNOWN_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
+			return Mono.just(GetLastServiceOperationResponse.builder()
+					.operationState(OperationState.FAILED)
+					.description("not so good")
+					.build());
+		}
+		return Mono.just(GetLastServiceOperationResponse.builder()
+				.operationState(OperationState.SUCCEEDED)
+				.description("all good")
+				.build());
 	}
 
 	@Override
 	public Mono<DeleteServiceInstanceResponse> deleteServiceInstance(DeleteServiceInstanceRequest request) {
-		return Mono.empty();
+		if (IN_PROGRESS_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
+			return Mono.error(new ServiceBrokerDeleteOperationInProgressException("still working"));
+		}
+		if (UNKNOWN_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
+			return Mono.error(new ServiceInstanceDoesNotExistException(UNKNOWN_SERVICE_INSTANCE_ID));
+		}
+		if (request.isAsyncAccepted()) {
+			return Mono.just(DeleteServiceInstanceResponse.builder()
+					.async(true)
+					.operation("working")
+					.build());
+		}
+		else {
+			return Mono.just(DeleteServiceInstanceResponse.builder()
+					.build());
+		}
 	}
 
 	@Override
 	public Mono<UpdateServiceInstanceResponse> updateServiceInstance(UpdateServiceInstanceRequest request) {
-		return Mono.empty();
+		if (IN_PROGRESS_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
+			return Mono.error(new ServiceBrokerUpdateOperationInProgressException("still working"));
+		}
+		if (UNKNOWN_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
+			return Mono.error(new ServiceInstanceDoesNotExistException(UNKNOWN_SERVICE_INSTANCE_ID));
+		}
+		if (request.isAsyncAccepted()) {
+			return Mono.just(UpdateServiceInstanceResponse.builder()
+					.async(true)
+					.operation("working")
+					.dashboardUrl("https://dashboard.example.local")
+					.build());
+		}
+		else {
+			return Mono.just(UpdateServiceInstanceResponse.builder()
+					.dashboardUrl("https://dashboard.example.local")
+					.build());
+		}
 	}
 
 }

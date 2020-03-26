@@ -534,8 +534,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	void deleteServiceInstanceFiltersPlansSucceeds() throws Exception {
 		setupCatalogService();
 
-		setupServiceInstanceService(DeleteServiceInstanceResponse
-				.builder()
+		setupServiceInstanceService(DeleteServiceInstanceResponse.builder()
 				.build());
 
 		MvcResult mvcResult = mockMvc

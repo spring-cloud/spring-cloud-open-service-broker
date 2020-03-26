@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package Instance.servlet
+package binding.reactive
 
 org.springframework.cloud.contract.spec.Contract.make {
-	request {
-		method 'PUT'
-		body(file("create_service_instance.json"))
-		url '/v2/service_instances/service-instance-one-id?accepts_incomplete=false'
-		headers {
-			contentType('application/json')
-		}
-	}
-	response {
-		status 201
-	}
+    request {
+        method GET()
+        url '/v2/service_instances/service-instance-one-id/service_bindings/service-binding-one-id'
+    }
+    response {
+        status OK()
+        body([
+                "{}"
+        ])
+        headers {
+            contentType('application/json')
+        }
+    }
 }

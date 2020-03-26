@@ -1,0 +1,10 @@
+{
+  "context": {
+    "platform": "cloudfoundry"
+  },
+  "service_id": "service-one-id",
+  "plan_id": "plan-one-id",
+  "bind_resource": {
+    "app_guid": "app-one-id"
+  }
+}

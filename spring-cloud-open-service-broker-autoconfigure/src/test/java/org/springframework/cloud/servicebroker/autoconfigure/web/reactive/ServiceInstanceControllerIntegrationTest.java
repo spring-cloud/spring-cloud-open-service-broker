@@ -525,7 +525,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	}
 
 	@Test
-	void deleteBindingWithMissingQueryParamsFails() {
+	void deleteServiceInstanceWithMissingQueryParamsFails() {
 		final String url = buildDeleteUrl(null, false).replace("plan_id", "plan-1");
 
 		client.delete().uri(url)
@@ -536,7 +536,6 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.jsonPath(".description").isNotEmpty()
 				.consumeWith(result -> assertDescriptionContains(result, "plan_id"));
 	}
-
 
 	@Test
 	void updateServiceInstanceWithAsyncAndHeadersSucceeds() throws Exception {
