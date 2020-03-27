@@ -21,20 +21,20 @@ buildscript {
 	dependencies {
 		classpath("io.spring.nohttp:nohttp-gradle:0.0.4.RELEASE")
 		classpath("io.spring.gradle:propdeps-plugin:0.0.10.RELEASE")
-		classpath("io.spring.gradle:dependency-management-plugin:1.0.8.RELEASE")
+		classpath("io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE")
 		classpath("org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.2.2.RELEASE")
 		classpath("org.asciidoctor:asciidoctor-gradle-plugin:1.6.1")
 	}
 }
 
 ext {
-	springBootVersion = project.findProperty("springBootVersion") ?: "2.2.4.RELEASE"
-	springFrameworkVersion = project.findProperty("springFrameworkVersion") ?: "5.2.3.RELEASE"
+	springBootVersion = project.findProperty("springBootVersion") ?: "2.2.6.RELEASE"
+	springFrameworkVersion = project.findProperty("springFrameworkVersion") ?: "5.2.5.RELEASE"
 	// deprecated in favor of `springFrameworkVersion`
 	if (project.hasProperty("springVersion")) {
 		springFrameworkVersion = project.findProperty("springVersion")
 	}
-	reactorVersion = project.findProperty("reactorVersion") ?: "Dysprosium-SR4"
+	reactorVersion = project.findProperty("reactorVersion") ?: "Dysprosium-SR6"
 	springCloudContractVersion = "2.2.2.RELEASE"
 	blockHoundVersion = "1.0.1.RELEASE"
 	junitPlatformLauncherVersion = "1.5.2"
