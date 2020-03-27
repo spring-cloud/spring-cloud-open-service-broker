@@ -135,10 +135,8 @@ public class ServiceInstanceBindingController extends BaseController {
 							LOG.debug("serviceInstanceId={}, bindingId={}, response={}", serviceInstanceId, bindingId,
 									response);
 						})
-						.doOnError(e -> {
-							LOG.error("Error creating service instance binding");
-							LOG.debug(e.getMessage(), e);
-						}))
+						.doOnError(e -> LOG.error("Error creating service instance binding. error=" +
+								e.getMessage(), e)))
 				.map(response -> new ResponseEntity<>(response, getCreateResponseCode(response)))
 				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.CREATED)));
 	}
@@ -192,10 +190,8 @@ public class ServiceInstanceBindingController extends BaseController {
 							LOG.info("Getting a service instance binding succeeded");
 							LOG.debug("bindingId={}", bindingId);
 						})
-						.doOnError(e -> {
-							LOG.error("Error getting service instance binding");
-							LOG.debug(e.getMessage(), e);
-						}))
+						.doOnError(e -> LOG.error("Error getting service instance binding. error=" +
+								e.getMessage(), e)))
 				.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
 				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
 				.onErrorResume(e -> {
@@ -254,10 +250,8 @@ public class ServiceInstanceBindingController extends BaseController {
 							LOG.info("Getting service instance binding last operation succeeded");
 							LOG.debug("serviceInstanceId={}, bindingId={}", serviceInstanceId, bindingId);
 						})
-						.doOnError(e -> {
-							LOG.error("Error getting service instance binding last operation");
-							LOG.debug(e.getMessage(), e);
-						}))
+						.doOnError(e -> LOG.error("Error getting service instance binding last operation. error=" +
+								e.getMessage(), e)))
 				.flatMap(response -> Mono
 						.just(response.getState().equals(OperationState.SUCCEEDED) && response.isDeleteOperation())
 						.flatMap(isSuccessfulDelete ->
@@ -317,10 +311,8 @@ public class ServiceInstanceBindingController extends BaseController {
 							LOG.info("Deleting a service instance binding succeeded");
 							LOG.debug("bindingId={}", bindingId);
 						})
-						.doOnError(e -> {
-							LOG.error("Error deleting a service instance binding");
-							LOG.debug(e.getMessage(), e);
-						}))
+						.doOnError(e -> LOG.error("Error deleting a service instance binding. error=" +
+								e.getMessage(), e)))
 				.map(response -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
 				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
 				.onErrorResume(e -> {

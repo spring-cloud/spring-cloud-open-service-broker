@@ -60,10 +60,7 @@ public class CatalogController extends BaseController {
 					LOG.info("Success retrieving catalog");
 					LOG.debug("catalog={}", catalog);
 				})
-				.doOnError(e -> {
-					LOG.error("Error retrieving catalog");
-					LOG.debug(e.getMessage(), e);
-				});
+				.doOnError(e -> LOG.error("Error retrieving catalog. error=" + e.getMessage(), e));
 	}
 
 }
