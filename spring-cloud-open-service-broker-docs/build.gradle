@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 
-plugins {
-	id 'org.asciidoctor.convert'
+buildscript {
+	repositories {
+		maven { url "https://repo.spring.io/plugins-release" }
+	}
+	dependencies {
+		classpath("org.asciidoctor:asciidoctor-gradle-plugin:1.6.1")
+	}
 }
+
+apply plugin: "org.asciidoctor.convert"
 
 description = "Spring Cloud Open Service Broker Documentation"
 

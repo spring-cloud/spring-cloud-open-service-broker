@@ -16,6 +16,15 @@ import org.springframework.cloud.contract.verifier.config.TestFramework
  * limitations under the License.
  */
 
+buildscript {
+	repositories {
+		maven { url "https://repo.spring.io/plugins-release" }
+	}
+	dependencies {
+		classpath("org.springframework.cloud:spring-cloud-contract-gradle-plugin:${springCloudContractVersion}")
+	}
+}
+
 description = "Spring Cloud Open Service Broker Auto-Configuration"
 
 apply plugin: "groovy"
