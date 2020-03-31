@@ -76,7 +76,13 @@ configure(allprojects) {
 	apply from: "${rootProject.projectDir}/publish-maven.gradle"
 
 	repositories {
-		maven { url "https://repo.spring.io/libs-release" }
+		mavenCentral()
+		if (!version.endsWith('RELEASE')) {
+			maven { url "https://repo.spring.io/milestone" }
+		}
+		if (version.endsWith('BUILD-SNAPSHOT')) {
+			maven { url "https://repo.spring.io/snapshot" }
+		}
 	}
 
 	if (project.hasProperty("springFrameworkVersion") || project.hasProperty("springBootVersion")) {
