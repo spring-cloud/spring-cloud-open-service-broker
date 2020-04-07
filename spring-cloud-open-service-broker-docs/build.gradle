@@ -20,10 +20,9 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.asciidoctor:asciidoctor-gradle-plugin:1.6.1")
+		classpath("org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.16")
 	}
 }
-
-apply plugin: "org.asciidoctor.convert"
 
 description = "Spring Cloud Open Service Broker Documentation"
 
@@ -51,7 +50,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-tomcat")
     compile("io.projectreactor:reactor-core")
 
-	docs("io.spring.docresources:spring-doc-resources:0.1.0.RELEASE@zip")
+    docs("io.spring.docresources:spring-doc-resources:0.2.0.RELEASE@zip")
 }
 
 task prepareAsciidocBuild(type: Sync) {
@@ -66,7 +65,25 @@ task prepareAsciidocBuild(type: Sync) {
 	into "$buildDir/asciidoc"
 }
 
+task('makePDF', type: org.asciidoctor.gradle.AsciidoctorTask){
+	dependsOn prepareAsciidocBuild
+	backends 'pdf'
+	sourceDir = file("$buildDir/asciidoc")
+	sources {
+		include 'index.adoc'
+	}
+	options doctype: 'book', eruby: 'erubis'
+	logDocuments = true
+	attributes 'icons': 'font',
+		'sectanchors': '',
+		'sectnums': '',
+		'toc': '',
+		'source-highlighter' : 'coderay',
+		'revnumber': project.version
+}
+
 asciidoctor {
+	dependsOn makePDF
 	sourceDir = file("$buildDir/asciidoc")
 	sources {
 		include '*.adoc'
@@ -95,7 +112,5 @@ asciidoctor {
 			'allow-uri-read': '',
 			'source-highlighter=highlight.js',
 			'highlightjsdir=js/highlight',
-			'highlightjs-theme=atom-one-dark-reasonable'
+			'highlightjs-theme=github'
 }
-
-asciidoctor.dependsOn prepareAsciidocBuild
