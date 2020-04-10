@@ -1,58 +1,91 @@
 :examples-dir: ../../src/test/java/com/example/servicebroker/
 [[service-instances]]
 == Service Instances
+
 Service brokers are responsible for provisioning the services advertised in their catalog and managing their lifecycle in the underlying cloud platform.
 The services created by the broker are referred to as service instances.
 
 Service brokers must implement the {scosb-api-services}ServiceInstanceService.html[`ServiceInstanceService`] interface and provide implementations of the required methods of that interface.
-Each method receives a single Java object parameter containing all details of the request from the platform and returns a Java object value providing details of the operation to the platform.
+Each method receives a single Java object parameter that contains all the details of the request from the platform and returns a Java object value that provides the details of the operation to the platform.
 
 The service instance create, update, and delete operations can be performed synchronously or asynchronously.
 
-* When a service broker creates, updates, or deletes a service instance synchronously, the appropriate interface method should block and only return a response to the platform when the operation completes successfully or when a failure occurs.
+* When a service broker creates, updates, or deletes a service instance synchronously, the appropriate interface method should block and return a response to the platform only when the operation completes successfully or when a failure occurs.
+
 * When performing an operation asynchronously, the service broker can return a response to the platform before the operation is complete and indicate in the response that the operation is in progress.
-The platform link:#service-instance-status[polls the service broker] to get the status of the operation when an asynchronous operation is indicated.
+The platform <<service-instance-status,polls the service broker>> to get the status of the operation when an asynchronous operation is indicated.
 
 === Service Instance Creation
-The service broker must provide an implementation of the {scosb-api-services}ServiceInstanceService.html#createServiceInstance-org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest-[createServiceInstance()].
 
-Service brokers typically provision a resource in the platform or in another system when creating a service instance.
+The service broker must provide an implementation of the {scosb-api-services}ServiceInstanceService.html#createServiceInstance-org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest[`createServiceInstance()`] method.
+
+Service brokers typically provision a resource in the platform or in another system when they create a service instance.
 Service brokers are responsible for keeping track of any resources associated with a service instance for future retrieval, updating, or deletion.
 
 ==== Event Registry
-Service instance creation can be further customized by utilizing events. Autowire the {scosb-api-service-events}/CreateServiceInstanceEventFlowRegistry.html[CreateServiceInstanceEventFlowRegistry] bean. Use the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I-[addInitializationFlow()], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C-[addCompletionFlow()] or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E-[addErrorFlow()] methods to register custom reactive flows for execution during the various stages of creating a service instance.
+
+Service instance creation can be further customized by utilizing events.
+To do so:
+
+. Autowire the {scosb-api-service-events}/CreateServiceInstanceEventFlowRegistry.html[`CreateServiceInstanceEventFlowRegistry`] bean.
+
+. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`], or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows for execution during the various stages of creating a service instance.
 
 === Service Instance Updating
-If the `plan_updateable` field is set to `true` in the services catalog, the service broker must provide an implementation of the {scosb-api-services}ServiceInstanceService.html#updateServiceInstance-org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest-[updateServiceInstance()].
+
+If the `plan_updateable` field is set to `true` in the services catalog, the service broker must provide an implementation of the {scosb-api-services}ServiceInstanceService.html#updateServiceInstance-org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest[`updateServiceInstance()`] method.
 Otherwise, this method is never called by the platform, and the default implementation in the interface can be used.
 
 Services brokers can modify the configuration of an existing resource when updating a service instance or deploying a new resource.
 
 ==== Event Registry
-Service instance updates can be further customized by utilizing events. Autowire the {scosb-api-service-events}/UpdateServiceInstanceEventFlowRegistry.html[UpdateServiceInstanceEventFlowRegistry] bean. Use the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I-[addInitializationFlow()], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C-[addCompletionFlow()] or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E-[addErrorFlow()] methods to register custom reactive flows for execution during the various stages of updating a service instance.
+
+Service instance updates can be further customized by utilizing events.
+To do so:
+
+. Autowire the {scosb-api-service-events}/UpdateServiceInstanceEventFlowRegistry.html[`UpdateServiceInstanceEventFlowRegistry`] bean.
+
+. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`], or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows for execution during the various stages of updating a service instance.
 
 === Service Instance Deletion
+
 An implementation of the
-{scosb-api-services}ServiceInstanceService.html#deleteServiceInstance-org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceRequest-[deleteServiceInstance()]
+{scosb-api-services}ServiceInstanceService.html#deleteServiceInstance-org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceRequest[`deleteServiceInstance()`]
 method must be provided by the service broker.
 
-Any resources provisioned in the create operation should be deprovisioned by the delete operation.
+Any resources provisioned in the create operation should be de-provisioned by the delete operation.
 
 ==== Event Registry
-Service instance deletion can be further customized by utilizing events. Autowire the {scosb-api-service-events}/DeleteServiceInstanceEventFlowRegistry.html[DeleteServiceInstanceEventFlowRegistry] bean. Use the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I-[addInitializationFlow()], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C-[addCompletionFlow()] or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E-[addErrorFlow()] methods to register custom reactive flows for execution during the various stages of deleting a service instance.
 
-[#service-instance-status]
+Service instance deletion can be further customized by utilizing events.
+To do so:
+
+. Autowire the {scosb-api-service-events}/DeleteServiceInstanceEventFlowRegistry.html[`DeleteServiceInstanceEventFlowRegistry`] bean.
+
+. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`], or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows for execution during the various stages of deleting a service instance.
+
+[[service-instance-status]]
 === Service Instance Operation Status Retrieval
-If any create, update, or delete operation can return an asynchronous "`operation in progress`" response to the platform, the service broker must provide an implementation of the {scosb-api-services}ServiceInstanceService.html#getLastOperation-org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationRequest-[getLastOperation()]. Otherwise, this method is never called by the platform, and the default implementation in the interface can be used.
+
+If any create, update, or delete operation can return an asynchronous "`operation in progress`" response to the platform, the service broker must provide an implementation of the {scosb-api-services}ServiceInstanceService.html#getLastOperation-org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationRequest[`getLastOperation()`] method.
+Otherwise, this method is never called by the platform, and the default implementation in the interface can be used.
 
 The platform polls this method of the service broker for a service instance that has an asynchronous operation in progress until the service broker indicates that the operation has completed successfully or a failure has occurred.
 
 ==== Event Registry
-Service instance last operation requests can be further customized by utilizing events. Autowire the {scosb-api-service-events}/AsyncOperationServiceInstanceEventFlowRegistry.html[AsyncOperationServiceInstanceEventFlowRegistry] bean. Use the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I-[addInitializationFlow()], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C-[addCompletionFlow()] or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E-[addErrorFlow()] methods to register custom reactive flows for execution during the various stages of last operation retrieval.
+
+Service instance last operation requests can be further customized by utilizing events.
+To do so:
+
+. Autowire the {scosb-api-service-events}/AsyncOperationServiceInstanceEventFlowRegistry.html[`AsyncOperationServiceInstanceEventFlowRegistry`] bean.
+
+. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`], or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows for execution during the various stages of last operation retrieval.
 
 === Service Instance Retrieval
+
 If the `instances_retrievable` field is set to `true` in the services catalog, the service broker must provide an implementation of the
-{scosb-api-services}ServiceInstanceService.html#getServiceInstance-org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceRequest-[getServiceInstance()]. Otherwise, this method is never called by the platform, and the default implementation in the interface can be used.
+{scosb-api-services}ServiceInstanceService.html#getServiceInstance-org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceRequest[`getServiceInstance()`] method.
+Otherwise, this method is never called by the platform, and the default implementation in the interface can be used.
 
 Service brokers are responsible for maintaining any service instance state necessary to support the retrieval operation.
 
@@ -60,29 +93,40 @@ Service brokers are responsible for maintaining any service instance state neces
 
 The following example shows a service instance implementation:
 
+====
 [source,java,%autofit]
 ----
 include::{examples-dir}/ExampleServiceInstanceService.java[]
 ----
+====
 
 === Example Event Flow Configuration
 
-There are multiple ways to configure service instance event flows. One option is to autowire one or more registries and interact with the registry directly. Another option is to define beans for specific flows. These beans will be identified and added to the appropriate registry automatically. A final option is to declare a new registry bean itself, however be aware that defining a new registry bean will override the provided auto-configuration.
+There are multiple ways to configure service instance event flows.
+One option is to autowire one or more registries and interact with the registry directly.
+Another option is to define beans for specific flows.
+These beans are automatically identified and added to the appropriate registry.
+A final option is to declare a new registry bean.
+However, be aware that defining a new registry bean overrides the provided auto-configuration.
 
 ==== Option 1: Autowire Registries
 
 The following example shows a configuration for service instance event flows:
 
+====
 [source,java,%autofit]
 ----
 include::{examples-dir}/ExampleServiceInstanceEventFlowsConfiguration.java[]
 ----
+====
 
 ==== Option 2: Event Flow Beans
 
-Optionally configure beans for the individual flows as seen in the following example:
+Optionally, you can configure beans for the individual flows, as follows:
 
+====
 [source,java,%autofit]
 ----
 include::{examples-dir}/ExampleServiceInstanceEventFlowsConfiguration2.java[]
 ----
+====

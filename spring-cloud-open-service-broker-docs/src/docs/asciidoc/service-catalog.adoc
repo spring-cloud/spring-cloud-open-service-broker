@@ -1,48 +1,58 @@
 :examples-dir: ../../src/test/java/com/example/servicebroker/
 [[service-catalog]]
 == Advertising Services
-The {osbspec}#catalog-management[service broker catalog] provides a set of metadata that describes the available services along with attributes such as cost and capabilities.
+
+The {osbspec}#catalog-management[service broker catalog] provides a set of metadata that describes the available services, along with attributes such as cost and capabilities.
 The catalog is made available to the platform's services marketplace through the service broker `/v2/catalog` endpoint.
 
-The service broker can either provide a Spring bean of type {scosb-api}/org/springframework/cloud/servicebroker/model/catalog/Catalog.html[Catalog] or implement the service {scosb-api-services}CatalogService.html[CatalogService].
+The service broker can either provide a Spring bean of type {scosb-api}/org/springframework/cloud/servicebroker/model/catalog/Catalog.html[`Catalog`] or implement the service {scosb-api-services}CatalogService.html[`CatalogService`].
 
 === Providing a Catalog Bean
 
-The service broker catalog can be exposed by creating a Spring bean and contribute it to the Spring
-application context. This can be done in a Spring `@Configuration` class as in this example:
+You can expose the service broker catalog by creating a Spring bean and contributing it to the Spring
+application context.
+You can do so in a Spring `@Configuration` class, as follows:
 
+====
 [source,java,%autofit]
 ----
 include::{examples-dir}/ExampleCatalogConfiguration.java[]
 ----
+====
 
-=== Providing a Catalog Using Properties
+=== Providing a Catalog by Using Properties
 
-A catalog may be configured with Spring Boot externalized configuration within a Java properties file or YAML file.
+You can configure a catalog with Spring Boot externalized configuration within a Java properties file or a YAML file.
 The catalog is parsed and made available as a `Catalog` bean during autoconfiguration.
 
-The following example shows a YAML file that configures a catalog:
+The following YAML file configures a catalog:
 
+====
 [source,yaml,%autofit]
 ----
 include::{examples-dir}/catalog-minimal.yml[]
 ----
+====
 
-The following example shows a properties file that configures a catalog:
+The following properties file configures a catalog:
 
+====
 [source,properties,%autofit]
 ----
 include::{examples-dir}/catalog-minimal.properties[]
 ----
+====
 
 === Implementing a Catalog Service
 
 A service broker can take more control over the catalog by implementing the `CatalogService` interface.
 This might be required if some details of the catalog metadata need to be read from the environment or from an external data source.
 
-The following example shows an implementation of the `CatalogService` interface:
+The following example implements the `CatalogService` interface:
 
+====
 [source,java,%autofit]
 ----
 include::{examples-dir}/ExampleCatalogService.java[]
 ----
+====

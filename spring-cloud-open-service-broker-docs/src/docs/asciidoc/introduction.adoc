@@ -1,5 +1,6 @@
 [[introduction]]
 == Introduction
+
 The {osbapi-href} defines an HTTP interface between the services marketplace of a platform and a service broker.
 
 Service brokers are responsible for:
@@ -8,7 +9,7 @@ Service brokers are responsible for:
 * Provisioning (creating or updating) service instances
 * Creating bindings between a service instance and a client application
 * Deleting bindings between a service instance and a client application
-* Deprovisioning (deleting) service instances
+* De-provisioning (deleting) service instances
 
-The {scosb-href} project provides the scaffolding for an {osbapi-href}-compliant service broker by implementing the required Spring web controllers, domain objects, and configuration. 
+The {scosb-href} project provides the scaffolding for an {osbapi-href}-compliant service broker by implementing the required Spring web controllers, domain objects, and configuration.
 Service broker authors can provide Spring beans that implement the {scosb-api-services}package-summary.html[appropriate interfaces].
