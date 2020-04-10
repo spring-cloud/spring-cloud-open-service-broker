@@ -1,9 +1,9 @@
 = Spring Cloud Open Service Broker
 :doctype: book
 :icons: font
-:source-highlighter: highlightjs
+:source-highlighter: github
 :toc: left
-:toclevels: 3
+:toclevels: 4
 :sectlinks:
 
 :examples-dir: ../../src/test/java/com/example/servicebroker/
@@ -22,14 +22,22 @@
 :springboot-api: https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/
 
 [[abstract]]
-
 Spring Cloud Open Service Broker is a framework for building {springboot-href} applications that implement the {osbapi-href}.
 
+// Always keep a blank line between include directives, in case an included file does not end with a blank line.
+
 include::introduction.adoc[]
+
 include::getting-started.adoc[]
+
 include::service-catalog.adoc[]
+
 include::service-instances.adoc[]
+
 include::service-bindings.adoc[]
+
 include::api-version-verification.adoc[]
+
 include::service-broker-security.adoc[]
+
 include::example-service-broker.adoc[]

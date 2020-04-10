@@ -5,12 +5,16 @@ Most service broker applications implement API or web UI endpoints beyond the Op
 These additional endpoints might provide information about the application, provide a dashboard UI, or provide controls over application behavior.
 Developers may implement these additional endpoints with https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html[Spring WebFlux] or https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html[Spring MVC].
 
-NOTE: The Spring Cloud Open Service Broker starter does not include a transitive dependency on Spring WebFlux or Spring MVC. A Spring Boot web starter is required to activate the auto-configuration.
+NOTE: The Spring Cloud Open Service Broker starter does not include a transitive dependency on Spring WebFlux or Spring MVC.
+A Spring Boot web starter is required to activate the auto-configuration.
 
-=== Maven dependencies
+=== Maven Dependencies
 
-To use Spring Cloud Open Service Broker in a Spring web application, add the starter:
+To use Spring Cloud Open Service Broker in a Spring web application, add the starter, as follows:
 
+====
+[source,XML]
+----
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -18,63 +22,89 @@ To use Spring Cloud Open Service Broker in a Spring web application, add the sta
             <version>${version}</version>
         </dependency>
     </dependencies>
+----
+====
 
-=== Gradle dependencies
+=== Gradle Dependencies
 
-To use Spring Cloud Open Service Broker in a Spring web application, add the starter:
+To use Spring Cloud Open Service Broker in a Spring web application, add the starter, as follows:
 
+====
+[source,XML]
+----
     dependencies {
         api 'org.springframework.cloud:spring-cloud-starter-open-service-broker:${version}'
     }
+----
+====
 
-=== Configuring the service broker
+=== Configuring the Service Broker
 
-See the https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#getting-started-first-application[Spring Boot documentation] for getting started building a Spring Boot application.
+See the https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#getting-started-first-application[Spring Boot documentation] to get started building a Spring Boot application.
 
 The framework provides default implementations of most of the components needed to implement a service broker.
-In Spring Boot fashion, you can override the default behavior by providing your own implementation of Spring beans, and the framework will back away from its defaults.
+In Spring Boot fashion, you can override the default behavior by providing your own implementation of Spring beans, and the framework backs away from its defaults.
 
-To start, use the `@SpringBootApplication` annotation on the service broker's main application class:
+To start, use the `@SpringBootApplication` annotation on the service broker's main application class, as follows:
 
+====
+[source,XML
+----
     @SpringBootApplication
     public class Application {
         public static void main(String[] args) {
             SpringApplication.run(Application.class, args);
         }
     }
+----
+====
 
-This will trigger the inclusion of the default configuration.
+This triggers the inclusion of the default configuration.
 
-=== Utilizing a unique platform Id
+=== Using a Unique Platform ID
 
-Every request to the service broker is able to receive a `platformInstanceId` via a path variable. This allows a service broker to detect the identity of a platform to which it has been registered, as described in the https://docs.cloudfoundry.org/services/supporting-multiple-cf-instances.html#routing-auth[Cloud Foundry documentation].
+Every request to the service broker is able to receive a `platformInstanceId` through a path variable.
+This lets a service broker detect the identity of a platform to which it has been registered, as described in the https://docs.cloudfoundry.org/services/supporting-multiple-cf-instances.html#routing-auth[Cloud Foundry documentation].
 
-For example, an operator may register a service broker to one CF platform instance as follows:
+For example, an operator may register a service broker to one CF platform instance, as follows:
 
+====
 [source,bash,%autofit]
 ----
 $ cf create-service-broker mybroker username password https://mybroker.app.local/east
 ----
+====
 
-The operator may also register the same service broker to another CF platform instance:
+The operator may also register the same service broker to another CF platform instance, as follows:
 
+====
 [source,bash,%autofit]
 ----
 $ cf create-service-broker mybroker username password https://mybroker.app.local/west
 ----
+====
 
-The broker could then expect requests to the following paths where the `platformInstanceId` field in the request object contains the value "east" or "west".
+The broker could then expect requests to the following paths, where the `platformInstanceId` field in the request object contains the value "east" or "west":
 
+====
+[source,bash]
+----
 - https://username:password@mybroker.app.local/east/v2/catalog
 - https://username:password@mybroker.app.local/west/v2/catalog
+----
+====
 
-=== Customizing the service broker path
+=== Customizing the Service Broker Path
 
-Sometimes, it is useful to customize the prefix for the service broker path. For example, your application might be serving conflicting endpoints for another purpose. You can use the `spring.cloud.openservicebroker.base-path` property to change the prefix for your broker path, as shown in the following example:
+Sometimes, it is useful to customize the prefix for the service broker path.
+For example, your application might be serving conflicting endpoints for another purpose.
+You can use the `spring.cloud.openservicebroker.base-path` property to change the prefix for your broker path, as follows:
 
+====
 [source,properties,%autofit]
 ----
 spring.cloud.openservicebroker.base-path=/broker
 ----
+====
 
-The preceding `application.properties` example changes the endpoint from `/` to `/broker/` (for example, /broker/v2/catalog).
+The preceding `application.properties` example changes the endpoint from `/` to `/broker/` (for example, `/broker/v2/catalog`).

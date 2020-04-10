@@ -11,9 +11,11 @@ by applying security to application endpoints with the path-matching pattern: `/
 
 === Example Configuration
 
-The following example shows a security configuration implementation:
+The following example implements a security configuration:
 
+====
 [source,java,%autofit]
 ----
 include::{examples-dir}/ExampleSecurityConfig.java[]
 ----
+====
