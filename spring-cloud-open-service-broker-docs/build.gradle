@@ -50,7 +50,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-tomcat")
     compile("io.projectreactor:reactor-core")
 
-    docs("io.spring.docresources:spring-doc-resources:0.2.0.RELEASE@zip")
+    docs("io.spring.docresources:spring-doc-resources:0.2.1.RELEASE@zip")
 }
 
 task prepareAsciidocBuild(type: Sync) {
