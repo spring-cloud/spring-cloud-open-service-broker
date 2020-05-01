@@ -15,9 +15,6 @@
  */
 
 buildscript {
-	repositories {
-		maven { url "https://repo.spring.io/plugins-release" }
-	}
 	dependencies {
 		classpath("org.asciidoctor:asciidoctor-gradle-plugin:1.6.1")
 		classpath("org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.16")
@@ -25,11 +22,6 @@ buildscript {
 }
 
 description = "Spring Cloud Open Service Broker Documentation"
-
-repositories {
-	maven { url "https://repo.spring.io/libs-release" }
-	mavenCentral()
-}
 
 configurations {
 	docs

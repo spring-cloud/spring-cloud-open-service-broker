@@ -17,9 +17,6 @@ import org.springframework.cloud.contract.verifier.config.TestFramework
  */
 
 buildscript {
-	repositories {
-		maven { url "https://repo.spring.io/plugins-release" }
-	}
 	dependencies {
 		classpath("org.springframework.cloud:spring-cloud-contract-gradle-plugin:${springCloudContractVersion}")
 	}

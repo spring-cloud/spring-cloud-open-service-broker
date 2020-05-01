@@ -16,6 +16,7 @@
 
 buildscript {
 	repositories {
+		mavenCentral()
 		maven { url "https://repo.spring.io/plugins-release" }
 	}
 	dependencies {
@@ -77,21 +78,32 @@ configure(allprojects) {
 
 	repositories {
 		mavenCentral()
-		if (!version.endsWith('RELEASE')) {
-			maven { url "https://repo.spring.io/milestone" }
-		}
-		if (version.endsWith('BUILD-SNAPSHOT')) {
-			maven { url "https://repo.spring.io/snapshot" }
+		maven { url "https://repo.spring.io/release" }
+	}
+	buildscript {
+		repositories {
+			mavenCentral()
+			maven { url "https://repo.spring.io/plugins-release" }
 		}
 	}
-
-	if (project.hasProperty("springFrameworkVersion") || project.hasProperty("springBootVersion")) {
+	if (!version.endsWith('RELEASE')) {
 		repositories {
-			maven { url "https://repo.spring.io/libs-snapshot" }
+			maven { url "https://repo.spring.io/milestone" }
 		}
 		buildscript {
 			repositories {
-				maven { url "https://repo.spring.io/libs-snapshot" }
+				maven { url "https://repo.spring.io/milestone" }
+			}
+		}
+	}
+	if (version.endsWith('BUILD-SNAPSHOT') || project.hasProperty("springFrameworkVersion") ||
+			project.hasProperty("springBootVersion")) {
+		repositories {
+			maven { url "https://repo.spring.io/snapshot" }
+		}
+		buildscript {
+			repositories {
+				maven { url "https://repo.spring.io/snapshot" }
 			}
 		}
 	}
