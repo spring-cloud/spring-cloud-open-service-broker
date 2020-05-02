@@ -23,7 +23,8 @@ package org.springframework.cloud.servicebroker.exception;
  * Throwing this exception will result in different HTTP status codes being returned to the platform, depending on
  * the condition. The default HTTP status code is {@literal 422 UNPROCESSABLE ENTITY}. If this exception is thrown
  * when retrieving a service instance binding, an HTTP status {@literal 404 NOT FOUND} is returned. If this exception
- * is thrown when deleting a service instance binding, an HTTP status {@literal 410 GONE} is returned.
+ * is thrown when deleting a service instance binding or retrieving service instance binding operation status,
+ * an HTTP status {@literal 410 GONE} is returned.
  *
  * @see org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController
  */

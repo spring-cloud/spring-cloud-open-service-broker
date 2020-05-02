@@ -37,6 +37,8 @@ import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceB
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationResponse;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.http.HttpStatus;
@@ -175,6 +177,19 @@ class ServiceInstanceBindingControllerResponseCodeTest {
 
 		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	void getLastOperationWithMissingBindingGivesExpectedStatus() {
+		given(bindingService.getLastOperation(any(GetLastServiceBindingOperationRequest.class)))
+				.willThrow(new ServiceInstanceBindingDoesNotExistException("binding does not exist"));
+
+		ResponseEntity<GetLastServiceBindingOperationResponse> responseEntity = controller
+				.getServiceInstanceBindingLastOperation(pathVariables, null, null, null, null, null, null, null, null)
+				.block();
+
+		assertThat(responseEntity).isNotNull();
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
 	}
 
 	@Test

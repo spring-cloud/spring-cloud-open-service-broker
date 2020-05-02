@@ -256,7 +256,15 @@ public class ServiceInstanceBindingController extends BaseController {
 						.just(response.getState().equals(OperationState.SUCCEEDED) && response.isDeleteOperation())
 						.flatMap(isSuccessfulDelete ->
 								Mono.just(new ResponseEntity<>(response,
-										isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK))));
+										isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK))))
+				.onErrorResume(e -> {
+					if (e instanceof ServiceInstanceBindingDoesNotExistException) {
+						return Mono.just(new ResponseEntity<>(HttpStatus.GONE));
+					}
+					else {
+						return Mono.error(e);
+					}
+				});
 	}
 
 	/**
