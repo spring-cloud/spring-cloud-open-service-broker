@@ -25,6 +25,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationI
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
@@ -53,6 +54,7 @@ public interface ServiceInstanceBindingService {
 	 * 		broker
 	 * @throws ServiceBrokerBindingRequiresAppException if the broker only supports application binding but an app
 	 * 		GUID is not provided in the request
+	 * @throws ServiceBrokerAsyncRequiredException if the broker requires asynchronous processing of the request
 	 * @throws ServiceBrokerCreateOperationInProgressException if a an operation is in progress for the service
 	 * 		binding
 	 */
@@ -108,6 +110,7 @@ public interface ServiceInstanceBindingService {
 	 * @throws ServiceInstanceBindingDoesNotExistException if a binding with the given ID is not known to the broker
 	 * @throws ServiceBrokerDeleteOperationInProgressException if a an operation is in progress for the service
 	 * 		binding
+	 * @throws ServiceBrokerAsyncRequiredException if the broker requires asynchronous processing of the request
 	 */
 	default Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(
 			DeleteServiceInstanceBindingRequest request) {
