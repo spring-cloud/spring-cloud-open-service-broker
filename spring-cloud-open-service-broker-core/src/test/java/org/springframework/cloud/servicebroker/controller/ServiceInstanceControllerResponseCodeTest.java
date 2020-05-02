@@ -335,4 +335,17 @@ class ServiceInstanceControllerResponseCodeTest {
 		assertThat(responseEntity.getBody()).isEqualTo(response);
 	}
 
+	@Test
+	void getLastOperationWithMissingInstanceGivesExpectedStatus() {
+		given(serviceInstanceService.getLastOperation(any(GetLastServiceOperationRequest.class)))
+				.willReturn(Mono.error(new ServiceInstanceDoesNotExistException("instance does not exist")));
+
+		ResponseEntity<GetLastServiceOperationResponse> responseEntity = controller
+				.getServiceInstanceLastOperation(pathVariables, null, null, null, null, null, null, null)
+				.block();
+
+		assertThat(responseEntity).isNotNull();
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
+	}
+
 }

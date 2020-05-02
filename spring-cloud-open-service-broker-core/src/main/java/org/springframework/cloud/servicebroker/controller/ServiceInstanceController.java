@@ -244,6 +244,14 @@ public class ServiceInstanceController extends BaseController {
 					boolean isSuccessfulDelete = response.getState().equals(OperationState.SUCCEEDED) && response
 							.isDeleteOperation();
 					return new ResponseEntity<>(response, isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK);
+				})
+				.onErrorResume(e -> {
+					if (e instanceof ServiceInstanceDoesNotExistException) {
+						return Mono.just(new ResponseEntity<>(HttpStatus.GONE));
+					}
+					else {
+						return Mono.error(e);
+					}
 				});
 	}
 
