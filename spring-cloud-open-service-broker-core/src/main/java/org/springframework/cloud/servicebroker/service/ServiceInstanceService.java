@@ -27,6 +27,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerUpdateOper
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
+import org.springframework.cloud.servicebroker.exception.ServiceBrokerConcurrencyException;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceRequest;
@@ -69,7 +70,8 @@ public interface ServiceInstanceService {
 	 * @return a {@link GetServiceInstanceResponse} on successful processing of the request
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the
 	 * 		broker
-	 * @throws ServiceBrokerOperationInProgressException if a an operation is in progress for the service instance
+	 * @throws ServiceBrokerOperationInProgressException if a service instance provisioning is still in progress
+	 * @throws ServiceBrokerConcurrencyException if a service instance is being updated and therefore cannot be fetched
 	 */
 	default Mono<GetServiceInstanceResponse> getServiceInstance(GetServiceInstanceRequest request) {
 		return Mono.error(new UnsupportedOperationException(
