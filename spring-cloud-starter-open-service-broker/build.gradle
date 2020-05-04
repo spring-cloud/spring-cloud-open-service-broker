@@ -23,13 +23,9 @@ dependencyManagement {
 }
 
 dependencies {
-	compile project(":spring-cloud-open-service-broker-autoconfigure")
+	api(project(":spring-cloud-open-service-broker-autoconfigure"))
 }
 
-install {
-	repositories.mavenInstaller {
-		pom.whenConfigured { generatedPom ->
-			generatedPom.packaging = "pom"
-		}
-	}
+generatePomFileForMavenJavaPublication {
+	pom.packaging = "pom"
 }

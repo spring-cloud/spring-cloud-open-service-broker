@@ -15,9 +15,9 @@
  */
 
 buildscript {
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
 }
 
 description = "Spring Cloud Open Service Broker Acceptance WebMvc"
@@ -28,8 +28,8 @@ configurations.archives.artifacts.clear()
 apply plugin: 'org.springframework.boot'
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation project(":spring-cloud-starter-open-service-broker")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+	implementation("org.springframework.boot:spring-boot-starter")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation(project(":spring-cloud-starter-open-service-broker"))
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

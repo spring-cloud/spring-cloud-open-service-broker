@@ -29,7 +29,7 @@
 
 	<!-- tests -->
 	<suppress
-			files="[\\/]src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]cloud[\\/]servicebroker[\\/]autoconfigure[//\/]contract[//\/]*"
+			files="[\\/]src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]cloud[\\/]servicebroker[\\/]contract[//\/]*"
 			checks="IllegalImport" id="bannedJUnitJupiterImports"/>
 
 </suppressions>

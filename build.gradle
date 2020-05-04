@@ -21,7 +21,6 @@ buildscript {
 	}
 	dependencies {
 		classpath("io.spring.nohttp:nohttp-gradle:0.0.4.RELEASE")
-		classpath("io.spring.gradle:propdeps-plugin:0.0.10.RELEASE")
 		classpath("io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE")
 	}
 }
@@ -68,13 +67,7 @@ configure(allprojects) {
 	apply plugin: "java"
 	apply plugin: "eclipse"
 	apply plugin: "idea"
-	apply plugin: "jacoco"
-	apply plugin: "propdeps"
-	apply plugin: "propdeps-idea"
-	apply plugin: "propdeps-eclipse"
 	apply plugin: "io.spring.dependency-management"
-
-	apply from: "${rootProject.projectDir}/publish-maven.gradle"
 
 	repositories {
 		mavenCentral()
@@ -96,7 +89,7 @@ configure(allprojects) {
 			}
 		}
 	}
-	if (version.endsWith('BUILD-SNAPSHOT') || project.hasProperty("springFrameworkVersion") ||
+	if (version.endsWith('SNAPSHOT') || project.hasProperty("springFrameworkVersion") ||
 			project.hasProperty("springBootVersion")) {
 		repositories {
 			maven { url "https://repo.spring.io/snapshot" }
@@ -107,6 +100,15 @@ configure(allprojects) {
 			}
 		}
 	}
+}
+
+configure(allprojects - [project(":spring-cloud-open-service-broker-acceptance-webflux"),
+						 project(":spring-cloud-open-service-broker-acceptance-webmvc"),
+						 project(":spring-cloud-open-service-broker-contract-tests"),
+						 project(":spring-cloud-open-service-broker-docs")]) {
+	apply plugin: "java-library"
+	apply from: "${rootProject.projectDir}/publish-maven.gradle"
+	apply plugin: "jacoco"
 }
 
 configure(allprojects - [project(":spring-cloud-open-service-broker-docs")]) {
@@ -153,8 +155,6 @@ subprojects {
 }
 
 configure(subprojects - [project(":spring-cloud-starter-open-service-broker")]) {
-	sourceCompatibility = 1.8
-	targetCompatibility = 1.8
 	[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 
 	[compileJava, compileTestJava]*.options*.compilerArgs = [
@@ -192,15 +192,18 @@ configure(subprojects - [project(":spring-cloud-starter-open-service-broker")]) 
 		options.addStringOption('Xdoclint:none', '-quiet')
 	}
 
-	task sourcesJar(type: Jar, dependsOn: classes) {
-		duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-		archiveClassifier = "sources"
-		from sourceSets.main.allSource
-	}
+	// see https://docs.gradle.org/current/userguide/java_plugin.html
+	java {
+		sourceCompatibility = JavaVersion.VERSION_1_8
+		targetCompatibility = JavaVersion.VERSION_1_8
+		withSourcesJar()
+		withJavadocJar()
 
-	task javadocJar(type: Jar) {
-		archiveClassifier = "javadoc"
-		from javadoc
+		// define 'optional' dependency feature variant
+		// see https://docs.gradle.org/current/userguide/feature_variants.html
+		registerFeature('optional') {
+			usingSourceSet(sourceSets.main)
+		}
 	}
 
 	task testsJar(type: Jar) {
@@ -209,8 +212,6 @@ configure(subprojects - [project(":spring-cloud-starter-open-service-broker")]) 
 	}
 
 	artifacts {
-		archives sourcesJar
-		archives javadocJar
 		archives testsJar
 	}
 }

@@ -40,18 +40,17 @@ dependencyManagement {
 }
 
 dependencies {
-	provided("javax.servlet:javax.servlet-api:${javaxServletApiVersion}")
-	compile("org.springframework:spring-context")
-	optional("org.springframework:spring-web")
-	optional("org.springframework:spring-webflux")
-	compile("io.projectreactor:reactor-core")
-	compile("com.fasterxml.jackson.core:jackson-databind")
-	compile("org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}")
-	compile("commons-beanutils:commons-beanutils:${beanUtilsVersion}") {
+	compileOnly("javax.servlet:javax.servlet-api:${javaxServletApiVersion}")
+	api("org.springframework:spring-context")
+	optionalApi("org.springframework:spring-web")
+	optionalApi("org.springframework:spring-webflux")
+	api("io.projectreactor:reactor-core")
+	api("com.fasterxml.jackson.core:jackson-databind")
+	api("org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}")
+	api("commons-beanutils:commons-beanutils:${beanUtilsVersion}") {
 		exclude group:"commons-logging", module:"commons-logging"
 	}
-	compile("org.slf4j:slf4j-api:${slf4jVersion}")
-
+	api("org.slf4j:slf4j-api:${slf4jVersion}")
 	testImplementation("org.springframework:spring-test") {
 		exclude group:"commons-logging", module:"commons-logging"
 	}

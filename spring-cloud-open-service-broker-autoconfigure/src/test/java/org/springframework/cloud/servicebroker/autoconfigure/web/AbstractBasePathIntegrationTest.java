@@ -17,7 +17,6 @@
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import reactor.core.publisher.Mono;
-import wiremock.com.google.common.base.Objects;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -68,7 +67,7 @@ public abstract class AbstractBasePathIntegrationTest {
 				public Mono<ServiceDefinition> getServiceDefinition(String serviceId) {
 					return this.getCatalog()
 							.flatMapIterable(Catalog::getServiceDefinitions)
-							.filter(service -> Objects.equal(serviceId, service.getId()))
+							.filter(service -> serviceId.equals(service.getId()))
 							.next();
 				}
 

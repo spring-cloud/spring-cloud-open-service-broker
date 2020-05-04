@@ -1,62 +1,63 @@
-apply plugin: "maven"
+// see https://docs.gradle.org/current/userguide/publishing_maven.html
+apply plugin: 'maven-publish'
 
-install {
-	repositories.mavenInstaller {
-		customizePom(pom, project)
-	}
-}
-
-def customizePom(pom, gradleProject) {
-	pom.whenConfigured { generatedPom ->
-		// eliminate test-scoped dependencies (no need in maven central poms)
-		generatedPom.dependencies.removeAll { dep ->
-			dep.scope == "test"
-		}
-
-		// Ensure consistent ordering of dependencies to ease comparison with older poms
-		generatedPom.dependencies = generatedPom.dependencies.sort { dep ->
-			"$dep.scope:$dep.groupId:$dep.artifactId"
-		}
-
-		// add all items necessary for maven central publication
-		generatedPom.project {
-			name = gradleProject.description
-			description = gradleProject.description
-			url = "https://spring.io/projects/spring-cloud-open-service-broker"
-			organization {
-				name = "Pivotal Software, Inc."
-				url = "https://spring.io"
-			}
-			licenses {
-				license {
-					name "The Apache Software License, Version 2.0"
-					url "https://www.apache.org/licenses/LICENSE-2.0.txt"
-					distribution "repo"
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			suppressAllPomMetadataWarnings()
+			from components.java
+			pom {
+				afterEvaluate {
+					name = project.description
+					description = project.description
+				}
+				url = "https://spring.io/projects/spring-cloud-open-service-broker"
+				organization {
+					name = "Pivotal Software, Inc."
+					url = "https://spring.io"
+				}
+				licenses {
+					license {
+						name = "The Apache Software License, Version 2.0"
+						url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+						distribution = "repo"
+					}
+				}
+				scm {
+					url = "https://github.com/spring-cloud/spring-cloud-open-service-broker"
+					connection = "scm:git:git://github.com/spring-cloud/spring-cloud-open-service-broker"
+					developerConnection = "scm:git:git://github.com/spring-cloud/spring-cloud-open-service-broker"
+				}
+				issueManagement {
+					system = "GitHub"
+					url = "https://github.com/spring-cloud/spring-cloud-open-service-broker/issues"
+				}
+				developers {
+					developer {
+						id = "sfrederick"
+						name = "Scott Frederick"
+						email = "sfrederick@pivotal.io"
+					}
+					developer {
+						id = "royclarkson"
+						name = "Roy Clarkson"
+						email = "rclarkson@pivotal.io"
+					}
 				}
 			}
 
-			scm {
-				url = "https://github.com/spring-cloud/spring-cloud-open-service-broker"
-				connection = "scm:git:https://github.com/spring-cloud/spring-cloud-open-service-broker.git"
-				developerConnection = "scm:git:https://github.com/spring-cloud/spring-cloud-open-service-broker.git"
-			}
-
-			issueManagement {
-				system = "GitHub"
-				url = "https://github.com/spring-cloud/spring-cloud-open-service-broker/issues"
-			}
-
-			developers {
-				developer {
-					id = "sfrederick"
-					name = "Scott Frederick"
-					email = "sfrederick@pivotal.io"
+			// Published pom will use fully-qualified dependency versions and no BOMs
+			versionMapping {
+				usage('java-api') {
+					fromResolutionOf('runtimeClasspath')
 				}
-				developer {
-					id = "royclarkson"
-					name = "Roy Clarkson"
-					email = "rclarkson@pivotal.io"
+				usage('java-runtime') {
+					fromResolutionResult()
 				}
+			}
+			pom.withXml {
+				def dependencyManagementNode = asNode().get("dependencyManagement")
+				asNode().remove(dependencyManagementNode)
 			}
 		}
 	}

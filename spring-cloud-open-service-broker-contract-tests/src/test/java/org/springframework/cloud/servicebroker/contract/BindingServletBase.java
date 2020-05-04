@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.cloud.servicebroker.autoconfigure.contract;
+package org.springframework.cloud.servicebroker.contract;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.reactive.context.ReactiveWebApplicationContext;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerAutoConfiguration;
 import org.springframework.cloud.servicebroker.autoconfigure.web.TestServiceInstanceBindingService;
@@ -35,20 +34,21 @@ import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-@SpringBootTest(classes = BindingReactiveBase.TestApplication.class,
-		properties = "spring.main.web-application-type=reactive",
+@SpringBootTest(classes = BindingServletBase.TestApplication.class,
+		properties = "spring.main.web-application-type=servlet",
 		webEnvironment = RANDOM_PORT)
-public class BindingReactiveBase {
+public class BindingServletBase {
 
 	@LocalServerPort
 	private int port;
 
 	@Autowired
-	private ReactiveWebApplicationContext context;
+	private WebApplicationContext context;
 
 	@BeforeEach
 	void setUp() {
@@ -63,7 +63,7 @@ public class BindingReactiveBase {
 
 	@SpringBootApplication(scanBasePackageClasses = {
 			ServiceBrokerAutoConfiguration.class,
-			ServiceBrokerWebFluxAutoConfiguration.class}, exclude = ServiceBrokerWebMvcAutoConfiguration.class)
+			ServiceBrokerWebMvcAutoConfiguration.class}, exclude = ServiceBrokerWebFluxAutoConfiguration.class)
 	protected static class TestApplication {
 
 		@Bean
