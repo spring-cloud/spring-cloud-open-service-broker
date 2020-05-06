@@ -10,25 +10,18 @@ Spring Cloud Open Service Broker is a framework for building https://projects.sp
 [NOTE]
 This project was formerly named *Spring Cloud - Cloud Foundry Service Broker*. View the https://github.com/spring-cloud/spring-cloud-open-service-broker/tree/1.0.x[1.0.x] branch of this repository for information on using the released versions of the project with artifacts using that name.
 
-== Compatibility
+== Version Compatibility
 
-=== v3.1.x
+The following table describes the version compatibility matrix for the various releases of Spring Cloud Open Service Broker.
 
-* https://projects.spring.io/spring-framework/[Spring Framework] 5.2.x
-* https://projects.spring.io/spring-boot/[Spring Boot] 2.2.x
-* https://github.com/openservicebrokerapi/servicebroker/[Open Service Broker API] 2.15
-
-=== v3.0.x
-
-* https://projects.spring.io/spring-framework/[Spring Framework] 5.1.x
-* https://projects.spring.io/spring-boot/[Spring Boot] 2.1.x
-* https://github.com/openservicebrokerapi/servicebroker/[Open Service Broker API] 2.14
-
-=== v2.1.x
-
-* https://projects.spring.io/spring-framework/[Spring Framework] 5.0.x
-* https://projects.spring.io/spring-boot/[Spring Boot] 2.0.x
-* https://github.com/openservicebrokerapi/servicebroker/[Open Service Broker API] 2.14
+[%header,cols=4*]
+|===
+|Spring Cloud Open Service Broker |https://github.com/openservicebrokerapi/servicebroker[Open Service Broker API] |https://projects.spring.io/spring-boot/[Spring Boot] |https://projects.spring.io/spring-framework/[Spring Framework]
+|3.2.x |TBD |2.3.x |5.2.x
+|3.1.x |2.15 |2.2.x |5.2.x
+|3.0.x |2.14 |2.1.x |5.1.x
+|2.1.x |2.14 |2.0.x |5.0.x
+|===
 
 == Getting Started
 
