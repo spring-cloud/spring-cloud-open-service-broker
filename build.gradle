@@ -227,6 +227,12 @@ configure(rootProject) {
 		from javadoc.destinationDir
 	}
 
+	// filter unwanted subprojects from published javadoc
+	def sourceProjects = subprojects - [project(":spring-cloud-open-service-broker-acceptance-webflux"),
+										project(":spring-cloud-open-service-broker-acceptance-webmvc"),
+										project(":spring-cloud-open-service-broker-contract-tests"),
+										project(":spring-cloud-open-service-broker-docs")]
+
 	task apidocs(type: Javadoc) {
 		group = "Documentation"
 		description = "Generates aggregated Javadoc API documentation."
@@ -237,11 +243,11 @@ configure(rootProject) {
 		options.header = rootProject.description
 		options.links(javadocLinks)
 
-		source subprojects.collect { project ->
+		source sourceProjects.collect { project ->
 			project.sourceSets.main.allJava
 		}
 
-		classpath = files(subprojects.collect { project ->
+		classpath = files(sourceProjects.collect { project ->
 			project.sourceSets.main.compileClasspath
 		})
 
