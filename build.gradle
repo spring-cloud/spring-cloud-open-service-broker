@@ -184,7 +184,7 @@ configure(subprojects - [project(":spring-cloud-starter-open-service-broker")]) 
 	javadoc {
 		description = "Generates project-level javadoc for use in -javadoc jar"
 
-		options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
+		options.memberLevel = JavadocMemberLevel.PROTECTED
 		options.author = true
 		options.header = project.name
 		options.use = true
@@ -207,7 +207,7 @@ configure(subprojects - [project(":spring-cloud-starter-open-service-broker")]) 
 	}
 
 	task testsJar(type: Jar) {
-		archiveClassifier = "tests"
+		archiveClassifier.set("tests")
 		from sourceSets.test.output
 	}
 
@@ -218,13 +218,13 @@ configure(subprojects - [project(":spring-cloud-starter-open-service-broker")]) 
 
 configure(rootProject) {
 	task sourcesJar(type: Jar, dependsOn: classes) {
-		archiveClassifier = "sources"
+		archiveClassifier.set("sources")
 		from sourceSets.main.allSource
 	}
 
 	task javadocJar(type: Jar, dependsOn: javadoc) {
-		archiveClassifier = "javadoc"
-		from javadoc
+		archiveClassifier.set("javadoc")
+		from javadoc.destinationDir
 	}
 
 	task apidocs(type: Javadoc) {
@@ -232,7 +232,7 @@ configure(rootProject) {
 		description = "Generates aggregated Javadoc API documentation."
 		title = "${rootProject.description} ${version} API"
 
-		options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
+		options.memberLevel = JavadocMemberLevel.PROTECTED
 		options.author = true
 		options.header = rootProject.description
 		options.links(javadocLinks)
@@ -251,7 +251,7 @@ configure(rootProject) {
 
 	task docsZip(type: Zip, dependsOn: [':spring-cloud-open-service-broker-docs:asciidoctor']) {
 		group = "Distribution"
-		archiveClassifier = "docs"
+		archiveClassifier.set("docs")
 		description = "Builds -${archiveClassifier} archive containing api and reference " +
 				"for deployment."
 
@@ -264,11 +264,14 @@ configure(rootProject) {
 		}
 	}
 
-	artifacts {
-		archives sourcesJar
-		archives javadocJar
-		archives docsZip
-
+	publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				artifact sourcesJar
+				artifact javadocJar
+				artifact docsZip
+			}
+		}
 	}
 
 	task dist(dependsOn: assemble) {
