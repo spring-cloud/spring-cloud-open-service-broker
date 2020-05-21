@@ -264,6 +264,10 @@ configure(rootProject) {
 		}
 	}
 
+	artifacts {
+		archives docsZip
+	}
+
 	publishing {
 		publications {
 			mavenJava(MavenPublication) {
