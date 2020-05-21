@@ -30,7 +30,7 @@ To use Spring Cloud Open Service Broker in a Spring web application, add the sta
 To use Spring Cloud Open Service Broker in a Spring web application, add the starter, as follows:
 
 ====
-[source,XML]
+[source,groovy,%autofit]
 ----
     dependencies {
         api 'org.springframework.cloud:spring-cloud-starter-open-service-broker:${version}'
@@ -48,7 +48,7 @@ In Spring Boot fashion, you can override the default behavior by providing your 
 To start, use the `@SpringBootApplication` annotation on the service broker's main application class, as follows:
 
 ====
-[source,XML
+[source,java,%autofit]
 ----
     @SpringBootApplication
     public class Application {
