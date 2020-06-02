@@ -18,11 +18,11 @@ description = "Spring Cloud Open Service Broker Core"
 
 ext {
 	jacksonVersion = "2.11.0"
-	hibernateValidatorVersion = "6.1.4.Final"
+	hibernateValidatorVersion = "6.1.5.Final"
 	beanUtilsVersion = "1.9.4"
 	slf4jVersion = "1.7.30"
 	junitJupiterVersion = "5.6.2"
-	assertjVersion = "3.15.0"
+	assertjVersion = "3.16.1"
 	mockitoVersion = "3.3.3"
 	hamcrestVersion = "2.2"
 	jsonPathVersion = "2.4.0"
