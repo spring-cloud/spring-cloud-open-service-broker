@@ -28,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.Context;
+import org.springframework.cloud.servicebroker.model.catalog.MaintenanceInfo;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
@@ -76,11 +77,13 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@JsonIgnore /*internal field*/
 	private transient Plan plan;
 
+	private final MaintenanceInfo maintenanceInfo;
+
 	/**
 	 * Construct a new {@link CreateServiceInstanceRequest}
 	 */
 	public CreateServiceInstanceRequest() {
-		this(null, null, null, null, null, null, null, false, null, null, null, null);
+		this(null, null, null, null, null, null, null, false, null, null, null, null, null);
 	}
 
 	/**
@@ -98,19 +101,21 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
 	 * @param requestIdentity identity of the request sent from the platform
+	 * @param maintenanceInfo maintenance info sent by the platform
 	 */
 	public CreateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
 			ServiceDefinition serviceDefinition, Plan plan, Map<String, Object> parameters, Context context,
 			boolean asyncAccepted, String platformInstanceId, String apiInfoLocation, Context originatingIdentity,
-			String requestIdentity) {
+			String requestIdentity, MaintenanceInfo maintenanceInfo) {
 		this(serviceDefinitionId, serviceInstanceId, planId, serviceDefinition, plan, parameters, context,
-				asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity, null, null);
+				asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity, null, null,
+				maintenanceInfo);
 	}
 
 	private CreateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
 			ServiceDefinition serviceDefinition, Plan plan, Map<String, Object> parameters, Context context,
 			boolean asyncAccepted, String platformInstanceId, String apiInfoLocation, Context originatingIdentity,
-			String requestIdentity, String organizationGuid, String spaceGuid) {
+			String requestIdentity, String organizationGuid, String spaceGuid, MaintenanceInfo maintenanceInfo) {
 		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity,
 				requestIdentity);
 		this.serviceDefinitionId = serviceDefinitionId;
@@ -120,6 +125,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		this.plan = plan;
 		this.organizationGuid = organizationGuid;
 		this.spaceGuid = spaceGuid;
+		this.maintenanceInfo = maintenanceInfo;
 	}
 
 	/**
@@ -286,6 +292,18 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	/**
+	 * Get the maintenance info of the service instance to create. This value is assigned by the platform.
+	 *
+	 * <p>
+	 * This value is set from the {@literal :maintenance_info} field in the body of the request from the platform.
+	 *
+	 * @return a MaintenanceInfo or null if none was provided
+	 */
+	public MaintenanceInfo getMaintenanceInfo() {
+		return maintenanceInfo;
+	}
+
+	/**
 	 * Create a builder that provides a fluent API for constructing a {@literal CreateServiceInstanceRequest}.
 	 *
 	 * <p>
@@ -320,7 +338,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 				Objects.equals(spaceGuid, that.spaceGuid) &&
 				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
 				Objects.equals(serviceDefinition, that.serviceDefinition) &&
-				Objects.equals(plan, that.plan);
+				Objects.equals(plan, that.plan) &&
+				Objects.equals(maintenanceInfo, that.maintenanceInfo);
 	}
 
 	@Override
@@ -331,7 +350,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@Override
 	public final int hashCode() {
 		return Objects.hash(super.hashCode(), serviceDefinitionId, planId,
-				organizationGuid, spaceGuid, serviceInstanceId, serviceDefinition, plan);
+				organizationGuid, spaceGuid, serviceInstanceId, serviceDefinition, plan, maintenanceInfo);
 	}
 
 	@Override
@@ -343,6 +362,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 				", organizationGuid='" + organizationGuid + '\'' +
 				", spaceGuid='" + spaceGuid + '\'' +
 				", serviceInstanceId='" + serviceInstanceId + '\'' +
+				", maintenanceInfo='" + maintenanceInfo + '\'' +
 				'}';
 	}
 
@@ -374,6 +394,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		private Context originatingIdentity;
 
 		private String requestIdentity;
+
+		private MaintenanceInfo maintenanceInfo;
 
 		private CreateServiceInstanceRequestBuilder() {
 		}
@@ -537,14 +559,26 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		}
 
 		/**
+		 * Set the maintenance info related to the plan
+		 *
+		 * @param maintenanceInfo the maintenance info
+		 * @return the builder
+		 * @see #getMaintenanceInfo()
+		 */
+		public CreateServiceInstanceRequestBuilder maintenanceInfo(MaintenanceInfo maintenanceInfo) {
+			this.maintenanceInfo = maintenanceInfo;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link CreateServiceInstanceRequest} from the provided values.
 		 *
 		 * @return the newly constructed {@literal CreateServiceInstanceRequest}
 		 */
 		public CreateServiceInstanceRequest build() {
-			return new CreateServiceInstanceRequest(serviceDefinitionId, serviceInstanceId, planId,
-					serviceDefinition, plan, parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation
-					, originatingIdentity, requestIdentity);
+			return new CreateServiceInstanceRequest(serviceDefinitionId, serviceInstanceId, planId, serviceDefinition,
+					plan, parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity,
+					requestIdentity, maintenanceInfo);
 		}
 
 	}

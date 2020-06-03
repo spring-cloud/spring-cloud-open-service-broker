@@ -29,6 +29,7 @@ import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
+import org.springframework.cloud.servicebroker.model.catalog.MaintenanceInfo;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
@@ -52,6 +53,7 @@ class CreateServiceInstanceRequestTest {
 		assertThat(request.getPlatformInstanceId()).isNull();
 		assertThat(request.getOriginatingIdentity()).isNull();
 		assertThat(request.getRequestIdentity()).isNull();
+		assertThat(request.getMaintenanceInfo()).isNull();
 	}
 
 	@Test
@@ -80,6 +82,8 @@ class CreateServiceInstanceRequestTest {
 				.apiInfoLocation("https://api.example.com")
 				.originatingIdentity(originatingIdentity)
 				.requestIdentity("request-id")
+				.maintenanceInfo(
+					new MaintenanceInfo("1.1.0", "Patch for CVE-x"))
 				.build();
 
 		assertThat(request.getServiceInstanceId()).isEqualTo("service-instance-id");
@@ -100,6 +104,8 @@ class CreateServiceInstanceRequestTest {
 		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.example.com");
 		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);
 		assertThat(request.getRequestIdentity()).isEqualTo("request-id");
+		assertThat(request.getMaintenanceInfo()).isEqualTo(
+			new MaintenanceInfo("1.1.0", "Patch for CVE-x"));
 	}
 
 	@Test
@@ -131,6 +137,8 @@ class CreateServiceInstanceRequestTest {
 				.requestIdentity("request-id")
 				.plan(Plan.builder().build())
 				.serviceDefinition(ServiceDefinition.builder().build())
+				.maintenanceInfo(
+					new MaintenanceInfo("1.1.0", "Patch for CVE-x"))
 				.build();
 
 		DocumentContext json = JsonUtils.toJsonPath(request);
@@ -141,6 +149,9 @@ class CreateServiceInstanceRequestTest {
 		JsonPathAssert.assertThat(json).hasMapAtPath("$.parameters").hasSize(5);
 		JsonPathAssert.assertThat(json).hasPath("$.parameters.field1").isEqualTo("value1");
 		JsonPathAssert.assertThat(json).hasMapAtPath("$.context").hasSize(3);
+		JsonPathAssert.assertThat(json).hasMapAtPath("$.maintenance_info").hasSize(2);
+		JsonPathAssert.assertThat(json).hasPath("$.maintenance_info.version").isEqualTo("1.1.0");
+		JsonPathAssert.assertThat(json).hasPath("$.maintenance_info.description").isEqualTo("Patch for CVE-x");
 		JsonPathAssert.assertThat(json).hasPath("$.space_guid").isEqualTo("space-guid");
 		JsonPathAssert.assertThat(json).hasPath("$.organization_guid").isEqualTo("org-guid");
 		JsonPathAssert.assertThat(json).hasNoPath("$.request_identity");
@@ -148,7 +159,7 @@ class CreateServiceInstanceRequestTest {
 
 		// fields mapped outside of json body (typically http headers or request paths)
 		// should be excluded
-		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(6);
+		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(7);
 	}
 
 	@Test

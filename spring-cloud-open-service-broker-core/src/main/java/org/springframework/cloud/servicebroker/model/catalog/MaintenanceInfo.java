@@ -24,11 +24,15 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
- * Maintenance info available for a Plan.
+ * Maintenance info available for a Plan. If this info is provided, a version string must be provided and platforms
+ * may use this when Provisioning or Updating a Service Instance.
  *
  * @author ilyavy
  * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#maintenance-info-object">Open
  * 		Service Broker API specification</a>
+ * @see Plan
+ * @see org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest
+ * @see org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MaintenanceInfo {
@@ -41,6 +45,15 @@ public class MaintenanceInfo {
 	private final String version;
 
 	private final String description;
+
+	/**
+	 * Constructs a new {@link MaintenanceInfo}
+	 */
+	@SuppressWarnings("PMD.NullAssignment")
+	public MaintenanceInfo() {
+		this.version = null;
+		this.description = null;
+	}
 
 	/**
 	 * Constructs a new {@link MaintenanceInfo}
