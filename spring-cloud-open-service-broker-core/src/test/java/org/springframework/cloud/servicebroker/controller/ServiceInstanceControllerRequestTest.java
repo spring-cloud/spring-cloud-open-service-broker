@@ -223,7 +223,7 @@ class ServiceInstanceControllerRequestTest extends ControllerRequestTest {
 		return UpdateServiceInstanceRequest.builder()
 				.serviceDefinitionId("service-definition-id")
 				.planId("plan-id")
-				.previousValues(new PreviousValues("previous-plan-id"))
+				.previousValues(new PreviousValues("previous-plan-id", null))
 				.parameters("create-param-1", "value1")
 				.parameters("create-param-2", "value2")
 				.context(requestContext);

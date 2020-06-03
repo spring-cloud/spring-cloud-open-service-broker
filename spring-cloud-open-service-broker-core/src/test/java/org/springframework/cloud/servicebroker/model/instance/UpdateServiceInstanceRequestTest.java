@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
+import org.springframework.cloud.servicebroker.model.catalog.MaintenanceInfo;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest.PreviousValues;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,6 +50,7 @@ public class UpdateServiceInstanceRequestTest {
 		assertThat(request.getPlatformInstanceId()).isNull();
 		assertThat(request.getOriginatingIdentity()).isNull();
 		assertThat(request.getRequestIdentity()).isNull();
+		assertThat(request.getMaintenanceInfo()).isNull();
 	}
 
 	@Test
@@ -67,7 +69,9 @@ public class UpdateServiceInstanceRequestTest {
 				.serviceInstanceId("service-instance-id")
 				.serviceDefinitionId("service-definition-id")
 				.planId("plan-id")
-				.previousValues(new PreviousValues("previous-plan-id"))
+				.previousValues(new PreviousValues(
+					"previous-plan-id",
+					new MaintenanceInfo("1.1.0", "Patch for CVE-x")))
 				.context(context)
 				.parameters("field1", "value1")
 				.parameters("field2", 2)
@@ -78,6 +82,7 @@ public class UpdateServiceInstanceRequestTest {
 				.apiInfoLocation("https://api.example.com")
 				.originatingIdentity(originatingIdentity)
 				.requestIdentity("request-id")
+				.maintenanceInfo(new MaintenanceInfo("2.0.0", null))
 				.build();
 
 		assertThat(request.getServiceInstanceId()).isEqualTo("service-instance-id");
@@ -85,6 +90,8 @@ public class UpdateServiceInstanceRequestTest {
 		assertThat(request.getPlanId()).isEqualTo("plan-id");
 
 		assertThat(request.getPreviousValues().getPlanId()).isEqualTo("previous-plan-id");
+		assertThat(request.getPreviousValues().getMaintenanceInfo()).isEqualTo(
+			new MaintenanceInfo("1.1.0", "Patch for CVE-x"));
 
 		assertThat(request.getParameters()).hasSize(5);
 		assertThat(request.getParameters().get("field1")).isEqualTo("value1");
@@ -100,6 +107,8 @@ public class UpdateServiceInstanceRequestTest {
 		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.example.com");
 		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);
 		assertThat(request.getRequestIdentity()).isEqualTo("request-id");
+		assertThat(request.getMaintenanceInfo().getVersion()).isEqualTo("2.0.0");
+		assertThat(request.getMaintenanceInfo().getDescription()).isNull();
 	}
 
 	@Test
@@ -111,6 +120,9 @@ public class UpdateServiceInstanceRequestTest {
 		assertThat(request.getServiceDefinitionId()).isEqualTo("test-service-id");
 		assertThat(request.getPlanId()).isEqualTo("test-plan-id");
 		assertThat(request.getPreviousValues().getPlanId()).isEqualTo("previous-plan-id");
+		assertThat(request.getPreviousValues().getMaintenanceInfo()).isEqualTo(new MaintenanceInfo("1.1.0", "Patch for CVE-x"));
+		assertThat(request.getMaintenanceInfo().getVersion()).isEqualTo("2.0.0");
+		assertThat(request.getMaintenanceInfo().getDescription()).isNull();
 	}
 
 	@Test
