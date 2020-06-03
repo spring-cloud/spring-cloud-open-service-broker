@@ -27,25 +27,27 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * Maintenance info available for a Plan.
  *
  * @author ilyavy
- * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#maintenance-info-object">Open
- * 		Service Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#maintenance-info-object">Open
+ * Service Broker API specification</a>
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MaintenanceInfo {
 
-	private static final Pattern SEMANTIC_VERSION_V2_PATTERN = Pattern.compile("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|" +
-			"[1-9]\\d*)(-(0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(\\.(0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?" +
-			"(\\+[0-9a-zA-Z-]+(\\.[0-9a-zA-Z-]+)*)?$");
+	private static final Pattern SEMANTIC_VERSION_V2_PATTERN = Pattern
+			.compile("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|"
+					+ "[1-9]\\d*)(-(0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(\\.(0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?"
+					+ "(\\+[0-9a-zA-Z-]+(\\.[0-9a-zA-Z-]+)*)?$");
+
+	private final String description;
 
 	@NotNull
 	private final String version;
 
-	private final String description;
-
 	/**
 	 * Default constructor to support JSON deserialization
 	 */
-	MaintenanceInfo() {
+	private MaintenanceInfo() {
 		version = null;
 		description = null;
 	}
@@ -55,8 +57,8 @@ public class MaintenanceInfo {
 	 *
 	 * @param version maintenance version (conforming to a semantic version 2.0)
 	 * @param description description of the impact of the maintenance update
-	 * @throws IllegalArgumentException if the provided to the builder version does not comply to semantic versioning
-	 * 		v2 specification
+	 * @throws IllegalArgumentException if the provided to the builder version does not
+	 *     comply to semantic versioning v2 specification
 	 */
 	public MaintenanceInfo(String version, String description) {
 		if (!SEMANTIC_VERSION_V2_PATTERN.matcher(version).matches()) {
@@ -67,13 +69,17 @@ public class MaintenanceInfo {
 		this.description = description;
 	}
 
-	/**
-	 * The version of the maintenance update available for a plan.
-	 *
-	 * @return the version
-	 */
-	public String getVersion() {
-		return version;
+	@Override
+	public final boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		MaintenanceInfo that = (MaintenanceInfo) o;
+		return Objects.equals(version, that.version)
+				&& Objects.equals(description, that.description);
 	}
 
 	/**
@@ -86,25 +92,12 @@ public class MaintenanceInfo {
 	}
 
 	/**
-	 * Creates a builder that provides a fluent API for constructing a {@literal MaintenanceInfo}.
+	 * The version of the maintenance update available for a plan.
 	 *
-	 * @return the builder
+	 * @return the version
 	 */
-	public static MaintenanceInfoBuilder builder() {
-		return new MaintenanceInfoBuilder();
-	}
-
-	@Override
-	public final boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		MaintenanceInfo that = (MaintenanceInfo) o;
-		return Objects.equals(version, that.version) &&
-				Objects.equals(description, that.description);
+	public String getVersion() {
+		return version;
 	}
 
 	@Override
@@ -114,10 +107,18 @@ public class MaintenanceInfo {
 
 	@Override
 	public String toString() {
-		return "MaintenanceInfo{" +
-				"version='" + version +
-				", description='" + description +
-				'}';
+		return "MaintenanceInfo{" + "version='" + version + ", description='"
+				+ description + '}';
+	}
+
+	/**
+	 * Creates a builder that provides a fluent API for constructing a
+	 * {@literal MaintenanceInfo}.
+	 *
+	 * @return the builder
+	 */
+	public static MaintenanceInfoBuilder builder() {
+		return new MaintenanceInfoBuilder();
 	}
 
 	/**
@@ -125,11 +126,33 @@ public class MaintenanceInfo {
 	 */
 	public static final class MaintenanceInfoBuilder {
 
-		private String version;
-
 		private String description;
 
+		private String version;
+
 		private MaintenanceInfoBuilder() {
+		}
+
+		/**
+		 * Constructs a {@link MaintenanceInfo} from the provided values.
+		 *
+		 * @return the newly constructed {@literal MaintenanceInfo}
+		 * @throws IllegalArgumentException if the provided to the builder version does
+		 *     not comply to semantic versioning v2 specification
+		 */
+		public MaintenanceInfo build() {
+			return new MaintenanceInfo(version, description);
+		}
+
+		/**
+		 * The description of the impact of the maintenance update.
+		 *
+		 * @param description the description
+		 * @return the builder instance
+		 */
+		public MaintenanceInfoBuilder description(String description) {
+			this.description = description;
+			return this;
 		}
 
 		/**
@@ -147,35 +170,15 @@ public class MaintenanceInfo {
 		 * The version of the maintenance update available for a plan.
 		 *
 		 * @param major MAJOR version when you make incompatible API changes
-		 * @param minor MINOR version when you add functionality in a backwards-compatible manner
+		 * @param minor MINOR version when you add functionality in a backwards-compatible
+		 *     manner
 		 * @param patch PATCH version when you make backwards-compatible bug fixes
 		 * @param extension additional labels for pre-release and build metadata
 		 * @return the builder instance
 		 */
-		public MaintenanceInfoBuilder version(int major, int minor, int patch, String extension) {
+		public MaintenanceInfoBuilder version(int major, int minor, int patch,
+				String extension) {
 			return this.version(major + "." + minor + "." + patch + extension);
-		}
-
-		/**
-		 * The description of the impact of the maintenance update.
-		 *
-		 * @param description the description
-		 * @return the builder instance
-		 */
-		public MaintenanceInfoBuilder description(String description) {
-			this.description = description;
-			return this;
-		}
-
-		/**
-		 * Constructs a {@link MaintenanceInfo} from the provided values.
-		 *
-		 * @return the newly constructed {@literal MaintenanceInfo}
-		 * @throws IllegalArgumentException if the provided to the builder version does not comply to semantic
-		 * 		versioning v2 specification
-		 */
-		public MaintenanceInfo build() {
-			return new MaintenanceInfo(version, description);
 		}
 
 	}

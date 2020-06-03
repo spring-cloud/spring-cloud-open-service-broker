@@ -36,45 +36,48 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
  * Details of a request to update a service instance.
  *
  * <p>
- * Objects of this type are constructed by the framework from the headers, path variables, query parameters and message
- * body passed to the service broker by the platform.
+ * Objects of this type are constructed by the framework from the headers, path variables,
+ * query parameters and message body passed to the service broker by the platform.
  *
  * @author Scott Frederick
  * @author Roy Clarkson
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-3">Open Service
- * 		Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-3">Open
+ * Service Broker API specification</a>
  */
-public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
+public class UpdateServiceInstanceRequest
+		extends AsyncParameterizedServiceInstanceRequest {
+
+	private final MaintenanceInfo maintenanceInfo;
+
+	private final String planId;
+
+	private final PreviousValues previousValues;
 
 	@NotEmpty
 	@JsonProperty("service_id")
 	private final String serviceDefinitionId;
 
-	private final String planId;
-
-	private final PreviousValues previousValues;
-	
-	private final MaintenanceInfo maintenanceInfo;
-
 	@JsonIgnore
-	private transient String serviceInstanceId;
+	private transient Plan plan;
 
 	@JsonIgnore
 	private transient ServiceDefinition serviceDefinition;
 
 	@JsonIgnore
-	private transient Plan plan;
+	private transient String serviceInstanceId;
 
 	/**
 	 * Construct a new {@link UpdateServiceInstanceRequest}
 	 */
 	public UpdateServiceInstanceRequest() {
-		this(null, null, null, null, null, null, null, null, false, null, null, null, null, null);
+		this(null, null, null, null, null, null, null, null, false, null, null, null,
+				null, null);
 	}
 
 	/**
 	 * Construct a new {@link UpdateServiceInstanceRequest}
-	 *  @param serviceDefinitionId the service definition ID
+	 * @param serviceDefinitionId the service definition ID
 	 * @param serviceInstanceId the service instance ID
 	 * @param planId the plan ID
 	 * @param serviceDefinition the service definition
@@ -85,17 +88,19 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @param asyncAccepted does the platform accept asynchronous requests
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
-	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * @param originatingIdentity identity of the user that initiated the request from the
+	 *     platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @param maintenanceInfo the maintenance info (possibly null)
 	 */
-	public UpdateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
-		ServiceDefinition serviceDefinition, Plan plan, PreviousValues previousValues,
-		Map<String, Object> parameters, Context context, boolean asyncAccepted, String platformInstanceId,
-		String apiInfoLocation, Context originatingIdentity, String requestIdentity,
-		MaintenanceInfo maintenanceInfo) {
-		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity,
-				requestIdentity);
+	public UpdateServiceInstanceRequest(String serviceDefinitionId,
+			String serviceInstanceId, String planId, ServiceDefinition serviceDefinition,
+			Plan plan, PreviousValues previousValues, Map<String, Object> parameters,
+			Context context, boolean asyncAccepted, String platformInstanceId,
+			String apiInfoLocation, Context originatingIdentity, String requestIdentity,
+			MaintenanceInfo maintenanceInfo) {
+		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation,
+				originatingIdentity, requestIdentity);
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.serviceInstanceId = serviceInstanceId;
 		this.planId = planId;
@@ -105,128 +110,9 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		this.maintenanceInfo = maintenanceInfo;
 	}
 
-	public MaintenanceInfo getMaintenanceInfo() {
-		return maintenanceInfo;
-	}
-
-	/**
-	 * Get the ID of the service instance to update. This value is assigned by the platform. It must be unique within
-	 * the platform and can be used to correlate any resources associated with the service instance.
-	 *
-	 * <p>
-	 * This value is set from the {@literal :instance_id} path element of the request from the platform.
-	 *
-	 * @return the service instance ID
-	 */
-	public String getServiceInstanceId() {
-		return this.serviceInstanceId;
-	}
-
-	/**
-	 * This method is intended to be used internally only; use {@link #builder()} to construct an object of this type
-	 * and set all field values.
-	 *
-	 * @param serviceInstanceId the service instance ID to update
-	 */
-	public void setServiceInstanceId(String serviceInstanceId) {
-		this.serviceInstanceId = serviceInstanceId;
-	}
-
-	/**
-	 * Get the ID of the service definition for to the service instance to update. This will match one of the service
-	 * definition IDs provided in the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog}.
-	 *
-	 * <p>
-	 * This value is set from the {@literal service_id} field in the body of the request from the platform
-	 *
-	 * @return the service definition ID
-	 */
-	public String getServiceDefinitionId() {
-		return this.serviceDefinitionId;
-	}
-
-	/**
-	 * Get the ID of the plan for to the service instance to update. This will match one of the plan IDs provided in the
-	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} within the specified {@link
-	 * ServiceDefinition}.
-	 *
-	 * <p>
-	 * This value is set from the {@literal plan_id} field in the body of the request from the platform.
-	 *
-	 * @return the plan ID
-	 */
-	public String getPlanId() {
-		return this.planId;
-	}
-
-	/**
-	 * Get information about the service instance prior to the update request.
-	 *
-	 * <p>
-	 * This value is set from the {@literal previous_values} field in the body of the request from the platform.
-	 *
-	 * @return the prior service instance details
-	 */
-	public PreviousValues getPreviousValues() {
-		return this.previousValues;
-	}
-
-	/**
-	 * Get the service definition of the service instance to update.
-	 *
-	 * <p>
-	 * The service definition is retrieved from the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog}
-	 * as a convenience.
-	 *
-	 * @return the service definition
-	 */
-	public ServiceDefinition getServiceDefinition() {
-		return this.serviceDefinition;
-	}
-
-	/**
-	 * This method is intended to be used internally only; use {@link #builder()} to construct an object of this type
-	 * and set all field values.
-	 *
-	 * @param serviceDefinition the service definition of the service instance to update
-	 */
-	public void setServiceDefinition(ServiceDefinition serviceDefinition) {
-		this.serviceDefinition = serviceDefinition;
-	}
-
-	/**
-	 * Get the plan of the service instance to update
-	 *
-	 * <p>
-	 * The plan is retrieved from the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a
-	 * convenience.
-	 *
-	 * @return the plan
-	 */
-	public Plan getPlan() {
-		return this.plan;
-	}
-
-	/**
-	 * For internal use only. Use {@link #builder()} to construct an object of this type and set all field values.
-	 *
-	 * @param plan the plan of the service instance to update
-	 */
-	public void setPlan(Plan plan) {
-		this.plan = plan;
-	}
-
-	/**
-	 * Create a builder that provides a fluent API for constructing an {@literal UpdateServiceInstanceRequest}.
-	 *
-	 * <p>
-	 * This builder is provided to support testing of {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService}
-	 * implementations.
-	 *
-	 * @return the builder
-	 */
-	public static UpdateServiceInstanceRequestBuilder builder() {
-		return new UpdateServiceInstanceRequestBuilder();
+	@Override
+	public final boolean canEqual(Object other) {
+		return other instanceof UpdateServiceInstanceRequest;
 	}
 
 	@Override
@@ -241,19 +127,135 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 			return false;
 		}
 		UpdateServiceInstanceRequest that = (UpdateServiceInstanceRequest) o;
-		return that.canEqual(this) &&
-				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
-				Objects.equals(planId, that.planId) &&
-				Objects.equals(previousValues, that.previousValues) &&
-				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
-				Objects.equals(serviceDefinition, that.serviceDefinition) &&
-				Objects.equals(plan, that.plan) &&
-				Objects.equals(maintenanceInfo, that.maintenanceInfo);
+		return that.canEqual(this)
+				&& Objects.equals(serviceDefinitionId, that.serviceDefinitionId)
+				&& Objects.equals(planId, that.planId)
+				&& Objects.equals(previousValues, that.previousValues)
+				&& Objects.equals(serviceInstanceId, that.serviceInstanceId)
+				&& Objects.equals(serviceDefinition, that.serviceDefinition)
+				&& Objects.equals(plan, that.plan)
+				&& Objects.equals(maintenanceInfo, that.maintenanceInfo);
 	}
 
-	@Override
-	public final boolean canEqual(Object other) {
-		return other instanceof UpdateServiceInstanceRequest;
+	public MaintenanceInfo getMaintenanceInfo() {
+		return maintenanceInfo;
+	}
+
+	/**
+	 * Get the plan of the service instance to update
+	 *
+	 * <p>
+	 * The plan is retrieved from the
+	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a
+	 * convenience.
+	 *
+	 * @return the plan
+	 */
+	public Plan getPlan() {
+		return this.plan;
+	}
+
+	/**
+	 * For internal use only. Use {@link #builder()} to construct an object of this type
+	 * and set all field values.
+	 *
+	 * @param plan the plan of the service instance to update
+	 */
+	public void setPlan(Plan plan) {
+		this.plan = plan;
+	}
+
+	/**
+	 * Get the ID of the plan for to the service instance to update. This will match one
+	 * of the plan IDs provided in the
+	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} within the
+	 * specified {@link ServiceDefinition}.
+	 *
+	 * <p>
+	 * This value is set from the {@literal plan_id} field in the body of the request from
+	 * the platform.
+	 *
+	 * @return the plan ID
+	 */
+	public String getPlanId() {
+		return this.planId;
+	}
+
+	/**
+	 * Get information about the service instance prior to the update request.
+	 *
+	 * <p>
+	 * This value is set from the {@literal previous_values} field in the body of the
+	 * request from the platform.
+	 *
+	 * @return the prior service instance details
+	 */
+	public PreviousValues getPreviousValues() {
+		return this.previousValues;
+	}
+
+	/**
+	 * Get the service definition of the service instance to update.
+	 *
+	 * <p>
+	 * The service definition is retrieved from the
+	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a
+	 * convenience.
+	 *
+	 * @return the service definition
+	 */
+	public ServiceDefinition getServiceDefinition() {
+		return this.serviceDefinition;
+	}
+
+	/**
+	 * This method is intended to be used internally only; use {@link #builder()} to
+	 * construct an object of this type and set all field values.
+	 *
+	 * @param serviceDefinition the service definition of the service instance to update
+	 */
+	public void setServiceDefinition(ServiceDefinition serviceDefinition) {
+		this.serviceDefinition = serviceDefinition;
+	}
+
+	/**
+	 * Get the ID of the service definition for to the service instance to update. This
+	 * will match one of the service definition IDs provided in the
+	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog}.
+	 *
+	 * <p>
+	 * This value is set from the {@literal service_id} field in the body of the request
+	 * from the platform
+	 *
+	 * @return the service definition ID
+	 */
+	public String getServiceDefinitionId() {
+		return this.serviceDefinitionId;
+	}
+
+	/**
+	 * Get the ID of the service instance to update. This value is assigned by the
+	 * platform. It must be unique within the platform and can be used to correlate any
+	 * resources associated with the service instance.
+	 *
+	 * <p>
+	 * This value is set from the {@literal :instance_id} path element of the request from
+	 * the platform.
+	 *
+	 * @return the service instance ID
+	 */
+	public String getServiceInstanceId() {
+		return this.serviceInstanceId;
+	}
+
+	/**
+	 * This method is intended to be used internally only; use {@link #builder()} to
+	 * construct an object of this type and set all field values.
+	 *
+	 * @param serviceInstanceId the service instance ID to update
+	 */
+	public void setServiceInstanceId(String serviceInstanceId) {
+		this.serviceInstanceId = serviceInstanceId;
 	}
 
 	@Override
@@ -264,14 +266,26 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 	@Override
 	public String toString() {
-		return super.toString() +
-				"UpdateServiceInstanceRequest{" +
-				"serviceDefinitionId='" + serviceDefinitionId + '\'' +
-				", planId='" + planId + '\'' +
-				", previousValues=" + previousValues +
-				", serviceInstanceId='" + serviceInstanceId + '\'' +
-				", maintenanceInfo='" + maintenanceInfo + '\'' +
-				'}';
+		return super.toString() + "UpdateServiceInstanceRequest{"
+				+ "serviceDefinitionId='" + serviceDefinitionId + '\'' + ", planId='"
+				+ planId + '\'' + ", previousValues=" + previousValues
+				+ ", serviceInstanceId='" + serviceInstanceId + '\''
+				+ ", maintenanceInfo='" + maintenanceInfo + '\'' + '}';
+	}
+
+	/**
+	 * Create a builder that provides a fluent API for constructing an
+	 * {@literal UpdateServiceInstanceRequest}.
+	 *
+	 * <p>
+	 * This builder is provided to support testing of
+	 * {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService}
+	 * implementations.
+	 *
+	 * @return the builder
+	 */
+	public static UpdateServiceInstanceRequestBuilder builder() {
+		return new UpdateServiceInstanceRequestBuilder();
 	}
 
 	/**
@@ -280,9 +294,10 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 	public static class PreviousValues {
 
+		private final MaintenanceInfo maintenanceInfo;
+
 		@NotEmpty
 		private final String planId;
-		private final MaintenanceInfo maintenanceInfo;
 
 		private PreviousValues() {
 			this(null, null);
@@ -294,36 +309,9 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 * @param planId the plan ID
 		 * @param maintenanceInfo the maintenance info (possibly null)
 		 */
-		public PreviousValues(String planId,
-			MaintenanceInfo maintenanceInfo) {
+		public PreviousValues(String planId, MaintenanceInfo maintenanceInfo) {
 			this.planId = planId;
 			this.maintenanceInfo = maintenanceInfo;
-		}
-
-		/**
-		 * Get the ID of the plan prior to the update request.
-		 *
-		 * <p>
-		 * This value is set from the {@literal plan_id} field in the {@literal previous_values} field in the body of
-		 * the request from the platform.
-		 *
-		 * @return the plan ID
-		 */
-		public String getPlanId() {
-			return this.planId;
-		}
-
-		/**
-		 * Get the maintenance info to the update request.
-		 *
-		 * <p>
-		 * This value is set from the {@literal maintenance_info} field in the {@literal previous_values} field in the
-		 * body of the request from the platform.
-		 *
-		 * @return the maintenance info
-		 */
-		public MaintenanceInfo getMaintenanceInfo() {
-			return maintenanceInfo;
 		}
 
 		@Override
@@ -335,8 +323,34 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 				return false;
 			}
 			PreviousValues that = (PreviousValues) o;
-			return Objects.equals(planId, that.planId) &&
-				Objects.equals(maintenanceInfo, that.maintenanceInfo);
+			return Objects.equals(planId, that.planId)
+					&& Objects.equals(maintenanceInfo, that.maintenanceInfo);
+		}
+
+		/**
+		 * Get the maintenance info to the update request.
+		 *
+		 * <p>
+		 * This value is set from the {@literal maintenance_info} field in the
+		 * {@literal previous_values} field in the body of the request from the platform.
+		 *
+		 * @return the maintenance info
+		 */
+		public MaintenanceInfo getMaintenanceInfo() {
+			return maintenanceInfo;
+		}
+
+		/**
+		 * Get the ID of the plan prior to the update request.
+		 *
+		 * <p>
+		 * This value is set from the {@literal plan_id} field in the
+		 * {@literal previous_values} field in the body of the request from the platform.
+		 *
+		 * @return the plan ID
+		 */
+		public String getPlanId() {
+			return this.planId;
 		}
 
 		@Override
@@ -346,10 +360,8 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 		@Override
 		public String toString() {
-			return "PreviousValues{" +
-					"planId='" + planId + '\'' +
-					"maintenanceInfo='" + maintenanceInfo + '\'' +
-					'}';
+			return "PreviousValues{" + "planId='" + planId + '\'' + "maintenanceInfo='"
+					+ maintenanceInfo + '\'' + '}';
 		}
 
 	}
@@ -359,75 +371,143 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 */
 	public static final class UpdateServiceInstanceRequestBuilder {
 
-		private MaintenanceInfo maintenanceInfo;
-
-		private String serviceInstanceId;
-
-		private String serviceDefinitionId;
-
-		private String planId;
-
-		private ServiceDefinition serviceDefinition;
-
-		private Plan plan;
-
-		private PreviousValues previousValues;
-
 		private final Map<String, Object> parameters = new HashMap<>();
-
-		private Context context;
-
-		private boolean asyncAccepted;
-
-		private String platformInstanceId;
 
 		private String apiInfoLocation;
 
+		private boolean asyncAccepted;
+
+		private Context context;
+
+		private MaintenanceInfo maintenanceInfo;
+
 		private Context originatingIdentity;
 
+		private Plan plan;
+
+		private String planId;
+
+		private String platformInstanceId;
+
+		private PreviousValues previousValues;
+
 		private String requestIdentity;
+
+		private ServiceDefinition serviceDefinition;
+
+		private String serviceDefinitionId;
+
+		private String serviceInstanceId;
 
 		private UpdateServiceInstanceRequestBuilder() {
 		}
 
-		public UpdateServiceInstanceRequestBuilder maintenanceInfo(MaintenanceInfo maintenanceInfo) {
+		/**
+		 * Set the location of the API info endpoint as would be provided in the request
+		 * from the platform.
+		 *
+		 * @param apiInfoLocation location of the API info endpoint of the platform
+		 *     instance
+		 * @return the builder
+		 * @see #getApiInfoLocation()
+		 */
+		public UpdateServiceInstanceRequestBuilder apiInfoLocation(
+				String apiInfoLocation) {
+			this.apiInfoLocation = apiInfoLocation;
+			return this;
+		}
+
+		/**
+		 * Set the value of the flag indicating whether the platform supports asynchronous
+		 * operations as would be provided in the request from the platform.
+		 *
+		 * @param asyncAccepted the boolean value of the flag
+		 * @return the builder
+		 * @see #isAsyncAccepted()
+		 */
+		public UpdateServiceInstanceRequestBuilder asyncAccepted(boolean asyncAccepted) {
+			this.asyncAccepted = asyncAccepted;
+			return this;
+		}
+
+		/**
+		 * Construct a {@link UpdateServiceInstanceRequest} from the provided values.
+		 *
+		 * @return the newly constructed {@literal UpdateServiceInstanceRequest}
+		 */
+		public UpdateServiceInstanceRequest build() {
+			return new UpdateServiceInstanceRequest(serviceDefinitionId,
+					serviceInstanceId, planId, serviceDefinition, plan, previousValues,
+					parameters, context, asyncAccepted, platformInstanceId,
+					apiInfoLocation, originatingIdentity, requestIdentity,
+					maintenanceInfo);
+		}
+
+		/**
+		 * Set the {@link Context} of the request as would be provided in the request from
+		 * the platform.
+		 *
+		 * @param context the context
+		 * @return the builder
+		 * @see #getContext()
+		 */
+		public UpdateServiceInstanceRequestBuilder context(Context context) {
+			this.context = context;
+			return this;
+		}
+
+		/**
+		 * Set the {@link MaintenanceInfo} as would be provided in the request from the platform.
+		 *
+		 * @param maintenanceInfo the context
+		 * @return the builder
+		 * @see #getMaintenanceInfo()
+		 */
+		public UpdateServiceInstanceRequestBuilder maintenanceInfo(
+				MaintenanceInfo maintenanceInfo) {
 			this.maintenanceInfo = maintenanceInfo;
 			return this;
 		}
 
 		/**
-		 * Set the service instance ID as would be provided in the request from the platform.
+		 * Set the identity of the user making the request as would be provided in the
+		 * request from the platform.
 		 *
-		 * @param serviceInstanceId the service instance ID
+		 * @param originatingIdentity the user identity
 		 * @return the builder
-		 * @see #getServiceInstanceId()
+		 * @see #getOriginatingIdentity()
 		 */
-		public UpdateServiceInstanceRequestBuilder serviceInstanceId(String serviceInstanceId) {
-			this.serviceInstanceId = serviceInstanceId;
+		public UpdateServiceInstanceRequestBuilder originatingIdentity(
+				Context originatingIdentity) {
+			this.originatingIdentity = originatingIdentity;
 			return this;
 		}
 
 		/**
-		 * Set the service definition ID as would be provided in the request from the platform.
+		 * Add a set of parameters from the provided {@literal Map} to the request
+		 * parameters as would be provided in the request from the platform.
 		 *
-		 * @param serviceDefinitionId the service definition ID
+		 * @param parameters the parameters to add
 		 * @return the builder
-		 * @see #getServiceDefinitionId()
+		 * @see #getParameters()
 		 */
-		public UpdateServiceInstanceRequestBuilder serviceDefinitionId(String serviceDefinitionId) {
-			this.serviceDefinitionId = serviceDefinitionId;
+		public UpdateServiceInstanceRequestBuilder parameters(
+				Map<String, Object> parameters) {
+			this.parameters.putAll(parameters);
 			return this;
 		}
 
 		/**
-		 * Set the fully resolved service definition.
+		 * Add a key/value pair to the request parameters as would be provided in the
+		 * request from the platform.
 		 *
-		 * @param serviceDefinition the service definition
+		 * @param key the parameter key to add
+		 * @param value the parameter value to add
 		 * @return the builder
-		 * @see #getServiceDefinition()
+		 * @see #getParameters()
 		 */
-		public UpdateServiceInstanceRequestBuilder serviceDefinition(ServiceDefinition serviceDefinition) {
-			this.serviceDefinition = serviceDefinition;
+		public UpdateServiceInstanceRequestBuilder parameters(String key, Object value) {
+			this.parameters.put(key, value);
 			return this;
 		}
 
@@ -456,102 +536,30 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		}
 
 		/**
-		 * Set the previous values of the service instance details as would be provided in the request from the
-		 * platform.
-		 *
-		 * @param previousValues the previous values
-		 * @return the builder
-		 * @see #getPreviousValues()
-		 */
-		public UpdateServiceInstanceRequestBuilder previousValues(PreviousValues previousValues) {
-			this.previousValues = previousValues;
-			return this;
-		}
-
-		/**
-		 * Add a set of parameters from the provided {@literal Map} to the request parameters as would be provided in
-		 * the request from the platform.
-		 *
-		 * @param parameters the parameters to add
-		 * @return the builder
-		 * @see #getParameters()
-		 */
-		public UpdateServiceInstanceRequestBuilder parameters(Map<String, Object> parameters) {
-			this.parameters.putAll(parameters);
-			return this;
-		}
-
-		/**
-		 * Add a key/value pair to the request parameters as would be provided in the request from the platform.
-		 *
-		 * @param key the parameter key to add
-		 * @param value the parameter value to add
-		 * @return the builder
-		 * @see #getParameters()
-		 */
-		public UpdateServiceInstanceRequestBuilder parameters(String key, Object value) {
-			this.parameters.put(key, value);
-			return this;
-		}
-
-		/**
-		 * Set the {@link Context} of the request as would be provided in the request from the platform.
-		 *
-		 * @param context the context
-		 * @return the builder
-		 * @see #getContext()
-		 */
-		public UpdateServiceInstanceRequestBuilder context(Context context) {
-			this.context = context;
-			return this;
-		}
-
-		/**
-		 * Set the value of the flag indicating whether the platform supports asynchronous operations as would be
-		 * provided in the request from the platform.
-		 *
-		 * @param asyncAccepted the boolean value of the flag
-		 * @return the builder
-		 * @see #isAsyncAccepted()
-		 */
-		public UpdateServiceInstanceRequestBuilder asyncAccepted(boolean asyncAccepted) {
-			this.asyncAccepted = asyncAccepted;
-			return this;
-		}
-
-		/**
-		 * Set the ID of the platform instance as would be provided in the request from the platform.
+		 * Set the ID of the platform instance as would be provided in the request from
+		 * the platform.
 		 *
 		 * @param platformInstanceId the platform instance ID
 		 * @return the builder
 		 * @see #getPlatformInstanceId()
 		 */
-		public UpdateServiceInstanceRequestBuilder platformInstanceId(String platformInstanceId) {
+		public UpdateServiceInstanceRequestBuilder platformInstanceId(
+				String platformInstanceId) {
 			this.platformInstanceId = platformInstanceId;
 			return this;
 		}
 
 		/**
-		 * Set the location of the API info endpoint as would be provided in the request from the platform.
+		 * Set the previous values of the service instance details as would be provided in
+		 * the request from the platform.
 		 *
-		 * @param apiInfoLocation location of the API info endpoint of the platform instance
+		 * @param previousValues the previous values
 		 * @return the builder
-		 * @see #getApiInfoLocation()
+		 * @see #getPreviousValues()
 		 */
-		public UpdateServiceInstanceRequestBuilder apiInfoLocation(String apiInfoLocation) {
-			this.apiInfoLocation = apiInfoLocation;
-			return this;
-		}
-
-		/**
-		 * Set the identity of the user making the request as would be provided in the request from the platform.
-		 *
-		 * @param originatingIdentity the user identity
-		 * @return the builder
-		 * @see #getOriginatingIdentity()
-		 */
-		public UpdateServiceInstanceRequestBuilder originatingIdentity(Context originatingIdentity) {
-			this.originatingIdentity = originatingIdentity;
+		public UpdateServiceInstanceRequestBuilder previousValues(
+				PreviousValues previousValues) {
+			this.previousValues = previousValues;
 			return this;
 		}
 
@@ -562,20 +570,51 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 * @return the builder
 		 * @see #getRequestIdentity()
 		 */
-		public UpdateServiceInstanceRequestBuilder requestIdentity(String requestIdentity) {
+		public UpdateServiceInstanceRequestBuilder requestIdentity(
+				String requestIdentity) {
 			this.requestIdentity = requestIdentity;
 			return this;
 		}
 
 		/**
-		 * Construct a {@link UpdateServiceInstanceRequest} from the provided values.
+		 * Set the fully resolved service definition.
 		 *
-		 * @return the newly constructed {@literal UpdateServiceInstanceRequest}
+		 * @param serviceDefinition the service definition
+		 * @return the builder
+		 * @see #getServiceDefinition()
 		 */
-		public UpdateServiceInstanceRequest build() {
-			return new UpdateServiceInstanceRequest(serviceDefinitionId, serviceInstanceId, planId,
-					serviceDefinition, plan, previousValues, parameters, context, asyncAccepted,
-					platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity, maintenanceInfo);
+		public UpdateServiceInstanceRequestBuilder serviceDefinition(
+				ServiceDefinition serviceDefinition) {
+			this.serviceDefinition = serviceDefinition;
+			return this;
+		}
+
+		/**
+		 * Set the service definition ID as would be provided in the request from the
+		 * platform.
+		 *
+		 * @param serviceDefinitionId the service definition ID
+		 * @return the builder
+		 * @see #getServiceDefinitionId()
+		 */
+		public UpdateServiceInstanceRequestBuilder serviceDefinitionId(
+				String serviceDefinitionId) {
+			this.serviceDefinitionId = serviceDefinitionId;
+			return this;
+		}
+
+		/**
+		 * Set the service instance ID as would be provided in the request from the
+		 * platform.
+		 *
+		 * @param serviceInstanceId the service instance ID
+		 * @return the builder
+		 * @see #getServiceInstanceId()
+		 */
+		public UpdateServiceInstanceRequestBuilder serviceInstanceId(
+				String serviceInstanceId) {
+			this.serviceInstanceId = serviceInstanceId;
+			return this;
 		}
 
 	}

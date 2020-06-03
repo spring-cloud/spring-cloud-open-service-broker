@@ -48,59 +48,108 @@ class ServiceInstanceControllerRequestTest extends ControllerRequestTest {
 		CreateServiceInstanceRequest parsedRequest = buildCreateRequest().build();
 
 		CreateServiceInstanceRequest expectedRequest = buildCreateRequest()
-				.asyncAccepted(true)
-				.serviceInstanceId("service-instance-id")
+				.asyncAccepted(true).serviceInstanceId("service-instance-id")
 				.platformInstanceId("platform-instance-id")
-				.apiInfoLocation("api-info-location")
-				.originatingIdentity(identityContext)
-				.requestIdentity("request-id")
-				.serviceDefinition(serviceDefinition)
-				.plan(plan)
-				.build();
+				.apiInfoLocation("api-info-location").originatingIdentity(identityContext)
+				.requestIdentity("request-id").serviceDefinition(serviceDefinition)
+				.plan(plan).build();
 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
 		controller.createServiceInstance(pathVariables, "service-instance-id", true,
-				"api-info-location", encodeOriginatingIdentity(identityContext), "request-id", parsedRequest)
-				.block();
-	}
-
-	private CreateServiceInstanceRequestBuilder buildCreateRequest() {
-		return CreateServiceInstanceRequest.builder()
-				.serviceDefinitionId("service-definition-id")
-				.planId("plan-id")
-				.parameters("create-param-1", "value1")
-				.parameters("create-param-2", "value2")
-				.context(requestContext);
-	}
-
-	@Test
-	void createServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
-		CreateServiceInstanceRequest createRequest = CreateServiceInstanceRequest.builder()
-				.serviceDefinitionId("unknown-service-definition-id")
-				.build();
-
-		ServiceInstanceController controller = createControllerUnderTest();
-
-		assertThrows(ServiceDefinitionDoesNotExistException.class, () ->
-				controller.createServiceInstance(pathVariables, null, false,
-						null, null, null, createRequest)
-						.block());
+				"api-info-location", encodeOriginatingIdentity(identityContext),
+				"request-id", parsedRequest).block();
 	}
 
 	@Test
 	void createServiceInstanceWithInvalidPlanIdThrowsException() {
-		CreateServiceInstanceRequest createRequest = CreateServiceInstanceRequest.builder()
-				.serviceDefinitionId("service-definition-id")
-				.planId("unknown-plan-id")
-				.build();
+		CreateServiceInstanceRequest createRequest = CreateServiceInstanceRequest
+				.builder().serviceDefinitionId("service-definition-id")
+				.planId("unknown-plan-id").build();
 
 		ServiceInstanceController controller = createControllerUnderTest();
 
-		assertThrows(ServiceDefinitionPlanDoesNotExistException.class, () ->
-				controller.createServiceInstance(pathVariables, null, false,
-						null, null, null, createRequest)
+		assertThrows(ServiceDefinitionPlanDoesNotExistException.class,
+				() -> controller.createServiceInstance(pathVariables, null, false, null,
+						null, null, createRequest).block());
+	}
+
+	@Test
+	void createServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
+		CreateServiceInstanceRequest createRequest = CreateServiceInstanceRequest
+				.builder().serviceDefinitionId("unknown-service-definition-id").build();
+
+		ServiceInstanceController controller = createControllerUnderTest();
+
+		assertThrows(ServiceDefinitionDoesNotExistException.class,
+				() -> controller.createServiceInstance(pathVariables, null, false, null,
+						null, null, createRequest).block());
+	}
+
+	@Test
+	void deleteServiceInstanceParametersAreMappedToRequest() {
+		DeleteServiceInstanceRequest expectedRequest = DeleteServiceInstanceRequest
+				.builder().asyncAccepted(true).serviceInstanceId("service-instance-id")
+				.serviceDefinitionId("service-definition-id").planId("plan-id")
+				.platformInstanceId("platform-instance-id")
+				.apiInfoLocation("api-info-location").originatingIdentity(identityContext)
+				.requestIdentity("request-id").serviceDefinition(serviceDefinition)
+				.plan(plan).build();
+
+		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
+
+		controller.deleteServiceInstance(pathVariables, "service-instance-id",
+				"service-definition-id", "plan-id", true, "api-info-location",
+				encodeOriginatingIdentity(identityContext), "request-id").block();
+	}
+
+	@Test
+	void deleteServiceInstanceWithInvalidPlanIdThrowsException() {
+		DeleteServiceInstanceRequest expectedRequest = DeleteServiceInstanceRequest
+				.builder().asyncAccepted(true)
+				.serviceDefinitionId("service-definition-id").planId("unknown-plan-id")
+				.build();
+
+		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
+
+		assertThrows(ServiceDefinitionPlanDoesNotExistException.class,
+				() -> controller
+						.deleteServiceInstance(pathVariables, null,
+								"service-definition-id", "unknown-plan-id", true, null,
+								encodeOriginatingIdentity(identityContext), "request-id")
 						.block());
+	}
+
+	@Test
+	void deleteServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
+		DeleteServiceInstanceRequest expectedRequest = DeleteServiceInstanceRequest
+				.builder().asyncAccepted(true)
+				.serviceDefinitionId("service-definition-id").planId("plan-id").build();
+
+		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
+
+		assertThrows(ServiceDefinitionDoesNotExistException.class,
+				() -> controller
+						.deleteServiceInstance(pathVariables, null,
+								"unknown-service-definition-id", null, true, null,
+								encodeOriginatingIdentity(identityContext), "request-id")
+						.block());
+	}
+
+	@Test
+	void getServiceInstanceLastOperationParametersAreMappedToRequest() {
+		GetLastServiceOperationRequest expectedRequest = GetLastServiceOperationRequest
+				.builder().serviceInstanceId("service-instance-id")
+				.serviceDefinitionId("service-definition-id").planId("plan-id")
+				.operation("operation").platformInstanceId("platform-instance-id")
+				.apiInfoLocation("api-info-location").originatingIdentity(identityContext)
+				.requestIdentity("request-id").build();
+
+		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
+
+		controller.getServiceInstanceLastOperation(pathVariables, "service-instance-id",
+				"service-definition-id", "plan-id", "operation", "api-info-location",
+				encodeOriginatingIdentity(identityContext), "request-id").block();
 	}
 
 	@Test
@@ -108,92 +157,14 @@ class ServiceInstanceControllerRequestTest extends ControllerRequestTest {
 		GetServiceInstanceRequest expectedRequest = GetServiceInstanceRequest.builder()
 				.serviceInstanceId("service-instance-id")
 				.platformInstanceId("platform-instance-id")
-				.apiInfoLocation("api-info-location")
-				.originatingIdentity(identityContext)
-				.requestIdentity("request-id")
-				.build();
+				.apiInfoLocation("api-info-location").originatingIdentity(identityContext)
+				.requestIdentity("request-id").build();
 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
 		controller.getServiceInstance(pathVariables, "service-instance-id",
-				"api-info-location", encodeOriginatingIdentity(identityContext), "request-id")
-				.block();
-	}
-
-	@Test
-	void getServiceInstanceLastOperationParametersAreMappedToRequest() {
-		GetLastServiceOperationRequest expectedRequest = GetLastServiceOperationRequest.builder()
-				.serviceInstanceId("service-instance-id")
-				.serviceDefinitionId("service-definition-id")
-				.planId("plan-id")
-				.operation("operation")
-				.platformInstanceId("platform-instance-id")
-				.apiInfoLocation("api-info-location")
-				.originatingIdentity(identityContext)
-				.requestIdentity("request-id")
-				.build();
-
-		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
-
-		controller.getServiceInstanceLastOperation(pathVariables, "service-instance-id",
-				"service-definition-id", "plan-id", "operation",
-				"api-info-location", encodeOriginatingIdentity(identityContext), "request-id")
-				.block();
-	}
-
-	@Test
-	void deleteServiceInstanceParametersAreMappedToRequest() {
-		DeleteServiceInstanceRequest expectedRequest = DeleteServiceInstanceRequest.builder()
-				.asyncAccepted(true)
-				.serviceInstanceId("service-instance-id")
-				.serviceDefinitionId("service-definition-id")
-				.planId("plan-id")
-				.platformInstanceId("platform-instance-id")
-				.apiInfoLocation("api-info-location")
-				.originatingIdentity(identityContext)
-				.requestIdentity("request-id")
-				.serviceDefinition(serviceDefinition)
-				.plan(plan)
-				.build();
-
-		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
-
-		controller.deleteServiceInstance(pathVariables, "service-instance-id",
-				"service-definition-id", "plan-id", true, "api-info-location",
-				encodeOriginatingIdentity(identityContext), "request-id")
-				.block();
-	}
-
-	@Test
-	void deleteServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
-		DeleteServiceInstanceRequest expectedRequest = DeleteServiceInstanceRequest.builder()
-				.asyncAccepted(true)
-				.serviceDefinitionId("service-definition-id")
-				.planId("plan-id")
-				.build();
-
-		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
-
-		assertThrows(ServiceDefinitionDoesNotExistException.class, () ->
-				controller.deleteServiceInstance(pathVariables, null, "unknown-service-definition-id", null, true, null,
-						encodeOriginatingIdentity(identityContext), "request-id")
-						.block());
-	}
-
-	@Test
-	void deleteServiceInstanceWithInvalidPlanIdThrowsException() {
-		DeleteServiceInstanceRequest expectedRequest = DeleteServiceInstanceRequest.builder()
-				.asyncAccepted(true)
-				.serviceDefinitionId("service-definition-id")
-				.planId("unknown-plan-id")
-				.build();
-
-		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
-
-		assertThrows(ServiceDefinitionPlanDoesNotExistException.class, () ->
-				controller.deleteServiceInstance(pathVariables, null, "service-definition-id", "unknown-plan-id", true,
-						null, encodeOriginatingIdentity(identityContext), "request-id")
-						.block());
+				"api-info-location", encodeOriginatingIdentity(identityContext),
+				"request-id").block();
 	}
 
 	@Test
@@ -201,50 +172,50 @@ class ServiceInstanceControllerRequestTest extends ControllerRequestTest {
 		UpdateServiceInstanceRequest parsedRequest = buildUpdateRequest().build();
 
 		UpdateServiceInstanceRequest expectedRequest = buildUpdateRequest()
-				.asyncAccepted(true)
-				.serviceInstanceId("service-instance-id")
+				.asyncAccepted(true).serviceInstanceId("service-instance-id")
 				.platformInstanceId("platform-instance-id")
-				.apiInfoLocation("api-info-location")
-				.originatingIdentity(identityContext)
-				.requestIdentity("request-id")
-				.serviceDefinition(serviceDefinition)
-				.plan(plan)
-				.build();
+				.apiInfoLocation("api-info-location").originatingIdentity(identityContext)
+				.requestIdentity("request-id").serviceDefinition(serviceDefinition)
+				.plan(plan).build();
 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
 		controller.updateServiceInstance(pathVariables, "service-instance-id", true,
-				"api-info-location", encodeOriginatingIdentity(identityContext), "request-id",
-				parsedRequest)
-				.block();
-	}
-
-	private UpdateServiceInstanceRequestBuilder buildUpdateRequest() {
-		return UpdateServiceInstanceRequest.builder()
-				.serviceDefinitionId("service-definition-id")
-				.planId("plan-id")
-				.previousValues(new PreviousValues("previous-plan-id", null))
-				.parameters("create-param-1", "value1")
-				.parameters("create-param-2", "value2")
-				.context(requestContext);
+				"api-info-location", encodeOriginatingIdentity(identityContext),
+				"request-id", parsedRequest).block();
 	}
 
 	@Test
 	void updateServiceInstanceWithInvalidServiceDefinitionIdThrowsException() {
-		UpdateServiceInstanceRequest updateRequest = UpdateServiceInstanceRequest.builder()
-				.serviceDefinitionId("unknown-service-definition-id")
-				.build();
+		UpdateServiceInstanceRequest updateRequest = UpdateServiceInstanceRequest
+				.builder().serviceDefinitionId("unknown-service-definition-id").build();
 
 		ServiceInstanceController controller = createControllerUnderTest();
 
-		assertThrows(ServiceDefinitionDoesNotExistException.class, () ->
-				controller.updateServiceInstance(pathVariables, null, false,
-						null, null, null, updateRequest)
-						.block());
+		assertThrows(ServiceDefinitionDoesNotExistException.class,
+				() -> controller.updateServiceInstance(pathVariables, null, false, null,
+						null, null, updateRequest).block());
 	}
 
-	private ServiceInstanceController createControllerUnderTest(ServiceBrokerRequest expectedRequest) {
-		return new ServiceInstanceController(catalogService, new VerifyingService(expectedRequest));
+	private CreateServiceInstanceRequestBuilder buildCreateRequest() {
+		return CreateServiceInstanceRequest.builder()
+				.serviceDefinitionId("service-definition-id").planId("plan-id")
+				.parameters("create-param-1", "value1")
+				.parameters("create-param-2", "value2").context(requestContext);
+	}
+
+	private UpdateServiceInstanceRequestBuilder buildUpdateRequest() {
+		return UpdateServiceInstanceRequest.builder()
+				.serviceDefinitionId("service-definition-id").planId("plan-id")
+				.previousValues(new PreviousValues("previous-plan-id", null))
+				.parameters("create-param-1", "value1")
+				.parameters("create-param-2", "value2").context(requestContext);
+	}
+
+	private ServiceInstanceController createControllerUnderTest(
+			ServiceBrokerRequest expectedRequest) {
+		return new ServiceInstanceController(catalogService,
+				new VerifyingService(expectedRequest));
 	}
 
 	private ServiceInstanceController createControllerUnderTest() {
@@ -260,33 +231,37 @@ class ServiceInstanceControllerRequestTest extends ControllerRequestTest {
 		}
 
 		@Override
-		public Mono<CreateServiceInstanceResponse> createServiceInstance(CreateServiceInstanceRequest request) {
+		public Mono<CreateServiceInstanceResponse> createServiceInstance(
+				CreateServiceInstanceRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
 			return Mono.empty();
 		}
 
 		@Override
-		public Mono<GetServiceInstanceResponse> getServiceInstance(GetServiceInstanceRequest request) {
+		public Mono<DeleteServiceInstanceResponse> deleteServiceInstance(
+				DeleteServiceInstanceRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
 			return Mono.empty();
 		}
 
 		@Override
-		public Mono<GetLastServiceOperationResponse> getLastOperation(GetLastServiceOperationRequest request) {
+		public Mono<GetLastServiceOperationResponse> getLastOperation(
+				GetLastServiceOperationRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
 			return Mono.just(GetLastServiceOperationResponse.builder()
-					.operationState(OperationState.SUCCEEDED)
-					.build());
+					.operationState(OperationState.SUCCEEDED).build());
 		}
 
 		@Override
-		public Mono<DeleteServiceInstanceResponse> deleteServiceInstance(DeleteServiceInstanceRequest request) {
+		public Mono<GetServiceInstanceResponse> getServiceInstance(
+				GetServiceInstanceRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
 			return Mono.empty();
 		}
 
 		@Override
-		public Mono<UpdateServiceInstanceResponse> updateServiceInstance(UpdateServiceInstanceRequest request) {
+		public Mono<UpdateServiceInstanceResponse> updateServiceInstance(
+				UpdateServiceInstanceRequest request) {
 			assertThat(request).isEqualTo(expectedRequest);
 			return Mono.empty();
 		}
