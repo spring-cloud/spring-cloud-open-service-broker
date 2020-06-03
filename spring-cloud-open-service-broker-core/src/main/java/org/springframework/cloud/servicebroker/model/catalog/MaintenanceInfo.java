@@ -43,6 +43,14 @@ public class MaintenanceInfo {
 	private final String description;
 
 	/**
+	 * Default constructor to support JSON deserialization
+	 */
+	MaintenanceInfo() {
+		version = null;
+		description = null;
+	}
+
+	/**
 	 * Constructs a new {@link MaintenanceInfo}
 	 *
 	 * @param version maintenance version (conforming to a semantic version 2.0)

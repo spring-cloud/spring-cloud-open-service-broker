@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import org.springframework.cloud.servicebroker.model.Context;
+import org.springframework.cloud.servicebroker.model.catalog.MaintenanceInfo;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
@@ -52,6 +53,8 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	private final String planId;
 
 	private final PreviousValues previousValues;
+	
+	private final MaintenanceInfo maintenanceInfo;
 
 	@JsonIgnore
 	private transient String serviceInstanceId;
@@ -66,13 +69,12 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * Construct a new {@link UpdateServiceInstanceRequest}
 	 */
 	public UpdateServiceInstanceRequest() {
-		this(null, null, null, null, null, null, null, null, false, null, null, null, null);
+		this(null, null, null, null, null, null, null, null, false, null, null, null, null, null);
 	}
 
 	/**
 	 * Construct a new {@link UpdateServiceInstanceRequest}
-	 *
-	 * @param serviceDefinitionId the service definition ID
+	 *  @param serviceDefinitionId the service definition ID
 	 * @param serviceInstanceId the service instance ID
 	 * @param planId the plan ID
 	 * @param serviceDefinition the service definition
@@ -85,11 +87,13 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
 	 * @param requestIdentity identity of the request sent from the platform
+	 * @param maintenanceInfo the maintenance info (possibly null)
 	 */
 	public UpdateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
-			ServiceDefinition serviceDefinition, Plan plan, PreviousValues previousValues,
-			Map<String, Object> parameters, Context context, boolean asyncAccepted, String platformInstanceId,
-			String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
+		ServiceDefinition serviceDefinition, Plan plan, PreviousValues previousValues,
+		Map<String, Object> parameters, Context context, boolean asyncAccepted, String platformInstanceId,
+		String apiInfoLocation, Context originatingIdentity, String requestIdentity,
+		MaintenanceInfo maintenanceInfo) {
 		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity,
 				requestIdentity);
 		this.serviceDefinitionId = serviceDefinitionId;
@@ -98,6 +102,11 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		this.serviceDefinition = serviceDefinition;
 		this.plan = plan;
 		this.previousValues = previousValues;
+		this.maintenanceInfo = maintenanceInfo;
+	}
+
+	public MaintenanceInfo getMaintenanceInfo() {
+		return maintenanceInfo;
 	}
 
 	/**
@@ -238,7 +247,8 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 				Objects.equals(previousValues, that.previousValues) &&
 				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
 				Objects.equals(serviceDefinition, that.serviceDefinition) &&
-				Objects.equals(plan, that.plan);
+				Objects.equals(plan, that.plan) &&
+				Objects.equals(maintenanceInfo, that.maintenanceInfo);
 	}
 
 	@Override
@@ -249,7 +259,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@Override
 	public final int hashCode() {
 		return Objects.hash(super.hashCode(), serviceDefinitionId, planId, previousValues,
-				serviceInstanceId, serviceDefinition, plan);
+				serviceInstanceId, serviceDefinition, plan, maintenanceInfo);
 	}
 
 	@Override
@@ -260,6 +270,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 				", planId='" + planId + '\'' +
 				", previousValues=" + previousValues +
 				", serviceInstanceId='" + serviceInstanceId + '\'' +
+				", maintenanceInfo='" + maintenanceInfo + '\'' +
 				'}';
 	}
 
@@ -271,18 +282,22 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 		@NotEmpty
 		private final String planId;
+		private final MaintenanceInfo maintenanceInfo;
 
 		private PreviousValues() {
-			this(null);
+			this(null, null);
 		}
 
 		/**
 		 * Construct a new {@link PreviousValues}
 		 *
 		 * @param planId the plan ID
+		 * @param maintenanceInfo the maintenance info (possibly null)
 		 */
-		public PreviousValues(String planId) {
+		public PreviousValues(String planId,
+			MaintenanceInfo maintenanceInfo) {
 			this.planId = planId;
+			this.maintenanceInfo = maintenanceInfo;
 		}
 
 		/**
@@ -298,6 +313,19 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 			return this.planId;
 		}
 
+		/**
+		 * Get the maintenance info to the update request.
+		 *
+		 * <p>
+		 * This value is set from the {@literal maintenance_info} field in the {@literal previous_values} field in the
+		 * body of the request from the platform.
+		 *
+		 * @return the maintenance info
+		 */
+		public MaintenanceInfo getMaintenanceInfo() {
+			return maintenanceInfo;
+		}
+
 		@Override
 		public boolean equals(Object o) {
 			if (this == o) {
@@ -307,18 +335,20 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 				return false;
 			}
 			PreviousValues that = (PreviousValues) o;
-			return Objects.equals(planId, that.planId);
+			return Objects.equals(planId, that.planId) &&
+				Objects.equals(maintenanceInfo, that.maintenanceInfo);
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(planId);
+			return Objects.hash(planId, maintenanceInfo);
 		}
 
 		@Override
 		public String toString() {
 			return "PreviousValues{" +
 					"planId='" + planId + '\'' +
+					"maintenanceInfo='" + maintenanceInfo + '\'' +
 					'}';
 		}
 
@@ -328,6 +358,8 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * Provides a fluent API for constructing a {@link UpdateServiceInstanceRequest}.
 	 */
 	public static final class UpdateServiceInstanceRequestBuilder {
+
+		private MaintenanceInfo maintenanceInfo;
 
 		private String serviceInstanceId;
 
@@ -356,6 +388,11 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		private String requestIdentity;
 
 		private UpdateServiceInstanceRequestBuilder() {
+		}
+
+		public UpdateServiceInstanceRequestBuilder maintenanceInfo(MaintenanceInfo maintenanceInfo) {
+			this.maintenanceInfo = maintenanceInfo;
+			return this;
 		}
 
 		/**
@@ -538,7 +575,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		public UpdateServiceInstanceRequest build() {
 			return new UpdateServiceInstanceRequest(serviceDefinitionId, serviceInstanceId, planId,
 					serviceDefinition, plan, previousValues, parameters, context, asyncAccepted,
-					platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
+					platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity, maintenanceInfo);
 		}
 
 	}
