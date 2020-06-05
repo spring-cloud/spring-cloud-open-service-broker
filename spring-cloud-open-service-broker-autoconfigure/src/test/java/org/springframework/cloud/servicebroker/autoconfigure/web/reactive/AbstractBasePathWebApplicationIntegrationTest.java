@@ -50,7 +50,6 @@ public abstract class AbstractBasePathWebApplicationIntegrationTest extends Abst
 				.expectStatus().isNotFound();
 	}
 
-
 	private ResponseSpec createExchange(String baseUri) {
 		String request = JsonUtils.toJson(CreateServiceInstanceRequest.builder()
 				.serviceDefinitionId("default-service")

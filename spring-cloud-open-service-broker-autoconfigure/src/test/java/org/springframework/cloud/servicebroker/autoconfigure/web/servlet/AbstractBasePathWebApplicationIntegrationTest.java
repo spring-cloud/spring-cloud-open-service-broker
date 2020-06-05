@@ -51,7 +51,6 @@ public abstract class AbstractBasePathWebApplicationIntegrationTest extends Abst
 				.andExpect(status().isNotFound());
 	}
 
-
 	private ResultActions makeRequest(String baseUri, boolean async) throws Exception {
 		ResultActions actions = mvc.perform(put(format("%s/v2/service_instances/default-service", baseUri))
 				.accept(MediaType.APPLICATION_JSON)
