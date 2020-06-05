@@ -37,7 +37,7 @@ ext {
 	blockHoundVersion = "1.0.3.RELEASE"
 	junitPlatformLauncherVersion = "1.5.2"
 	checkstyleVersion = "8.33"
-	pmdVersion = "6.19.0"
+	pmdVersion = "6.24.0"
 
 	javadocLinks = [
 			"https://docs.oracle.com/javase/8/docs/api/",
