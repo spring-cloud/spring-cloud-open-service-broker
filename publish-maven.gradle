@@ -8,6 +8,9 @@ publishing {
 			from components.java
 			pom {
 				afterEvaluate {
+					if (project.description == null || project.description.isEmpty()) {
+						throw new InvalidUserDataException("A project description is required for publishing to maven central")
+					}
 					name = project.description
 					description = project.description
 				}
