@@ -28,10 +28,6 @@ buildscript {
 ext {
 	springBootVersion = project.findProperty("springBootVersion") ?: "2.3.0.RELEASE"
 	springFrameworkVersion = project.findProperty("springFrameworkVersion") ?: "5.2.6.RELEASE"
-	// deprecated in favor of `springFrameworkVersion`
-	if (project.hasProperty("springVersion")) {
-		springFrameworkVersion = project.findProperty("springVersion")
-	}
 	reactorVersion = project.findProperty("reactorVersion") ?: "Dysprosium-SR7"
 	springCloudContractVersion = "2.2.2.RELEASE"
 	blockHoundVersion = "1.0.3.RELEASE"
@@ -46,7 +42,7 @@ ext {
 }
 
 //override managed Spring Boot versions
-if (project.hasProperty("springFrameworkVersion") || project.hasProperty("springVersion")) {
+if (project.hasProperty("springFrameworkVersion")) {
 	ext['spring-framework.version'] = ext.springFrameworkVersion
 }
 if (project.hasProperty("reactorVersion")) {
