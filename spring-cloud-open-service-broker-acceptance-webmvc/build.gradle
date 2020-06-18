@@ -28,6 +28,7 @@ configurations.archives.artifacts.clear()
 apply plugin: 'org.springframework.boot'
 
 dependencies {
+	implementation enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation(project(":spring-cloud-starter-open-service-broker"))

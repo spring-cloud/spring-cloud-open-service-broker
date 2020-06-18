@@ -16,15 +16,12 @@
 
 description = "Spring Cloud Open Service Broker Auto-Configuration"
 
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
-	}
-}
-
 dependencies {
+	// BOM imports - The versions used in these files will override any other versions found in the graph
+	implementation enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+	annotationProcessor enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+
 	api(project(":spring-cloud-open-service-broker-core"))
-	api("org.springframework.boot:spring-boot-starter")
 	optionalApi("org.springframework.boot:spring-boot-starter-web")
 	optionalApi("org.springframework.boot:spring-boot-starter-webflux")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")

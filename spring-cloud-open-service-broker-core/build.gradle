@@ -30,15 +30,12 @@ ext {
 	javaxServletApiVersion = "3.1.0"
 }
 
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework:spring-framework-bom:${springFrameworkVersion}"
-		mavenBom "io.projectreactor:reactor-bom:${reactorVersion}"
-		mavenBom "com.fasterxml.jackson:jackson-bom:${jacksonVersion}"
-	}
-}
-
 dependencies {
+	// BOM imports - The versions used in these files will override any other versions found in the graph
+	implementation enforcedPlatform("org.springframework:spring-framework-bom:${springFrameworkVersion}")
+	implementation enforcedPlatform("io.projectreactor:reactor-bom:${reactorVersion}")
+	implementation enforcedPlatform("com.fasterxml.jackson:jackson-bom:${jacksonVersion}")
+
 	compileOnly("javax.servlet:javax.servlet-api:${javaxServletApiVersion}")
 	api("org.springframework:spring-context")
 	optionalApi("org.springframework:spring-web")
