@@ -26,9 +26,9 @@ buildscript {
 }
 
 ext {
-	springBootVersion = project.findProperty("springBootVersion") ?: "2.3.0.RELEASE"
-	springFrameworkVersion = project.findProperty("springFrameworkVersion") ?: "5.2.6.RELEASE"
-	reactorVersion = project.findProperty("reactorVersion") ?: "Dysprosium-SR7"
+	springBootVersion = project.findProperty("springBootVersion") ?: "2.3.1.RELEASE"
+	springFrameworkVersion = project.findProperty("springFrameworkVersion") ?: "5.2.7.RELEASE"
+	reactorVersion = project.findProperty("reactorVersion") ?: "Dysprosium-SR8"
 	springCloudContractVersion = "2.2.2.RELEASE"
 	blockHoundVersion = "1.0.3.RELEASE"
 	junitPlatformLauncherVersion = "1.5.2"
