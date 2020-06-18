@@ -16,13 +16,8 @@
 
 description = "Spring Cloud Open Service Broker Starter"
 
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
-	}
-}
-
 dependencies {
+	api("org.springframework.boot:spring-boot-starter:${springBootVersion}")
 	api(project(":spring-cloud-open-service-broker-autoconfigure"))
 }
 

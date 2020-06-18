@@ -59,8 +59,11 @@ publishing {
 				}
 			}
 			pom.withXml {
-				def dependencyManagementNode = asNode().get("dependencyManagement")
-				asNode().remove(dependencyManagementNode)
+				def pomNode = asNode()
+				def dependencyManagementNode = pomNode.get('dependencyManagement')
+				if (dependencyManagementNode) {
+					pomNode.remove(dependencyManagementNode)
+				}
 			}
 		}
 	}

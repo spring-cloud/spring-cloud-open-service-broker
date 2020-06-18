@@ -27,15 +27,12 @@ configurations {
 	docs
 }
 
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
-	}
-}
-
 apply plugin: 'org.asciidoctor.convert'
 
 dependencies {
+	// BOM imports - The versions used in these files will override any other versions found in the graph
+	implementation enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+
 	implementation(project(":spring-cloud-open-service-broker-core"))
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.springframework.boot:spring-boot-starter-security")

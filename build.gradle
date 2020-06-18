@@ -21,7 +21,6 @@ buildscript {
 	}
 	dependencies {
 		classpath("io.spring.nohttp:nohttp-gradle:0.0.5.RELEASE")
-		classpath("io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE")
 	}
 }
 
@@ -41,14 +40,6 @@ ext {
 	] as String[]
 }
 
-//override managed Spring Boot versions
-if (project.hasProperty("springFrameworkVersion")) {
-	ext['spring-framework.version'] = ext.springFrameworkVersion
-}
-if (project.hasProperty("reactorVersion")) {
-	ext['reactor-bom.version'] = ext.reactorVersion
-}
-
 description = "Spring Cloud Open Service Broker"
 
 apply plugin: "io.spring.nohttp"
@@ -63,7 +54,6 @@ configure(allprojects) {
 	apply plugin: "java"
 	apply plugin: "eclipse"
 	apply plugin: "idea"
-	apply plugin: "io.spring.dependency-management"
 
 	repositories {
 		mavenCentral()
@@ -85,8 +75,7 @@ configure(allprojects) {
 			}
 		}
 	}
-	if (version.endsWith('SNAPSHOT') || project.hasProperty("springFrameworkVersion") ||
-			project.hasProperty("springBootVersion")) {
+	if (version.endsWith('SNAPSHOT')) {
 		repositories {
 			maven { url "https://repo.spring.io/snapshot" }
 		}
@@ -170,9 +159,7 @@ configure(subprojects - [project(":spring-cloud-starter-open-service-broker")]) 
 			"-Xlint:try",
 			"-Xlint:fallthrough",
 			"-Xlint:rawtypes",
-			// Suppress deprecation warnings when building against latest integration releases
-			(springBootVersion == "latest.integration" || springFrameworkVersion == "latest.integration")
-					? "-Xlint:-deprecation" : "-Xlint:deprecation",
+			"-Xlint:deprecation",
 			"-Xlint:unchecked",
 			"-Xlint:options",
 			"-Werror"
