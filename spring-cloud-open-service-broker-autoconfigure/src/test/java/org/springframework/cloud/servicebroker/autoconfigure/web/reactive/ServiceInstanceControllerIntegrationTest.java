@@ -111,8 +111,8 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.exchange()
 				.expectStatus().isAccepted()
 				.expectBody()
-				.jsonPath("$.description").isNotEmpty()
-				.consumeWith(result -> assertDescriptionContains(result, "still working"));
+				.jsonPath("$.operation").isNotEmpty()
+				.consumeWith(result -> assertOperationIsEqualTo(result, "still working"));
 
 		verifyCreateServiceInstance();
 	}
@@ -450,8 +450,8 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.exchange()
 				.expectStatus().isAccepted()
 				.expectBody()
-				.jsonPath("$.description").isNotEmpty()
-				.consumeWith(result -> assertDescriptionContains(result, "still working"));
+				.jsonPath("$.operation").isNotEmpty()
+				.consumeWith(result -> assertOperationIsEqualTo(result, "still working"));
 
 		verifyDeleteServiceInstance();
 	}
@@ -579,8 +579,8 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.exchange()
 				.expectStatus().isAccepted()
 				.expectBody()
-				.jsonPath("$.description").isNotEmpty()
-				.consumeWith(result -> assertDescriptionContains(result, "still working"));
+				.jsonPath("$.operation").isNotEmpty()
+				.consumeWith(result -> assertOperationIsEqualTo(result, "still working"));
 
 		verifyUpdateServiceInstance();
 	}

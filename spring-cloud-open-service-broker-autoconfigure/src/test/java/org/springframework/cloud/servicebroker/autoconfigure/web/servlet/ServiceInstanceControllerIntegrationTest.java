@@ -126,7 +126,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 
 		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isAccepted())
-				.andExpect(jsonPath("$.description", containsString("still working")));
+				.andExpect(jsonPath("$.operation", is("still working")));
 
 		verifyCreateServiceInstance();
 	}
@@ -504,7 +504,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 
 		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isAccepted())
-				.andExpect(jsonPath("$.description", containsString("still working")));
+				.andExpect(jsonPath("$.operation", is("still working")));
 
 		verifyDeleteServiceInstance();
 	}
@@ -639,7 +639,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 
 		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isAccepted())
-				.andExpect(jsonPath("$.description", containsString("still working")));
+				.andExpect(jsonPath("$.operation", is("still working")));
 
 		verifyUpdateServiceInstance();
 	}

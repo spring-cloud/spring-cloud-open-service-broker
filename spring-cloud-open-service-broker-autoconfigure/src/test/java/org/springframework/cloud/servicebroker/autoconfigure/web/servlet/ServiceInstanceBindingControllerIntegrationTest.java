@@ -177,7 +177,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 
 		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isAccepted())
-				.andExpect(jsonPath("$.description", containsString("still working")));
+				.andExpect(jsonPath("$.operation", is("still working")));
 
 		verifyCreateBinding();
 	}
@@ -457,7 +457,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 
 		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isAccepted())
-				.andExpect(jsonPath("$.description", containsString("still working")));
+				.andExpect(jsonPath("$.operation", is("still working")));
 
 		then(serviceInstanceBindingService)
 				.should()

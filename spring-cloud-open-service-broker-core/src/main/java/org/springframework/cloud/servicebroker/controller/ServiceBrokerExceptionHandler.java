@@ -40,6 +40,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotE
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceUpdateNotSupportedException;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
+import org.springframework.cloud.servicebroker.model.error.OperationInProgressMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -176,36 +177,36 @@ public abstract class ServiceBrokerExceptionHandler {
 	 * Handle a {@link ServiceBrokerCreateOperationInProgressException}
 	 *
 	 * @param ex the exception
-	 * @return an error message
+	 * @return an operation in progress message
 	 */
 	@ExceptionHandler(ServiceBrokerCreateOperationInProgressException.class)
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public ErrorMessage handleException(ServiceBrokerCreateOperationInProgressException ex) {
-		return getErrorResponse(ex);
+	public OperationInProgressMessage handleException(ServiceBrokerCreateOperationInProgressException ex) {
+		return getOperationInProgressMessage(ex);
 	}
 
 	/**
 	 * Handle a {@link ServiceBrokerUpdateOperationInProgressException}
 	 *
 	 * @param ex the exception
-	 * @return an error message
+	 * @return an operation in progress message
 	 */
 	@ExceptionHandler(ServiceBrokerUpdateOperationInProgressException.class)
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public ErrorMessage handleException(ServiceBrokerUpdateOperationInProgressException ex) {
-		return getErrorResponse(ex);
+	public OperationInProgressMessage handleException(ServiceBrokerUpdateOperationInProgressException ex) {
+		return getOperationInProgressMessage(ex);
 	}
 
 	/**
 	 * Handle a {@link ServiceBrokerDeleteOperationInProgressException}
 	 *
 	 * @param ex the exception
-	 * @return an error message
+	 * @return an operation in progress message
 	 */
 	@ExceptionHandler(ServiceBrokerDeleteOperationInProgressException.class)
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public ErrorMessage handleException(ServiceBrokerDeleteOperationInProgressException ex) {
-		return getErrorResponse(ex);
+	public OperationInProgressMessage handleException(ServiceBrokerDeleteOperationInProgressException ex) {
+		return getOperationInProgressMessage(ex);
 	}
 
 	/**
@@ -339,6 +340,17 @@ public abstract class ServiceBrokerExceptionHandler {
 	protected ErrorMessage getErrorResponse(ServiceBrokerException ex) {
 		getLog().debug(ex.getMessage(), ex);
 		return ex.getErrorMessage();
+	}
+
+	/**
+	 * Format an operation in progress message for the exception
+	 *
+	 * @param ex the exception
+	 * @return the message
+	 */
+	protected OperationInProgressMessage getOperationInProgressMessage(ServiceBrokerOperationInProgressException ex) {
+		getLog().debug(ex.getMessage(), ex);
+		return ex.getOperationInProgressMessage();
 	}
 
 	/**

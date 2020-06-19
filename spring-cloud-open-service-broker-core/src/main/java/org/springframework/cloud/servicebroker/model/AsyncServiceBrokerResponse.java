@@ -44,14 +44,11 @@ public class AsyncServiceBrokerResponse {
 	 * Create a new AsyncServiceBrokerResponse
 	 *
 	 * @param async is the operation asynchronous
-	 * @param operation description of the operation being performed
+	 * @param operation an identifier representing the operation in progress
 	 * @throws IllegalArgumentException if operation length exceeds 10,000 characters
 	 */
 	protected AsyncServiceBrokerResponse(boolean async, String operation) {
-		if (StringUtils.hasLength(operation) && operation.length() > MAX_OPERATION_LENGTH) {
-			throw new IllegalArgumentException("operation strings are restricted to 10,000 characters in the response" +
-					" body");
-		}
+		validateOperationLength(operation);
 		this.async = async;
 		this.operation = operation;
 	}
@@ -110,6 +107,19 @@ public class AsyncServiceBrokerResponse {
 				"async=" + async +
 				", operation='" + operation + '\'' +
 				'}';
+	}
+
+	/**
+	 * Validate the length of the operation string to be within the 10,000 character limit
+	 *
+	 * @param operation an identifier representing the operation in progress
+	 * @throws IllegalArgumentException if the operation is longer than 10,000 characters
+	 */
+	public static void validateOperationLength(String operation) {
+		if (StringUtils.hasLength(operation) && operation.length() > MAX_OPERATION_LENGTH) {
+			throw new IllegalArgumentException("operation strings are restricted to 10,000 characters in the response" +
+					" body");
+		}
 	}
 
 }
