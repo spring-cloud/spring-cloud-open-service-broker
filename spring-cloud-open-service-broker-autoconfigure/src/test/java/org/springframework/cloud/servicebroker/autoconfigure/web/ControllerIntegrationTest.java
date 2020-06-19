@@ -125,4 +125,10 @@ public abstract class ControllerIntegrationTest {
 		assertThat(description).contains(value);
 	}
 
+	protected void assertOperationIsEqualTo(EntityExchangeResult<byte[]> result, String value) {
+		String responseBody = new String(Objects.requireNonNull(result.getResponseBody()), StandardCharsets.UTF_8);
+		String operation = JsonPath.read(responseBody, "$.operation");
+		assertThat(operation).isEqualTo(value);
+	}
+
 }

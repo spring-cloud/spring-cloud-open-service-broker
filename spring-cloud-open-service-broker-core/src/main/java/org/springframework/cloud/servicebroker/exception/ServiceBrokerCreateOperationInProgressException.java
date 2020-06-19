@@ -25,41 +25,24 @@ package org.springframework.cloud.servicebroker.exception;
  *
  * @author Roy Clarkson
  */
-public class ServiceBrokerCreateOperationInProgressException extends ServiceBrokerException {
+public class ServiceBrokerCreateOperationInProgressException extends ServiceBrokerOperationInProgressException {
 
 	private static final long serialVersionUID = -1248042363905670885L;
-
-	private static final String MESSAGE_PREFIX = "Service broker create operation is in progress " +
-			"for the requested service instance or binding";
 
 	/**
 	 * Construct an exception with a default message.
 	 */
 	public ServiceBrokerCreateOperationInProgressException() {
-		super(MESSAGE_PREFIX);
+		super();
 	}
 
 	/**
 	 * Construct an exception with a default message that includes the provided {@literal operation} description.
 	 *
-	 * @param operation a description of the operation in progress
+	 * @param operation an identifier representing the operation in progress
 	 */
 	public ServiceBrokerCreateOperationInProgressException(String operation) {
-		super(prependMessagePrefix(operation));
-	}
-
-	/**
-	 * Construct an exception with an error code and default message.
-	 *
-	 * @param errorCode a single word in camel case that uniquely identifies the error condition
-	 * @param operation a description of the operation in progress
-	 */
-	public ServiceBrokerCreateOperationInProgressException(String errorCode, String operation) {
-		super(errorCode, prependMessagePrefix(operation));
-	}
-
-	private static String prependMessagePrefix(String operation) {
-		return MESSAGE_PREFIX + ": operation=" + operation;
+		super(operation);
 	}
 
 }

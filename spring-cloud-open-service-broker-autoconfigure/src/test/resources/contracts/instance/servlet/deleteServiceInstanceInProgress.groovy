@@ -26,9 +26,7 @@ org.springframework.cloud.contract.spec.Contract.make {
     }
     response {
         status ACCEPTED()
-        body([
-                "description": $(regex('.*=still working'))
-        ])
+        body(file('async_in_progress_response.json'))
         headers {
             contentType('application/json')
         }

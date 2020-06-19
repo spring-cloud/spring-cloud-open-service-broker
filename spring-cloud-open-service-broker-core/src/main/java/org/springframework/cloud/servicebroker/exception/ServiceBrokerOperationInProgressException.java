@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.exception;
 
+import org.springframework.cloud.servicebroker.model.error.OperationInProgressMessage;
+
 /**
  * Thrown to indicate that a request for a service instance or binding was received while asynchronous creation of the
  * service instance or binding is in progress.
@@ -32,30 +34,39 @@ public class ServiceBrokerOperationInProgressException extends ServiceBrokerExce
 	private static final String MESSAGE_PREFIX = "Service broker operation is in progress " +
 			"for the requested service instance or binding";
 
+	private final OperationInProgressMessage operationInProgressMessage;
+
 	/**
 	 * Construct an exception with a default message.
 	 */
 	public ServiceBrokerOperationInProgressException() {
 		super(MESSAGE_PREFIX);
+		this.operationInProgressMessage = new OperationInProgressMessage();
 	}
 
 	/**
 	 * Construct an exception with a default message that includes the provided {@literal operation} description.
 	 *
-	 * @param operation a description of the operation in progress
+	 * @param operation an identifier representing the operation in progress
 	 */
 	public ServiceBrokerOperationInProgressException(String operation) {
 		super(prependMessagePrefix(operation));
+		this.operationInProgressMessage = new OperationInProgressMessage(operation);
 	}
 
 	/**
 	 * Construct an exception with an error code and default message.
 	 *
 	 * @param errorCode a single word in camel case that uniquely identifies the error condition
-	 * @param operation a description of the operation in progress
+	 * @param operation an identifier representing the operation in progress
 	 */
 	public ServiceBrokerOperationInProgressException(String errorCode, String operation) {
 		super(errorCode, prependMessagePrefix(operation));
+		this.operationInProgressMessage = new OperationInProgressMessage(operation);
+	}
+
+	public OperationInProgressMessage getOperationInProgressMessage() {
+		return operationInProgressMessage;
 	}
 
 	private static String prependMessagePrefix(String operation) {
