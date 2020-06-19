@@ -18,7 +18,7 @@ package instance.servlet
 
 org.springframework.cloud.contract.spec.Contract.make {
     request {
-        method PUT()
+        method PATCH()
         body(file("create_service_instance.json"))
         url '/v2/service_instances/service-instance-two-id'
         headers {
