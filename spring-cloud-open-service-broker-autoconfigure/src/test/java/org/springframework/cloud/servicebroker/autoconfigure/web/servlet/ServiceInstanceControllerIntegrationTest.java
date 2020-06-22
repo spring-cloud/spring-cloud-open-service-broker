@@ -112,7 +112,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	void createServiceInstanceWithAsyncAndHeadersOperationInProgress() throws Exception {
 		setupCatalogService();
 
-		setupServiceInstanceService(new ServiceBrokerCreateOperationInProgressException("still working"));
+		setupServiceInstanceService(new ServiceBrokerCreateOperationInProgressException("task_10"));
 
 		MvcResult mvcResult = mockMvc.perform(put(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
 				.content(createRequestBody)
@@ -126,7 +126,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 
 		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isAccepted())
-				.andExpect(jsonPath("$.operation", is("still working")));
+				.andExpect(jsonPath("$.operation", is("task_10")));
 
 		verifyCreateServiceInstance();
 	}
@@ -448,7 +448,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 
 	@Test
 	void getServiceInstanceWithOperationInProgressFails() throws Exception {
-		setupServiceInstanceService(new ServiceBrokerOperationInProgressException("still working"));
+		setupServiceInstanceService(new ServiceBrokerOperationInProgressException("task_10"));
 
 		MvcResult mvcResult = mockMvc.perform(get(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, false))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
@@ -460,7 +460,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 
 		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isNotFound())
-				.andExpect(jsonPath("$.description", containsString("still working")));
+				.andExpect(jsonPath("$.description", containsString("task_10")));
 	}
 
 	@Test
@@ -492,7 +492,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	void deleteServiceInstanceWithAsyncAndHeadersOperationInProgress() throws Exception {
 		setupCatalogService();
 
-		setupServiceInstanceService(new ServiceBrokerDeleteOperationInProgressException("still working"));
+		setupServiceInstanceService(new ServiceBrokerDeleteOperationInProgressException("task_10"));
 
 		MvcResult mvcResult = mockMvc.perform(delete(buildDeleteUrl(PLATFORM_INSTANCE_ID, true))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
@@ -504,7 +504,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 
 		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isAccepted())
-				.andExpect(jsonPath("$.operation", is("still working")));
+				.andExpect(jsonPath("$.operation", is("task_10")));
 
 		verifyDeleteServiceInstance();
 	}
@@ -626,7 +626,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	void updateServiceInstanceWithAsyncAndHeadersOperationInProgress() throws Exception {
 		setupCatalogService();
 
-		setupServiceInstanceService(new ServiceBrokerUpdateOperationInProgressException("still working"));
+		setupServiceInstanceService(new ServiceBrokerUpdateOperationInProgressException("task_10"));
 
 		MvcResult mvcResult = mockMvc.perform(patch(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
 				.content(updateRequestBody)
@@ -639,7 +639,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 
 		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isAccepted())
-				.andExpect(jsonPath("$.operation", is("still working")));
+				.andExpect(jsonPath("$.operation", is("task_10")));
 
 		verifyUpdateServiceInstance();
 	}

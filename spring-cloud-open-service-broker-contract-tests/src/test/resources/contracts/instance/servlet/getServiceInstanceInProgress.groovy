@@ -27,7 +27,7 @@ org.springframework.cloud.contract.spec.Contract.make {
     response {
         status NOT_FOUND()
         body([
-                "description": $(regex('.*=still working'))
+                "description": $(regex('.*=task_10'))
         ])
         headers {
             contentType('application/json')

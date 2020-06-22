@@ -140,12 +140,12 @@ abstract class ServiceBrokerExceptionHandlerTest {
 	@Test
 	void operationInProgressException() {
 		ServiceBrokerOperationInProgressException exception =
-				new ServiceBrokerOperationInProgressException("still working");
+				new ServiceBrokerOperationInProgressException("task_10");
 
 		ErrorMessage errorMessage = exceptionHandler.handleException(exception);
 
 		assertThat(errorMessage.getError()).isNull();
-		assertThat(errorMessage.getMessage()).contains("still working");
+		assertThat(errorMessage.getMessage()).contains("task_10");
 	}
 
 	@Test

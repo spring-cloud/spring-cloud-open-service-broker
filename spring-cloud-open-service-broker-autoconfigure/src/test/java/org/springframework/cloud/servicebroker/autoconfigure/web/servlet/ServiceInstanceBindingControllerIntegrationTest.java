@@ -163,7 +163,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	void createBindingToAppWithAsyncAndHeadersOperationInProgress() throws Exception {
 		setupCatalogService();
 
-		setupServiceInstanceBindingService(new ServiceBrokerCreateOperationInProgressException("still working"));
+		setupServiceInstanceBindingService(new ServiceBrokerCreateOperationInProgressException("task_10"));
 
 		MvcResult mvcResult = mockMvc.perform(put(buildCreateUrl(PLATFORM_INSTANCE_ID, true))
 				.content(createRequestBody)
@@ -177,7 +177,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 
 		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isAccepted())
-				.andExpect(jsonPath("$.operation", is("still working")));
+				.andExpect(jsonPath("$.operation", is("task_10")));
 
 		verifyCreateBinding();
 	}
@@ -401,7 +401,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	@Test
 	void getBindingWithOperationInProgressFails() throws Exception {
 		given(serviceInstanceBindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
-				.willThrow(new ServiceBrokerOperationInProgressException("still working"));
+				.willThrow(new ServiceBrokerOperationInProgressException("task_10"));
 
 		MvcResult mvcResult = mockMvc.perform(get(buildCreateUrl())
 				.accept(MediaType.APPLICATION_JSON)
@@ -445,7 +445,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	void deleteBindingWithoutAsyncAndHeadersOperationInProgress() throws Exception {
 		setupCatalogService();
 
-		setupServiceInstanceBindingService(new ServiceBrokerDeleteOperationInProgressException("still working"));
+		setupServiceInstanceBindingService(new ServiceBrokerDeleteOperationInProgressException("task_10"));
 
 		MvcResult mvcResult = mockMvc.perform(delete(buildDeleteUrl(PLATFORM_INSTANCE_ID, false))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
@@ -457,7 +457,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 
 		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isAccepted())
-				.andExpect(jsonPath("$.operation", is("still working")));
+				.andExpect(jsonPath("$.operation", is("task_10")));
 
 		then(serviceInstanceBindingService)
 				.should()

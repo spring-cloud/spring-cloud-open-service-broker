@@ -47,7 +47,7 @@ public class TestServiceInstanceService implements ServiceInstanceService {
 	@Override
 	public Mono<CreateServiceInstanceResponse> createServiceInstance(CreateServiceInstanceRequest request) {
 		if (IN_PROGRESS_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
-			return Mono.error(new ServiceBrokerCreateOperationInProgressException("still working"));
+			return Mono.error(new ServiceBrokerCreateOperationInProgressException("task_10"));
 		}
 		if (EXISTING_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
 			return Mono.just(CreateServiceInstanceResponse.builder()
@@ -69,7 +69,7 @@ public class TestServiceInstanceService implements ServiceInstanceService {
 	@Override
 	public Mono<GetServiceInstanceResponse> getServiceInstance(GetServiceInstanceRequest request) {
 		if (IN_PROGRESS_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
-			return Mono.error(new ServiceBrokerOperationInProgressException("still working"));
+			return Mono.error(new ServiceBrokerOperationInProgressException("task_10"));
 		}
 		return Mono.just(GetServiceInstanceResponse.builder()
 				.build());
@@ -107,7 +107,7 @@ public class TestServiceInstanceService implements ServiceInstanceService {
 	@Override
 	public Mono<DeleteServiceInstanceResponse> deleteServiceInstance(DeleteServiceInstanceRequest request) {
 		if (IN_PROGRESS_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
-			return Mono.error(new ServiceBrokerDeleteOperationInProgressException("still working"));
+			return Mono.error(new ServiceBrokerDeleteOperationInProgressException("task_10"));
 		}
 		if (UNKNOWN_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
 			return Mono.error(new ServiceInstanceDoesNotExistException(UNKNOWN_SERVICE_INSTANCE_ID));
@@ -127,7 +127,7 @@ public class TestServiceInstanceService implements ServiceInstanceService {
 	@Override
 	public Mono<UpdateServiceInstanceResponse> updateServiceInstance(UpdateServiceInstanceRequest request) {
 		if (IN_PROGRESS_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
-			return Mono.error(new ServiceBrokerUpdateOperationInProgressException("still working"));
+			return Mono.error(new ServiceBrokerUpdateOperationInProgressException("task_10"));
 		}
 		if (UNKNOWN_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
 			return Mono.error(new ServiceInstanceDoesNotExistException(UNKNOWN_SERVICE_INSTANCE_ID));
