@@ -50,7 +50,7 @@ public class TestServiceInstanceBindingService implements ServiceInstanceBinding
 	public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(
 			CreateServiceInstanceBindingRequest request) {
 		if (IN_PROGRESS_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
-			return Mono.error(new ServiceBrokerCreateOperationInProgressException("still working"));
+			return Mono.error(new ServiceBrokerCreateOperationInProgressException("task_10"));
 		}
 		if (EXISTING_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
 			return Mono.just(CreateServiceInstanceAppBindingResponse.builder()
@@ -78,7 +78,7 @@ public class TestServiceInstanceBindingService implements ServiceInstanceBinding
 	public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(
 			DeleteServiceInstanceBindingRequest request) {
 		if (IN_PROGRESS_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
-			return Mono.error(new ServiceBrokerDeleteOperationInProgressException("still working"));
+			return Mono.error(new ServiceBrokerDeleteOperationInProgressException("task_10"));
 		}
 		if (UNKNOWN_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
 			return Mono.error(new ServiceInstanceDoesNotExistException(request.getServiceInstanceId()));
@@ -101,7 +101,7 @@ public class TestServiceInstanceBindingService implements ServiceInstanceBinding
 	@Override
 	public Mono<GetServiceInstanceBindingResponse> getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
 		if (IN_PROGRESS_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
-			return Mono.error(new ServiceBrokerOperationInProgressException("still working"));
+			return Mono.error(new ServiceBrokerOperationInProgressException("task_10"));
 		}
 		return Mono.just(GetServiceInstanceAppBindingResponse.builder()
 				.build());

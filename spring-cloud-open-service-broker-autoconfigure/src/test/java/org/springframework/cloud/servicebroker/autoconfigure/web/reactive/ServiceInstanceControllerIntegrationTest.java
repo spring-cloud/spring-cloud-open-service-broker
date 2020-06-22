@@ -100,7 +100,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	void createServiceInstanceWithAsyncAndHeadersOperationInProgress() throws Exception {
 		setupCatalogService();
 
-		setupServiceInstanceService(new ServiceBrokerCreateOperationInProgressException("still working"));
+		setupServiceInstanceService(new ServiceBrokerCreateOperationInProgressException("task_10"));
 
 		client.put().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
 				.contentType(MediaType.APPLICATION_JSON)
@@ -112,7 +112,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.expectStatus().isAccepted()
 				.expectBody()
 				.jsonPath("$.operation").isNotEmpty()
-				.consumeWith(result -> assertOperationIsEqualTo(result, "still working"));
+				.consumeWith(result -> assertOperationIsEqualTo(result, "task_10"));
 
 		verifyCreateServiceInstance();
 	}
@@ -402,7 +402,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 
 	@Test
 	void getServiceInstanceWithOperationInProgressFails() throws Exception {
-		setupServiceInstanceService(new ServiceBrokerOperationInProgressException("still working"));
+		setupServiceInstanceService(new ServiceBrokerOperationInProgressException("task_10"));
 
 		client.get().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, false))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
@@ -411,7 +411,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.exchange()
 				.expectStatus().isNotFound()
 				.expectBody()
-				.consumeWith(result -> assertDescriptionContains(result, "operation=still working"));
+				.consumeWith(result -> assertDescriptionContains(result, "operation=task_10"));
 	}
 
 	@Test
@@ -441,7 +441,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	void deleteServiceInstanceWithAsyncAndHeadersOperationInProgress() throws Exception {
 		setupCatalogService();
 
-		setupServiceInstanceService(new ServiceBrokerDeleteOperationInProgressException("still working"));
+		setupServiceInstanceService(new ServiceBrokerDeleteOperationInProgressException("task_10"));
 
 		client.delete().uri(buildDeleteUrl(PLATFORM_INSTANCE_ID, true))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
@@ -451,7 +451,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.expectStatus().isAccepted()
 				.expectBody()
 				.jsonPath("$.operation").isNotEmpty()
-				.consumeWith(result -> assertOperationIsEqualTo(result, "still working"));
+				.consumeWith(result -> assertOperationIsEqualTo(result, "task_10"));
 
 		verifyDeleteServiceInstance();
 	}
@@ -568,7 +568,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	void updateServiceInstanceWithAsyncAndHeadersOperationInProgress() throws Exception {
 		setupCatalogService();
 
-		setupServiceInstanceService(new ServiceBrokerUpdateOperationInProgressException("still working"));
+		setupServiceInstanceService(new ServiceBrokerUpdateOperationInProgressException("task_10"));
 
 		client.patch().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
 				.contentType(MediaType.APPLICATION_JSON)
@@ -580,7 +580,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.expectStatus().isAccepted()
 				.expectBody()
 				.jsonPath("$.operation").isNotEmpty()
-				.consumeWith(result -> assertOperationIsEqualTo(result, "still working"));
+				.consumeWith(result -> assertOperationIsEqualTo(result, "task_10"));
 
 		verifyUpdateServiceInstance();
 	}

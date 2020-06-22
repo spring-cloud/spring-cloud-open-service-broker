@@ -138,7 +138,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	void createBindingToAppWithAsyncAndHeadersOperationInProgress() throws Exception {
 		setupCatalogService();
 
-		setupServiceInstanceBindingService(new ServiceBrokerCreateOperationInProgressException("still working"));
+		setupServiceInstanceBindingService(new ServiceBrokerCreateOperationInProgressException("task_10"));
 
 		client.put().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, true))
 				.contentType(MediaType.APPLICATION_JSON)
@@ -149,7 +149,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 				.exchange()
 				.expectStatus().isAccepted()
 				.expectBody().jsonPath("$.operation").isNotEmpty()
-				.consumeWith(result -> assertOperationIsEqualTo(result, "still working"));
+				.consumeWith(result -> assertOperationIsEqualTo(result, "task_10"));
 
 		verifyCreateBinding();
 	}
@@ -378,7 +378,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	@Test
 	void getBindingWithOperationInProgressFails() {
 		given(serviceInstanceBindingService.getServiceInstanceBinding(any(GetServiceInstanceBindingRequest.class)))
-				.willThrow(new ServiceBrokerOperationInProgressException("still working"));
+				.willThrow(new ServiceBrokerOperationInProgressException("task_10"));
 
 		client.get().uri(buildCreateUrl())
 				.accept(MediaType.APPLICATION_JSON)
@@ -466,7 +466,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	void deleteBindingWithAsyncAndHeadersOperationInProgress() throws Exception {
 		setupCatalogService();
 
-		setupServiceInstanceBindingService(new ServiceBrokerDeleteOperationInProgressException("still working"));
+		setupServiceInstanceBindingService(new ServiceBrokerDeleteOperationInProgressException("task_10"));
 
 		client.delete().uri(buildDeleteUrl(PLATFORM_INSTANCE_ID, true))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
@@ -475,7 +475,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 				.expectStatus().isAccepted()
 				.expectBody()
 				.jsonPath("$.operation").isNotEmpty()
-				.consumeWith(result -> assertOperationIsEqualTo(result, "still working"));
+				.consumeWith(result -> assertOperationIsEqualTo(result, "task_10"));
 
 		verifyDeleteBinding();
 	}
