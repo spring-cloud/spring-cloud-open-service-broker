@@ -30,7 +30,7 @@ ext {
 	springFrameworkVersion = project.findProperty("springFrameworkVersion") ?: "5.2.7.RELEASE"
 	reactorVersion = project.findProperty("reactorVersion") ?: "Dysprosium-SR8"
 	springCloudContractVersion = "2.2.3.RELEASE"
-	blockHoundVersion = "1.0.3.RELEASE"
+	blockHoundVersion = "1.0.4.RELEASE"
 	junitPlatformLauncherVersion = "1.6.2"
 	checkstyleVersion = "8.33"
 	pmdVersion = "6.24.0"
