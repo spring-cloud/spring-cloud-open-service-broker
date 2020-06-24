@@ -97,6 +97,35 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	}
 
 	@Test
+	void createServiceInstanceWithAsyncOperationAndHeadersSucceeds() throws Exception {
+		setupCatalogService();
+
+		// alternatively throw a ServiceBrokerCreateOperationInProgressException when a request is received for
+		// an operation in progress. See test: createServiceInstanceWithAsyncAndHeadersOperationInProgress
+		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
+				.async(true)
+				.operation("task_10")
+				.dashboardUrl("https://dashboard.app.local")
+				.build());
+
+		client.put().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
+				.contentType(MediaType.APPLICATION_JSON)
+				.bodyValue(createRequestBody)
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isAccepted()
+				.expectBody()
+				.jsonPath("$.operation").isEqualTo("task_10")
+				.jsonPath("$.dashboard_url").isEqualTo("https://dashboard.app.local");
+
+		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
+		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
 	void createServiceInstanceWithAsyncAndHeadersOperationInProgress() throws Exception {
 		setupCatalogService();
 
@@ -114,7 +143,9 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.jsonPath("$.operation").isNotEmpty()
 				.consumeWith(result -> assertOperationIsEqualTo(result, "task_10"));
 
-		verifyCreateServiceInstance();
+		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
+		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
+		assertHeaderValuesSet(actualRequest);
 	}
 
 	@Test
