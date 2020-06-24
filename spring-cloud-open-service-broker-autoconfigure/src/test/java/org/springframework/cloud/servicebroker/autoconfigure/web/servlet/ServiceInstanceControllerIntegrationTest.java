@@ -218,8 +218,8 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.build());
 
 		// force a condition where the platformInstanceId segment is present but empty
-		// e.g. https://test.example.com//v2/service_instances/[guid]
-		String url = "https://test.example.com/" + buildCreateUpdateUrl();
+		// e.g. https://test.app.local//v2/service_instances/[guid]
+		String url = "https://test.app.local/" + buildCreateUpdateUrl();
 		MvcResult mvcResult = mockMvc.perform(put(url)
 				.content(createRequestBody)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -634,7 +634,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
 				.async(true)
 				.operation("working")
-				.dashboardUrl("https://dashboard.example.com")
+				.dashboardUrl("https://dashboard.app.local")
 				.build());
 
 		MvcResult mvcResult = mockMvc.perform(patch(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
@@ -649,7 +649,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isAccepted())
 				.andExpect(jsonPath("$.operation", equalTo("working")))
-				.andExpect(jsonPath("$.dashboard_url", equalTo("https://dashboard.example.com")));
+				.andExpect(jsonPath("$.dashboard_url", equalTo("https://dashboard.app.local")));
 
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);

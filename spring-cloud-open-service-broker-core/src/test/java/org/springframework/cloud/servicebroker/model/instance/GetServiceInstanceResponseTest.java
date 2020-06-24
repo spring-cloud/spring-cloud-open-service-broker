@@ -58,7 +58,7 @@ public class GetServiceInstanceResponseTest {
 		GetServiceInstanceResponse response = GetServiceInstanceResponse.builder()
 				.serviceDefinitionId("service-definition-id")
 				.planId("plan-id")
-				.dashboardUrl("https://dashboard.example.com")
+				.dashboardUrl("https://dashboard.app.local")
 				.parameters("field1", "value1")
 				.parameters("field2", 2)
 				.parameters("field3", true)
@@ -67,7 +67,7 @@ public class GetServiceInstanceResponseTest {
 
 		assertThat(response.getServiceDefinitionId()).isEqualTo("service-definition-id");
 		assertThat(response.getPlanId()).isEqualTo("plan-id");
-		assertThat(response.getDashboardUrl()).isEqualTo("https://dashboard.example.com");
+		assertThat(response.getDashboardUrl()).isEqualTo("https://dashboard.app.local");
 
 		assertThat(response.getParameters()).hasSize(5);
 		assertThat(response.getParameters().get("field1")).isEqualTo("value1");
@@ -80,7 +80,7 @@ public class GetServiceInstanceResponseTest {
 
 		assertThat(json).hasPath("$.service_id").isEqualTo("service-definition-id");
 		assertThat(json).hasPath("$.plan_id").isEqualTo("plan-id");
-		assertThat(json).hasPath("$.dashboard_url").isEqualTo("https://dashboard.example.com");
+		assertThat(json).hasPath("$.dashboard_url").isEqualTo("https://dashboard.app.local");
 		assertThat(json).hasPath("$.parameters.field1").isEqualTo("value1");
 		assertThat(json).hasPath("$.parameters.field2").isEqualTo(2);
 		assertThat(json).hasPath("$.parameters.field3").isEqualTo(true);

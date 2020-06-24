@@ -55,7 +55,7 @@ class GetServiceInstanceRouteBindingResponseTest {
 				.parameters("field2", 2)
 				.parameters("field3", true)
 				.parameters(parameters)
-				.routeServiceUrl("https://routes.example.com")
+				.routeServiceUrl("https://routes.app.local")
 				.build();
 
 		assertThat(response.getParameters()).hasSize(5);
@@ -65,7 +65,7 @@ class GetServiceInstanceRouteBindingResponseTest {
 		assertThat(response.getParameters().get("field4")).isEqualTo("value4");
 		assertThat(response.getParameters().get("field5")).isEqualTo("value5");
 
-		assertThat(response.getRouteServiceUrl()).isEqualTo("https://routes.example.com");
+		assertThat(response.getRouteServiceUrl()).isEqualTo("https://routes.app.local");
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
@@ -75,7 +75,7 @@ class GetServiceInstanceRouteBindingResponseTest {
 		assertThat(json).hasPath("$.parameters.field4").isEqualTo("value4");
 		assertThat(json).hasPath("$.parameters.field5").isEqualTo("value5");
 
-		assertThat(json).hasPath("$.route_service_url").isEqualTo("https://routes.example.com");
+		assertThat(json).hasPath("$.route_service_url").isEqualTo("https://routes.app.local");
 	}
 
 	@Test

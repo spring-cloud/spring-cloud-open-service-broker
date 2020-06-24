@@ -44,7 +44,7 @@ import static org.mockito.BDDMockito.given;
 
 public abstract class ControllerIntegrationTest {
 
-	protected static final String API_INFO_LOCATION = "https://api.platform.example.com";
+	protected static final String API_INFO_LOCATION = "https://api.platform.app.local";
 
 	private static final String ORIGINATING_IDENTITY_PLATFORM = "test-platform";
 
@@ -54,7 +54,7 @@ public abstract class ControllerIntegrationTest {
 
 	private static final String ORIGINATING_EMAIL_KEY = "email";
 
-	private static final String ORIGINATING_EMAIL_VALUE = "user@example.com";
+	private static final String ORIGINATING_EMAIL_VALUE = "user@app.local";
 
 	protected static final String PLATFORM_INSTANCE_ID = "platform-abc";
 

@@ -51,18 +51,18 @@ class CreateServiceInstanceResponseTest {
 				.async(true)
 				.operation("in progress")
 				.instanceExisted(true)
-				.dashboardUrl("https://dashboard.example.com")
+				.dashboardUrl("https://dashboard.app.local")
 				.build();
 
 		assertThat(response.isAsync()).isEqualTo(true);
 		assertThat(response.getOperation()).isEqualTo("in progress");
 		assertThat(response.isInstanceExisted()).isEqualTo(true);
-		assertThat(response.getDashboardUrl()).isEqualTo("https://dashboard.example.com");
+		assertThat(response.getDashboardUrl()).isEqualTo("https://dashboard.app.local");
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
 		assertThat(json).hasPath("$.operation").isEqualTo("in progress");
-		assertThat(json).hasPath("$.dashboard_url").isEqualTo("https://dashboard.example.com");
+		assertThat(json).hasPath("$.dashboard_url").isEqualTo("https://dashboard.app.local");
 	}
 
 	@Test

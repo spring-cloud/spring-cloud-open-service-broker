@@ -81,7 +81,7 @@ class ServiceInstanceControllerResponseCodeTest {
 		validateCreateServiceInstanceWithResponseStatus(CreateServiceInstanceResponse.builder()
 				.async(false)
 				.instanceExisted(false)
-				.dashboardUrl("https://dashboard.example.com")
+				.dashboardUrl("https://dashboard.app.local")
 				.build(), HttpStatus.CREATED);
 	}
 

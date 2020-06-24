@@ -1,6 +1,6 @@
 {
 	"app_guid": "test-app-guid",
-	"route": "https://test.example.com",
+	"route": "https://test.app.local",
 	"property1": 1,
 	"property2": "value2",
 	"property3": true

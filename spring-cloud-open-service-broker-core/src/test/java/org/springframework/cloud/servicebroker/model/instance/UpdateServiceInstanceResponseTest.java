@@ -44,7 +44,7 @@ class UpdateServiceInstanceResponseTest {
 	void responseWithAllValuesIsBuilt() {
 		UpdateServiceInstanceResponse response = UpdateServiceInstanceResponse.builder()
 				.async(true)
-				.dashboardUrl("https://dashboard.example.com")
+				.dashboardUrl("https://dashboard.app.local")
 				.operation("in progress")
 				.build();
 
@@ -54,7 +54,7 @@ class UpdateServiceInstanceResponseTest {
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
 		assertThat(json).hasPath("$.operation").isEqualTo("in progress");
-		assertThat(json).hasPath("$.dashboard_url").isEqualTo("https://dashboard.example.com");
+		assertThat(json).hasPath("$.dashboard_url").isEqualTo("https://dashboard.app.local");
 	}
 
 	@Test

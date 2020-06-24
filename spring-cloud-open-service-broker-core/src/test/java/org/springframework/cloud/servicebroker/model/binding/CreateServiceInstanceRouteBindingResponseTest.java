@@ -46,15 +46,15 @@ class CreateServiceInstanceRouteBindingResponseTest {
 	void responseWithValuesIsBuilt() {
 		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
 				.bindingExisted(true)
-				.routeServiceUrl("https://routes.example.com")
+				.routeServiceUrl("https://routes.app.local")
 				.build();
 
 		assertThat(response.isBindingExisted()).isEqualTo(true);
-		assertThat(response.getRouteServiceUrl()).isEqualTo("https://routes.example.com");
+		assertThat(response.getRouteServiceUrl()).isEqualTo("https://routes.app.local");
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
-		assertThat(json).hasPath("$.route_service_url").isEqualTo("https://routes.example.com");
+		assertThat(json).hasPath("$.route_service_url").isEqualTo("https://routes.app.local");
 	}
 
 	@Test

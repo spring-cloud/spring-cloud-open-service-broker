@@ -57,7 +57,7 @@ class GetLastServiceBindingOperationRequestTest {
 				.planId("plan-id")
 				.operation("working")
 				.platformInstanceId("platform-instance-id")
-				.apiInfoLocation("https://api.example.com")
+				.apiInfoLocation("https://api.app.local")
 				.originatingIdentity(originatingIdentity)
 				.requestIdentity("request-id")
 				.build();
@@ -69,7 +69,7 @@ class GetLastServiceBindingOperationRequestTest {
 		assertThat(request.getOperation()).isEqualTo("working");
 
 		assertThat(request.getPlatformInstanceId()).isEqualTo("platform-instance-id");
-		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.example.com");
+		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.app.local");
 		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);
 		assertThat(request.getRequestIdentity()).isEqualTo("request-id");
 	}

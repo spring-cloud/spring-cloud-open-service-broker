@@ -193,8 +193,8 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.build());
 
 		// force a condition where the platformInstanceId segment is present but empty
-		// e.g. https://test.example.com//v2/service_instances/[guid]
-		String url = "https://test.example.com/" + buildCreateUpdateUrl();
+		// e.g. https://test.app.local//v2/service_instances/[guid]
+		String url = "https://test.app.local/" + buildCreateUpdateUrl();
 		client.put().uri(url)
 				.contentType(MediaType.APPLICATION_JSON)
 				.bodyValue(createRequestBody)
@@ -571,7 +571,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
 				.async(true)
 				.operation("working")
-				.dashboardUrl("https://dashboard.example.com")
+				.dashboardUrl("https://dashboard.app.local")
 				.build());
 
 		client.patch().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, true))
@@ -584,7 +584,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.expectStatus().isAccepted()
 				.expectBody()
 				.jsonPath("$.operation").isEqualTo("working")
-				.jsonPath("$.dashboard_url").isEqualTo("https://dashboard.example.com");
+				.jsonPath("$.dashboard_url").isEqualTo("https://dashboard.app.local");
 
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);

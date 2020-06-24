@@ -79,7 +79,7 @@ public class UpdateServiceInstanceRequestTest {
 				.parameters(parameters)
 				.asyncAccepted(true)
 				.platformInstanceId("platform-instance-id")
-				.apiInfoLocation("https://api.example.com")
+				.apiInfoLocation("https://api.app.local")
 				.originatingIdentity(originatingIdentity)
 				.requestIdentity("request-id")
 				.maintenanceInfo(new MaintenanceInfo("2.0.0", null))
@@ -104,7 +104,7 @@ public class UpdateServiceInstanceRequestTest {
 		assertThat(request.isAsyncAccepted()).isEqualTo(true);
 
 		assertThat(request.getPlatformInstanceId()).isEqualTo("platform-instance-id");
-		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.example.com");
+		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.app.local");
 		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);
 		assertThat(request.getRequestIdentity()).isEqualTo("request-id");
 		assertThat(request.getMaintenanceInfo().getVersion()).isEqualTo("2.0.0");

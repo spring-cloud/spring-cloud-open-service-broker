@@ -81,7 +81,7 @@ class GetServiceInstanceAppBindingResponseTest {
 				.credentials("credential2", 2)
 				.credentials("credential3", true)
 				.credentials(credentials)
-				.syslogDrainUrl("https://logs.example.com")
+				.syslogDrainUrl("https://logs.app.local")
 				.volumeMounts(VolumeMount.builder().build())
 				.volumeMounts(VolumeMount.builder().build())
 				.volumeMounts(volumeMounts)
@@ -103,7 +103,7 @@ class GetServiceInstanceAppBindingResponseTest {
 		assertThat(response.getCredentials().get("credential4")).isEqualTo("value4");
 		assertThat(response.getCredentials().get("credential5")).isEqualTo("value5");
 
-		assertThat(response.getSyslogDrainUrl()).isEqualTo("https://logs.example.com");
+		assertThat(response.getSyslogDrainUrl()).isEqualTo("https://logs.app.local");
 
 		assertThat(response.getVolumeMounts()).hasSize(4);
 		assertThat(response.getEndpoints()).hasSize(3);
@@ -122,7 +122,7 @@ class GetServiceInstanceAppBindingResponseTest {
 		assertThat(json).hasPath("$.credentials.credential4").isEqualTo("value4");
 		assertThat(json).hasPath("$.credentials.credential5").isEqualTo("value5");
 
-		assertThat(json).hasPath("$.syslog_drain_url").isEqualTo("https://logs.example.com");
+		assertThat(json).hasPath("$.syslog_drain_url").isEqualTo("https://logs.app.local");
 
 		assertThat(json).hasListAtPath("$.volume_mounts").hasSize(4);
 		assertThat(json).hasListAtPath("$.endpoints").hasSize(3);

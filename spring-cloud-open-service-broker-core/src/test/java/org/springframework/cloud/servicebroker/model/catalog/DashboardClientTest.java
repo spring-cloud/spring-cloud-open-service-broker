@@ -48,18 +48,18 @@ class DashboardClientTest {
 		DashboardClient client = DashboardClient.builder()
 				.id("client-id")
 				.secret("client-secret")
-				.redirectUri("https://token.example.com")
+				.redirectUri("https://token.app.local")
 				.build();
 
 		assertThat(client.getId()).isEqualTo("client-id");
 		assertThat(client.getSecret()).isEqualTo("client-secret");
-		assertThat(client.getRedirectUri()).isEqualTo("https://token.example.com");
+		assertThat(client.getRedirectUri()).isEqualTo("https://token.app.local");
 
 		DocumentContext json = JsonUtils.toJsonPath(client);
 
 		assertThat(json).hasPath("$.id").isEqualTo("client-id");
 		assertThat(json).hasPath("$.secret").isEqualTo("client-secret");
-		assertThat(json).hasPath("$.redirect_uri").isEqualTo("https://token.example.com");
+		assertThat(json).hasPath("$.redirect_uri").isEqualTo("https://token.app.local");
 	}
 
 	@Test

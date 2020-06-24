@@ -62,7 +62,7 @@ class DeleteServiceInstanceBindingRequestTest {
 				.bindingId("binding-id")
 				.asyncAccepted(true)
 				.platformInstanceId("platform-instance-id")
-				.apiInfoLocation("https://api.example.com")
+				.apiInfoLocation("https://api.app.local")
 				.originatingIdentity(originatingIdentity)
 				.requestIdentity("request-id")
 				.build();
@@ -74,7 +74,7 @@ class DeleteServiceInstanceBindingRequestTest {
 		assertThat(request.isAsyncAccepted()).isEqualTo(true);
 
 		assertThat(request.getPlatformInstanceId()).isEqualTo("platform-instance-id");
-		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.example.com");
+		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.app.local");
 		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);
 		assertThat(request.getRequestIdentity()).isEqualTo("request-id");
 	}
@@ -92,7 +92,7 @@ class DeleteServiceInstanceBindingRequestTest {
 				.bindingId("binding-id")
 				.asyncAccepted(true)
 				.platformInstanceId("platform-instance-id")
-				.apiInfoLocation("https://api.example.com")
+				.apiInfoLocation("https://api.app.local")
 				.originatingIdentity(originatingIdentity)
 				.requestIdentity("request-id")
 				.plan(Plan.builder().build())
