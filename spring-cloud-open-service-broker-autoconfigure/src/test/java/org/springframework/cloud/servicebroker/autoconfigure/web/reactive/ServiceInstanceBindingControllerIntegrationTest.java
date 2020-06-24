@@ -148,8 +148,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isAccepted()
-				.expectBody().jsonPath("$.operation").isNotEmpty()
-				.consumeWith(result -> assertOperationIsEqualTo(result, "task_10"));
+				.expectBody().jsonPath("$.operation").isEqualTo("task_10");
 
 		verifyCreateBinding();
 	}
@@ -474,8 +473,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 				.exchange()
 				.expectStatus().isAccepted()
 				.expectBody()
-				.jsonPath("$.operation").isNotEmpty()
-				.consumeWith(result -> assertOperationIsEqualTo(result, "task_10"));
+				.jsonPath("$.operation").isEqualTo("task_10");
 
 		verifyDeleteBinding();
 	}

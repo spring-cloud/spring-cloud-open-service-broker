@@ -65,19 +65,16 @@ public abstract class AbstractServiceInstanceControllerIntegrationTest extends C
 
 	@BeforeEach
 	public void setUpCommonFixtures() {
-		this.createRequestBody = JsonUtils.toJson(CreateServiceInstanceRequest
-				.builder()
+		this.createRequestBody = JsonUtils.toJson(CreateServiceInstanceRequest.builder()
 				.serviceDefinitionId(serviceDefinition.getId())
 				.planId("plan-one-id")
 				.build());
 
-		this.updateRequestBody = JsonUtils.toJson(UpdateServiceInstanceRequest
-				.builder()
+		this.updateRequestBody = JsonUtils.toJson(UpdateServiceInstanceRequest.builder()
 				.serviceDefinitionId(serviceDefinition.getId())
 				.build());
 
-		this.updateRequestBodyWithPlan = JsonUtils.toJson(UpdateServiceInstanceRequest
-				.builder()
+		this.updateRequestBodyWithPlan = JsonUtils.toJson(UpdateServiceInstanceRequest.builder()
 				.serviceDefinitionId(serviceDefinition.getId())
 				.planId("plan-three-id")
 				.build());

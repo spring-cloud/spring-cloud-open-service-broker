@@ -16,7 +16,6 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -62,8 +61,6 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
 
 @ExtendWith(MockitoExtension.class)
 class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceControllerIntegrationTest {
-
-	private static final Charset UTF_8 = StandardCharsets.UTF_8;
 
 	private WebTestClient client;
 
@@ -140,8 +137,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.exchange()
 				.expectStatus().isAccepted()
 				.expectBody()
-				.jsonPath("$.operation").isNotEmpty()
-				.consumeWith(result -> assertOperationIsEqualTo(result, "task_10"));
+				.jsonPath("$.operation").isEqualTo("task_10");
 
 		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
@@ -409,7 +405,8 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> {
-					String responseBody = new String(Objects.requireNonNull(result.getResponseBody()), UTF_8);
+					String responseBody = new String(Objects.requireNonNull(result.getResponseBody()),
+							StandardCharsets.UTF_8);
 					String description = JsonPath.read(responseBody, "$.description");
 					assertThat(description).contains("planId", "serviceDefinitionId");
 				});
@@ -481,8 +478,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.exchange()
 				.expectStatus().isAccepted()
 				.expectBody()
-				.jsonPath("$.operation").isNotEmpty()
-				.consumeWith(result -> assertOperationIsEqualTo(result, "task_10"));
+				.jsonPath("$.operation").isEqualTo("task_10");
 
 		verifyDeleteServiceInstance();
 	}
@@ -610,8 +606,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.exchange()
 				.expectStatus().isAccepted()
 				.expectBody()
-				.jsonPath("$.operation").isNotEmpty()
-				.consumeWith(result -> assertOperationIsEqualTo(result, "task_10"));
+				.jsonPath("$.operation").isEqualTo("task_10");
 
 		verifyUpdateServiceInstance();
 	}
