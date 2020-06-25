@@ -17,7 +17,7 @@ The following table describes the version compatibility matrix for the various r
 [%header,cols=4*]
 |===
 |Spring Cloud Open Service Broker |https://github.com/openservicebrokerapi/servicebroker[Open Service Broker API] |https://projects.spring.io/spring-boot/[Spring Boot] |https://projects.spring.io/spring-framework/[Spring Framework]
-|3.2.x |TBD |2.3.x |5.2.x
+|3.2.x |2.15 |2.3.x |5.2.x
 |3.1.x |2.15 |2.2.x |5.2.x
 |3.0.x |2.14 |2.1.x |5.1.x
 |2.1.x |2.14 |2.0.x |5.0.x
@@ -30,7 +30,7 @@ See the https://spring.io/projects/spring-cloud-open-service-broker/[project sit
 === Gradle Dependencies
 
 ```
-implementation("org.springframework.cloud:spring-cloud-starter-open-service-broker:3.1.1.RELEASE")
+implementation("org.springframework.cloud:spring-cloud-starter-open-service-broker:3.1.2.RELEASE")
 ```
 
 === Maven Dependencies:
@@ -39,7 +39,7 @@ implementation("org.springframework.cloud:spring-cloud-starter-open-service-brok
 <dependency>
   <groupId>org.springframework.cloud</groupId>
   <artifactId>spring-cloud-starter-open-service-broker</artifactId>
-  <version>3.1.1.RELEASE</version>
+  <version>3.1.2.RELEASE</version>
 </dependency>
 ```
 
@@ -55,9 +55,9 @@ The project is built with Gradle. The https://docs.gradle.org/current/userguide/
 
     ./gradlew build
 
-You may also build and run tests against the latest versions or specific version of Spring Framework and Spring Boot by using the following parameters, either individually or together.
+Deploy the artifacts to your local maven repository:
 
-    ./gradlew build -PspringBootVersion=latest.integration -PspringFrameworkVersion=latest.integration
+    ./gradlew publishToMavenLocal
 
 == Working with the code
 If you don't have an IDE preference we would recommend that you use
