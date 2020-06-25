@@ -45,7 +45,7 @@ description = "Spring Cloud Open Service Broker"
 apply plugin: "io.spring.nohttp"
 
 nohttp {
-	whitelistFile = rootProject.file("src/nohttp/whitelist.lines")
+	allowlistFile = rootProject.file("src/nohttp/allowlist.lines")
 }
 
 configure(allprojects) {
