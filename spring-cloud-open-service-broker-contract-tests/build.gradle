@@ -16,18 +16,14 @@ import org.springframework.cloud.contract.verifier.config.TestFramework
  * limitations under the License.
  */
 
-buildscript {
-	dependencies {
-		classpath("io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE")
-		classpath("org.springframework.cloud:spring-cloud-contract-gradle-plugin:${springCloudContractVersion}")
-	}
+plugins {
+	id "io.spring.dependency-management" version "1.0.9.RELEASE"
+	id "org.springframework.cloud.contract" version "${springCloudContractVersion}"
 }
 
 description = "Spring Cloud Open Service Broker Contract Tests"
 
-apply plugin: "io.spring.dependency-management"
 apply plugin: "groovy"
-apply plugin: "spring-cloud-contract"
 
 contracts {
 	packageWithBaseClasses = "org.springframework.cloud.servicebroker.contract"

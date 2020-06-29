@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-buildscript {
-	repositories {
-		mavenCentral()
-		maven { url "https://repo.spring.io/plugins-release" }
-	}
-	dependencies {
-		classpath("io.spring.nohttp:nohttp-gradle:0.0.5.RELEASE")
-	}
+plugins {
+	id "io.spring.nohttp" version "0.0.5.RELEASE"
 }
 
 ext {
@@ -42,8 +36,6 @@ ext {
 
 description = "Spring Cloud Open Service Broker"
 
-apply plugin: "io.spring.nohttp"
-
 nohttp {
 	allowlistFile = rootProject.file("src/nohttp/allowlist.lines")
 }
@@ -59,32 +51,16 @@ configure(allprojects) {
 		mavenCentral()
 		maven { url "https://repo.spring.io/release" }
 	}
-	buildscript {
-		repositories {
-			mavenCentral()
-			maven { url "https://repo.spring.io/plugins-release" }
-		}
-	}
 	if (!version.endsWith('RELEASE')) {
 		repositories {
 			maven { url "https://repo.spring.io/milestone" }
 		}
-		buildscript {
-			repositories {
-				maven { url "https://repo.spring.io/milestone" }
-			}
 		}
-	}
-	if (version.endsWith('SNAPSHOT')) {
-		repositories {
-			maven { url "https://repo.spring.io/snapshot" }
-		}
-		buildscript {
+	if (version.endsWith('-SNAPSHOT')) {
 			repositories {
 				maven { url "https://repo.spring.io/snapshot" }
 			}
 		}
-	}
 }
 
 configure(allprojects - [project(":spring-cloud-open-service-broker-acceptance-webflux"),

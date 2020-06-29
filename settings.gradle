@@ -1,3 +1,14 @@
+pluginManagement {
+	repositories {
+		gradlePluginPortal()
+		mavenCentral()
+		maven { url "https://repo.spring.io/plugins-release" }
+		if (version.endsWith('SNAPSHOT')) {
+			maven { url "https://repo.spring.io/plugins-snapshot" }
+		}
+	}
+}
+
 rootProject.name = "spring-cloud-open-service-broker"
 
 include ":spring-cloud-open-service-broker-docs"

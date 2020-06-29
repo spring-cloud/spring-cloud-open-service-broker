@@ -14,18 +14,11 @@
  * limitations under the License.
  */
 
-buildscript {
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+plugins {
+	id "org.springframework.boot" version "${springBootVersion}"
 }
 
 description = "Spring Cloud Open Service Broker Acceptance WebMvc"
-
-// don't publish the jar for the acceptance tests project
-configurations.archives.artifacts.clear()
-
-apply plugin: 'org.springframework.boot'
 
 dependencies {
 	implementation enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
@@ -34,3 +27,6 @@ dependencies {
 	implementation(project(":spring-cloud-starter-open-service-broker"))
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
+
+// don't publish the jar for the acceptance tests project
+configurations.archives.artifacts.clear()
