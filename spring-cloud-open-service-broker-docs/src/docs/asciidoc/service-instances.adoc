@@ -29,7 +29,7 @@ To do so:
 
 . Autowire the {scosb-api-service-events}/CreateServiceInstanceEventFlowRegistry.html[`CreateServiceInstanceEventFlowRegistry`] bean.
 
-. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`], or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows for execution during the various stages of creating a service instance.
+. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`], or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows to run during the various stages of creating a service instance.
 
 === Service Instance Updating
 
@@ -45,7 +45,7 @@ To do so:
 
 . Autowire the {scosb-api-service-events}/UpdateServiceInstanceEventFlowRegistry.html[`UpdateServiceInstanceEventFlowRegistry`] bean.
 
-. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`], or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows for execution during the various stages of updating a service instance.
+. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`], or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows to run during the various stages of updating a service instance.
 
 === Service Instance Deletion
 
@@ -62,7 +62,7 @@ To do so:
 
 . Autowire the {scosb-api-service-events}/DeleteServiceInstanceEventFlowRegistry.html[`DeleteServiceInstanceEventFlowRegistry`] bean.
 
-. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`], or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows for execution during the various stages of deleting a service instance.
+. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`], or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows to run during the various stages of deleting a service instance.
 
 [[service-instance-status]]
 === Service Instance Operation Status Retrieval
@@ -79,7 +79,7 @@ To do so:
 
 . Autowire the {scosb-api-service-events}/AsyncOperationServiceInstanceEventFlowRegistry.html[`AsyncOperationServiceInstanceEventFlowRegistry`] bean.
 
-. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`], or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows for execution during the various stages of last operation retrieval.
+. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`], or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows to run during the various stages of last operation retrieval.
 
 === Service Instance Retrieval
 

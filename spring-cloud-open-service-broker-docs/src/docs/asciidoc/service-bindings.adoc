@@ -37,7 +37,7 @@ To do so:
 
 . Autowire the {scosb-api-service-events}/CreateServiceInstanceBindingEventFlowRegistry.html[`CreateServiceInstanceBindingEventFlowRegistry`] bean.
 
-. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`], or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows for execution during the various stages of creating a service binding.
+. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`], or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows to run during the various stages of creating a service binding.
 
 === Service Binding Deletion
 
@@ -51,7 +51,7 @@ You can use events to further customize service binding deletion.
 To do so:
 . Autowire the {scosb-api-service-events}/DeleteServiceInstanceBindingEventFlowRegistry.html[`DeleteServiceInstanceBindingEventFlowRegistry`] bean.
 
-. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`], or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows for execution during the various stages of deleting a service binding.
+. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`], or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows to run during the various stages of deleting a service binding.
 
 [[service-instance-binding-status]]
 === Service Binding Operation Status Retrieval
@@ -66,7 +66,7 @@ You can use events to further customize service binding last operation requests.
 To do so:
 . Autowire the {scosb-api-service-events}/AsyncOperationServiceInstanceBindingEventFlowRegistry.html[`AsyncOperationServiceInstanceBindingEventFlowRegistry`] bean.
 
-. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`] or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows for execution during the various stages of last operation retrieval.
+. Use one of the {scosb-api-service-events}/EventFlowRegistry.html#addInitializationFlow-I[`addInitializationFlow()`], {scosb-api-service-events}/EventFlowRegistry.html#addCompletionFlow-C[`addCompletionFlow()`] or {scosb-api-service-events}/EventFlowRegistry.html#addErrorFlow-E[`addErrorFlow()`] methods to register custom reactive flows to run during the various stages of last operation retrieval.
 
 === Service Binding Retrieval
 
