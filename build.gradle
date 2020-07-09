@@ -256,7 +256,6 @@ configure(rootProject) {
 		from(apidocs) {
 			into "apidocs"
 		}
-		println project.tasks.findByPath(':spring-cloud-open-service-broker-docs:asciidoctor')
 		from(project.tasks.findByPath(':spring-cloud-open-service-broker-docs:asciidoctor')) {
 			into 'reference'
 		}
