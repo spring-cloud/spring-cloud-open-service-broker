@@ -14,15 +14,9 @@
  * limitations under the License.
  */
 
-buildscript {
-	dependencies {
-		classpath("org.asciidoctor:asciidoctor-gradle-plugin:1.6.1")
-		classpath("org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.16")
-	}
-	repositories {
-		mavenCentral()
-		maven { url "https://repo.spring.io/plugins-release" }
-	}
+plugins {
+	id 'org.asciidoctor.jvm.pdf'
+	id 'org.asciidoctor.jvm.convert'
 }
 
 description = "Spring Cloud Open Service Broker Documentation"
@@ -30,8 +24,6 @@ description = "Spring Cloud Open Service Broker Documentation"
 configurations {
 	docs
 }
-
-apply plugin: 'org.asciidoctor.convert'
 
 dependencies {
 	// BOM imports - The versions used in these files will override any other versions found in the graph
@@ -43,6 +35,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-tomcat")
 	implementation("io.projectreactor:reactor-core")
 	docs("io.spring.docresources:spring-doc-resources:0.2.1.RELEASE@zip")
+}
+
+javadoc {
+	enabled = false
 }
 
 task prepareAsciidocBuild(type: Sync) {
@@ -57,25 +53,30 @@ task prepareAsciidocBuild(type: Sync) {
 	into "$buildDir/asciidoc"
 }
 
-task('makePDF', type: org.asciidoctor.gradle.AsciidoctorTask){
+asciidoctorPdf {
 	dependsOn prepareAsciidocBuild
-	backends 'pdf'
-	sourceDir = file("$buildDir/asciidoc")
-	sources {
-		include 'index.adoc'
+	baseDirFollowsSourceFile()
+
+	asciidoctorj {
+		sourceDir "$buildDir/asciidoc"
+		inputs.dir(sourceDir)
+		sources {
+			include 'index.adoc'
+		}
+		options doctype: 'book'
+		attributes 'icons': 'font',
+				'sectanchors': '',
+				'sectnums': '',
+				'toc': '',
+				'source-highlighter' : 'coderay',
+				revnumber: project.version,
+				'project-version': project.version
 	}
-	options doctype: 'book', eruby: 'erubis'
-	logDocuments = true
-	attributes 'icons': 'font',
-		'sectanchors': '',
-		'sectnums': '',
-		'toc': '',
-		'source-highlighter' : 'coderay',
-		'revnumber': project.version
 }
 
 asciidoctor {
-	dependsOn makePDF
+	dependsOn asciidoctorPdf
+	baseDirFollowsSourceFile()
 	sourceDir = file("$buildDir/asciidoc")
 	sources {
 		include '*.adoc'
@@ -86,7 +87,6 @@ asciidoctor {
 		}
 	}
 	logDocuments = true
-	backends = ["html5"]
 	options doctype: 'book', eruby: 'erubis'
 	attributes 'revnumber': project.version,
 			'spring-version': project.version,
@@ -102,7 +102,8 @@ asciidoctor {
 			'linkcss': true,
 			'nofooter': true,
 			'allow-uri-read': '',
-			'source-highlighter=highlight.js',
-			'highlightjsdir=js/highlight',
-			'highlightjs-theme=github'
+			'source-highlighter': 'highlight.js',
+			'highlightjsdir': 'js/highlight',
+			'highlightjs-theme': 'github',
+			'project-version': project.version
 }
