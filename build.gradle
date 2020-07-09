@@ -15,19 +15,10 @@
  */
 
 plugins {
-	id "io.spring.nohttp" version "0.0.5.RELEASE"
+	id "io.spring.nohttp"
 }
 
 ext {
-	springBootVersion = project.findProperty("springBootVersion") ?: "2.3.1.RELEASE"
-	springFrameworkVersion = project.findProperty("springFrameworkVersion") ?: "5.2.7.RELEASE"
-	reactorVersion = project.findProperty("reactorVersion") ?: "Dysprosium-SR8"
-	springCloudContractVersion = "2.2.3.RELEASE"
-	blockHoundVersion = "1.0.4.RELEASE"
-	junitPlatformLauncherVersion = "1.6.2"
-	checkstyleVersion = "8.33"
-	pmdVersion = "6.24.0"
-
 	javadocLinks = [
 			"https://docs.oracle.com/javase/8/docs/api/",
 			"https://docs.spring.io/spring/docs/${springFrameworkVersion}/javadoc-api/",

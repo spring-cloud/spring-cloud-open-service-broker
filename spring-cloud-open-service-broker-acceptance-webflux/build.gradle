@@ -15,7 +15,7 @@
  */
 
 plugins {
-	id "org.springframework.boot" version "${springBootVersion}"
+	id "org.springframework.boot"
 }
 
 description = "Spring Cloud Open Service Broker Acceptance WebFlux"

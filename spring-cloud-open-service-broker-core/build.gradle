@@ -16,52 +16,36 @@
 
 description = "Spring Cloud Open Service Broker Core"
 
-ext {
-	jacksonVersion = "2.11.0"
-	hibernateValidatorVersion = "6.1.5.Final"
-	beanUtilsVersion = "1.9.4"
-	slf4jVersion = "1.7.30"
-	junitJupiterVersion = "5.6.2"
-	assertjVersion = "3.16.1"
-	mockitoVersion = "3.3.3"
-	hamcrestVersion = "2.2"
-	jsonPathVersion = "2.4.0"
-	equalsVerifierVersion = "3.1.9"
-	javaxServletApiVersion = "3.1.0"
-}
-
 dependencies {
 	// BOM imports - The versions used in these files will override any other versions found in the graph
-	implementation enforcedPlatform("org.springframework:spring-framework-bom:${springFrameworkVersion}")
-	implementation enforcedPlatform("io.projectreactor:reactor-bom:${reactorVersion}")
-	implementation enforcedPlatform("com.fasterxml.jackson:jackson-bom:${jacksonVersion}")
+	implementation enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
 
-	compileOnly("javax.servlet:javax.servlet-api:${javaxServletApiVersion}")
+	compileOnly("javax.servlet:javax.servlet-api")
 	api("org.springframework:spring-context")
 	optionalApi("org.springframework:spring-web")
 	optionalApi("org.springframework:spring-webflux")
 	api("io.projectreactor:reactor-core")
 	api("com.fasterxml.jackson.core:jackson-databind")
-	api("org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}")
+	api("org.hibernate.validator:hibernate-validator")
 	api("commons-beanutils:commons-beanutils:${beanUtilsVersion}") {
 		exclude group:"commons-logging", module:"commons-logging"
 	}
-	api("org.slf4j:slf4j-api:${slf4jVersion}")
+	api("org.slf4j:slf4j-api")
 	testImplementation("org.springframework:spring-test") {
 		exclude group:"commons-logging", module:"commons-logging"
 	}
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("io.projectreactor.tools:blockhound-junit-platform:${blockHoundVersion}")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher:${junitPlatformLauncherVersion}")
-	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
-	testImplementation("org.junit.jupiter:junit-jupiter:${junitJupiterVersion}")
-	testImplementation("org.assertj:assertj-core:${assertjVersion}")
-	testImplementation("org.hamcrest:hamcrest-library:${hamcrestVersion}")
-	testImplementation("org.mockito:mockito-core:${mockitoVersion}")
-	testImplementation("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
-	testImplementation("com.jayway.jsonpath:json-path:${jsonPathVersion}")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+	testImplementation("org.junit.jupiter:junit-jupiter")
+	testImplementation("org.assertj:assertj-core")
+	testImplementation("org.hamcrest:hamcrest-library")
+	testImplementation("org.mockito:mockito-core")
+	testImplementation("org.mockito:mockito-junit-jupiter")
+	testImplementation("com.jayway.jsonpath:json-path")
 	testImplementation("nl.jqno.equalsverifier:equalsverifier:${equalsVerifierVersion}")
-	testImplementation("javax.servlet:javax.servlet-api:${javaxServletApiVersion}")
+	testImplementation("javax.servlet:javax.servlet-api")
 }
 
 configurations {
