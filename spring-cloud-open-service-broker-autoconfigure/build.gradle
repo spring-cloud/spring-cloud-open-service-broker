@@ -21,20 +21,20 @@ dependencies {
 	implementation enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
 	annotationProcessor enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
 
-	api(project(":spring-cloud-open-service-broker-core"))
-	optionalApi("org.springframework.boot:spring-boot-starter-web")
-	optionalApi("org.springframework.boot:spring-boot-starter-webflux")
-	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-	annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
-	testImplementation(project(path: ":spring-cloud-open-service-broker-core", configuration: "testOutput"))
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("io.projectreactor.tools:blockhound-junit-platform:${blockHoundVersion}")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-	testRuntimeOnly("javax.servlet:javax.servlet-api")
-	testImplementation("org.mockito:mockito-core")
-	testImplementation("org.hamcrest:java-hamcrest:${javaHamcrestVersion}")
-	testImplementation("org.assertj:assertj-core")
-	testImplementation("org.apache.commons:commons-lang3")
+	api project(':spring-cloud-open-service-broker-core')
+	optionalApi 'org.springframework.boot:spring-boot-starter-web'
+	optionalApi 'org.springframework.boot:spring-boot-starter-webflux'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor 'org.springframework.boot:spring-boot-autoconfigure-processor'
+	testImplementation project(path: ':spring-cloud-open-service-broker-core', configuration: 'testOutput')
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation "io.projectreactor.tools:blockhound-junit-platform:${blockHoundVersion}"
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testRuntimeOnly 'javax.servlet:javax.servlet-api'
+	testImplementation 'org.mockito:mockito-core'
+	testImplementation "org.hamcrest:java-hamcrest:${javaHamcrestVersion}"
+	testImplementation 'org.assertj:assertj-core'
+	testImplementation 'org.apache.commons:commons-lang3'
 }
 
 configurations {

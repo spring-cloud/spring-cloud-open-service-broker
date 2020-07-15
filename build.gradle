@@ -15,7 +15,7 @@
  */
 
 plugins {
-	id "io.spring.nohttp"
+	id 'io.spring.nohttp'
 }
 
 ext {
@@ -34,38 +34,44 @@ nohttp {
 configure(allprojects) {
 	group = "org.springframework.cloud"
 
-	apply plugin: "java"
-	apply plugin: "eclipse"
-	apply plugin: "idea"
+	apply plugin: 'java'
+	apply plugin: 'eclipse'
+	apply plugin: 'idea'
 
 	repositories {
 		mavenCentral()
-		maven { url "https://repo.spring.io/release" }
+		maven { url 'https://repo.spring.io/release' }
 	}
 	if (version =~ /((-M|-RC)[0-9]+|-SNAPSHOT)$/) {
 		repositories {
-			maven { url "https://repo.spring.io/milestone" }
+			maven { url 'https://repo.spring.io/milestone' }
 		}
-		}
+	}
 	if (version.endsWith('-SNAPSHOT')) {
-			repositories {
-				maven { url "https://repo.spring.io/snapshot" }
-			}
+		repositories {
+			maven { url 'https://repo.spring.io/snapshot' }
 		}
+	}
+
+	configurations {
+		all {
+			exclude group: 'commons-logging', module: 'commons-logging'
+		}
+	}
 }
 
-configure(allprojects - [project(":spring-cloud-open-service-broker-acceptance-webflux"),
-						 project(":spring-cloud-open-service-broker-acceptance-webmvc"),
-						 project(":spring-cloud-open-service-broker-contract-tests"),
-						 project(":spring-cloud-open-service-broker-docs")]) {
-	apply plugin: "java-library"
+configure(allprojects - [project(':spring-cloud-open-service-broker-acceptance-webflux'),
+						 project(':spring-cloud-open-service-broker-acceptance-webmvc'),
+						 project(':spring-cloud-open-service-broker-contract-tests'),
+						 project(':spring-cloud-open-service-broker-docs')]) {
+	apply plugin: 'java-library'
 	apply from: "${rootProject.projectDir}/publish-maven.gradle"
-	apply plugin: "jacoco"
+	apply plugin: 'jacoco'
 }
 
-configure(allprojects - [project(":spring-cloud-open-service-broker-docs")]) {
-	apply plugin: "checkstyle"
-	apply plugin: "pmd"
+configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
+	apply plugin: 'checkstyle'
+	apply plugin: 'pmd'
 
 	checkstyle {
 		configFile = rootProject.file("src/checkstyle/checkstyle.xml")
@@ -107,7 +113,7 @@ subprojects {
 	task dependencyReport(type: DependencyReportTask)
 }
 
-configure(subprojects - [project(":spring-cloud-starter-open-service-broker")]) {
+configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) {
 	[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 
 	[compileJava, compileTestJava]*.options*.compilerArgs = [
@@ -179,10 +185,10 @@ configure(rootProject) {
 	}
 
 	// filter unwanted subprojects from published javadoc
-	def sourceProjects = subprojects - [project(":spring-cloud-open-service-broker-acceptance-webflux"),
-										project(":spring-cloud-open-service-broker-acceptance-webmvc"),
-										project(":spring-cloud-open-service-broker-contract-tests"),
-										project(":spring-cloud-open-service-broker-docs")]
+	def sourceProjects = subprojects - [project(':spring-cloud-open-service-broker-acceptance-webflux'),
+										project(':spring-cloud-open-service-broker-acceptance-webmvc'),
+										project(':spring-cloud-open-service-broker-contract-tests'),
+										project(':spring-cloud-open-service-broker-docs')]
 
 	task apidocs(type: Javadoc) {
 		group = "Documentation"

@@ -29,12 +29,12 @@ dependencies {
 	// BOM imports - The versions used in these files will override any other versions found in the graph
 	implementation enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
 
-	implementation(project(":spring-cloud-open-service-broker-core"))
-	implementation("org.springframework.boot:spring-boot-starter")
-	implementation("org.springframework.boot:spring-boot-starter-security")
-	implementation("org.springframework.boot:spring-boot-starter-tomcat")
-	implementation("io.projectreactor:reactor-core")
-	docs("io.spring.docresources:spring-doc-resources:0.2.1.RELEASE@zip")
+	implementation project(':spring-cloud-open-service-broker-core')
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
+	implementation 'io.projectreactor:reactor-core'
+	docs 'io.spring.docresources:spring-doc-resources:0.2.1.RELEASE@zip'
 }
 
 javadoc {

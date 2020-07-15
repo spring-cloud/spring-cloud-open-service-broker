@@ -17,13 +17,13 @@ import org.springframework.cloud.contract.verifier.config.TestFramework
  */
 
 plugins {
-	id "io.spring.dependency-management" version "1.0.9.RELEASE"
-	id "org.springframework.cloud.contract" version "${springCloudContractVersion}"
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'org.springframework.cloud.contract' version "${springCloudContractVersion}"
 }
 
 description = "Spring Cloud Open Service Broker Contract Tests"
 
-apply plugin: "groovy"
+apply plugin: 'groovy'
 
 contracts {
 	packageWithBaseClasses = "org.springframework.cloud.servicebroker.contract"
@@ -39,12 +39,12 @@ dependencyManagement {
 }
 
 dependencies {
-	testImplementation(project(":spring-cloud-starter-open-service-broker"))
-	testImplementation("org.springframework.boot:spring-boot-starter-web")
-	testImplementation("org.springframework.boot:spring-boot-starter-webflux")
-	testImplementation(project(path: ":spring-cloud-open-service-broker-autoconfigure", configuration: "testOutput"))
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-	testImplementation("org.springframework.cloud:spring-cloud-starter-contract-verifier")
-	testRuntimeOnly("javax.servlet:javax.servlet-api")
+	testImplementation project(':spring-cloud-starter-open-service-broker')
+	testImplementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+	testImplementation project(path: ':spring-cloud-open-service-broker-autoconfigure', configuration: 'testOutput')
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
+	testRuntimeOnly 'javax.servlet:javax.servlet-api'
 }
