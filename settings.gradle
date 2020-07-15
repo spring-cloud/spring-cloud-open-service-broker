@@ -9,7 +9,7 @@ pluginManagement {
 		gradlePluginPortal()
 		mavenCentral()
 		maven { url "https://repo.spring.io/plugins-release" }
-		if (version =~ /(-M[0-9]+|-SNAPSHOT)$/) {
+		if (version =~ /((-M|-RC)[0-9]+|-SNAPSHOT)$/) {
 			maven { url "https://repo.spring.io/plugins-milestone" }
 		}
 		if (version.endsWith('-SNAPSHOT')) {

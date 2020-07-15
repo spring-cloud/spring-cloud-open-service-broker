@@ -42,7 +42,7 @@ configure(allprojects) {
 		mavenCentral()
 		maven { url "https://repo.spring.io/release" }
 	}
-	if (version =~ /(-M[0-9]+|-SNAPSHOT)$/) {
+	if (version =~ /((-M|-RC)[0-9]+|-SNAPSHOT)$/) {
 		repositories {
 			maven { url "https://repo.spring.io/milestone" }
 		}
