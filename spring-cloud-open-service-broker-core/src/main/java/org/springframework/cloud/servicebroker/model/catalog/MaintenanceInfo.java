@@ -121,8 +121,8 @@ public class MaintenanceInfo {
 	public String toString() {
 		return "MaintenanceInfo{" +
 				"version='" + version +
-				", description='" + description +
-				'}';
+				"', description='" + description +
+				"'}";
 	}
 
 	/**

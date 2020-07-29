@@ -54,6 +54,16 @@ class MaintenanceInfoTest {
 		constructInfoAndValidate(1, 0, 0, "-beta+exp.sha.5114f85", "description");
 	}
 
+	@Test
+	void formatsToString() {
+		MaintenanceInfo info = MaintenanceInfo.builder()
+			.version("1.1.1")
+			.description("a description")
+			.build();
+		String toString = info.toString();
+		assertThat(toString).isEqualTo("MaintenanceInfo{version='1.1.1', description='a description'}");
+	}
+
 	private void constructInfoAndValidate(String version, String description) {
 		MaintenanceInfo info = MaintenanceInfo.builder()
 				.version(version)
