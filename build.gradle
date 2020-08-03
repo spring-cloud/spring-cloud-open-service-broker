@@ -19,8 +19,12 @@ plugins {
 }
 
 ext {
+	javaApi = "https://docs.oracle.com/javase/8/docs/api/"
+	if (JavaVersion.current() >= JavaVersion.VERSION_11) {
+		javaApi = "https://docs.oracle.com/en/java/javase/11/docs/api"
+	}
 	javadocLinks = [
-			"https://docs.oracle.com/javase/8/docs/api/",
+			javaApi,
 			"https://docs.spring.io/spring/docs/${springFrameworkVersion}/javadoc-api/",
 	] as String[]
 }
@@ -75,6 +79,7 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 
 	checkstyle {
 		configFile = rootProject.file("src/checkstyle/checkstyle.xml")
+		configProperties = [config_path : rootProject.file("src/checkstyle")]
 		toolVersion = "${checkstyleVersion}"
 		showViolations = true
 	}
@@ -116,7 +121,7 @@ subprojects {
 configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) {
 	[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 
-	[compileJava, compileTestJava]*.options*.compilerArgs = [
+	def compilerArgs = [
 			"-Xlint:serial",
 			"-Xlint:varargs",
 			"-Xlint:cast",
@@ -134,9 +139,22 @@ configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) 
 			"-Xlint:rawtypes",
 			"-Xlint:deprecation",
 			"-Xlint:unchecked",
-			"-Xlint:options",
-			"-Werror"
+			"-Xlint:options"
 	]
+	if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
+		// Java 8 is the baseline, so don't fail on warnings with newer versions
+		compilerArgs << "-Werror"
+	}
+	[compileJava, compileTestJava]*.options*.compilerArgs = compilerArgs
+
+	// see https://github.com/reactor/BlockHound/issues/33
+	tasks.withType(Test).all {
+		if (JavaVersion.current() >= JavaVersion.VERSION_13) {
+			jvmArgs += [
+					"-XX:+AllowRedefinitionToAddDeleteMethods"
+			]
+		}
+	}
 
 	javadoc {
 		description = "Generates project-level javadoc for use in -javadoc jar"
@@ -147,12 +165,16 @@ configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) 
 		options.use = true
 		options.links(javadocLinks)
 		options.addStringOption('Xdoclint:none', '-quiet')
+		if (JavaVersion.current() == JavaVersion.VERSION_11) {
+			options.addBooleanOption('-no-module-directories', true)
+		}
 	}
 
 	// see https://docs.gradle.org/current/userguide/java_plugin.html
 	java {
 		sourceCompatibility = JavaVersion.VERSION_1_8
 		targetCompatibility = JavaVersion.VERSION_1_8
+		disableAutoTargetJvm()
 		withSourcesJar()
 		withJavadocJar()
 
