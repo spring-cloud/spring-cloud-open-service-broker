@@ -5,6 +5,8 @@ Most service broker applications implement API or web UI endpoints beyond the Op
 These additional endpoints might provide information about the application, provide a dashboard UI, or provide controls over application behavior.
 Developers may implement these additional endpoints with https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html[Spring WebFlux] or https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html[Spring MVC].
 
+While spring-cloud-open-service-broker uses reactive return types in its API, both blocking web stack (such as tomcat/jetty using `spring-boot-starter-web`) or non blocking web stack (such as netty/undertow using `spring-boot-starter-webflux`) are supported. See respective acceptance tests in modules `spring-cloud-open-service-broker-acceptance-webmvc` and `spring-cloud-open-service-broker-acceptance-webflux`.
+
 NOTE: The Spring Cloud Open Service Broker starter does not include a transitive dependency on Spring WebFlux or Spring MVC.
 A Spring Boot web starter is required to activate the auto-configuration.
 
