@@ -11,7 +11,7 @@ by applying security to application endpoints with the path-matching pattern: `/
 
 === Example Configuration
 
-The following example implements a security configuration:
+The following example implements a security configuration in a https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html[Spring MVC] i.e blocking webstack. Similar config for a https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html[Spring WebFlux] reactive stack is necessary, see https://docs.spring.io/spring-security/site/docs/current/reference/html5/#minimal-webflux-security-configuration[Spring security webflux support]
 
 ====
 [source,java,%autofit]
