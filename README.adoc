@@ -25,6 +25,9 @@ The following table describes the version compatibility matrix for the various r
 |2.1.x |2.14 |2.0.x |5.0.x
 |===
 
+[NOTE]
+Spring WebFlux and Spring MVC are both supported in version 3.0 and later
+
 == Getting Started
 
 See the https://spring.io/projects/spring-cloud-open-service-broker/[project site] and https://docs.spring.io/spring-cloud-open-service-broker/docs/current/reference/html5/[reference documentation] to get started building a service broker using this framework.
