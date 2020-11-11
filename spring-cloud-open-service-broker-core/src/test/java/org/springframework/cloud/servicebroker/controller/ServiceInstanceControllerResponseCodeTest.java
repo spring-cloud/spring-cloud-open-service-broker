@@ -314,6 +314,20 @@ class ServiceInstanceControllerResponseCodeTest {
 	}
 
 	@Test
+	void getLastOperationWithUnknownInstanceBadRequest() {
+		given(serviceInstanceService.getLastOperation(any(GetLastServiceOperationRequest.class)))
+				.willReturn(Mono.error(new ServiceInstanceDoesNotExistException("instance never existed")));
+
+		ResponseEntity<GetLastServiceOperationResponse> responseEntity = controller
+				.getServiceInstanceLastOperation(pathVariables, null, "service-definition-id",
+						"service-definition-plan-id", null, null, null, null)
+				.block();
+
+		assertThat(responseEntity).isNotNull();
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+	}
+
+	@Test
 	void getLastOperationWithFailedResponseGivesExpectedStatus() {
 		validateGetLastOperationWithResponseStatus(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.FAILED)

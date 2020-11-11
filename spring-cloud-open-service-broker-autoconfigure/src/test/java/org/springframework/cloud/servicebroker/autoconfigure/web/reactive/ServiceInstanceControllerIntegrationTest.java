@@ -53,6 +53,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException.ASYNC_REQUIRED_ERROR;
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerMaintenanceInfoConflictException.MAINTENANCE_INFO_CONFLICT_ERROR;
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerMaintenanceInfoConflictException.MAINTENANCE_INFO_CONFLICT_MESSAGE;
@@ -785,6 +786,20 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.expectBody()
 				.jsonPath("$.state").isEqualTo(OperationState.SUCCEEDED.toString())
 				.jsonPath("$.description").isEqualTo("all gone");
+	}
+
+	@Test
+	void lastOperationWithUnknownInstanceBadRequest() {
+		setupServiceInstanceServiceLastOperation(new ServiceInstanceDoesNotExistException("nonexistent-instance-id"));
+
+		client.get().uri(buildLastOperationUrl())
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().is4xxClientError()
+				.expectStatus().isEqualTo(HttpStatus.BAD_REQUEST)
+				.expectBody()
+				.jsonPath("$.state").doesNotExist()
+				.jsonPath("$.description").value(containsString("The requested Service Instance does not exist"));
 	}
 
 	@Test

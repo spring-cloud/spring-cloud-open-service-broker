@@ -862,6 +862,21 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	}
 
 	@Test
+	void lastOperationWithUnknownInstanceBadRequest() throws Exception {
+		setupServiceInstanceServiceLastOperation(new ServiceInstanceDoesNotExistException("nonexistent-instance-id"));
+
+		MvcResult mvcResult = mockMvc.perform(get(buildLastOperationUrl()))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.state").doesNotExist())
+				.andExpect(jsonPath("$.description",
+						containsString("The requested Service Instance does not exist")));
+	}
+
+	@Test
 	void lastOperationHasFailedStatus() throws Exception {
 		setupServiceInstanceService(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.FAILED)
