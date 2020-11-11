@@ -64,6 +64,7 @@ configure(allprojects) {
 	}
 }
 
+// configure submodules with published java artifacts
 configure(allprojects - [project(':spring-cloud-open-service-broker-acceptance-webflux'),
 						 project(':spring-cloud-open-service-broker-acceptance-webmvc'),
 						 project(':spring-cloud-open-service-broker-contract-tests'),
@@ -73,6 +74,7 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-acceptance-w
 	apply plugin: 'jacoco'
 }
 
+// perform lint checks on all code, except for sample code used in docs
 configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 	apply plugin: 'checkstyle'
 	apply plugin: 'pmd'
@@ -118,6 +120,7 @@ subprojects {
 	task dependencyReport(type: DependencyReportTask)
 }
 
+// configure java compilation for all java source
 configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) {
 	[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 
@@ -195,6 +198,7 @@ configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) 
 	}
 }
 
+// consolidate and package the javadoc, apidoc and sources
 configure(rootProject) {
 	task sourcesJar(type: Jar, dependsOn: classes) {
 		archiveClassifier.set("sources")
