@@ -241,9 +241,20 @@ public class ServiceInstanceController extends BaseController {
 						.doOnError(e -> LOG.error("Error getting service instance last operation. error=" +
 								e.getMessage(), e)))
 				.map(response -> {
-					boolean isSuccessfulDelete = response.getState().equals(OperationState.SUCCEEDED) && response
+					boolean isSuccessfulDelete = OperationState.SUCCEEDED.equals(response.getState()) && response
 							.isDeleteOperation();
 					return new ResponseEntity<>(response, isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK);
+				})
+				.onErrorResume(e -> {
+					if (e instanceof ServiceInstanceDoesNotExistException) {
+						// TODO: v2.16 of the OSB API spec changes this to an HTTP 404
+						return Mono.just(new ResponseEntity<>(GetLastServiceOperationResponse.builder()
+								.description("The requested Service Instance does not exist")
+								.build(), HttpStatus.BAD_REQUEST));
+					}
+					else {
+						return Mono.error(e);
+					}
 				});
 	}
 

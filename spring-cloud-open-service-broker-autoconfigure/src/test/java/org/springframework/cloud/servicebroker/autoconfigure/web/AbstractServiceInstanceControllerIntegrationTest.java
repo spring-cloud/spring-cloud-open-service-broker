@@ -125,6 +125,11 @@ public abstract class AbstractServiceInstanceControllerIntegrationTest extends C
 				.willReturn(Mono.error(exception));
 	}
 
+	protected void setupServiceInstanceServiceLastOperation(ServiceInstanceDoesNotExistException exception) {
+		given(serviceInstanceService.getLastOperation(any(GetLastServiceOperationRequest.class)))
+				.willReturn(Mono.error(exception));
+	}
+
 	protected void setupServiceInstanceService(UpdateServiceInstanceResponse response) {
 		given(serviceInstanceService.updateServiceInstance(any(UpdateServiceInstanceRequest.class)))
 				.willReturn(Mono.just(response));
