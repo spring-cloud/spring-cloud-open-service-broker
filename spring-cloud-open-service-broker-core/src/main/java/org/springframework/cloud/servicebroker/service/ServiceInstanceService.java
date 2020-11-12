@@ -75,10 +75,9 @@ public interface ServiceInstanceService {
 	 * 		fetched
 	 */
 	default Mono<GetServiceInstanceResponse> getServiceInstance(GetServiceInstanceRequest request) {
-		return Mono.error(new UnsupportedOperationException(
-				"This service broker does not support retrieving service instances. " +
-						"The service broker should set 'instances_retrievable:false' in the service catalog, " +
-						"or provide an implementation of the fetch instance API."));
+		return Mono.error(new UnsupportedOperationException("This service broker does not support retrieving service " +
+				"instances. The service broker should set 'instances_retrievable:false' in the service catalog, or " +
+				"provide an implementation of the fetch instance API."));
 	}
 
 	/**
@@ -90,11 +89,10 @@ public interface ServiceInstanceService {
 	 * 		broker
 	 */
 	default Mono<GetLastServiceOperationResponse> getLastOperation(GetLastServiceOperationRequest request) {
-		return Mono
-				.error(new UnsupportedOperationException("This service broker does not support getting the status of " +
-						"an asynchronous operation. " +
-						"If the service broker returns '202 Accepted' in response to a provision, update, or deprovision" +
-						"request, it must also provide an implementation of the get last operation API."));
+		return Mono.error(new UnsupportedOperationException("This service broker does not support getting the status " +
+				"of an asynchronous operation. If the service broker returns '202 Accepted' in response to a " +
+				"provision, update, or deprovision request, it must also provide an implementation of the get last " +
+				"operation API."));
 	}
 
 	/**
@@ -125,10 +123,9 @@ public interface ServiceInstanceService {
 	 * 		instance
 	 */
 	default Mono<UpdateServiceInstanceResponse> updateServiceInstance(UpdateServiceInstanceRequest request) {
-		return Mono.error(new UnsupportedOperationException(
-				"This service broker does not support updating service instances. " +
-						"The service broker should set 'plan_updateable:false' in the service catalog, " +
-						"or provide an implementation of the update instance API."));
+		return Mono.error(new UnsupportedOperationException("This service broker does not support updating service " +
+				"instances. The service broker should set 'plan_updateable:false' in the service catalog, or " +
+				"provide an implementation of the update instance API."));
 	}
 
 }
