@@ -41,11 +41,14 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	private final String dashboardUrl;
 
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private final ServiceInstanceMetadata metadata;
+
 	/**
 	 * Construct a new {@link UpdateServiceInstanceResponse}
 	 */
 	public UpdateServiceInstanceResponse() {
-		this(false, null, null);
+		this(false, null, null, null);
 	}
 
 	/**
@@ -54,10 +57,12 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 * @param async is the operation asynchronous
 	 * @param operation description of the operation being performed
 	 * @param dashboardUrl the dashboard URL
+	 * @param metadata containing metadata for the service instance
 	 */
-	public UpdateServiceInstanceResponse(boolean async, String operation, String dashboardUrl) {
+	public UpdateServiceInstanceResponse(boolean async, String operation, String dashboardUrl, ServiceInstanceMetadata metadata) {
 		super(async, operation);
 		this.dashboardUrl = dashboardUrl;
+		this.metadata = metadata;
 	}
 
 	/**
@@ -67,6 +72,15 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 */
 	public String getDashboardUrl() {
 		return this.dashboardUrl;
+	}
+
+	/**
+	 * Get object containing metadata for the service instance
+	 *
+	 * @return the service instance metadata
+	 */
+	public ServiceInstanceMetadata getMetadata() {
+		return this.metadata;
 	}
 
 	/**
@@ -91,7 +105,8 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		}
 		UpdateServiceInstanceResponse that = (UpdateServiceInstanceResponse) o;
 		return that.canEqual(this) &&
-				Objects.equals(dashboardUrl, that.dashboardUrl);
+				Objects.equals(dashboardUrl, that.dashboardUrl) &&
+				Objects.equals(metadata, that.metadata);
 	}
 
 	@Override
@@ -101,7 +116,7 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(super.hashCode(), dashboardUrl);
+		return Objects.hash(super.hashCode(), dashboardUrl, metadata);
 	}
 
 	@Override
@@ -109,6 +124,7 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		return super.toString() +
 				"UpdateServiceInstanceResponse{" +
 				"dashboardUrl='" + dashboardUrl + '\'' +
+				", metadata=" + metadata +
 				'}';
 	}
 
@@ -122,6 +138,8 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		private boolean async;
 
 		private String operation;
+
+		private ServiceInstanceMetadata metadata;
 
 		private UpdateServiceInstanceResponseBuilder() {
 		}
@@ -138,6 +156,21 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 */
 		public UpdateServiceInstanceResponse.UpdateServiceInstanceResponseBuilder dashboardUrl(String dashboardUrl) {
 			this.dashboardUrl = dashboardUrl;
+			return this;
+		}
+
+		/**
+		 * Object containing metadata for the service instance
+		 * Can be {@literal null} to indicate that metadata was not provided for the service instance.
+		 *
+		 * <p>
+		 * This value will set the {@literal metadata} field in the body of the response to the platform.
+		 *
+		 * @param metadata the service instance metadata
+		 * @return the builder
+		 */
+		public UpdateServiceInstanceResponse.UpdateServiceInstanceResponseBuilder metadata(ServiceInstanceMetadata metadata) {
+			this.metadata = metadata;
 			return this;
 		}
 
@@ -181,7 +214,7 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * @return the newly constructed {@literal UpdateServiceInstanceResponse}
 		 */
 		public UpdateServiceInstanceResponse build() {
-			return new UpdateServiceInstanceResponse(async, operation, dashboardUrl);
+			return new UpdateServiceInstanceResponse(async, operation, dashboardUrl, metadata);
 		}
 
 	}

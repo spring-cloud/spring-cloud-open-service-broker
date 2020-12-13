@@ -45,11 +45,14 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	@JsonIgnore //not sent on the wire as json payload, but as http status instead
 	private final boolean instanceExisted;
 
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private final ServiceInstanceMetadata metadata;
+
 	/**
 	 * Construct a new {@link CreateServiceInstanceResponse}
 	 */
 	public CreateServiceInstanceResponse() {
-		this(false, null, null, false);
+		this(false, null, null, false, null);
 	}
 
 	/**
@@ -59,12 +62,14 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 * @param operation description of the operation being performed
 	 * @param dashboardUrl the dashboard URL
 	 * @param instanceExisted true if the instance exists
+	 * @param metadata containing metadata for the service instance
 	 */
 	public CreateServiceInstanceResponse(boolean async, String operation, String dashboardUrl,
-			boolean instanceExisted) {
+			boolean instanceExisted, ServiceInstanceMetadata metadata) {
 		super(async, operation);
 		this.dashboardUrl = dashboardUrl;
 		this.instanceExisted = instanceExisted;
+		this.metadata = metadata;
 	}
 
 	/**
@@ -84,6 +89,15 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 */
 	public boolean isInstanceExisted() {
 		return this.instanceExisted;
+	}
+
+	/**
+	 * Get object containing metadata for the service instance
+	 *
+	 * @return the service instance metadata
+	 */
+	public ServiceInstanceMetadata getMetadata() {
+		return this.metadata;
 	}
 
 	/**
@@ -109,7 +123,8 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		CreateServiceInstanceResponse that = (CreateServiceInstanceResponse) o;
 		return that.canEqual(this) &&
 				instanceExisted == that.instanceExisted &&
-				Objects.equals(dashboardUrl, that.dashboardUrl);
+				Objects.equals(dashboardUrl, that.dashboardUrl) &&
+				Objects.equals(metadata, that.metadata);
 	}
 
 	@Override
@@ -119,7 +134,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(super.hashCode(), dashboardUrl, instanceExisted);
+		return Objects.hash(super.hashCode(), dashboardUrl, instanceExisted, metadata);
 	}
 
 	@Override
@@ -128,6 +143,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 				"CreateServiceInstanceResponse{" +
 				"dashboardUrl='" + dashboardUrl + '\'' +
 				", instanceExisted=" + instanceExisted +
+				", metadata=" + metadata +
 				'}';
 	}
 
@@ -143,6 +159,8 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		private boolean async;
 
 		private String operation;
+
+		private ServiceInstanceMetadata metadata;
 
 		private CreateServiceInstanceResponseBuilder() {
 		}
@@ -178,6 +196,21 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 */
 		public CreateServiceInstanceResponseBuilder instanceExisted(boolean instanceExisted) {
 			this.instanceExisted = instanceExisted;
+			return this;
+		}
+
+		/**
+		 * Object containing metadata for the service instance
+		 * Can be {@literal null} to indicate that metadata was not provided for the service instance.
+		 *
+		 * <p>
+		 * This value will set the {@literal metadata} field in the body of the response to the platform.
+		 *
+		 * @param metadata the service instance metadata
+		 * @return the builder
+		 */
+		public CreateServiceInstanceResponseBuilder metadata(ServiceInstanceMetadata metadata) {
+			this.metadata = metadata;
 			return this;
 		}
 
@@ -222,7 +255,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * @return the newly constructed {@literal CreateServiceInstanceResponse}
 		 */
 		public CreateServiceInstanceResponse build() {
-			return new CreateServiceInstanceResponse(async, operation, dashboardUrl, instanceExisted);
+			return new CreateServiceInstanceResponse(async, operation, dashboardUrl, instanceExisted, metadata);
 		}
 
 	}
