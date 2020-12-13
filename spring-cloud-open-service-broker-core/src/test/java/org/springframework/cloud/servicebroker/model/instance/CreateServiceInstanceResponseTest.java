@@ -16,9 +16,13 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.jayway.jsonpath.DocumentContext;
 import net.bytebuddy.utility.RandomString;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.assertj.core.util.Maps;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
@@ -38,11 +42,13 @@ class CreateServiceInstanceResponseTest {
 		assertThat(response.getOperation()).isNull();
 		assertThat(response.isInstanceExisted()).isEqualTo(false);
 		assertThat(response.getDashboardUrl()).isNull();
+		assertThat(response.getMetadata()).isNull();
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
 		assertThat(json).hasNoPath("$.operation");
 		assertThat(json).hasNoPath("$.dashboard_url");
+		assertThat(json).hasNoPath("$.metadata");
 	}
 
 	@Test
@@ -52,17 +58,22 @@ class CreateServiceInstanceResponseTest {
 				.operation("in progress")
 				.instanceExisted(true)
 				.dashboardUrl("https://dashboard.app.local")
+				.metadata(ServiceInstanceMetadata.builder().label("key","value").build())
 				.build();
 
 		assertThat(response.isAsync()).isEqualTo(true);
 		assertThat(response.getOperation()).isEqualTo("in progress");
 		assertThat(response.isInstanceExisted()).isEqualTo(true);
 		assertThat(response.getDashboardUrl()).isEqualTo("https://dashboard.app.local");
+		assertThat(response.getMetadata()).isEqualTo(
+				ServiceInstanceMetadata.builder().label("key","value").build());
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
 		assertThat(json).hasPath("$.operation").isEqualTo("in progress");
 		assertThat(json).hasPath("$.dashboard_url").isEqualTo("https://dashboard.app.local");
+		assertThat(json).hasPath("$.metadata.labels").isEqualTo(
+				Maps.newHashMap("key", "value"));
 	}
 
 	@Test
@@ -72,6 +83,13 @@ class CreateServiceInstanceResponseTest {
 
 		assertThat(response.getOperation()).isEqualTo("in progress");
 		assertThat(response.getDashboardUrl()).isEqualTo("https://dashboard.local");
+
+		Map<String,Object> labels = new HashMap<>();
+		labels.put("key1","value1");
+		labels.put("key2","value2");
+
+		assertThat(response.getMetadata()).isEqualTo(ServiceInstanceMetadata.builder().labels(labels).build());
+
 	}
 
 	@Test

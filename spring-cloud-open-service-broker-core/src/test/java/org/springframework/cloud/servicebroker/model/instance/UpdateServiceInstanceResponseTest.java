@@ -16,8 +16,12 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.assertj.core.util.Maps;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
@@ -34,10 +38,12 @@ class UpdateServiceInstanceResponseTest {
 
 		assertThat(response.isAsync()).isEqualTo(false);
 		assertThat(response.getOperation()).isNull();
+		assertThat(response.getMetadata()).isNull();
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
 		assertThat(json).hasNoPath("$.operation");
+		assertThat(json).hasNoPath("$.metadata");
 	}
 
 	@Test
@@ -46,15 +52,20 @@ class UpdateServiceInstanceResponseTest {
 				.async(true)
 				.dashboardUrl("https://dashboard.app.local")
 				.operation("in progress")
+				.metadata(ServiceInstanceMetadata.builder().label("key","value").build())
 				.build();
 
 		assertThat(response.isAsync()).isEqualTo(true);
 		assertThat(response.getOperation()).isEqualTo("in progress");
+		assertThat(response.getMetadata()).isEqualTo(
+				ServiceInstanceMetadata.builder().label("key","value").build());
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
 		assertThat(json).hasPath("$.operation").isEqualTo("in progress");
 		assertThat(json).hasPath("$.dashboard_url").isEqualTo("https://dashboard.app.local");
+		assertThat(json).hasPath("$.metadata.labels").isEqualTo(
+				Maps.newHashMap("key", "value"));
 	}
 
 	@Test
@@ -64,6 +75,12 @@ class UpdateServiceInstanceResponseTest {
 
 		assertThat(response.getOperation()).isEqualTo("in progress");
 		assertThat(response.getDashboardUrl()).isEqualTo("https://dashboard.local");
+
+		Map<String,Object> labels = new HashMap<>();
+		labels.put("key1","value1");
+		labels.put("key2","value2");
+
+		assertThat(response.getMetadata()).isEqualTo(ServiceInstanceMetadata.builder().labels(labels).build());
 	}
 
 	@Test
