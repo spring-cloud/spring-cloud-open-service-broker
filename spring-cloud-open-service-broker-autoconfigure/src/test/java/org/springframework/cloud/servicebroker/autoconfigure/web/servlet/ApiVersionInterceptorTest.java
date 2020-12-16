@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionMissingException;
@@ -31,6 +30,7 @@ import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 class ApiVersionInterceptorTest {
 
@@ -42,7 +42,7 @@ class ApiVersionInterceptorTest {
 
 	@BeforeEach
 	void setUp() {
-		MockitoAnnotations.initMocks(this);
+		openMocks(this);
 	}
 
 	@Test

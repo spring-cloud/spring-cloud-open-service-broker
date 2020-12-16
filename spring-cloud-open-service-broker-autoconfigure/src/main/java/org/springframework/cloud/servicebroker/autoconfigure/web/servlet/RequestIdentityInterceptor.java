@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 /**
  * {@link HandlerInterceptor} that inspects the request for the presence of the {@literal X-Broker-API-Request
@@ -30,7 +29,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  *
  * @author Roy Clarkson
  */
-public class RequestIdentityInterceptor extends HandlerInterceptorAdapter {
+public class RequestIdentityInterceptor implements HandlerInterceptor {
 
 	/**
 	 * Sets the {@literal X-Broker-API-Request-Identity} header in the response if a value is received in the request

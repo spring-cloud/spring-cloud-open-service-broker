@@ -18,7 +18,6 @@ package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
@@ -29,6 +28,7 @@ import org.springframework.web.server.WebFilterChain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 class ApiVersionWebFilterTest {
 
@@ -106,7 +106,7 @@ class ApiVersionWebFilterTest {
 					.build();
 		}
 		this.exchange = MockServerWebExchange.from(request);
-		MockitoAnnotations.initMocks(this);
+		openMocks(this);
 		exchange.getResponse().setStatusCode(HttpStatus.OK);
 		given(chain.filter(exchange))
 				.willReturn(Mono.empty());

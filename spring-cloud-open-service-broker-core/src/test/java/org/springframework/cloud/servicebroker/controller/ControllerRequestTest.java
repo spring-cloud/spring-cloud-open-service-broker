@@ -35,7 +35,7 @@ import org.springframework.cloud.servicebroker.service.CatalogService;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 @ExtendWith(MockitoExtension.class)
 public abstract class ControllerRequestTest {
@@ -56,7 +56,7 @@ public abstract class ControllerRequestTest {
 
 	@BeforeEach
 	public void setUpControllerRequestTest() {
-		initMocks(this);
+		openMocks(this);
 
 		plan = Plan.builder()
 				.id("plan-id")

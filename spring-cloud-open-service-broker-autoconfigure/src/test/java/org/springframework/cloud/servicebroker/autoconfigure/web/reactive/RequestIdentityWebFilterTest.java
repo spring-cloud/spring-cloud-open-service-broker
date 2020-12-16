@@ -18,7 +18,6 @@ package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
@@ -28,6 +27,7 @@ import org.springframework.web.server.WebFilterChain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 class RequestIdentityWebFilterTest {
 
@@ -45,7 +45,7 @@ class RequestIdentityWebFilterTest {
 				.header(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, "request-id")
 				.build();
 		this.exchange = MockServerWebExchange.from(request);
-		MockitoAnnotations.initMocks(this);
+		openMocks(this);
 		given(chain.filter(exchange)).willReturn(Mono.empty());
 		RequestIdentityWebFilter webFilter = new RequestIdentityWebFilter();
 		webFilter.filter(exchange, chain).block();
@@ -59,7 +59,7 @@ class RequestIdentityWebFilterTest {
 				.get(V2_API_PATH_PATTERN)
 				.build();
 		this.exchange = MockServerWebExchange.from(request);
-		MockitoAnnotations.initMocks(this);
+		openMocks(this);
 		given(chain.filter(exchange)).willReturn(Mono.empty());
 		RequestIdentityWebFilter webFilter = new RequestIdentityWebFilter();
 		webFilter.filter(exchange, chain).block();

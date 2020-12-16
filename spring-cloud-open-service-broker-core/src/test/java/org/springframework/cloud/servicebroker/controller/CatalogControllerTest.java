@@ -28,7 +28,7 @@ import org.springframework.cloud.servicebroker.service.CatalogService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 @ExtendWith(MockitoExtension.class)
 class CatalogControllerTest {
@@ -38,7 +38,7 @@ class CatalogControllerTest {
 
 	@BeforeEach
 	void setUp() {
-		initMocks(this);
+		openMocks(this);
 	}
 
 	@Test

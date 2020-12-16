@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 
@@ -30,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 class RequestIdentityInterceptorTest {
 
@@ -41,7 +41,7 @@ class RequestIdentityInterceptorTest {
 
 	@BeforeEach
 	void setUp() {
-		MockitoAnnotations.initMocks(this);
+		openMocks(this);
 	}
 
 	@Test

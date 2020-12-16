@@ -23,7 +23,6 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersion
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionMissingException;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 /**
  * {@link HandlerInterceptor} that inspects the service broker API version passed in all request headers and compares it
@@ -31,7 +30,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  *
  * @author Scott Frederick
  */
-public class ApiVersionInterceptor extends HandlerInterceptorAdapter {
+public class ApiVersionInterceptor implements HandlerInterceptor {
 
 	private final BrokerApiVersion version;
 
