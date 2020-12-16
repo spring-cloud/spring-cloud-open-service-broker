@@ -35,7 +35,7 @@ See the https://spring.io/projects/spring-cloud-open-service-broker/[project sit
 === Gradle Dependencies
 
 ```
-implementation("org.springframework.cloud:spring-cloud-starter-open-service-broker:3.1.2.RELEASE")
+implementation("org.springframework.cloud:spring-cloud-starter-open-service-broker:3.2.0")
 ```
 
 === Maven Dependencies:
