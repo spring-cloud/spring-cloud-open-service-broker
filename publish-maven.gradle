@@ -16,7 +16,7 @@ publishing {
 				}
 				url = "https://spring.io/projects/spring-cloud-open-service-broker"
 				organization {
-					name = "Pivotal Software, Inc."
+					name = "VMware, Inc."
 					url = "https://spring.io"
 				}
 				licenses {
@@ -39,12 +39,12 @@ publishing {
 					developer {
 						id = "sfrederick"
 						name = "Scott Frederick"
-						email = "sfrederick@pivotal.io"
+						email = "sfrederick@vmware.com"
 					}
 					developer {
 						id = "royclarkson"
 						name = "Roy Clarkson"
-						email = "rclarkson@pivotal.io"
+						email = "rclarkson@vmware.com"
 					}
 				}
 			}
