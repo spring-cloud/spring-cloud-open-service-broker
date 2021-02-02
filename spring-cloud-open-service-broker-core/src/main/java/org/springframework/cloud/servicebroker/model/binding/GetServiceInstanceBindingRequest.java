@@ -39,21 +39,30 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 
 	private transient final String bindingId;
 
+	private transient final String serviceDefinitionId;
+
+	private transient final String planId;
+
 	/**
 	 * Construct a new {@link GetServiceInstanceBindingRequest}
 	 *
 	 * @param serviceInstanceId the service instance ID
 	 * @param bindingId the service binding ID
+	 * @param serviceDefinitionId the service definition ID
+	 * @param planId the plan ID
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 */
-	public GetServiceInstanceBindingRequest(String serviceInstanceId, String bindingId, String platformInstanceId,
-			String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
+	public GetServiceInstanceBindingRequest(String serviceInstanceId, String bindingId, String serviceDefinitionId,
+			String planId, String platformInstanceId, String apiInfoLocation, Context originatingIdentity,
+			String requestIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.bindingId = bindingId;
+		this.serviceDefinitionId = serviceDefinitionId;
+		this.planId = planId;
 	}
 
 	/**
@@ -83,6 +92,30 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	}
 
 	/**
+	 * Get the ID of the service definition of the service instance.
+	 *
+	 * <p>
+	 * This value is set from the {@literal service_id} request parameter of the request from the platform
+	 *
+	 * @return the service definition ID
+	 */
+	public String getServiceDefinitionId() {
+		return this.serviceDefinitionId;
+	}
+
+	/**
+	 * Get the ID of the plan of the service instance.
+	 *
+	 * <p>
+	 * This value is set from the {@literal plan_id} request parameter of the request from the platform.
+	 *
+	 * @return the plan ID
+	 */
+	public String getPlanId() {
+		return this.planId;
+	}
+
+	/**
 	 * Create a builder that provides a fluent API for constructing a {@literal GetServiceInstanceBindingRequest}.
 	 *
 	 * <p>
@@ -109,7 +142,9 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		GetServiceInstanceBindingRequest that = (GetServiceInstanceBindingRequest) o;
 		return that.canEqual(this) &&
 				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
-				Objects.equals(bindingId, that.bindingId);
+				Objects.equals(bindingId, that.bindingId) &&
+				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
+				Objects.equals(planId, that.planId);
 	}
 
 	@Override
@@ -119,7 +154,7 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(super.hashCode(), serviceInstanceId, bindingId);
+		return Objects.hash(super.hashCode(), serviceInstanceId, bindingId, serviceDefinitionId, planId);
 	}
 
 	@Override
@@ -128,6 +163,8 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 				"GetServiceInstanceBindingRequest{" +
 				"serviceInstanceId='" + serviceInstanceId + '\'' +
 				", bindingId='" + bindingId + '\'' +
+				", serviceDefinitionId='" + serviceDefinitionId + '\'' +
+				", planId='" + planId + '\'' +
 				'}';
 	}
 
@@ -139,6 +176,10 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		private String serviceInstanceId;
 
 		private String bindingId;
+
+		private String serviceDefinitionId;
+
+		private String planId;
 
 		private String platformInstanceId;
 
@@ -172,6 +213,30 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		 */
 		public GetServiceInstanceBindingRequestBuilder bindingId(String bindingId) {
 			this.bindingId = bindingId;
+			return this;
+		}
+
+		/**
+		 * Set the service definition ID as would be provided in the request from the platform.
+		 *
+		 * @param serviceDefinitionId the service definition ID
+		 * @return the builder
+		 * @see #getServiceDefinitionId()
+		 */
+		public GetServiceInstanceBindingRequestBuilder serviceDefinitionId(String serviceDefinitionId) {
+			this.serviceDefinitionId = serviceDefinitionId;
+			return this;
+		}
+
+		/**
+		 * Set the plan ID as would be provided in the request from the platform.
+		 *
+		 * @param planId the plan ID
+		 * @return the builder
+		 * @see #getPlanId()
+		 */
+		public GetServiceInstanceBindingRequestBuilder planId(String planId) {
+			this.planId = planId;
 			return this;
 		}
 
@@ -229,8 +294,8 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 		 * @return the newly constructed {@literal GetServiceInstanceBindingRequest}
 		 */
 		public GetServiceInstanceBindingRequest build() {
-			return new GetServiceInstanceBindingRequest(serviceInstanceId, bindingId, platformInstanceId,
-					apiInfoLocation, originatingIdentity, requestIdentity);
+			return new GetServiceInstanceBindingRequest(serviceInstanceId, bindingId, serviceDefinitionId, planId,
+					platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		}
 
 	}

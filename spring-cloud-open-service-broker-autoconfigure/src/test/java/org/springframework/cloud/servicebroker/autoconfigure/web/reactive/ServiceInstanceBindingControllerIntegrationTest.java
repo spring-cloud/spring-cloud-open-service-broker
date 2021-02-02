@@ -347,7 +347,23 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 		setupServiceInstanceBindingService(GetServiceInstanceAppBindingResponse.builder()
 				.build());
 
-		client.get().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, false))
+		client.get().uri(buildGetUrl(PLATFORM_INSTANCE_ID))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isOk();
+
+		GetServiceInstanceBindingRequest actualRequest = verifyGetBinding();
+		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	void getBindingToAppWithParamsSucceeds() throws Exception {
+		setupServiceInstanceBindingService(GetServiceInstanceAppBindingResponse.builder()
+				.build());
+
+		client.get().uri(buildGetUrl(PLATFORM_INSTANCE_ID, "service-definition-id", "plan-id", false))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
@@ -363,7 +379,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 		setupServiceInstanceBindingService(GetServiceInstanceRouteBindingResponse.builder()
 				.build());
 
-		client.get().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, false))
+		client.get().uri(buildGetUrl(PLATFORM_INSTANCE_ID))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)

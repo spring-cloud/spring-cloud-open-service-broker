@@ -418,7 +418,23 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 		setupServiceInstanceService(GetServiceInstanceResponse.builder()
 				.build());
 
-		client.get().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, false))
+		client.get().uri(buildGetUrl(PLATFORM_INSTANCE_ID))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isOk();
+
+		GetServiceInstanceRequest actualRequest = verifyGetServiceInstance();
+		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	void getServiceInstanceWithParamsSucceeds() throws Exception {
+		setupServiceInstanceService(GetServiceInstanceResponse.builder()
+				.build());
+
+		client.get().uri(buildGetUrl(PLATFORM_INSTANCE_ID, "service-definition-id", "plan-id",false))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
@@ -433,7 +449,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	void getServiceInstanceWithOperationInProgressFails() throws Exception {
 		setupServiceInstanceService(new ServiceBrokerOperationInProgressException("task_10"));
 
-		client.get().uri(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, false))
+		client.get().uri(buildGetUrl(PLATFORM_INSTANCE_ID))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)

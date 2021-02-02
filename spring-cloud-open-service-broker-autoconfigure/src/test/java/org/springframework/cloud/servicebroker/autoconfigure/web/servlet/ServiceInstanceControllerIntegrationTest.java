@@ -465,7 +465,28 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 		setupServiceInstanceService(GetServiceInstanceResponse.builder()
 				.build());
 
-		MvcResult mvcResult = mockMvc.perform(get(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, false))
+		MvcResult mvcResult = mockMvc.perform(get(buildGetUrl(PLATFORM_INSTANCE_ID))
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
+				.andExpect(status().isOk());
+
+		GetServiceInstanceRequest actualRequest = verifyGetServiceInstance();
+		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
+	void getServiceInstanceWithParamsSucceeds() throws Exception {
+		setupServiceInstanceService(GetServiceInstanceResponse.builder()
+				.build());
+
+		MvcResult mvcResult = mockMvc.perform(get(buildGetUrl(PLATFORM_INSTANCE_ID, "service-definition-id",
+				"plan-id", false))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.contentType(MediaType.APPLICATION_JSON)
@@ -484,7 +505,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	void getServiceInstanceWithOperationInProgressFails() throws Exception {
 		setupServiceInstanceService(new ServiceBrokerOperationInProgressException("task_10"));
 
-		MvcResult mvcResult = mockMvc.perform(get(buildCreateUpdateUrl(PLATFORM_INSTANCE_ID, false))
+		MvcResult mvcResult = mockMvc.perform(get(buildGetUrl(PLATFORM_INSTANCE_ID))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.contentType(MediaType.APPLICATION_JSON)

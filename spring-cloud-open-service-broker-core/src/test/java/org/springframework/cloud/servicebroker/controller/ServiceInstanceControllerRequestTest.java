@@ -107,6 +107,8 @@ class ServiceInstanceControllerRequestTest extends ControllerRequestTest {
 	void getServiceInstanceParametersAreMappedToRequest() {
 		GetServiceInstanceRequest expectedRequest = GetServiceInstanceRequest.builder()
 				.serviceInstanceId("service-instance-id")
+				.serviceDefinitionId("service-definition-id")
+				.planId("plan-id")
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("api-info-location")
 				.originatingIdentity(identityContext)
@@ -115,7 +117,7 @@ class ServiceInstanceControllerRequestTest extends ControllerRequestTest {
 
 		ServiceInstanceController controller = createControllerUnderTest(expectedRequest);
 
-		controller.getServiceInstance(pathVariables, "service-instance-id",
+		controller.getServiceInstance(pathVariables, "service-instance-id", "service-definition-id", "plan-id",
 				"api-info-location", encodeOriginatingIdentity(identityContext), "request-id")
 				.block();
 	}

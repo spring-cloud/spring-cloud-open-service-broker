@@ -363,7 +363,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 		setupServiceInstanceBindingService(GetServiceInstanceAppBindingResponse.builder()
 				.build());
 
-		MvcResult mvcResult = mockMvc.perform(get(buildCreateUrl(PLATFORM_INSTANCE_ID, false))
+		MvcResult mvcResult = mockMvc.perform(get(buildGetUrl(PLATFORM_INSTANCE_ID))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
@@ -379,11 +379,31 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
+	void getBindingToAppWithParamsSucceeds() throws Exception {
+		setupServiceInstanceBindingService(GetServiceInstanceAppBindingResponse.builder()
+				.build());
+
+		MvcResult mvcResult = mockMvc.perform(get(buildGetUrl(PLATFORM_INSTANCE_ID, "service-definition-id", "plan-id", false))
+						.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+						.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+						.accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
+				.andExpect(status().isOk());
+
+		GetServiceInstanceBindingRequest actualRequest = verifyGetBinding();
+		assertHeaderValuesSet(actualRequest);
+	}
+
+	@Test
 	void getBindingToRouteSucceeds() throws Exception {
 		setupServiceInstanceBindingService(GetServiceInstanceRouteBindingResponse.builder()
 				.build());
 
-		MvcResult mvcResult = mockMvc.perform(get(buildCreateUrl(PLATFORM_INSTANCE_ID, false))
+		MvcResult mvcResult = mockMvc.perform(get(buildGetUrl(PLATFORM_INSTANCE_ID))
 				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
