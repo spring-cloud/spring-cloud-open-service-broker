@@ -142,7 +142,7 @@ class ServiceInstanceBindingControllerResponseCodeTest {
 				.willReturn(responseMono);
 
 		ResponseEntity<GetServiceInstanceBindingResponse> responseEntity = controller
-				.getServiceInstanceBinding(pathVariables, null, null, null, null, null)
+				.getServiceInstanceBinding(pathVariables, null, null, null, null, null, null, null)
 				.block();
 
 		assertThat(responseEntity).isNotNull();
@@ -156,7 +156,7 @@ class ServiceInstanceBindingControllerResponseCodeTest {
 				.willThrow(new ServiceInstanceBindingDoesNotExistException("binding-id"));
 
 		ResponseEntity<GetServiceInstanceBindingResponse> responseEntity = controller
-				.getServiceInstanceBinding(pathVariables, null, null, null, null, null)
+				.getServiceInstanceBinding(pathVariables, null, null, null, null, null, null, null)
 				.block();
 
 		assertThat(responseEntity).isNotNull();
@@ -170,7 +170,7 @@ class ServiceInstanceBindingControllerResponseCodeTest {
 
 		ResponseEntity<GetServiceInstanceBindingResponse> responseEntity = controller
 				.getServiceInstanceBinding(pathVariables, "nonexistent-service-id", "nonexistent-binding-id", null,
-						null, null)
+						null, null, null, null)
 				.block();
 
 		assertThat(responseEntity).isNotNull();

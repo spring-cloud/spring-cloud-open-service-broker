@@ -33,6 +33,8 @@ class GetServiceInstanceRequestTest {
 				.build();
 
 		assertThat(request.getServiceInstanceId()).isNull();
+		assertThat(request.getServiceDefinitionId()).isNull();
+		assertThat(request.getPlanId()).isNull();
 		assertThat(request.getApiInfoLocation()).isNull();
 		assertThat(request.getPlatformInstanceId()).isNull();
 		assertThat(request.getOriginatingIdentity()).isNull();
@@ -47,6 +49,8 @@ class GetServiceInstanceRequestTest {
 
 		GetServiceInstanceRequest request = GetServiceInstanceRequest.builder()
 				.serviceInstanceId("service-instance-id")
+				.serviceDefinitionId("service-definition-id")
+				.planId("plan-id")
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("https://api.app.local")
 				.originatingIdentity(originatingIdentity)
@@ -54,6 +58,8 @@ class GetServiceInstanceRequestTest {
 				.build();
 
 		assertThat(request.getServiceInstanceId()).isEqualTo("service-instance-id");
+		assertThat(request.getServiceDefinitionId()).isEqualTo("service-definition-id");
+		assertThat(request.getPlanId()).isEqualTo("plan-id");
 		assertThat(request.getPlatformInstanceId()).isEqualTo("platform-instance-id");
 		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.app.local");
 		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);

@@ -34,6 +34,8 @@ class GetServiceInstanceBindingRequestTest {
 
 		assertThat(request.getServiceInstanceId()).isNull();
 		assertThat(request.getBindingId()).isNull();
+		assertThat(request.getServiceDefinitionId()).isNull();
+		assertThat(request.getPlanId()).isNull();
 		assertThat(request.getApiInfoLocation()).isNull();
 		assertThat(request.getPlatformInstanceId()).isNull();
 		assertThat(request.getOriginatingIdentity()).isNull();
@@ -49,6 +51,8 @@ class GetServiceInstanceBindingRequestTest {
 		GetServiceInstanceBindingRequest request = GetServiceInstanceBindingRequest.builder()
 				.serviceInstanceId("service-instance-id")
 				.bindingId("binding-id")
+				.serviceDefinitionId("service-definition-id")
+				.planId("plan-id")
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("https://api.app.local")
 				.originatingIdentity(originatingIdentity)
@@ -57,6 +61,8 @@ class GetServiceInstanceBindingRequestTest {
 
 		assertThat(request.getServiceInstanceId()).isEqualTo("service-instance-id");
 		assertThat(request.getBindingId()).isEqualTo("binding-id");
+		assertThat(request.getServiceDefinitionId()).isEqualTo("service-definition-id");
+		assertThat(request.getPlanId()).isEqualTo("plan-id");
 
 		assertThat(request.getPlatformInstanceId()).isEqualTo("platform-instance-id");
 		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.app.local");

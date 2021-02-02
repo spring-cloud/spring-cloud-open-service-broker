@@ -20,6 +20,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
+import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIntegrationTest {
@@ -48,6 +49,23 @@ public abstract class ServiceInstanceBindingIntegrationTest extends ControllerIn
 		return buildBaseUrl(platformInstanceId)
 				.queryParam("accepts_incomplete", asyncAccepted)
 				.toUriString();
+	}
+
+	protected String buildGetUrl(String platformInstanceId) {
+		return buildGetUrl(platformInstanceId, null, null, false);
+	}
+
+	protected String buildGetUrl(String platformInstanceId, String serviceDefinitionId, String planId,
+			boolean asyncAccepted) {
+		UriComponentsBuilder builder = buildBaseUrl(platformInstanceId)
+				.queryParam("accepts_incomplete", asyncAccepted);
+		if (StringUtils.hasLength(serviceDefinitionId)) {
+			builder.queryParam("service_id", serviceDefinitionId);
+		}
+		if (StringUtils.hasLength(planId)) {
+			builder.queryParam("plan_id", planId);
+		}
+		return builder.toUriString();
 	}
 
 	protected String buildDeleteUrl() {

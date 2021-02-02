@@ -42,6 +42,7 @@ import org.springframework.cloud.servicebroker.model.instance.GetServiceInstance
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
+import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -154,6 +155,24 @@ public abstract class AbstractServiceInstanceControllerIntegrationTest extends C
 				.path(SERVICE_INSTANCE_ID)
 				.queryParam("accepts_incomplete", asyncAccepted)
 				.toUriString();
+	}
+
+	protected String buildGetUrl(String platformInstanceId) {
+		return buildGetUrl(platformInstanceId, null, null, false);
+	}
+
+	protected String buildGetUrl(String platformInstanceId, String serviceDefinitionId, String planId,
+			boolean asyncAccepted) {
+		UriComponentsBuilder builder = buildBaseUrl(platformInstanceId)
+				.path(SERVICE_INSTANCE_ID)
+				.queryParam("accepts_incomplete", asyncAccepted);
+		if (StringUtils.hasLength(serviceDefinitionId)) {
+			builder.queryParam("service_id", serviceDefinitionId);
+		}
+		if (StringUtils.hasLength(planId)) {
+			builder.queryParam("plan_id", planId);
+		}
+		return builder.toUriString();
 	}
 
 	protected String buildDeleteUrl() {

@@ -166,7 +166,7 @@ class ServiceInstanceControllerResponseCodeTest {
 				.willReturn(responseMono);
 
 		ResponseEntity<GetServiceInstanceResponse> responseEntity = controller
-				.getServiceInstance(pathVariables, null, null, null, null)
+				.getServiceInstance(pathVariables, null, null, null, null, null, null)
 				.block();
 
 		assertThat(responseEntity).isNotNull();
@@ -180,7 +180,7 @@ class ServiceInstanceControllerResponseCodeTest {
 				.willReturn(Mono.error(new ServiceInstanceDoesNotExistException("instance does not exist")));
 
 		ResponseEntity<GetServiceInstanceResponse> responseEntity = controller
-				.getServiceInstance(pathVariables, null, "service-definition-id", null, null)
+				.getServiceInstance(pathVariables, null, null, null, null, null, null)
 				.block();
 
 		assertThat(responseEntity).isNotNull();

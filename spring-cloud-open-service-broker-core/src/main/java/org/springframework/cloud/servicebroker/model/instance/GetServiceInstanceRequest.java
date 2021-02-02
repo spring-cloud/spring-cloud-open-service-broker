@@ -35,21 +35,29 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
  */
 public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 
-	private final transient String serviceInstanceId;
+	private transient final String serviceInstanceId;
+
+	private transient final String serviceDefinitionId;
+
+	private transient final String planId;
 
 	/**
 	 * Construct a new {@link GetServiceInstanceRequest}
 	 *
 	 * @param serviceInstanceId the service instance ID
+	 * @param serviceDefinitionId the service definition ID
+	 * @param planId the plan ID
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentity identity of the user that initiated the request from the platform
 	 * @param requestIdentity identity of the request sent from server
 	 */
-	public GetServiceInstanceRequest(String serviceInstanceId, String platformInstanceId,
-			String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
+	public GetServiceInstanceRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
+			String platformInstanceId, String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
+		this.serviceDefinitionId = serviceDefinitionId;
+		this.planId = planId;
 	}
 
 	/**
@@ -63,6 +71,30 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 	 */
 	public String getServiceInstanceId() {
 		return this.serviceInstanceId;
+	}
+
+	/**
+	 * Get the ID of the service definition of the service instance.
+	 *
+	 * <p>
+	 * This value is set from the {@literal service_id} request parameter of the request from the platform
+	 *
+	 * @return the service definition ID
+	 */
+	public String getServiceDefinitionId() {
+		return this.serviceDefinitionId;
+	}
+
+	/**
+	 * Get the ID of the plan of the service instance.
+	 *
+	 * <p>
+	 * This value is set from the {@literal plan_id} request parameter of the request from the platform.
+	 *
+	 * @return the plan ID
+	 */
+	public String getPlanId() {
+		return this.planId;
 	}
 
 	/**
@@ -91,7 +123,9 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 		}
 		GetServiceInstanceRequest that = (GetServiceInstanceRequest) o;
 		return that.canEqual(this) &&
-				Objects.equals(serviceInstanceId, that.serviceInstanceId);
+				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
+				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
+				Objects.equals(planId, that.planId);
 	}
 
 	@Override
@@ -101,7 +135,7 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(super.hashCode(), serviceInstanceId);
+		return Objects.hash(super.hashCode(), serviceInstanceId, serviceDefinitionId, planId);
 	}
 
 	@Override
@@ -109,6 +143,8 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 		return super.toString() +
 				"GetServiceInstanceRequest{" +
 				"serviceInstanceId='" + serviceInstanceId + '\'' +
+				", serviceDefinitionId='" + serviceDefinitionId + '\'' +
+				", planId='" + planId + '\'' +
 				'}';
 	}
 
@@ -118,6 +154,10 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 	public static final class GetServiceInstanceRequestBuilder {
 
 		private String serviceInstanceId;
+
+		private String serviceDefinitionId;
+
+		private String planId;
 
 		private String platformInstanceId;
 
@@ -139,6 +179,30 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 		 */
 		public GetServiceInstanceRequestBuilder serviceInstanceId(String serviceInstanceId) {
 			this.serviceInstanceId = serviceInstanceId;
+			return this;
+		}
+
+		/**
+		 * Set the service definition ID as would be provided in the request from the platform.
+		 *
+		 * @param serviceDefinitionId the service definition ID
+		 * @return the builder
+		 * @see #getServiceDefinitionId()
+		 */
+		public GetServiceInstanceRequestBuilder serviceDefinitionId(String serviceDefinitionId) {
+			this.serviceDefinitionId = serviceDefinitionId;
+			return this;
+		}
+
+		/**
+		 * Set the plan ID as would be provided in the request from the platform.
+		 *
+		 * @param planId the plan ID
+		 * @return the builder
+		 * @see #getPlanId()
+		 */
+		public GetServiceInstanceRequestBuilder planId(String planId) {
+			this.planId = planId;
 			return this;
 		}
 
@@ -196,8 +260,8 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 		 * @return the newly constructed {@literal GetServiceInstanceRequest}
 		 */
 		public GetServiceInstanceRequest build() {
-			return new GetServiceInstanceRequest(serviceInstanceId,
-					platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
+			return new GetServiceInstanceRequest(serviceInstanceId, serviceDefinitionId, planId, platformInstanceId,
+					apiInfoLocation, originatingIdentity, requestIdentity);
 		}
 
 	}

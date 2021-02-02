@@ -105,6 +105,8 @@ class ServiceInstanceBindingControllerRequestTest extends ControllerRequestTest 
 		GetServiceInstanceBindingRequest expectedRequest = GetServiceInstanceBindingRequest.builder()
 				.serviceInstanceId("service-instance-id")
 				.bindingId("binding-id")
+				.serviceDefinitionId("service-definition-id")
+				.planId("plan-id")
 				.platformInstanceId("platform-instance-id")
 				.apiInfoLocation("api-info-location")
 				.originatingIdentity(identityContext)
@@ -114,7 +116,8 @@ class ServiceInstanceBindingControllerRequestTest extends ControllerRequestTest 
 		ServiceInstanceBindingController controller = createControllerUnderTest(expectedRequest);
 
 		controller.getServiceInstanceBinding(pathVariables, "service-instance-id", "binding-id",
-				"api-info-location", encodeOriginatingIdentity(identityContext), "request-id");
+				"service-definition-id", "plan-id", "api-info-location", encodeOriginatingIdentity(identityContext),
+				"request-id");
 	}
 
 	@Test
