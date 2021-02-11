@@ -25,7 +25,7 @@ ext {
 	}
 	javadocLinks = [
 			javaApi,
-			"https://docs.spring.io/spring/docs/${springFrameworkVersion}/javadoc-api/",
+			"https://docs.spring.io/spring-framework/docs/${springFrameworkVersion}/javadoc-api/",
 	] as String[]
 }
 
