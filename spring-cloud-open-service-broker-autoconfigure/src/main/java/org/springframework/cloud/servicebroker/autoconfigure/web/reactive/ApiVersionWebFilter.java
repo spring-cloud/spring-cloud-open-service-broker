@@ -26,8 +26,6 @@ import reactor.core.publisher.Mono;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionErrorMessage;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
-import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
@@ -73,47 +71,43 @@ public class ApiVersionWebFilter implements WebFilter {
 	 */
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-		PathPattern p = new PathPatternParser().parse(V2_API_PATH_PATTERN);
-		Mono<Void> filterMono = chain.filter(exchange);
-		if (p.matches(exchange.getRequest().getPath()) && version != null && !anyVersionAllowed()) {
-			String apiVersion = exchange.getRequest().getHeaders().getFirst(version.getBrokerApiVersionHeader());
+		PathPattern pathPattern = new PathPatternParser().parse(V2_API_PATH_PATTERN);
+		if (pathPattern.matches(exchange.getRequest().getPath()) && version != null && !anyVersionAllowed()) {
+			String requestedApiVersion = exchange.getRequest().getHeaders()
+					.getFirst(version.getBrokerApiVersionHeader());
 			ServerHttpResponse response = exchange.getResponse();
-			String message = null;
-			if (apiVersion == null) {
+			if (requestedApiVersion == null) {
 				response.setStatusCode(HttpStatus.BAD_REQUEST);
-				message = ServiceBrokerApiVersionErrorMessage.from(version.getApiVersion(), "null").toString();
+				return writeResponse(response, requestedApiVersion);
 			}
-			else if (!version.getApiVersion().equals(apiVersion)) {
+			else if (!version.getApiVersion().equals(requestedApiVersion)) {
 				response.setStatusCode(HttpStatus.PRECONDITION_FAILED);
-				message = ServiceBrokerApiVersionErrorMessage.from(version.getApiVersion(), apiVersion)
-						.toString();
-			}
-			if (message != null) {
-				String json;
-				try {
-					json = new ObjectMapper().writeValueAsString(new ErrorMessage(message));
-				}
-				catch (JsonProcessingException e) {
-					json = "{}";
-				}
-				Flux<DataBuffer> responseBody =
-						Flux.just(json)
-								.map(s -> toDataBuffer(s, response.bufferFactory()));
-				filterMono = response.writeWith(responseBody);
+				return writeResponse(response, requestedApiVersion);
 			}
 		}
-		return filterMono;
+		return chain.filter(exchange);
 	}
 
 	private boolean anyVersionAllowed() {
 		return BrokerApiVersion.API_VERSION_ANY.equals(version.getApiVersion());
 	}
 
-	private DataBuffer toDataBuffer(String value, DataBufferFactory factory) {
-		byte[] data = value.getBytes(StandardCharsets.UTF_8);
-		DataBuffer buffer = factory.allocateBuffer(data.length);
-		buffer.write(data);
-		return buffer;
+	private Mono<Void> writeResponse(ServerHttpResponse response, String requestedApiVersion) {
+		String message = ServiceBrokerApiVersionErrorMessage.from(version.getApiVersion(), requestedApiVersion)
+				.toString();
+		return response.writeWith(Flux.just(response.bufferFactory().allocateBuffer()
+				.write(toJson(ErrorMessage.builder().message(message).build()), StandardCharsets.UTF_8)));
+	}
+
+	private String toJson(ErrorMessage message) {
+		String json;
+		try {
+			json = new ObjectMapper().writeValueAsString(message);
+		}
+		catch (JsonProcessingException e) {
+			json = "{}";
+		}
+		return json;
 	}
 
 }

@@ -37,8 +37,33 @@ class ErrorMessageTest {
 	}
 
 	@Test
+	void errorWithCodeAndDescriptionIsBuiltWithBuilder() {
+		ErrorMessage errorMessage = ErrorMessage.builder()
+				.error("ErrorCode")
+				.message("error description")
+				.build();
+
+		DocumentContext json = JsonUtils.toJsonPath(errorMessage);
+
+		assertThat(json).hasPath("$.error").isEqualTo("ErrorCode");
+		assertThat(json).hasPath("$.description").isEqualTo("error description");
+	}
+
+	@Test
 	void errorWithDescriptionIsBuilt() {
 		ErrorMessage errorMessage = new ErrorMessage("error description");
+
+		DocumentContext json = JsonUtils.toJsonPath(errorMessage);
+
+		assertThat(json).hasNoPath("$.error");
+		assertThat(json).hasPath("$.description").isEqualTo("error description");
+	}
+
+	@Test
+	void errorWithDescriptionIsBuiltWithBuilder() {
+		ErrorMessage errorMessage = ErrorMessage.builder()
+				.message("error description")
+				.build();
 
 		DocumentContext json = JsonUtils.toJsonPath(errorMessage);
 

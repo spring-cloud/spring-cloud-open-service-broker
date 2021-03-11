@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
+ * @author Roy Clarkson
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-broker-errors">Open
  * 		Service Broker API specification</a>
  */
@@ -82,6 +83,15 @@ public class ErrorMessage {
 		return this.message;
 	}
 
+	/**
+	 * Create a builder that provides a fluent API for constructing an {@literal ErrorMessage}.
+	 *
+	 * @return the builder
+	 */
+	public static ErrorMessageBuilder builder() {
+		return new ErrorMessageBuilder();
+	}
+
 	@Override
 	public final boolean equals(Object o) {
 		if (this == o) {
@@ -106,6 +116,49 @@ public class ErrorMessage {
 				"error='" + error + '\'' +
 				", message='" + message + '\'' +
 				'}';
+	}
+
+	/**
+	 * Provides a fluent API for constructing an {@link ErrorMessage}.
+	 */
+	public static final class ErrorMessageBuilder {
+
+		private String error;
+
+		private String message;
+
+		/**
+		 * Set the error code
+		 *
+		 * @param error the error code
+		 * @return builder
+		 * @see #getError()
+		 */
+		public ErrorMessageBuilder error(String error) {
+			this.error = error;
+			return this;
+		}
+
+		/**
+		 * Set the description
+		 *
+		 * @param message the error description
+		 * @return the builder
+		 * @see #getMessage()
+		 */
+		public ErrorMessageBuilder message(String message) {
+			this.message = message;
+			return this;
+		}
+
+		/**
+		 * Construct an {@link ErrorMessage} from the provided values
+		 *
+		 * @return the newly constructed {@link ErrorMessage}
+		 */
+		public ErrorMessage build() {
+			return new ErrorMessage(error, message);
+		}
 	}
 
 }
