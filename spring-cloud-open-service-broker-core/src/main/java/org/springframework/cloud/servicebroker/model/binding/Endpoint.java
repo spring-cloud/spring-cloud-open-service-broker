@@ -141,7 +141,7 @@ public class Endpoint {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal VolumeMount}.
+	 * Create a builder that provides a fluent API for constructing an {@literal Endpoint}.
 	 *
 	 * @return the builder
 	 */
