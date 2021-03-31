@@ -1,5 +1,3 @@
-import org.springframework.cloud.contract.verifier.config.TestFramework
-
 /*
  * Copyright 2002-2021 the original author or authors.
  *
@@ -16,29 +14,32 @@ import org.springframework.cloud.contract.verifier.config.TestFramework
  * limitations under the License.
  */
 
+import org.springframework.cloud.contract.verifier.config.TestFramework
+import org.springframework.cloud.contract.verifier.config.TestMode
+
 plugins {
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'groovy'
 	id 'org.springframework.cloud.contract' version "${springCloudContractVersion}"
 }
 
 description = "Spring Cloud Open Service Broker Contract Tests"
 
-apply plugin: 'groovy'
-
 contracts {
-	packageWithBaseClasses = "org.springframework.cloud.servicebroker.contract"
-	testMode = "EXPLICIT"
 	testFramework(TestFramework.JUNIT5)
+	testMode(TestMode.EXPLICIT)
+	packageWithBaseClasses = "org.springframework.cloud.servicebroker.contract"
 }
 
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-contract-dependencies:${springCloudContractVersion}"
-		mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+contractTest {
+	useJUnitPlatform()
+	testLogging {
+		exceptionFormat = 'full'
 	}
 }
 
 dependencies {
+	implementation platform("org.springframework.cloud:spring-cloud-contract-dependencies:${springCloudContractVersion}")
+	implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
 	testImplementation project(':spring-cloud-starter-open-service-broker')
 	testImplementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webflux'

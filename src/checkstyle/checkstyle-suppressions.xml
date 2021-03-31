@@ -27,9 +27,13 @@
 			files="[\\/]src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]cloud[\\/]servicebroker[\\/].+(Test|Tests)"
 			checks="JavadocStyleCheck" id="checkEmptyJavadoc"/>
 
-	<!-- tests -->
+	<!-- contract tests -->
 	<suppress
-			files="[\\/]src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]cloud[\\/]servicebroker[\\/]contract[//\/]*"
+			files="[\\/]src[\\/]contractTest[\\/]java[\\/]org[\\/]springframework[\\/]cloud[\\/]servicebroker[\\/]contract[//\/]*"
 			checks="IllegalImport" id="bannedJUnitJupiterImports"/>
+
+	<suppress
+			files="[\\/]build[\\/]generated-test-sources[\\/]contractTest[\\/]java[\\/]org[\\/]springframework[\\/]cloud[\\/]servicebroker[\\/]contract[//\/]*"
+			checks=".*"/>
 
 </suppressions>
