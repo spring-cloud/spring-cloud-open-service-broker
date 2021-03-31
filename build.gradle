@@ -78,10 +78,10 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-acceptance-w
 	}
 }
 
-// perform lint checks on all code, except for sample code used in docs
+// perform lint checks on all code, except for sample code used in docs,
+// and generated contract tests
 configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 	apply plugin: 'checkstyle'
-	apply plugin: 'pmd'
 
 	checkstyle {
 		configFile = rootProject.file("src/checkstyle/checkstyle.xml")
@@ -93,8 +93,15 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 		source = "src/main/java"
 	}
 	checkstyleTest {
-		source = "src/test/java"
+		source = ["src/test/java", "src/contractTest/java"]
 	}
+}
+
+// struggled to get pmd to ignore or exclude the generated test classes, so
+// ignoring the entire contracts submodule
+configure(allprojects - [project(':spring-cloud-open-service-broker-docs'),
+						 project(':spring-cloud-open-service-broker-contract-tests')]) {
+	apply plugin: 'pmd'
 
 	pmd {
 		toolVersion = "${pmdVersion}"
@@ -110,7 +117,10 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 		ruleSetFiles = rootProject.files("src/pmd/pmdTestRuleSet.xml")
 		source = "src/test/java"
 	}
+}
 
+// enable JUnit 5 tests, ignoring documentation subproject because there are no tests
+configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 	test {
 		useJUnitPlatform()
 		testLogging {
@@ -120,6 +130,7 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 	}
 }
 
+// define `dependencyReport` task to aggregate each subproject dependencies
 subprojects {
 	task dependencyReport(type: DependencyReportTask)
 }
