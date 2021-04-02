@@ -6,11 +6,11 @@ name: Java 15
 on:
   push:
     branches:
-      - master
+      - main
       - 3.*
   pull_request:
     branches:
-      - master
+      - main
       - 3.*
 
 jobs:
