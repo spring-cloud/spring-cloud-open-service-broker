@@ -66,6 +66,18 @@ Deploy the artifacts to your local maven repository:
 
     ./gradlew publishToMavenLocal
 
+Perform all checks, including checkstyle, pmd, unit tests, and contract tests:
+
+    ./gradlew check
+
+Run only unit tests:
+
+    ./gradlew test
+
+Run only contract tests:
+
+    ./gradlew contractTest
+
 == Working with the code
 If you don't have an IDE preference we would recommend that you use
 https://spring.io/tools[Spring Tool Suite] or
