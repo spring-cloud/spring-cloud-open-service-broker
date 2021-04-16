@@ -3,7 +3,6 @@ image:https://github.com/spring-cloud/spring-cloud-open-service-broker/workflows
 image:https://github.com/spring-cloud/spring-cloud-open-service-broker/workflows/Java%2015/badge.svg["GitHub Actions", link="https://github.com/spring-cloud/spring-cloud-open-service-broker/actions?query=workflow%3A%22Java+15%22"]
 image:https://circleci.com/gh/spring-cloud/spring-cloud-open-service-broker.svg?style=svg["CircleCI", link="https://circleci.com/gh/spring-cloud/spring-cloud-open-service-broker"]
 image:https://api.codacy.com/project/badge/Grade/6fb04712acd14a898ecf504d545d1400["Codacy code quality", link="https://www.codacy.com/app/scottfrederick/spring-cloud-open-service-broker?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=spring-cloud/spring-cloud-open-service-broker&amp;utm_campaign=Badge_Grade"]
-image:https://codecov.io/gh/spring-cloud/spring-cloud-open-service-broker/branch/master/graph/badge.svg["Codecov", link="https://codecov.io/gh/spring-cloud/spring-cloud-open-service-broker/branch/master"]
 
 = Overview
 
