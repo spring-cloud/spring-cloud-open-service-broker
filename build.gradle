@@ -273,3 +273,8 @@ configure(rootProject) {
 		description = "Builds -dist and -docs distribution archives."
 	}
 }
+
+wrapper {
+	gradleVersion = "6.8.3"
+	distributionType = Wrapper.DistributionType.ALL
+}
