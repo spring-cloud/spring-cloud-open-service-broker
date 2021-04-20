@@ -1,7 +1,6 @@
 image:https://build.spring.io/plugins/servlet/wittified/build-status/CLOUD-SCCFSB["Bamboo", link="https://build.spring.io/browse/CLOUD-SCCFSB"] image:https://github.com/spring-cloud/spring-cloud-open-service-broker/workflows/Java%208/badge.svg["GitHub Actions", link="https://github.com/spring-cloud/spring-cloud-open-service-broker/actions?query=workflow%3A%22Java+8%22"]
 image:https://github.com/spring-cloud/spring-cloud-open-service-broker/workflows/Java%2011/badge.svg["GitHub Actions", link="https://github.com/spring-cloud/spring-cloud-open-service-broker/actions?query=workflow%3A%22Java+11%22"]
-image:https://github.com/spring-cloud/spring-cloud-open-service-broker/workflows/Java%2014/badge.svg["GitHub Actions", link="https://github.com/spring-cloud/spring-cloud-open-service-broker/actions?query=workflow%3A%22Java+14%22"]
-image:https://circleci.com/gh/spring-cloud/spring-cloud-open-service-broker.svg?style=svg["CircleCI", link="https://circleci.com/gh/spring-cloud/spring-cloud-open-service-broker"]
+image:https://github.com/spring-cloud/spring-cloud-open-service-broker/workflows/Java%2015/badge.svg["GitHub Actions", link="https://github.com/spring-cloud/spring-cloud-open-service-broker/actions?query=workflow%3A%22Java+15%22"]
 image:https://api.codacy.com/project/badge/Grade/6fb04712acd14a898ecf504d545d1400["Codacy code quality", link="https://www.codacy.com/app/scottfrederick/spring-cloud-open-service-broker?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=spring-cloud/spring-cloud-open-service-broker&amp;utm_campaign=Badge_Grade"]
 
 = Overview
@@ -30,12 +29,12 @@ Spring WebFlux and Spring MVC are both supported in version 3.0 and later
 
 == Getting Started
 
-See the https://spring.io/projects/spring-cloud-open-service-broker/[project site] and https://docs.spring.io/spring-cloud-open-service-broker/docs/current/reference/html5/[reference documentation] to get started building a service broker using this framework.
+See the https://spring.io/projects/spring-cloud-open-service-broker/[project site] and https://docs.spring.io/spring-cloud-open-service-broker/docs/current/reference/[reference documentation] to get started building a service broker using this framework.
 
 === Gradle Dependencies
 
 ```
-implementation("org.springframework.cloud:spring-cloud-starter-open-service-broker:3.2.0")
+implementation("org.springframework.cloud:spring-cloud-starter-open-service-broker:3.3.0")
 ```
 
 === Maven Dependencies:
@@ -44,7 +43,7 @@ implementation("org.springframework.cloud:spring-cloud-starter-open-service-brok
 <dependency>
   <groupId>org.springframework.cloud</groupId>
   <artifactId>spring-cloud-starter-open-service-broker</artifactId>
-  <version>3.2.0</version>
+  <version>3.3.0</version>
 </dependency>
 ```
 
@@ -63,6 +62,18 @@ The project is built with Gradle. The https://docs.gradle.org/current/userguide/
 Deploy the artifacts to your local maven repository:
 
     ./gradlew publishToMavenLocal
+
+Perform all checks, including checkstyle, pmd, unit tests, and contract tests:
+
+    ./gradlew check
+
+Run only unit tests:
+
+    ./gradlew test
+
+Run only contract tests:
+
+    ./gradlew contractTest
 
 == Working with the code
 If you don't have an IDE preference we would recommend that you use
