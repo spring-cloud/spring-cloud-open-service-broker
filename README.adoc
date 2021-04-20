@@ -1,5 +1,4 @@
 image:https://build.spring.io/plugins/servlet/wittified/build-status/CLOUD-SCCFSB["Bamboo", link="https://build.spring.io/browse/CLOUD-SCCFSB"]
-image:https://api.codacy.com/project/badge/Grade/6fb04712acd14a898ecf504d545d1400["Codacy code quality", link="https://www.codacy.com/app/scottfrederick/spring-cloud-open-service-broker?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=spring-cloud/spring-cloud-open-service-broker&amp;utm_campaign=Badge_Grade"]
 
 = Overview
 
