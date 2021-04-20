@@ -71,11 +71,6 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-acceptance-w
 						 project(':spring-cloud-open-service-broker-docs')]) {
 	apply plugin: 'java-library'
 	apply from: "${rootProject.projectDir}/publish-maven.gradle"
-	apply plugin: 'jacoco'
-
-	jacoco {
-		toolVersion = "${jacocoVersion}"
-	}
 }
 
 // perform lint checks on all code, except for sample code used in docs,
