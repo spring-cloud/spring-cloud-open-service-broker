@@ -18,6 +18,8 @@ apply plugin: "base"
 
 buildscript {
 	repositories {
+		gradlePluginPortal()
+		mavenCentral()
 		maven { url "https://repo.spring.io/plugins-release" }
 	}
 	dependencies {
@@ -63,7 +65,8 @@ configure(allprojects) {
 	apply from: "${rootProject.projectDir}/publish-maven.gradle"
 
 	repositories {
-		maven { url "https://repo.spring.io/libs-release" }
+		mavenCentral()
+		maven { url "https://repo.spring.io/release" }
 	}
 
 	if (project.hasProperty("springVersion") || project.hasProperty("springBootVersion")) {
