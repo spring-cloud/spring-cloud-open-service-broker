@@ -20,7 +20,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
@@ -36,7 +36,7 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-2">Open Service
  * 		Broker API specification</a>
  */
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)

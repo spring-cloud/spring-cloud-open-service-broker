@@ -24,7 +24,7 @@ import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import org.springframework.cloud.servicebroker.model.Context;
@@ -286,7 +286,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	/**
 	 * Information about the service instance prior to the update request.
 	 */
-	@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+	@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 	public static class PreviousValues {
 
 		@NotEmpty

@@ -24,7 +24,7 @@ import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import org.springframework.util.CollectionUtils;
@@ -38,7 +38,7 @@ import org.springframework.util.CollectionUtils;
  * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-plan-object">Open
  * 		Service Broker API specification</a>
  */
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(Include.NON_NULL)
 public class Plan {
 

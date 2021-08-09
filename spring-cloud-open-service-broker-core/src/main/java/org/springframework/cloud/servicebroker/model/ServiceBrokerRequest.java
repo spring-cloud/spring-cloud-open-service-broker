@@ -19,7 +19,7 @@ package org.springframework.cloud.servicebroker.model;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  * @author Scott Frederick
  * @author Roy Clarkson
  */
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ServiceBrokerRequest {
 
 	/**

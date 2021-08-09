@@ -22,7 +22,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import org.springframework.util.CollectionUtils;
@@ -38,7 +38,7 @@ import org.springframework.util.CollectionUtils;
  * @see <a href=https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#bind-resource-object>Open
  * 		Service Broker API specification</a>
  */
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class BindResource {
 
 	private final String appGuid;
