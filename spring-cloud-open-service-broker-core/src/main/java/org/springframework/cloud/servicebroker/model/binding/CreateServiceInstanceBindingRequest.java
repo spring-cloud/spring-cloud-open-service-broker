@@ -54,11 +54,11 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	@JsonIgnore //OSB field passed as path param
 	private transient String bindingId;
 
-	@NotEmpty
+	@NotEmpty(message = "service_id must not be empty.")
 	@JsonProperty("service_id")
 	private final String serviceDefinitionId;
 
-	@NotEmpty
+	@NotEmpty(message = "plan_id must not be empty.")
 	private final String planId;
 
 	@Deprecated

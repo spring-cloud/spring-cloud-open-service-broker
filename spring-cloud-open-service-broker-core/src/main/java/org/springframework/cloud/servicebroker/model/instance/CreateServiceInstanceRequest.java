@@ -60,12 +60,14 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * remains in the model for marshalling support but test harnesses should not use
 	 */
 	@Deprecated
+	@JsonIgnore
 	private final String organizationGuid;
 
 	/**
 	 * remains in the model for marshalling support but test harnesses should not use
 	 */
 	@Deprecated
+	@JsonIgnore
 	private final String spaceGuid;
 
 	@JsonIgnore //mapped as path param

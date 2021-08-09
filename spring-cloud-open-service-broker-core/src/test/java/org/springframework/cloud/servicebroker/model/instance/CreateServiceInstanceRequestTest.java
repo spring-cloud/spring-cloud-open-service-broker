@@ -193,8 +193,6 @@ class CreateServiceInstanceRequestTest {
 
 		assertThat(request.getServiceDefinitionId()).isEqualTo("test-service-id");
 		assertThat(request.getPlanId()).isEqualTo("test-plan-id");
-		assertThat(request.getOrganizationGuid()).isEqualTo("test-organization-guid");
-		assertThat(request.getSpaceGuid()).isEqualTo("test-space-guid");
 	}
 
 	@Test
