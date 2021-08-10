@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
@@ -71,6 +72,7 @@ public final class JsonUtils {
 	public static <T> T readTestDataFile(String filename, Class<T> contentType) {
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			return objectMapper.readValue(getTestDataFileReader(filename), contentType);
 		}
 		catch (IOException e) {
