@@ -1,0 +1,80 @@
+---
+aliases:
+  - &slack-success-notification
+    put: alert
+    params:
+      icon_emoji: ":concourse:"
+      username: concourse
+      channel: ((scosb-slack-success-channel))
+      text: "$BUILD_PIPELINE_NAME pipeline has succeeded with build <${ATC_EXTERNAL_URL}/builds/$BUILD_ID|$BUILD_NAME>!"
+  - &slack-failure-notification
+    put: alert
+    params:
+      icon_emoji: ":animal-1252:"
+      username: concourse
+      channel: ((ab-slack-failure-channel))
+      text: <!here> Build <${ATC_EXTERNAL_URL}/builds/$BUILD_ID|$BUILD_NAME> of job $BUILD_JOB_NAME in the $BUILD_PIPELINE_NAME pipeline has failed!
+
+jobs:
+  - name: build
+    serial: true
+    public: true
+    plan:
+      - get: git-repo
+        trigger: true
+      - task: build-project
+        timeout: 1h30m
+        file: git-repo/ci/tasks/build-project.yml
+        vars:
+          ci-image-tag: ((ci-image-tag))
+      - put: artifactory-repo
+        params: &artifactory-params
+          repo: libs-snapshot-local
+          folder: distribution-repository
+          build_uri: "${ATC_EXTERNAL_URL}/teams/${BUILD_TEAM_NAME}/pipelines/${BUILD_PIPELINE_NAME}/jobs/${BUILD_JOB_NAME}/builds/${BUILD_NAME}"
+          build_number: "${BUILD_PIPELINE_NAME}-${BUILD_JOB_NAME}-${BUILD_NAME}"
+          disable_checksum_uploads: true
+    on_failure:
+      *slack-failure-notification
+
+resource_types:
+  - name: artifactory-resource
+    type: registry-image
+    source:
+      repository: ((dockerhub-mirror-registry))/springio/artifactory-resource
+      tag: 0.0.14
+
+  - name: slack-notification
+    type: registry-image
+    source:
+      repository: ((dockerhub-mirror-registry))/cfcommunity/slack-notification-resource
+      tag: latest
+
+resources:
+  - name: git-repo
+    type: git
+    source:
+      uri: ((github-repo))
+      username: ((github-username))
+      password: ((github-password))
+      branch: ((branch))
+      ignore_paths: ["ci/images/*"]
+      fetch_tags: true
+
+  - name: artifactory-repo
+    type: artifactory-resource
+    source:
+      uri: ((artifactory-server))
+      username: ((artifactory-username))
+      password: ((artifactory-password))
+      build_name: ((build-name))
+
+  - name: alert
+    type: slack-notification
+    source:
+      url: ((scs-slack-webhook))
+
+groups:
+  - name: "build"
+    jobs:
+      - build
