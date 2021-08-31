@@ -14,6 +14,6 @@ else
 fi
 
 pushd git-repo >/dev/null
-./gradlew --parallel clean "$build_task" publish \
+./gradlew clean "${build_task}" publish \
 	-PpublicationRepository="${repository}"
 popd >/dev/null
