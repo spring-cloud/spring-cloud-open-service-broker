@@ -29,6 +29,8 @@ jobs:
           ci-image-tag: ((ci-image-tag))
       - put: artifactory-repo
         params: &artifactory-params
+          signing_key: ((signing-key))
+          signing_passphrase: ((signing-passphrase))
           repo: libs-snapshot-local
           folder: distribution-repository
           build_uri: "${ATC_EXTERNAL_URL}/teams/${BUILD_TEAM_NAME}/pipelines/${BUILD_PIPELINE_NAME}/jobs/${BUILD_JOB_NAME}/builds/${BUILD_NAME}"
@@ -55,7 +57,7 @@ resources:
     type: git
     source:
       uri: ((github-repo))
-      username: ((github-username))
+      username: ((github-token))
       password: ((github-password))
       branch: ((branch))
       ignore_paths: ["ci/images/*"]
