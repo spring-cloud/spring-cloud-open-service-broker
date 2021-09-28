@@ -1,4 +1,4 @@
-image:https://build.spring.io/plugins/servlet/wittified/build-status/CLOUD-SCCFSB["Bamboo", link="https://build.spring.io/browse/CLOUD-SCCFSB"] image:https://github.com/spring-cloud/spring-cloud-open-service-broker/workflows/Java%208/badge.svg["GitHub Actions", link="https://github.com/spring-cloud/spring-cloud-open-service-broker/actions?query=workflow%3A%22Java+8%22"]
+image:https://github.com/spring-cloud/spring-cloud-open-service-broker/workflows/Java%208/badge.svg["GitHub Actions", link="https://github.com/spring-cloud/spring-cloud-open-service-broker/actions?query=workflow%3A%22Java+8%22"]
 image:https://github.com/spring-cloud/spring-cloud-open-service-broker/workflows/Java%2011/badge.svg["GitHub Actions", link="https://github.com/spring-cloud/spring-cloud-open-service-broker/actions?query=workflow%3A%22Java+11%22"]
 image:https://github.com/spring-cloud/spring-cloud-open-service-broker/workflows/Java%2015/badge.svg["GitHub Actions", link="https://github.com/spring-cloud/spring-cloud-open-service-broker/actions?query=workflow%3A%22Java+15%22"]
 
