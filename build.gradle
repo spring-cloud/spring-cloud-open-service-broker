@@ -119,7 +119,7 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 	test {
 		useJUnitPlatform()
 		testLogging {
-			events "passed", "skipped", "failed"
+			events "skipped", "failed"
 		}
 		reports.junitXml.enabled = true
 	}
