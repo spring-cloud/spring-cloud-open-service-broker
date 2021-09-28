@@ -31,7 +31,7 @@ dependencies {
 	api 'org.slf4j:slf4j-api'
 	testImplementation 'org.springframework:spring-test'
 	testImplementation 'io.projectreactor:reactor-test'
-	testImplementation "io.projectreactor.tools:blockhound-junit-platform:${blockHoundVersion}"
+	testImplementation "io.projectreactor.tools:blockhound:${blockHoundVersion}"
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 	testImplementation 'org.junit.jupiter:junit-jupiter'
