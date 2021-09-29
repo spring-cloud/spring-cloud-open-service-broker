@@ -155,6 +155,8 @@ public class ServiceInstanceController extends BaseController {
 	 *
 	 * @param pathVariables the path variables
 	 * @param serviceInstanceId the service instance ID
+	 * @param serviceDefinitionId the service definition ID
+	 * @param planId the plan ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 * @param originatingIdentityString identity of the user that initiated the request from the platform
 	 * @param requestIdentity identity of the request sent from the platform
