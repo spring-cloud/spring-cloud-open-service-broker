@@ -2,6 +2,11 @@
 apply plugin: 'maven-publish'
 
 publishing {
+	repositories {
+		maven {
+			url = project.properties.getOrDefault('publicationRepository', "${System.getenv('HOME')}/.m2/repository")
+		}
+	}
 	publications {
 		mavenJava(MavenPublication) {
 			suppressAllPomMetadataWarnings()
