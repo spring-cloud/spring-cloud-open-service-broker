@@ -279,6 +279,6 @@ configure(rootProject) {
 }
 
 wrapper {
-	gradleVersion = "7.2"
+	gradleVersion = "6.9.1"
 	distributionType = Wrapper.DistributionType.ALL
 }
