@@ -60,12 +60,14 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * remains in the model for marshalling support but test harnesses should not use
 	 */
 	@Deprecated
+	@JsonProperty("organization_guid")
 	private final String organizationGuid;
 
 	/**
 	 * remains in the model for marshalling support but test harnesses should not use
 	 */
 	@Deprecated
+	@JsonProperty("space_guid")
 	private final String spaceGuid;
 
 	@JsonIgnore //mapped as path param
@@ -188,6 +190,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @deprecated {@link #getContext} provides platform-neutral access to platform context details
 	 */
 	@Deprecated
+	@JsonIgnore
 	public String getOrganizationGuid() {
 		return this.organizationGuid;
 	}
@@ -202,6 +205,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @deprecated {@link #getContext} provides platform-neutral access to platform context details
 	 */
 	@Deprecated
+	@JsonIgnore
 	public String getSpaceGuid() {
 		return this.spaceGuid;
 	}
