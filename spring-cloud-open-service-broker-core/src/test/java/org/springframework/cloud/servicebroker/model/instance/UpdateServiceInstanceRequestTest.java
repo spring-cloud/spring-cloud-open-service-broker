@@ -31,10 +31,10 @@ import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInsta
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UpdateServiceInstanceRequestTest {
+class UpdateServiceInstanceRequestTest {
 
 	@Test
-	public void requestWithDefaultsIsBuilt() {
+	void requestWithDefaultsIsBuilt() {
 		UpdateServiceInstanceRequest request = UpdateServiceInstanceRequest.builder()
 				.build();
 
@@ -112,7 +112,7 @@ public class UpdateServiceInstanceRequestTest {
 	}
 
 	@Test
-	public void requestIsDeserializedFromJson() {
+	void requestIsDeserializedFromJson() {
 		UpdateServiceInstanceRequest request =
 				JsonUtils.readTestDataFile("updateRequest.json",
 						UpdateServiceInstanceRequest.class);
@@ -126,7 +126,7 @@ public class UpdateServiceInstanceRequestTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(UpdateServiceInstanceRequest.class)
 				.withRedefinedSuperclass()

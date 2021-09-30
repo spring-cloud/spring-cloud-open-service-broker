@@ -51,17 +51,17 @@ class BeanCatalogServiceTest {
 	}
 
 	@Test
-	public void catalogIsReturnedSuccessfully() {
+	void catalogIsReturnedSuccessfully() {
 		assertThat(service.getCatalog().block()).isEqualTo(catalog);
 	}
 
 	@Test
-	public void serviceDefinitionIsFound() {
+	void serviceDefinitionIsFound() {
 		assertThat(service.getServiceDefinition(SVC_DEF_ID).block()).isEqualTo(serviceDefinition);
 	}
 
 	@Test
-	public void serviceDefinitionIsNotFound() {
+	void serviceDefinitionIsNotFound() {
 		assertThat(service.getServiceDefinition("NOT_THERE").block()).isNull();
 	}
 

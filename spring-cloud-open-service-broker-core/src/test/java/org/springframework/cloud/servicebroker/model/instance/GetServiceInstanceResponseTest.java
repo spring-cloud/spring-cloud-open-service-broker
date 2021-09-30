@@ -29,10 +29,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
-public class GetServiceInstanceResponseTest {
+class GetServiceInstanceResponseTest {
 
 	@Test
-	public void responseWithDefaultsIsBuilt() {
+	void responseWithDefaultsIsBuilt() {
 		GetServiceInstanceResponse response = GetServiceInstanceResponse.builder()
 				.build();
 
@@ -89,7 +89,7 @@ public class GetServiceInstanceResponseTest {
 	}
 
 	@Test
-	public void responseWithAllValuesIsDeserialized() {
+	void responseWithAllValuesIsDeserialized() {
 		GetServiceInstanceResponse response = JsonUtils.readTestDataFile(
 				"getResponse.json", GetServiceInstanceResponse.class);
 
@@ -100,7 +100,7 @@ public class GetServiceInstanceResponseTest {
 	}
 
 	@Test
-	public void equalsAndHashCode() {
+	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(GetServiceInstanceResponse.class)
 				.verify();

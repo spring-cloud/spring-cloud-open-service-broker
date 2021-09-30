@@ -23,10 +23,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PlatformContextTest {
+class PlatformContextTest {
 
 	@Test
-	public void contextIsBuildWithDefaults() {
+	void contextIsBuildWithDefaults() {
 		PlatformContext context = PlatformContext.builder()
 				.build();
 
