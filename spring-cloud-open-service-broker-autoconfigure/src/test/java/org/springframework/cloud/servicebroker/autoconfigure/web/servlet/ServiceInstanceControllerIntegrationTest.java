@@ -461,6 +461,53 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	}
 
 	@Test
+	void createServiceInstanceWithEmptyBodyFails() throws Exception {
+		final String body = "";
+
+		mockMvc.perform(put(buildCreateUpdateUrl())
+						.content(body)
+						.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+						.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.description", containsString("Required request body is missing")))
+				.andExpect(request().asyncNotStarted())
+				.andReturn();
+	}
+
+	@Test
+	void createServiceInstanceWithEmptyBodyAndNoContentTypeFails() throws Exception {
+		final String body = "";
+
+		mockMvc.perform(put(buildCreateUpdateUrl())
+						.content(body)
+						.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+						.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.description", containsString("Required request body is missing")))
+				.andExpect(request().asyncNotStarted())
+				.andReturn();
+	}
+
+	@Test
+	void createServiceInstanceWithEmptyBodyAndMismatchedContentTypeFails() throws Exception {
+		final String body = "";
+
+		mockMvc.perform(put(buildCreateUpdateUrl())
+						.content(body)
+						.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+						.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+						.contentType(MediaType.TEXT_PLAIN)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.description", containsString("Content type 'text/plain' not supported")))
+				.andExpect(request().asyncNotStarted())
+				.andReturn();
+	}
+
+	@Test
 	void getServiceInstanceSucceeds() throws Exception {
 		setupServiceInstanceService(GetServiceInstanceResponse.builder()
 				.build());
