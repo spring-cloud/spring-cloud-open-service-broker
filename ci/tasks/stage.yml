@@ -1,0 +1,23 @@
+---
+platform: linux
+image_resource:
+  type: registry-image
+  source:
+    repository: ((corporate-harbor-registry))/((dockerhub-organization))/app-broker-ci
+    username: ((corporate-harbor-robot-account.username))
+    password: ((corporate-harbor-robot-account.password))
+    tag: ((ci-image-tag))
+inputs:
+  - name: git-repo
+outputs:
+  - name: stage-git-repo
+  - name: distribution-repository
+params:
+  RELEASE_TYPE: ((release-type))
+  USER_NAME: ((git-username))
+  USER_EMAIL: ((git-email))
+caches:
+  - path: maven
+  - path: gradle
+run:
+  path: git-repo/ci/scripts/stage.sh

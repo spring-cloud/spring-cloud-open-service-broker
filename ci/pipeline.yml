@@ -39,6 +39,69 @@ jobs:
     on_failure:
       *slack-failure-notification
 
+  - name: stage-milestone
+    serial: true
+    plan:
+      - get: git-repo
+      - task: stage
+        file: git-repo/ci/tasks/stage.yml
+        vars:
+          release-type: M
+          ci-image-tag: ((ci-image-tag))
+      - put: artifactory-repo
+        params:
+          <<: *artifactory-params
+          repo: libs-staging-local
+      - put: git-repo-staging
+        params:
+          repository: stage-git-repo
+
+  - name: stage-rc
+    serial: true
+    plan:
+      - get: git-repo
+      - task: stage
+        file: git-repo/ci/tasks/stage.yml
+        vars:
+          release-type: RC
+          ci-image-tag: ((ci-image-tag))
+      - put: artifactory-repo
+        params:
+          <<: *artifactory-params
+          repo: libs-staging-local
+      - put: git-repo-staging
+        params:
+          repository: stage-git-repo
+
+  - name: promote-milestone
+    serial: true
+    plan:
+      - get: git-repo
+      - get: artifactory-repo
+        passed: [stage-milestone]
+        params:
+          save_build_info: true
+      - task: promote
+        file: git-repo/ci/tasks/promote.yml
+        vars:
+          release-type: M
+          ci-image-tag: ((ci-image-tag))
+
+  - name: promote-rc
+    serial: true
+    plan:
+      - in_parallel:
+          - get: git-repo
+          - get: artifactory-repo
+            passed: [stage-rc]
+            params:
+              save_build_info: true
+      - task: promote
+        file: git-repo/ci/tasks/promote.yml
+        vars:
+          release-type: RC
+          ci-image-tag: ((ci-image-tag))
+
 resource_types:
   - name: artifactory-resource
     type: registry-image
@@ -63,6 +126,14 @@ resources:
       ignore_paths: ["ci/images/*"]
       fetch_tags: true
 
+  - name: git-repo-staging
+    type: git
+    source:
+      uri: ((github-repo))
+      username: ((github-token))
+      password: ((github-password))
+      branch: ((github-username))/staging
+
   - name: artifactory-repo
     type: artifactory-resource
     source:
@@ -80,3 +151,18 @@ groups:
   - name: "build"
     jobs:
       - build
+  - name: "milestone"
+    jobs:
+      - stage-milestone
+      - promote-milestone
+  - name: "rc"
+    jobs:
+      - stage-rc
+      - promote-rc
+  - name: "all"
+    jobs:
+      - build
+      - stage-milestone
+      - promote-milestone
+      - stage-rc
+      - promote-rc

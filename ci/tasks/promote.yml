@@ -1,0 +1,21 @@
+---
+platform: linux
+image_resource:
+  type: registry-image
+  source:
+    repository: ((corporate-harbor-registry))/((dockerhub-organization))/app-broker-ci
+    username: ((corporate-harbor-robot-account.username))
+    password: ((corporate-harbor-robot-account.password))
+    tag: ((ci-image-tag))
+inputs:
+  - name: git-repo
+  - name: artifactory-repo
+outputs:
+  - name: version
+params:
+  RELEASE_TYPE: ((release-type))
+  ARTIFACTORY_SERVER: ((artifactory-server))
+  ARTIFACTORY_USERNAME: ((artifactory-username))
+  ARTIFACTORY_PASSWORD: ((artifactory-password))
+run:
+  path: git-repo/ci/scripts/promote.sh
