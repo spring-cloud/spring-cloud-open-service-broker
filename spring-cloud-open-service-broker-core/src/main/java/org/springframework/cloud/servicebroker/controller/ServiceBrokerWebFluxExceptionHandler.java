@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.server.ServerWebInputException;
+import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 
 /**
  * Exception handling logic shared by WebFlux Controllers.
@@ -72,6 +73,19 @@ public class ServiceBrokerWebFluxExceptionHandler extends ServiceBrokerException
 	public ErrorMessage handleException(ServerWebInputException ex) {
 		LOG.error(UNPROCESSABLE_REQUEST, ex);
 		return getErrorResponse(ex.getMessage());
+	}
+
+	/**
+	 * Handle a {@link UnsupportedMediaTypeStatusException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
+	@ExceptionHandler(UnsupportedMediaTypeStatusException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ErrorMessage handleException(UnsupportedMediaTypeStatusException ex) {
+		getLog().error(UNPROCESSABLE_REQUEST, ex);
+		return getErrorResponse(ex);
 	}
 
 }

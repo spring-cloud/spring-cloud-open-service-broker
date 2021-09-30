@@ -24,6 +24,8 @@ import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -70,6 +72,32 @@ public class ServiceBrokerWebMvcExceptionHandler extends ServiceBrokerExceptionH
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorMessage handleException(MissingServletRequestParameterException ex) {
+		LOG.error(UNPROCESSABLE_REQUEST, ex);
+		return getErrorResponse(ex.getMessage());
+	}
+
+	/**
+	 * Handle a {@link HttpMediaTypeNotSupportedException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
+	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ErrorMessage handleException(HttpMediaTypeNotSupportedException ex) {
+		LOG.error(UNPROCESSABLE_REQUEST, ex);
+		return getErrorResponse(ex.getMessage());
+	}
+
+	/**
+	 * Handle a {@link HttpMessageNotReadableException}
+	 *
+	 * @param ex the exception
+	 * @return an error message
+	 */
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ErrorMessage handleException(HttpMessageNotReadableException ex) {
 		LOG.error(UNPROCESSABLE_REQUEST, ex);
 		return getErrorResponse(ex.getMessage());
 	}

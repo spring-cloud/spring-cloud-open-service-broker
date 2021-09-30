@@ -414,6 +414,56 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	}
 
 	@Test
+	void createServiceInstanceWithEmptyBodyFails() throws Exception {
+		final String body = "";
+
+		client.put().uri(buildCreateUpdateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.bodyValue(body)
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isBadRequest()
+				.expectBody()
+				.jsonPath("$.description").isNotEmpty()
+				.consumeWith(result -> assertDescriptionContains(result, "Failed to read HTTP message"));
+	}
+
+	@Test
+	void createServiceInstanceWithEmptyBodyAndNoContentTypeFails() throws Exception {
+		final String body = "";
+
+		client.put().uri(buildCreateUpdateUrl())
+				.bodyValue(body)
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isBadRequest()
+				.expectBody()
+				.jsonPath("$.description").isNotEmpty()
+				.consumeWith(result -> assertDescriptionContains(result, "Content type 'text/plain;charset=UTF-8' not supported"));
+	}
+
+	@Test
+	void createServiceInstanceWithEmptyBodyAndMismatchedContentTypeFails() throws Exception {
+		final String body = "";
+
+		client.put().uri(buildCreateUpdateUrl())
+				.contentType(MediaType.TEXT_PLAIN)
+				.bodyValue(body)
+				.header(API_INFO_LOCATION_HEADER, API_INFO_LOCATION)
+				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isBadRequest()
+				.expectBody()
+				.jsonPath("$.description").isNotEmpty()
+				.consumeWith(result -> assertDescriptionContains(result, "Content type 'text/plain' not supported"));
+	}
+
+	@Test
 	void getServiceInstanceSucceeds() throws Exception {
 		setupServiceInstanceService(GetServiceInstanceResponse.builder()
 				.build());
