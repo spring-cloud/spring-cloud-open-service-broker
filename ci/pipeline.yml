@@ -16,6 +16,16 @@ aliases:
       text: <!here> Build <${ATC_EXTERNAL_URL}/builds/$BUILD_ID|$BUILD_NAME> of job $BUILD_JOB_NAME in the $BUILD_PIPELINE_NAME pipeline has failed!
 
 jobs:
+  - name: build-ci-images
+    plan:
+      - get: ci-images-git-repo
+        trigger: true
+      - put: scosb-ci-image
+        params:
+          build: ci-images-git-repo/ci/images/scosb-ci
+        get_params:
+          skip_download: "true"
+
   - name: build
     serial: true
     public: true
@@ -180,6 +190,21 @@ resources:
       password: ((github-password))
       branch: ((github-username))/staging
 
+  - name: ci-images-git-repo
+    type: git
+    source:
+      uri: ((github-repo))
+      branch: ((branch))
+      paths: ["ci/images/*"]
+
+  - name: scosb-ci-image
+    type: docker-image
+    source:
+      repository: ((corporate-harbor-registry))/((dockerhub-organization))/scosb-ci
+      username: ((corporate-harbor-robot-account.username))
+      password: ((corporate-harbor-robot-account.password))
+      tag: ((ci-image-tag))
+
   - name: artifactory-repo
     type: artifactory-resource
     source:
@@ -210,6 +235,9 @@ groups:
       - stage-release
       - promote-release
       - sync-to-maven-central
+  - name: "ci-images"
+    jobs:
+      - build-ci-images
   - name: "all"
     jobs:
       - build
@@ -220,3 +248,4 @@ groups:
       - stage-release
       - promote-release
       - sync-to-maven-central
+      - build-ci-images
