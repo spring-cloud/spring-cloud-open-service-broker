@@ -3,7 +3,7 @@ platform: linux
 image_resource:
   type: registry-image
   source:
-    repository: ((corporate-harbor-registry))/((dockerhub-organization))/app-broker-ci
+    repository: ((corporate-harbor-registry))/((dockerhub-organization))/scosb-ci
     username: ((corporate-harbor-robot-account.username))
     password: ((corporate-harbor-robot-account.password))
     tag: ((ci-image-tag))
