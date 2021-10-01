@@ -1,0 +1,21 @@
+---
+platform: linux
+image_resource:
+  type: registry-image
+  source:
+    repository: ((corporate-harbor-registry))/((dockerhub-organization))/app-broker-ci
+    username: ((corporate-harbor-robot-account.username))
+    password: ((corporate-harbor-robot-account.password))
+    tag: ((ci-image-tag))
+inputs:
+  - name: git-repo
+outputs:
+  - name: distribution-repository
+caches:
+  - path: maven
+  - path: gradle
+run:
+  path: git-repo/ci/scripts/build-project.sh
+params:
+  ARTIFACTORY_USERNAME: ((artifactory-username))
+  ARTIFACTORY_PASSWORD: ((artifactory-password))
