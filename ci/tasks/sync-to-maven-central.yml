@@ -1,0 +1,19 @@
+---
+platform: linux
+image_resource:
+  type: registry-image
+  source:
+    repository: ((corporate-harbor-registry))/((dockerhub-organization))/scosb-ci
+    username: ((corporate-harbor-robot-account.username))
+    password: ((corporate-harbor-robot-account.password))
+    tag: ((ci-image-tag))
+inputs:
+  - name: git-repo
+  - name: artifactory-repo
+params:
+  SONATYPE_URL: ((sonatype-url))
+  SONATYPE_USERNAME: ((sonatype-user-token))
+  SONATYPE_PASSWORD: ((sonatype-user-token-password))
+  SONATYPE_STAGING_PROFILE_ID: ((sonatype-staging-profile-id))
+run:
+  path: git-repo/ci/scripts/sync-to-maven-central.sh
