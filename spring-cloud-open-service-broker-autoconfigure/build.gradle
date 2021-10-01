@@ -28,7 +28,7 @@ dependencies {
 	annotationProcessor 'org.springframework.boot:spring-boot-autoconfigure-processor'
 	testImplementation project(path: ':spring-cloud-open-service-broker-core', configuration: 'testOutput')
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation "io.projectreactor.tools:blockhound:${blockHoundVersion}"
+	testImplementation "io.projectreactor.tools:blockhound-junit-platform:${blockHoundVersion}"
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testRuntimeOnly 'javax.servlet:javax.servlet-api'
 	testImplementation 'org.mockito:mockito-core'
