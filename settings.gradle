@@ -2,8 +2,8 @@ pluginManagement {
 	plugins {
 		id "org.springframework.boot" version "${springBootVersion}"
 		id "io.spring.nohttp" version "0.0.10"
-		id 'org.asciidoctor.jvm.pdf' version '3.2.0'
-		id 'org.asciidoctor.jvm.convert' version '3.2.0'
+		id 'org.asciidoctor.jvm.pdf' version '3.3.2'
+		id 'org.asciidoctor.jvm.convert' version '3.3.2'
 	}
 	repositories {
 		gradlePluginPortal()
