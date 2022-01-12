@@ -9,12 +9,13 @@ This project was formerly named *Spring Cloud - Cloud Foundry Service Broker*. V
 
 == Version Compatibility
 
-The following table describes the version compatibility matrix for the various releases of Spring Cloud Open Service Broker.
+The following table describes the version compatibility matrix for the various releases of Spring Cloud Open Service Broker. Please note that Spring Boot 2.4 and older have reached https://spring.io/projects/spring-boot#support[end of support]. We recommend upgrading to a version of Spring Boot Open Service Broker that supports a newer version.
 
 [%header,cols=4*]
 |===
 |Spring Cloud Open Service Broker |https://github.com/openservicebrokerapi/servicebroker[Open Service Broker API] |https://projects.spring.io/spring-boot/[Spring Boot] |https://projects.spring.io/spring-framework/[Spring Framework]
-|3.4.x |2.16 |2.5.x |5.3.x
+|3.5.x |2.16 (developing) |2.6.x |5.3.x
+|3.4.x |2.16 (developing) |2.5.x |5.3.x
 |3.3.x |2.15 |2.4.x |5.3.x
 |3.2.x |2.15 |2.3.x |5.2.x
 |3.1.x |2.15 |2.2.x |5.2.x
@@ -32,7 +33,7 @@ See the https://spring.io/projects/spring-cloud-open-service-broker/[project sit
 === Gradle Dependencies
 
 ```
-implementation("org.springframework.cloud:spring-cloud-starter-open-service-broker:3.3.0")
+implementation("org.springframework.cloud:spring-cloud-starter-open-service-broker:3.4.1")
 ```
 
 === Maven Dependencies:
@@ -41,7 +42,7 @@ implementation("org.springframework.cloud:spring-cloud-starter-open-service-brok
 <dependency>
   <groupId>org.springframework.cloud</groupId>
   <artifactId>spring-cloud-starter-open-service-broker</artifactId>
-  <version>3.3.0</version>
+  <version>3.4.1</version>
 </dependency>
 ```
 
