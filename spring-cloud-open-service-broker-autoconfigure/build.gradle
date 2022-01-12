@@ -18,8 +18,8 @@ description = "Spring Cloud Open Service Broker Auto-Configuration"
 
 dependencies {
 	// BOM imports - The versions used in these files will override any other versions found in the graph
-	implementation enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
-	annotationProcessor enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+	implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+	annotationProcessor platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
 
 	api project(':spring-cloud-open-service-broker-core')
 	optionalApi 'org.springframework.boot:spring-boot-starter-web'

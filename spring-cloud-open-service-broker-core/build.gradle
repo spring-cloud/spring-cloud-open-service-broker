@@ -18,7 +18,7 @@ description = "Spring Cloud Open Service Broker Core"
 
 dependencies {
 	// BOM imports - The versions used in these files will override any other versions found in the graph
-	implementation enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+	implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
 
 	compileOnly 'javax.servlet:javax.servlet-api'
 	api 'org.springframework:spring-context'

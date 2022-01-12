@@ -21,7 +21,7 @@ plugins {
 description = "Spring Cloud Open Service Broker Acceptance WebMvc"
 
 dependencies {
-	implementation enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+	implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation project(':spring-cloud-starter-open-service-broker')
