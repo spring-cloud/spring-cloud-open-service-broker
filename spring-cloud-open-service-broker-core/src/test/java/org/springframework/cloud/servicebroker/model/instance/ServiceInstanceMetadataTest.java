@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.model.KubernetesContext;
@@ -103,5 +104,12 @@ class ServiceInstanceMetadataTest {
 		ServiceInstanceMetadata serviceInstanceMetadata = new ServiceInstanceMetadata();
 
 		assertThat(serviceInstanceMetadata.toString()).isEqualTo("ServiceInstanceMetadata{labels='{}'}");
+	}
+
+	@Test
+	void equalsAndHashCode() {
+		EqualsVerifier
+				.forClass(ServiceInstanceMetadata.class)
+				.verify();
 	}
 }

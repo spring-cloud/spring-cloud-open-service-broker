@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -84,4 +85,11 @@ class MaintenanceInfoTest {
 		assertThat(info.getDescription()).isEqualTo(description);
 	}
 
+	@Test
+	void equalsAndHashCode() {
+		EqualsVerifier
+				.simple()
+				.forClass(MaintenanceInfo.class)
+				.verify();
+	}
 }
