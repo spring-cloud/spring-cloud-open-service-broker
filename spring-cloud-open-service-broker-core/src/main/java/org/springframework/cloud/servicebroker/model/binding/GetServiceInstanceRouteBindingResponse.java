@@ -28,6 +28,7 @@ import java.util.Objects;
  * platform.
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API
  * 		specification</a>
  */
@@ -39,17 +40,19 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 	 * Construct a new {@link GetServiceInstanceRouteBindingResponse}
 	 */
 	public GetServiceInstanceRouteBindingResponse() {
-		this(new HashMap<>(), null);
+		this(new HashMap<>(), null, null);
 	}
 
 	/**
 	 * Construct a new {@link GetServiceInstanceRouteBindingResponse}
 	 *
 	 * @param parameters the parameters
+	 * @param metadata the service instance binding metadata
 	 * @param routeServiceUrl the route service URL
 	 */
-	public GetServiceInstanceRouteBindingResponse(Map<String, Object> parameters, String routeServiceUrl) {
-		super(parameters);
+	public GetServiceInstanceRouteBindingResponse(Map<String, Object> parameters, BindingMetadata metadata,
+			String routeServiceUrl) {
+		super(parameters, metadata);
 		this.routeServiceUrl = routeServiceUrl;
 	}
 
@@ -113,6 +116,8 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 
 		private final Map<String, Object> parameters = new HashMap<>();
 
+		private BindingMetadata metadata;
+
 		private GetServiceInstanceRouteBindingResponseBuilder() {
 		}
 
@@ -164,12 +169,26 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 		}
 
 		/**
+		 * Set the service instance binding metadata
+		 *
+		 * <p>
+		 * This value will set the {@literal metadata} field in the body of the response to the platform.
+		 *
+		 * @param metadata metadata about this service binding
+		 * @return the builder
+		 */
+		public GetServiceInstanceRouteBindingResponseBuilder metadata(BindingMetadata metadata) {
+			this.metadata = metadata;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link GetServiceInstanceRouteBindingResponse} from the provided values.
 		 *
 		 * @return the newly constructed {@literal GetServiceInstanceRouteBindingResponse}
 		 */
 		public GetServiceInstanceRouteBindingResponse build() {
-			return new GetServiceInstanceRouteBindingResponse(parameters, routeServiceUrl);
+			return new GetServiceInstanceRouteBindingResponse(parameters, metadata, routeServiceUrl);
 		}
 
 	}

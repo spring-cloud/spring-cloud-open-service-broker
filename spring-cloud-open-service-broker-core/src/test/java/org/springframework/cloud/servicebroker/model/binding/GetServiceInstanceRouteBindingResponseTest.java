@@ -36,11 +36,14 @@ class GetServiceInstanceRouteBindingResponseTest {
 		GetServiceInstanceRouteBindingResponse response = GetServiceInstanceRouteBindingResponse.builder()
 				.build();
 
+		assertThat(response.getParameters()).hasSize(0);
+		assertThat(response.getMetadata()).isNull();
 		assertThat(response.getRouteServiceUrl()).isNull();
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
 		assertThat(json).hasNoPath("$.parameters");
+		assertThat(json).hasNoPath("$.metadata");
 		assertThat(json).hasNoPath("$.route_service_url");
 	}
 
@@ -55,6 +58,9 @@ class GetServiceInstanceRouteBindingResponseTest {
 				.parameters("field2", 2)
 				.parameters("field3", true)
 				.parameters(parameters)
+				.metadata(BindingMetadata.builder()
+						.expiresAt("2019-12-31T23:59:59.0Z")
+						.build())
 				.routeServiceUrl("https://routes.app.local")
 				.build();
 
@@ -75,6 +81,8 @@ class GetServiceInstanceRouteBindingResponseTest {
 		assertThat(json).hasPath("$.parameters.field4").isEqualTo("value4");
 		assertThat(json).hasPath("$.parameters.field5").isEqualTo("value5");
 
+		assertThat(json).hasPath("$.metadata.expires_at").isEqualTo("2019-12-31T23:59:59.0Z");
+
 		assertThat(json).hasPath("$.route_service_url").isEqualTo("https://routes.app.local");
 	}
 
@@ -88,6 +96,7 @@ class GetServiceInstanceRouteBindingResponseTest {
 		assertThat(response.getParameters())
 				.hasSize(2)
 				.containsOnly(entry("param1", "param-a"), entry("param2", "param-b"));
+		assertThat(response.getMetadata().getExpiresAt()).isEqualTo("2019-12-31T23:59:59.0Z");
 	}
 
 	@Test

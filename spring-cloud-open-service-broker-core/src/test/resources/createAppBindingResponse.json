@@ -1,4 +1,7 @@
 {
+  "metadata": {
+    "expires_at": "2019-12-31T23:59:59.0Z"
+  },
   "credentials": {
     "cred1": "cred-a",
     "cred2": "cred-b"

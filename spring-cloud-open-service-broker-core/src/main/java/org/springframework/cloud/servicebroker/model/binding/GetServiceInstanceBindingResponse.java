@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  * Service brokers will typically construct one of the subtypes of this class to build a response.
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -36,13 +37,17 @@ public class GetServiceInstanceBindingResponse {
 
 	private final Map<String, Object> parameters;
 
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private final BindingMetadata metadata;
+
 	/**
 	 * Construct a new {@link GetServiceInstanceBindingResponse}
 	 *
 	 * @param parameters collection of parameters
 	 */
-	protected GetServiceInstanceBindingResponse(Map<String, Object> parameters) {
+	protected GetServiceInstanceBindingResponse(Map<String, Object> parameters, BindingMetadata metadata) {
 		this.parameters = parameters;
+		this.metadata = metadata;
 	}
 
 	/**
@@ -52,6 +57,15 @@ public class GetServiceInstanceBindingResponse {
 	 */
 	public Map<String, Object> getParameters() {
 		return parameters;
+	}
+
+	/**
+	 * Get the service instance binding metadata
+	 *
+	 * @return the metadata
+	 */
+	public BindingMetadata getMetadata() {
+		return this.metadata;
 	}
 
 	@Override
@@ -64,7 +78,8 @@ public class GetServiceInstanceBindingResponse {
 		}
 		GetServiceInstanceBindingResponse that = (GetServiceInstanceBindingResponse) o;
 		return that.canEqual(this) &&
-				Objects.equals(parameters, that.parameters);
+				Objects.equals(parameters, that.parameters) &&
+				Objects.equals(metadata,that.metadata);
 	}
 
 	/**
@@ -79,13 +94,14 @@ public class GetServiceInstanceBindingResponse {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(parameters);
+		return Objects.hash(parameters, metadata);
 	}
 
 	@Override
 	public String toString() {
 		return "GetServiceInstanceBindingResponse{" +
 				"parameters=" + parameters +
+				"metadata=" + metadata +
 				'}';
 	}
 

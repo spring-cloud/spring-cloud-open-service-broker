@@ -38,7 +38,7 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 	 * Construct a new {@link CreateServiceInstanceRouteBindingResponse}
 	 */
 	public CreateServiceInstanceRouteBindingResponse() {
-		this(false, null, false, null);
+		this(false, null, false, null, null);
 	}
 
 	/**
@@ -47,11 +47,12 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 	 * @param async is the operation asynchronous
 	 * @param operation description of the operation being performed
 	 * @param bindingExisted does the service binding already exist
+	 * @param metadata the service binding metadata
 	 * @param routeServiceUrl the route service URL
 	 */
 	public CreateServiceInstanceRouteBindingResponse(boolean async, String operation, boolean bindingExisted,
-			String routeServiceUrl) {
-		super(async, operation, bindingExisted);
+			BindingMetadata metadata, String routeServiceUrl) {
+		super(async, operation, bindingExisted, metadata);
 		this.routeServiceUrl = routeServiceUrl;
 	}
 
@@ -115,6 +116,8 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 
 		private boolean bindingExisted;
 
+		private BindingMetadata metadata;
+
 		private boolean async;
 
 		private String operation;
@@ -151,6 +154,20 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 		 */
 		public CreateServiceInstanceRouteBindingResponseBuilder bindingExisted(boolean bindingExisted) {
 			this.bindingExisted = bindingExisted;
+			return this;
+		}
+
+		/**
+		 * Set the service instance binding metadata
+		 *
+		 * <p>
+		 * This value will set the {@literal metadata} field in the body of the response to the platform.
+		 *
+		 * @param metadata metadata about this service binding
+		 * @return the builder
+		 */
+		public CreateServiceInstanceRouteBindingResponseBuilder metadata(BindingMetadata metadata) {
+			this.metadata = metadata;
 			return this;
 		}
 
@@ -195,7 +212,8 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 		 * @return the newly constructed {@literal CreateServiceInstanceRouteBindingResponse}
 		 */
 		public CreateServiceInstanceRouteBindingResponse build() {
-			return new CreateServiceInstanceRouteBindingResponse(async, operation, bindingExisted, routeServiceUrl);
+			return new CreateServiceInstanceRouteBindingResponse(async, operation, bindingExisted, metadata,
+					routeServiceUrl);
 		}
 
 	}

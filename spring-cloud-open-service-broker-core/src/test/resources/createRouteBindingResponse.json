@@ -1,3 +1,6 @@
 {
+  "metadata": {
+    "expires_at": "2019-12-31T23:59:59.0Z"
+  },
   "route_service_url": "https://route.local"
 }

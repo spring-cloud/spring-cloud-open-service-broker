@@ -41,16 +41,22 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	@JsonIgnore
 	protected final boolean bindingExisted;
 
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private final BindingMetadata metadata;
+
 	/**
 	 * Construct a new {@link CreateServiceInstanceBindingResponse}
 	 *
 	 * @param async is the operation asynchronous
 	 * @param operation description of the operation being performed
 	 * @param bindingExisted does the service binding already exist
+	 * @param metadata the service instance binding metadata
 	 */
-	protected CreateServiceInstanceBindingResponse(boolean async, String operation, boolean bindingExisted) {
+	protected CreateServiceInstanceBindingResponse(boolean async, String operation, boolean bindingExisted,
+			BindingMetadata metadata) {
 		super(async, operation);
 		this.bindingExisted = bindingExisted;
+		this.metadata = metadata;
 	}
 
 	/**
@@ -61,6 +67,15 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	 */
 	public boolean isBindingExisted() {
 		return this.bindingExisted;
+	}
+
+	/**
+	 * Get the service instance binding metadata
+	 *
+	 * @return the metadata
+	 */
+	public BindingMetadata getMetadata() {
+		return this.metadata;
 	}
 
 	@Override
@@ -76,7 +91,8 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		}
 		CreateServiceInstanceBindingResponse that = (CreateServiceInstanceBindingResponse) o;
 		return that.canEqual(this) &&
-				bindingExisted == that.bindingExisted;
+				bindingExisted == that.bindingExisted &&
+				Objects.equals(metadata,that.metadata);
 	}
 
 	@Override
@@ -86,13 +102,14 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), bindingExisted);
+		return Objects.hash(super.hashCode(), bindingExisted, metadata);
 	}
 
 	@Override
 	public String toString() {
 		return "CreateServiceInstanceBindingResponse{" +
 				"bindingExisted=" + bindingExisted +
+				"metadata=" + metadata +
 				'}';
 	}
 
@@ -102,6 +119,8 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	public static final class CreateServiceInstanceBindingResponseBuilder {
 
 		private boolean bindingExisted;
+
+		private BindingMetadata metadata;
 
 		private boolean async;
 
@@ -117,16 +136,29 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 * resources were created.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. If the service broker indicates
-		 * that it performed the operation synchronously, a {@literal true} value will result in a response code
-		 * {@literal 200 OK}, and a {@literal false} value will result in a response code {@literal 201 CREATED}.
+		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
+		 * result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be determined by the
+		 * value of {@link #async(boolean)}.
 		 *
 		 * @param bindingExisted {@literal true} to indicate that the binding exists, {@literal false} otherwise
 		 * @return the builder
-		 * @see #async(boolean)
 		 */
 		public CreateServiceInstanceBindingResponseBuilder bindingExisted(boolean bindingExisted) {
 			this.bindingExisted = bindingExisted;
+			return this;
+		}
+
+		/**
+		 * Set the service instance binding metadata
+		 *
+		 * <p>
+		 * This value will set the {@literal metadata} field in the body of the response to the platform.
+		 *
+		 * @param metadata metadata about this service binding
+		 * @return the builder
+		 */
+		public CreateServiceInstanceBindingResponseBuilder metadata(BindingMetadata metadata) {
+			this.metadata = metadata;
 			return this;
 		}
 
@@ -135,14 +167,13 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 * asynchronously.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
-		 * result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be determined by the
-		 * value of {@link #bindingExisted(boolean)}.
+		 * This value will be used to determine the HTTP response code to the platform. If the service broker indicates
+		 * that it performed the operation synchronously, a {@literal true} value will result in a response code
+		 * {@literal 200 OK}, and a {@literal false} value will result in a response code {@literal 201 CREATED}.
 		 *
 		 * @param async {@literal true} to indicate that the operation is being performed asynchronously, {@literal
 		 * 		false} to indicate that the operation was completed
 		 * @return the builder
-		 * @see #bindingExisted(boolean)
 		 */
 		public CreateServiceInstanceBindingResponseBuilder async(boolean async) {
 			this.async = async;
@@ -171,7 +202,7 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 * @return the newly constructed {@literal CreateServiceInstanceBindingResponse}
 		 */
 		public CreateServiceInstanceBindingResponse build() {
-			return new CreateServiceInstanceBindingResponse(async, operation, bindingExisted);
+			return new CreateServiceInstanceBindingResponse(async, operation, bindingExisted, metadata);
 		}
 
 	}

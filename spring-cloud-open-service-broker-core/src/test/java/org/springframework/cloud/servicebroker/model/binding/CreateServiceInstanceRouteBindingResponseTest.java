@@ -35,16 +35,21 @@ class CreateServiceInstanceRouteBindingResponseTest {
 				.build();
 
 		assertThat(response.isBindingExisted()).isEqualTo(false);
+		assertThat(response.getMetadata()).isNull();
 		assertThat(response.getRouteServiceUrl()).isNull();
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
+		assertThat(json).hasNoPath("$.metadata");
 		assertThat(json).hasNoPath("$.route_service_url");
 	}
 
 	@Test
 	void responseWithValuesIsBuilt() {
 		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
+				.metadata(BindingMetadata.builder()
+						.expiresAt("2019-12-31T23:59:59.0Z")
+						.build())
 				.bindingExisted(true)
 				.routeServiceUrl("https://routes.app.local")
 				.build();
@@ -54,6 +59,7 @@ class CreateServiceInstanceRouteBindingResponseTest {
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
+		assertThat(json).hasPath("$.metadata.expires_at").isEqualTo("2019-12-31T23:59:59.0Z");
 		assertThat(json).hasPath("$.route_service_url").isEqualTo("https://routes.app.local");
 	}
 
@@ -63,6 +69,7 @@ class CreateServiceInstanceRouteBindingResponseTest {
 				"createRouteBindingResponse.json",
 				CreateServiceInstanceRouteBindingResponse.class);
 
+		assertThat(response.getMetadata().getExpiresAt()).isEqualTo("2019-12-31T23:59:59.0Z");
 		assertThat(response.getRouteServiceUrl()).isEqualTo("https://route.local");
 	}
 

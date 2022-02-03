@@ -42,6 +42,7 @@ class CreateServiceInstanceAppBindingResponseTest {
 				.build();
 
 		assertThat(response.isBindingExisted()).isEqualTo(false);
+		assertThat(response.getMetadata()).isNull();
 		assertThat(response.getCredentials()).hasSize(0);
 		assertThat(response.getSyslogDrainUrl()).isNull();
 		assertThat(response.getVolumeMounts()).hasSize(0);
@@ -49,6 +50,7 @@ class CreateServiceInstanceAppBindingResponseTest {
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
+		assertThat(json).hasNoPath("$.metadata");
 		assertThat(json).hasNoPath("$.credentials");
 		assertThat(json).hasNoPath("$.syslog_drain_url");
 		assertThat(json).hasNoPath("$.volume_mounts");
@@ -69,6 +71,9 @@ class CreateServiceInstanceAppBindingResponseTest {
 		List<Endpoint> endpoints = Collections.singletonList(Endpoint.builder().build());
 
 		CreateServiceInstanceAppBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
+				.metadata(BindingMetadata.builder()
+						.expiresAt("2019-12-31T23:59:59.0Z")
+						.build())
 				.bindingExisted(true)
 				.credentials("credential1", "value1")
 				.credentials("credential2", 2)
@@ -97,6 +102,8 @@ class CreateServiceInstanceAppBindingResponseTest {
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
+		assertThat(json).hasPath("$.metadata.expires_at").isEqualTo("2019-12-31T23:59:59.0Z");
+
 		assertThat(json).hasPath("$.credentials.credential1").isEqualTo("value1");
 		assertThat(json).hasPath("$.credentials.credential2").isEqualTo(2);
 		assertThat(json).hasPath("$.credentials.credential3").isEqualTo(true);
@@ -114,6 +121,8 @@ class CreateServiceInstanceAppBindingResponseTest {
 		CreateServiceInstanceAppBindingResponse response = JsonUtils.readTestDataFile(
 				"createAppBindingResponse.json",
 				CreateServiceInstanceAppBindingResponse.class);
+
+		assertThat(response.getMetadata().getExpiresAt()).isEqualTo("2019-12-31T23:59:59.0Z");
 
 		assertThat(response.getCredentials()).containsOnly(entry("cred1", "cred-a"), entry("cred2", "cred-b"));
 		assertThat(response.getSyslogDrainUrl()).isEqualTo("https://logs.hello.local");

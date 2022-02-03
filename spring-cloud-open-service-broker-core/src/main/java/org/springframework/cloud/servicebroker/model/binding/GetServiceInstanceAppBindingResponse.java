@@ -49,21 +49,23 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 	 * Construct a new {@link GetServiceInstanceAppBindingResponse}
 	 */
 	public GetServiceInstanceAppBindingResponse() {
-		this(new HashMap<>(), new HashMap<>(), null, new ArrayList<>(), new ArrayList<>());
+		this(new HashMap<>(), null, new HashMap<>(), null, new ArrayList<>(), new ArrayList<>());
 	}
 
 	/**
 	 * Construct a new {@link GetServiceInstanceAppBindingResponse}
 	 *
 	 * @param parameters the parameters
+	 * @param metadata the service instance binding metadata
 	 * @param credentials the service binding credentials
 	 * @param syslogDrainUrl the syslog drain URL
 	 * @param volumeMounts the set of volume mounts
 	 * @param endpoints the set of endpoints
 	 */
-	public GetServiceInstanceAppBindingResponse(Map<String, Object> parameters, Map<String, Object> credentials,
-			String syslogDrainUrl, List<VolumeMount> volumeMounts, List<Endpoint> endpoints) {
-		super(parameters);
+	public GetServiceInstanceAppBindingResponse(Map<String, Object> parameters, BindingMetadata metadata,
+			Map<String, Object> credentials, String syslogDrainUrl, List<VolumeMount> volumeMounts,
+			List<Endpoint> endpoints) {
+		super(parameters, metadata);
 		this.credentials = credentials;
 		this.syslogDrainUrl = syslogDrainUrl;
 		this.volumeMounts = volumeMounts;
@@ -169,6 +171,8 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		private final List<Endpoint> endpoints = new ArrayList<>();
 
 		private final Map<String, Object> parameters = new HashMap<>();
+
+		private BindingMetadata metadata;
 
 		private GetServiceInstanceAppBindingResponseBuilder() {
 		}
@@ -312,13 +316,27 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		}
 
 		/**
+		 * Set the service instance binding metadata
+		 *
+		 * <p>
+		 * This value will set the {@literal metadata} field in the body of the response to the platform.
+		 *
+		 * @param metadata metadata about this service binding
+		 * @return the builder
+		 */
+		public GetServiceInstanceAppBindingResponseBuilder metadata(BindingMetadata metadata) {
+			this.metadata = metadata;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link GetServiceInstanceAppBindingResponse} from the provided values.
 		 *
 		 * @return the newly constructed {@literal GetServiceInstanceAppBindingResponse}
 		 */
 		public GetServiceInstanceAppBindingResponse build() {
-			return new GetServiceInstanceAppBindingResponse(parameters, credentials, syslogDrainUrl, volumeMounts,
-					endpoints);
+			return new GetServiceInstanceAppBindingResponse(parameters, metadata, credentials, syslogDrainUrl,
+					volumeMounts, endpoints);
 		}
 
 	}

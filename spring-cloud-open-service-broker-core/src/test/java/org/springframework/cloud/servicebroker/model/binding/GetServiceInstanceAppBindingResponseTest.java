@@ -39,6 +39,7 @@ class GetServiceInstanceAppBindingResponseTest {
 				.build();
 
 		assertThat(response.getParameters()).hasSize(0);
+		assertThat(response.getMetadata()).isNull();
 		assertThat(response.getCredentials()).hasSize(0);
 		assertThat(response.getSyslogDrainUrl()).isNull();
 		assertThat(response.getVolumeMounts()).hasSize(0);
@@ -46,6 +47,7 @@ class GetServiceInstanceAppBindingResponseTest {
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
 		assertThat(json).hasNoPath("$.parameters");
+		assertThat(json).hasNoPath("$.metadata");
 		assertThat(json).hasNoPath("$.credentials");
 		assertThat(json).hasNoPath("$.syslog_drain_url");
 		assertThat(json).hasNoPath("$.volume_mounts");
@@ -77,6 +79,9 @@ class GetServiceInstanceAppBindingResponseTest {
 				.parameters("field2", 2)
 				.parameters("field3", true)
 				.parameters(parameters)
+				.metadata(BindingMetadata.builder()
+						.expiresAt("2019-12-31T23:59:59.0Z")
+						.build())
 				.credentials("credential1", "value1")
 				.credentials("credential2", 2)
 				.credentials("credential3", true)
@@ -116,6 +121,8 @@ class GetServiceInstanceAppBindingResponseTest {
 		assertThat(json).hasPath("$.parameters.field4").isEqualTo("value4");
 		assertThat(json).hasPath("$.parameters.field5").isEqualTo("value5");
 
+		assertThat(json).hasPath("$.metadata.expires_at").isEqualTo("2019-12-31T23:59:59.0Z");
+
 		assertThat(json).hasPath("$.credentials.credential1").isEqualTo("value1");
 		assertThat(json).hasPath("$.credentials.credential2").isEqualTo(2);
 		assertThat(json).hasPath("$.credentials.credential3").isEqualTo(true);
@@ -132,6 +139,8 @@ class GetServiceInstanceAppBindingResponseTest {
 	void responseWithValuesIsDeserialized() {
 		GetServiceInstanceAppBindingResponse response = JsonUtils.readTestDataFile(
 				"getAppBindingResponse.json", GetServiceInstanceAppBindingResponse.class);
+
+		assertThat(response.getMetadata().getExpiresAt()).isEqualTo("2019-12-31T23:59:59.0Z");
 
 		assertThat(response.getCredentials()).containsOnly(entry("cred1", "cred-a"), entry("cred2", "cred-b"));
 		assertThat(response.getSyslogDrainUrl()).isEqualTo("https://logs.hello.local");

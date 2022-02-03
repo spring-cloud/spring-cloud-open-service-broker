@@ -51,7 +51,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	 * Construct a new {@link CreateServiceInstanceAppBindingResponse}
 	 */
 	public CreateServiceInstanceAppBindingResponse() {
-		this(false, null, false, new HashMap<>(), null, new ArrayList<>(), new ArrayList<>());
+		this(false, null, false, null, new HashMap<>(), null, new ArrayList<>(), new ArrayList<>());
 	}
 
 	/**
@@ -66,9 +66,9 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	 * @param endpoints the set of endpoints
 	 */
 	public CreateServiceInstanceAppBindingResponse(boolean async, String operation, boolean bindingExisted,
-			Map<String, Object> credentials, String syslogDrainUrl,
+			BindingMetadata metadata, Map<String, Object> credentials, String syslogDrainUrl,
 			List<VolumeMount> volumeMounts, List<Endpoint> endpoints) {
-		super(async, operation, bindingExisted);
+		super(async, operation, bindingExisted, metadata);
 		this.credentials = credentials;
 		this.syslogDrainUrl = syslogDrainUrl;
 		this.volumeMounts = volumeMounts;
@@ -174,6 +174,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		private final List<Endpoint> endpoints = new ArrayList<>();
 
 		private boolean bindingExisted;
+
+		private BindingMetadata metadata;
 
 		private boolean async;
 
@@ -306,6 +308,20 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
+		 * Set the service instance binding metadata
+		 *
+		 * <p>
+		 * This value will set the {@literal metadata} field in the body of the response to the platform.
+		 *
+		 * @param metadata metadata about this service binding
+		 * @return the builder
+		 */
+		public CreateServiceInstanceAppBindingResponseBuilder metadata(BindingMetadata metadata) {
+			this.metadata = metadata;
+			return this;
+		}
+
+		/**
 		 * Set a boolean value indicating whether the requested operation is being performed synchronously or
 		 * asynchronously.
 		 *
@@ -346,7 +362,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		 * @return the newly constructed {@literal CreateServiceInstanceAppBindingResponse}
 		 */
 		public CreateServiceInstanceAppBindingResponse build() {
-			return new CreateServiceInstanceAppBindingResponse(async, operation, bindingExisted, credentials,
+			return new CreateServiceInstanceAppBindingResponse(async, operation, bindingExisted, metadata, credentials,
 					syslogDrainUrl, volumeMounts, endpoints);
 		}
 
