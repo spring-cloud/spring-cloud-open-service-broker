@@ -35,7 +35,7 @@ public class ServiceInstanceMetadata {
 	/**
 	 * Broker specified key-value pairs specifying attributes of Service Instances
 	 */
-	public Map<String, Object> labels = new HashMap<>();
+	private final Map<String, Object> labels = new HashMap<>();
 
 	/**
 	 * Create a new ServiceInstanceMetadata
@@ -68,18 +68,23 @@ public class ServiceInstanceMetadata {
 	 * Set the labels
 	 *
 	 * @param labels the service instance metadata labels
+	 * @deprecated in favor of {@link ServiceInstanceMetadataBuilder}
 	 */
+	@Deprecated
 	public void setLabels(Map<String, Object> labels) {
-		this.labels = labels;
+		if (!CollectionUtils.isEmpty(labels)) {
+			this.labels.clear();
+			this.labels.putAll(labels);
+		}
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal CreateServiceInstanceResponse}.
+	 * Create a builder that provides a fluent API for constructing a {@literal ServiceInstanceMetadata}.
 	 *
 	 * @return the builder
 	 */
-	public static ServiceInstanceMetadata.ServiceInstanceMetadataBuilder builder() {
-		return new ServiceInstanceMetadata.ServiceInstanceMetadataBuilder();
+	public static ServiceInstanceMetadataBuilder builder() {
+		return new ServiceInstanceMetadataBuilder();
 	}
 
 
@@ -126,7 +131,7 @@ public class ServiceInstanceMetadata {
 		/**
 		 * Broker specified key-value pairs specifying attributes of Service Instances
 		 */
-		public Map<String, Object> labels = new HashMap<>();
+		private final Map<String, Object> labels = new HashMap<>();
 
 		private ServiceInstanceMetadataBuilder() {
 		}
@@ -139,7 +144,9 @@ public class ServiceInstanceMetadata {
 		 * @see #labels(Map)
 		 */
 		public ServiceInstanceMetadataBuilder labels(Map<String, Object> labels) {
-			this.labels.putAll(labels);
+			if (!CollectionUtils.isEmpty(labels)) {
+				this.labels.putAll(labels);
+			}
 			return this;
 		}
 
