@@ -50,6 +50,7 @@ class ServiceInstanceMetadataTest {
 		assertThat(serviceInstanceMetadata.getLabels()).containsOnly(entry("key", "value"), entry("key2", "value2"));
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	void populatedServiceInstanceMetadataSetLabels() {
 		Map<String, Object> labels = new HashMap<>();
