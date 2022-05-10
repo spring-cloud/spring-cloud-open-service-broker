@@ -5,5 +5,11 @@
   "parameters": {
     "field1": "field-a",
     "field2": "field-b"
+  },
+  "metadata": {
+    "labels": {
+      "key1" : "value1",
+      "key2" : "value2"
+    }
   }
 }
