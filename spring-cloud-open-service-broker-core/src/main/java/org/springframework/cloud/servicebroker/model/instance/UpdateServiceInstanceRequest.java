@@ -44,6 +44,7 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-3">Open Service
  * 		Broker API specification</a>
  */
+@SuppressWarnings("PMD.ExcessivePublicCount")
 public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
 
 	@NotEmpty
@@ -289,13 +290,32 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 	public static class PreviousValues {
 
+		/**
+		 * remains in the model for marshaling support
+		 */
+		@Deprecated
+		@JsonProperty("service_id")
+		private final String serviceDefinitionId;
+
 		@NotEmpty
 		private final String planId;
+
+		/**
+		 * remains in the model for marshaling support
+		 */
+		@Deprecated
+		private final String organizationId;
+
+		/**
+		 * remains in the model for marshaling support
+		 */
+		@Deprecated
+		private final String spaceId;
 
 		private final MaintenanceInfo maintenanceInfo;
 
 		private PreviousValues() {
-			this(null, null);
+			this(null, null, null, null, null);
 		}
 
 		/**
@@ -303,10 +323,42 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 *
 		 * @param planId the plan ID
 		 * @param maintenanceInfo the maintenance info (possibly null)
+		 * @deprecated in favor of {@link PreviousValues#builder()}
 		 */
+		@Deprecated
 		public PreviousValues(String planId, MaintenanceInfo maintenanceInfo) {
+			this(null, planId, null, null, maintenanceInfo);
+		}
+
+		/**
+		 * Construct a new {@link PreviousValues}
+		 *
+		 * @param serviceDefinitionId the ID of the service offering
+		 * @param planId the plan ID
+		 * @param organizationId the organization ID for the service instance
+		 * @param spaceId the space ID for the service instance
+		 * @param maintenanceInfo the maintenance info (possibly null)
+		 */
+		public PreviousValues(String serviceDefinitionId, String planId, String organizationId, String spaceId,
+				MaintenanceInfo maintenanceInfo) {
+			this.serviceDefinitionId = serviceDefinitionId;
 			this.planId = planId;
+			this.organizationId = organizationId;
+			this.spaceId = spaceId;
 			this.maintenanceInfo = maintenanceInfo;
+		}
+
+		/**
+		 * Get the ID of the service offering prior to the update request.
+		 *
+		 * <p>
+		 * This value is set from the {@literal service_id} field in the {@literal previous_values} field in the body of
+		 * the request from the platform.
+		 *
+		 * @return the ID of the service offering
+		 */
+		public String getServiceDefinitionId() {
+			return this.serviceDefinitionId;
 		}
 
 		/**
@@ -323,6 +375,45 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		}
 
 		/**
+		 * Get the ID of the organization prior to the update request.
+		 *
+		 * <p>
+		 * This value is set from the {@literal organization_id} field in the {@literal previous_values} field in the
+		 * body of the request from the platform.
+		 *
+		 * @return organization ID for the service instance
+		 */
+		public String getOrganizationId() {
+			return this.organizationId;
+		}
+
+		/**
+		 * Get the ID of the space prior to the update request.
+		 *
+		 * <p>
+		 * This value is set from the {@literal space_id} field in the {@literal previous_values} field in the body of
+		 * the request from the platform.
+		 *
+		 * @return the space ID for the service instance
+		 */
+		public String getSpaceId() {
+			return this.spaceId;
+		}
+
+		/**
+		 * Create a builder that provides a fluent API for constructing a {@literal PreviousValues}.
+		 *
+		 * <p>
+		 * This builder is provided to support testing of {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService}
+		 * implementations.
+		 *
+		 * @return the builder
+		 */
+		public static PreviousValuesBuilder builder() {
+			return new PreviousValuesBuilder();
+		}
+
+		/**
 		 * Get the maintenance info to the update request.
 		 *
 		 * <p>
@@ -332,7 +423,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 * @return the maintenance info
 		 */
 		public MaintenanceInfo getMaintenanceInfo() {
-			return maintenanceInfo;
+			return this.maintenanceInfo;
 		}
 
 		@Override
@@ -344,21 +435,115 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 				return false;
 			}
 			PreviousValues that = (PreviousValues) o;
-			return Objects.equals(planId, that.planId) &&
+			return Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
+					Objects.equals(planId, that.planId) &&
+					Objects.equals(organizationId, that.organizationId) &&
+					Objects.equals(spaceId, that.spaceId) &&
 					Objects.equals(maintenanceInfo, that.maintenanceInfo);
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(planId, maintenanceInfo);
+			return Objects.hash(serviceDefinitionId, planId, organizationId, spaceId, maintenanceInfo);
 		}
 
 		@Override
 		public String toString() {
 			return "PreviousValues{" +
+					"serviceDefinitionId=" + serviceDefinitionId + '\'' +
 					"planId='" + planId + '\'' +
+					"organizationId='" + organizationId + '\'' +
+					"spaceId='" + spaceId + '\'' +
 					"maintenanceInfo='" + maintenanceInfo + '\'' +
 					'}';
+		}
+
+		/**
+		 * Provides a fluent API for constructing a {@link PreviousValues}.
+		 */
+		public static final class PreviousValuesBuilder {
+
+			private String serviceDefinitionId;
+
+			private String planId;
+
+			private String organizationId;
+
+			private String spaceId;
+
+			private MaintenanceInfo maintenanceInfo;
+
+			private PreviousValuesBuilder() {
+			}
+
+			/**
+			 * Set the service definition ID as would be provided in the request from the platform.
+			 *
+			 * @param serviceDefinitionId the service definition ID
+			 * @return the builder
+			 * @see #getServiceDefinitionId()
+			 */
+			public PreviousValuesBuilder serviceDefinitionId(String serviceDefinitionId) {
+				this.serviceDefinitionId = serviceDefinitionId;
+				return this;
+			}
+
+			/**
+			 * Set the plan ID as would be provided in the request from the platform.
+			 *
+			 * @param planId the plan ID
+			 * @return the builder
+			 * @see #getPlanId()
+			 */
+			public PreviousValuesBuilder planId(String planId) {
+				this.planId = planId;
+				return this;
+			}
+
+			/**
+			 * Set the organization ID as would be provided in the request from the platform.
+			 *
+			 * @param organizationId the organization ID
+			 * @return the builder
+			 * @see #getOrganizationId()
+			 */
+			public PreviousValuesBuilder organizationId(String organizationId) {
+				this.organizationId = organizationId;
+				return this;
+			}
+
+			/**
+			 * Set the space ID as would be provided in the request from the platform.
+			 *
+			 * @param spaceId the space ID
+			 * @return the builder
+			 * @see #getSpaceId()
+			 */
+			public PreviousValuesBuilder spaceId(String spaceId) {
+				this.spaceId = spaceId;
+				return this;
+			}
+
+			/**
+			 * Set the maintenance info as would be provided in the request from the platform.
+			 *
+			 * @param maintenanceInfo the maintenance info
+			 * @return the builder
+			 * @see #getMaintenanceInfo()
+			 */
+			public PreviousValuesBuilder maintenanceInfo(MaintenanceInfo maintenanceInfo) {
+				this.maintenanceInfo = maintenanceInfo;
+				return this;
+			}
+
+			/**
+			 * Construct a {@link PreviousValues} from the provided values.
+			 *
+			 * @return the newly constructed {@literal PreviousValues}
+			 */
+			public PreviousValues build() {
+				return new PreviousValues(serviceDefinitionId, planId, organizationId, spaceId, maintenanceInfo);
+			}
 		}
 
 	}
