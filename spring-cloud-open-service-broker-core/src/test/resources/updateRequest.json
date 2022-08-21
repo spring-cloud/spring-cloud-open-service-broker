@@ -2,7 +2,10 @@
 	"service_id": "test-service-id",
 	"plan_id": "test-plan-id",
 	"previous_values": {
+		"service_id": "previous-service-definition-id",
 		"plan_id": "previous-plan-id",
+		"organization_id": "previous-organization-id",
+		"space_id": "previous-space-id",
 		"maintenance_info": {
 			"version": "1.1.0",
 			"description": "Patch for CVE-x"

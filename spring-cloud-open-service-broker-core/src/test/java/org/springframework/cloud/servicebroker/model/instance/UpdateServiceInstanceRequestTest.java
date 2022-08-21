@@ -69,9 +69,16 @@ class UpdateServiceInstanceRequestTest {
 				.serviceInstanceId("service-instance-id")
 				.serviceDefinitionId("service-definition-id")
 				.planId("plan-id")
-				.previousValues(new PreviousValues(
-					"previous-plan-id",
-					new MaintenanceInfo("1.1.0", "Patch for CVE-x")))
+				.previousValues(PreviousValues.builder()
+						.serviceDefinitionId("previous-service-definition-id")
+						.planId("previous-plan-id")
+						.organizationId("previous-organization-id")
+						.spaceId("previous-space-id")
+						.maintenanceInfo(MaintenanceInfo.builder()
+								.version("1.1.0")
+								.description("Patch for CVE-x")
+								.build())
+						.build())
 				.context(context)
 				.parameters("field1", "value1")
 				.parameters("field2", 2)
@@ -89,7 +96,10 @@ class UpdateServiceInstanceRequestTest {
 		assertThat(request.getServiceDefinitionId()).isEqualTo("service-definition-id");
 		assertThat(request.getPlanId()).isEqualTo("plan-id");
 
+		assertThat(request.getPreviousValues().getServiceDefinitionId()).isEqualTo("previous-service-definition-id");
 		assertThat(request.getPreviousValues().getPlanId()).isEqualTo("previous-plan-id");
+		assertThat(request.getPreviousValues().getOrganizationId()).isEqualTo("previous-organization-id");
+		assertThat(request.getPreviousValues().getSpaceId()).isEqualTo("previous-space-id");
 		assertThat(request.getPreviousValues().getMaintenanceInfo()).isEqualTo(
 			new MaintenanceInfo("1.1.0", "Patch for CVE-x"));
 
@@ -119,7 +129,10 @@ class UpdateServiceInstanceRequestTest {
 
 		assertThat(request.getServiceDefinitionId()).isEqualTo("test-service-id");
 		assertThat(request.getPlanId()).isEqualTo("test-plan-id");
+		assertThat(request.getPreviousValues().getServiceDefinitionId()).isEqualTo("previous-service-definition-id");
 		assertThat(request.getPreviousValues().getPlanId()).isEqualTo("previous-plan-id");
+		assertThat(request.getPreviousValues().getOrganizationId()).isEqualTo("previous-organization-id");
+		assertThat(request.getPreviousValues().getSpaceId()).isEqualTo("previous-space-id");
 		assertThat(request.getPreviousValues().getMaintenanceInfo()).isEqualTo(new MaintenanceInfo("1.1.0", "Patch for CVE-x"));
 		assertThat(request.getMaintenanceInfo().getVersion()).isEqualTo("2.0.0");
 		assertThat(request.getMaintenanceInfo().getDescription()).isNull();
