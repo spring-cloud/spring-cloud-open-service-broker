@@ -103,8 +103,7 @@ public interface ServiceInstanceService {
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the
 	 * 		broker
 	 * @throws ServiceBrokerAsyncRequiredException if the broker requires asynchronous processing of the request
-	 * @throws ServiceBrokerDeleteOperationInProgressException if a an operation is in progress for the service
-	 * 		binding
+	 * @throws ServiceBrokerDeleteOperationInProgressException if an operation is in progress for the service instance
 	 */
 	Mono<DeleteServiceInstanceResponse> deleteServiceInstance(DeleteServiceInstanceRequest request);
 
@@ -119,8 +118,7 @@ public interface ServiceInstanceService {
 	 * 		broker
 	 * @throws ServiceBrokerAsyncRequiredException if the broker requires asynchronous processing of the request
 	 * @throws ServiceBrokerInvalidParametersException if any parameters passed in the request are invalid
-	 * @throws ServiceBrokerUpdateOperationInProgressException if a an operation is in progress for the service
-	 * 		instance
+	 * @throws ServiceBrokerUpdateOperationInProgressException if an operation is in progress for the service instance
 	 */
 	default Mono<UpdateServiceInstanceResponse> updateServiceInstance(UpdateServiceInstanceRequest request) {
 		return Mono.error(new UnsupportedOperationException("This service broker does not support updating service " +
