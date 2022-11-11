@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 class ErrorMessageTest {
@@ -30,10 +31,34 @@ class ErrorMessageTest {
 	void errorWithCodeAndDescriptionIsBuilt() {
 		ErrorMessage errorMessage = new ErrorMessage("ErrorCode", "error description");
 
+		assertThat(errorMessage.getError()).isEqualTo("ErrorCode");
+		assertThat(errorMessage.getMessage()).isEqualTo("error description");
+		assertThat(errorMessage.isInstanceUsable()).isNull();
+		assertThat(errorMessage.isInstanceUsable()).isNull();
+
 		DocumentContext json = JsonUtils.toJsonPath(errorMessage);
 
 		assertThat(json).hasPath("$.error").isEqualTo("ErrorCode");
 		assertThat(json).hasPath("$.description").isEqualTo("error description");
+		assertThat(json).hasNoPath("$.instance_usable");
+		assertThat(json).hasNoPath("$.update_repeatable");
+	}
+
+	@Test
+	void errorWithAllValuesIsBuilt() {
+		ErrorMessage errorMessage = new ErrorMessage("ErrorCode", "error description", false, false);
+
+		assertThat(errorMessage.getError()).isEqualTo("ErrorCode");
+		assertThat(errorMessage.getMessage()).isEqualTo("error description");
+		assertThat(errorMessage.isInstanceUsable()).isFalse();
+		assertThat(errorMessage.isUpdateRepeatable()).isFalse();
+
+		DocumentContext json = JsonUtils.toJsonPath(errorMessage);
+
+		assertThat(json).hasPath("$.error").isEqualTo("ErrorCode");
+		assertThat(json).hasPath("$.description").isEqualTo("error description");
+		assertThat(json).hasPath("$.instance_usable").isEqualTo(false);
+		assertThat(json).hasPath("$.update_repeatable").isEqualTo(false);
 	}
 
 	@Test
@@ -47,16 +72,47 @@ class ErrorMessageTest {
 
 		assertThat(json).hasPath("$.error").isEqualTo("ErrorCode");
 		assertThat(json).hasPath("$.description").isEqualTo("error description");
+		assertThat(json).hasNoPath("$.instance_usable");
+		assertThat(json).hasNoPath("$.update_repeatable");
+	}
+
+	@Test
+	void errorWithAllValuesIsBuiltWithBuilder() {
+		ErrorMessage errorMessage = ErrorMessage.builder()
+				.error("ErrorCode")
+				.message("error description")
+				.instanceUsable(false)
+				.updateRepeatable(true)
+				.build();
+
+		assertThat(errorMessage.getError()).isEqualTo("ErrorCode");
+		assertThat(errorMessage.getMessage()).isEqualTo("error description");
+		assertThat(errorMessage.isInstanceUsable()).isFalse();
+		assertThat(errorMessage.isUpdateRepeatable()).isTrue();
+
+		DocumentContext json = JsonUtils.toJsonPath(errorMessage);
+
+		assertThat(json).hasPath("$.error").isEqualTo("ErrorCode");
+		assertThat(json).hasPath("$.description").isEqualTo("error description");
+		assertThat(json).hasPath("$.instance_usable").isEqualTo(false);
+		assertThat(json).hasPath("$.update_repeatable").isEqualTo(true);
 	}
 
 	@Test
 	void errorWithDescriptionIsBuilt() {
 		ErrorMessage errorMessage = new ErrorMessage("error description");
 
+		assertThat(errorMessage.getError()).isNull();
+		assertThat(errorMessage.getMessage()).isEqualTo("error description");
+		assertThat(errorMessage.isInstanceUsable()).isNull();
+		assertThat(errorMessage.isInstanceUsable()).isNull();
+
 		DocumentContext json = JsonUtils.toJsonPath(errorMessage);
 
 		assertThat(json).hasNoPath("$.error");
 		assertThat(json).hasPath("$.description").isEqualTo("error description");
+		assertThat(json).hasNoPath("$.instance_usable");
+		assertThat(json).hasNoPath("$.update_repeatable");
 	}
 
 	@Test
@@ -65,10 +121,17 @@ class ErrorMessageTest {
 				.message("error description")
 				.build();
 
+		assertThat(errorMessage.getError()).isNull();
+		assertThat(errorMessage.getMessage()).isEqualTo("error description");
+		assertThat(errorMessage.isInstanceUsable()).isNull();
+		assertThat(errorMessage.isInstanceUsable()).isNull();
+
 		DocumentContext json = JsonUtils.toJsonPath(errorMessage);
 
 		assertThat(json).hasNoPath("$.error");
 		assertThat(json).hasPath("$.description").isEqualTo("error description");
+		assertThat(json).hasNoPath("$.instance_usable");
+		assertThat(json).hasNoPath("$.update_repeatable");
 	}
 
 	@Test

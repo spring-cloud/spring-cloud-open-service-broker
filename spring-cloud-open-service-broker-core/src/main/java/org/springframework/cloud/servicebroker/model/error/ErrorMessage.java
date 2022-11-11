@@ -20,6 +20,8 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
  * Details of an error reported to the platform from a service broker.
@@ -31,12 +33,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 		Service Broker API specification</a>
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ErrorMessage {
 
 	private final String error;
 
 	@JsonProperty("description")
 	private final String message;
+
+	private final Boolean instanceUsable;
+
+	private final Boolean updateRepeatable;
 
 	/**
 	 * Construct an error message with no error code or description.
@@ -61,8 +68,22 @@ public class ErrorMessage {
 	 * @param message a user-facing error message explaining why the request failed
 	 */
 	public ErrorMessage(String error, String message) {
+		this(error, message, null, null);
+	}
+
+	/**
+	 * Construct an error message.
+	 *
+	 * @param error a single word in camel case that uniquely identifies the error condition
+	 * @param message a user-facing error message explaining why the request failed
+	 * @param instanceUsable is the instance still usable after a failed operation
+	 * @param updateRepeatable can the update be repeated after a failed operation
+	 */
+	public ErrorMessage(String error, String message, Boolean instanceUsable, Boolean updateRepeatable) {
 		this.error = error;
 		this.message = message;
+		this.instanceUsable = instanceUsable;
+		this.updateRepeatable = updateRepeatable;
 	}
 
 	/**
@@ -84,6 +105,24 @@ public class ErrorMessage {
 	}
 
 	/**
+	 * Get a boolean value indicating whether the instance is usable after a failed update or deprovisioning operation
+	 *
+	 * @return the boolean value
+	 */
+	public Boolean isInstanceUsable() {
+		return this.instanceUsable;
+	}
+
+	/**
+	 * Get a boolean value indicating whether a failed update is repeatable
+	 *
+	 * @return the boolean value
+	 */
+	public Boolean isUpdateRepeatable() {
+		return this.updateRepeatable;
+	}
+
+	/**
 	 * Create a builder that provides a fluent API for constructing an {@literal ErrorMessage}.
 	 *
 	 * @return the builder
@@ -102,12 +141,14 @@ public class ErrorMessage {
 		}
 		ErrorMessage that = (ErrorMessage) o;
 		return Objects.equals(error, that.error) &&
-				Objects.equals(message, that.message);
+				Objects.equals(message, that.message) &&
+				Objects.equals(instanceUsable, that.instanceUsable) &&
+				Objects.equals(updateRepeatable, that.updateRepeatable);
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(error, message);
+		return Objects.hash(error, message, instanceUsable, updateRepeatable);
 	}
 
 	@Override
@@ -115,6 +156,8 @@ public class ErrorMessage {
 		return "ErrorMessage{" +
 				"error='" + error + '\'' +
 				", message='" + message + '\'' +
+				", instanceUsable=" + instanceUsable + '\'' +
+				", updateRepeatable=" + updateRepeatable +
 				'}';
 	}
 
@@ -126,6 +169,10 @@ public class ErrorMessage {
 		private String error;
 
 		private String message;
+
+		private Boolean instanceUsable;
+
+		private Boolean updateRepeatable;
 
 		/**
 		 * Set the error code
@@ -152,12 +199,44 @@ public class ErrorMessage {
 		}
 
 		/**
+		 * Set a boolean that indicates whether or not the Service Instance is still usable after a failed update or
+		 * delete action. If true, the Service Instance can still be used, false otherwise.
+		 *
+		 * <p>
+		 * This value will set the {@literal instance_usable} field in the body of the response to the platform.
+		 *
+		 * @param instanceUsable the boolean value
+		 * @return the builder
+		 * @see #isInstanceUsable()
+		 */
+		public ErrorMessageBuilder instanceUsable(Boolean instanceUsable) {
+			this.instanceUsable = instanceUsable;
+			return this;
+		}
+
+		/**
+		 * Set a boolean that indicates whether this update can be repeated or not. If true, the same update
+		 * operation MAY be repeated and MAY succeed; if false, repeating the same update operation will fail again.
+		 *
+		 * <p>
+		 * This value will set the {@literal update_repeatable} field in the body of the response to the platform.
+		 *
+		 * @param updateRepeatable the boolean value
+		 * @return the builder
+		 * @see #isUpdateRepeatable()
+		 */
+		public ErrorMessageBuilder updateRepeatable(Boolean updateRepeatable) {
+			this.updateRepeatable = updateRepeatable;
+			return this;
+		}
+
+		/**
 		 * Construct an {@link ErrorMessage} from the provided values
 		 *
 		 * @return the newly constructed {@link ErrorMessage}
 		 */
 		public ErrorMessage build() {
-			return new ErrorMessage(error, message);
+			return new ErrorMessage(error, message, instanceUsable, updateRepeatable);
 		}
 	}
 

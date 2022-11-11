@@ -1,4 +1,6 @@
 {
   "state": "succeeded",
-  "description": "description"
+  "description": "description",
+  "instance_usable": true,
+  "update_repeatable": true
 }

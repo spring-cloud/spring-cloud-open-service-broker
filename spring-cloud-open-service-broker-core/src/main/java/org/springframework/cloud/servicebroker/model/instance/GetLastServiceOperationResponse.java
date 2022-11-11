@@ -21,6 +21,8 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
  * Details of a response to a request to get the state of the last operation on a service instance.
@@ -30,16 +32,22 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * platform.
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-1">Open Service
  * 		Broker API specification</a>
  */
 @JsonAutoDetect
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class GetLastServiceOperationResponse {
 
 	private final OperationState state;
 
 	private final String description;
+
+	private final Boolean instanceUsable;
+
+	private final Boolean updateRepeatable;
 
 	@JsonIgnore
 	private final boolean deleteOperation;
@@ -48,7 +56,7 @@ public class GetLastServiceOperationResponse {
 	 * Construct a new {@link GetLastServiceOperationResponse}
 	 */
 	public GetLastServiceOperationResponse() {
-		this(null, null, false);
+		this(null, null, null, null, false);
 	}
 
 	/**
@@ -57,10 +65,30 @@ public class GetLastServiceOperationResponse {
 	 * @param state the current state
 	 * @param description the description
 	 * @param deleteOperation is delete operation
+	 * @deprecated in favor of
+	 *        {@link GetLastServiceOperationResponse#GetLastServiceOperationResponse(OperationState, String, Boolean,
+	 *        Boolean, boolean)}
 	 */
+	@Deprecated
 	public GetLastServiceOperationResponse(OperationState state, String description, boolean deleteOperation) {
+		this(state, description, true, true, deleteOperation);
+	}
+
+	/**
+	 * Construct a new {@link GetLastServiceOperationResponse}
+	 *
+	 * @param state the current state
+	 * @param description the description
+	 * @param instanceUsable is the instance usable
+	 * @param updateRepeatable is the update repeatable
+	 * @param deleteOperation is delete operation
+	 */
+	public GetLastServiceOperationResponse(OperationState state, String description, Boolean instanceUsable,
+			Boolean updateRepeatable, boolean deleteOperation) {
 		this.state = state;
 		this.description = description;
+		this.instanceUsable = instanceUsable;
+		this.updateRepeatable = updateRepeatable;
 		this.deleteOperation = deleteOperation;
 	}
 
@@ -80,6 +108,24 @@ public class GetLastServiceOperationResponse {
 	 */
 	public String getDescription() {
 		return this.description;
+	}
+
+	/**
+	 * Get a boolean value indicating whether the instance is usable after a failed update or deprovisioning operation
+	 *
+	 * @return the boolean value
+	 */
+	public Boolean isInstanceUsable() {
+		return this.instanceUsable;
+	}
+
+	/**
+	 * Get a boolean value indicating whether a failed update is repeatable
+	 *
+	 * @return the boolean value
+	 */
+	public Boolean isUpdateRepeatable() {
+		return this.updateRepeatable;
 	}
 
 	/**
@@ -109,14 +155,16 @@ public class GetLastServiceOperationResponse {
 			return false;
 		}
 		GetLastServiceOperationResponse that = (GetLastServiceOperationResponse) o;
-		return deleteOperation == that.deleteOperation &&
-				state == that.state &&
-				Objects.equals(description, that.description);
+		return state == that.state &&
+				Objects.equals(description, that.description) &&
+				Objects.equals(instanceUsable, that.instanceUsable) &&
+				Objects.equals(updateRepeatable, that.updateRepeatable) &&
+				deleteOperation == that.deleteOperation;
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(state, description, deleteOperation);
+		return Objects.hash(state, description, instanceUsable, updateRepeatable, deleteOperation);
 	}
 
 	@Override
@@ -124,6 +172,8 @@ public class GetLastServiceOperationResponse {
 		return "GetLastServiceOperationResponse{" +
 				"state=" + state +
 				", description='" + description + '\'' +
+				", instanceUsable=" + instanceUsable + '\'' +
+				", updateRepeatable=" + updateRepeatable + '\'' +
 				", deleteOperation=" + deleteOperation +
 				'}';
 	}
@@ -136,6 +186,10 @@ public class GetLastServiceOperationResponse {
 		private OperationState state;
 
 		private String description;
+
+		private Boolean instanceUsable;
+
+		private Boolean updateRepeatable;
 
 		private boolean deleteOperation;
 
@@ -177,6 +231,36 @@ public class GetLastServiceOperationResponse {
 		}
 
 		/**
+		 * Set a boolean that indicates whether or not the Service Instance is still usable after a failed update or
+		 * delete action. If true, the Service Instance can still be used, false otherwise.
+		 *
+		 * <p>
+		 * This value will set the {@literal instance_usable} field in the body of the response to the platform.
+		 *
+		 * @param instanceUsable the boolean value
+		 * @return the builder
+		 */
+		public GetLastServiceOperationResponseBuilder instanceUsable(Boolean instanceUsable) {
+			this.instanceUsable = instanceUsable;
+			return this;
+		}
+
+		/**
+		 * Set a boolean that indicates whether this update can be repeated or not. If true, the same update
+		 * operation MAY be repeated and MAY succeed; if false, repeating the same update operation will fail again.
+		 *
+		 * <p>
+		 * This value will set the {@literal update_repeatable} field in the body of the response to the platform.
+		 *
+		 * @param updateRepeatable the boolean value
+		 * @return the builder
+		 */
+		public GetLastServiceOperationResponseBuilder updateRepeatable(Boolean updateRepeatable) {
+			this.updateRepeatable = updateRepeatable;
+			return this;
+		}
+
+		/**
 		 * Set a boolean value indicating whether the current asynchronous operation is a delete operation. Should be
 		 * set to <code>true</code> in response to a request for the status of an asynchronous delete request, and
 		 * <code>false</code> otherwise.
@@ -201,7 +285,8 @@ public class GetLastServiceOperationResponse {
 		 * @return the newly constructed {@literal GetLastServiceOperationResponse}
 		 */
 		public GetLastServiceOperationResponse build() {
-			return new GetLastServiceOperationResponse(state, description, deleteOperation);
+			return new GetLastServiceOperationResponse(state, description, instanceUsable, updateRepeatable,
+					deleteOperation);
 		}
 
 	}

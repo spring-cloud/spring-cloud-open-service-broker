@@ -22,6 +22,8 @@ package org.springframework.cloud.servicebroker.exception;
  * <p>
  * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY} being returned to the
  * platform.
+ *
+ * @author Roy Clarkson
  */
 public class ServiceInstanceUpdateNotSupportedException extends ServiceBrokerException {
 
@@ -67,6 +69,41 @@ public class ServiceInstanceUpdateNotSupportedException extends ServiceBrokerExc
 	 */
 	public ServiceInstanceUpdateNotSupportedException(String errorCode, String message, Throwable cause) {
 		super(errorCode, MESSAGE_PREFIX + ": " + message, cause);
+	}
+
+	/**
+	 * Construct an exception with a default message and the provided detail and a cause.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param message detail to add to the default message
+	 * @param instanceUsable If an update or deprovisioning operation failed, this flag indicates whether or not the
+	 * 		Service Instance is still usable. If true, the Service Instance can still be used, false otherwise. This field
+	 * 		MUST NOT be present for errors of other operations.
+	 * @param updateRepeatable If an update operation failed, this flag indicates whether this update can be repeated
+	 * 		or not. If true, the same update operation MAY be repeated and MAY succeed; if false, repeating the same
+	 * 		update operation will fail again. This field MUST NOT be present for errors of other operations.
+	 */
+	public ServiceInstanceUpdateNotSupportedException(String errorCode, String message, Boolean instanceUsable,
+			Boolean updateRepeatable) {
+		super(errorCode, MESSAGE_PREFIX + ": " + message, instanceUsable, updateRepeatable);
+	}
+
+	/**
+	 * Construct an exception with a default message and the provided detail and a cause.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param message detail to add to the default message
+	 * @param instanceUsable If an update or deprovisioning operation failed, this flag indicates whether or not the
+	 * 		Service Instance is still usable. If true, the Service Instance can still be used, false otherwise. This field
+	 * 		MUST NOT be present for errors of other operations.
+	 * @param updateRepeatable If an update operation failed, this flag indicates whether this update can be repeated
+	 * 		or not. If true, the same update operation MAY be repeated and MAY succeed; if false, repeating the same
+	 * 		update operation will fail again. This field MUST NOT be present for errors of other operations.
+	 * @param cause the cause of the exception
+	 */
+	public ServiceInstanceUpdateNotSupportedException(String errorCode, String message, Boolean instanceUsable,
+			Boolean updateRepeatable, Throwable cause) {
+		super(errorCode, MESSAGE_PREFIX + ": " + message, instanceUsable, updateRepeatable, cause);
 	}
 
 	/**

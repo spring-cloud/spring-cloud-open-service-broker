@@ -95,7 +95,7 @@ class GetLastServiceBindingOperationResponseTest {
 	@Test
 	void responseWithAllValuesIsDeserialized() {
 		GetLastServiceBindingOperationResponse response = JsonUtils.readTestDataFile(
-				"getLastOperationResponse.json", GetLastServiceBindingOperationResponse.class);
+				"getLastBindingOperationResponse.json", GetLastServiceBindingOperationResponse.class);
 
 		assertThat(response.getState()).isEqualTo(OperationState.SUCCEEDED);
 		assertThat(response.getDescription()).isEqualTo("description");

@@ -34,12 +34,18 @@ class GetLastServiceOperationResponseTest {
 
 		assertThat(response.getState()).isNull();
 		assertThat(response.getDescription()).isNull();
-		assertThat(response.isDeleteOperation()).isEqualTo(false);
+		assertThat(response.isInstanceUsable()).isNull();
+		assertThat(response.isUpdateRepeatable()).isNull();
+		assertThat(response.isDeleteOperation()).isFalse();
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
 		assertThat(json).hasNoPath("$.state");
 		assertThat(json).hasNoPath("$.description");
+		assertThat(json).hasNoPath("$.instance_usable");
+		assertThat(json).hasNoPath("$.update_repeatable");
+		assertThat(json).hasNoPath("$.delete_operation");
+
 	}
 
 	@Test
@@ -50,12 +56,17 @@ class GetLastServiceOperationResponseTest {
 
 		assertThat(response.getState()).isNull();
 		assertThat(response.getDescription()).isNotNull();
-		assertThat(response.isDeleteOperation()).isEqualTo(false);
+		assertThat(response.isInstanceUsable()).isNull();
+		assertThat(response.isUpdateRepeatable()).isNull();
+		assertThat(response.isDeleteOperation()).isFalse();
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
 		assertThat(json).hasNoPath("$.state");
 		assertThat(json).hasPath("$.description").isEqualTo("");
+		assertThat(json).hasNoPath("$.instance_usable");
+		assertThat(json).hasNoPath("$.update_repeatable");
+		assertThat(json).hasNoPath("$.delete_operation");
 	}
 
 	@Test
@@ -63,17 +74,24 @@ class GetLastServiceOperationResponseTest {
 		GetLastServiceOperationResponse response = GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.SUCCEEDED)
 				.description("description")
+				.instanceUsable(false)
+				.updateRepeatable(false)
 				.deleteOperation(true)
 				.build();
 
 		assertThat(response.getState()).isEqualTo(OperationState.SUCCEEDED);
 		assertThat(response.getDescription()).isEqualTo("description");
-		assertThat(response.isDeleteOperation()).isEqualTo(true);
+		assertThat(response.isInstanceUsable()).isFalse();
+		assertThat(response.isUpdateRepeatable()).isFalse();
+		assertThat(response.isDeleteOperation()).isTrue();
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
 		assertThat(json).hasPath("$.state").isEqualTo(OperationState.SUCCEEDED.toString());
 		assertThat(json).hasPath("$.description").isEqualTo("description");
+		assertThat(json).hasPath("$.instance_usable").isEqualTo(false);
+		assertThat(json).hasPath("$.update_repeatable").isEqualTo(false);
+		assertThat(json).hasNoPath("$.delete_operation");
 	}
 
 	@Test
@@ -98,6 +116,8 @@ class GetLastServiceOperationResponseTest {
 
 		assertThat(response.getState()).isEqualTo(OperationState.SUCCEEDED);
 		assertThat(response.getDescription()).isEqualTo("description");
+		assertThat(response.isInstanceUsable()).isTrue();
+		assertThat(response.isUpdateRepeatable()).isTrue();
 	}
 
 	private void responseWithStateIsSerializedToJson(OperationState stateValue, String stateString) {

@@ -24,6 +24,7 @@ package org.springframework.cloud.servicebroker.exception;
  * platform.
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
 public class ServiceBrokerInvalidParametersException extends ServiceBrokerException {
 
@@ -69,6 +70,41 @@ public class ServiceBrokerInvalidParametersException extends ServiceBrokerExcept
 	 */
 	public ServiceBrokerInvalidParametersException(String errorCode, String message, Throwable cause) {
 		super(errorCode, prependMessagePrefix(message), cause);
+	}
+
+	/**
+	 * Construct an exception with the provided error code, message and cause.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param message the exception message
+	 * @param instanceUsable If an update or deprovisioning operation failed, this flag indicates whether or not the
+	 * 		Service Instance is still usable. If true, the Service Instance can still be used, false otherwise. This field
+	 * 		MUST NOT be present for errors of other operations.
+	 * @param updateRepeatable If an update operation failed, this flag indicates whether this update can be repeated
+	 * 		or not. If true, the same update operation MAY be repeated and MAY succeed; if false, repeating the same
+	 * 		update operation will fail again. This field MUST NOT be present for errors of other operations.
+	 */
+	public ServiceBrokerInvalidParametersException(String errorCode, String message, Boolean instanceUsable,
+			Boolean updateRepeatable) {
+		super(errorCode, prependMessagePrefix(message), instanceUsable, updateRepeatable);
+	}
+
+	/**
+	 * Construct an exception with the provided error code, message and cause.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param message the exception message
+	 * @param instanceUsable If an update or deprovisioning operation failed, this flag indicates whether or not the
+	 * 		Service Instance is still usable. If true, the Service Instance can still be used, false otherwise. This field
+	 * 		MUST NOT be present for errors of other operations.
+	 * @param updateRepeatable If an update operation failed, this flag indicates whether this update can be repeated
+	 * 		or not. If true, the same update operation MAY be repeated and MAY succeed; if false, repeating the same
+	 * 		update operation will fail again. This field MUST NOT be present for errors of other operations.
+	 * @param cause the cause of the exception
+	 */
+	public ServiceBrokerInvalidParametersException(String errorCode, String message, Boolean instanceUsable,
+			Boolean updateRepeatable, Throwable cause) {
+		super(errorCode, prependMessagePrefix(message), instanceUsable, updateRepeatable, cause);
 	}
 
 	/**

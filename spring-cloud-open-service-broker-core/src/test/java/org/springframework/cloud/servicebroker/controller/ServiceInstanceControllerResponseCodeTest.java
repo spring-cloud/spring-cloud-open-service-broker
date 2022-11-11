@@ -334,6 +334,15 @@ class ServiceInstanceControllerResponseCodeTest {
 				.build(), HttpStatus.OK);
 	}
 
+	@Test
+	void getLastOperationWithFailedResponseInstanceUnusableGivesExpectedStatus() {
+		validateGetLastOperationWithResponseStatus(GetLastServiceOperationResponse.builder()
+				.operationState(OperationState.FAILED)
+				.instanceUsable(false)
+				.updateRepeatable(true)
+				.build(), HttpStatus.OK);
+	}
+
 	private void validateGetLastOperationWithResponseStatus(GetLastServiceOperationResponse response,
 			HttpStatus expectedStatus) {
 		given(serviceInstanceService.getLastOperation(any(GetLastServiceOperationRequest.class)))

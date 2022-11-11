@@ -27,6 +27,7 @@ import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
  * platform.
  *
  * @author sgreenberg@pivotal.io
+ * @author Roy Clarkson
  */
 public class ServiceBrokerException extends RuntimeException {
 
@@ -76,6 +77,52 @@ public class ServiceBrokerException extends RuntimeException {
 	public ServiceBrokerException(String errorCode, String message, Throwable cause) {
 		super(message, cause);
 		this.errorMessage = new ErrorMessage(errorCode, message);
+	}
+
+	/**
+	 * Construct an exception with the provided error code, message and cause.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param message the exception message
+	 * @param instanceUsable If an update or deprovisioning operation failed, this flag indicates whether or not the
+	 * 		Service Instance is still usable. If true, the Service Instance can still be used, false otherwise. This field
+	 * 		MUST NOT be present for errors of other operations.
+	 * @param updateRepeatable If an update operation failed, this flag indicates whether this update can be repeated
+	 * 		or not. If true, the same update operation MAY be repeated and MAY succeed; if false, repeating the same
+	 * 		update operation will fail again. This field MUST NOT be present for errors of other operations.
+	 */
+	public ServiceBrokerException(String errorCode, String message, Boolean instanceUsable, Boolean updateRepeatable) {
+		super(message);
+		this.errorMessage = ErrorMessage.builder()
+				.error(errorCode)
+				.message(message)
+				.instanceUsable(instanceUsable)
+				.updateRepeatable(updateRepeatable)
+				.build();
+	}
+
+	/**
+	 * Construct an exception with the provided error code, message and cause.
+	 *
+	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param message the exception message
+	 * @param instanceUsable If an update or deprovisioning operation failed, this flag indicates whether or not the
+	 * 		Service Instance is still usable. If true, the Service Instance can still be used, false otherwise. This field
+	 * 		MUST NOT be present for errors of other operations.
+	 * @param updateRepeatable If an update operation failed, this flag indicates whether this update can be repeated
+	 * 		or not. If true, the same update operation MAY be repeated and MAY succeed; if false, repeating the same
+	 * 		update operation will fail again. This field MUST NOT be present for errors of other operations.
+	 * @param cause the cause of the exception
+	 */
+	public ServiceBrokerException(String errorCode, String message, Boolean instanceUsable, Boolean updateRepeatable,
+			Throwable cause) {
+		super(message, cause);
+		this.errorMessage = ErrorMessage.builder()
+				.error(errorCode)
+				.message(message)
+				.instanceUsable(instanceUsable)
+				.updateRepeatable(updateRepeatable)
+				.build();
 	}
 
 	/**
