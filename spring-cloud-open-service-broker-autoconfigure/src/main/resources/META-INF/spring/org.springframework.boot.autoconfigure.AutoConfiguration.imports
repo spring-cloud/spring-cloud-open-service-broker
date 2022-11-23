@@ -1,0 +1,6 @@
+org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerAutoConfiguration
+org.springframework.cloud.servicebroker.autoconfigure.web.servlet.ServiceBrokerWebMvcAutoConfiguration
+org.springframework.cloud.servicebroker.autoconfigure.web.servlet.ApiVersionWebMvcAutoConfiguration
+org.springframework.cloud.servicebroker.autoconfigure.web.reactive.ServiceBrokerWebFluxAutoConfiguration
+org.springframework.cloud.servicebroker.autoconfigure.web.reactive.ApiVersionWebFluxAutoConfiguration
+org.springframework.cloud.servicebroker.autoconfigure.web.EventFlowsAutoConfiguration

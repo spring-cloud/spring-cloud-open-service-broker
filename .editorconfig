@@ -9,3 +9,6 @@ indent_size = 4
 continuation_indent_size = 8
 end_of_line = lf
 insert_final_newline = true
+ij_java_class_count_to_use_import_on_demand = 100
+ij_java_names_count_to_use_import_on_demand = 100
+ij_java_imports_layout = jakarta.**,|,java.**,|,*,|,io.pivotal.**,|,org.springframework.**,|,$*

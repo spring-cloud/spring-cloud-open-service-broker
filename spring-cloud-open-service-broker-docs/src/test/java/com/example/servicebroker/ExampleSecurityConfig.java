@@ -17,8 +17,8 @@ public class ExampleSecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 				.csrf().disable()
-				.authorizeRequests()
-				.antMatchers("/v2/**").hasRole("ADMIN")
+				.authorizeHttpRequests()
+				.requestMatchers("/v2/**").hasRole("ADMIN")
 				.and()
 				.httpBasic();
 		return http.build();

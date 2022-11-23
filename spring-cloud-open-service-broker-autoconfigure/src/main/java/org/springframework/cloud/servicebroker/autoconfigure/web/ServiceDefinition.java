@@ -16,11 +16,11 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
+import jakarta.validation.constraints.NotEmpty;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import javax.validation.constraints.NotEmpty;
 
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 

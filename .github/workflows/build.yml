@@ -15,22 +15,23 @@ jobs:
     strategy:
       matrix:
         java: [ '8', '11', '17' ]
-        branch: [ ${{ github.ref }} ]
+        branch:
+          - ${{ github.base_ref || github.ref }}
         exclude:
           - branch: main
             java: '8'
           - branch: main
             java: '11'
-    name: Java ${{ matrix.Java }} build
+    name: Java ${{ matrix.java }} build
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up JDK
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: ${{ matrix.java }}
-          distribution: 'temurin'
+          distribution: temurin
       - name: Cache Gradle packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches

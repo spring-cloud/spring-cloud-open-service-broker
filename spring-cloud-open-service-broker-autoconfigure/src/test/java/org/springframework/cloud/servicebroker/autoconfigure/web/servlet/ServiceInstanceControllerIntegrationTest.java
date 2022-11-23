@@ -502,7 +502,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 						.contentType(MediaType.TEXT_PLAIN)
 						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.description", containsString("Content type 'text/plain' not supported")))
+				.andExpect(jsonPath("$.description", containsString("Content-Type 'text/plain' is not supported")))
 				.andExpect(request().asyncNotStarted())
 				.andReturn();
 	}
