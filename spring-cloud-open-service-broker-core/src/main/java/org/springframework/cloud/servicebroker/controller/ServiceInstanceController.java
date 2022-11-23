@@ -16,9 +16,9 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
-import java.util.Map;
+import jakarta.validation.Valid;
 
-import javax.validation.Valid;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -20,7 +20,7 @@ dependencies {
 	// BOM imports - The versions used in these files will override any other versions found in the graph
 	implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
 
-	compileOnly 'javax.servlet:javax.servlet-api'
+	compileOnly 'jakarta.servlet:jakarta.servlet-api'
 	api 'org.springframework:spring-context'
 	optionalApi 'org.springframework:spring-web'
 	optionalApi 'org.springframework:spring-webflux'
@@ -41,7 +41,7 @@ dependencies {
 	testImplementation 'org.mockito:mockito-junit-jupiter'
 	testImplementation 'com.jayway.jsonpath:json-path'
 	testImplementation "nl.jqno.equalsverifier:equalsverifier:${equalsVerifierVersion}"
-	testImplementation 'javax.servlet:javax.servlet-api'
+	testImplementation 'jakarta.servlet:jakarta.servlet-api'
 	testImplementation "com.google.code.findbugs:annotations:${findbugsVersion}"
 }
 

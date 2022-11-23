@@ -16,13 +16,13 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+import jakarta.validation.constraints.NotEmpty;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

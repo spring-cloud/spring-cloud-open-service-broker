@@ -19,10 +19,7 @@ plugins {
 }
 
 ext {
-	javaApi = "https://docs.oracle.com/javase/8/docs/api/"
-	if (JavaVersion.current() >= JavaVersion.VERSION_11) {
-		javaApi = "https://docs.oracle.com/en/java/javase/11/docs/api"
-	}
+	javaApi = "https://docs.oracle.com/javase/17/docs/api/"
 	javadocLinks = [
 			javaApi,
 			"https://docs.spring.io/spring-framework/docs/${springFrameworkVersion}/javadoc-api/",
@@ -41,21 +38,6 @@ configure(allprojects) {
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
 	apply plugin: 'idea'
-
-	repositories {
-		mavenCentral()
-		maven { url 'https://repo.spring.io/release' }
-	}
-	if (version =~ /((-M|-RC)[0-9]+|-SNAPSHOT)$/) {
-		repositories {
-			maven { url 'https://repo.spring.io/milestone' }
-		}
-	}
-	if (version.endsWith('-SNAPSHOT')) {
-		repositories {
-			maven { url 'https://repo.spring.io/snapshot' }
-		}
-	}
 
 	configurations {
 		all {
@@ -185,8 +167,9 @@ configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) 
 
 	// see https://docs.gradle.org/current/userguide/java_plugin.html
 	java {
-		sourceCompatibility = JavaVersion.VERSION_1_8
-		targetCompatibility = JavaVersion.VERSION_1_8
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(17)
+		}
 		disableAutoTargetJvm()
 		withSourcesJar()
 		withJavadocJar()

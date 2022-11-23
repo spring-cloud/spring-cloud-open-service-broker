@@ -16,8 +16,8 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.util.StringUtils;
