@@ -30,7 +30,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation "io.projectreactor.tools:blockhound-junit-platform:${blockHoundVersion}"
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	testRuntimeOnly 'javax.servlet:javax.servlet-api'
+	testRuntimeOnly 'jakarta.servlet:jakarta.servlet-api'
 	testImplementation 'org.mockito:mockito-core'
 	testImplementation "org.hamcrest:java-hamcrest:${javaHamcrestVersion}"
 	testImplementation 'org.assertj:assertj-core'

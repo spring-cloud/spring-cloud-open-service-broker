@@ -26,6 +26,7 @@ import reactor.core.publisher.Mono;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionErrorMessage;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 import org.springframework.cloud.servicebroker.model.error.ErrorMessage;
+import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
@@ -95,7 +96,7 @@ public class ApiVersionWebFilter implements WebFilter {
 	private Mono<Void> writeResponse(ServerHttpResponse response, String requestedApiVersion) {
 		String message = ServiceBrokerApiVersionErrorMessage.from(version.getApiVersion(), requestedApiVersion)
 				.toString();
-		return response.writeWith(Flux.just(response.bufferFactory().allocateBuffer()
+		return response.writeWith(Flux.just(response.bufferFactory().allocateBuffer(DefaultDataBufferFactory.DEFAULT_INITIAL_CAPACITY)
 				.write(toJson(ErrorMessage.builder().message(message).build()), StandardCharsets.UTF_8)));
 	}
 

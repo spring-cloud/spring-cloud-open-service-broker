@@ -31,6 +31,23 @@ pluginManagement {
 	}
 }
 
+dependencyResolutionManagement {
+	repositories {
+		mavenCentral()
+		maven { url 'https://repo.spring.io/release' }
+	}
+	if (version =~ /((-M|-RC)[0-9]+|-SNAPSHOT)$/) {
+		repositories {
+			maven { url 'https://repo.spring.io/milestone' }
+		}
+	}
+	if (version.endsWith('-SNAPSHOT')) {
+		repositories {
+			maven { url 'https://repo.spring.io/snapshot' }
+		}
+	}
+}
+
 rootProject.name = "spring-cloud-open-service-broker"
 
 include ":spring-cloud-open-service-broker-docs"

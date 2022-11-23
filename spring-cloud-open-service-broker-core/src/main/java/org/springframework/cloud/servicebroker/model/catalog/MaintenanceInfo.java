@@ -16,10 +16,10 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Objects;
 import java.util.regex.Pattern;
-
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

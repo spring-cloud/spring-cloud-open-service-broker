@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerAutoConfiguration;
 import org.springframework.cloud.servicebroker.autoconfigure.web.TestServiceInstanceService;
 import org.springframework.cloud.servicebroker.autoconfigure.web.fixture.ServiceFixture;

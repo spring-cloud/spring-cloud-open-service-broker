@@ -38,6 +38,12 @@ contractTest {
 }
 
 dependencies {
+	constraints {
+		testImplementation("com.github.tomakehurst:wiremock-jre8-standalone:2.35.0") {
+			because "avoid Logback classpath conflict"
+		}
+	}
+
 	implementation platform("org.springframework.cloud:spring-cloud-contract-dependencies:${springCloudContractVersion}")
 	implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
 	testImplementation project(':spring-cloud-starter-open-service-broker')
@@ -47,5 +53,5 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
-	testRuntimeOnly 'javax.servlet:javax.servlet-api'
+	testRuntimeOnly 'jakarta.servlet:jakarta.servlet-api'
 }
