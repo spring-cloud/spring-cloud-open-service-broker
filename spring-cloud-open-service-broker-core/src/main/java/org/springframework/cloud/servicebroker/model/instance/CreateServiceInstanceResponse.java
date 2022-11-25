@@ -110,7 +110,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	}
 
 	@Override
-	public final boolean equals(Object o) {
+	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
 		}
@@ -133,7 +133,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	}
 
 	@Override
-	public final int hashCode() {
+	public int hashCode() {
 		return Objects.hash(super.hashCode(), dashboardUrl, instanceExisted, metadata);
 	}
 

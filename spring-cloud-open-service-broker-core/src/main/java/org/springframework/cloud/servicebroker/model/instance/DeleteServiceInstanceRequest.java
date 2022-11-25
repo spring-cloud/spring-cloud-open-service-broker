@@ -168,7 +168,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	}
 
 	@Override
-	public final boolean equals(Object o) {
+	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
 		}
@@ -193,7 +193,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	}
 
 	@Override
-	public final int hashCode() {
+	public int hashCode() {
 		return Objects.hash(super.hashCode(), serviceInstanceId,
 				serviceDefinitionId, planId, serviceDefinition, plan);
 	}

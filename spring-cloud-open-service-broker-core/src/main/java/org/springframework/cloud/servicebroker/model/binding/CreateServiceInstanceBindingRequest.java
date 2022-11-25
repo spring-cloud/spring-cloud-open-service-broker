@@ -277,7 +277,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	}
 
 	@Override
-	public final boolean equals(Object o) {
+	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
 		}
@@ -305,7 +305,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	}
 
 	@Override
-	public final int hashCode() {
+	public int hashCode() {
 		return Objects.hash(super.hashCode(), serviceDefinitionId, serviceInstanceId, planId, bindingId,
 				appGuid, bindResource, serviceDefinition, plan);
 	}
