@@ -33,7 +33,7 @@ public interface CatalogService {
 	 *
 	 * @return the catalog of services
 	 */
-	Mono<Catalog> getCatalog();
+	<T extends Catalog> Mono<T> getCatalog();
 
 	/**
 	 * Get a service definition from the catalog by ID.
@@ -41,6 +41,6 @@ public interface CatalogService {
 	 * @param serviceId The ID of the service definition in the catalog
 	 * @return the service definition, or null if it doesn't exist
 	 */
-	Mono<ServiceDefinition> getServiceDefinition(String serviceId);
+	<T extends ServiceDefinition> Mono<T> getServiceDefinition(String serviceId);
 
 }
