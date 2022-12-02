@@ -2,7 +2,19 @@
 	"context": {
 		"platform": "cloudfoundry",
 		"organization_guid": "test-organization-guid",
+		"organization_name": "test-organization-name",
+		"organization_annotations": {
+			"org_annotation1": 2,
+			"org_annotation2": "param-b",
+			"org_annotation3": true
+		},
 		"space_guid": "test-space-guid",
+		"space_name": "test-space-name",
+		"space_annotations": {
+			"space_annotation1": 3,
+			"space_annotation2": "param-c",
+			"space_annotation3": true
+		},
 		"field1": "data",
 		"field2": 2
 	},

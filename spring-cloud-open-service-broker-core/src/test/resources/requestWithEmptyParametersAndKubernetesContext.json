@@ -2,6 +2,18 @@
 	"context": {
 		"platform": "kubernetes",
 		"namespace": "test-namespace",
+		"namespace_annotations": {
+			"namespace_annotation1": 4,
+			"namespace_annotation2": "param-d",
+			"namespace_annotation3": true
+		},
+		"instance_annotations": {
+			"instance_annotation1": 5,
+			"instance_annotation2": "param-e",
+			"instance_annotation3": true
+		},
+		"instance_name": "test-instance-name",
+		"clusterid": "test-clusterid",
 		"field1": "data",
 		"field2": 2
 	},

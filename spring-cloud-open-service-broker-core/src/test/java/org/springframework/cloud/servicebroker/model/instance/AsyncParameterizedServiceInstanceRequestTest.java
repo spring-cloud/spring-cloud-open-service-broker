@@ -45,7 +45,23 @@ class AsyncParameterizedServiceInstanceRequestTest {
 
 		CloudFoundryContext context = (CloudFoundryContext) request.getContext();
 		assertThat(context.getOrganizationGuid()).isEqualTo("test-organization-guid");
+		assertThat(context.getOrganizationName()).isEqualTo("test-organization-name");
+
+		Map<String, Object> organizationAnnotations = context.getOrganizationAnnotations();
+		assertThat(organizationAnnotations).hasSize(3);
+		assertThat(organizationAnnotations.get("org_annotation1")).isEqualTo(2);
+		assertThat(organizationAnnotations.get("org_annotation2")).isEqualTo("param-b");
+		assertThat(organizationAnnotations.get("org_annotation3")).isEqualTo(true);
+
 		assertThat(context.getSpaceGuid()).isEqualTo("test-space-guid");
+		assertThat(context.getSpaceName()).isEqualTo("test-space-name");
+
+		Map<String, Object> spaceAnnotations = context.getSpaceAnnotations();
+		assertThat(spaceAnnotations).hasSize(3);
+		assertThat(spaceAnnotations.get("space_annotation1")).isEqualTo(3);
+		assertThat(spaceAnnotations.get("space_annotation2")).isEqualTo("param-c");
+		assertThat(spaceAnnotations.get("space_annotation3")).isEqualTo(true);
+
 		assertThat(context.getProperty("field1")).isEqualTo("data");
 		assertThat(context.getProperty("field2")).isEqualTo(2);
 
@@ -67,6 +83,22 @@ class AsyncParameterizedServiceInstanceRequestTest {
 
 		KubernetesContext context = (KubernetesContext) request.getContext();
 		assertThat(context.getNamespace()).isEqualTo("test-namespace");
+
+		Map<String, Object> namespaceAnnotations = context.getNamespaceAnnotations();
+		assertThat(namespaceAnnotations).hasSize(3);
+		assertThat(namespaceAnnotations.get("namespace_annotation1")).isEqualTo(4);
+		assertThat(namespaceAnnotations.get("namespace_annotation2")).isEqualTo("param-d");
+		assertThat(namespaceAnnotations.get("namespace_annotation3")).isEqualTo(true);
+
+		Map<String, Object> instanceAnnotations = context.getInstanceAnnotations();
+		assertThat(instanceAnnotations).hasSize(3);
+		assertThat(instanceAnnotations.get("instance_annotation1")).isEqualTo(5);
+		assertThat(instanceAnnotations.get("instance_annotation2")).isEqualTo("param-e");
+		assertThat(instanceAnnotations.get("instance_annotation3")).isEqualTo(true);
+
+		assertThat(context.getInstanceName()).isEqualTo("test-instance-name");
+		assertThat(context.getClusterid()).isEqualTo("test-clusterid");
+
 		assertThat(context.getProperty("field1")).isEqualTo("data");
 		assertThat(context.getProperty("field2")).isEqualTo(2);
 

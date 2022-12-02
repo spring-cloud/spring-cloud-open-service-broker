@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model;
 
+import java.util.Collections;
+
 import com.jayway.jsonpath.DocumentContext;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +27,10 @@ import org.springframework.cloud.servicebroker.JsonUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.springframework.cloud.servicebroker.model.KubernetesContext.CLUSTERID_KEY;
+import static org.springframework.cloud.servicebroker.model.KubernetesContext.INSTANCE_ANNOTATIONS_KEY;
+import static org.springframework.cloud.servicebroker.model.KubernetesContext.INSTANCE_NAME_KEY;
 import static org.springframework.cloud.servicebroker.model.KubernetesContext.KUBERNETES_PLATFORM;
+import static org.springframework.cloud.servicebroker.model.KubernetesContext.NAMESPACE_ANNOTATIONS_KEY;
 import static org.springframework.cloud.servicebroker.model.KubernetesContext.NAMESPACE_KEY;
 
 class KubernetesContextTest {
@@ -36,9 +41,11 @@ class KubernetesContextTest {
 				.build();
 
 		assertThat(context.getPlatform()).isEqualTo(KUBERNETES_PLATFORM);
-
 		assertThat(context.getNamespace()).isNull();
-
+		assertThat(context.getInstanceAnnotations()).isNull();
+		assertThat(context.getNamespaceAnnotations()).isNull();
+		assertThat(context.getInstanceName()).isNull();
+		assertThat(context.getClusterid()).isNull();
 		assertThat(context.getProperties()).isEmpty();
 	}
 
@@ -46,17 +53,25 @@ class KubernetesContextTest {
 	void populatedContext() {
 		KubernetesContext context = KubernetesContext.builder()
 				.property("key1", "value1")
-				.namespace("namespace")
+				.namespace("test-namespace")
+				.instanceName("test-instance-name")
+				.instanceAnnotations(Collections.singletonMap("prefix-here.org/name-here",
+						"instance-annotation-value-here"))
+				.namespaceAnnotations(Collections.singletonMap("prefix-here.org/name-here",
+						"namespace-annotation-value-here"))
 				.clusterid("clusterid")
 				.property("key2", "value2")
 				.build();
 
 		assertThat(context.getPlatform()).isEqualTo(KUBERNETES_PLATFORM);
 
-		assertThat(context.getNamespace()).isEqualTo("namespace");
+		assertThat(context.getNamespace()).isEqualTo("test-namespace");
+		assertThat(context.getInstanceName()).isEqualTo("test-instance-name");
+		assertThat(context.getInstanceAnnotations()).isEqualTo(
+				Collections.singletonMap("prefix-here.org/name-here", "instance-annotation-value-here"));
+		assertThat(context.getNamespaceAnnotations()).isEqualTo(
+				Collections.singletonMap("prefix-here.org/name-here", "namespace-annotation-value-here"));
 		assertThat(context.getClusterid()).isEqualTo("clusterid");
-		assertThat(context.getProperty(NAMESPACE_KEY)).isEqualTo("namespace");
-		assertThat(context.getProperty(CLUSTERID_KEY)).isEqualTo("clusterid");
 
 		assertThat(context.getProperty("key1")).isEqualTo("value1");
 		assertThat(context.getProperty("key2")).isEqualTo("value2");
@@ -65,8 +80,13 @@ class KubernetesContextTest {
 		assertThat(context.getProperties()).containsOnly(
 				entry("key1", "value1"),
 				entry("key2", "value2"),
-				entry("namespace", "namespace"),
-				entry("clusterid", "clusterid"));
+				entry(NAMESPACE_KEY, "test-namespace"),
+				entry(INSTANCE_NAME_KEY, "test-instance-name"),
+				entry(INSTANCE_ANNOTATIONS_KEY, Collections.singletonMap("prefix-here.org/name-here",
+						"instance-annotation-value-here")),
+				entry(NAMESPACE_ANNOTATIONS_KEY, Collections.singletonMap("prefix-here.org/name-here",
+						"namespace-annotation-value-here")),
+				entry(CLUSTERID_KEY, "clusterid"));
 	}
 
 	@Test
@@ -85,11 +105,11 @@ class KubernetesContextTest {
 		JsonPathAssert.assertThat(json).hasPath("$.key2").isEqualTo("value2");
 		// detect any double serialization due to inheritance and naming mismatch
 		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(4);
-		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 4 + 1);//still have duplicated platform property
+		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 4);
 	}
 
 	@Test
-	void fullContextIsSerialized() {
+	void fullContextIsSerialized215() {
 		KubernetesContext context = KubernetesContext.builder()
 				.property("key1", "value1")
 				.namespace("namespace")
@@ -106,7 +126,38 @@ class KubernetesContextTest {
 		JsonPathAssert.assertThat(json).hasPath("$.key2").isEqualTo("value2");
 		// detect any double serialization due to inheritance and naming mismatch
 		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(5);
-		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 5 + 1);//still have duplicated platform property
+		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 5);
+	}
+
+	@Test
+	void fullContextIsSerialized216() {
+		KubernetesContext context = KubernetesContext.builder()
+				.property("key1", "value1")
+				.namespace("test-namespace")
+				.instanceName("test-instance-name")
+				.instanceAnnotations(Collections.singletonMap("prefix-here.org/name-here",
+						"instance-annotation-value-here"))
+				.namespaceAnnotations(Collections.singletonMap("prefix-here.org/name-here",
+						"namespace-annotation-value-here"))
+				.clusterid("test-clusterid")
+				.property("key2", "value2")
+				.build();
+
+		DocumentContext json = JsonUtils.toJsonPath(context);
+
+		JsonPathAssert.assertThat(json).hasPath("$.platform").isEqualTo("kubernetes");
+		JsonPathAssert.assertThat(json).hasPath("$.namespace").isEqualTo("test-namespace");
+		JsonPathAssert.assertThat(json).hasPath("$.instance_name").isEqualTo("test-instance-name");
+		JsonPathAssert.assertThat(json).hasPath("$.instance_annotations").isEqualTo(Collections.singletonMap(
+				"prefix-here.org/name-here", "instance-annotation-value-here"));
+		JsonPathAssert.assertThat(json).hasPath("$.namespace_annotations").isEqualTo(Collections.singletonMap(
+				"prefix-here.org/name-here", "namespace-annotation-value-here"));
+		JsonPathAssert.assertThat(json).hasPath("$.clusterid").isEqualTo("test-clusterid");
+		JsonPathAssert.assertThat(json).hasPath("$.key1").isEqualTo("value1");
+		JsonPathAssert.assertThat(json).hasPath("$.key2").isEqualTo("value2");
+		// detect any double serialization due to inheritance and naming mismatch
+		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(8);
+		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 10);
 	}
 
 }

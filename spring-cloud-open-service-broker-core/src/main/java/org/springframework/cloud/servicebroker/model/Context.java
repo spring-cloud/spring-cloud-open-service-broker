@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * Platform specific contextual information under which the service instance is to be provisioned or updated. Fields
@@ -33,8 +34,9 @@ import org.springframework.util.CollectionUtils;
  * properties will available using {@link #getProperty(String)}.
  *
  * @author Scott Frederick
+ * @author Roy Clarkson
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY,
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY,
 		property = Context.PLATFORM_KEY, visible = true, defaultImpl = PlatformContext.class)
 @JsonSubTypes({
 		@JsonSubTypes.Type(value = CloudFoundryContext.class, name = CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM),
@@ -112,6 +114,42 @@ public class Context {
 			return getProperty(key).toString();
 		}
 		return null;
+	}
+
+	/**
+	 * Set the String value of a property in the context with the given key. Null keys and values are ignored.
+	 *
+	 * @param key the key of the property
+	 * @param value the value of the property
+	 */
+	protected void setStringProperty(String key, String value) {
+		if (StringUtils.hasText(key) && StringUtils.hasText(value)) {
+			this.properties.put(key,value);
+		}
+	}
+
+	/**
+	 * Get the Map value of a property in the context with the given key.
+	 *
+	 * @param key the key of the property to retrieve
+	 * @return the value of the property, or {@literal null} if the key is not present in the request
+	 */
+
+	@SuppressWarnings("unchecked")
+	protected Map<String, Object> getMapProperty(String key) {
+		return (Map<String, Object>) this.properties.get(key);
+	}
+
+	/**
+	 * Set the Map value of a property in the context with the given key. Null keys and empty maps are ignored.
+	 *
+	 * @param key the key of the property
+	 * @param map the map to set as the value of the property
+	 */
+	protected void setMapProperty(String key, Map<String, Object> map) {
+		if (StringUtils.hasText(key) && !CollectionUtils.isEmpty(map)) {
+			this.properties.put(key, map);
+		}
 	}
 
 	@Override
