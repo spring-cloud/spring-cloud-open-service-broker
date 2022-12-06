@@ -6,14 +6,14 @@ aliases:
       icon_emoji: ":concourse:"
       username: concourse
       channel: ((scosb-slack-success-channel))
-      text: "$BUILD_PIPELINE_NAME pipeline has succeeded with build <${ATC_EXTERNAL_URL}/builds/$BUILD_ID|$BUILD_NAME>!"
+      text: "`$BUILD_PIPELINE_NAME ((branch))` pipeline has succeeded with build <${ATC_EXTERNAL_URL}/builds/$BUILD_ID|$BUILD_NAME>!"
   - &slack-failure-notification
     put: alert
     params:
       icon_emoji: ":animal-1252:"
       username: concourse
-      channel: ((ab-slack-failure-channel))
-      text: <!here> Build <${ATC_EXTERNAL_URL}/builds/$BUILD_ID|$BUILD_NAME> of job $BUILD_JOB_NAME in the $BUILD_PIPELINE_NAME pipeline has failed!
+      channel: ((scosb-slack-failure-channel))
+      text: "<!here> Build <${ATC_EXTERNAL_URL}/builds/$BUILD_ID|$BUILD_NAME> of job `$BUILD_JOB_NAME` in the `$BUILD_PIPELINE_NAME ((branch))` pipeline has failed!"
 
 jobs:
   - name: build-ci-images
@@ -43,8 +43,8 @@ jobs:
           signing_passphrase: ((signing-passphrase))
           repo: libs-snapshot-local
           folder: distribution-repository
-          build_uri: "${ATC_EXTERNAL_URL}/teams/${BUILD_TEAM_NAME}/pipelines/${BUILD_PIPELINE_NAME}/jobs/${BUILD_JOB_NAME}/builds/${BUILD_NAME}"
-          build_number: "${BUILD_PIPELINE_NAME}-${BUILD_JOB_NAME}-${BUILD_NAME}"
+          build_uri: "${ATC_EXTERNAL_URL}/builds/${BUILD_ID}"
+          build_number: "${BUILD_PIPELINE_NAME}-((branch))-${BUILD_JOB_NAME}-${BUILD_NAME}"
           disable_checksum_uploads: true
     on_failure:
       *slack-failure-notification
