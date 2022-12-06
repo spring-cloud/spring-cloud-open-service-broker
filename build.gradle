@@ -63,7 +63,6 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 	checkstyle {
 		configFile = rootProject.file("src/checkstyle/checkstyle.xml")
 		configProperties = [config_path : rootProject.file("src/checkstyle")]
-		toolVersion = "${checkstyleVersion}"
 		showViolations = true
 	}
 	checkstyleMain {
@@ -81,7 +80,6 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-docs'),
 	apply plugin: 'pmd'
 
 	pmd {
-		toolVersion = "${pmdVersion}"
 		consoleOutput = true
 	}
 	pmdMain {
