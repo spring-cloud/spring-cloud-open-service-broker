@@ -12,22 +12,23 @@ set_pipeline() {
 	branch="${3:?branch must be provided}"
 	ci_image_tag="${4:-$branch}"
 
-	echo "Setting $pipeline_name pipeline..."
+	echo "Setting $pipeline_name $branch pipeline..."
 	fly --target "$FLY_TARGET" set-pipeline \
 		--pipeline "$pipeline_name" \
 		--config "$pipeline_definition" \
 		--load-vars-from config-concourse.yml \
-		--var "github-repo=$GITHUB_REPO" \
-		--var "branch=$branch" \
+		--instance-var "branch=$branch" \
 		--var "ci-image-tag=$ci_image_tag"
 }
 
 main() {
-	fly -t scosb sync
+	local -r branches=("main" "3.6.x" "3.5.x" "3.4.x" "3.3.x")
 
 	pushd "$(dirname "$0")/../ci" >/dev/null
 
-	set_pipeline scosb-4.0.x pipeline.yml main
+	for branch in "${branches[@]}"; do
+		set_pipeline scosb pipeline.yml "$branch"
+	done
 
 	popd >/dev/null
 }
