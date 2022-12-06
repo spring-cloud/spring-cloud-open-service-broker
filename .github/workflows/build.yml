@@ -11,25 +11,27 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [ '8', '11', '17' ]
-        branch:
-          - ${{ github.base_ref || github.ref }}
-        exclude:
-          - branch: main
-            java: '8'
-          - branch: main
-            java: '11'
+    runs-on: ubuntu-latest            
     name: Java ${{ matrix.java }} build
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK
+
+      - name: Set up JDK 17
+        if: ${{ github.base_ref == 'main' || github.ref != '' }}
         uses: actions/setup-java@v3
         with:
-          java-version: ${{ matrix.java }}
-          distribution: temurin
+          java-version: 17
+          distribution: liberica
+      
+      - name: Set up JDK 8 & 11 for branches
+        if: ${{ github.ref != '' }}
+        uses: actions/setup-java@v3
+        with:
+          java-version: |
+            8
+            11
+          distribution: liberica
+          
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:
