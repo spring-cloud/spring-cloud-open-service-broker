@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,9 @@ import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.Schemas;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -44,6 +47,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_ROUTE_FORWARDING;
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_SYSLOG_DRAIN;
@@ -51,6 +55,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -68,24 +73,31 @@ class CatalogControllerIntegrationTest {
 
 	private ServiceDefinition serviceDefinition;
 
+	private Catalog catalog;
+
 	@BeforeEach
 	void setUp() {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(this.controller)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter())
 				.build();
+
 		this.serviceDefinition = ServiceFixture.getSimpleService();
-		Catalog catalog = Catalog.builder()
+
+		this.catalog = Catalog.builder()
 				.serviceDefinitions(this.serviceDefinition)
 				.build();
 
 		given(this.catalogService.getCatalog())
 				.willReturn(Mono.just(catalog));
+
+		given(this.catalogService.getResponseEntityCatalog(any()))
+				.willReturn(Mono.empty());
 	}
 
 	@Test
 	void catalogIsRetrieved() throws Exception {
 		MvcResult mvcResult = this.mockMvc.perform(get("/v2/catalog")
-				.accept(MediaType.APPLICATION_JSON))
+						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(request().asyncStarted())
 				.andReturn();
 		assertResult(mvcResult);
@@ -94,15 +106,86 @@ class CatalogControllerIntegrationTest {
 	@Test
 	void catalogIsRetrievedWithPlatformInstanceId() throws Exception {
 		MvcResult mvcResult = this.mockMvc.perform(get("/123/v2/catalog")
-				.accept(MediaType.APPLICATION_JSON))
+						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(request().asyncStarted())
 				.andReturn();
 		assertResult(mvcResult);
 	}
 
-	@SuppressWarnings("unchecked")
-	private void assertResult(MvcResult mvcResult) throws Exception {
+	@Test
+	void catalogWithEtagIsRetrieved() throws Exception {
+		ResponseEntity<Catalog> responseEntity = ResponseEntity
+				.ok()
+				.eTag("12345")
+				.body(catalog);
 
+		given(this.catalogService.getResponseEntityCatalog(getHeaders()))
+				.willReturn(Mono.just(responseEntity));
+
+		MvcResult mvcResult = this.mockMvc.perform(get("/v2/catalog")
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+
+		ResultActions resultActions = assertResult(mvcResult);
+		resultActions.andExpect(header().string(HttpHeaders.ETAG, "\"12345\""));
+	}
+
+	@Test
+	void cachedCatalogWithSameEtagIsRetrieved() throws Exception {
+		ResponseEntity<Catalog> responseEntity = ResponseEntity
+				.status(304)
+				.eTag("12345")
+				.build();
+
+		HttpHeaders headers = getHeaders();
+		headers.setIfNoneMatch("12345");
+
+		given(this.catalogService.getResponseEntityCatalog(headers))
+				.willReturn(Mono.just(responseEntity));
+
+		MvcResult mvcResult = this.mockMvc.perform(get("/v2/catalog")
+						.header(HttpHeaders.IF_NONE_MATCH, "12345")
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+
+		ResultActions resultActions = this.mockMvc.perform(asyncDispatch(mvcResult));
+		resultActions.andExpect(status().isNotModified());
+		resultActions.andExpect(header().string(HttpHeaders.ETAG, "\"12345\""));
+	}
+
+	@Test
+	void catalogWithDifferentEtagIsRetrieved() throws Exception {
+		ResponseEntity<Catalog> responseEntity = ResponseEntity
+				.ok()
+				.eTag("22222")
+				.body(catalog);
+
+		HttpHeaders headers = getHeaders();
+		headers.setIfNoneMatch("22221");
+
+		given(this.catalogService.getResponseEntityCatalog(headers))
+				.willReturn(Mono.just(responseEntity));
+
+		MvcResult mvcResult = this.mockMvc.perform(get("/v2/catalog")
+						.header(HttpHeaders.IF_NONE_MATCH, "22221")
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+
+		ResultActions resultActions = assertResult(mvcResult);
+		resultActions.andExpect(header().string(HttpHeaders.ETAG, "\"22222\""));
+	}
+
+	private HttpHeaders getHeaders() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		return headers;
+	}
+
+	@SuppressWarnings("unchecked")
+	private ResultActions assertResult(MvcResult mvcResult) throws Exception {
 		List<String> features = (List<String>) serviceDefinition.getMetadata().get("features");
 
 		List<Plan> plans = serviceDefinition.getPlans();
@@ -158,6 +241,8 @@ class CatalogControllerIntegrationTest {
 						contains(plans.get(0).getMaintenanceInfo().getVersion())))
 				.andExpect(jsonPath("$.services[*].plans[*].maintenance_info.description",
 						contains(plans.get(0).getMaintenanceInfo().getDescription())));
+
+		return resultActions;
 	}
 
 }
