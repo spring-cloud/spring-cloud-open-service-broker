@@ -33,6 +33,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -54,14 +55,18 @@ class RequestIdentityInterceptorIntegrationTest {
 		this.mvc = MockMvcBuilders.standaloneSetup(controller)
 				.addInterceptors(new RequestIdentityInterceptor())
 				.build();
+
 		given(catalogService.getCatalog())
 				.willReturn(Mono.just(Catalog.builder().build()));
+
+		given(this.catalogService.getResponseEntityCatalog(any()))
+				.willReturn(Mono.empty());
 	}
 
 	@Test
 	void noHeaderSent() throws Exception {
 		mvc.perform(get(CATALOG_PATH)
-				.accept(MediaType.APPLICATION_JSON))
+						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(result -> assertThat(
 						result.getResponse().getHeaderValue(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER)).isNull())
 				.andReturn();
@@ -70,8 +75,8 @@ class RequestIdentityInterceptorIntegrationTest {
 	@Test
 	void headerSent() throws Exception {
 		mvc.perform(get(CATALOG_PATH)
-				.header(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, "request-id")
-				.accept(MediaType.APPLICATION_JSON))
+						.header(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, "request-id")
+						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(result -> assertThat(
 						result.getResponse().getHeaderValue(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER))
 						.isEqualTo("request-id"))

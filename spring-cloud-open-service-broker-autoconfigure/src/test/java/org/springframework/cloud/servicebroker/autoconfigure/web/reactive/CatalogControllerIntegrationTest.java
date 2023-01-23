@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -34,9 +35,13 @@ import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.Schemas;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.reactive.server.WebTestClient.ResponseSpec;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_ROUTE_FORWARDING;
 import static org.springframework.cloud.servicebroker.model.catalog.ServiceDefinitionRequires.SERVICE_REQUIRES_SYSLOG_DRAIN;
@@ -54,30 +59,111 @@ class CatalogControllerIntegrationTest {
 
 	private ServiceDefinition serviceDefinition;
 
+	private Catalog catalog;
+
 	@BeforeEach
 	void setUp() {
 		this.client = WebTestClient.bindToController(this.controller).build();
 		this.serviceDefinition = ServiceFixture.getSimpleService();
 
-		Catalog catalog = Catalog.builder()
+		this.catalog = Catalog.builder()
 				.serviceDefinitions(this.serviceDefinition)
 				.build();
 
 		given(this.catalogService.getCatalog())
 				.willReturn(Mono.just(catalog));
+
+		given(this.catalogService.getResponseEntityCatalog(any()))
+				.willReturn(Mono.empty());
 	}
 
 	@Test
 	void catalogIsRetrieved() {
-		assertCatalog("/v2/catalog");
+		ResponseSpec responseSpec = client.get().uri("/v2/catalog")
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange();
+
+		assertCatalog(responseSpec);
 	}
 
 	@Test
 	void catalogIsRetrievedWithPlatformInstanceId() {
-		assertCatalog("/123/v2/catalog");
+		ResponseSpec responseSpec = client.get().uri("/123/v2/catalog")
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange();
+
+		assertCatalog(responseSpec);
 	}
 
-	private void assertCatalog(final String uri) {
+	@Test
+	void catalogWithEtagIsRetrieved() throws Exception {
+		ResponseEntity<Catalog> responseEntity = ResponseEntity
+				.ok()
+				.eTag("12345")
+				.body(catalog);
+
+		given(this.catalogService.getResponseEntityCatalog(getHeaders()))
+				.willReturn(Mono.just(responseEntity));
+
+		ResponseSpec responseSpec = client.get().uri("/v2/catalog")
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectHeader().valueEquals(HttpHeaders.ETAG, "\"12345\"");
+
+		assertCatalog(responseSpec);
+	}
+
+	@Test
+	void cachedCatalogWithSameEtagIsRetrieved() throws Exception {
+		ResponseEntity<Catalog> responseEntity = ResponseEntity
+				.status(304)
+				.eTag("12345")
+				.build();
+
+		HttpHeaders headers = getHeaders();
+		headers.setIfNoneMatch("12345");
+
+		given(this.catalogService.getResponseEntityCatalog(headers))
+				.willReturn(Mono.just(responseEntity));
+
+		client.get().uri("/v2/catalog")
+				.accept(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.IF_NONE_MATCH, "12345")
+				.exchange()
+				.expectStatus().isNotModified()
+				.expectHeader().valueEquals(HttpHeaders.ETAG, "\"12345\"");
+	}
+
+	@Test
+	void catalogWithDifferentEtagIsRetrieved() throws Exception {
+		ResponseEntity<Catalog> responseEntity = ResponseEntity
+				.ok()
+				.eTag("22222")
+				.body(catalog);
+
+		HttpHeaders headers = getHeaders();
+		headers.setIfNoneMatch("22221");
+
+		given(this.catalogService.getResponseEntityCatalog(headers))
+				.willReturn(Mono.just(responseEntity));
+
+		ResponseSpec responseSpec = client.get().uri("/v2/catalog")
+				.accept(MediaType.APPLICATION_JSON)
+				.ifNoneMatch("22221")
+				.exchange()
+				.expectHeader().valueEquals(HttpHeaders.ETAG, "\"22222\"");
+
+		assertCatalog(responseSpec);
+	}
+
+	private HttpHeaders getHeaders() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("WebTestClient-Request-Id", "1");
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		return headers;
+	}
+
+	private void assertCatalog(final ResponseSpec responseSpec) {
 		List<Plan> plans = serviceDefinition.getPlans();
 		Schemas schemas = plans.get(1).getSchemas();
 		Map<String, Object> createServiceInstanceSchema = schemas.getServiceInstanceSchema().getCreateMethodSchema()
@@ -87,9 +173,7 @@ class CatalogControllerIntegrationTest {
 		Map<String, Object> createServiceBindingSchema = schemas.getServiceBindingSchema().getCreateMethodSchema()
 				.getParameters();
 
-		client.get().uri(uri)
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
+		responseSpec
 				.expectStatus().isOk()
 				.expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
 				.expectBody()

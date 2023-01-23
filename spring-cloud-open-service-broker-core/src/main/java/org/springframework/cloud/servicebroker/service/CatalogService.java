@@ -18,13 +18,17 @@ package org.springframework.cloud.servicebroker.service;
 
 import reactor.core.publisher.Mono;
 
+import org.springframework.cloud.servicebroker.controller.CatalogController;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 
 /**
  * This interface is implemented by service brokers to process requests to retrieve the service catalog.
  *
  * @author sgreenberg@pivotal.io
+ * @author Roy Clarkson
  */
 public interface CatalogService {
 
@@ -42,5 +46,17 @@ public interface CatalogService {
 	 * @return the service definition, or null if it doesn't exist
 	 */
 	Mono<ServiceDefinition> getServiceDefinition(String serviceId);
+
+	/**
+	 * Return the {@link ResponseEntity} with catalog of services provided by the service broker. Implementing
+	 * service brokers may use this method to manage ETag responses and caching of the catalog. This ResponseEntity
+	 * returned by this method is directly returned in the {@link CatalogController#getCatalog(HttpHeaders)} method.
+	 *
+	 * @param httpHeaders the HttpHeaders from the request
+	 * @return the ResponseEntity with catalog or an appropriate ETag response
+	 */
+	default Mono<ResponseEntity<Catalog>> getResponseEntityCatalog(HttpHeaders httpHeaders) {
+		return Mono.empty();
+	}
 
 }
