@@ -14,6 +14,27 @@
  * limitations under the License.
  */
 
+buildscript {
+	ext {
+		// Spring Dependencies
+		springBootVersion = "2.7.8"
+		springFrameworkVersion = "5.3.25"
+
+		// External Dependencies
+		beanUtilsVersion = "1.9.4"
+
+		// Test Dependencies
+		springCloudContractVersion = "3.1.3"
+		javaHamcrestVersion = "2.0.0.0"
+		equalsVerifierVersion = "3.10.1"
+		findbugsVersion = "3.0.1"
+
+		// Static Analysis
+		blockHoundVersion = "1.0.6.RELEASE"
+		junitPlatformLauncherVersion = "1.7.0"
+	}
+}
+
 plugins {
 	id 'io.spring.nohttp'
 }
@@ -42,21 +63,6 @@ configure(allprojects) {
 	apply plugin: 'eclipse'
 	apply plugin: 'idea'
 
-	repositories {
-		mavenCentral()
-		maven { url 'https://repo.spring.io/release' }
-	}
-	if (version =~ /((-M|-RC)[0-9]+|-SNAPSHOT)$/) {
-		repositories {
-			maven { url 'https://repo.spring.io/milestone' }
-		}
-	}
-	if (version.endsWith('-SNAPSHOT')) {
-		repositories {
-			maven { url 'https://repo.spring.io/snapshot' }
-		}
-	}
-
 	configurations {
 		all {
 			exclude group: 'commons-logging', module: 'commons-logging'
@@ -81,7 +87,6 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 	checkstyle {
 		configFile = rootProject.file("src/checkstyle/checkstyle.xml")
 		configProperties = [config_path : rootProject.file("src/checkstyle")]
-		toolVersion = "${checkstyleVersion}"
 		showViolations = true
 	}
 	checkstyleMain {
@@ -99,7 +104,6 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-docs'),
 	apply plugin: 'pmd'
 
 	pmd {
-		toolVersion = "${pmdVersion}"
 		consoleOutput = true
 	}
 	pmdMain {
