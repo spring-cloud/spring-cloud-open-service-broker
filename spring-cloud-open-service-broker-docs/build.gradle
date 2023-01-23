@@ -16,7 +16,7 @@
 
 plugins {
 	id 'org.asciidoctor.jvm.pdf'
-  id 'org.asciidoctor.jvm.convert' version '3.1.0'
+	id 'org.asciidoctor.jvm.convert'
 }
 
 description = "Spring Cloud Open Service Broker Documentation"
@@ -34,7 +34,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
 	implementation 'io.projectreactor:reactor-core'
-  asciidoctorExtensions "io.spring.asciidoctor.backends:spring-asciidoctor-backends:0.0.4"
+	asciidoctorExtensions "io.spring.asciidoctor.backends:spring-asciidoctor-backends:0.0.4"
 }
 
 javadoc {
@@ -71,8 +71,8 @@ asciidoctorPdf {
 
 asciidoctor {
 	dependsOn asciidoctorPdf
-  configurations "asciidoctorExtensions"
-  outputOptions {
+	configurations "asciidoctorExtensions"
+	outputOptions {
 		backends "spring-html"
 	}
 	baseDirFollowsSourceFile()
