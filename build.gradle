@@ -14,6 +14,27 @@
  * limitations under the License.
  */
 
+buildscript {
+	ext {
+		// Spring Dependencies
+		springBootVersion = "3.0.2"
+		springFrameworkVersion = "6.0.4"
+
+		// External Dependencies
+		beanUtilsVersion = "1.9.4"
+
+		// Test Dependencies
+		springCloudContractVersion = "4.0.0"
+		javaHamcrestVersion = "2.0.0.0"
+		equalsVerifierVersion = "3.10.1"
+		findbugsVersion = "3.0.1"
+
+		// Static Analysis
+		blockHoundVersion = "1.0.6.RELEASE"
+		junitPlatformLauncherVersion = "1.7.0"
+	}
+}
+
 plugins {
 	id 'io.spring.nohttp'
 }
