@@ -22,7 +22,7 @@ plugins {
 description = "Spring Cloud Open Service Broker Documentation"
 
 configurations {
-	docs
+	asciidoctorExtensions
 }
 
 dependencies {
@@ -34,7 +34,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
 	implementation 'io.projectreactor:reactor-core'
-	docs 'io.spring.docresources:spring-doc-resources:0.2.1.RELEASE@zip'
+	asciidoctorExtensions 'io.spring.asciidoctor.backends:spring-asciidoctor-backends:0.0.4'
 }
 
 javadoc {
@@ -42,12 +42,7 @@ javadoc {
 }
 
 task prepareAsciidocBuild(type: Sync) {
-	dependsOn configurations.docs
-	// copy doc resources
-	from {
-		configurations.docs.collect { zipTree(it) }
-	}
-	// and doc sources
+	// Copy doc sources
 	from "src/docs/asciidoc"
 	// to a temporary build directory
 	into "$buildDir/asciidoc"
@@ -76,6 +71,10 @@ asciidoctorPdf {
 
 asciidoctor {
 	dependsOn asciidoctorPdf
+	configurations "asciidoctorExtensions"
+	outputOptions {
+		backends "spring-html"
+	}
 	baseDirFollowsSourceFile()
 	sourceDir = file("$buildDir/asciidoc")
 	sources {
