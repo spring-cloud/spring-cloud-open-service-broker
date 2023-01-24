@@ -62,21 +62,6 @@ configure(allprojects) {
 	apply plugin: 'eclipse'
 	apply plugin: 'idea'
 
-	repositories {
-		mavenCentral()
-		maven { url 'https://repo.spring.io/release' }
-	}
-	if (version =~ /((-M|-RC)[0-9]+|-SNAPSHOT)$/) {
-		repositories {
-			maven { url 'https://repo.spring.io/milestone' }
-		}
-	}
-	if (version.endsWith('-SNAPSHOT')) {
-		repositories {
-			maven { url 'https://repo.spring.io/snapshot' }
-		}
-	}
-
 	configurations {
 		all {
 			exclude group: 'commons-logging', module: 'commons-logging'
