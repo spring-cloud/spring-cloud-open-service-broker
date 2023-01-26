@@ -34,6 +34,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -53,7 +54,7 @@ class ApiVersionInterceptorIntegrationTest {
 	@Test
 	void noHeaderSent() throws Exception {
 		mockWithExpectedVersion().perform(get(CATALOG_PATH)
-				.accept(MediaType.APPLICATION_JSON))
+						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.description", containsString("expected-version")));
 	}
@@ -61,8 +62,8 @@ class ApiVersionInterceptorIntegrationTest {
 	@Test
 	void incorrectHeaderSent() throws Exception {
 		mockWithExpectedVersion().perform(get(CATALOG_PATH)
-				.header(BrokerApiVersion.DEFAULT_API_VERSION_HEADER, "wrong-version")
-				.accept(MediaType.APPLICATION_JSON))
+						.header(BrokerApiVersion.DEFAULT_API_VERSION_HEADER, "wrong-version")
+						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isPreconditionFailed())
 				.andExpect(jsonPath("$.description", containsString("expected-version")))
 				.andExpect(jsonPath("$.description", containsString("wrong-version")));
@@ -70,31 +71,36 @@ class ApiVersionInterceptorIntegrationTest {
 
 	@Test
 	void matchingHeaderSent() throws Exception {
-		given(catalogService.getCatalog())
-				.willReturn(Mono.just(Catalog.builder().build()));
+		setUpCatalogMocks();
 		mockWithExpectedVersion().perform(get(CATALOG_PATH)
-				.header(BrokerApiVersion.DEFAULT_API_VERSION_HEADER, "expected-version")
-				.accept(MediaType.APPLICATION_JSON))
+						.header(BrokerApiVersion.DEFAULT_API_VERSION_HEADER, "expected-version")
+						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	void anyHeaderNotSent() throws Exception {
-		given(catalogService.getCatalog())
-				.willReturn(Mono.just(Catalog.builder().build()));
+		setUpCatalogMocks();
 		mockWithDefaultVersion().perform(get(CATALOG_PATH)
-				.accept(MediaType.APPLICATION_JSON))
+						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	void anyHeaderSent() throws Exception {
+		setUpCatalogMocks();
+		mockWithDefaultVersion().perform(get(CATALOG_PATH)
+						.header(BrokerApiVersion.DEFAULT_API_VERSION_HEADER, "ignored-version")
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
+
+	private void setUpCatalogMocks() {
 		given(catalogService.getCatalog())
 				.willReturn(Mono.just(Catalog.builder().build()));
-		mockWithDefaultVersion().perform(get(CATALOG_PATH)
-				.header(BrokerApiVersion.DEFAULT_API_VERSION_HEADER, "ignored-version")
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+
+		given(this.catalogService.getResponseEntityCatalog(any()))
+				.willReturn(Mono.empty());
 	}
 
 	private MockMvc mockWithDefaultVersion() {
