@@ -27,7 +27,7 @@ updates:
       - "dependencies"
     commit-message:
       prefix: "(v3.6.x)"
-    target-branch: "v3.6.x"
+    target-branch: "3.6.x"
     ignore:
       - dependency-name: "org.springframework.boot:*"
         update-types:
@@ -46,7 +46,7 @@ updates:
       - "dependencies"
     commit-message:
       prefix: "(v3.5.x)"
-    target-branch: "v3.5.x"
+    target-branch: "3.5.x"
     ignore:
       - dependency-name: "org.springframework.boot:*"
         update-types:
