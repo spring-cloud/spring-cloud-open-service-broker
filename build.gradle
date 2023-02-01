@@ -27,7 +27,7 @@ buildscript {
 		springCloudContractVersion = "3.1.5"
 		javaHamcrestVersion = "2.0.0.0"
 		equalsVerifierVersion = "3.12.4"
-		findbugsVersion = "3.0.1"
+		findbugsVersion = "3.0.1u2"
 
 		// Static Analysis
 		blockHoundVersion = "1.0.7.RELEASE"
