@@ -40,7 +40,7 @@ plugins {
 }
 
 ext {
-	javaApi = "https://docs.oracle.com/javase/17/docs/api/"
+	javaApi = "https://docs.oracle.com/en/java/javase/17/docs/api/"
 	javadocLinks = [
 			javaApi,
 			"https://docs.spring.io/spring-framework/docs/${springFrameworkVersion}/javadoc-api/",
