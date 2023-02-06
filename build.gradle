@@ -18,7 +18,6 @@ buildscript {
 	ext {
 		// Spring Dependencies
 		springBootVersion = "3.0.2"
-		springFrameworkVersion = "6.0.4"
 
 		// External Dependencies
 		beanUtilsVersion = "1.9.4"
@@ -43,7 +42,7 @@ ext {
 	javaApi = "https://docs.oracle.com/en/java/javase/17/docs/api/"
 	javadocLinks = [
 			javaApi,
-			"https://docs.spring.io/spring-framework/docs/${springFrameworkVersion}/javadoc-api/",
+			"https://docs.spring.io/spring-framework/docs/6.0.x/javadoc-api/",
 	] as String[]
 }
 
