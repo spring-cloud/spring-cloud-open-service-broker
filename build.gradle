@@ -152,12 +152,9 @@ configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) 
 			"-Xlint:rawtypes",
 			"-Xlint:deprecation",
 			"-Xlint:unchecked",
-			"-Xlint:options"
+			"-Xlint:options",
+			"-Werror"
 	]
-	if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
-		// Java 8 is the baseline, so don't fail on warnings with newer versions
-		compilerArgs << "-Werror"
-	}
 	[compileJava, compileTestJava]*.options*.compilerArgs = compilerArgs
 
 	// see https://github.com/reactor/BlockHound/issues/33
