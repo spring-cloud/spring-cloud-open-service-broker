@@ -29,6 +29,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationI
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
+import org.springframework.cloud.servicebroker.model.binding.BindingStatus;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceRouteBindingResponse;
@@ -82,7 +83,6 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse.builder()
-				.bindingExisted(false)
 				.build());
 
 		MvcResult mvcResult = mockMvc.perform(put(buildCreateUrl(PLATFORM_INSTANCE_ID, false))
@@ -108,7 +108,6 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 
 		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse
 				.builder()
-				.bindingExisted(false)
 				.build());
 
 		MvcResult mvcResult = mockMvc
@@ -137,7 +136,6 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse.builder()
 				.async(true)
 				.operation("working")
-				.bindingExisted(false)
 				.build());
 
 		MvcResult mvcResult = mockMvc.perform(put(buildCreateUrl(PLATFORM_INSTANCE_ID, true))
@@ -183,11 +181,11 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	void createBindingToAppWithExistingSucceeds() throws Exception {
+	void createBindingToAppWithIdenticalExistingSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse.builder()
-				.bindingExisted(true)
+				.bindingStatus(BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS)
 				.build());
 
 		MvcResult mvcResult = mockMvc.perform(put(buildCreateUrl())
@@ -206,11 +204,33 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
+	void createBindingToAppWithDifferentExistingSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse.builder()
+				.bindingStatus(BindingStatus.EXISTS_WITH_DIFFERENT_PARAMETERS)
+				.build());
+
+		MvcResult mvcResult = mockMvc.perform(put(buildCreateUrl())
+						.content(createRequestBody)
+						.accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andExpect(status().isOk())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
+				.andExpect(status().isConflict());
+
+		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
+		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
 	void createBindingToRouteWithoutAsyncHeadersSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceRouteBindingResponse.builder()
-				.bindingExisted(false)
 				.build());
 
 		MvcResult mvcResult = mockMvc.perform(put(buildCreateUrl())
@@ -236,7 +256,6 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 		setupServiceInstanceBindingService(CreateServiceInstanceRouteBindingResponse.builder()
 				.async(true)
 				.operation("working")
-				.bindingExisted(false)
 				.build());
 
 		MvcResult mvcResult = mockMvc.perform(put(buildCreateUrl(null, true))
@@ -257,11 +276,11 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	void createBindingToRouteWithExistingSucceeds() throws Exception {
+	void createBindingToRouteWithIdenticalExistingSucceeds() throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceRouteBindingResponse.builder()
-				.bindingExisted(true)
+				.bindingStatus(BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS)
 				.build());
 
 		MvcResult mvcResult = mockMvc.perform(put(buildCreateUrl())
@@ -273,6 +292,25 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 
 		mockMvc.perform(asyncDispatch(mvcResult))
 				.andExpect(status().isOk());
+	}
+
+	@Test
+	void createBindingToRouteWithDifferentExistingSucceeds() throws Exception {
+		setupCatalogService();
+
+		setupServiceInstanceBindingService(CreateServiceInstanceRouteBindingResponse.builder()
+				.bindingStatus(BindingStatus.EXISTS_WITH_DIFFERENT_PARAMETERS)
+				.build());
+
+		MvcResult mvcResult = mockMvc.perform(put(buildCreateUrl())
+						.content(createRequestBody)
+						.accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+				.andReturn();
+
+		mockMvc.perform(asyncDispatch(mvcResult))
+				.andExpect(status().isConflict());
 	}
 
 	@Test
