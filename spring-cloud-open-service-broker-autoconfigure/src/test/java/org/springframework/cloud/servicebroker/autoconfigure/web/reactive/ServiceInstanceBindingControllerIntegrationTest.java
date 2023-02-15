@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationI
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
+import org.springframework.cloud.servicebroker.model.binding.BindingStatus;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceRouteBindingResponse;
@@ -69,7 +70,6 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse.builder()
-				.bindingExisted(false)
 				.build());
 
 		client.put().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, false))
@@ -91,7 +91,6 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 
 		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse
 				.builder()
-				.bindingExisted(false)
 				.build());
 
 		client.put().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, false))
@@ -115,7 +114,6 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse.builder()
 				.async(true)
 				.operation("working")
-				.bindingExisted(false)
 				.build());
 
 		client.put().uri(buildCreateUrl(PLATFORM_INSTANCE_ID, true))
@@ -154,11 +152,11 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	void createBindingToAppWithExistingSucceeds() {
+	void createBindingToAppWithIdenticalExistingSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse.builder()
-				.bindingExisted(true)
+				.bindingStatus(BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS)
 				.build());
 
 		client.put().uri(buildCreateUrl())
@@ -173,11 +171,29 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
+	void createBindingToAppWithDifferentExistingSucceeds() {
+		setupCatalogService();
+
+		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse.builder()
+				.bindingStatus(BindingStatus.EXISTS_WITH_DIFFERENT_PARAMETERS)
+				.build());
+
+		client.put().uri(buildCreateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.bodyValue(createRequestBody)
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isEqualTo(HttpStatus.CONFLICT);
+
+		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
+		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
 	void createBindingToRouteWithoutAsyncAndHeadersSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceRouteBindingResponse.builder()
-				.bindingExisted(false)
 				.build());
 
 		client.put().uri(buildCreateUrl())
@@ -198,7 +214,6 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 
 		setupServiceInstanceBindingService(CreateServiceInstanceRouteBindingResponse
 				.builder()
-				.bindingExisted(false)
 				.build());
 
 		client.put().uri(buildCreateUrl())
@@ -221,7 +236,6 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 		setupServiceInstanceBindingService(CreateServiceInstanceRouteBindingResponse.builder()
 				.async(true)
 				.operation("working")
-				.bindingExisted(false)
 				.build());
 
 		client.put().uri(buildCreateUrl(null, true))
@@ -239,11 +253,11 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	void createBindingToRouteWithExistingSucceeds() {
+	void createBindingToRouteWithIdenticalExistingSucceeds() {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceRouteBindingResponse.builder()
-				.bindingExisted(true)
+				.bindingStatus(BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS)
 				.build());
 
 		client.put().uri(buildCreateUrl())
@@ -252,6 +266,22 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isOk();
+	}
+
+	@Test
+	void createBindingToRouteWithDifferentExistingSucceeds() {
+		setupCatalogService();
+
+		setupServiceInstanceBindingService(CreateServiceInstanceRouteBindingResponse.builder()
+				.bindingStatus(BindingStatus.EXISTS_WITH_DIFFERENT_PARAMETERS)
+				.build());
+
+		client.put().uri(buildCreateUrl())
+				.contentType(MediaType.APPLICATION_JSON)
+				.bodyValue(createRequestBody)
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isEqualTo(HttpStatus.CONFLICT);
 	}
 
 	@Test

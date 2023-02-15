@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import org.springframework.cloud.servicebroker.model.instance.CreateServiceInsta
 public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResponse {
 
 	@JsonIgnore
-	protected final boolean bindingExisted;
+	private final BindingStatus bindingStatus;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private final BindingMetadata metadata;
@@ -49,13 +49,34 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	 *
 	 * @param async is the operation asynchronous
 	 * @param operation description of the operation being performed
+	 * @param bindingStatus does the service binding already exist
+	 * @param metadata the service instance binding metadata
+	 */
+	protected CreateServiceInstanceBindingResponse(boolean async, String operation, BindingStatus bindingStatus,
+			BindingMetadata metadata) {
+		super(async, operation);
+		this.bindingStatus = bindingStatus;
+		this.metadata = metadata;
+	}
+
+	/**
+	 * Construct a new {@link CreateServiceInstanceBindingResponse}
+	 *
+	 * @param async is the operation asynchronous
+	 * @param operation description of the operation being performed
 	 * @param bindingExisted does the service binding already exist
 	 * @param metadata the service instance binding metadata
 	 */
+	@Deprecated
 	protected CreateServiceInstanceBindingResponse(boolean async, String operation, boolean bindingExisted,
 			BindingMetadata metadata) {
 		super(async, operation);
-		this.bindingExisted = bindingExisted;
+		if (bindingExisted) {
+			this.bindingStatus = BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS;
+		}
+		else {
+			this.bindingStatus = BindingStatus.NEW;
+		}
 		this.metadata = metadata;
 	}
 
@@ -65,8 +86,21 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	 *
 	 * @return the boolean value
 	 */
+	@Deprecated
+	@JsonIgnore
 	public boolean isBindingExisted() {
-		return this.bindingExisted;
+		return this.bindingStatus != null && this.bindingStatus != BindingStatus.NEW;
+	}
+
+	/**
+	 * Get whether the service binding request is a new request, or whether there is an existing binding with same or
+	 * different parameters
+	 *
+	 * @return the binding status
+	 */
+	@JsonIgnore
+	public BindingStatus getBindingStatus() {
+		return this.bindingStatus;
 	}
 
 	/**
@@ -91,7 +125,7 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		}
 		CreateServiceInstanceBindingResponse that = (CreateServiceInstanceBindingResponse) o;
 		return that.canEqual(this) &&
-				bindingExisted == that.bindingExisted &&
+				bindingStatus == that.bindingStatus &&
 				Objects.equals(metadata,that.metadata);
 	}
 
@@ -102,13 +136,13 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), bindingExisted, metadata);
+		return Objects.hash(super.hashCode(), bindingStatus, metadata);
 	}
 
 	@Override
 	public String toString() {
 		return "CreateServiceInstanceBindingResponse{" +
-				"bindingExisted=" + bindingExisted +
+				"bindingStatus=" + bindingStatus +
 				"metadata=" + metadata +
 				'}';
 	}
@@ -118,7 +152,7 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	 */
 	public static final class CreateServiceInstanceBindingResponseBuilder {
 
-		private boolean bindingExisted;
+		private BindingStatus bindingStatus = BindingStatus.NEW;
 
 		private BindingMetadata metadata;
 
@@ -130,6 +164,24 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		}
 
 		/**
+		 * Set the binding status indicating whether the service binding already exists with the same
+		 * parameters, different parameters, or is a new binding.
+		 * <p>
+		 * This value will be used to determine the HTTP response code to the platform. A {@literal NEW} value will
+		 * result in a response code {@literal 201 CREATED or 202 ACCEPTED} depending on whether it is an async
+		 * request or not, a {@literal EXISTS_WITH_IDENTICAL_PARAMETERS} value will result in a response code
+		 * {@literal 200 OK}, and a {@literal EXISTS_WITH_DIFFERENT_PARAMETERS} value will result in a response code
+		 * {@literal 409 CONFLICT}.
+		 *
+		 * @param bindingStatus the status indicating whether the request is a new service binding or already exists
+		 * @return the builder
+		 */
+		public CreateServiceInstanceBindingResponseBuilder bindingStatus(BindingStatus bindingStatus) {
+			this.bindingStatus = bindingStatus;
+			return this;
+		}
+
+		/**
 		 * Set a boolean value indicating whether the service instance binding already exists with the same parameters
 		 * as the requested service instance binding. A {@literal true} value indicates a service instance binding
 		 * exists and no new resources were created by the service broker, <code>false</code> indicates that new
@@ -137,14 +189,20 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 *
 		 * <p>
 		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
-		 * result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be determined by the
-		 * value of {@link #async(boolean)}.
+		 * result in a response code {@literal 200 OK}, and a {@literal false} value will result in a response code
+		 * {@literal 201 CREATED or 202 ACCEPTED}, depending on the value of {@link #async(boolean)}.
 		 *
 		 * @param bindingExisted {@literal true} to indicate that the binding exists, {@literal false} otherwise
 		 * @return the builder
 		 */
+		@Deprecated
 		public CreateServiceInstanceBindingResponseBuilder bindingExisted(boolean bindingExisted) {
-			this.bindingExisted = bindingExisted;
+			if (bindingExisted) {
+				this.bindingStatus = BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS;
+			}
+			else {
+				this.bindingStatus = BindingStatus.NEW;
+			}
 			return this;
 		}
 
@@ -202,7 +260,7 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 * @return the newly constructed {@literal CreateServiceInstanceBindingResponse}
 		 */
 		public CreateServiceInstanceBindingResponse build() {
-			return new CreateServiceInstanceBindingResponse(async, operation, bindingExisted, metadata);
+			return new CreateServiceInstanceBindingResponse(async, operation, bindingStatus, metadata);
 		}
 
 	}

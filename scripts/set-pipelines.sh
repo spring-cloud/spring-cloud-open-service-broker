@@ -27,7 +27,7 @@ main() {
 
 	pushd "$(dirname "$0")/../ci" >/dev/null
 
-	set_pipeline scosb-3.6.x pipeline.yml main
+	set_pipeline scosb-4.0.x pipeline.yml main
 
 	popd >/dev/null
 }

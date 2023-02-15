@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -84,9 +85,7 @@ class ApiVersionWebFilterIntegrationTest {
 
 	@Test
 	void matchingHeaderSent() {
-		given(catalogService.getCatalog())
-				.willReturn(Mono.just(Catalog.builder().build()));
-
+		setUpCatalogMocks();
 		mockWithExpectedVersion().get().uri(CATALOG_PATH)
 				.header(BrokerApiVersion.DEFAULT_API_VERSION_HEADER, "expected-version")
 				.accept(MediaType.APPLICATION_JSON)
@@ -96,9 +95,7 @@ class ApiVersionWebFilterIntegrationTest {
 
 	@Test
 	void anyHeaderNotSent() {
-		given(catalogService.getCatalog())
-				.willReturn(Mono.just(Catalog.builder().build()));
-
+		setUpCatalogMocks();
 		mockWithDefaultVersion().get().uri(CATALOG_PATH)
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
@@ -107,14 +104,20 @@ class ApiVersionWebFilterIntegrationTest {
 
 	@Test
 	void anyHeaderSent() {
-		given(catalogService.getCatalog())
-				.willReturn(Mono.just(Catalog.builder().build()));
-
+		setUpCatalogMocks();
 		mockWithDefaultVersion().get().uri(CATALOG_PATH)
 				.header(BrokerApiVersion.DEFAULT_API_VERSION_HEADER, "ignored-version")
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().isOk();
+	}
+
+	private void setUpCatalogMocks() {
+		given(catalogService.getCatalog())
+				.willReturn(Mono.just(Catalog.builder().build()));
+
+		given(this.catalogService.getResponseEntityCatalog(any()))
+				.willReturn(Mono.empty());
 	}
 
 	private WebTestClient mockWithDefaultVersion() {

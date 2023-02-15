@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,17 @@ import reactor.core.publisher.Mono;
 import org.springframework.cloud.servicebroker.annotation.ServiceBrokerRestController;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 /**
  * Provide endpoints for the catalog API.
  *
  * @author sgreenberg@pivotal.io
  * @author Scott Frederick
+ * @author Roy Clarkson
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#catalog-management">Open
  * 		Service Broker API specification</a>
  */
@@ -53,14 +57,18 @@ public class CatalogController extends BaseController {
 	 * @return the catalog
 	 */
 	@GetMapping({"/v2/catalog", "{platformInstanceId}/v2/catalog"})
-	public Mono<Catalog> getCatalog() {
-		return catalogService.getCatalog()
-				.doOnRequest(v -> LOG.info("Retrieving catalog"))
-				.doOnSuccess(catalog -> {
-					LOG.info("Success retrieving catalog");
-					LOG.debug("catalog={}", catalog);
-				})
-				.doOnError(e -> LOG.error("Error retrieving catalog. error=" + e.getMessage(), e));
+	public Mono<ResponseEntity<Catalog>> getCatalog(@RequestHeader HttpHeaders httpHeaders) {
+		return catalogService.getResponseEntityCatalog(httpHeaders)
+				.switchIfEmpty(catalogService.getCatalog()
+						.doOnRequest(v -> LOG.info("Retrieving catalog"))
+						.doOnSuccess(catalog -> {
+							LOG.info("Success retrieving catalog");
+							LOG.debug("catalog={}", catalog);
+						})
+						.doOnError(e -> LOG.error("Error retrieving catalog. error=" + e.getMessage(), e))
+						.flatMap(catalog -> Mono.just(ResponseEntity
+								.ok()
+								.body(catalog))));
 	}
 
 }

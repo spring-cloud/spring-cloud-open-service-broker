@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
-import java.util.Map;
+import jakarta.validation.Valid;
 
-import javax.validation.Valid;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +29,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingD
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
+import org.springframework.cloud.servicebroker.model.binding.BindingStatus;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
@@ -147,8 +148,11 @@ public class ServiceInstanceBindingController extends BaseController {
 			if (response.isAsync()) {
 				status = HttpStatus.ACCEPTED;
 			}
-			else if (response.isBindingExisted()) {
+			else if (response.getBindingStatus() == BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS) {
 				status = HttpStatus.OK;
+			}
+			else if (response.getBindingStatus() == BindingStatus.EXISTS_WITH_DIFFERENT_PARAMETERS) {
+				status = HttpStatus.CONFLICT;
 			}
 		}
 		return status;

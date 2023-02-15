@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,35 @@
  * limitations under the License.
  */
 
+buildscript {
+	ext {
+		// Spring Dependencies
+		springBootVersion = "3.0.2"
+
+		// External Dependencies
+		beanUtilsVersion = "1.9.4"
+
+		// Test Dependencies
+		springCloudContractVersion = "4.0.1"
+		javaHamcrestVersion = "2.0.0.0"
+		equalsVerifierVersion = "3.13.1"
+		findbugsVersion = "3.0.1"
+
+		// Static Analysis
+		blockHoundVersion = "1.0.7.RELEASE"
+		junitPlatformLauncherVersion = "1.7.0"
+	}
+}
+
 plugins {
 	id 'io.spring.nohttp'
 }
 
 ext {
-	javaApi = "https://docs.oracle.com/javase/8/docs/api/"
-	if (JavaVersion.current() >= JavaVersion.VERSION_11) {
-		javaApi = "https://docs.oracle.com/en/java/javase/11/docs/api"
-	}
+	javaApi = "https://docs.oracle.com/en/java/javase/17/docs/api/"
 	javadocLinks = [
 			javaApi,
-			"https://docs.spring.io/spring-framework/docs/${springFrameworkVersion}/javadoc-api/",
+			"https://docs.spring.io/spring-framework/docs/6.0.x/javadoc-api/",
 	] as String[]
 }
 
@@ -41,21 +58,6 @@ configure(allprojects) {
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
 	apply plugin: 'idea'
-
-	repositories {
-		mavenCentral()
-		maven { url 'https://repo.spring.io/release' }
-	}
-	if (version =~ /((-M|-RC)[0-9]+|-SNAPSHOT)$/) {
-		repositories {
-			maven { url 'https://repo.spring.io/milestone' }
-		}
-	}
-	if (version.endsWith('-SNAPSHOT')) {
-		repositories {
-			maven { url 'https://repo.spring.io/snapshot' }
-		}
-	}
 
 	configurations {
 		all {
@@ -81,7 +83,6 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 	checkstyle {
 		configFile = rootProject.file("src/checkstyle/checkstyle.xml")
 		configProperties = [config_path : rootProject.file("src/checkstyle")]
-		toolVersion = "${checkstyleVersion}"
 		showViolations = true
 	}
 	checkstyleMain {
@@ -99,7 +100,6 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-docs'),
 	apply plugin: 'pmd'
 
 	pmd {
-		toolVersion = "${pmdVersion}"
 		consoleOutput = true
 	}
 	pmdMain {
@@ -152,12 +152,9 @@ configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) 
 			"-Xlint:rawtypes",
 			"-Xlint:deprecation",
 			"-Xlint:unchecked",
-			"-Xlint:options"
+			"-Xlint:options",
+			"-Werror"
 	]
-	if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
-		// Java 8 is the baseline, so don't fail on warnings with newer versions
-		compilerArgs << "-Werror"
-	}
 	[compileJava, compileTestJava]*.options*.compilerArgs = compilerArgs
 
 	// see https://github.com/reactor/BlockHound/issues/33
@@ -185,8 +182,9 @@ configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) 
 
 	// see https://docs.gradle.org/current/userguide/java_plugin.html
 	java {
-		sourceCompatibility = JavaVersion.VERSION_1_8
-		targetCompatibility = JavaVersion.VERSION_1_8
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(17)
+		}
 		disableAutoTargetJvm()
 		withSourcesJar()
 		withJavadocJar()

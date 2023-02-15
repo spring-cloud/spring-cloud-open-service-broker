@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,10 +46,26 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 	 *
 	 * @param async is the operation asynchronous
 	 * @param operation description of the operation being performed
+	 * @param bindingStatus does the service binding already exist
+	 * @param metadata the service binding metadata
+	 * @param routeServiceUrl the route service URL
+	 */
+	public CreateServiceInstanceRouteBindingResponse(boolean async, String operation, BindingStatus bindingStatus,
+			BindingMetadata metadata, String routeServiceUrl) {
+		super(async, operation, bindingStatus, metadata);
+		this.routeServiceUrl = routeServiceUrl;
+	}
+
+	/**
+	 * Construct a new {@link CreateServiceInstanceRouteBindingResponse}
+	 *
+	 * @param async is the operation asynchronous
+	 * @param operation description of the operation being performed
 	 * @param bindingExisted does the service binding already exist
 	 * @param metadata the service binding metadata
 	 * @param routeServiceUrl the route service URL
 	 */
+	@Deprecated
 	public CreateServiceInstanceRouteBindingResponse(boolean async, String operation, boolean bindingExisted,
 			BindingMetadata metadata, String routeServiceUrl) {
 		super(async, operation, bindingExisted, metadata);
@@ -114,7 +130,7 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 
 		private String routeServiceUrl;
 
-		private boolean bindingExisted;
+		private BindingStatus bindingStatus;
 
 		private BindingMetadata metadata;
 
@@ -140,6 +156,24 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 		}
 
 		/**
+		 * Set the binding status indicating whether the service binding already exists with the same
+		 * parameters, different parameters, or is a new binding.
+		 * <p>
+		 * This value will be used to determine the HTTP response code to the platform. A {@literal NEW} value will
+		 * result in a response code {@literal 201 CREATED or 202 ACCEPTED} depending on whether it is an async
+		 * request or not, a {@literal EXISTS_WITH_IDENTICAL_PARAMETERS} value will result in a response code
+		 * {@literal 200 OK}, and a {@literal EXISTS_WITH_DIFFERENT_PARAMETERS} value will result in a response code
+		 * {@literal 409 CONFLICT}.
+		 *
+		 * @param bindingStatus the status indicating whether the request is a new service binding or already exists
+		 * @return the builder
+		 */
+		public CreateServiceInstanceRouteBindingResponseBuilder bindingStatus(BindingStatus bindingStatus) {
+			this.bindingStatus = bindingStatus;
+			return this;
+		}
+
+		/**
 		 * Set a boolean value indicating whether the service binding already exists with the same parameters as the
 		 * requested service binding. A {@literal true} value indicates a service binding exists and no new resources
 		 * were created by the service broker, <code>false</code> indicates that new resources were created.
@@ -147,13 +181,19 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 		 * <p>
 		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
 		 * result in a response code {@literal 200 OK}, and a {@literal false} value will result in a response code
-		 * {@literal 201 CREATED}.
+		 * {@literal 201 CREATED or 202 ACCEPTED} depending on whether it is an async request or not.
 		 *
 		 * @param bindingExisted {@literal true} to indicate that the binding exists, {@literal false} otherwise
 		 * @return the builder
 		 */
+		@Deprecated
 		public CreateServiceInstanceRouteBindingResponseBuilder bindingExisted(boolean bindingExisted) {
-			this.bindingExisted = bindingExisted;
+			if (bindingExisted) {
+				this.bindingStatus = BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS;
+			}
+			else {
+				this.bindingStatus = BindingStatus.NEW;
+			}
 			return this;
 		}
 
@@ -212,7 +252,7 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 		 * @return the newly constructed {@literal CreateServiceInstanceRouteBindingResponse}
 		 */
 		public CreateServiceInstanceRouteBindingResponse build() {
-			return new CreateServiceInstanceRouteBindingResponse(async, operation, bindingExisted, metadata,
+			return new CreateServiceInstanceRouteBindingResponse(async, operation, bindingStatus, metadata,
 					routeServiceUrl);
 		}
 

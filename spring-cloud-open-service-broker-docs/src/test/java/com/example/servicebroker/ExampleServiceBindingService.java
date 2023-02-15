@@ -2,6 +2,7 @@ package com.example.servicebroker;
 
 import reactor.core.publisher.Mono;
 
+import org.springframework.cloud.servicebroker.model.binding.BindingStatus;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
@@ -33,7 +34,7 @@ public class ExampleServiceBindingService implements ServiceInstanceBindingServi
 				.credentials("url", url)
 				.credentials("username", bindingUsername)
 				.credentials("password", bindingPassword)
-				.bindingExisted(false)
+				.bindingStatus(BindingStatus.NEW)
 				.async(true)
 				.build();
 

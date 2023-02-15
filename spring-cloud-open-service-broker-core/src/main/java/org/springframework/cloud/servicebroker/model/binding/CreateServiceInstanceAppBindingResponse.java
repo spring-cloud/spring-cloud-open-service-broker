@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,28 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	 * Construct a new {@link CreateServiceInstanceAppBindingResponse}
 	 */
 	public CreateServiceInstanceAppBindingResponse() {
-		this(false, null, false, null, new HashMap<>(), null, new ArrayList<>(), new ArrayList<>());
+		this(false, null, BindingStatus.NEW, null, new HashMap<>(), null, new ArrayList<>(), new ArrayList<>());
+	}
+
+	/**
+	 * Construct a new {@link CreateServiceInstanceAppBindingResponse}
+	 *
+	 * @param async is the operation asynchronous
+	 * @param operation description of the operation being performed
+	 * @param bindingStatus does the service binding already exist
+	 * @param credentials the service binding credentials
+	 * @param syslogDrainUrl the syslog drain URL
+	 * @param volumeMounts the set of volume mounts
+	 * @param endpoints the set of endpoints
+	 */
+	public CreateServiceInstanceAppBindingResponse(boolean async, String operation, BindingStatus bindingStatus,
+			BindingMetadata metadata, Map<String, Object> credentials, String syslogDrainUrl,
+			List<VolumeMount> volumeMounts, List<Endpoint> endpoints) {
+		super(async, operation, bindingStatus, metadata);
+		this.credentials = credentials;
+		this.syslogDrainUrl = syslogDrainUrl;
+		this.volumeMounts = volumeMounts;
+		this.endpoints = endpoints;
 	}
 
 	/**
@@ -65,6 +86,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	 * @param volumeMounts the set of volume mounts
 	 * @param endpoints the set of endpoints
 	 */
+	@Deprecated
 	public CreateServiceInstanceAppBindingResponse(boolean async, String operation, boolean bindingExisted,
 			BindingMetadata metadata, Map<String, Object> credentials, String syslogDrainUrl,
 			List<VolumeMount> volumeMounts, List<Endpoint> endpoints) {
@@ -173,7 +195,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 
 		private final List<Endpoint> endpoints = new ArrayList<>();
 
-		private boolean bindingExisted;
+		private BindingStatus bindingStatus;
 
 		private BindingMetadata metadata;
 
@@ -290,6 +312,24 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
+		 * Set the binding status indicating whether the service binding already exists with the same
+		 * parameters, different parameters, or is a new binding.
+		 * <p>
+		 * This value will be used to determine the HTTP response code to the platform. A {@literal NEW} value will
+		 * result in a response code {@literal 201 CREATED or 202 ACCEPTED} depending on whether it is an async
+		 * request or not, a {@literal EXISTS_WITH_IDENTICAL_PARAMETERS} value will result in a response code
+		 * {@literal 200 OK}, and a {@literal EXISTS_WITH_DIFFERENT_PARAMETERS} value will result in a response code
+		 * {@literal 409 CONFLICT}.
+		 *
+		 * @param bindingStatus the status indicating whether the request is a new service binding or already exists
+		 * @return the builder
+		 */
+		public CreateServiceInstanceAppBindingResponseBuilder bindingStatus(BindingStatus bindingStatus) {
+			this.bindingStatus = bindingStatus;
+			return this;
+		}
+
+		/**
 		 * Set a boolean value indicating whether the service binding already exists with the same parameters as the
 		 * requested service binding. A {@literal true} value indicates a service binding exists and no new resources
 		 * were created by the service broker, <code>false</code> indicates that new resources were created.
@@ -297,13 +337,19 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		 * <p>
 		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
 		 * result in a response code {@literal 200 OK}, and a {@literal false} value will result in a response code
-		 * {@literal 201 CREATED}.
+		 * {@literal 201 CREATED or 202 ACCEPTED}, depending on whether it is an async request or not.
 		 *
 		 * @param bindingExisted {@literal true} to indicate that the binding exists, {@literal false} otherwise
 		 * @return the builder
 		 */
+		@Deprecated
 		public CreateServiceInstanceAppBindingResponseBuilder bindingExisted(boolean bindingExisted) {
-			this.bindingExisted = bindingExisted;
+			if (bindingExisted) {
+				this.bindingStatus = BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS;
+			}
+			else {
+				this.bindingStatus = BindingStatus.NEW;
+			}
 			return this;
 		}
 
@@ -362,7 +408,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		 * @return the newly constructed {@literal CreateServiceInstanceAppBindingResponse}
 		 */
 		public CreateServiceInstanceAppBindingResponse build() {
-			return new CreateServiceInstanceAppBindingResponse(async, operation, bindingExisted, metadata, credentials,
+			return new CreateServiceInstanceAppBindingResponse(async, operation, bindingStatus, metadata, credentials,
 					syslogDrainUrl, volumeMounts, endpoints);
 		}
 

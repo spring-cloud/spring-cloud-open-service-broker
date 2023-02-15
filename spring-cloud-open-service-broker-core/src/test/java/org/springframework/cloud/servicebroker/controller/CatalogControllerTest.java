@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -42,11 +43,17 @@ class CatalogControllerTest {
 	}
 
 	@Test
-	void catalogIsReturned() {
+	void catalogIsReturned() throws Exception {
 		Catalog expectedCatalog = Catalog.builder().build();
-		given(catalogService.getCatalog()).willReturn(Mono.just(expectedCatalog));
+
+		given(catalogService.getCatalog())
+				.willReturn(Mono.just(expectedCatalog));
+
+		given(this.catalogService.getResponseEntityCatalog(any()))
+				.willReturn(Mono.empty());
+
 		CatalogController controller = new CatalogController(catalogService);
-		Catalog actualCatalog = controller.getCatalog().block();
+		Catalog actualCatalog = controller.getCatalog(null).block().getBody();
 		assertThat(actualCatalog).isEqualTo(expectedCatalog);
 	}
 

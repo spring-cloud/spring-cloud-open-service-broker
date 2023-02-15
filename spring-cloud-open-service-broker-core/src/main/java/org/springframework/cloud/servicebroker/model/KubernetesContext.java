@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,10 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
-import org.springframework.util.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 /**
  * Kubernetes specific contextual information under which the service instance is to be provisioned or updated.
@@ -31,6 +33,7 @@ import org.springframework.util.StringUtils;
  * @author Scott Frederick
  * @author Roy Clarkson
  */
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public final class KubernetesContext extends Context {
 
@@ -43,6 +46,21 @@ public final class KubernetesContext extends Context {
 	 * Kubernetes Namespace key
 	 */
 	public static final String NAMESPACE_KEY = "namespace";
+
+	/**
+	 * Kubernetes Namespace Annotations key
+	 */
+	public static final String NAMESPACE_ANNOTATIONS_KEY = "namespaceAnnotations";
+
+	/**
+	 * Kubernetes Instance Annotations key
+	 */
+	public static final String INSTANCE_ANNOTATIONS_KEY = "instanceAnnotations";
+
+	/**
+	 * Kubernetes Instance Name
+	 */
+	public static final String INSTANCE_NAME_KEY = "instanceName";
 
 	/**
 	 * Kubernetes Cluster ID key
@@ -62,12 +80,30 @@ public final class KubernetesContext extends Context {
 	 */
 	public KubernetesContext(String namespace, String clusterid, Map<String, Object> properties) {
 		super(KUBERNETES_PLATFORM, properties);
-		if (StringUtils.hasText(namespace)) {
-			setNamespace(namespace);
-		}
-		if (StringUtils.hasText(clusterid)) {
-			setCluserid(clusterid);
-		}
+		setNamespace(namespace);
+		setClusterid(clusterid);
+	}
+
+	/**
+	 * Create a new KubernetesContext
+	 *
+	 * @param namespace the kubernetes namespace
+	 * @param instanceName the service instance name
+	 * @param namespaceAnnotations The annotations attached to the namespace in which the Service Instance will be
+	 * 		visible
+	 * @param instanceAnnotations the annotations attached to the service instance
+	 * @param clusterid the kubernetes clusterid
+	 * @param properties a collection of properties
+	 */
+	public KubernetesContext(String namespace, String clusterid, String instanceName,
+			Map<String, Object> namespaceAnnotations, Map<String, Object> instanceAnnotations,
+			Map<String, Object> properties) {
+		super(KUBERNETES_PLATFORM, properties);
+		setNamespace(namespace);
+		setClusterid(clusterid);
+		setInstanceName(instanceName);
+		setNamespaceAnnotations(namespaceAnnotations);
+		setInstanceAnnotations(instanceAnnotations);
 	}
 
 	/**
@@ -81,6 +117,9 @@ public final class KubernetesContext extends Context {
 		properties.remove(KUBERNETES_PLATFORM);
 		properties.remove(NAMESPACE_KEY);
 		properties.remove(CLUSTERID_KEY);
+		properties.remove(INSTANCE_NAME_KEY);
+		properties.remove(NAMESPACE_ANNOTATIONS_KEY);
+		properties.remove(INSTANCE_ANNOTATIONS_KEY);
 		properties.remove(Context.PLATFORM_KEY);
 		return properties;
 	}
@@ -96,7 +135,7 @@ public final class KubernetesContext extends Context {
 	}
 
 	private void setNamespace(String namespace) {
-		properties.put(NAMESPACE_KEY, namespace);
+		setStringProperty(NAMESPACE_KEY, namespace);
 	}
 
 	/**
@@ -109,8 +148,49 @@ public final class KubernetesContext extends Context {
 		return getStringProperty(CLUSTERID_KEY);
 	}
 
-	private void setCluserid(String cluserid) {
-		properties.put(CLUSTERID_KEY, cluserid);
+	private void setClusterid(String clusterid) {
+		setStringProperty(CLUSTERID_KEY, clusterid);
+	}
+
+	/**
+	 * Retrieve the kubernetes instance name from the collection of platform properties
+	 *
+	 * @return the instance name
+	 */
+	@JsonProperty
+	public String getInstanceName() {
+		return getStringProperty(INSTANCE_NAME_KEY);
+	}
+
+	private void setInstanceName(String instanceName) {
+		setStringProperty(INSTANCE_NAME_KEY, instanceName);
+	}
+
+	/**
+	 * Retrieve the kubernetes namespace annotations from the collection of platform properties
+	 *
+	 * @return the namespace annotations
+	 */
+	@JsonProperty
+	public Map<String, Object> getNamespaceAnnotations() {
+		return getMapProperty(NAMESPACE_ANNOTATIONS_KEY);
+	}
+
+	private void setNamespaceAnnotations(Map<String, Object> namespaceAnnotations) {
+		setMapProperty(NAMESPACE_ANNOTATIONS_KEY, namespaceAnnotations);
+	}
+
+	/**
+	 * Retrieve the kubernetes instance annotations from the collection of platform properties
+	 *
+	 * @return the instance annotations
+	 */
+	public Map<String, Object> getInstanceAnnotations() {
+		return getMapProperty(INSTANCE_ANNOTATIONS_KEY);
+	}
+
+	private void setInstanceAnnotations(Map<String, Object> instanceAnnotations) {
+		setMapProperty(INSTANCE_ANNOTATIONS_KEY, instanceAnnotations);
 	}
 
 	/**
@@ -129,6 +209,12 @@ public final class KubernetesContext extends Context {
 			extends ContextBaseBuilder<KubernetesContext, KubernetesContextBuilder> {
 
 		private String namespace;
+
+		private final Map<String, Object> namespaceAnnotations = new HashMap<>();
+
+		private final Map<String, Object> instanceAnnotations = new HashMap<>();
+
+		private String instanceName;
 
 		private String clusterid;
 
@@ -163,9 +249,49 @@ public final class KubernetesContext extends Context {
 			return this;
 		}
 
+		/**
+		 * Set the kubernetes instance name
+		 *
+		 * @param instanceName the clusterid
+		 * @return the builder
+		 */
+		public KubernetesContextBuilder instanceName(String instanceName) {
+			this.instanceName = instanceName;
+			return this;
+		}
+
+		/**
+		 * Set the namespace annotations
+		 *
+		 * @param namespaceAnnotations the namespace annotations
+		 * @return the builder
+		 */
+		public KubernetesContextBuilder namespaceAnnotations(Map<String, Object> namespaceAnnotations) {
+			if (!CollectionUtils.isEmpty(namespaceAnnotations)) {
+				this.namespaceAnnotations.clear();
+				this.namespaceAnnotations.putAll(namespaceAnnotations);
+			}
+			return this;
+		}
+
+		/**
+		 * Set the instance annotations
+		 *
+		 * @param instanceAnnotations the instance annotations
+		 * @return the builder
+		 */
+		public KubernetesContextBuilder instanceAnnotations(Map<String, Object> instanceAnnotations) {
+			if (!CollectionUtils.isEmpty(instanceAnnotations)) {
+				this.instanceAnnotations.clear();
+				this.instanceAnnotations.putAll(instanceAnnotations);
+			}
+			return this;
+		}
+
 		@Override
 		public KubernetesContext build() {
-			return new KubernetesContext(namespace, clusterid, properties);
+			return new KubernetesContext(namespace, clusterid, instanceName, namespaceAnnotations, instanceAnnotations,
+					properties);
 		}
 
 	}

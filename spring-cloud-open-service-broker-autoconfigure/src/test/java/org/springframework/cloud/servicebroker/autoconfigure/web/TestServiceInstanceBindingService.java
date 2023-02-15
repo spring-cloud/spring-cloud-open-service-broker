@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerDeleteOper
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
+import org.springframework.cloud.servicebroker.model.binding.BindingStatus;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
@@ -54,7 +55,7 @@ public class TestServiceInstanceBindingService implements ServiceInstanceBinding
 		}
 		if (EXISTING_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
 			return Mono.just(CreateServiceInstanceAppBindingResponse.builder()
-					.bindingExisted(true)
+							.bindingStatus(BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS)
 					.build());
 		}
 		if (UNKNOWN_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
@@ -64,12 +65,10 @@ public class TestServiceInstanceBindingService implements ServiceInstanceBinding
 			return Mono.just(CreateServiceInstanceAppBindingResponse.builder()
 					.async(true)
 					.operation("working")
-					.bindingExisted(false)
 					.build());
 		}
 		else {
 			return Mono.just(CreateServiceInstanceAppBindingResponse.builder()
-					.bindingExisted(false)
 					.build());
 		}
 	}

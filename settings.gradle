@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,32 @@
 
 pluginManagement {
 	plugins {
-		id "org.springframework.boot" version "${springBootVersion}"
-		id "io.spring.nohttp" version "0.0.10"
+		id "org.springframework.boot" version "3.0.2"
+		id "io.spring.nohttp" version "0.0.11"
 		id 'org.asciidoctor.jvm.pdf' version '3.3.2'
 		id 'org.asciidoctor.jvm.convert' version '3.3.2'
 	}
 	repositories {
 		gradlePluginPortal()
 		mavenCentral()
-		maven { url "https://repo.spring.io/plugins-release" }
 		if (version.endsWith('-SNAPSHOT')) {
 			maven { url "https://repo.spring.io/plugins-snapshot" }
+		}
+	}
+}
+
+dependencyResolutionManagement {
+	repositories {
+		mavenCentral()
+	}
+	if (version =~ /((-M|-RC)[0-9]+|-SNAPSHOT)$/) {
+		repositories {
+			maven { url 'https://repo.spring.io/milestone' }
+		}
+	}
+	if (version.endsWith('-SNAPSHOT')) {
+		repositories {
+			maven { url 'https://repo.spring.io/snapshot' }
 		}
 	}
 }

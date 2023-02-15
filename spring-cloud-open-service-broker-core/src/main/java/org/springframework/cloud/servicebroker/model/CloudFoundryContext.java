@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
-import org.springframework.util.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 /**
  * Cloud Foundry specific contextual information under which the service instance is to be provisioned or updated.
@@ -53,6 +53,11 @@ public final class CloudFoundryContext extends Context {
 	public static final String ORGANIZATION_NAME_KEY = "organizationName";
 
 	/**
+	 * Organization Annotations key
+	 */
+	public static final String ORGANIZATION_ANNOTATIONS_KEY = "organizationAnnotations";
+
+	/**
 	 * Space GUID key
 	 */
 	public static final String SPACE_GUID_KEY = "spaceGuid";
@@ -61,6 +66,11 @@ public final class CloudFoundryContext extends Context {
 	 * Space Name key
 	 */
 	public static final String SPACE_NAME_KEY = "spaceName";
+
+	/**
+	 * Space Annotations key
+	 */
+	public static final String SPACE_ANNOTATIONS_KEY = "spaceAnnotations";
 
 	/**
 	 * Instance Name key
@@ -84,21 +94,36 @@ public final class CloudFoundryContext extends Context {
 	public CloudFoundryContext(String organizationGuid, String organizationName, String spaceGuid, String spaceName,
 			String instanceName, Map<String, Object> properties) {
 		super(CLOUD_FOUNDRY_PLATFORM, properties);
-		if (StringUtils.hasText(organizationGuid)) {
-			setOrganizationGuid(organizationGuid);
-		}
-		if (StringUtils.hasText(organizationName)) {
-			setOrganizationName(organizationName);
-		}
-		if (StringUtils.hasText(spaceGuid)) {
-			setSpaceGuid(spaceGuid);
-		}
-		if (StringUtils.hasText(spaceName)) {
-			setSpaceName(spaceName);
-		}
-		if (StringUtils.hasText(instanceName)) {
-			setInstanceName(instanceName);
-		}
+		setOrganizationGuid(organizationGuid);
+		setOrganizationName(organizationName);
+		setSpaceGuid(spaceGuid);
+		setSpaceName(spaceName);
+		setInstanceName(instanceName);
+	}
+
+	/**
+	 * Create a new CloudFoundryContext
+	 *
+	 * @param organizationGuid the organization GUID
+	 * @param organizationName the organization name
+	 * @param organizationAnnotations organization annotations
+	 * @param spaceGuid the space GUID
+	 * @param spaceName the space name
+	 * @param spaceAnnotations the space annotations
+	 * @param instanceName the instance name
+	 * @param properties additional properties
+	 */
+	public CloudFoundryContext(String organizationGuid, String organizationName,
+			Map<String, Object> organizationAnnotations, String spaceGuid, String spaceName,
+			Map<String, Object> spaceAnnotations, String instanceName, Map<String, Object> properties) {
+		super(CLOUD_FOUNDRY_PLATFORM, properties);
+		setOrganizationGuid(organizationGuid);
+		setOrganizationName(organizationName);
+		setOrganizationAnnotations(organizationAnnotations);
+		setSpaceGuid(spaceGuid);
+		setSpaceName(spaceName);
+		setSpaceAnnotations(spaceAnnotations);
+		setInstanceName(instanceName);
 	}
 
 	/**
@@ -111,8 +136,10 @@ public final class CloudFoundryContext extends Context {
 		HashMap<String, Object> properties = new HashMap<>(super.getProperties());
 		properties.remove(ORGANIZATION_GUID_KEY);
 		properties.remove(ORGANIZATION_NAME_KEY);
+		properties.remove(ORGANIZATION_ANNOTATIONS_KEY);
 		properties.remove(SPACE_GUID_KEY);
 		properties.remove(SPACE_NAME_KEY);
+		properties.remove(SPACE_ANNOTATIONS_KEY);
 		properties.remove(INSTANCE_NAME_KEY);
 		properties.remove(Context.PLATFORM_KEY);
 		return properties;
@@ -129,7 +156,7 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	private void setOrganizationGuid(String organizationGuid) {
-		properties.put(ORGANIZATION_GUID_KEY, organizationGuid);
+		setStringProperty(ORGANIZATION_GUID_KEY, organizationGuid);
 	}
 
 	/**
@@ -143,7 +170,21 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	private void setOrganizationName(String organizationName) {
-		properties.put(ORGANIZATION_NAME_KEY, organizationName);
+		setStringProperty(ORGANIZATION_NAME_KEY, organizationName);
+	}
+
+	/**
+	 * Retrieve the organization annotations from the collection of platform properties
+	 *
+	 * @return the organization annotations
+	 */
+	@JsonProperty
+	public Map<String, Object> getOrganizationAnnotations() {
+		return getMapProperty(ORGANIZATION_ANNOTATIONS_KEY);
+	}
+
+	private void setOrganizationAnnotations(Map<String, Object> organizationAnnotations) {
+		setMapProperty(ORGANIZATION_ANNOTATIONS_KEY, organizationAnnotations);
 	}
 
 	/**
@@ -157,7 +198,7 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	private void setSpaceGuid(String spaceGuid) {
-		properties.put(SPACE_GUID_KEY, spaceGuid);
+		setStringProperty(SPACE_GUID_KEY, spaceGuid);
 	}
 
 	/**
@@ -171,7 +212,21 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	private void setSpaceName(String spaceName) {
-		properties.put(SPACE_NAME_KEY, spaceName);
+		setStringProperty(SPACE_NAME_KEY, spaceName);
+	}
+
+	/**
+	 * Retrieve the space annotations from the collection of platform properties
+	 *
+	 * @return the space annotations
+	 */
+	@JsonProperty
+	public Map<String, Object> getSpaceAnnotations() {
+		return getMapProperty(SPACE_ANNOTATIONS_KEY);
+	}
+
+	private void setSpaceAnnotations(Map<String, Object> spaceAnnotations) {
+		setMapProperty(SPACE_ANNOTATIONS_KEY, spaceAnnotations);
 	}
 
 	/**
@@ -185,7 +240,7 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	private void setInstanceName(String instanceName) {
-		properties.put(INSTANCE_NAME_KEY, instanceName);
+		setStringProperty(INSTANCE_NAME_KEY, instanceName);
 	}
 
 	/**
@@ -207,9 +262,13 @@ public final class CloudFoundryContext extends Context {
 
 		private String organizationName;
 
+		private final Map<String, Object> organizationAnnotations = new HashMap<>();
+
 		private String spaceGuid;
 
 		private String spaceName;
+
+		private final Map<String, Object> spaceAnnotations = new HashMap<>();
 
 		private String instanceName;
 
@@ -245,6 +304,20 @@ public final class CloudFoundryContext extends Context {
 		}
 
 		/**
+		 * Set the organization annotations
+		 *
+		 * @param organizationAnnotations the organization annotations
+		 * @return the builder
+		 */
+		public CloudFoundryContextBuilder organizationAnnotations(Map<String, Object> organizationAnnotations) {
+			if (!CollectionUtils.isEmpty(organizationAnnotations)) {
+				this.organizationAnnotations.clear();
+				this.organizationAnnotations.putAll(organizationAnnotations);
+			}
+			return this;
+		}
+
+		/**
 		 * Set the space GUID
 		 *
 		 * @param spaceGuid the space GUID
@@ -267,6 +340,20 @@ public final class CloudFoundryContext extends Context {
 		}
 
 		/**
+		 * Set the space annotations
+		 *
+		 * @param spaceAnnotations the space annotations
+		 * @return the builder
+		 */
+		public CloudFoundryContextBuilder spaceAnnotations(Map<String, Object> spaceAnnotations) {
+			if (!CollectionUtils.isEmpty(spaceAnnotations)) {
+				this.spaceAnnotations.clear();
+				this.spaceAnnotations.putAll(spaceAnnotations);
+			}
+			return this;
+		}
+
+		/**
 		 * Set the instance name
 		 *
 		 * @param instanceName the instance name
@@ -279,8 +366,8 @@ public final class CloudFoundryContext extends Context {
 
 		@Override
 		public CloudFoundryContext build() {
-			return new CloudFoundryContext(organizationGuid, organizationName, spaceGuid, spaceName, instanceName,
-					properties);
+			return new CloudFoundryContext(organizationGuid, organizationName, organizationAnnotations, spaceGuid,
+					spaceName, spaceAnnotations, instanceName, properties);
 		}
 
 	}

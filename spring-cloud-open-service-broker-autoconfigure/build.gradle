@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation "io.projectreactor.tools:blockhound-junit-platform:${blockHoundVersion}"
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	testRuntimeOnly 'javax.servlet:javax.servlet-api'
+	testRuntimeOnly 'jakarta.servlet:jakarta.servlet-api'
 	testImplementation 'org.mockito:mockito-core'
 	testImplementation "org.hamcrest:java-hamcrest:${javaHamcrestVersion}"
 	testImplementation 'org.assertj:assertj-core'

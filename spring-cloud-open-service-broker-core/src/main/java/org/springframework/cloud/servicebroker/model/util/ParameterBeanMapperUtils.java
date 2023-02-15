@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ public final class ParameterBeanMapperUtils {
 	 */
 	public static <T> T mapParametersToBean(Map<String, Object> parameters, Class<T> cls) {
 		try {
-			T bean = cls.newInstance();
+			T bean = cls.getDeclaredConstructor().newInstance();
 
 			BeanUtilsBean beanUtils = new BeanUtilsBean();
 			beanUtils.getPropertyUtils().addBeanIntrospector(SuppressPropertiesBeanIntrospector.SUPPRESS_CLASS);
@@ -51,7 +51,7 @@ public final class ParameterBeanMapperUtils {
 
 			return bean;
 		}
-		catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+		catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
 			throw new IllegalArgumentException("Error mapping parameters to class of type " + cls.getName(), e);
 		}
 	}
