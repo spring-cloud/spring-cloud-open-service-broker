@@ -49,7 +49,7 @@ class ServiceInstanceMetadataTest {
 
 		assertThat(serviceInstanceMetadata.getLabels()).containsOnly(entry("key", "value"), entry("key2", "value2"));
 	}
-	
+
 	@Test
 	void populatedServiceInstanceMetadataSetLabels() {
 		Map<String, Object> labels = new HashMap<>();
@@ -66,7 +66,7 @@ class ServiceInstanceMetadataTest {
 	@Test
 	void populatedServiceInstanceMetadataWithLabel() {
 		ServiceInstanceMetadata serviceInstanceMetadata = ServiceInstanceMetadata.builder()
-				.label("key","value").label("key2", "value2").build();
+				.label("key", "value").label("key2", "value2").build();
 
 		assertThat(serviceInstanceMetadata.getLabels()).containsOnly(entry("key", "value"), entry("key2", "value2"));
 	}
@@ -113,4 +113,5 @@ class ServiceInstanceMetadataTest {
 				.forClass(ServiceInstanceMetadata.class)
 				.verify();
 	}
+
 }
