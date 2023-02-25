@@ -17,6 +17,7 @@
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -35,7 +36,6 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
-import org.springframework.util.Base64Utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -97,7 +97,7 @@ public abstract class ControllerIntegrationTest {
 		propMap.put(ORIGINATING_EMAIL_KEY, ORIGINATING_EMAIL_VALUE);
 		ObjectMapper mapper = Jackson2ObjectMapperBuilder.json().build();
 		String properties = mapper.writeValueAsString(propMap);
-		String encodedProperties = new String(Base64Utils.encode(properties.getBytes()));
+		String encodedProperties = Base64.getEncoder().encodeToString(properties.getBytes());
 		return ORIGINATING_IDENTITY_PLATFORM + " " + encodedProperties;
 	}
 

@@ -18,6 +18,7 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +27,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.util.MetadataUtils;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.util.Base64Utils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
@@ -205,7 +205,7 @@ public class ServiceMetadata {
 		ClassPathResource resource = new ClassPathResource(filename);
 		try (InputStream stream = resource.getInputStream()) {
 			byte[] imageBytes = StreamUtils.copyToByteArray(stream);
-			String imageData = Base64Utils.encodeToString(imageBytes);
+			String imageData = Base64.getEncoder().encodeToString(imageBytes);
 			formattedImageData = String.format(IMAGE_DATA_FORMAT, imageData);
 		}
 		catch (IOException e) {

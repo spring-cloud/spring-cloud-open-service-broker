@@ -17,6 +17,7 @@
 package org.springframework.cloud.servicebroker.controller;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -39,7 +40,6 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.util.Base64Utils;
 
 /**
  * Base functionality shared by controllers.
@@ -196,7 +196,7 @@ public class BaseController {
 
 	private String decodeOriginatingIdentityHeader(String encodedProperties) {
 		try {
-			return new String(Base64Utils.decode(encodedProperties.getBytes()));
+			return new String(Base64.getDecoder().decode(encodedProperties.getBytes()));
 		}
 		catch (IllegalArgumentException e) {
 			throw new ServiceBrokerInvalidOriginatingIdentityException("Error decoding JSON properties from "
