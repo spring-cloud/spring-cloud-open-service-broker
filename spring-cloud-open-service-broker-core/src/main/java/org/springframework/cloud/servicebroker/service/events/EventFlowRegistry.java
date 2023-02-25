@@ -43,14 +43,6 @@ public abstract class EventFlowRegistry<I, C, E, R, S> {
 
 	/**
 	 * Construct a new {@link EventFlowRegistry}
-	 */
-	@Deprecated
-	public EventFlowRegistry() {
-		// This constructor is intentionally empty to indicate it is deprecated
-	}
-
-	/**
-	 * Construct a new {@link EventFlowRegistry}
 	 *
 	 * @param initializationFlows the initialization flows
 	 * @param completionFlows the completion flows

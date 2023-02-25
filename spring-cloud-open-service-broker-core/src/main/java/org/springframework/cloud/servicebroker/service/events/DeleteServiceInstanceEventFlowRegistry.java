@@ -36,14 +36,6 @@ public class DeleteServiceInstanceEventFlowRegistry extends EventFlowRegistry<De
 		DeleteServiceInstanceResponse> {
 
 	/**
-	 * Constructs a new {@link DeleteServiceInstanceEventFlowRegistry}
-	 */
-	@Deprecated
-	public DeleteServiceInstanceEventFlowRegistry() {
-		super();
-	}
-
-	/**
 	 * Construct a new {@link DeleteServiceInstanceEventFlowRegistry}
 	 *
 	 * @param initializationFlows the initialization flows

@@ -17,6 +17,9 @@
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 
+import java.util.ArrayList;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -32,7 +35,14 @@ import org.springframework.cloud.servicebroker.controller.ServiceInstanceControl
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
+import org.springframework.cloud.servicebroker.service.events.AsyncOperationServiceInstanceBindingEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.AsyncOperationServiceInstanceEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.CreateServiceInstanceBindingEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.CreateServiceInstanceEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.DeleteServiceInstanceBindingEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.DeleteServiceInstanceEventFlowRegistry;
 import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
+import org.springframework.cloud.servicebroker.service.events.UpdateServiceInstanceEventFlowRegistry;
 import org.springframework.context.annotation.Bean;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,6 +51,28 @@ public abstract class AbstractServiceBrokerWebAutoConfigurationTest {
 
 	private static final String ANALYZER_DESCRIPTION = String.format("Service brokers must implement the '%s' and " +
 			"provide implementations of the required methods of that interface.", ServiceInstanceService.class);
+
+	private static EventFlowRegistries eventFlowRegistries;
+
+	protected static EventFlowRegistries getEventFlowRegistries() {
+		return eventFlowRegistries;
+	}
+
+	@BeforeEach
+	void setUp() {
+		eventFlowRegistries = new EventFlowRegistries(
+				new CreateServiceInstanceEventFlowRegistry(new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),
+				new UpdateServiceInstanceEventFlowRegistry(new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),
+				new DeleteServiceInstanceEventFlowRegistry(new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),
+				new AsyncOperationServiceInstanceEventFlowRegistry(
+						new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),
+				new CreateServiceInstanceBindingEventFlowRegistry(
+						new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),
+				new DeleteServiceInstanceBindingEventFlowRegistry(
+						new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),
+				new AsyncOperationServiceInstanceBindingEventFlowRegistry(
+						new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+	}
 
 	@Test
 	void controllersAreNotCreatedWithNonWebConfiguration() {
@@ -85,10 +117,9 @@ public abstract class AbstractServiceBrokerWebAutoConfigurationTest {
 			return new TestServiceInstanceBindingService();
 		}
 
-		@SuppressWarnings("deprecation")
 		@Bean
 		protected EventFlowRegistries eventFlowRegistries() {
-			return new EventFlowRegistries();
+			return getEventFlowRegistries();
 		}
 
 	}
@@ -106,10 +137,9 @@ public abstract class AbstractServiceBrokerWebAutoConfigurationTest {
 			return new TestServiceInstanceBindingService();
 		}
 
-		@SuppressWarnings("deprecation")
 		@Bean
 		protected EventFlowRegistries eventFlowRegistries() {
-			return new EventFlowRegistries();
+			return getEventFlowRegistries();
 		}
 
 	}

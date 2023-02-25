@@ -321,18 +321,6 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * Construct a new {@link PreviousValues}
 		 *
-		 * @param planId the plan ID
-		 * @param maintenanceInfo the maintenance info (possibly null)
-		 * @deprecated in favor of {@link PreviousValues#builder()}
-		 */
-		@Deprecated
-		public PreviousValues(String planId, MaintenanceInfo maintenanceInfo) {
-			this(null, planId, null, null, maintenanceInfo);
-		}
-
-		/**
-		 * Construct a new {@link PreviousValues}
-		 *
 		 * @param serviceDefinitionId the ID of the service offering
 		 * @param planId the plan ID
 		 * @param organizationId the organization ID for the service instance

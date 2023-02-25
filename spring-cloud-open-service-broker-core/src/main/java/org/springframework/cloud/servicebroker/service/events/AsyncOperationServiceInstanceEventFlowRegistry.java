@@ -38,14 +38,6 @@ public class AsyncOperationServiceInstanceEventFlowRegistry
 
 	/**
 	 * Construct a new {@link AsyncOperationServiceInstanceEventFlowRegistry}
-	 */
-	@Deprecated
-	public AsyncOperationServiceInstanceEventFlowRegistry() {
-		super();
-	}
-
-	/**
-	 * Construct a new {@link AsyncOperationServiceInstanceEventFlowRegistry}
 	 *
 	 * @param initializationFlows the initialization flows
 	 * @param completionFlows the completion flows

@@ -65,20 +65,6 @@ public class ServiceInstanceMetadata {
 	}
 
 	/**
-	 * Set the labels
-	 *
-	 * @param labels the service instance metadata labels
-	 * @deprecated in favor of {@link ServiceInstanceMetadataBuilder}
-	 */
-	@Deprecated
-	public void setLabels(Map<String, Object> labels) {
-		if (!CollectionUtils.isEmpty(labels)) {
-			this.labels.clear();
-			this.labels.putAll(labels);
-		}
-	}
-
-	/**
 	 * Create a builder that provides a fluent API for constructing a {@literal ServiceInstanceMetadata}.
 	 *
 	 * @return the builder

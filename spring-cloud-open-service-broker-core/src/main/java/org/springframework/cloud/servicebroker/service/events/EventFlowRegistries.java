@@ -39,20 +39,6 @@ public class EventFlowRegistries {
 
 	/**
 	 * Construct a new {@link EventFlowRegistries}
-	 */
-	@Deprecated
-	public EventFlowRegistries() {
-		this.createInstanceRegistry = new CreateServiceInstanceEventFlowRegistry();
-		this.updateInstanceRegistry = new UpdateServiceInstanceEventFlowRegistry();
-		this.deleteInstanceRegistry = new DeleteServiceInstanceEventFlowRegistry();
-		this.asyncOperationRegistry = new AsyncOperationServiceInstanceEventFlowRegistry();
-		this.createInstanceBindingRegistry = new CreateServiceInstanceBindingEventFlowRegistry();
-		this.deleteInstanceBindingRegistry = new DeleteServiceInstanceBindingEventFlowRegistry();
-		this.asyncOperationBindingRegistry = new AsyncOperationServiceInstanceBindingEventFlowRegistry();
-	}
-
-	/**
-	 * Construct a new {@link EventFlowRegistries}
 	 *
 	 * @param createInstanceRegistry the create instance flow registry
 	 * @param updateInstanceRegistry the update instance flow registry

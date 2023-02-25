@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -250,34 +251,31 @@ class EventFlowsAutoConfigurationTest {
 	@TestConfiguration
 	protected static class AlternateEventFlowRegistryBeansConfiguration {
 
-		@SuppressWarnings("deprecation")
 		@Bean
 		public CreateServiceInstanceEventFlowRegistry createInstanceRegistry() {
-			return new CreateServiceInstanceEventFlowRegistry();
+			return new CreateServiceInstanceEventFlowRegistry(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 		}
 
-		@SuppressWarnings("deprecation")
 		@Bean
 		public UpdateServiceInstanceEventFlowRegistry updateInstanceRegistry() {
-			return new UpdateServiceInstanceEventFlowRegistry();
+			return new UpdateServiceInstanceEventFlowRegistry(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 		}
 
-		@SuppressWarnings("deprecation")
 		@Bean
 		public DeleteServiceInstanceEventFlowRegistry deleteInstanceRegistry() {
-			return new DeleteServiceInstanceEventFlowRegistry();
+			return new DeleteServiceInstanceEventFlowRegistry(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 		}
 
-		@SuppressWarnings("deprecation")
 		@Bean
 		public CreateServiceInstanceBindingEventFlowRegistry createInstanceBindingRegistry() {
-			return new CreateServiceInstanceBindingEventFlowRegistry();
+			return new CreateServiceInstanceBindingEventFlowRegistry(
+					new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 		}
 
-		@SuppressWarnings("deprecation")
 		@Bean
 		public DeleteServiceInstanceBindingEventFlowRegistry deleteInstanceBindingRegistry() {
-			return new DeleteServiceInstanceBindingEventFlowRegistry();
+			return new DeleteServiceInstanceBindingEventFlowRegistry(
+					new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 		}
 
 	}

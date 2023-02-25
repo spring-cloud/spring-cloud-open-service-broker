@@ -37,14 +37,6 @@ public class CreateServiceInstanceEventFlowRegistry extends EventFlowRegistry<Cr
 
 	/**
 	 * Construct a new {@link CreateServiceInstanceEventFlowRegistry}
-	 */
-	@Deprecated
-	public CreateServiceInstanceEventFlowRegistry() {
-		super();
-	}
-
-	/**
-	 * Construct a new {@link CreateServiceInstanceEventFlowRegistry}
 	 *
 	 * @param initializationFlows the initialization flows
 	 * @param completionFlows the completion flows

@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.service;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -31,7 +33,14 @@ import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOper
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationResponse;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
+import org.springframework.cloud.servicebroker.service.events.AsyncOperationServiceInstanceBindingEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.AsyncOperationServiceInstanceEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.CreateServiceInstanceBindingEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.CreateServiceInstanceEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.DeleteServiceInstanceBindingEventFlowRegistry;
+import org.springframework.cloud.servicebroker.service.events.DeleteServiceInstanceEventFlowRegistry;
 import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
+import org.springframework.cloud.servicebroker.service.events.UpdateServiceInstanceEventFlowRegistry;
 import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceCompletionFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceErrorFlow;
 import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceInitializationFlow;
@@ -47,7 +56,6 @@ import org.springframework.cloud.servicebroker.service.events.flows.UpdateServic
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SuppressWarnings("deprecation")
 class ServiceInstanceEventServiceTest {
 
 	private ServiceInstanceEventService serviceInstanceEventService;
@@ -58,7 +66,19 @@ class ServiceInstanceEventServiceTest {
 
 	@BeforeEach
 	void setUp() {
-		this.eventFlowRegistries = new EventFlowRegistries();
+		this.eventFlowRegistries = new EventFlowRegistries(
+				new CreateServiceInstanceEventFlowRegistry(new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),
+				new UpdateServiceInstanceEventFlowRegistry(new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),
+				new DeleteServiceInstanceEventFlowRegistry(new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),
+				new AsyncOperationServiceInstanceEventFlowRegistry(
+						new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),
+				new CreateServiceInstanceBindingEventFlowRegistry(
+						new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),
+				new DeleteServiceInstanceBindingEventFlowRegistry(
+						new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),
+				new AsyncOperationServiceInstanceBindingEventFlowRegistry(
+						new ArrayList<>(), new ArrayList<>(), new ArrayList<>())
+		);
 		this.serviceInstanceEventService = new ServiceInstanceEventService(
 				new TestServiceInstanceService(), eventFlowRegistries);
 		this.results = new EventFlowTestResults();

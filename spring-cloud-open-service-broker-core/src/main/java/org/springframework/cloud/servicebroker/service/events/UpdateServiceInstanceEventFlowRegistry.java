@@ -37,14 +37,6 @@ public class UpdateServiceInstanceEventFlowRegistry extends EventFlowRegistry<Up
 
 	/**
 	 * Construct a new {@link UpdateServiceInstanceEventFlowRegistry}
-	 */
-	@Deprecated
-	public UpdateServiceInstanceEventFlowRegistry() {
-		super();
-	}
-
-	/**
-	 * Construct a new {@link UpdateServiceInstanceEventFlowRegistry}
 	 *
 	 * @param initializationFlows the initialization flows
 	 * @param completionFlows the completion flows

@@ -37,14 +37,6 @@ public class AsyncOperationServiceInstanceBindingEventFlowRegistry
 		GetLastServiceBindingOperationRequest, GetLastServiceBindingOperationResponse> {
 
 	/**
-	 * Construct a new {@link AsyncOperationServiceInstanceBindingEventFlowRegistry}
-	 */
-	@Deprecated
-	public AsyncOperationServiceInstanceBindingEventFlowRegistry() {
-		super();
-	}
-
-	/**
 	 * @param initializationFlows the initialization flows
 	 * @param completionFlows the completion flows
 	 * @param errorFlows the error flows

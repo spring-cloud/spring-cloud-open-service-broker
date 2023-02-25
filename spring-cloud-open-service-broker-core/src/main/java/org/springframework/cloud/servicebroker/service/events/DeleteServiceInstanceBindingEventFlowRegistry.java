@@ -38,14 +38,6 @@ public class DeleteServiceInstanceBindingEventFlowRegistry
 
 	/**
 	 * Construct a new {@link DeleteServiceInstanceBindingEventFlowRegistry}
-	 */
-	@Deprecated
-	public DeleteServiceInstanceBindingEventFlowRegistry() {
-		super();
-	}
-
-	/**
-	 * Construct a new {@link DeleteServiceInstanceBindingEventFlowRegistry}
 	 *
 	 * @param initializationFlows the initialization flows
 	 * @param completionFlows the completion flows

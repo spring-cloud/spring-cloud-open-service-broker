@@ -38,14 +38,6 @@ public class CreateServiceInstanceBindingEventFlowRegistry
 
 	/**
 	 * Construct a new {@link CreateServiceInstanceBindingEventFlowRegistry}
-	 */
-	@Deprecated
-	public CreateServiceInstanceBindingEventFlowRegistry() {
-		super();
-	}
-
-	/**
-	 * Construct a new {@link CreateServiceInstanceBindingEventFlowRegistry}
 	 *
 	 * @param initializationFlows the initialization flows
 	 * @param completionFlows the completion flows
