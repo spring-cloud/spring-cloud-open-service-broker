@@ -85,6 +85,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	 * @param syslogDrainUrl the syslog drain URL
 	 * @param volumeMounts the set of volume mounts
 	 * @param endpoints the set of endpoints
+	 * @deprecated in favor of {@link #CreateServiceInstanceAppBindingResponse(boolean, String, BindingStatus, BindingMetadata, Map, String, List, List)}
 	 */
 	@Deprecated
 	public CreateServiceInstanceAppBindingResponse(boolean async, String operation, boolean bindingExisted,
@@ -341,6 +342,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		 *
 		 * @param bindingExisted {@literal true} to indicate that the binding exists, {@literal false} otherwise
 		 * @return the builder
+		 * @deprecated in favor of {@link #bindingStatus(BindingStatus)}
 		 */
 		@Deprecated
 		public CreateServiceInstanceAppBindingResponseBuilder bindingExisted(boolean bindingExisted) {

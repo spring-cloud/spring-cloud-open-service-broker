@@ -66,6 +66,7 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	 * @param operation description of the operation being performed
 	 * @param bindingExisted does the service binding already exist
 	 * @param metadata the service instance binding metadata
+	 * @deprecated in favor of {@link #CreateServiceInstanceBindingResponse(boolean, String, BindingStatus, BindingMetadata)}
 	 */
 	@Deprecated
 	protected CreateServiceInstanceBindingResponse(boolean async, String operation, boolean bindingExisted,
@@ -85,6 +86,7 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	 * requested service binding.
 	 *
 	 * @return the boolean value
+	 * @deprecated in favor of {@link #getBindingStatus()}
 	 */
 	@Deprecated
 	@JsonIgnore
@@ -194,6 +196,7 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 *
 		 * @param bindingExisted {@literal true} to indicate that the binding exists, {@literal false} otherwise
 		 * @return the builder
+		 * @deprecated in favor of {@link #bindingStatus(BindingStatus)}
 		 */
 		@Deprecated
 		public CreateServiceInstanceBindingResponseBuilder bindingExisted(boolean bindingExisted) {
