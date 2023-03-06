@@ -16,7 +16,7 @@
 
 plugins {
 	id 'org.asciidoctor.jvm.pdf'
-  id 'org.asciidoctor.jvm.convert' version '3.1.0'
+  id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
 description = "Spring Cloud Open Service Broker Documentation"
