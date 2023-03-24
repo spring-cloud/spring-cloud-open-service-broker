@@ -29,13 +29,11 @@ import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 class CreateServiceInstanceRouteBindingResponseTest {
 
-	@SuppressWarnings("deprecation")
 	@Test
 	void responseWithDefaultsIsBuilt() {
 		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
 				.build();
 
-		assertThat(response.getBindingStatus()).isNull();
 		assertThat(response.isBindingExisted()).isEqualTo(false);
 		assertThat(response.getMetadata()).isNull();
 		assertThat(response.getRouteServiceUrl()).isNull();
@@ -46,18 +44,16 @@ class CreateServiceInstanceRouteBindingResponseTest {
 		assertThat(json).hasNoPath("$.route_service_url");
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
 	void responseWithValuesIsBuilt() {
 		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
 				.metadata(BindingMetadata.builder()
 						.expiresAt("2019-12-31T23:59:59.0Z")
 						.build())
-				.bindingStatus(BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS)
+				.bindingExisted(true)
 				.routeServiceUrl("https://routes.app.local")
 				.build();
 
-		assertThat(response.getBindingStatus()).isEqualTo(BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS);
 		assertThat(response.isBindingExisted()).isEqualTo(true);
 		assertThat(response.getRouteServiceUrl()).isEqualTo("https://routes.app.local");
 
@@ -105,61 +101,6 @@ class CreateServiceInstanceRouteBindingResponseTest {
 		CreateServiceInstanceRouteBindingResponse.builder()
 				.operation(RandomString.make(10_000))
 				.build();
-	}
-
-	@SuppressWarnings("deprecation")
-	@Test
-	void responseWithBindingExistedFalseIsBuilt() {
-		CreateServiceInstanceAppBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
-				.bindingExisted(false)
-				.build();
-
-		assertThat(response.getBindingStatus()).isEqualTo(BindingStatus.NEW);
-		assertThat(response.isBindingExisted()).isEqualTo(false);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Test
-	void responseWithBindingExistingTrueIsBuilt() {
-		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
-				.bindingExisted(true)
-				.build();
-
-		assertThat(response.getBindingStatus()).isEqualTo(BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS);
-		assertThat(response.isBindingExisted()).isEqualTo(true);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Test
-	void responseWithNewBindingIsBuilt() {
-		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
-				.bindingStatus(BindingStatus.NEW)
-				.build();
-
-		assertThat(response.getBindingStatus()).isEqualTo(BindingStatus.NEW);
-		assertThat(response.isBindingExisted()).isEqualTo(false);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Test
-	void responseWithExistingBindingWithIdenticalParametersIsBuilt() {
-		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
-				.bindingStatus(BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS)
-				.build();
-
-		assertThat(response.getBindingStatus()).isEqualTo(BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS);
-		assertThat(response.isBindingExisted()).isEqualTo(true);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Test
-	void responseWithExistingBindingWithDifferentParametersIsBuilt() {
-		CreateServiceInstanceRouteBindingResponse response = CreateServiceInstanceRouteBindingResponse.builder()
-				.bindingStatus(BindingStatus.EXISTS_WITH_DIFFERENT_PARAMETERS)
-				.build();
-
-		assertThat(response.getBindingStatus()).isEqualTo(BindingStatus.EXISTS_WITH_DIFFERENT_PARAMETERS);
-		assertThat(response.isBindingExisted()).isEqualTo(true);
 	}
 
 }

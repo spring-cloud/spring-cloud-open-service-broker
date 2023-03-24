@@ -27,7 +27,6 @@ import reactor.core.publisher.Mono;
 
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
-import org.springframework.cloud.servicebroker.model.binding.BindingStatus;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
@@ -76,31 +75,6 @@ class ServiceInstanceBindingControllerResponseCodeTest {
 	}
 
 	@Test
-	void createServiceBindingWithNewBindingStatusResponseGivesExpectedStatus() {
-		CreateServiceInstanceBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
-				.bindingStatus(BindingStatus.NEW)
-				.build();
-		validateCreateServiceBindingResponseStatus(response, HttpStatus.CREATED);
-	}
-
-	@Test
-	void createServiceBindingWithIdenticalExistingBindingStatusResponseGivesExpectedStatus() {
-		CreateServiceInstanceBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
-				.bindingStatus(BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS)
-				.build();
-		validateCreateServiceBindingResponseStatus(response, HttpStatus.OK);
-	}
-
-	@Test
-	void createServiceBindingWithDifferentExistingBindingStatusResponseGivesExpectedStatus() {
-		CreateServiceInstanceBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
-				.bindingStatus(BindingStatus.EXISTS_WITH_DIFFERENT_PARAMETERS)
-				.build();
-		validateCreateServiceBindingResponseStatus(response, HttpStatus.CONFLICT);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Test
 	void createServiceBindingWithNoExistingBindingResponseGivesExpectedStatus() {
 		CreateServiceInstanceBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
 				.bindingExisted(false)
@@ -108,7 +82,6 @@ class ServiceInstanceBindingControllerResponseCodeTest {
 		validateCreateServiceBindingResponseStatus(response, HttpStatus.CREATED);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
 	void createServiceBindingWithExistingBindingResponseGivesExpectedStatus() {
 		CreateServiceInstanceBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()

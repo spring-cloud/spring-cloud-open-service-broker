@@ -36,13 +36,11 @@ import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
 
 class CreateServiceInstanceAppBindingResponseTest {
 
-	@SuppressWarnings("deprecation")
 	@Test
 	void responseWithDefaultsIsBuilt() {
 		CreateServiceInstanceAppBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
 				.build();
 
-		assertThat(response.getBindingStatus()).isNull();
 		assertThat(response.isBindingExisted()).isEqualTo(false);
 		assertThat(response.getMetadata()).isNull();
 		assertThat(response.getCredentials()).hasSize(0);
@@ -59,7 +57,6 @@ class CreateServiceInstanceAppBindingResponseTest {
 		assertThat(json).hasNoPath("$.endpoints");
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
 	void responseWithDiscreteValuesIsBuilt() {
 		Map<String, Object> credentials = new HashMap<>();
@@ -77,7 +74,7 @@ class CreateServiceInstanceAppBindingResponseTest {
 				.metadata(BindingMetadata.builder()
 						.expiresAt("2019-12-31T23:59:59.0Z")
 						.build())
-				.bindingStatus(BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS)
+				.bindingExisted(true)
 				.credentials("credential1", "value1")
 				.credentials("credential2", 2)
 				.credentials("credential3", true)
@@ -90,7 +87,6 @@ class CreateServiceInstanceAppBindingResponseTest {
 				.endpoints(endpoints)
 				.build();
 
-		assertThat(response.getBindingStatus()).isEqualTo(BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS);
 		assertThat(response.isBindingExisted()).isEqualTo(true);
 
 		assertThat(response.getCredentials()).hasSize(5);
@@ -188,61 +184,6 @@ class CreateServiceInstanceAppBindingResponseTest {
 		CreateServiceInstanceAppBindingResponse.builder()
 				.operation(RandomString.make(10_000))
 				.build();
-	}
-
-	@SuppressWarnings("deprecation")
-	@Test
-	void responseWithBindingExistedFalseIsBuilt() {
-		CreateServiceInstanceAppBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
-				.bindingExisted(false)
-				.build();
-
-		assertThat(response.getBindingStatus()).isEqualTo(BindingStatus.NEW);
-		assertThat(response.isBindingExisted()).isEqualTo(false);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Test
-	void responseWithBindingExistingTrueIsBuilt() {
-		CreateServiceInstanceAppBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
-				.bindingExisted(true)
-				.build();
-
-		assertThat(response.getBindingStatus()).isEqualTo(BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS);
-		assertThat(response.isBindingExisted()).isEqualTo(true);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Test
-	void responseWithNewBindingIsBuilt() {
-		CreateServiceInstanceAppBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
-				.bindingStatus(BindingStatus.NEW)
-				.build();
-
-		assertThat(response.getBindingStatus()).isEqualTo(BindingStatus.NEW);
-		assertThat(response.isBindingExisted()).isEqualTo(false);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Test
-	void responseWithExistingBindingWithIdenticalParametersIsBuilt() {
-		CreateServiceInstanceAppBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
-				.bindingStatus(BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS)
-				.build();
-
-		assertThat(response.getBindingStatus()).isEqualTo(BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS);
-		assertThat(response.isBindingExisted()).isEqualTo(true);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Test
-	void responseWithExistingBindingWithDifferentParametersIsBuilt() {
-		CreateServiceInstanceAppBindingResponse response = CreateServiceInstanceAppBindingResponse.builder()
-				.bindingStatus(BindingStatus.EXISTS_WITH_DIFFERENT_PARAMETERS)
-				.build();
-
-		assertThat(response.getBindingStatus()).isEqualTo(BindingStatus.EXISTS_WITH_DIFFERENT_PARAMETERS);
-		assertThat(response.isBindingExisted()).isEqualTo(true);
 	}
 
 }

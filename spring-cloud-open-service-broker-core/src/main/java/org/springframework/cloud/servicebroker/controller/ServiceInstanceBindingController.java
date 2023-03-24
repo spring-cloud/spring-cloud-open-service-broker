@@ -29,7 +29,6 @@ import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingD
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
-import org.springframework.cloud.servicebroker.model.binding.BindingStatus;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
@@ -148,11 +147,8 @@ public class ServiceInstanceBindingController extends BaseController {
 			if (response.isAsync()) {
 				status = HttpStatus.ACCEPTED;
 			}
-			else if (response.getBindingStatus() == BindingStatus.EXISTS_WITH_IDENTICAL_PARAMETERS) {
+			else if (response.isBindingExisted()) {
 				status = HttpStatus.OK;
-			}
-			else if (response.getBindingStatus() == BindingStatus.EXISTS_WITH_DIFFERENT_PARAMETERS) {
-				status = HttpStatus.CONFLICT;
 			}
 		}
 		return status;
