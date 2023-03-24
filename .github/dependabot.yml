@@ -33,6 +33,10 @@ updates:
         update-types:
           - "version-update:semver-major"
           - "version-update:semver-minor"
+      - dependency-name: "org.springframework.boot"
+        update-types:
+          - "version-update:semver-major"
+          - "version-update:semver-minor"
       - dependency-name: "org.springframework.cloud:*"
         update-types:
           - "version-update:semver-major"
@@ -49,6 +53,10 @@ updates:
     target-branch: "3.5.x"
     ignore:
       - dependency-name: "org.springframework.boot:*"
+        update-types:
+          - "version-update:semver-major"
+          - "version-update:semver-minor"
+      - dependency-name: "org.springframework.boot"
         update-types:
           - "version-update:semver-major"
           - "version-update:semver-minor"
