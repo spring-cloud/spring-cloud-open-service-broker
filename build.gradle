@@ -29,7 +29,7 @@ buildscript {
 		findbugsVersion = "3.0.1"
 
 		// Static Analysis
-		blockHoundVersion = "1.0.7.RELEASE"
+		blockHoundVersion = "1.0.8.RELEASE"
 		junitPlatformLauncherVersion = "1.7.0"
 	}
 }
