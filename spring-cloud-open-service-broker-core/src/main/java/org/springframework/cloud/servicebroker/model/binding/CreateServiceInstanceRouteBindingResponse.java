@@ -49,7 +49,6 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 	 * @param bindingExisted does the service binding already exist
 	 * @param metadata the service binding metadata
 	 * @param routeServiceUrl the route service URL
-	 * @deprecated in favor of {@link #CreateServiceInstanceRouteBindingResponse(boolean, String, BindingStatus, BindingMetadata, String)}
 	 */
 	public CreateServiceInstanceRouteBindingResponse(boolean async, String operation, boolean bindingExisted,
 			BindingMetadata metadata, String routeServiceUrl) {
@@ -152,7 +151,6 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 		 *
 		 * @param bindingExisted {@literal true} to indicate that the binding exists, {@literal false} otherwise
 		 * @return the builder
-		 * @deprecated in favor of {@link #bindingStatus(BindingStatus)}
 		 */
 		public CreateServiceInstanceRouteBindingResponseBuilder bindingExisted(boolean bindingExisted) {
 			this.bindingExisted = bindingExisted;

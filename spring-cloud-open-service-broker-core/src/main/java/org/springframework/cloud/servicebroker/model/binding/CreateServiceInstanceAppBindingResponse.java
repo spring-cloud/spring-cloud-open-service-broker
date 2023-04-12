@@ -64,7 +64,6 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	 * @param syslogDrainUrl the syslog drain URL
 	 * @param volumeMounts the set of volume mounts
 	 * @param endpoints the set of endpoints
-	 * @deprecated in favor of {@link #CreateServiceInstanceAppBindingResponse(boolean, String, BindingStatus, BindingMetadata, Map, String, List, List)}
 	 */
 	public CreateServiceInstanceAppBindingResponse(boolean async, String operation, boolean bindingExisted,
 			BindingMetadata metadata, Map<String, Object> credentials, String syslogDrainUrl,
@@ -302,7 +301,6 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		 *
 		 * @param bindingExisted {@literal true} to indicate that the binding exists, {@literal false} otherwise
 		 * @return the builder
-		 * @deprecated in favor of {@link #bindingStatus(BindingStatus)}
 		 */
 		public CreateServiceInstanceAppBindingResponseBuilder bindingExisted(boolean bindingExisted) {
 			this.bindingExisted = bindingExisted;
