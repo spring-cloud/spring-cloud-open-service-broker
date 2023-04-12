@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingExistsException;
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
 
@@ -49,7 +50,7 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	 *
 	 * @param async is the operation asynchronous
 	 * @param operation description of the operation being performed
-	 * @param bindingExisted does the service binding already exist
+	 * @param bindingExisted does the service binding already exist with identical parameters
 	 * @param metadata the service instance binding metadata
 	 */
 	protected CreateServiceInstanceBindingResponse(boolean async, String operation, boolean bindingExisted,
@@ -61,7 +62,8 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 
 	/**
 	 * Get the boolean value indicating whether the service binding already exists with the same parameters as the
-	 * requested service binding.
+	 * requested service binding. If the request is for the same binding id, but with different parameters, the
+	 * implementor should throw a {@link ServiceInstanceBindingExistsException} instead.
 	 *
 	 * @return the boolean value
 	 */
@@ -92,7 +94,7 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		CreateServiceInstanceBindingResponse that = (CreateServiceInstanceBindingResponse) o;
 		return that.canEqual(this) &&
 				bindingExisted == that.bindingExisted &&
-				Objects.equals(metadata,that.metadata);
+				Objects.equals(metadata, that.metadata);
 	}
 
 	@Override
@@ -133,7 +135,8 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 * Set a boolean value indicating whether the service instance binding already exists with the same parameters
 		 * as the requested service instance binding. A {@literal true} value indicates a service instance binding
 		 * exists and no new resources were created by the service broker, <code>false</code> indicates that new
-		 * resources were created.
+		 * resources were created. If the request is for the same binding id, but with different parameters, the
+		 * implementor should throw a {@link ServiceInstanceBindingExistsException} instead.
 		 *
 		 * <p>
 		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
