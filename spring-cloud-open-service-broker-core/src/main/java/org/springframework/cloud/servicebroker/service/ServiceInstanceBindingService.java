@@ -45,7 +45,11 @@ import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceB
 public interface ServiceInstanceBindingService {
 
 	/**
-	 * Create a new binding to a service instance.
+	 * Create a new binding to a service instance. In the case of a request to create a new service instance binding
+	 * with an existing binding id, the implementor should throw an {@link ServiceInstanceBindingExistsException},
+	 * which will return a {@literal HTTP 409}. If the request includes identical parameters as an existing binding,
+	 * then the implementor should set {@link CreateServiceInstanceBindingResponse#isBindingExisted()}, which will
+	 * result in an {@literal HTTP 200} with the populated response body.
 	 *
 	 * @param request containing the details of the request
 	 * @return a {@link CreateServiceInstanceBindingResponse} on successful processing of the request
@@ -55,8 +59,10 @@ public interface ServiceInstanceBindingService {
 	 * @throws ServiceBrokerBindingRequiresAppException if the broker only supports application binding but an app
 	 * 		GUID is not provided in the request
 	 * @throws ServiceBrokerAsyncRequiredException if the broker requires asynchronous processing of the request
-	 * @throws ServiceBrokerCreateOperationInProgressException if a an operation is in progress for the service
+	 * @throws ServiceBrokerCreateOperationInProgressException if an operation is in progress for the service
 	 * 		binding
+	 * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#response-6">
+	 * 		https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#response-6</a>
 	 */
 	default Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(
 			CreateServiceInstanceBindingRequest request) {
