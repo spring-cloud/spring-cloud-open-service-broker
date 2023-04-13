@@ -338,7 +338,9 @@ public abstract class ServiceBrokerExceptionHandler {
 	 * @return the error message
 	 */
 	protected ErrorMessage getErrorResponse(ServiceBrokerException ex) {
-		getLog().debug(ex.getMessage(), ex);
+		if (getLog().isDebugEnabled()) {
+			getLog().debug(ex.getMessage(), ex);
+		}
 		return ex.getErrorMessage();
 	}
 
@@ -349,7 +351,9 @@ public abstract class ServiceBrokerExceptionHandler {
 	 * @return the message
 	 */
 	protected OperationInProgressMessage getOperationInProgressMessage(ServiceBrokerOperationInProgressException ex) {
-		getLog().debug(ex.getMessage(), ex);
+		if (getLog().isDebugEnabled()) {
+			getLog().debug(ex.getMessage(), ex);
+		}
 		return ex.getOperationInProgressMessage();
 	}
 

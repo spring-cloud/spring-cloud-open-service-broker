@@ -60,10 +60,18 @@ public class CatalogController extends BaseController {
 	public Mono<ResponseEntity<Catalog>> getCatalog(@RequestHeader HttpHeaders httpHeaders) {
 		return catalogService.getResponseEntityCatalog(httpHeaders)
 				.switchIfEmpty(catalogService.getCatalog()
-						.doOnRequest(v -> LOG.info("Retrieving catalog"))
+						.doOnRequest(v -> {
+							if (LOG.isInfoEnabled()) {
+								LOG.info("Retrieving catalog");
+							}
+						})
 						.doOnSuccess(catalog -> {
-							LOG.info("Success retrieving catalog");
-							LOG.debug("catalog={}", catalog);
+							if (LOG.isInfoEnabled()) {
+								LOG.info("Retrieving catalog success");
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug("catalog={}", catalog);
+							}
 						})
 						.doOnError(e -> LOG.error("Error retrieving catalog. error=" + e.getMessage(), e))
 						.flatMap(catalog -> Mono.just(ResponseEntity
