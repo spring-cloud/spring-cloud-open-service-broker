@@ -21,6 +21,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractServiceInstanceBindingControllerIntegrationTest;
 import org.springframework.cloud.servicebroker.controller.ServiceBrokerWebFluxExceptionHandler;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerCreateOperationInProgressException;
@@ -53,6 +55,7 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 
 @ExtendWith(MockitoExtension.class)
+@ExtendWith(OutputCaptureExtension.class)
 class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceInstanceBindingControllerIntegrationTest {
 
 	private WebTestClient client;
@@ -65,7 +68,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	void createBindingToAppWithoutAsyncAndHeadersSucceeds() throws Exception {
+	void createBindingToAppWithoutAsyncAndHeadersSucceeds(CapturedOutput output) throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(CreateServiceInstanceAppBindingResponse.builder()
@@ -83,6 +86,11 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 
 		CreateServiceInstanceBindingRequest actualRequest = verifyCreateBinding();
 		assertHeaderValuesSet(actualRequest);
+
+		assertThat(output.getOut()).contains("Creating service instance binding: serviceInstanceId="
+				+ SERVICE_INSTANCE_ID + ", bindingId=" + SERVICE_INSTANCE_BINDING_ID);
+		assertThat(output.getOut()).contains("Creating service instance binding succeeded: serviceInstanceId="
+				+ SERVICE_INSTANCE_ID + ", bindingId=" + SERVICE_INSTANCE_BINDING_ID);
 	}
 
 	@Test
@@ -343,7 +351,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	void getBindingToAppSucceeds() throws Exception {
+	void getBindingToAppSucceeds(CapturedOutput output) throws Exception {
 		setupServiceInstanceBindingService(GetServiceInstanceAppBindingResponse.builder()
 				.build());
 
@@ -356,6 +364,11 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 
 		GetServiceInstanceBindingRequest actualRequest = verifyGetBinding();
 		assertHeaderValuesSet(actualRequest);
+
+		assertThat(output.getOut()).contains("Getting service instance binding: serviceInstanceId="
+				+ SERVICE_INSTANCE_ID + ", bindingId=" + SERVICE_INSTANCE_BINDING_ID);
+		assertThat(output.getOut()).contains("Getting service instance binding succeeded: serviceInstanceId="
+				+ SERVICE_INSTANCE_ID + ", bindingId=" + SERVICE_INSTANCE_BINDING_ID);
 	}
 
 	@Test
@@ -402,7 +415,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	void deleteBindingWithoutAsyncAndHeadersSucceeds() throws Exception {
+	void deleteBindingWithoutAsyncAndHeadersSucceeds(CapturedOutput output) throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceBindingService(DeleteServiceInstanceBindingResponse.builder()
@@ -424,6 +437,11 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 		DeleteServiceInstanceBindingRequest actualRequest = verifyDeleteBinding();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(false);
 		assertHeaderValuesSet(actualRequest);
+
+		assertThat(output.getOut()).contains("Deleting service instance binding: serviceInstanceId="
+				+ SERVICE_INSTANCE_ID + ", bindingId=" + SERVICE_INSTANCE_BINDING_ID);
+		assertThat(output.getOut()).contains("Deleting service instance binding succeeded: serviceInstanceId="
+				+ SERVICE_INSTANCE_ID + ", bindingId=" + SERVICE_INSTANCE_BINDING_ID);
 	}
 
 	@Test
@@ -570,7 +588,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 	}
 
 	@Test
-	void lastOperationHasSucceededStatus() throws Exception {
+	void lastOperationHasSucceededStatus(CapturedOutput output) throws Exception {
 		setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse.builder()
 				.operationState(OperationState.SUCCEEDED)
 				.description("all good")
@@ -591,6 +609,11 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 
 		GetLastServiceBindingOperationRequest actualRequest = verifyLastOperation();
 		assertHeaderValuesSet(actualRequest);
+
+		assertThat(output.getOut()).contains("Getting last operation for service instance binding: serviceInstanceId="
+				+ SERVICE_INSTANCE_ID + ", bindingId=" + SERVICE_INSTANCE_BINDING_ID);
+		assertThat(output.getOut()).contains("Getting last operation for service instance binding succeeded: " +
+				"serviceInstanceId=" + SERVICE_INSTANCE_ID + ", bindingId=" + SERVICE_INSTANCE_BINDING_ID);
 	}
 
 	@Test

@@ -25,6 +25,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractServiceInstanceControllerIntegrationTest;
 import org.springframework.cloud.servicebroker.controller.ServiceBrokerWebFluxExceptionHandler;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException;
@@ -61,6 +63,7 @@ import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest
 import static org.springframework.cloud.servicebroker.model.ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER;
 
 @ExtendWith(MockitoExtension.class)
+@ExtendWith(OutputCaptureExtension.class)
 class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceControllerIntegrationTest {
 
 	private WebTestClient client;
@@ -73,7 +76,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	}
 
 	@Test
-	void createServiceInstanceWithAsyncAndHeadersSucceeds() throws Exception {
+	void createServiceInstanceWithAsyncAndHeadersSucceeds(CapturedOutput output) throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(CreateServiceInstanceResponse.builder()
@@ -92,6 +95,9 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 		CreateServiceInstanceRequest actualRequest = verifyCreateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
 		assertHeaderValuesSet(actualRequest);
+
+		assertThat(output.getOut()).contains("Creating service instance: serviceInstanceId=" + SERVICE_INSTANCE_ID);
+		assertThat(output.getOut()).contains("Creating service instance succeeded: serviceInstanceId=" + SERVICE_INSTANCE_ID);
 	}
 
 	@Test
@@ -464,7 +470,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	}
 
 	@Test
-	void getServiceInstanceSucceeds() throws Exception {
+	void getServiceInstanceSucceeds(CapturedOutput output) throws Exception {
 		setupServiceInstanceService(GetServiceInstanceResponse.builder()
 				.build());
 
@@ -477,6 +483,9 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 
 		GetServiceInstanceRequest actualRequest = verifyGetServiceInstance();
 		assertHeaderValuesSet(actualRequest);
+
+		assertThat(output.getOut()).contains("Getting service instance: serviceInstanceId=" + SERVICE_INSTANCE_ID);
+		assertThat(output.getOut()).contains("Getting service instance succeeded: serviceInstanceId=" + SERVICE_INSTANCE_ID);
 	}
 
 	@Test
@@ -510,7 +519,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	}
 
 	@Test
-	void deleteServiceInstanceWithAsyncAndHeadersSucceeds() throws Exception {
+	void deleteServiceInstanceWithAsyncAndHeadersSucceeds(CapturedOutput output) throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(DeleteServiceInstanceResponse.builder()
@@ -530,6 +539,9 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 		DeleteServiceInstanceRequest actualRequest = verifyDeleteServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
 		assertHeaderValuesSet(actualRequest);
+
+		assertThat(output.getOut()).contains("Deleting service instance: serviceInstanceId=" + SERVICE_INSTANCE_ID);
+		assertThat(output.getOut()).contains("Deleting service instance succeeded: serviceInstanceId=" + SERVICE_INSTANCE_ID);
 	}
 
 	@Test
@@ -632,7 +644,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	}
 
 	@Test
-	void updateServiceInstanceWithAsyncAndHeadersSucceeds() throws Exception {
+	void updateServiceInstanceWithAsyncAndHeadersSucceeds(CapturedOutput output) throws Exception {
 		setupCatalogService();
 
 		setupServiceInstanceService(UpdateServiceInstanceResponse.builder()
@@ -656,6 +668,9 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 		UpdateServiceInstanceRequest actualRequest = verifyUpdateServiceInstance();
 		assertThat(actualRequest.isAsyncAccepted()).isEqualTo(true);
 		assertHeaderValuesSet(actualRequest);
+
+		assertThat(output.getOut()).contains("Updating service instance: serviceInstanceId=" + SERVICE_INSTANCE_ID);
+		assertThat(output.getOut()).contains("Updating service instance succeeded: serviceInstanceId=" + SERVICE_INSTANCE_ID);
 	}
 
 	@Test
@@ -818,7 +833,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 	}
 
 	@Test
-	void lastOperationHasSucceededStatus() throws Exception {
+	void lastOperationHasSucceededStatus(CapturedOutput output) throws Exception {
 		setupServiceInstanceService(GetLastServiceOperationResponse.builder()
 				.operationState(OperationState.SUCCEEDED)
 				.description("all good")
@@ -835,6 +850,10 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 
 		GetLastServiceOperationRequest actualRequest = verifyLastOperation();
 		assertHeaderValuesSet(actualRequest);
+
+		assertThat(output.getOut()).contains("Getting last operation for service instance: serviceInstanceId=" + SERVICE_INSTANCE_ID);
+		assertThat(output.getOut()).contains("Getting last operation for service instance succeeded: " +
+				"serviceInstanceId=" + SERVICE_INSTANCE_ID);
 	}
 
 	@Test

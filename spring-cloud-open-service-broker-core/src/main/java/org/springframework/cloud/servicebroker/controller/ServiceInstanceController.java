@@ -61,6 +61,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#provisioning">Open Service
  * 		Broker API specification</a>
  */
+@SuppressWarnings("PMD.CognitiveComplexity")
 @ServiceBrokerRestController
 public class ServiceInstanceController extends BaseController {
 
@@ -70,9 +71,13 @@ public class ServiceInstanceController extends BaseController {
 
 	private static final String PATH_MAPPING = "/v2/service_instances/{instanceId}";
 
+	private static final String INFO_REQUEST = "{} service instance: serviceInstanceId={}";
+
+	private static final String INFO_RESPONSE = "{} service instance succeeded: serviceInstanceId={}";
+
 	private static final String DEBUG_REQUEST = "request={}";
 
-	private static final String DEBUG_RESPONSE = "serviceInstanceId={}, response={}";
+	private static final String DEBUG_RESPONSE = "response={}";
 
 	private final ServiceInstanceService service;
 
@@ -125,12 +130,20 @@ public class ServiceInstanceController extends BaseController {
 				.cast(CreateServiceInstanceRequest.class)
 				.flatMap(req -> service.createServiceInstance(req)
 						.doOnRequest(v -> {
-							LOG.info("Creating a service instance");
-							LOG.debug(DEBUG_REQUEST, req);
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_REQUEST, "Creating", req.getServiceInstanceId());
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_REQUEST, req);
+							}
 						})
 						.doOnSuccess(response -> {
-							LOG.info("Creating a service instance succeeded");
-							LOG.debug(DEBUG_RESPONSE, serviceInstanceId, response);
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_RESPONSE, "Creating", serviceInstanceId);
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_RESPONSE, response);
+							}
 						})
 						.doOnError(e -> LOG.error("Error creating service instance. error=" + e.getMessage(), e)))
 				.map(response -> new ResponseEntity<>(response, getCreateResponseCode(response)))
@@ -182,12 +195,20 @@ public class ServiceInstanceController extends BaseController {
 				.build())
 				.flatMap(request -> service.getServiceInstance(request)
 						.doOnRequest(v -> {
-							LOG.info("Getting service instance");
-							LOG.debug(DEBUG_REQUEST, request);
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_REQUEST, "Getting", request.getServiceInstanceId());
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_REQUEST, request);
+							}
 						})
 						.doOnSuccess(response -> {
-							LOG.info("Getting service instance succeeded");
-							LOG.debug(DEBUG_RESPONSE, serviceInstanceId, response);
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_RESPONSE, "Getting", serviceInstanceId);
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_RESPONSE, response);
+							}
 						})
 						.doOnError(e -> LOG.error("Error getting service instance. error=" + e.getMessage(), e)))
 				.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
@@ -237,12 +258,20 @@ public class ServiceInstanceController extends BaseController {
 				.build())
 				.flatMap(request -> service.getLastOperation(request)
 						.doOnRequest(v -> {
-							LOG.info("Getting service instance last operation");
-							LOG.debug(DEBUG_REQUEST, request);
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_REQUEST, "Getting last operation for", request.getServiceInstanceId());
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_REQUEST, request);
+							}
 						})
 						.doOnSuccess(response -> {
-							LOG.info("Getting service instance last operation succeeded");
-							LOG.debug(DEBUG_RESPONSE, serviceInstanceId, response);
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_RESPONSE, "Getting last operation for", serviceInstanceId);
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_RESPONSE, response);
+							}
 						})
 						.doOnError(e -> LOG.error("Error getting service instance last operation. error=" +
 								e.getMessage(), e)))
@@ -304,12 +333,20 @@ public class ServiceInstanceController extends BaseController {
 								.build()))
 				.flatMap(request -> service.deleteServiceInstance(request)
 						.doOnRequest(v -> {
-							LOG.info("Deleting a service instance");
-							LOG.debug(DEBUG_REQUEST, request);
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_REQUEST, "Deleting", request.getServiceInstanceId());
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_REQUEST, request);
+							}
 						})
 						.doOnSuccess(response -> {
-							LOG.info("Deleting a service instance succeeded");
-							LOG.debug(DEBUG_RESPONSE, serviceInstanceId, response);
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_RESPONSE, "Deleting", serviceInstanceId);
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_RESPONSE, response);
+							}
 						})
 						.doOnError(e -> LOG.error("Error deleting a service instance. error=" + e.getMessage(), e)))
 				.map(response -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
@@ -363,12 +400,20 @@ public class ServiceInstanceController extends BaseController {
 				.cast(UpdateServiceInstanceRequest.class)
 				.flatMap(req -> service.updateServiceInstance(req)
 						.doOnRequest(v -> {
-							LOG.info("Updating service instance");
-							LOG.debug(DEBUG_REQUEST, request);
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_REQUEST, "Updating", req.getServiceInstanceId());
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_REQUEST, req);
+							}
 						})
 						.doOnSuccess(response -> {
-							LOG.info("Updating service instance succeeded");
-							LOG.debug(DEBUG_RESPONSE, serviceInstanceId, response);
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_RESPONSE, "Updating", serviceInstanceId);
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_RESPONSE, response);
+							}
 						})
 						.doOnError(e -> LOG.error("Error updating service instance. error=" + e.getMessage(), e)))
 				.map(response -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
