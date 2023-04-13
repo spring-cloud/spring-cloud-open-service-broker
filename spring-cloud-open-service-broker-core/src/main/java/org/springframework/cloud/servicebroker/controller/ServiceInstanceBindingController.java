@@ -60,6 +60,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#binding">Open Service Broker
  * 		API specification</a>
  */
+@SuppressWarnings("PMD.CognitiveComplexity")
 @ServiceBrokerRestController
 public class ServiceInstanceBindingController extends BaseController {
 
@@ -69,7 +70,13 @@ public class ServiceInstanceBindingController extends BaseController {
 
 	private static final String PATH_MAPPING = "/v2/service_instances/{instanceId}/service_bindings/{bindingId}";
 
+	private static final String INFO_REQUEST = "{} service instance binding: serviceInstanceId={}, bindingId={}";
+
+	private static final String INFO_RESPONSE = "{} service instance binding succeeded: serviceInstanceId={}, " +
+			"bindingId={}";
 	private static final String DEBUG_REQUEST = "request={}";
+
+	private static final String DEBUG_RESPONSE = "response={}";
 
 	private final ServiceInstanceBindingService service;
 
@@ -127,13 +134,20 @@ public class ServiceInstanceBindingController extends BaseController {
 				.cast(CreateServiceInstanceBindingRequest.class)
 				.flatMap(req -> service.createServiceInstanceBinding(req)
 						.doOnRequest(v -> {
-							LOG.info("Creating a service instance binding");
-							LOG.debug(DEBUG_REQUEST, req);
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_REQUEST, "Creating", req.getServiceInstanceId(), req.getBindingId());
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_REQUEST, req);
+							}
 						})
 						.doOnSuccess(response -> {
-							LOG.info("Creating a service instance binding succeeded");
-							LOG.debug("serviceInstanceId={}, bindingId={}, response={}", serviceInstanceId, bindingId,
-									response);
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_RESPONSE, "Creating", serviceInstanceId, bindingId);
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_RESPONSE, response);
+							}
 						})
 						.doOnError(e -> LOG.error("Error creating service instance binding. error=" +
 								e.getMessage(), e)))
@@ -189,12 +203,20 @@ public class ServiceInstanceBindingController extends BaseController {
 				.build())
 				.flatMap(req -> service.getServiceInstanceBinding(req)
 						.doOnRequest(v -> {
-							LOG.info("Getting a service instance binding");
-							LOG.debug(DEBUG_REQUEST, req);
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_REQUEST, "Getting", req.getServiceInstanceId(), req.getBindingId());
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_REQUEST, req);
+							}
 						})
 						.doOnSuccess(response -> {
-							LOG.info("Getting a service instance binding succeeded");
-							LOG.debug("bindingId={}", bindingId);
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_RESPONSE, "Getting", serviceInstanceId, bindingId);
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_RESPONSE, response);
+							}
 						})
 						.doOnError(e -> LOG.error("Error getting service instance binding. error=" +
 								e.getMessage(), e)))
@@ -249,12 +271,21 @@ public class ServiceInstanceBindingController extends BaseController {
 				.build())
 				.flatMap(request -> service.getLastOperation(request)
 						.doOnRequest(v -> {
-							LOG.info("Getting service instance binding last operation");
-							LOG.debug(DEBUG_REQUEST, request);
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_REQUEST, "Getting last operation for", request.getServiceInstanceId(),
+										request.getBindingId());
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_REQUEST, request);
+							}
 						})
-						.doOnSuccess(aVoid -> {
-							LOG.info("Getting service instance binding last operation succeeded");
-							LOG.debug("serviceInstanceId={}, bindingId={}", serviceInstanceId, bindingId);
+						.doOnSuccess(response -> {
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_RESPONSE, "Getting last operation for", serviceInstanceId, bindingId);
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_RESPONSE, response);
+							}
 						})
 						.doOnError(e -> LOG.error("Error getting service instance binding last operation. error=" +
 								e.getMessage(), e)))
@@ -310,12 +341,20 @@ public class ServiceInstanceBindingController extends BaseController {
 								.build()))
 				.flatMap(req -> service.deleteServiceInstanceBinding(req)
 						.doOnRequest(v -> {
-							LOG.info("Deleting a service instance binding");
-							LOG.debug(DEBUG_REQUEST, req);
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_REQUEST, "Deleting", req.getServiceInstanceId(), req.getBindingId());
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_REQUEST, req);
+							}
 						})
-						.doOnSuccess(aVoid -> {
-							LOG.info("Deleting a service instance binding succeeded");
-							LOG.debug("bindingId={}", bindingId);
+						.doOnSuccess(response -> {
+							if (LOG.isInfoEnabled()) {
+								LOG.info(INFO_RESPONSE, "Deleting", serviceInstanceId, bindingId);
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(DEBUG_RESPONSE, response);
+							}
 						})
 						.doOnError(e -> LOG.error("Error deleting a service instance binding. error=" +
 								e.getMessage(), e)))
