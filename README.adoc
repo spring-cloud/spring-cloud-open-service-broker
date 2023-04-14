@@ -6,7 +6,7 @@ Spring Cloud Open Service Broker is a framework for building https://projects.sp
 
 == Version Compatibility
 
-The following table describes the version compatibility matrix for the various releases of Spring Cloud Open Service Broker. Please note that Spring Boot versions 2.5 and older have reached https://spring.io/projects/spring-boot#support[end of support]. We recommend upgrading to a version of Spring Boot Open Service Broker that supports a newer version.
+The following table describes the version compatibility matrix for the various releases of Spring Cloud Open Service Broker. Please note that certain Spring Boot versions have reached https://spring.io/projects/spring-boot#support[end of support]. We recommend upgrading to a version of Spring Cloud Open Service Broker that supports a newer version of Spring Boot.
 
 [%header,cols=5*]
 |===
