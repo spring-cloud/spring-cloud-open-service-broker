@@ -40,7 +40,7 @@ See the https://spring.io/projects/spring-cloud-open-service-broker/[project sit
 === Gradle Dependencies
 
 ```
-implementation("org.springframework.cloud:spring-cloud-starter-open-service-broker:3.4.1")
+implementation("org.springframework.cloud:spring-cloud-starter-open-service-broker:4.0.0")
 ```
 
 === Maven Dependencies:
@@ -49,11 +49,9 @@ implementation("org.springframework.cloud:spring-cloud-starter-open-service-brok
 <dependency>
   <groupId>org.springframework.cloud</groupId>
   <artifactId>spring-cloud-starter-open-service-broker</artifactId>
-  <version>3.5.3</version>
+  <version>4.0.0</version>
 </dependency>
 ```
-
-See the https://github.com/spring-cloud/spring-cloud-open-service-broker/wiki/2.0-Migration-Guide[migration guide] if you are migrating a project from `Spring Cloud - Cloud Foundry Service Broker` 1.x to `Spring Cloud Open Service Broker` 2.x.
 
 == Build
 
