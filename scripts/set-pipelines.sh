@@ -3,7 +3,6 @@
 set -euo pipefail
 
 readonly FLY_TARGET="scosb"
-readonly GITHUB_REPO="https://github.com/spring-cloud/spring-cloud-open-service-broker"
 
 set_pipeline() {
 	local pipeline_name pipeline_definition branch ci_image_tag

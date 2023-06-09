@@ -18,13 +18,25 @@ aliases:
 jobs:
   - name: build-ci-images
     plan:
+      - get: weekly
+        trigger: true
       - get: ci-images-git-repo
         trigger: true
-      - put: scosb-ci-image
+      - task: build-image
+        privileged: true
+        tags: [ btrfs ]
+        file: ci-images-git-repo/ci/tasks/build-image.yml
+        input_mapping:
+          source: ci-images-git-repo
         params:
-          build: ci-images-git-repo/ci/images/scosb-ci
+          CONTEXT: source/ci/images/scosb-ci
+      - put: scosb-ci-image
+        inputs: detect
+        params:
+          image: image/image.tar
         get_params:
-          skip_download: "true"
+          skip_download: true
+    on_failure: *slack-failure-notification
 
   - name: build
     serial: true
@@ -172,6 +184,17 @@ resource_types:
       tag: latest
 
 resources:
+  - name: weekly
+    type: time
+    icon: calendar-clock
+    source:
+      start: 12:00 AM
+      stop: 1:00 AM
+      days:
+        - Monday
+      location: America/New_York
+      initial_version: true
+
   - name: git-repo
     type: git
     source:
@@ -198,7 +221,7 @@ resources:
       paths: ["ci/images/*"]
 
   - name: scosb-ci-image
-    type: docker-image
+    type: registry-image
     source:
       repository: ((corporate-harbor-registry))/((dockerhub-organization))/scosb-ci
       username: ((corporate-harbor-robot-account.username))
