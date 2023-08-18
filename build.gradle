@@ -25,7 +25,7 @@ buildscript {
 		// Test Dependencies
 		springCloudContractVersion = "4.0.4"
 		javaHamcrestVersion = "2.0.0.0"
-		equalsVerifierVersion = "3.15"
+		equalsVerifierVersion = "3.15.1"
 		findbugsVersion = "3.0.1"
 
 		// Static Analysis
