@@ -34,7 +34,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
 	implementation 'io.projectreactor:reactor-core'
-	asciidoctorExtensions "io.spring.asciidoctor.backends:spring-asciidoctor-backends:0.0.6"
+	asciidoctorExtensions "io.spring.asciidoctor.backends:spring-asciidoctor-backends:0.0.7"
 }
 
 javadoc {
