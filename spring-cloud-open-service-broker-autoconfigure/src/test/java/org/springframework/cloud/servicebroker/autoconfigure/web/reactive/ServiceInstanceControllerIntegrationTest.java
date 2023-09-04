@@ -504,7 +504,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.header(ORIGINATING_IDENTITY_HEADER, buildOriginatingIdentityHeader())
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
-				.expectStatus().isNotFound()
+				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
 				.expectBody()
 				.consumeWith(result -> assertDescriptionContains(result, "operation=task_10"));
 	}

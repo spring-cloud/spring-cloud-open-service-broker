@@ -268,7 +268,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
 				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectStatus().isEqualTo(HttpStatus.NOT_FOUND)
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> assertDescriptionContains(result, String.format("id=%s", SERVICE_INSTANCE_ID)));
@@ -398,7 +398,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 		client.get().uri(buildCreateUrl())
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()
-				.expectStatus().isNotFound();
+				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@Test
@@ -505,7 +505,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 		client.delete().uri(buildDeleteUrl())
 				.exchange()
 				.expectStatus().is4xxClientError()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+				.expectStatus().isEqualTo(HttpStatus.NOT_FOUND)
 				.expectBody()
 				.jsonPath("$.description").isNotEmpty()
 				.consumeWith(result -> assertDescriptionContains(result, SERVICE_INSTANCE_ID));
