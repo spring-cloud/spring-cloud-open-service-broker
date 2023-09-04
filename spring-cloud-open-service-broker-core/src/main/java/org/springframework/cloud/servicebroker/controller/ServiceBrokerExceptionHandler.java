@@ -96,7 +96,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	 * @return an error message
 	 */
 	@ExceptionHandler(ServiceInstanceDoesNotExistException.class)
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ErrorMessage handleException(ServiceInstanceDoesNotExistException ex) {
 		return getErrorResponse(ex);
 	}
@@ -168,7 +168,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	 * @return an error message
 	 */
 	@ExceptionHandler(ServiceBrokerOperationInProgressException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public ErrorMessage handleException(ServiceBrokerOperationInProgressException ex) {
 		return getErrorResponse(ex);
 	}
