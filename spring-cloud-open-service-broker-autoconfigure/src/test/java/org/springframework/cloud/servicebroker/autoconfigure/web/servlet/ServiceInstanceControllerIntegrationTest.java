@@ -561,7 +561,7 @@ class ServiceInstanceControllerIntegrationTest extends AbstractServiceInstanceCo
 				.andReturn();
 
 		mockMvc.perform(asyncDispatch(mvcResult))
-				.andExpect(status().isNotFound())
+				.andExpect(status().isUnprocessableEntity())
 				.andExpect(jsonPath("$.description", containsString("task_10")));
 	}
 

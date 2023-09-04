@@ -291,7 +291,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 				.andReturn();
 
 		mockMvc.perform(asyncDispatch(mvcResult))
-				.andExpect(status().isUnprocessableEntity())
+				.andExpect(status().isNotFound())
 				.andExpect(jsonPath("$.description", containsString(SERVICE_INSTANCE_ID)));
 	}
 
@@ -430,7 +430,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 				.andReturn();
 
 		mockMvc.perform(asyncDispatch(mvcResult))
-				.andExpect(status().isNotFound());
+				.andExpect(status().isUnprocessableEntity());
 	}
 
 	@Test
@@ -563,7 +563,7 @@ class ServiceInstanceBindingControllerIntegrationTest extends AbstractServiceIns
 				.andReturn();
 
 		mockMvc.perform(asyncDispatch(mvcResult))
-				.andExpect(status().isUnprocessableEntity())
+				.andExpect(status().isNotFound())
 				.andExpect(jsonPath("$.description", containsString(SERVICE_INSTANCE_ID)));
 	}
 
