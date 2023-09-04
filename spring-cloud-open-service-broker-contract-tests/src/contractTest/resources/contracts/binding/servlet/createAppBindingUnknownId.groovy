@@ -26,7 +26,7 @@ org.springframework.cloud.contract.spec.Contract.make {
         }
     }
     response {
-        status UNPROCESSABLE_ENTITY()
+        status NOT_FOUND()
         body([
                 "description": $(regex('.+id=service-instance-four-id'))
         ])

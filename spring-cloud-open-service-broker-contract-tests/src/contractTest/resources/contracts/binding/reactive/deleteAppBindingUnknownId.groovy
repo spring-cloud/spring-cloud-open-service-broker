@@ -22,7 +22,7 @@ org.springframework.cloud.contract.spec.Contract.make {
         url '/v2/service_instances/service-instance-four-id/service_bindings/service-binding-one-id?service_id=service-one-id&plan_id=plan-one-id&accepts_incomplete=true'
     }
     response {
-        status UNPROCESSABLE_ENTITY()
+        status NOT_FOUND()
         body([
                 "description": $(regex('.*id=service-instance-four-id'))
         ])

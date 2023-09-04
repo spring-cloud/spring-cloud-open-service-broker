@@ -25,7 +25,7 @@ org.springframework.cloud.contract.spec.Contract.make {
         }
     }
     response {
-        status NOT_FOUND()
+        status UNPROCESSABLE_ENTITY()
         body([
                 "description": $(regex('.*=task_10'))
         ])

@@ -22,7 +22,7 @@ org.springframework.cloud.contract.spec.Contract.make {
         url '/v2/service_instances/service-instance-two-id'
     }
     response {
-        status NOT_FOUND()
+        status UNPROCESSABLE_ENTITY()
         body([
                 "description": $(regex('.*=task_10'))
         ])
