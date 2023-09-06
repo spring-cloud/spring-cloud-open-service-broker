@@ -121,7 +121,7 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 		testLogging {
 			events "skipped", "failed"
 		}
-		reports.junitXml.enabled = true
+		reports.junitXml.required = true
 	}
 }
 
