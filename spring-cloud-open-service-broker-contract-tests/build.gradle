@@ -39,7 +39,7 @@ contractTest {
 
 dependencies {
 	constraints {
-		testImplementation("com.github.tomakehurst:wiremock-standalone:3.0.1") {
+		testImplementation("com.github.tomakehurst:wiremock-standalone:${wiremockStandaloneVersion}") {
 			because "avoid Logback classpath conflict"
 		}
 	}

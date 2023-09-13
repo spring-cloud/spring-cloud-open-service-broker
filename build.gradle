@@ -27,6 +27,7 @@ buildscript {
 		javaHamcrestVersion = "2.0.0.0"
 		equalsVerifierVersion = "3.15.1"
 		findbugsVersion = "3.0.1"
+		wiremockStandaloneVersion = "3.0.1"
 
 		// Static Analysis
 		blockHoundVersion = "1.0.8.RELEASE"
