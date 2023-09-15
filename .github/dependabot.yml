@@ -7,7 +7,30 @@ updates:
     labels:
       - "dependencies"
     commit-message:
-      prefix: "(v4.0.0)"
+      prefix: "(v4.1.x)"
+    target-branch: "4.1.x"
+    ignore:
+      - dependency-name: "org.springframework.boot:*"
+        update-types:
+          - "version-update:semver-major"
+          - "version-update:semver-minor"
+      - dependency-name: "org.springframework.boot"
+        update-types:
+          - "version-update:semver-major"
+          - "version-update:semver-minor"
+      - dependency-name: "org.springframework.cloud:*"
+        update-types:
+          - "version-update:semver-major"
+          - "version-update:semver-minor"
+
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "(v4.0.x)"
     target-branch: "4.0.x"
     ignore:
       - dependency-name: "org.springframework.boot:*"
