@@ -8,7 +8,7 @@ updates:
       - "dependencies"
     commit-message:
       prefix: "(v4.0.0)"
-    target-branch: "main"
+    target-branch: "4.0.x"
     ignore:
       - dependency-name: "org.springframework.boot:*"
         update-types:
