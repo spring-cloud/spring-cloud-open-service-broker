@@ -48,7 +48,6 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
 
 	@NotEmpty
-	@JsonProperty("service_id")
 	private final String serviceDefinitionId;
 
 	private final String planId;
@@ -57,13 +56,10 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 	private final MaintenanceInfo maintenanceInfo;
 
-	@JsonIgnore
 	private transient String serviceInstanceId;
 
-	@JsonIgnore
 	private transient ServiceDefinition serviceDefinition;
 
-	@JsonIgnore
 	private transient Plan plan;
 
 	/**
@@ -116,6 +112,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 *
 	 * @return the service instance ID
 	 */
+	@JsonIgnore
 	public String getServiceInstanceId() {
 		return this.serviceInstanceId;
 	}
@@ -139,6 +136,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 *
 	 * @return the service definition ID
 	 */
+	@JsonProperty("service_id")
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}
@@ -178,6 +176,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 *
 	 * @return the service definition
 	 */
+	@JsonIgnore
 	public ServiceDefinition getServiceDefinition() {
 		return this.serviceDefinition;
 	}
@@ -201,6 +200,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 *
 	 * @return the plan
 	 */
+	@JsonIgnore
 	public Plan getPlan() {
 		return this.plan;
 	}

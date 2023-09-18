@@ -38,10 +38,8 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	private final String dashboardUrl;
 
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private final ServiceInstanceMetadata metadata;
 
 	/**
@@ -70,6 +68,7 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 *
 	 * @return the dashboard URL, or {@literal null} if not provided
 	 */
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	public String getDashboardUrl() {
 		return this.dashboardUrl;
 	}
@@ -79,6 +78,7 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 *
 	 * @return the service instance metadata
 	 */
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public ServiceInstanceMetadata getMetadata() {
 		return this.metadata;
 	}

@@ -31,7 +31,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class BindingMetadata {
 
-	@JsonProperty("expires_at")
 	private final String expiresAt;
 
 	/**
@@ -55,6 +54,7 @@ public class BindingMetadata {
 	 *
 	 * @return the date and time in ISO 8601 format
 	 */
+	@JsonProperty("expires_at")
 	public String getExpiresAt() {
 		return expiresAt;
 	}

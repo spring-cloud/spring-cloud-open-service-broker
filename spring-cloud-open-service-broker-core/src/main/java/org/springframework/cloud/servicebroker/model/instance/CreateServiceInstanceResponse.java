@@ -39,13 +39,10 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	private final String dashboardUrl;
 
-	@JsonIgnore //not sent on the wire as json payload, but as http status instead
 	private final boolean instanceExisted;
 
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private final ServiceInstanceMetadata metadata;
 
 	/**
@@ -77,6 +74,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 *
 	 * @return the dashboard URL, or {@literal null} if not provided
 	 */
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	public String getDashboardUrl() {
 		return this.dashboardUrl;
 	}
@@ -87,6 +85,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 *
 	 * @return the boolean value
 	 */
+	@JsonIgnore //not sent on the wire as json payload, but as http status instead
 	public boolean isInstanceExisted() {
 		return this.instanceExisted;
 	}
@@ -96,6 +95,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 *
 	 * @return the service instance metadata
 	 */
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public ServiceInstanceMetadata getMetadata() {
 		return this.metadata;
 	}

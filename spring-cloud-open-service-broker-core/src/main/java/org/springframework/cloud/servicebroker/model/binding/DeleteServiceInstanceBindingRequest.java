@@ -41,22 +41,16 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
  */
 public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerRequest {
 
-	@JsonIgnore // mapped as path param
 	private transient final String serviceInstanceId;
 
-	@JsonIgnore // mapped as path param
 	private transient final String bindingId;
 
-	@JsonProperty("service_id")
 	private transient final String serviceDefinitionId;
 
-	@JsonProperty("plan_id")
 	private transient final String planId;
 
-	@JsonIgnore /*internal field*/
 	private transient final ServiceDefinition serviceDefinition;
 
-	@JsonIgnore /*internal field*/
 	private transient final Plan plan;
 
 	/**
@@ -87,6 +81,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	}
 
 	@JsonProperty(ASYNC_REQUEST_PARAMETER)
+	@JsonIgnore(false)
 	//in base class field is excluded, as other requests are passing this as query params
 	@Override
 	public boolean isAsyncAccepted() {
@@ -101,6 +96,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 *
 	 * @return the service instance ID
 	 */
+	@JsonIgnore // mapped as path param
 	public String getServiceInstanceId() {
 		return this.serviceInstanceId;
 	}
@@ -113,6 +109,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 *
 	 * @return the service instance ID
 	 */
+	@JsonIgnore // mapped as path param
 	public String getBindingId() {
 		return this.bindingId;
 	}
@@ -126,6 +123,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 *
 	 * @return the service definition ID
 	 */
+	@JsonProperty("service_id")
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}
@@ -140,6 +138,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 *
 	 * @return the plan ID
 	 */
+	@JsonProperty("plan_id")
 	public String getPlanId() {
 		return this.planId;
 	}
@@ -153,6 +152,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 *
 	 * @return the service definition
 	 */
+	@JsonIgnore /*internal field*/
 	public ServiceDefinition getServiceDefinition() {
 		return this.serviceDefinition;
 	}
@@ -166,6 +166,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 *
 	 * @return the plan
 	 */
+	@JsonIgnore /*internal field*/
 	public Plan getPlan() {
 		return this.plan;
 	}

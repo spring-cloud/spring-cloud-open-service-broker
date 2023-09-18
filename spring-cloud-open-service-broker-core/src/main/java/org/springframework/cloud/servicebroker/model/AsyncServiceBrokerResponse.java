@@ -34,10 +34,8 @@ public class AsyncServiceBrokerResponse {
 
 	private static final int MAX_OPERATION_LENGTH = 10_000;
 
-	@JsonIgnore //not sent on the wire as json payload, but as http status instead
 	protected final boolean async;
 
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	protected final String operation;
 
 	/**
@@ -59,6 +57,7 @@ public class AsyncServiceBrokerResponse {
 	 *
 	 * @return the boolean value
 	 */
+	@JsonIgnore //not sent on the wire as json payload, but as http status instead
 	public boolean isAsync() {
 		return this.async;
 	}
@@ -68,6 +67,7 @@ public class AsyncServiceBrokerResponse {
 	 *
 	 * @return the operation description
 	 */
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	public String getOperation() {
 		return this.operation;
 	}

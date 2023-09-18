@@ -38,7 +38,6 @@ public class ErrorMessage {
 
 	private final String error;
 
-	@JsonProperty("description")
 	private final String message;
 
 	private final Boolean instanceUsable;
@@ -100,6 +99,7 @@ public class ErrorMessage {
 	 *
 	 * @return the description.
 	 */
+	@JsonProperty("description")
 	public String getMessage() {
 		return this.message;
 	}

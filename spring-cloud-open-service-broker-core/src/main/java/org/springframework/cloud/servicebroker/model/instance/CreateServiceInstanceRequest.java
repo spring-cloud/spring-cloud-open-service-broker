@@ -49,11 +49,9 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
 
 	@NotEmpty
-	@JsonProperty("service_id")
 	private final String serviceDefinitionId;
 
 	@NotEmpty
-	@JsonProperty("plan_id")
 	private final String planId;
 
 	/**
@@ -70,13 +68,10 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@JsonProperty("space_guid")
 	private final String spaceGuid;
 
-	@JsonIgnore //mapped as path param
 	private transient String serviceInstanceId;
 
-	@JsonIgnore /*internal field*/
 	private transient ServiceDefinition serviceDefinition;
 
-	@JsonIgnore /*internal field*/
 	private transient Plan plan;
 
 	private final MaintenanceInfo maintenanceInfo;
@@ -139,6 +134,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 *
 	 * @return the service instance ID
 	 */
+	@JsonIgnore //mapped as path param
 	public String getServiceInstanceId() {
 		return this.serviceInstanceId;
 	}
@@ -162,6 +158,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 *
 	 * @return the service definition ID
 	 */
+	@JsonProperty("service_id")
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}
@@ -176,6 +173,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 *
 	 * @return the plan ID
 	 */
+	@JsonProperty("plan_id")
 	public String getPlanId() {
 		return this.planId;
 	}
@@ -259,6 +257,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 *
 	 * @return the service definition
 	 */
+	@JsonIgnore /*internal field*/
 	public ServiceDefinition getServiceDefinition() {
 		return this.serviceDefinition;
 	}
@@ -277,11 +276,12 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * Get the plan of the service to create
 	 *
 	 * <p>
-	 * The plan is retreved from the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a
+	 * The plan is retrieved from the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a
 	 * convenience.
 	 *
 	 * @return the plan
 	 */
+	@JsonIgnore /*internal field*/
 	public Plan getPlan() {
 		return this.plan;
 	}

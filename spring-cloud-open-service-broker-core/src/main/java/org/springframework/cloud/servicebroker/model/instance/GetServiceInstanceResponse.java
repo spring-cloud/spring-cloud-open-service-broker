@@ -41,7 +41,6 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetServiceInstanceResponse {
 
-	@JsonProperty("service_id")
 	private final String serviceDefinitionId;
 
 	private final String planId;
@@ -78,6 +77,7 @@ public class GetServiceInstanceResponse {
 	 *
 	 * @return the service definition ID
 	 */
+	@JsonProperty("service_id")
 	public String getServiceDefinitionId() {
 		return serviceDefinitionId;
 	}

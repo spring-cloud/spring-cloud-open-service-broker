@@ -49,7 +49,6 @@ public class GetLastServiceOperationResponse {
 
 	private final Boolean updateRepeatable;
 
-	@JsonIgnore
 	private final boolean deleteOperation;
 
 	/**
@@ -133,6 +132,7 @@ public class GetLastServiceOperationResponse {
 	 *
 	 * @return the boolean value
 	 */
+	@JsonIgnore
 	public boolean isDeleteOperation() {
 		return this.deleteOperation;
 	}

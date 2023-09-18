@@ -44,7 +44,6 @@ public class GetLastServiceBindingOperationResponse {
 
 	private final String description;
 
-	@JsonIgnore
 	private final boolean deleteOperation;
 
 	/**
@@ -90,6 +89,7 @@ public class GetLastServiceBindingOperationResponse {
 	 *
 	 * @return the boolean value
 	 */
+	@JsonIgnore
 	public boolean isDeleteOperation() {
 		return this.deleteOperation;
 	}

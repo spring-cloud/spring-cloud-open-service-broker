@@ -31,10 +31,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceInstanceSchema {
 
-	@JsonProperty("create")
 	private final MethodSchema createMethodSchema;
 
-	@JsonProperty("update")
 	private final MethodSchema updateMethodSchema;
 
 	/**
@@ -61,6 +59,7 @@ public class ServiceInstanceSchema {
 	 *
 	 * @return the schema
 	 */
+	@JsonProperty("create")
 	public MethodSchema getCreateMethodSchema() {
 		return this.createMethodSchema;
 	}
@@ -70,6 +69,7 @@ public class ServiceInstanceSchema {
 	 *
 	 * @return the schema
 	 */
+	@JsonProperty("update")
 	public MethodSchema getUpdateMethodSchema() {
 		return this.updateMethodSchema;
 	}

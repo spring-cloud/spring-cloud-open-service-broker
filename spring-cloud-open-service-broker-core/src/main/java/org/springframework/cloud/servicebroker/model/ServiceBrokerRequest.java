@@ -71,16 +71,12 @@ public class ServiceBrokerRequest {
 	 */
 	public static final String PLATFORM_INSTANCE_ID_VARIABLE = "platformInstanceId";
 
-	@JsonIgnore //relative path to Osb query path, not to include in Json body
 	protected transient String platformInstanceId;
 
-	@JsonIgnore //mapped as X-Api-Info-Location Header
 	protected transient String apiInfoLocation;
 
-	@JsonIgnore //mapped as X-Broker-API-Originating-Identity Header
 	protected transient Context originatingIdentity;
 
-	@JsonIgnore //mapped as X-Broker-API-Request-Identity Header
 	protected transient String requestIdentity;
 
 	/**
@@ -116,6 +112,7 @@ public class ServiceBrokerRequest {
 	 *
 	 * @return the platform instance ID, or {@literal null} if not provided
 	 */
+	@JsonIgnore //relative path to Osb query path, not to include in Json body
 	public String getPlatformInstanceId() {
 		return this.platformInstanceId;
 	}
@@ -140,6 +137,7 @@ public class ServiceBrokerRequest {
 	 *
 	 * @return the API info endpoint location, or {@literal null} if not provided
 	 */
+	@JsonIgnore //mapped as X-Api-Info-Location Header
 	public String getApiInfoLocation() {
 		return this.apiInfoLocation;
 	}
@@ -161,6 +159,7 @@ public class ServiceBrokerRequest {
 	 *
 	 * @return the user identity, or {@literal null} if not provided
 	 */
+	@JsonIgnore //mapped as X-Broker-API-Originating-Identity Header
 	public Context getOriginatingIdentity() {
 		return this.originatingIdentity;
 	}
@@ -182,6 +181,7 @@ public class ServiceBrokerRequest {
 	 *
 	 * @return the request identity, or {@literal null} if not provided
 	 */
+	@JsonIgnore //mapped as X-Broker-API-Request-Identity Header
 	public String getRequestIdentity() {
 		return this.requestIdentity;
 	}
