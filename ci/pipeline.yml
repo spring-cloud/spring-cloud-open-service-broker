@@ -218,7 +218,9 @@ resources:
     source:
       uri: ((github-repo))
       branch: ((branch))
-      paths: ["ci/images/*"]
+      paths:
+        - ci/images/*
+        - ci/tasks/build-image.*
 
   - name: scosb-ci-image
     type: registry-image
