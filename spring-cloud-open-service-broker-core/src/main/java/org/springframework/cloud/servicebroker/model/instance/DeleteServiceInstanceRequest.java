@@ -41,19 +41,14 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
  */
 public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 
-	@JsonIgnore //mapped as path param
 	private transient final String serviceInstanceId;
 
-	@JsonProperty("service_id")
 	private transient final String serviceDefinitionId;
 
-	@JsonProperty("plan_id")
 	private transient final String planId;
 
-	@JsonIgnore //internal support
 	private transient final ServiceDefinition serviceDefinition;
 
-	@JsonIgnore /*internal field*/
 	private transient final Plan plan;
 
 	/**
@@ -90,6 +85,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	 *
 	 * @return the service instance ID
 	 */
+	@JsonIgnore //mapped as path param
 	public String getServiceInstanceId() {
 		return this.serviceInstanceId;
 	}
@@ -103,6 +99,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	 *
 	 * @return the service definition ID
 	 */
+	@JsonProperty("service_id")
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}
@@ -117,6 +114,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	 *
 	 * @return the plan ID
 	 */
+	@JsonProperty("plan_id")
 	public String getPlanId() {
 		return this.planId;
 	}
@@ -130,11 +128,13 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	 *
 	 * @return the service definition
 	 */
+	@JsonIgnore //internal support
 	public ServiceDefinition getServiceDefinition() {
 		return this.serviceDefinition;
 	}
 
 	@JsonProperty(ASYNC_REQUEST_PARAMETER)
+	@JsonIgnore(false)
 	//in base class field is excluded, as other requests are passing this as query params
 	@Override
 	public boolean isAsyncAccepted() {
@@ -150,6 +150,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	 *
 	 * @return the plan
 	 */
+	@JsonIgnore /*internal field*/
 	public Plan getPlan() {
 		return this.plan;
 	}

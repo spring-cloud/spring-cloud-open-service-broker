@@ -33,7 +33,6 @@ public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
 	 */
 	public final static String ASYNC_REQUEST_PARAMETER = "accepts_incomplete";
 
-	@JsonIgnore //accepts_incomplete Osb field passed as query param in most subclasses
 	protected transient boolean asyncAccepted;
 
 	/**
@@ -70,6 +69,7 @@ public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
 	 *
 	 * @return the boolean value
 	 */
+	@JsonIgnore //accepts_incomplete Osb field passed as query param in most subclasses
 	public boolean isAsyncAccepted() {
 		return this.asyncAccepted;
 	}

@@ -40,7 +40,6 @@ public enum OperationState {
 	 */
 	FAILED("failed");
 
-	@JsonValue
 	private final String state;
 
 	OperationState(String state) {
@@ -52,6 +51,7 @@ public enum OperationState {
 	 *
 	 * @return the {@literal String} value
 	 */
+	@JsonValue
 	public String getValue() {
 		return state;
 	}

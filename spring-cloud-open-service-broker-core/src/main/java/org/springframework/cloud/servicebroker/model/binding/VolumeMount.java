@@ -97,16 +97,10 @@ public class VolumeMount {
 
 	private final String containerDir;
 
-	@JsonSerialize(using = ToStringSerializer.class)
-	@JsonDeserialize(using = ModeDeserializer.class)
 	private final Mode mode;
 
-	@JsonSerialize(using = ToStringSerializer.class)
-	@JsonDeserialize(using = DeviceTypeDeserializer.class)
 	private final DeviceType deviceType;
 
-	@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "device_type")
-	@JsonSubTypes({@JsonSubTypes.Type(value = SharedVolumeDevice.class, name = "shared")})
 	private final VolumeDevice device;
 
 	/**
@@ -156,6 +150,8 @@ public class VolumeMount {
 	 *
 	 * @return the volume read/write mode
 	 */
+	@JsonSerialize(using = ToStringSerializer.class)
+	@JsonDeserialize(using = ModeDeserializer.class)
 	public Mode getMode() {
 		return this.mode;
 	}
@@ -165,6 +161,8 @@ public class VolumeMount {
 	 *
 	 * @return the volume device type
 	 */
+	@JsonSerialize(using = ToStringSerializer.class)
+	@JsonDeserialize(using = DeviceTypeDeserializer.class)
 	public DeviceType getDeviceType() {
 		return this.deviceType;
 	}
@@ -174,6 +172,8 @@ public class VolumeMount {
 	 *
 	 * @return the volume device details
 	 */
+	@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "device_type")
+	@JsonSubTypes({@JsonSubTypes.Type(value = SharedVolumeDevice.class, name = "shared")})
 	public VolumeDevice getDevice() {
 		return this.device;
 	}

@@ -40,7 +40,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Catalog {
 
 	@NotEmpty
-	@JsonProperty("services")
 	private final List<ServiceDefinition> serviceDefinitions;
 
 	/**
@@ -64,6 +63,7 @@ public class Catalog {
 	 *
 	 * @return a set of service offerings
 	 */
+	@JsonProperty("services")
 	public List<ServiceDefinition> getServiceDefinitions() {
 		return this.serviceDefinitions;
 	}

@@ -32,7 +32,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceBindingSchema {
 
-	@JsonProperty("create")
 	private final MethodSchema createMethodSchema;
 
 	/**
@@ -56,6 +55,7 @@ public class ServiceBindingSchema {
 	 *
 	 * @return the schema
 	 */
+	@JsonProperty("create")
 	public MethodSchema getCreateMethodSchema() {
 		return this.createMethodSchema;
 	}

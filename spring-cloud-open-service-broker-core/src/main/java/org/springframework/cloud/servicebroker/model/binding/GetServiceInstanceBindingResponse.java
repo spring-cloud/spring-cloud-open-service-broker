@@ -37,7 +37,6 @@ public class GetServiceInstanceBindingResponse {
 
 	private final Map<String, Object> parameters;
 
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private final BindingMetadata metadata;
 
 	/**
@@ -64,6 +63,7 @@ public class GetServiceInstanceBindingResponse {
 	 *
 	 * @return the metadata
 	 */
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public BindingMetadata getMetadata() {
 		return this.metadata;
 	}

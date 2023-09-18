@@ -51,7 +51,6 @@ public class Context {
 
 	protected final String platform;
 
-	@JsonAnySetter
 	protected final Map<String, Object> properties = new HashMap<>();
 
 	/**
@@ -91,6 +90,17 @@ public class Context {
 	@JsonIgnore
 	public Map<String, Object> getProperties() {
 		return this.properties;
+	}
+
+	/**
+	 * Set a property in the context.
+	 *
+	 * @param key the key of the property
+	 * @param value the value of the property
+	 */
+	@JsonAnySetter
+	public void setProperties(String key, Object value) {
+		this.properties.put(key, value);
 	}
 
 	/**

@@ -48,14 +48,11 @@ import org.springframework.cloud.servicebroker.model.instance.AsyncParameterized
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServiceInstanceRequest {
 
-	@JsonIgnore //OSB field passed as path param
 	private transient String serviceInstanceId;
 
-	@JsonIgnore //OSB field passed as path param
 	private transient String bindingId;
 
 	@NotEmpty
-	@JsonProperty("service_id")
 	private final String serviceDefinitionId;
 
 	@NotEmpty
@@ -66,10 +63,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 
 	private final BindResource bindResource;
 
-	@JsonIgnore //internal field
 	private transient ServiceDefinition serviceDefinition;
 
-	@JsonIgnore //internal field
 	private transient Plan plan;
 
 	/**
@@ -126,6 +121,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	 *
 	 * @return the service instance ID
 	 */
+	@JsonIgnore //OSB field passed as path param
 	public String getServiceInstanceId() {
 		return this.serviceInstanceId;
 	}
@@ -149,6 +145,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	 *
 	 * @return the service instance ID
 	 */
+	@JsonIgnore //OSB field passed as path param
 	public String getBindingId() {
 		return this.bindingId;
 	}
@@ -172,6 +169,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	 *
 	 * @return the service definition ID
 	 */
+	@JsonProperty("service_id")
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}
@@ -226,6 +224,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	 *
 	 * @return the service definition
 	 */
+	@JsonIgnore //internal field
 	public ServiceDefinition getServiceDefinition() {
 		return this.serviceDefinition;
 	}
@@ -249,6 +248,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	 *
 	 * @return the plan
 	 */
+	@JsonIgnore //internal field
 	public Plan getPlan() {
 		return this.plan;
 	}
