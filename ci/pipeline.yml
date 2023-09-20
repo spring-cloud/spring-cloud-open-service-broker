@@ -58,6 +58,17 @@ jobs:
           build_uri: "${ATC_EXTERNAL_URL}/builds/${BUILD_ID}"
           build_number: "${BUILD_PIPELINE_NAME}-((branch))-${BUILD_JOB_NAME}-${BUILD_NAME}"
           disable_checksum_uploads: true
+          artifact_set:
+            - include:
+                - /**/*.zip
+              properties:
+                zip.name: spring-cloud-open-service-broker
+                zip.displayname: Spring Cloud Open Service Broker
+                zip.deployed: false
+            - include:
+                - /**/*-docs.zip
+              properties:
+                zip.type: docs
     on_failure:
       *slack-failure-notification
 
