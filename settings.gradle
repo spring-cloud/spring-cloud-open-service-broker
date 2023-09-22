@@ -16,7 +16,7 @@
 
 pluginManagement {
 	plugins {
-		id "org.springframework.boot" version "2.7.15"
+		id "org.springframework.boot" version "2.7.16"
 		id "io.spring.nohttp" version "0.0.11"
 		id 'org.asciidoctor.jvm.pdf' version '3.3.2'
 		id 'org.asciidoctor.jvm.convert' version '3.3.2'
