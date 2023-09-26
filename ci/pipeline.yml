@@ -135,7 +135,6 @@ jobs:
         file: git-repo/ci/tasks/promote.yml
         vars:
           release-type: M
-          ci-image-tag: ((ci-image-tag))
 
   - name: promote-rc
     serial: true
@@ -150,7 +149,6 @@ jobs:
         file: git-repo/ci/tasks/promote.yml
         vars:
           release-type: RC
-          ci-image-tag: ((ci-image-tag))
 
   - name: promote-release
     serial: true
@@ -165,7 +163,6 @@ jobs:
         file: git-repo/ci/tasks/promote.yml
         vars:
           release-type: RELEASE
-          ci-image-tag: ((ci-image-tag))
 
   - name: sync-to-maven-central
     serial: true
@@ -178,8 +175,6 @@ jobs:
               save_build_info: true
       - task: sync-to-maven-central
         file: git-repo/ci/tasks/sync-to-maven-central.yml
-        vars:
-          ci-image-tag: ((ci-image-tag))
 
 resource_types:
   - name: artifactory-resource
