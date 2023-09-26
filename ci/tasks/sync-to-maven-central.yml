@@ -3,10 +3,8 @@ platform: linux
 image_resource:
   type: registry-image
   source:
-    repository: ((corporate-harbor-registry))/((dockerhub-organization))/scosb-ci
-    username: ((corporate-harbor-robot-account.username))
-    password: ((corporate-harbor-robot-account.password))
-    tag: ((ci-image-tag))
+    repository: ((dockerhub-mirror-registry))/springio/concourse-release-scripts
+    tag: '0.3.4'
 inputs:
   - name: git-repo
   - name: artifactory-repo
