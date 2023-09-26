@@ -1,5 +1,0 @@
-artifactory-server: https://repo.spring.io
-build-name: spring-cloud-open-service-broker
-github-repo: https://github.com/spring-cloud/spring-cloud-open-service-broker
-scosb-slack-success-channel: "#sc-app-broker"
-scosb-slack-failure-channel: "#sc-app-broker"
