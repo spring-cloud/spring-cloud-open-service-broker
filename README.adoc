@@ -12,9 +12,10 @@ The following table describes the version compatibility matrix for the various r
 |===
 |Spring Cloud Open Service Broker |https://github.com/openservicebrokerapi/servicebroker[Open Service Broker API] |https://projects.spring.io/spring-boot/[Spring Boot] |https://projects.spring.io/spring-framework/[Spring Framework]|JDK
 |4.2.x (planning) |2.17 |3.1.x |6.0.x|17
-|4.1.x (planning) |2.16 |3.1.x |6.0.x|17
-|4.0.x (main branch) |2.16 |3.0.x |6.0.x|17
+|4.1.x |2.16 |3.1.x |6.0.x|17
+|4.0.x |2.16 |3.0.x |6.0.x|17
 |3.6.x |2.16 |2.7.x |5.3.x|8
+|3.5.x |2.16 (partial support) |2.6.x |5.3.x|8
 |===
 
 Previous versions which were built against versions of Spring Boot that are no longer supported
@@ -22,8 +23,7 @@ Previous versions which were built against versions of Spring Boot that are no l
 [%header,cols=4*]
 |===
 |Spring Cloud Open Service Broker |https://github.com/openservicebrokerapi/servicebroker[Open Service Broker API] |https://projects.spring.io/spring-boot/[Spring Boot] |https://projects.spring.io/spring-framework/[Spring Framework]
-|3.5.x |2.16 (developing) |2.6.x |5.3.x
-|3.4.x |2.16 (developing) |2.5.x |5.3.x
+|3.4.x |2.16 (partial support) |2.5.x |5.3.x
 |3.3.x |2.15 |2.4.x |5.3.x
 |3.2.x |2.15 |2.3.x |5.2.x
 |3.1.x |2.15 |2.2.x |5.2.x
