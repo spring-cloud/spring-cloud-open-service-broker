@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.model.error;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -34,7 +36,10 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ErrorMessage {
+public class ErrorMessage implements Serializable {
+
+	@Serial
+	private static final long serialVersionUID = 2182737098581225395L;
 
 	private final String error;
 

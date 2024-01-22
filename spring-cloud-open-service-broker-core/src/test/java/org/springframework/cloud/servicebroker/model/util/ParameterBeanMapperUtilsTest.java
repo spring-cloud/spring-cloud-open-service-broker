@@ -33,15 +33,15 @@ class ParameterBeanMapperUtilsTest {
 		parameters.put("extraProperty", "extra");
 		parameters.put("nestedBean.booleanProperty", true);
 
-		TestBean testBean = ParameterBeanMapperUtils.mapParametersToBean(parameters, TestBean.class);
+		BasicBean basicBean = ParameterBeanMapperUtils.mapParametersToBean(parameters, BasicBean.class);
 
-		assertThat(testBean.getStringProperty()).isEqualTo("value1");
-		assertThat(testBean.getIntProperty()).isEqualTo(2);
-		assertThat(testBean.getUnusedProperty()).isNull();
-		assertThat(testBean.getNestedBean().isBooleanProperty()).isEqualTo(true);
+		assertThat(basicBean.getStringProperty()).isEqualTo("value1");
+		assertThat(basicBean.getIntProperty()).isEqualTo(2);
+		assertThat(basicBean.getUnusedProperty()).isNull();
+		assertThat(basicBean.getNestedBean().isBooleanProperty()).isEqualTo(true);
 	}
 
-	public static final class TestBean {
+	public static final class BasicBean {
 
 		private String stringProperty;
 
@@ -51,7 +51,7 @@ class ParameterBeanMapperUtilsTest {
 
 		private final NestedBean nestedBean;
 
-		public TestBean() {
+		public BasicBean() {
 			this.nestedBean = new NestedBean();
 		}
 

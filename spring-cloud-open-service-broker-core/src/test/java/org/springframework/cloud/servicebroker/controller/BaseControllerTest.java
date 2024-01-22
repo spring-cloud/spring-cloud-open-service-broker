@@ -37,7 +37,7 @@ class BaseControllerTest {
 			"\"key2\":\"value2\"" +
 			"}";
 
-	private final TestBaseController controller = new TestBaseController();
+	private final BasicBaseController controller = new BasicBaseController();
 
 	@Test
 	void originatingIdentityWithNoPropertiesThrowsException() {
@@ -90,9 +90,9 @@ class BaseControllerTest {
 		return Base64.getEncoder().encodeToString(json.getBytes());
 	}
 
-	private static class TestBaseController extends BaseController {
+	private static class BasicBaseController extends BaseController {
 
-		TestBaseController() {
+		BasicBaseController() {
 			super(null);
 		}
 

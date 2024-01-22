@@ -104,17 +104,17 @@ public abstract class AbstractServiceBrokerWebAutoConfigurationTest {
 
 		@Bean
 		protected CatalogService catalogService() {
-			return new TestCatalogService();
+			return new BasicCatalogService();
 		}
 
 		@Bean
 		protected ServiceInstanceService serviceInstanceService() {
-			return new TestServiceInstanceService();
+			return new BasicServiceInstanceService();
 		}
 
 		@Bean
 		protected ServiceInstanceBindingService serviceInstanceBindingService() {
-			return new TestServiceInstanceBindingService();
+			return new BasicServiceInstanceBindingService();
 		}
 
 		@Bean
@@ -129,12 +129,12 @@ public abstract class AbstractServiceBrokerWebAutoConfigurationTest {
 
 		@Bean
 		protected CatalogService catalogService() {
-			return new TestCatalogService();
+			return new BasicCatalogService();
 		}
 
 		@Bean
 		protected ServiceInstanceBindingService serviceInstanceBindingService() {
-			return new TestServiceInstanceBindingService();
+			return new BasicServiceInstanceBindingService();
 		}
 
 		@Bean

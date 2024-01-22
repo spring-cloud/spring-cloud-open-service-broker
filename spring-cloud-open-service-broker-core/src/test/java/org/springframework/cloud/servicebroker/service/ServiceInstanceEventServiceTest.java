@@ -80,7 +80,7 @@ class ServiceInstanceEventServiceTest {
 						new ArrayList<>(), new ArrayList<>(), new ArrayList<>())
 		);
 		this.serviceInstanceEventService = new ServiceInstanceEventService(
-				new TestServiceInstanceService(), eventFlowRegistries);
+				new BasicServiceInstanceService(), eventFlowRegistries);
 		this.results = new EventFlowTestResults();
 	}
 
@@ -335,7 +335,7 @@ class ServiceInstanceEventServiceTest {
 				.subscribe();
 	}
 
-	private static class TestServiceInstanceService implements ServiceInstanceService {
+	private static class BasicServiceInstanceService implements ServiceInstanceService {
 
 		@Override
 		public Mono<CreateServiceInstanceResponse> createServiceInstance(

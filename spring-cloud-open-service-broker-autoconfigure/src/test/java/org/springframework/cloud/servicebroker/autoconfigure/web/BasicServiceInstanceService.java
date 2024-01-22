@@ -36,7 +36,7 @@ import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInsta
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 
-public class TestServiceInstanceService implements ServiceInstanceService {
+public class BasicServiceInstanceService implements ServiceInstanceService {
 
 	private static final String IN_PROGRESS_SERVICE_INSTANCE_ID = "service-instance-two-id";
 

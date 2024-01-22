@@ -36,7 +36,7 @@ import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceB
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 
-public class TestServiceInstanceBindingService implements ServiceInstanceBindingService {
+public class BasicServiceInstanceBindingService implements ServiceInstanceBindingService {
 
 	private static final String IN_PROGRESS_SERVICE_INSTANCE_ID = "service-instance-two-id";
 

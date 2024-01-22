@@ -24,8 +24,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.cloud.servicebroker.autoconfigure.web.BasicServiceInstanceService;
 import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerAutoConfiguration;
-import org.springframework.cloud.servicebroker.autoconfigure.web.TestServiceInstanceService;
 import org.springframework.cloud.servicebroker.autoconfigure.web.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.autoconfigure.web.reactive.ServiceBrokerWebFluxAutoConfiguration;
 import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.ServiceBrokerWebMvcAutoConfiguration;
@@ -73,7 +73,7 @@ public class CatalogServletBase {
 
 		@Bean
 		protected ServiceInstanceService serviceInstanceService() {
-			return new TestServiceInstanceService();
+			return new BasicServiceInstanceService();
 		}
 
 		public static void main(String[] args) {

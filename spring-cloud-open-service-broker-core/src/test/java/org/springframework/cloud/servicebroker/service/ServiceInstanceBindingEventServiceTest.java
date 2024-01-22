@@ -82,7 +82,7 @@ class ServiceInstanceBindingEventServiceTest {
 		);
 
 		this.serviceInstanceBindingEventService =
-				new ServiceInstanceBindingEventService(new TestServiceInstanceBindingService(), eventFlowRegistries);
+				new ServiceInstanceBindingEventService(new BasicServiceInstanceBindingService(), eventFlowRegistries);
 		this.results = new EventFlowTestResults();
 	}
 
@@ -292,7 +292,7 @@ class ServiceInstanceBindingEventServiceTest {
 				.subscribe();
 	}
 
-	private static class TestServiceInstanceBindingService implements ServiceInstanceBindingService {
+	private static class BasicServiceInstanceBindingService implements ServiceInstanceBindingService {
 
 		@Override
 		public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(

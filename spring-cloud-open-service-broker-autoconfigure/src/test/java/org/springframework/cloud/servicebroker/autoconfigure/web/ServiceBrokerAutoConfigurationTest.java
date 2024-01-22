@@ -58,7 +58,7 @@ class ServiceBrokerAutoConfigurationTest {
 
 					assertThat(context)
 							.getBean(ServiceInstanceService.class)
-							.isExactlyInstanceOf(TestServiceInstanceService.class);
+							.isExactlyInstanceOf(BasicServiceInstanceService.class);
 				});
 	}
 
@@ -73,11 +73,11 @@ class ServiceBrokerAutoConfigurationTest {
 
 					assertThat(context)
 							.getBean(ServiceInstanceBindingService.class)
-							.isExactlyInstanceOf(TestServiceInstanceBindingService.class);
+							.isExactlyInstanceOf(BasicServiceInstanceBindingService.class);
 
 					assertThat(context)
 							.getBean(ServiceInstanceService.class)
-							.isExactlyInstanceOf(TestServiceInstanceService.class);
+							.isExactlyInstanceOf(BasicServiceInstanceService.class);
 				});
 	}
 
@@ -88,15 +88,15 @@ class ServiceBrokerAutoConfigurationTest {
 				.run((context) -> {
 					assertThat(context)
 							.getBean(CatalogService.class)
-							.isExactlyInstanceOf(TestCatalogService.class);
+							.isExactlyInstanceOf(BasicCatalogService.class);
 
 					assertThat(context)
 							.getBean(ServiceInstanceBindingService.class)
-							.isExactlyInstanceOf(TestServiceInstanceBindingService.class);
+							.isExactlyInstanceOf(BasicServiceInstanceBindingService.class);
 
 					assertThat(context)
 							.getBean(ServiceInstanceService.class)
-							.isExactlyInstanceOf(TestServiceInstanceService.class);
+							.isExactlyInstanceOf(BasicServiceInstanceService.class);
 				});
 	}
 
@@ -107,7 +107,7 @@ class ServiceBrokerAutoConfigurationTest {
 				.run((context) -> {
 					assertThat(context)
 							.getBean(CatalogService.class)
-							.isExactlyInstanceOf(TestCatalogService.class);
+							.isExactlyInstanceOf(BasicCatalogService.class);
 
 					assertThat(context)
 							.getBean(ServiceInstanceBindingService.class)
@@ -115,7 +115,7 @@ class ServiceBrokerAutoConfigurationTest {
 
 					assertThat(context)
 							.getBean(ServiceInstanceService.class)
-							.isExactlyInstanceOf(TestServiceInstanceService.class);
+							.isExactlyInstanceOf(BasicServiceInstanceService.class);
 				});
 	}
 
@@ -190,7 +190,7 @@ class ServiceBrokerAutoConfigurationTest {
 
 					assertThat(context)
 							.getBean(ServiceInstanceService.class)
-							.isExactlyInstanceOf(TestServiceInstanceService.class);
+							.isExactlyInstanceOf(BasicServiceInstanceService.class);
 				});
 	}
 
@@ -204,7 +204,7 @@ class ServiceBrokerAutoConfigurationTest {
 
 		@Bean
 		protected ServiceInstanceService serviceInstanceService() {
-			return new TestServiceInstanceService();
+			return new BasicServiceInstanceService();
 		}
 
 	}
@@ -219,12 +219,12 @@ class ServiceBrokerAutoConfigurationTest {
 
 		@Bean
 		protected ServiceInstanceService serviceInstanceService() {
-			return new TestServiceInstanceService();
+			return new BasicServiceInstanceService();
 		}
 
 		@Bean
 		protected ServiceInstanceBindingService serviceInstanceBindingService() {
-			return new TestServiceInstanceBindingService();
+			return new BasicServiceInstanceBindingService();
 		}
 
 	}
@@ -234,17 +234,17 @@ class ServiceBrokerAutoConfigurationTest {
 
 		@Bean
 		protected CatalogService catalogService() {
-			return new TestCatalogService();
+			return new BasicCatalogService();
 		}
 
 		@Bean
 		protected ServiceInstanceService serviceInstanceService() {
-			return new TestServiceInstanceService();
+			return new BasicServiceInstanceService();
 		}
 
 		@Bean
 		protected ServiceInstanceBindingService serviceInstanceBindingService() {
-			return new TestServiceInstanceBindingService();
+			return new BasicServiceInstanceBindingService();
 		}
 
 	}
@@ -259,12 +259,12 @@ class ServiceBrokerAutoConfigurationTest {
 
 		@Bean
 		protected CatalogService catalogService() {
-			return new TestCatalogService();
+			return new BasicCatalogService();
 		}
 
 		@Bean
 		protected ServiceInstanceService serviceInstanceService() {
-			return new TestServiceInstanceService();
+			return new BasicServiceInstanceService();
 		}
 
 	}
@@ -296,7 +296,7 @@ class ServiceBrokerAutoConfigurationTest {
 
 		@Bean
 		protected ServiceInstanceService serviceInstanceService() {
-			return new TestServiceInstanceService();
+			return new BasicServiceInstanceService();
 		}
 
 	}

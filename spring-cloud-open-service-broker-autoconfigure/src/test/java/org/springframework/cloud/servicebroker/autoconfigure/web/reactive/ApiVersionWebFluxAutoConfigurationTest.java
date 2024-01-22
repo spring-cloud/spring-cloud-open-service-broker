@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
-import org.springframework.cloud.servicebroker.autoconfigure.web.TestServiceInstanceService;
+import org.springframework.cloud.servicebroker.autoconfigure.web.BasicServiceInstanceService;
 import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.ApiVersionWebMvcAutoConfiguration;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
@@ -128,7 +128,7 @@ class ApiVersionWebFluxAutoConfigurationTest {
 
 		@Bean
 		public ServiceInstanceService serviceInstanceService() {
-			return new TestServiceInstanceService();
+			return new BasicServiceInstanceService();
 		}
 
 	}

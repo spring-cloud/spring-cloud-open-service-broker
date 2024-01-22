@@ -24,9 +24,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.cloud.servicebroker.autoconfigure.web.BasicServiceInstanceBindingService;
+import org.springframework.cloud.servicebroker.autoconfigure.web.BasicServiceInstanceService;
 import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerAutoConfiguration;
-import org.springframework.cloud.servicebroker.autoconfigure.web.TestServiceInstanceBindingService;
-import org.springframework.cloud.servicebroker.autoconfigure.web.TestServiceInstanceService;
 import org.springframework.cloud.servicebroker.autoconfigure.web.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.autoconfigure.web.reactive.ServiceBrokerWebFluxAutoConfiguration;
 import org.springframework.cloud.servicebroker.autoconfigure.web.servlet.ServiceBrokerWebMvcAutoConfiguration;
@@ -75,12 +75,12 @@ public class BindingServletBase {
 
 		@Bean
 		protected ServiceInstanceService serviceInstanceService() {
-			return new TestServiceInstanceService();
+			return new BasicServiceInstanceService();
 		}
 
 		@Bean
 		protected ServiceInstanceBindingService serviceInstanceBindingService() {
-			return new TestServiceInstanceBindingService();
+			return new BasicServiceInstanceBindingService();
 		}
 
 		public static void main(String[] args) {
