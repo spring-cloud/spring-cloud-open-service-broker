@@ -21,6 +21,7 @@ import java.util.Map;
 
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
@@ -149,6 +150,7 @@ class ServiceDefinitionTest {
 	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(ServiceDefinition.class)
+				.suppress(Warning.STRICT_INHERITANCE)
 				.verify();
 	}
 
