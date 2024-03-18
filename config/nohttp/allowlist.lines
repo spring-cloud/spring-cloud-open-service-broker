@@ -1,5 +1,2 @@
-// ASLv2 header
-^http://www.apache.org/licenses/LICENSE-2.0.*$
-
 // JSON schema URL used in tests
 ^http://json-schema.org/.*$
