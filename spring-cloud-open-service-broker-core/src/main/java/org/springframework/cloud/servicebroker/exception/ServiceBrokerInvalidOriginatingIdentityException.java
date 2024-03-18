@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,17 +17,16 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that parameters passed in the originating identity header are not understood by the service
- * broker.
+ * Thrown to indicate that parameters passed in the originating identity header are not
+ * understood by the service broker.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY} being returned to the
- * platform.
+ * Throwing this exception will result in an HTTP status code
+ * {@literal 422 UNPROCESSABLE ENTITY} being returned to the platform.
  *
  * @author Roy Clarkson
  */
-public class ServiceBrokerInvalidOriginatingIdentityException
-		extends ServiceBrokerException {
+public class ServiceBrokerInvalidOriginatingIdentityException extends ServiceBrokerException {
 
 	private static final long serialVersionUID = -7027388607132362654L;
 
@@ -35,7 +34,6 @@ public class ServiceBrokerInvalidOriginatingIdentityException
 
 	/**
 	 * Construct an exception with the provided message.
-	 *
 	 * @param message the exception message
 	 */
 	public ServiceBrokerInvalidOriginatingIdentityException(String message) {
@@ -44,12 +42,10 @@ public class ServiceBrokerInvalidOriginatingIdentityException
 
 	/**
 	 * Construct an exception with the provided message and cause.
-	 *
 	 * @param message the exception message
 	 * @param cause the cause of the exception
 	 */
-	public ServiceBrokerInvalidOriginatingIdentityException(String message,
-			Throwable cause) {
+	public ServiceBrokerInvalidOriginatingIdentityException(String message, Throwable cause) {
 		super(prependMessagePrefix(message), cause);
 	}
 

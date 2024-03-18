@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,21 +41,21 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	private final Context context;
 
 	/**
-	 * Construct a new {@link AsyncParameterizedServiceInstanceRequest}
+	 * Construct a new {@link AsyncParameterizedServiceInstanceRequest}.
 	 */
 	protected AsyncParameterizedServiceInstanceRequest() {
 		this(null, null, false, null, null, null, null);
 	}
 
 	/**
-	 * Construct a new {@link AsyncParameterizedServiceInstanceRequest}
-	 *
+	 * Construct a new {@link AsyncParameterizedServiceInstanceRequest}.
 	 * @param parameters the parameters
 	 * @param context the context
 	 * @param asyncAccepted does the platform accept asynchronous requests
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
-	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * @param originatingIdentity identity of the user that initiated the request from the
+	 * platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 */
 	protected AsyncParameterizedServiceInstanceRequest(Map<String, Object> parameters, Context context,
@@ -69,15 +69,17 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	}
 
 	/**
-	 * Get any parameters passed by the user, with the user-supplied JSON structure converted to a {@literal Map}.
+	 * Get any parameters passed by the user, with the user-supplied JSON structure
+	 * converted to a {@literal Map}.
 	 *
 	 * <p>
-	 * This value is set from the {@literal parameters} field in the body of the request from the platform.
+	 * This value is set from the {@literal parameters} field in the body of the request
+	 * from the platform.
 	 *
 	 * <p>
-	 * The platform will pass the user-supplied JSON structure to the service broker as-is. The service broker is
-	 * responsible for validating the contents of the parameters for correctness or applicability.
-	 *
+	 * The platform will pass the user-supplied JSON structure to the service broker
+	 * as-is. The service broker is responsible for validating the contents of the
+	 * parameters for correctness or applicability.
 	 * @return the populated {@literal Map}
 	 */
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -86,34 +88,36 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	}
 
 	/**
-	 * Get any parameters passed by the user, with the user-supplied JSON structure mapped to fields of the specified
-	 * object type.
+	 * Get any parameters passed by the user, with the user-supplied JSON structure mapped
+	 * to fields of the specified object type.
 	 *
 	 * <p>
-	 * This value is set from the {@literal parameters} field in the body of the request from the platform.
+	 * This value is set from the {@literal parameters} field in the body of the request
+	 * from the platform.
 	 *
 	 * <p>
-	 * An object of the specified type will be instantiated, and value from the parameters JSON will be mapped to the
-	 * object using Java Bean mapping rules.
+	 * An object of the specified type will be instantiated, and value from the parameters
+	 * JSON will be mapped to the object using Java Bean mapping rules.
 	 *
 	 * <p>
-	 * The platform will pass the user-supplied JSON structure to the service broker as-is. The service broker is
-	 * responsible for validating the contents of the parameters for correctness or applicability.
-	 *
-	 * @param cls the {@link Class} representing the type of object to map the parameter key/value pairs to
+	 * The platform will pass the user-supplied JSON structure to the service broker
+	 * as-is. The service broker is responsible for validating the contents of the
+	 * parameters for correctness or applicability.
+	 * @param cls the {@link Class} representing the type of object to map the parameter
+	 * key/value pairs to
 	 * @param <T> the type of the object to instantiate and populate
 	 * @return the instantiated and populated object
 	 */
 	public <T> T getParameters(Class<T> cls) {
-		return ParameterBeanMapperUtils.mapParametersToBean(parameters, cls);
+		return ParameterBeanMapperUtils.mapParametersToBean(this.parameters, cls);
 	}
 
 	/**
 	 * Get the platform-specific contextual information for the service instance.
 	 *
 	 * <p>
-	 * This value is set from the {@literal context} field in the body of the request from the platform.
-	 *
+	 * This value is set from the {@literal context} field in the body of the request from
+	 * the platform.
 	 * @return the contextual information
 	 */
 	public Context getContext() {
@@ -132,9 +136,8 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 			return false;
 		}
 		AsyncParameterizedServiceInstanceRequest that = (AsyncParameterizedServiceInstanceRequest) o;
-		return that.canEqual(this) &&
-				Objects.equals(parameters, that.parameters) &&
-				Objects.equals(context, that.context);
+		return that.canEqual(this) && Objects.equals(this.parameters, that.parameters)
+				&& Objects.equals(this.context, that.context);
 	}
 
 	@Override
@@ -144,16 +147,13 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), parameters, context);
+		return Objects.hash(super.hashCode(), this.parameters, this.context);
 	}
 
 	@Override
 	public String toString() {
-		return super.toString() +
-				"AsyncParameterizedServiceInstanceRequest{" +
-				"parameters=" + parameters +
-				", context=" + context +
-				'}';
+		return super.toString() + "AsyncParameterizedServiceInstanceRequest{" + "parameters=" + this.parameters
+				+ ", context=" + this.context + '}';
 	}
 
 }

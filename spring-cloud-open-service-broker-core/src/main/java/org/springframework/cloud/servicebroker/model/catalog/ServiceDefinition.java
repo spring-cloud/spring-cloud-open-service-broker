@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,8 +15,6 @@
  */
 
 package org.springframework.cloud.servicebroker.model.catalog;
-
-import jakarta.validation.constraints.NotEmpty;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,16 +28,18 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import jakarta.validation.constraints.NotEmpty;
 
 import org.springframework.util.CollectionUtils;
 
 /**
  * A service offered by this broker.
  *
- * @author sgreenberg@pivotal.io
+ * @author S Greenberg
  * @author Scott Frederick
- * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-offering-object">Open
- * 		Service Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-offering-object">Open
+ * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -76,16 +76,15 @@ public class ServiceDefinition {
 	private final DashboardClient dashboardClient;
 
 	/**
-	 * Construct a new {@link ServiceDefinition}
+	 * Construct a new {@link ServiceDefinition}.
 	 */
 	public ServiceDefinition() {
-		this(null, null, null, false, null, null, null, null, new ArrayList<>(),
-				new ArrayList<>(), new HashMap<>(), new ArrayList<>(), null);
+		this(null, null, null, false, null, null, null, null, new ArrayList<>(), new ArrayList<>(), new HashMap<>(),
+				new ArrayList<>(), null);
 	}
 
 	/**
-	 * Construct a new {@link ServiceDefinition}
-	 *
+	 * Construct a new {@link ServiceDefinition}.
 	 * @param id the service ID
 	 * @param name the service name
 	 * @param description the service description
@@ -101,9 +100,8 @@ public class ServiceDefinition {
 	 * @param dashboardClient the service dashboard URI
 	 */
 	public ServiceDefinition(String id, String name, String description, boolean bindable, Boolean planUpdateable,
-			Boolean instancesRetrievable, Boolean bindingsRetrievable, Boolean allowContextUpdates,
-			List<Plan> plans, List<String> tags, Map<String, Object> metadata, List<String> requires,
-			DashboardClient dashboardClient) {
+			Boolean instancesRetrievable, Boolean bindingsRetrievable, Boolean allowContextUpdates, List<Plan> plans,
+			List<String> tags, Map<String, Object> metadata, List<String> requires, DashboardClient dashboardClient) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -120,9 +118,8 @@ public class ServiceDefinition {
 	}
 
 	/**
-	 * An identifier used to correlate this service in future requests to the catalog. This must be unique within the
-	 * platform. Using a GUID is recommended.
-	 *
+	 * An identifier used to correlate this service in future requests to the catalog.
+	 * This must be unique within the platform. Using a GUID is recommended.
 	 * @return the service ID
 	 */
 	public String getId() {
@@ -130,9 +127,8 @@ public class ServiceDefinition {
 	}
 
 	/**
-	 * A CLI-friendly name of the service that will appear in the catalog. The value should be all lowercase, with no
-	 * spaces.
-	 *
+	 * A CLI-friendly name of the service that will appear in the catalog. The value
+	 * should be all lowercase, with no spaces.
 	 * @return the service name
 	 */
 	public String getName() {
@@ -141,7 +137,6 @@ public class ServiceDefinition {
 
 	/**
 	 * A user-friendly short description of the service that will appear in the catalog.
-	 *
 	 * @return the service description
 	 */
 	public String getDescription() {
@@ -150,7 +145,6 @@ public class ServiceDefinition {
 
 	/**
 	 * Indicates whether the service can be bound to applications.
-	 *
 	 * @return true if the service may be bound
 	 */
 	public boolean isBindable() {
@@ -158,9 +152,8 @@ public class ServiceDefinition {
 	}
 
 	/**
-	 * Indicates whether the service supports requests to update instances to use a different plan from the one used to
-	 * provision a service instance.
-	 *
+	 * Indicates whether the service supports requests to update instances to use a
+	 * different plan from the one used to provision a service instance.
 	 * @return true if the plan may be updated
 	 */
 	public Boolean isPlanUpdateable() {
@@ -169,7 +162,6 @@ public class ServiceDefinition {
 
 	/**
 	 * Indicates whether the service broker supports retrieving service instances.
-	 *
 	 * @return true if the service instances may be retrieved
 	 */
 	public Boolean isInstancesRetrievable() {
@@ -178,7 +170,6 @@ public class ServiceDefinition {
 
 	/**
 	 * Indicates whether the service broker supports retrieving service bindings.
-	 *
 	 * @return true if the service bindings may be retrieved
 	 */
 	public Boolean isBindingsRetrievable() {
@@ -186,18 +177,16 @@ public class ServiceDefinition {
 	}
 
 	/**
-	 * Indicates whether a service instance supports update requests when contextual data for the service instance in
-	 * the platform changes.
-	 *
+	 * Indicates whether a service instance supports update requests when contextual data
+	 * for the service instance in the platform changes.
 	 * @return true if the service instances supports context updates
 	 */
 	public Boolean isAllowContextUpdates() {
-		return allowContextUpdates;
+		return this.allowContextUpdates;
 	}
 
 	/**
 	 * A list of plans for this service.
-	 *
 	 * @return the service plans
 	 */
 	public List<Plan> getPlans() {
@@ -205,8 +194,8 @@ public class ServiceDefinition {
 	}
 
 	/**
-	 * A list of tags to aid in categorizing and classifying services with similar characteristics.
-	 *
+	 * A list of tags to aid in categorizing and classifying services with similar
+	 * characteristics.
 	 * @return the tags
 	 */
 	public List<String> getTags() {
@@ -215,7 +204,6 @@ public class ServiceDefinition {
 
 	/**
 	 * A map of metadata to further describe a service offering.
-	 *
 	 * @return the service metadata
 	 */
 	public Map<String, Object> getMetadata() {
@@ -223,8 +211,8 @@ public class ServiceDefinition {
 	}
 
 	/**
-	 * A list of permissions that the user would have to give the service, if they provision it.
-	 *
+	 * A list of permissions that the user would have to give the service, if they
+	 * provision it.
 	 * @return the required permissions
 	 * @see ServiceDefinitionRequires supported permissions
 	 */
@@ -234,7 +222,6 @@ public class ServiceDefinition {
 
 	/**
 	 * Data necessary to activate the Dashboard SSO feature for this service.
-	 *
 	 * @return the service dashboard URI
 	 */
 	public DashboardClient getDashboardClient() {
@@ -242,8 +229,8 @@ public class ServiceDefinition {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal ServiceDefinition}.
-	 *
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal ServiceDefinition}.
 	 * @return the builder
 	 */
 	public static ServiceDefinitionBuilder builder() {
@@ -259,45 +246,32 @@ public class ServiceDefinition {
 			return false;
 		}
 		ServiceDefinition that = (ServiceDefinition) o;
-		return bindable == that.bindable &&
-				Objects.equals(planUpdateable, that.planUpdateable) &&
-				Objects.equals(instancesRetrievable, that.instancesRetrievable) &&
-				Objects.equals(bindingsRetrievable, that.bindingsRetrievable) &&
-				Objects.equals(allowContextUpdates, that.allowContextUpdates) &&
-				Objects.equals(id, that.id) &&
-				Objects.equals(name, that.name) &&
-				Objects.equals(description, that.description) &&
-				Objects.equals(plans, that.plans) &&
-				Objects.equals(tags, that.tags) &&
-				Objects.equals(metadata, that.metadata) &&
-				Objects.equals(requires, that.requires) &&
-				Objects.equals(dashboardClient, that.dashboardClient);
+		return this.bindable == that.bindable && Objects.equals(this.planUpdateable, that.planUpdateable)
+				&& Objects.equals(this.instancesRetrievable, that.instancesRetrievable)
+				&& Objects.equals(this.bindingsRetrievable, that.bindingsRetrievable)
+				&& Objects.equals(this.allowContextUpdates, that.allowContextUpdates)
+				&& Objects.equals(this.id, that.id) && Objects.equals(this.name, that.name)
+				&& Objects.equals(this.description, that.description) && Objects.equals(this.plans, that.plans)
+				&& Objects.equals(this.tags, that.tags) && Objects.equals(this.metadata, that.metadata)
+				&& Objects.equals(this.requires, that.requires)
+				&& Objects.equals(this.dashboardClient, that.dashboardClient);
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(id, name, description, bindable, planUpdateable,
-				instancesRetrievable, bindingsRetrievable, allowContextUpdates,
-				plans, tags, metadata, requires, dashboardClient);
+		return Objects.hash(this.id, this.name, this.description, this.bindable, this.planUpdateable,
+				this.instancesRetrievable, this.bindingsRetrievable, this.allowContextUpdates, this.plans, this.tags,
+				this.metadata, this.requires, this.dashboardClient);
 	}
 
 	@Override
 	public String toString() {
-		return "ServiceDefinition{" +
-				"id='" + id + '\'' +
-				", name='" + name + '\'' +
-				", description='" + description + '\'' +
-				", bindable=" + bindable +
-				", planUpdateable=" + planUpdateable +
-				", instancesRetrievable=" + instancesRetrievable +
-				", bindingsRetrievable=" + bindingsRetrievable +
-				", allowContextUpdates=" + allowContextUpdates +
-				", plans=" + plans +
-				", tags=" + tags +
-				", metadata=" + metadata +
-				", requires=" + requires +
-				", dashboardClient=" + dashboardClient +
-				'}';
+		return "ServiceDefinition{" + "id='" + this.id + '\'' + ", name='" + this.name + '\'' + ", description='"
+				+ this.description + '\'' + ", bindable=" + this.bindable + ", planUpdateable=" + this.planUpdateable
+				+ ", instancesRetrievable=" + this.instancesRetrievable + ", bindingsRetrievable="
+				+ this.bindingsRetrievable + ", allowContextUpdates=" + this.allowContextUpdates + ", plans="
+				+ this.plans + ", tags=" + this.tags + ", metadata=" + this.metadata + ", requires=" + this.requires
+				+ ", dashboardClient=" + this.dashboardClient + '}';
 	}
 
 	/**
@@ -335,9 +309,8 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * An identifier used to correlate this service in future requests to the catalog. This must be unique within
-		 * the platform. Using a GUID is recommended.
-		 *
+		 * An identifier used to correlate this service in future requests to the catalog.
+		 * This must be unique within the platform. Using a GUID is recommended.
 		 * @param id the service ID
 		 * @return the binder instance
 		 */
@@ -347,9 +320,8 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * A CLI-friendly name of the service that will appear in the catalog. The value should be all lowercase, with
-		 * no spaces.
-		 *
+		 * A CLI-friendly name of the service that will appear in the catalog. The value
+		 * should be all lowercase, with no spaces.
 		 * @param name the service name
 		 * @return the binder instance
 		 */
@@ -359,8 +331,8 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * A user-friendly short description of the service that will appear in the catalog.
-		 *
+		 * A user-friendly short description of the service that will appear in the
+		 * catalog.
 		 * @param description the service description
 		 * @return the binder instance
 		 */
@@ -371,7 +343,6 @@ public class ServiceDefinition {
 
 		/**
 		 * Indicates whether the service can be bound to applications.
-		 *
 		 * @param bindable true if the service may be bound
 		 * @return the binder instance
 		 */
@@ -381,9 +352,8 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * Indicates whether the service supports requests to update instances to use a different plan from the one used
-		 * to provision a service instance.
-		 *
+		 * Indicates whether the service supports requests to update instances to use a
+		 * different plan from the one used to provision a service instance.
 		 * @param planUpdateable true if the plan may be updated
 		 * @return the binder instance
 		 */
@@ -394,7 +364,6 @@ public class ServiceDefinition {
 
 		/**
 		 * Indicates whether the service broker supports retrieving service instances.
-		 *
 		 * @param instancesRetrievable true if the service instances may be retrieved
 		 * @return the binder instance
 		 */
@@ -405,7 +374,6 @@ public class ServiceDefinition {
 
 		/**
 		 * Indicates whether the service broker supports retrieving service bindings.
-		 *
 		 * @param bindingsRetrievable true if the service bindings may be retrieved
 		 * @return the binder instance
 		 */
@@ -416,8 +384,8 @@ public class ServiceDefinition {
 
 		/**
 		 * Indicates whether the service instance supports contextual updates.
-		 *
-		 * @param allowContextUpdates true if the service instance supports context updates
+		 * @param allowContextUpdates true if the service instance supports context
+		 * updates
 		 * @return the builder
 		 */
 		public ServiceDefinitionBuilder allowContextUpdates(Boolean allowContextUpdates) {
@@ -427,7 +395,6 @@ public class ServiceDefinition {
 
 		/**
 		 * A list of plans for this service.
-		 *
 		 * @param plans the service plans
 		 * @return the binder instance
 		 */
@@ -438,7 +405,6 @@ public class ServiceDefinition {
 
 		/**
 		 * A list of plans for this service.
-		 *
 		 * @param plans the service plans
 		 * @return the binder instance
 		 */
@@ -448,8 +414,8 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * A list of tags to aid in categorizing and classifying services with similar characteristics.
-		 *
+		 * A list of tags to aid in categorizing and classifying services with similar
+		 * characteristics.
 		 * @param tags the tags
 		 * @return the binder instance
 		 */
@@ -462,8 +428,8 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * A list of tags to aid in categorizing and classifying services with similar characteristics.
-		 *
+		 * A list of tags to aid in categorizing and classifying services with similar
+		 * characteristics.
 		 * @param tags the tags
 		 * @return the binder instance
 		 */
@@ -477,7 +443,6 @@ public class ServiceDefinition {
 
 		/**
 		 * A map of metadata to further describe a service offering.
-		 *
 		 * @param metadata the service metadata
 		 * @return the binder instance
 		 */
@@ -492,8 +457,8 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * A key/value pair to add to the map of metadata to further describe a service offering.
-		 *
+		 * A key/value pair to add to the map of metadata to further describe a service
+		 * offering.
 		 * @param key the unique key
 		 * @param value the value
 		 * @return the binder instance
@@ -507,8 +472,8 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * A list of permissions that the user would have to give the service, if they provision it.
-		 *
+		 * A list of permissions that the user would have to give the service, if they
+		 * provision it.
 		 * @param requires the required permissions
 		 * @return the binder instance
 		 * @see ServiceDefinitionRequires supported permissions
@@ -522,8 +487,8 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * A list of permissions that the user would have to give the service, if they provision it.
-		 *
+		 * A list of permissions that the user would have to give the service, if they
+		 * provision it.
 		 * @param requires the required permissions
 		 * @return the binder instance
 		 * @see ServiceDefinitionRequires supported permissions
@@ -537,8 +502,8 @@ public class ServiceDefinition {
 		}
 
 		/**
-		 * A list of permissions that the user would have to give the service, if they provision it.
-		 *
+		 * A list of permissions that the user would have to give the service, if they
+		 * provision it.
 		 * @param requires the required permissions
 		 * @return the binder instance
 		 * @see ServiceDefinitionRequires supported permissions
@@ -547,15 +512,13 @@ public class ServiceDefinition {
 			if (this.requires == null) {
 				this.requires = new ArrayList<>();
 			}
-			this.requires.addAll(Arrays.stream(requires)
-					.map(ServiceDefinitionRequires::toString)
-					.collect(Collectors.toList()));
+			this.requires
+				.addAll(Arrays.stream(requires).map(ServiceDefinitionRequires::toString).collect(Collectors.toList()));
 			return this;
 		}
 
 		/**
 		 * Data necessary to activate the Dashboard SSO feature for this service.
-		 *
 		 * @param dashboardClient the service dashboard URI
 		 * @return the binder instance
 		 */
@@ -566,13 +529,12 @@ public class ServiceDefinition {
 
 		/**
 		 * Construct a {@link ServiceDefinition} from the provided values.
-		 *
 		 * @return the newly constructed {@literal ServiceDefinition}
 		 */
 		public ServiceDefinition build() {
-			return new ServiceDefinition(id, name, description, bindable, planUpdateable,
-					instancesRetrievable, bindingsRetrievable, allowContextUpdates,
-					plans, tags, metadata, requires, dashboardClient);
+			return new ServiceDefinition(this.id, this.name, this.description, this.bindable, this.planUpdateable,
+					this.instancesRetrievable, this.bindingsRetrievable, this.allowContextUpdates, this.plans,
+					this.tags, this.metadata, this.requires, this.dashboardClient);
 		}
 
 	}

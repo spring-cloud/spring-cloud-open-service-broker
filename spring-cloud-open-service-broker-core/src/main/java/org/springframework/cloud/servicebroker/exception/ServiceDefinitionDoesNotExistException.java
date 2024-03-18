@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,22 +17,22 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a request includes a service definition ID that does not exist in the service broker
- * catalog.
+ * Thrown to indicate that a request includes a service definition ID that does not exist
+ * in the service broker catalog.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 400 BAD REQUEST} being returned to the
- * platform.
+ * Throwing this exception will result in an HTTP status code {@literal 400 BAD REQUEST}
+ * being returned to the platform.
  *
- * @author sgreenberg@pivotal.io
+ * @author S Greenberg
  */
 public class ServiceDefinitionDoesNotExistException extends ServiceBrokerException {
 
 	private static final long serialVersionUID = -62090827040416788L;
 
 	/**
-	 * Construct an exception with a default message that includes the provided service definition ID.
-	 *
+	 * Construct an exception with a default message that includes the provided service
+	 * definition ID.
 	 * @param serviceDefinitionId the service definition ID
 	 */
 	public ServiceDefinitionDoesNotExistException(String serviceDefinitionId) {
@@ -40,9 +40,10 @@ public class ServiceDefinitionDoesNotExistException extends ServiceBrokerExcepti
 	}
 
 	/**
-	 * Construct an exception with an error code and default message that includes the provided service definition ID.
-	 *
-	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * Construct an exception with an error code and default message that includes the
+	 * provided service definition ID.
+	 * @param errorCode a single word in camel case that uniquely identifies the error
+	 * condition
 	 * @param serviceDefinitionId the service definition ID
 	 */
 	public ServiceDefinitionDoesNotExistException(String errorCode, String serviceDefinitionId) {

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +22,7 @@ import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
 import org.springframework.context.annotation.Bean;
 
 /**
- * NoOp Web MVC Open Service Broker
+ * NoOp Web MVC Open Service Broker.
  *
  * @author Roy Clarkson
  */
@@ -30,8 +30,7 @@ import org.springframework.context.annotation.Bean;
 public class WebMvcApplication {
 
 	/**
-	 * main application entry point
-	 *
+	 * main application entry point.
 	 * @param args the args
 	 */
 	public static void main(final String[] args) {
@@ -39,8 +38,7 @@ public class WebMvcApplication {
 	}
 
 	/**
-	 * NoOp ServiceInstanceService Bean
-	 *
+	 * NoOp ServiceInstanceService Bean.
 	 * @return the bean
 	 */
 	@Bean

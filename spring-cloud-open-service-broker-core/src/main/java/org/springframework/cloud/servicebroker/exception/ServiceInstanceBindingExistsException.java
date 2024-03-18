@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,13 +17,16 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a service binding create request was received for a binding that already exists with
- * parameters that are different from the existing binding.
+ * Thrown to indicate that a service binding create request was received for a binding
+ * that already exists with parameters that are different from the existing binding.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 409 CONFLICT} being returned to the platform.
+ * Throwing this exception will result in an HTTP status code {@literal 409 CONFLICT}
+ * being returned to the platform.
  *
- * @author sgreenberg@pivotal.io
+ * @author S Greenberg
+ * @author Scott Frederick
+ * @author Roy Clarkson
  */
 public class ServiceInstanceBindingExistsException extends ServiceBrokerException {
 
@@ -31,7 +34,6 @@ public class ServiceInstanceBindingExistsException extends ServiceBrokerExceptio
 
 	/**
 	 * Construct an exception with a default message that includes the provided IDs.
-	 *
 	 * @param serviceInstanceId the service instance ID
 	 * @param bindingId the ID of the service binding
 	 */
@@ -41,8 +43,8 @@ public class ServiceInstanceBindingExistsException extends ServiceBrokerExceptio
 
 	/**
 	 * Construct an exception with a default message that includes the provided IDs.
-	 *
-	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param errorCode a single word in camel case that uniquely identifies the error
+	 * condition
 	 * @param serviceInstanceId the service instance ID
 	 * @param bindingId the ID of the service binding
 	 */
@@ -51,9 +53,8 @@ public class ServiceInstanceBindingExistsException extends ServiceBrokerExceptio
 	}
 
 	private static String buildMessage(String serviceInstanceId, String bindingId) {
-		return "Service instance binding already exists: "
-				+ "serviceInstanceId=" + serviceInstanceId
-				+ ", bindingId=" + bindingId;
+		return "Service instance binding already exists: " + "serviceInstanceId=" + serviceInstanceId + ", bindingId="
+				+ bindingId;
 	}
 
 }

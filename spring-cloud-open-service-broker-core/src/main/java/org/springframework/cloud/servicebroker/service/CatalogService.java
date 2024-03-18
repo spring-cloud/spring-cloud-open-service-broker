@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,33 +25,32 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
 /**
- * This interface is implemented by service brokers to process requests to retrieve the service catalog.
+ * This interface is implemented by service brokers to process requests to retrieve the
+ * service catalog.
  *
- * @author sgreenberg@pivotal.io
+ * @author S Greenberg
  * @author Roy Clarkson
  */
 public interface CatalogService {
 
 	/**
 	 * Return the catalog of services provided by the service broker.
-	 *
 	 * @return the catalog of services
 	 */
 	Mono<Catalog> getCatalog();
 
 	/**
 	 * Get a service definition from the catalog by ID.
-	 *
-	 * @param serviceId The ID of the service definition in the catalog
+	 * @param serviceId the ID of the service definition in the catalog
 	 * @return the service definition, or null if it doesn't exist
 	 */
 	Mono<ServiceDefinition> getServiceDefinition(String serviceId);
 
 	/**
-	 * Return the {@link ResponseEntity} with catalog of services provided by the service broker. Implementing
-	 * service brokers may use this method to manage ETag responses and caching of the catalog. This ResponseEntity
-	 * returned by this method is directly returned in the {@link CatalogController#getCatalog(HttpHeaders)} method.
-	 *
+	 * Return the {@link ResponseEntity} with catalog of services provided by the service
+	 * broker. Implementing service brokers may use this method to manage ETag responses
+	 * and caching of the catalog. This ResponseEntity returned by this method is directly
+	 * returned in the {@link CatalogController#getCatalog(HttpHeaders)} method.
 	 * @param httpHeaders the HttpHeaders from the request
 	 * @return the ResponseEntity with catalog or an appropriate ETag response
 	 */

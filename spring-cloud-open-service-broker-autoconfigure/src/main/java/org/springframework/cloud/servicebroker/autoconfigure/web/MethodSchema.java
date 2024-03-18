@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,8 +22,8 @@ import java.util.Map;
 import org.springframework.cloud.servicebroker.autoconfigure.web.util.MetadataUtils;
 
 /**
- * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties that describe a JSON Schema
- * for a service broker object method.
+ * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
+ * that describe a JSON Schema for a service broker object method.
  *
  * @author Sam Gunaratne
  * @author Roy Clarkson
@@ -41,15 +41,14 @@ public class MethodSchema {
 	}
 
 	/**
-	 * Converts this object into its corresponding model
-	 *
+	 * Converts this object into its corresponding model.
 	 * @return a MethodSchema model
 	 * @see org.springframework.cloud.servicebroker.model.catalog.MethodSchema
 	 */
 	public org.springframework.cloud.servicebroker.model.catalog.MethodSchema toModel() {
 		return org.springframework.cloud.servicebroker.model.catalog.MethodSchema.builder()
-				.parameters(MetadataUtils.convertMap(this.parameters))
-				.build();
+			.parameters(MetadataUtils.convertMap(this.parameters))
+			.build();
 	}
 
 }

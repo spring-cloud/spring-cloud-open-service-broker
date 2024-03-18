@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,10 +16,9 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
-import jakarta.validation.Valid;
-
 import java.util.Map;
 
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -55,11 +54,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * Provide endpoints for the service instances API.
  *
- * @author sgreenberg@pivotal.io
+ * @author S Greenberg
  * @author Scott Frederick
  * @author Roy Clarkson
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#provisioning">Open Service
- * 		Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#provisioning">Open
+ * Service Broker API specification</a>
  */
 @ServiceBrokerRestController
 public class ServiceInstanceController extends BaseController {
@@ -83,8 +83,7 @@ public class ServiceInstanceController extends BaseController {
 	private final ServiceInstanceService service;
 
 	/**
-	 * Construct a new {@link ServiceInstanceController}
-	 *
+	 * Construct a new {@link ServiceInstanceController}.
 	 * @param catalogService the catalog service
 	 * @param serviceInstanceService the service instance service
 	 */
@@ -94,62 +93,64 @@ public class ServiceInstanceController extends BaseController {
 	}
 
 	/**
-	 * REST controller for creating a service instance
-	 *
+	 * REST controller for creating a service instance.
 	 * @param pathVariables the path variables
 	 * @param serviceInstanceId the service instance ID
 	 * @param acceptsIncomplete indicates an asynchronous request
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
-	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param originatingIdentityString identity of the user that initiated the request
+	 * from the platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @param request the request body
 	 * @return the response
 	 */
-	@PutMapping({PLATFORM_PATH_MAPPING, PATH_MAPPING})
+	@PutMapping({ PLATFORM_PATH_MAPPING, PATH_MAPPING })
 	public Mono<ResponseEntity<CreateServiceInstanceResponse>> createServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
-			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
-			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, required = false) String requestIdentity,
+			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER,
+					required = false) boolean acceptsIncomplete,
+			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER,
+					required = false) String apiInfoLocation,
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER,
+					required = false) String originatingIdentityString,
+			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER,
+					required = false) String requestIdentity,
 			@Valid @RequestBody CreateServiceInstanceRequest request) {
 		return getRequiredServiceDefinition(request.getServiceDefinitionId())
-				.flatMap(serviceDefinition -> getRequiredServiceDefinitionPlan(serviceDefinition, request.getPlanId())
-						.map(plan -> {
-							request.setPlan(plan);
-							return request;
-						})
-						.map(req -> {
-							req.setServiceInstanceId(serviceInstanceId);
-							req.setServiceDefinition(serviceDefinition);
-							return req;
-						}))
-				.flatMap(req -> configureCommonRequestFields(req,
-						pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
-						originatingIdentityString, requestIdentity, acceptsIncomplete))
-				.cast(CreateServiceInstanceRequest.class)
-				.flatMap(req -> service.createServiceInstance(req)
-						.doOnRequest(v -> {
-							if (LOG.isInfoEnabled()) {
-								LOG.info(INFO_REQUEST, "Creating", req.getServiceInstanceId());
-							}
-							if (LOG.isDebugEnabled()) {
-								LOG.debug(DEBUG_REQUEST, req);
-							}
-						})
-						.doOnSuccess(response -> {
-							if (LOG.isInfoEnabled()) {
-								LOG.info(INFO_RESPONSE, "Creating", serviceInstanceId);
-							}
-							if (LOG.isDebugEnabled()) {
-								LOG.debug(DEBUG_RESPONSE, response);
-							}
-						})
-						.doOnError(e -> LOG.error(String.format(ERROR_RESPONSE, "creating", serviceInstanceId,
-										e.getMessage()), e)))
-				.map(response -> new ResponseEntity<>(response, getCreateResponseCode(response)))
-				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.CREATED)));
+			.flatMap((serviceDefinition) -> getRequiredServiceDefinitionPlan(serviceDefinition, request.getPlanId())
+				.map((plan) -> {
+					request.setPlan(plan);
+					return request;
+				})
+				.map((req) -> {
+					req.setServiceInstanceId(serviceInstanceId);
+					req.setServiceDefinition(serviceDefinition);
+					return req;
+				}))
+			.flatMap((req) -> configureCommonRequestFields(req,
+					pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
+					originatingIdentityString, requestIdentity, acceptsIncomplete))
+			.cast(CreateServiceInstanceRequest.class)
+			.flatMap((req) -> this.service.createServiceInstance(req).doOnRequest((v) -> {
+				if (LOG.isInfoEnabled()) {
+					LOG.info(INFO_REQUEST, "Creating", req.getServiceInstanceId());
+				}
+				if (LOG.isDebugEnabled()) {
+					LOG.debug(DEBUG_REQUEST, req);
+				}
+			}).doOnSuccess((response) -> {
+				if (LOG.isInfoEnabled()) {
+					LOG.info(INFO_RESPONSE, "Creating", serviceInstanceId);
+				}
+				if (LOG.isDebugEnabled()) {
+					LOG.debug(DEBUG_RESPONSE, response);
+				}
+			})
+				.doOnError((e) -> LOG
+					.error(String.format(ERROR_RESPONSE, "creating", serviceInstanceId, e.getMessage()), e)))
+			.map((response) -> new ResponseEntity<>(response, getCreateResponseCode(response)))
+			.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.CREATED)));
 	}
 
 	private HttpStatus getCreateResponseCode(CreateServiceInstanceResponse response) {
@@ -166,263 +167,269 @@ public class ServiceInstanceController extends BaseController {
 	}
 
 	/**
-	 * REST controller for getting a service instance
-	 *
+	 * REST controller for getting a service instance.
 	 * @param pathVariables the path variables
 	 * @param serviceInstanceId the service instance ID
 	 * @param serviceDefinitionId the service definition ID
 	 * @param planId the plan ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
-	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param originatingIdentityString identity of the user that initiated the request
+	 * from the platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the response
 	 */
-	@GetMapping({PLATFORM_PATH_MAPPING, PATH_MAPPING})
+	@GetMapping({ PLATFORM_PATH_MAPPING, PATH_MAPPING })
 	public Mono<ResponseEntity<GetServiceInstanceResponse>> getServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-			@RequestParam(value = ServiceBrokerRequest.SERVICE_ID_PARAMETER, required = false) String serviceDefinitionId,
+			@RequestParam(value = ServiceBrokerRequest.SERVICE_ID_PARAMETER,
+					required = false) String serviceDefinitionId,
 			@RequestParam(value = ServiceBrokerRequest.PLAN_ID_PARAMETER, required = false) String planId,
-			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
-			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, required = false) String requestIdentity) {
-		return Mono.just(GetServiceInstanceRequest.builder()
-						.serviceInstanceId(serviceInstanceId)
-						.serviceDefinitionId(serviceDefinitionId)
-						.planId(planId)
-						.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
-						.apiInfoLocation(apiInfoLocation)
-						.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
-						.requestIdentity(requestIdentity)
-						.build())
-				.flatMap(request -> service.getServiceInstance(request)
-						.doOnRequest(v -> {
-							if (LOG.isInfoEnabled()) {
-								LOG.info(INFO_REQUEST, "Getting", request.getServiceInstanceId());
-							}
-							if (LOG.isDebugEnabled()) {
-								LOG.debug(DEBUG_REQUEST, request);
-							}
-						})
-						.doOnSuccess(response -> {
-							if (LOG.isInfoEnabled()) {
-								LOG.info(INFO_RESPONSE, "Getting", serviceInstanceId);
-							}
-							if (LOG.isDebugEnabled()) {
-								LOG.debug(DEBUG_RESPONSE, response);
-							}
-						})
-						.doOnError(e -> LOG.error(String.format(ERROR_RESPONSE, "getting", serviceInstanceId,
-								e.getMessage()), e)))
-				.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
-				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
-				.onErrorResume(e -> {
-					if (e instanceof ServiceInstanceDoesNotExistException) {
-						return Mono.just(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-					}
-					else {
-						return Mono.error(e);
-					}
-				});
+			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER,
+					required = false) String apiInfoLocation,
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER,
+					required = false) String originatingIdentityString,
+			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER,
+					required = false) String requestIdentity) {
+		return Mono
+			.just(GetServiceInstanceRequest.builder()
+				.serviceInstanceId(serviceInstanceId)
+				.serviceDefinitionId(serviceDefinitionId)
+				.planId(planId)
+				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
+				.apiInfoLocation(apiInfoLocation)
+				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+				.requestIdentity(requestIdentity)
+				.build())
+			.flatMap((request) -> this.service.getServiceInstance(request).doOnRequest((v) -> {
+				if (LOG.isInfoEnabled()) {
+					LOG.info(INFO_REQUEST, "Getting", request.getServiceInstanceId());
+				}
+				if (LOG.isDebugEnabled()) {
+					LOG.debug(DEBUG_REQUEST, request);
+				}
+			}).doOnSuccess((response) -> {
+				if (LOG.isInfoEnabled()) {
+					LOG.info(INFO_RESPONSE, "Getting", serviceInstanceId);
+				}
+				if (LOG.isDebugEnabled()) {
+					LOG.debug(DEBUG_RESPONSE, response);
+				}
+			})
+				.doOnError((e) -> LOG.error(String.format(ERROR_RESPONSE, "getting", serviceInstanceId, e.getMessage()),
+						e)))
+			.map((response) -> new ResponseEntity<>(response, HttpStatus.OK))
+			.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
+			.onErrorResume((e) -> {
+				if (e instanceof ServiceInstanceDoesNotExistException) {
+					return Mono.just(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+				}
+				else {
+					return Mono.error(e);
+				}
+			});
 	}
 
 	/**
-	 * REST controller for getting the last operation of a service instance
-	 *
+	 * REST controller for getting the last operation of a service instance.
 	 * @param pathVariables the path variables
 	 * @param serviceInstanceId the service instance ID
 	 * @param serviceDefinitionId the service definition ID
 	 * @param planId the plan ID
 	 * @param operation description of the operation being performed
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
-	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param originatingIdentityString identity of the user that initiated the request
+	 * from the platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the response
 	 */
-	@GetMapping({PLATFORM_PATH_MAPPING + "/last_operation", PATH_MAPPING + "/last_operation"})
+	@GetMapping({ PLATFORM_PATH_MAPPING + "/last_operation", PATH_MAPPING + "/last_operation" })
 	public Mono<ResponseEntity<GetLastServiceOperationResponse>> getServiceInstanceLastOperation(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-			@RequestParam(value = ServiceBrokerRequest.SERVICE_ID_PARAMETER, required = false) String serviceDefinitionId,
+			@RequestParam(value = ServiceBrokerRequest.SERVICE_ID_PARAMETER,
+					required = false) String serviceDefinitionId,
 			@RequestParam(value = ServiceBrokerRequest.PLAN_ID_PARAMETER, required = false) String planId,
 			@RequestParam(value = "operation", required = false) String operation,
-			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
-			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, required = false) String requestIdentity) {
-		return Mono.just(GetLastServiceOperationRequest.builder()
-						.serviceDefinitionId(serviceDefinitionId)
-						.serviceInstanceId(serviceInstanceId)
-						.planId(planId)
-						.operation(operation)
-						.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
-						.apiInfoLocation(apiInfoLocation)
-						.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
-						.requestIdentity(requestIdentity)
-						.build())
-				.flatMap(request -> service.getLastOperation(request)
-						.doOnRequest(v -> {
-							if (LOG.isInfoEnabled()) {
-								LOG.info(INFO_REQUEST, "Getting last operation for", request.getServiceInstanceId());
-							}
-							if (LOG.isDebugEnabled()) {
-								LOG.debug(DEBUG_REQUEST, request);
-							}
-						})
-						.doOnSuccess(response -> {
-							if (LOG.isInfoEnabled()) {
-								LOG.info(INFO_RESPONSE, "Getting last operation for", serviceInstanceId);
-							}
-							if (LOG.isDebugEnabled()) {
-								LOG.debug(DEBUG_RESPONSE, response);
-							}
-						})
-						.doOnError(e -> LOG.error(String.format(ERROR_RESPONSE, "getting last operation for",
-								serviceInstanceId, e.getMessage()), e)))
-				.map(response -> {
-					boolean isSuccessfulDelete = OperationState.SUCCEEDED.equals(response.getState()) && response
-							.isDeleteOperation();
-					return new ResponseEntity<>(response, isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK);
-				})
-				.onErrorResume(e -> {
-					if (e instanceof ServiceInstanceDoesNotExistException) {
-						// TODO: v2.16 of the OSB API spec changes this to an HTTP 404
-						return Mono.just(new ResponseEntity<>(GetLastServiceOperationResponse.builder()
-								.description("The requested Service Instance does not exist")
-								.build(), HttpStatus.BAD_REQUEST));
-					}
-					else {
-						return Mono.error(e);
-					}
-				});
+			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER,
+					required = false) String apiInfoLocation,
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER,
+					required = false) String originatingIdentityString,
+			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER,
+					required = false) String requestIdentity) {
+		return Mono
+			.just(GetLastServiceOperationRequest.builder()
+				.serviceDefinitionId(serviceDefinitionId)
+				.serviceInstanceId(serviceInstanceId)
+				.planId(planId)
+				.operation(operation)
+				.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
+				.apiInfoLocation(apiInfoLocation)
+				.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+				.requestIdentity(requestIdentity)
+				.build())
+			.flatMap((request) -> this.service.getLastOperation(request).doOnRequest((v) -> {
+				if (LOG.isInfoEnabled()) {
+					LOG.info(INFO_REQUEST, "Getting last operation for", request.getServiceInstanceId());
+				}
+				if (LOG.isDebugEnabled()) {
+					LOG.debug(DEBUG_REQUEST, request);
+				}
+			}).doOnSuccess((response) -> {
+				if (LOG.isInfoEnabled()) {
+					LOG.info(INFO_RESPONSE, "Getting last operation for", serviceInstanceId);
+				}
+				if (LOG.isDebugEnabled()) {
+					LOG.debug(DEBUG_RESPONSE, response);
+				}
+			})
+				.doOnError((e) -> LOG.error(
+						String.format(ERROR_RESPONSE, "getting last operation for", serviceInstanceId, e.getMessage()),
+						e)))
+			.map((response) -> {
+				boolean isSuccessfulDelete = OperationState.SUCCEEDED.equals(response.getState())
+						&& response.isDeleteOperation();
+				return new ResponseEntity<>(response, isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK);
+			})
+			.onErrorResume((e) -> {
+				if (e instanceof ServiceInstanceDoesNotExistException) {
+					// TODO: v2.16 of the OSB API spec changes this to an HTTP 404
+					return Mono.just(new ResponseEntity<>(GetLastServiceOperationResponse.builder()
+						.description("The requested Service Instance does not exist")
+						.build(), HttpStatus.BAD_REQUEST));
+				}
+				else {
+					return Mono.error(e);
+				}
+			});
 	}
 
 	/**
-	 * REST controller for deleting a service instance
-	 *
+	 * REST controller for deleting a service instance.
 	 * @param pathVariables the path variables
 	 * @param serviceInstanceId the service instance ID
 	 * @param serviceDefinitionId the service definition ID
 	 * @param planId the plan ID
 	 * @param acceptsIncomplete indicates an asynchronous request
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
-	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param originatingIdentityString identity of the user that initiated the request
+	 * from the platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the response
 	 */
-	@DeleteMapping({PLATFORM_PATH_MAPPING, PATH_MAPPING})
+	@DeleteMapping({ PLATFORM_PATH_MAPPING, PATH_MAPPING })
 	public Mono<ResponseEntity<DeleteServiceInstanceResponse>> deleteServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
 			@RequestParam(ServiceBrokerRequest.SERVICE_ID_PARAMETER) String serviceDefinitionId,
 			@RequestParam(ServiceBrokerRequest.PLAN_ID_PARAMETER) String planId,
-			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
-			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
-			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, required = false) String requestIdentity) {
+			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER,
+					required = false) boolean acceptsIncomplete,
+			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER,
+					required = false) String apiInfoLocation,
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER,
+					required = false) String originatingIdentityString,
+			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER,
+					required = false) String requestIdentity) {
 		return getRequiredServiceDefinition(serviceDefinitionId)
-				.flatMap(serviceDefinition -> getRequiredServiceDefinitionPlan(serviceDefinition, planId)
-						.map(DeleteServiceInstanceRequest.builder()::plan)
-						.map(builder -> builder
-								.serviceInstanceId(serviceInstanceId)
-								.serviceDefinitionId(serviceDefinitionId)
-								.planId(planId)
-								.serviceDefinition(serviceDefinition)
-								.asyncAccepted(acceptsIncomplete)
-								.platformInstanceId(
-										pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
-								.apiInfoLocation(apiInfoLocation)
-								.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
-								.requestIdentity(requestIdentity)
-								.build()))
-				.flatMap(request -> service.deleteServiceInstance(request)
-						.doOnRequest(v -> {
-							if (LOG.isInfoEnabled()) {
-								LOG.info(INFO_REQUEST, "Deleting", request.getServiceInstanceId());
-							}
-							if (LOG.isDebugEnabled()) {
-								LOG.debug(DEBUG_REQUEST, request);
-							}
-						})
-						.doOnSuccess(response -> {
-							if (LOG.isInfoEnabled()) {
-								LOG.info(INFO_RESPONSE, "Deleting", serviceInstanceId);
-							}
-							if (LOG.isDebugEnabled()) {
-								LOG.debug(DEBUG_RESPONSE, response);
-							}
-						})
-						.doOnError(e -> LOG.error(String.format(ERROR_RESPONSE, "deleting", serviceInstanceId,
-								e.getMessage()), e)))
-				.map(response -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
-				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
-				.onErrorResume(e -> {
-					if (e instanceof ServiceInstanceDoesNotExistException) {
-						return Mono.just(new ResponseEntity<>(HttpStatus.GONE));
-					}
-					else {
-						return Mono.error(e);
-					}
-				});
+			.flatMap((serviceDefinition) -> getRequiredServiceDefinitionPlan(serviceDefinition, planId)
+				.map(DeleteServiceInstanceRequest.builder()::plan)
+				.map((builder) -> builder.serviceInstanceId(serviceInstanceId)
+					.serviceDefinitionId(serviceDefinitionId)
+					.planId(planId)
+					.serviceDefinition(serviceDefinition)
+					.asyncAccepted(acceptsIncomplete)
+					.platformInstanceId(pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE))
+					.apiInfoLocation(apiInfoLocation)
+					.originatingIdentity(parseOriginatingIdentity(originatingIdentityString))
+					.requestIdentity(requestIdentity)
+					.build()))
+			.flatMap((request) -> this.service.deleteServiceInstance(request).doOnRequest((v) -> {
+				if (LOG.isInfoEnabled()) {
+					LOG.info(INFO_REQUEST, "Deleting", request.getServiceInstanceId());
+				}
+				if (LOG.isDebugEnabled()) {
+					LOG.debug(DEBUG_REQUEST, request);
+				}
+			}).doOnSuccess((response) -> {
+				if (LOG.isInfoEnabled()) {
+					LOG.info(INFO_RESPONSE, "Deleting", serviceInstanceId);
+				}
+				if (LOG.isDebugEnabled()) {
+					LOG.debug(DEBUG_RESPONSE, response);
+				}
+			})
+				.doOnError((e) -> LOG
+					.error(String.format(ERROR_RESPONSE, "deleting", serviceInstanceId, e.getMessage()), e)))
+			.map((response) -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
+			.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
+			.onErrorResume((e) -> {
+				if (e instanceof ServiceInstanceDoesNotExistException) {
+					return Mono.just(new ResponseEntity<>(HttpStatus.GONE));
+				}
+				else {
+					return Mono.error(e);
+				}
+			});
 	}
 
 	/**
-	 * REST controller for updating a service instance
-	 *
+	 * REST controller for updating a service instance.
 	 * @param pathVariables the path variables
 	 * @param serviceInstanceId the service instance ID
 	 * @param acceptsIncomplete indicates an asynchronous request
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
-	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param originatingIdentityString identity of the user that initiated the request
+	 * from the platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @param request the request body
 	 * @return the response
 	 */
-	@PatchMapping({PLATFORM_PATH_MAPPING, PATH_MAPPING})
+	@PatchMapping({ PLATFORM_PATH_MAPPING, PATH_MAPPING })
 	public Mono<ResponseEntity<UpdateServiceInstanceResponse>> updateServiceInstance(
 			@PathVariable Map<String, String> pathVariables,
 			@PathVariable(ServiceBrokerRequest.INSTANCE_ID_PATH_VARIABLE) String serviceInstanceId,
-			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER, required = false) boolean acceptsIncomplete,
-			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER, required = false) String apiInfoLocation,
-			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER, required = false) String originatingIdentityString,
-			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, required = false) String requestIdentity,
+			@RequestParam(value = AsyncServiceBrokerRequest.ASYNC_REQUEST_PARAMETER,
+					required = false) boolean acceptsIncomplete,
+			@RequestHeader(value = ServiceBrokerRequest.API_INFO_LOCATION_HEADER,
+					required = false) String apiInfoLocation,
+			@RequestHeader(value = ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER,
+					required = false) String originatingIdentityString,
+			@RequestHeader(value = ServiceBrokerRequest.REQUEST_IDENTITY_HEADER,
+					required = false) String requestIdentity,
 			@Valid @RequestBody UpdateServiceInstanceRequest request) {
-		return getRequiredServiceDefinition(request.getServiceDefinitionId())
-				.flatMap(serviceDefinition -> getServiceDefinitionPlan(serviceDefinition, request.getPlanId())
-						.map(plan -> {
-							request.setPlan(plan);
-							return request;
-						})
-						.switchIfEmpty(Mono.just(request))
-						.map(req -> {
-							req.setServiceInstanceId(serviceInstanceId);
-							req.setServiceDefinition(serviceDefinition);
-							return req;
-						}))
-				.flatMap(req -> configureCommonRequestFields(req,
-						pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
-						originatingIdentityString, requestIdentity, acceptsIncomplete))
-				.cast(UpdateServiceInstanceRequest.class)
-				.flatMap(req -> service.updateServiceInstance(req)
-						.doOnRequest(v -> {
-							if (LOG.isInfoEnabled()) {
-								LOG.info(INFO_REQUEST, "Updating", req.getServiceInstanceId());
-							}
-							if (LOG.isDebugEnabled()) {
-								LOG.debug(DEBUG_REQUEST, req);
-							}
-						})
-						.doOnSuccess(response -> {
-							if (LOG.isInfoEnabled()) {
-								LOG.info(INFO_RESPONSE, "Updating", serviceInstanceId);
-							}
-							if (LOG.isDebugEnabled()) {
-								LOG.debug(DEBUG_RESPONSE, response);
-							}
-						})
-						.doOnError(e -> LOG.error(String.format(ERROR_RESPONSE, "updating", serviceInstanceId,
-								e.getMessage()), e)))
-				.map(response -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
-				.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)));
+		return getRequiredServiceDefinition(request.getServiceDefinitionId()).flatMap(
+				(serviceDefinition) -> getServiceDefinitionPlan(serviceDefinition, request.getPlanId()).map((plan) -> {
+					request.setPlan(plan);
+					return request;
+				}).switchIfEmpty(Mono.just(request)).map((req) -> {
+					req.setServiceInstanceId(serviceInstanceId);
+					req.setServiceDefinition(serviceDefinition);
+					return req;
+				}))
+			.flatMap((req) -> configureCommonRequestFields(req,
+					pathVariables.get(ServiceBrokerRequest.PLATFORM_INSTANCE_ID_VARIABLE), apiInfoLocation,
+					originatingIdentityString, requestIdentity, acceptsIncomplete))
+			.cast(UpdateServiceInstanceRequest.class)
+			.flatMap((req) -> this.service.updateServiceInstance(req).doOnRequest((v) -> {
+				if (LOG.isInfoEnabled()) {
+					LOG.info(INFO_REQUEST, "Updating", req.getServiceInstanceId());
+				}
+				if (LOG.isDebugEnabled()) {
+					LOG.debug(DEBUG_REQUEST, req);
+				}
+			}).doOnSuccess((response) -> {
+				if (LOG.isInfoEnabled()) {
+					LOG.info(INFO_RESPONSE, "Updating", serviceInstanceId);
+				}
+				if (LOG.isDebugEnabled()) {
+					LOG.debug(DEBUG_RESPONSE, response);
+				}
+			})
+				.doOnError((e) -> LOG
+					.error(String.format(ERROR_RESPONSE, "updating", serviceInstanceId, e.getMessage()), e)))
+			.map((response) -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
+			.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)));
 	}
 
 }

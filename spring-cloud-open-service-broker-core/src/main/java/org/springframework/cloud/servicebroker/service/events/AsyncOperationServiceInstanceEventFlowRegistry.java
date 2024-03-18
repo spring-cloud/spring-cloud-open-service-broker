@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,18 +27,15 @@ import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperati
 import org.springframework.cloud.servicebroker.service.events.flows.AsyncOperationServiceInstanceInitializationFlow;
 
 /**
- * Event flow registry for asynchronous get last operation requests
+ * Event flow registry for asynchronous get last operation requests.
  *
  * @author Roy Clarkson
  */
-public class AsyncOperationServiceInstanceEventFlowRegistry
-		extends EventFlowRegistry<AsyncOperationServiceInstanceInitializationFlow,
-		AsyncOperationServiceInstanceCompletionFlow, AsyncOperationServiceInstanceErrorFlow, GetLastServiceOperationRequest,
-		GetLastServiceOperationResponse> {
+public class AsyncOperationServiceInstanceEventFlowRegistry extends
+		EventFlowRegistry<AsyncOperationServiceInstanceInitializationFlow, AsyncOperationServiceInstanceCompletionFlow, AsyncOperationServiceInstanceErrorFlow, GetLastServiceOperationRequest, GetLastServiceOperationResponse> {
 
 	/**
-	 * Construct a new {@link AsyncOperationServiceInstanceEventFlowRegistry}
-	 *
+	 * Construct a new {@link AsyncOperationServiceInstanceEventFlowRegistry}.
 	 * @param initializationFlows the initialization flows
 	 * @param completionFlows the completion flows
 	 * @param errorFlows the error flows
@@ -52,21 +49,18 @@ public class AsyncOperationServiceInstanceEventFlowRegistry
 
 	@Override
 	public Flux<Void> getInitializationFlows(GetLastServiceOperationRequest request) {
-		return getInitializationFlowsInternal()
-				.flatMap(flow -> flow.initialize(request));
+		return getInitializationFlowsInternal().flatMap((flow) -> flow.initialize(request));
 	}
 
 	@Override
 	public Flux<Void> getCompletionFlows(GetLastServiceOperationRequest request,
 			GetLastServiceOperationResponse response) {
-		return getCompletionFlowsInternal()
-				.flatMap(flow -> flow.complete(request, response));
+		return getCompletionFlowsInternal().flatMap((flow) -> flow.complete(request, response));
 	}
 
 	@Override
 	public Flux<Void> getErrorFlows(GetLastServiceOperationRequest request, Throwable t) {
-		return getErrorFlowsInternal()
-				.flatMap(flow -> flow.error(request, t));
+		return getErrorFlowsInternal().flatMap((flow) -> flow.error(request, t));
 	}
 
 }

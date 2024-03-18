@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,15 +58,13 @@ public abstract class ServiceBrokerExceptionHandler {
 	protected static final String UNPROCESSABLE_REQUEST = "Unprocessable request received: ";
 
 	/**
-	 * Callback to implementing classes to obtain the configured Logger
-	 *
+	 * Callback to implementing classes to obtain the configured Logger.
 	 * @return the Logger
 	 */
 	protected abstract Logger getLog();
 
 	/**
-	 * Handle a {@link ServiceBrokerApiVersionException}
-	 *
+	 * Handle a {@link ServiceBrokerApiVersionException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -77,8 +75,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceBrokerApiVersionMissingException}
-	 *
+	 * Handle a {@link ServiceBrokerApiVersionMissingException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -89,8 +86,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceInstanceDoesNotExistException}
-	 *
+	 * Handle a {@link ServiceInstanceDoesNotExistException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -101,8 +97,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceDefinitionDoesNotExistException}
-	 *
+	 * Handle a {@link ServiceDefinitionDoesNotExistException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -113,8 +108,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceDefinitionPlanDoesNotExistException}
-	 *
+	 * Handle a {@link ServiceDefinitionPlanDoesNotExistException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -125,8 +119,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceBrokerAsyncRequiredException}
-	 *
+	 * Handle a {@link ServiceBrokerAsyncRequiredException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -137,8 +130,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceBrokerMaintenanceInfoConflictException}
-	 *
+	 * Handle a {@link ServiceBrokerMaintenanceInfoConflictException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -149,8 +141,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceBrokerInvalidParametersException}
-	 *
+	 * Handle a {@link ServiceBrokerInvalidParametersException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -161,8 +152,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceBrokerOperationInProgressException}
-	 *
+	 * Handle a {@link ServiceBrokerOperationInProgressException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -173,8 +163,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceBrokerCreateOperationInProgressException}
-	 *
+	 * Handle a {@link ServiceBrokerCreateOperationInProgressException}.
 	 * @param ex the exception
 	 * @return an operation in progress message
 	 */
@@ -185,8 +174,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceBrokerUpdateOperationInProgressException}
-	 *
+	 * Handle a {@link ServiceBrokerUpdateOperationInProgressException}.
 	 * @param ex the exception
 	 * @return an operation in progress message
 	 */
@@ -197,8 +185,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceBrokerDeleteOperationInProgressException}
-	 *
+	 * Handle a {@link ServiceBrokerDeleteOperationInProgressException}.
 	 * @param ex the exception
 	 * @return an operation in progress message
 	 */
@@ -209,8 +196,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceBrokerUnavailableException}
-	 *
+	 * Handle a {@link ServiceBrokerUnavailableException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -221,8 +207,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceBrokerConcurrencyException}
-	 *
+	 * Handle a {@link ServiceBrokerConcurrencyException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -233,8 +218,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceBrokerException}
-	 *
+	 * Handle a {@link ServiceBrokerException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -245,8 +229,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceBrokerInvalidOriginatingIdentityException}
-	 *
+	 * Handle a {@link ServiceBrokerInvalidOriginatingIdentityException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -258,8 +241,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link Exception}
-	 *
+	 * Handle a {@link Exception}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -271,8 +253,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceInstanceExistsException}
-	 *
+	 * Handle a {@link ServiceInstanceExistsException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -283,8 +264,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceInstanceUpdateNotSupportedException}
-	 *
+	 * Handle a {@link ServiceInstanceUpdateNotSupportedException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -295,8 +275,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceInstanceBindingExistsException}
-	 *
+	 * Handle a {@link ServiceInstanceBindingExistsException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -307,8 +286,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceInstanceBindingDoesNotExistException}
-	 *
+	 * Handle a {@link ServiceInstanceBindingDoesNotExistException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -319,8 +297,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Handle a {@link ServiceBrokerBindingRequiresAppException}
-	 *
+	 * Handle a {@link ServiceBrokerBindingRequiresAppException}.
 	 * @param ex the exception
 	 * @return an error message
 	 */
@@ -331,8 +308,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Format an error message for the exception
-	 *
+	 * Format an error message for the exception.
 	 * @param ex the exception
 	 * @return the error message
 	 */
@@ -344,8 +320,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Format an operation in progress message for the exception
-	 *
+	 * Format an operation in progress message for the exception.
 	 * @param ex the exception
 	 * @return the message
 	 */
@@ -357,8 +332,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Format an error message for the exception
-	 *
+	 * Format an error message for the exception.
 	 * @param ex the exception
 	 * @return the error message
 	 */
@@ -367,8 +341,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Create an error message object
-	 *
+	 * Create an error message object.
 	 * @param message the text of the message
 	 * @return the error message
 	 */
@@ -377,8 +350,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	}
 
 	/**
-	 * Creates an error message for binding errors
-	 *
+	 * Creates an error message for binding errors.
 	 * @param ex the exception
 	 * @param result the binding result
 	 * @return the error message

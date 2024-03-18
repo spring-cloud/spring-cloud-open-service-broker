@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,9 +25,11 @@ import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 
 /**
- * An implementation of the {@link CatalogService} that allows the {@link Catalog} to be specified as a Spring Bean.
+ * An implementation of the {@link CatalogService} that allows the {@link Catalog} to be
+ * specified as a Spring Bean.
  *
- * @author sgreenberg@pivotal.io
+ * @author S Greenberg
+ * @author Scott Frederick
  */
 public class BeanCatalogService implements CatalogService {
 
@@ -37,7 +39,6 @@ public class BeanCatalogService implements CatalogService {
 
 	/**
 	 * Construct a service with the provided {@link Catalog bean}.
-	 *
 	 * @param catalog the {@link Catalog} bean
 	 */
 	public BeanCatalogService(Catalog catalog) {
@@ -46,17 +47,17 @@ public class BeanCatalogService implements CatalogService {
 	}
 
 	private void initializeMap() {
-		catalog.getServiceDefinitions().forEach(def -> serviceDefs.put(def.getId(), def));
+		this.catalog.getServiceDefinitions().forEach((def) -> this.serviceDefs.put(def.getId(), def));
 	}
 
 	@Override
 	public Mono<Catalog> getCatalog() {
-		return Mono.just(catalog);
+		return Mono.just(this.catalog);
 	}
 
 	@Override
 	public Mono<ServiceDefinition> getServiceDefinition(final String serviceId) {
-		return Mono.justOrEmpty(serviceDefs.get(serviceId));
+		return Mono.justOrEmpty(this.serviceDefs.get(serviceId));
 	}
 
 }

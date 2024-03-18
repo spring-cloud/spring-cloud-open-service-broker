@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,10 +19,9 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
- * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties that describes a JSON Schemas
- * available for a {@link Plan}.
+ * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
+ * that describes a JSON Schemas available for a {@link Plan}.
  *
- * @author sgunaratne@pivotal.io
  * @author Sam Gunaratne
  * @author Roy Clarkson
  * @see org.springframework.cloud.servicebroker.model.catalog.Schemas
@@ -58,16 +57,15 @@ public class Schemas {
 	}
 
 	/**
-	 * Converts this object into its corresponding model
-	 *
+	 * Converts this object into its corresponding model.
 	 * @return a Schemas model
 	 * @see org.springframework.cloud.servicebroker.model.catalog.Schemas
 	 */
 	public org.springframework.cloud.servicebroker.model.catalog.Schemas toModel() {
 		return org.springframework.cloud.servicebroker.model.catalog.Schemas.builder()
-				.serviceInstanceSchema(this.serviceInstance == null ? null : this.serviceInstance.toModel())
-				.serviceBindingSchema(this.serviceBinding == null ? null : this.serviceBinding.toModel())
-				.build();
+			.serviceInstanceSchema((this.serviceInstance == null) ? null : this.serviceInstance.toModel())
+			.serviceBindingSchema((this.serviceBinding == null) ? null : this.serviceBinding.toModel())
+			.build();
 	}
 
 }

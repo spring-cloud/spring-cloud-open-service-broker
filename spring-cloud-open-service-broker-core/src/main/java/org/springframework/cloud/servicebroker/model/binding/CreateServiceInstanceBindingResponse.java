@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,7 +30,8 @@ import org.springframework.cloud.servicebroker.model.instance.CreateServiceInsta
 /**
  * Details of a response to a service instance binding create request.
  * <p>
- * Service brokers will typically construct one of the subtypes of this class to build a response.
+ * Service brokers will typically construct one of the subtypes of this class to build a
+ * response.
  *
  * @author Scott Frederick
  * @author Roy Clarkson
@@ -44,11 +45,11 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	private final BindingMetadata metadata;
 
 	/**
-	 * Construct a new {@link CreateServiceInstanceBindingResponse}
-	 *
+	 * Construct a new {@link CreateServiceInstanceBindingResponse}.
 	 * @param async is the operation asynchronous
 	 * @param operation description of the operation being performed
-	 * @param bindingExisted does the service binding already exist with identical parameters
+	 * @param bindingExisted does the service binding already exist with identical
+	 * parameters
 	 * @param metadata the service instance binding metadata
 	 */
 	protected CreateServiceInstanceBindingResponse(boolean async, String operation, boolean bindingExisted,
@@ -59,10 +60,10 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	}
 
 	/**
-	 * Get the boolean value indicating whether the service binding already exists with the same parameters as the
-	 * requested service binding. If the request is for the same binding id, but with different parameters, the
-	 * implementor should throw a {@link ServiceInstanceBindingExistsException} instead.
-	 *
+	 * Get the boolean value indicating whether the service binding already exists with
+	 * the same parameters as the requested service binding. If the request is for the
+	 * same binding id, but with different parameters, the implementor should throw a
+	 * {@link ServiceInstanceBindingExistsException} instead.
 	 * @return the boolean value
 	 */
 	@JsonIgnore
@@ -71,8 +72,7 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	}
 
 	/**
-	 * Get the service instance binding metadata
-	 *
+	 * Get the service instance binding metadata.
 	 * @return the metadata
 	 */
 	@JsonInclude(JsonInclude.Include.NON_NULL)
@@ -92,9 +92,8 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 			return false;
 		}
 		CreateServiceInstanceBindingResponse that = (CreateServiceInstanceBindingResponse) o;
-		return that.canEqual(this) &&
-				bindingExisted == that.bindingExisted &&
-				Objects.equals(metadata, that.metadata);
+		return that.canEqual(this) && this.bindingExisted == that.bindingExisted
+				&& Objects.equals(this.metadata, that.metadata);
 	}
 
 	@Override
@@ -104,15 +103,13 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), bindingExisted, metadata);
+		return Objects.hash(super.hashCode(), this.bindingExisted, this.metadata);
 	}
 
 	@Override
 	public String toString() {
-		return "CreateServiceInstanceBindingResponse{" +
-				"bindingExisted=" + bindingExisted +
-				"metadata=" + metadata +
-				'}';
+		return "CreateServiceInstanceBindingResponse{" + "bindingExisted=" + this.bindingExisted + "metadata="
+				+ this.metadata + '}';
 	}
 
 	/**
@@ -132,18 +129,21 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		}
 
 		/**
-		 * Set a boolean value indicating whether the service instance binding already exists with the same parameters
-		 * as the requested service instance binding. A {@literal true} value indicates a service instance binding
-		 * exists and no new resources were created by the service broker, <code>false</code> indicates that new
-		 * resources were created. If the request is for the same binding id, but with different parameters, the
-		 * implementor should throw a {@link ServiceInstanceBindingExistsException} instead.
+		 * Set a boolean value indicating whether the service instance binding already
+		 * exists with the same parameters as the requested service instance binding. A
+		 * {@literal true} value indicates a service instance binding exists and no new
+		 * resources were created by the service broker, <code>false</code> indicates that
+		 * new resources were created. If the request is for the same binding id, but with
+		 * different parameters, the implementor should throw a
+		 * {@link ServiceInstanceBindingExistsException} instead.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
-		 * result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be determined by the
-		 * value of {@link #async(boolean)}.
-		 *
-		 * @param bindingExisted {@literal true} to indicate that the binding exists, {@literal false} otherwise
+		 * This value will be used to determine the HTTP response code to the platform. A
+		 * {@literal true} value will result in a response code {@literal 202 ACCEPTED};
+		 * otherwise the response code will be determined by the value of
+		 * {@link #async(boolean)}.
+		 * @param bindingExisted {@literal true} to indicate that the binding exists,
+		 * {@literal false} otherwise
 		 * @return the builder
 		 */
 		public CreateServiceInstanceBindingResponseBuilder bindingExisted(boolean bindingExisted) {
@@ -155,8 +155,8 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 * Set the service instance binding metadata
 		 *
 		 * <p>
-		 * This value will set the {@literal metadata} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal metadata} field in the body of the response
+		 * to the platform.
 		 * @param metadata metadata about this service binding
 		 * @return the builder
 		 */
@@ -166,15 +166,16 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		}
 
 		/**
-		 * Set a boolean value indicating whether the requested operation is being performed synchronously or
-		 * asynchronously.
+		 * Set a boolean value indicating whether the requested operation is being
+		 * performed synchronously or asynchronously.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. If the service broker indicates
-		 * that it performed the operation synchronously, a {@literal true} value will result in a response code
-		 * {@literal 200 OK}, and a {@literal false} value will result in a response code {@literal 201 CREATED}.
-		 *
-		 * @param async {@literal true} to indicate that the operation is being performed asynchronously, {@literal
+		 * This value will be used to determine the HTTP response code to the platform. If
+		 * the service broker indicates that it performed the operation synchronously, a
+		 * {@literal true} value will result in a response code {@literal 200 OK}, and a
+		 * {@literal false} value will result in a response code {@literal 201 CREATED}.
+		 * @param async {@literal true} to indicate that the operation is being performed
+		 * asynchronously, {@literal
 		 * 		false} to indicate that the operation was completed
 		 * @return the builder
 		 */
@@ -184,13 +185,13 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		}
 
 		/**
-		 * Set a value to inform the user of the operation being performed in support of an asynchronous response. This
-		 * value will be passed back to the service broker in subsequent {@link GetLastServiceBindingOperationRequest}
-		 * requests.
+		 * Set a value to inform the user of the operation being performed in support of
+		 * an asynchronous response. This value will be passed back to the service broker
+		 * in subsequent {@link GetLastServiceBindingOperationRequest} requests.
 		 *
 		 * <p>
-		 * This value will set the {@literal operation} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal operation} field in the body of the response
+		 * to the platform.
 		 * @param operation description of the operation being performed
 		 * @return the builder
 		 */
@@ -200,12 +201,13 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		}
 
 		/**
-		 * Construct a {@link CreateServiceInstanceBindingResponse} from the provided values.
-		 *
+		 * Construct a {@link CreateServiceInstanceBindingResponse} from the provided
+		 * values.
 		 * @return the newly constructed {@literal CreateServiceInstanceBindingResponse}
 		 */
 		public CreateServiceInstanceBindingResponse build() {
-			return new CreateServiceInstanceBindingResponse(async, operation, bindingExisted, metadata);
+			return new CreateServiceInstanceBindingResponse(this.async, this.operation, this.bindingExisted,
+					this.metadata);
 		}
 
 	}

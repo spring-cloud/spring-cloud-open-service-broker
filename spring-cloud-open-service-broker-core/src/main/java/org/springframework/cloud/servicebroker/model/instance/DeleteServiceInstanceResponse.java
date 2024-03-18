@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,25 +22,25 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
  * Details of a response to a request to delete a service instance.
  *
  * <p>
- * Objects of this type are constructed by the service broker application, and used to build the response to the
- * platform.
+ * Objects of this type are constructed by the service broker application, and used to
+ * build the response to the platform.
  *
  * @author Scott Frederick
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-6">Open Service
- * 		Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-6">Open
+ * Service Broker API specification</a>
  */
 public class DeleteServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 	/**
-	 * Construct a new {@link DeleteServiceInstanceResponse}
+	 * Construct a new {@link DeleteServiceInstanceResponse}.
 	 */
 	public DeleteServiceInstanceResponse() {
 		this(false, null);
 	}
 
 	/**
-	 * Construct a new {@link DeleteServiceInstanceResponse}
-	 *
+	 * Construct a new {@link DeleteServiceInstanceResponse}.
 	 * @param async is the operation asynchronous
 	 * @param operation description of the operation being performed
 	 */
@@ -49,8 +49,8 @@ public class DeleteServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal DeleteServiceInstanceResponse}.
-	 *
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal DeleteServiceInstanceResponse}.
 	 * @return the builder
 	 */
 	public static DeleteServiceInstanceResponseBuilder builder() {
@@ -59,9 +59,7 @@ public class DeleteServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 	@Override
 	public String toString() {
-		return super.toString() +
-				"DeleteServiceInstanceResponse{" +
-				'}';
+		return super.toString() + "DeleteServiceInstanceResponse{" + '}';
 	}
 
 	/**
@@ -77,15 +75,15 @@ public class DeleteServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		}
 
 		/**
-		 * Set a boolean value indicating whether the requested operation is being performed synchronously or
-		 * asynchronously.
+		 * Set a boolean value indicating whether the requested operation is being
+		 * performed synchronously or asynchronously.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
-		 * result in a response code {@literal 202 ACCEPTED}, and a {@literal false} value will result in a response
-		 * code {@literal 200 OK}.
-		 *
-		 * @param async {@literal true} to indicate that the operation is being performed asynchronously, {@literal
+		 * This value will be used to determine the HTTP response code to the platform. A
+		 * {@literal true} value will result in a response code {@literal 202 ACCEPTED},
+		 * and a {@literal false} value will result in a response code {@literal 200 OK}.
+		 * @param async {@literal true} to indicate that the operation is being performed
+		 * asynchronously, {@literal
 		 * 		false} to indicate that the operation was completed
 		 * @return the builder
 		 */
@@ -95,13 +93,13 @@ public class DeleteServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		}
 
 		/**
-		 * Set a value to inform the user of the operation being performed in support of an asynchronous response. This
-		 * value will be passed back to the service broker in subsequent {@link GetLastServiceOperationRequest}
-		 * requests.
+		 * Set a value to inform the user of the operation being performed in support of
+		 * an asynchronous response. This value will be passed back to the service broker
+		 * in subsequent {@link GetLastServiceOperationRequest} requests.
 		 *
 		 * <p>
-		 * This value will set the {@literal operation} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal operation} field in the body of the response
+		 * to the platform.
 		 * @param operation description of the operation being performed
 		 * @return the builder
 		 */
@@ -112,11 +110,10 @@ public class DeleteServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 		/**
 		 * Construct a {@link DeleteServiceInstanceResponse} from the provided values.
-		 *
 		 * @return the newly constructed {@literal DeleteServiceInstanceResponse}
 		 */
 		public DeleteServiceInstanceResponse build() {
-			return new DeleteServiceInstanceResponse(async, operation);
+			return new DeleteServiceInstanceResponse(this.async, this.operation);
 		}
 
 	}

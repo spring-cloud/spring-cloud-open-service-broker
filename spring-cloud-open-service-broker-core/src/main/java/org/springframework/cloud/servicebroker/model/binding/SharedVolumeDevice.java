@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,11 +24,12 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
- * Represents a type of distributed {@link VolumeDevice} which can be mounted on multiple app instances simultaneously.
+ * Represents a type of distributed {@link VolumeDevice} which can be mounted on multiple
+ * app instances simultaneously.
  *
  * <p>
- * Objects of this type are constructed by the service broker application, and used to build the response to the
- * platform.
+ * Objects of this type are constructed by the service broker application, and used to
+ * build the response to the platform.
  *
  * @author Scott Frederick
  */
@@ -40,15 +41,14 @@ public class SharedVolumeDevice extends VolumeDevice {
 	private final Map<String, Object> mountConfig;
 
 	/**
-	 * Construct a new {@link SharedVolumeDevice}
+	 * Construct a new {@link SharedVolumeDevice}.
 	 */
 	public SharedVolumeDevice() {
 		this(null, new HashMap<>());
 	}
 
 	/**
-	 * Construct a new {@link SharedVolumeDevice}
-	 *
+	 * Construct a new {@link SharedVolumeDevice}.
 	 * @param volumeId the volume ID
 	 * @param mountConfig the device configuration
 	 */
@@ -60,7 +60,6 @@ public class SharedVolumeDevice extends VolumeDevice {
 
 	/**
 	 * Get the ID of the shared volume device to mount on each app instance.
-	 *
 	 * @return the volume ID
 	 */
 	public String getVolumeId() {
@@ -69,7 +68,6 @@ public class SharedVolumeDevice extends VolumeDevice {
 
 	/**
 	 * Get the configuration properties for the volume device.
-	 *
 	 * @return the device configuration
 	 */
 	public Map<String, Object> getMountConfig() {
@@ -77,8 +75,8 @@ public class SharedVolumeDevice extends VolumeDevice {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal SharedVolumeDevice}.
-	 *
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal SharedVolumeDevice}.
 	 * @return the builder
 	 */
 	public static SharedVolumeDeviceBuilder builder() {
@@ -94,21 +92,17 @@ public class SharedVolumeDevice extends VolumeDevice {
 			return false;
 		}
 		SharedVolumeDevice that = (SharedVolumeDevice) o;
-		return Objects.equals(volumeId, that.volumeId) &&
-				Objects.equals(mountConfig, that.mountConfig);
+		return Objects.equals(this.volumeId, that.volumeId) && Objects.equals(this.mountConfig, that.mountConfig);
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(volumeId, mountConfig);
+		return Objects.hash(this.volumeId, this.mountConfig);
 	}
 
 	@Override
 	public String toString() {
-		return "SharedVolumeDevice{" +
-				"volumeId='" + volumeId + '\'' +
-				", mountConfig=" + mountConfig +
-				'}';
+		return "SharedVolumeDevice{" + "volumeId='" + this.volumeId + '\'' + ", mountConfig=" + this.mountConfig + '}';
 	}
 
 	/**
@@ -127,8 +121,8 @@ public class SharedVolumeDevice extends VolumeDevice {
 		 * Set the ID of the shared volume device to mount on each app instance.
 		 *
 		 * <p>
-		 * This value sets the {@literal volume_id} field in the body of the response to the platform.
-		 *
+		 * This value sets the {@literal volume_id} field in the body of the response to
+		 * the platform.
 		 * @param volumeId the volume ID
 		 * @return the builder
 		 */
@@ -138,11 +132,12 @@ public class SharedVolumeDevice extends VolumeDevice {
 		}
 
 		/**
-		 * Add a set of configuration properties from the provided {@literal Map} to the volume device configuration.
+		 * Add a set of configuration properties from the provided {@literal Map} to the
+		 * volume device configuration.
 		 *
 		 * <p>
-		 * This value sets the {@literal mount_config} field in the body of the response to the platform.
-		 *
+		 * This value sets the {@literal mount_config} field in the body of the response
+		 * to the platform.
 		 * @param mountConfig the configuration properties to add
 		 * @return the builder
 		 */
@@ -155,8 +150,8 @@ public class SharedVolumeDevice extends VolumeDevice {
 		 * Add a key/value pair to the volume device configuration.
 		 *
 		 * <p>
-		 * This value sets the {@literal mount_config} field in the body of the response to the platform.
-		 *
+		 * This value sets the {@literal mount_config} field in the body of the response
+		 * to the platform.
 		 * @param key the configuration properties key
 		 * @param value the configuration properties value
 		 * @return the builder
@@ -168,11 +163,10 @@ public class SharedVolumeDevice extends VolumeDevice {
 
 		/**
 		 * Construct a {@link SharedVolumeDevice} from the provided values.
-		 *
 		 * @return the newly constructed {@literal SharedVolumeDevice}
 		 */
 		public SharedVolumeDevice build() {
-			return new SharedVolumeDevice(volumeId, mountConfig);
+			return new SharedVolumeDevice(this.volumeId, this.mountConfig);
 		}
 
 	}

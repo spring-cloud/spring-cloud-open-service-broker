@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,12 +30,13 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  * Details of a response to a request to get the details a service instance.
  *
  * <p>
- * Objects of this type are constructed by the service broker application, and used to build the response to the
- * platform.
+ * Objects of this type are constructed by the service broker application, and used to
+ * build the response to the platform.
  *
  * @author Scott Frederick
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API
- * 		specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open
+ * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -50,15 +51,14 @@ public class GetServiceInstanceResponse {
 	private final Map<String, Object> parameters;
 
 	/**
-	 * Construct a new {@link GetServiceInstanceResponse}
+	 * Construct a new {@link GetServiceInstanceResponse}.
 	 */
 	public GetServiceInstanceResponse() {
 		this(null, null, null, new Hashtable<>());
 	}
 
 	/**
-	 * Construct a new {@link GetServiceInstanceResponse}
-	 *
+	 * Construct a new {@link GetServiceInstanceResponse}.
 	 * @param serviceDefinitionId the service definition ID
 	 * @param planId the plan ID
 	 * @param dashboardUrl the dashboard URL
@@ -74,45 +74,42 @@ public class GetServiceInstanceResponse {
 
 	/**
 	 * Get the ID of the service definition associated with the service instance.
-	 *
 	 * @return the service definition ID
 	 */
 	@JsonProperty("service_id")
 	public String getServiceDefinitionId() {
-		return serviceDefinitionId;
+		return this.serviceDefinitionId;
 	}
 
 	/**
 	 * Get the ID of the plan associated with the service instance.
-	 *
 	 * @return the plan ID
 	 */
 	public String getPlanId() {
-		return planId;
+		return this.planId;
 	}
 
 	/**
 	 * Get the URL of a web-based management user interface for the service instance.
-	 *
 	 * @return the dashboard URL, or {@literal null} if not provided
 	 */
 	public String getDashboardUrl() {
-		return dashboardUrl;
+		return this.dashboardUrl;
 	}
 
 	/**
-	 * Get any parameters provided to the service broker when the service instance was created.
-	 *
-	 * @return the parameters, or {@literal null} if parameters were not provided at creation or retrieval of parameters
-	 * 		is not supported by the service broker
+	 * Get any parameters provided to the service broker when the service instance was
+	 * created.
+	 * @return the parameters, or {@literal null} if parameters were not provided at
+	 * creation or retrieval of parameters is not supported by the service broker
 	 */
 	public Map<String, Object> getParameters() {
-		return parameters;
+		return this.parameters;
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal GetServiceInstanceResponse}.
-	 *
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal GetServiceInstanceResponse}.
 	 * @return the builder
 	 */
 	public static GetServiceInstanceResponseBuilder builder() {
@@ -128,16 +125,13 @@ public class GetServiceInstanceResponse {
 			return false;
 		}
 		GetServiceInstanceResponse that = (GetServiceInstanceResponse) o;
-		return that.canEqual(this) &&
-				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
-				Objects.equals(planId, that.planId) &&
-				Objects.equals(dashboardUrl, that.dashboardUrl) &&
-				Objects.equals(parameters, that.parameters);
+		return that.canEqual(this) && Objects.equals(this.serviceDefinitionId, that.serviceDefinitionId)
+				&& Objects.equals(this.planId, that.planId) && Objects.equals(this.dashboardUrl, that.dashboardUrl)
+				&& Objects.equals(this.parameters, that.parameters);
 	}
 
 	/**
-	 * Is another object type compatible with this object
-	 *
+	 * Is another object type compatible with this object.
 	 * @param other the other object
 	 * @return true of compatible
 	 */
@@ -147,17 +141,14 @@ public class GetServiceInstanceResponse {
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(serviceDefinitionId, planId, dashboardUrl, parameters);
+		return Objects.hash(this.serviceDefinitionId, this.planId, this.dashboardUrl, this.parameters);
 	}
 
 	@Override
 	public String toString() {
-		return "GetServiceInstanceResponse{" +
-				"serviceDefinitionId='" + serviceDefinitionId + '\'' +
-				", planId='" + planId + '\'' +
-				", dashboardUrl='" + dashboardUrl + '\'' +
-				", parameters=" + parameters +
-				'}';
+		return "GetServiceInstanceResponse{" + "serviceDefinitionId='" + this.serviceDefinitionId + '\'' + ", planId='"
+				+ this.planId + '\'' + ", dashboardUrl='" + this.dashboardUrl + '\'' + ", parameters=" + this.parameters
+				+ '}';
 	}
 
 	/**
@@ -180,8 +171,8 @@ public class GetServiceInstanceResponse {
 		 * Set the ID of the service definition associated with the service instance.
 		 *
 		 * <p>
-		 * This value will set the {@literal service_id} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal service_id} field in the body of the response
+		 * to the platform.
 		 * @param serviceDefinitionId the service definition ID
 		 * @return the builder
 		 */
@@ -194,8 +185,8 @@ public class GetServiceInstanceResponse {
 		 * Set the ID of the plan associated with the service instance.
 		 *
 		 * <p>
-		 * This value will set the {@literal plan_id} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal plan_id} field in the body of the response to
+		 * the platform.
 		 * @param planId the plan ID
 		 * @return the builder
 		 */
@@ -205,12 +196,13 @@ public class GetServiceInstanceResponse {
 		}
 
 		/**
-		 * Set the URL of a web-based management user interface provided by the service broker for the service instance.
-		 * Can be {@literal null} to indicate that a management dashboard is not provided.
+		 * Set the URL of a web-based management user interface provided by the service
+		 * broker for the service instance. Can be {@literal null} to indicate that a
+		 * management dashboard is not provided.
 		 *
 		 * <p>
-		 * This value will set the {@literal dashboard_url} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal dashboard_url} field in the body of the
+		 * response to the platform.
 		 * @param dashboardUrl the dashboard URL
 		 * @return the builder
 		 */
@@ -220,12 +212,12 @@ public class GetServiceInstanceResponse {
 		}
 
 		/**
-		 * Add a set of parameters from the provided {@literal Map} to the parameters as were provided to the service
-		 * broker at service instance creation.
+		 * Add a set of parameters from the provided {@literal Map} to the parameters as
+		 * were provided to the service broker at service instance creation.
 		 *
 		 * <p>
-		 * This value will set the {@literal parameters} field in the body of the response to the platform
-		 *
+		 * This value will set the {@literal parameters} field in the body of the response
+		 * to the platform
 		 * @param parameters the parameters {@literal Map}
 		 * @return the builder
 		 */
@@ -235,11 +227,12 @@ public class GetServiceInstanceResponse {
 		}
 
 		/**
-		 * Add a key/value pair to the parameters as were provided to the service broker at service instance creation.
+		 * Add a key/value pair to the parameters as were provided to the service broker
+		 * at service instance creation.
 		 *
 		 * <p>
-		 * This value will set the {@literal parameters} field in the body of the response to the platform
-		 *
+		 * This value will set the {@literal parameters} field in the body of the response
+		 * to the platform
 		 * @param key the parameter key
 		 * @param value the parameter value
 		 * @return the builder
@@ -251,11 +244,11 @@ public class GetServiceInstanceResponse {
 
 		/**
 		 * Construct a {@link GetServiceInstanceResponse} from the provided values.
-		 *
 		 * @return the newly constructed {@literal GetServiceInstanceResponse}
 		 */
 		public GetServiceInstanceResponse build() {
-			return new GetServiceInstanceResponse(serviceDefinitionId, planId, dashboardUrl, parameters);
+			return new GetServiceInstanceResponse(this.serviceDefinitionId, this.planId, this.dashboardUrl,
+					this.parameters);
 		}
 
 	}

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,10 +24,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Service binding JSON Schemas.
  *
- * @author sgunaratne@pivotal.io
  * @author Sam Gunaratne
- * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-binding-schema-object">Open
- * 		Service Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-binding-schema-object">Open
+ * Service Broker API specification</a>
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceBindingSchema {
@@ -35,15 +35,14 @@ public class ServiceBindingSchema {
 	private final MethodSchema createMethodSchema;
 
 	/**
-	 * Construct a new {@link ServiceBindingSchema}
+	 * Construct a new {@link ServiceBindingSchema}.
 	 */
 	public ServiceBindingSchema() {
 		this(null);
 	}
 
 	/**
-	 * Construct a new {@link ServiceBindingSchema}
-	 *
+	 * Construct a new {@link ServiceBindingSchema}.
 	 * @param createMethodSchema the JSON schema
 	 */
 	public ServiceBindingSchema(MethodSchema createMethodSchema) {
@@ -52,7 +51,6 @@ public class ServiceBindingSchema {
 
 	/**
 	 * The JSON schema for configuration parameters when creating a service binding.
-	 *
 	 * @return the schema
 	 */
 	@JsonProperty("create")
@@ -61,8 +59,8 @@ public class ServiceBindingSchema {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal ServiceBindingSchema}.
-	 *
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal ServiceBindingSchema}.
 	 * @return the builder
 	 */
 	public static ServiceBindingSchemaBuilder builder() {
@@ -78,19 +76,17 @@ public class ServiceBindingSchema {
 			return false;
 		}
 		ServiceBindingSchema that = (ServiceBindingSchema) o;
-		return Objects.equals(createMethodSchema, that.createMethodSchema);
+		return Objects.equals(this.createMethodSchema, that.createMethodSchema);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(createMethodSchema);
+		return Objects.hash(this.createMethodSchema);
 	}
 
 	@Override
 	public String toString() {
-		return "ServiceBindingSchema{" +
-				"createMethodSchema=" + createMethodSchema +
-				'}';
+		return "ServiceBindingSchema{" + "createMethodSchema=" + this.createMethodSchema + '}';
 	}
 
 	/**
@@ -105,7 +101,6 @@ public class ServiceBindingSchema {
 
 		/**
 		 * The JSON schema for configuration parameters when creating a service binding.
-		 *
 		 * @param createMethodSchema the schema
 		 * @return the binder instance
 		 */
@@ -116,11 +111,10 @@ public class ServiceBindingSchema {
 
 		/**
 		 * Construct a {@link ServiceBindingSchema} from the provided values.
-		 *
 		 * @return the newly constructed {@literal ServiceBindingSchema}
 		 */
 		public ServiceBindingSchema build() {
-			return new ServiceBindingSchema(createMethodSchema);
+			return new ServiceBindingSchema(this.createMethodSchema);
 		}
 
 	}

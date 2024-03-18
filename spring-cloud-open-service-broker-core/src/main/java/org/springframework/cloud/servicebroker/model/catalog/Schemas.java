@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,10 +24,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * JSON Schemas available for a Plan.
  *
- * @author sgunaratne@pivotal.io
  * @author Sam Gunaratne
- * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#schemas-object">Open Service
- * 		Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#schemas-object">Open
+ * Service Broker API specification</a>
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Schemas {
@@ -37,27 +37,24 @@ public class Schemas {
 	private final ServiceBindingSchema serviceBindingSchema;
 
 	/**
-	 * Construct a new {@link Schemas}
+	 * Construct a new {@link Schemas}.
 	 */
 	public Schemas() {
 		this(null, null);
 	}
 
 	/**
-	 * Construct a new {@link Schemas}
-	 *
+	 * Construct a new {@link Schemas}.
 	 * @param serviceInstanceSchema the service instance schema
 	 * @param serviceBindingSchema the service binding schema
 	 */
-	public Schemas(ServiceInstanceSchema serviceInstanceSchema,
-			ServiceBindingSchema serviceBindingSchema) {
+	public Schemas(ServiceInstanceSchema serviceInstanceSchema, ServiceBindingSchema serviceBindingSchema) {
 		this.serviceInstanceSchema = serviceInstanceSchema;
 		this.serviceBindingSchema = serviceBindingSchema;
 	}
 
 	/**
 	 * The schemas available on a service instance.
-	 *
 	 * @return the schemas
 	 */
 	@JsonProperty("service_instance")
@@ -67,7 +64,6 @@ public class Schemas {
 
 	/**
 	 * The schemas available on a service binding.
-	 *
 	 * @return the schemas
 	 */
 	@JsonProperty("service_binding")
@@ -77,7 +73,6 @@ public class Schemas {
 
 	/**
 	 * Create a builder that provides a fluent API for constructing a {@literal Schemas}.
-	 *
 	 * @return the builder
 	 */
 	public static SchemasBuilder builder() {
@@ -93,21 +88,19 @@ public class Schemas {
 			return false;
 		}
 		Schemas schemas = (Schemas) o;
-		return Objects.equals(serviceInstanceSchema, schemas.serviceInstanceSchema) &&
-				Objects.equals(serviceBindingSchema, schemas.serviceBindingSchema);
+		return Objects.equals(this.serviceInstanceSchema, schemas.serviceInstanceSchema)
+				&& Objects.equals(this.serviceBindingSchema, schemas.serviceBindingSchema);
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(serviceInstanceSchema, serviceBindingSchema);
+		return Objects.hash(this.serviceInstanceSchema, this.serviceBindingSchema);
 	}
 
 	@Override
 	public String toString() {
-		return "Schemas{" +
-				"serviceInstanceSchema=" + serviceInstanceSchema +
-				", serviceBindingSchema=" + serviceBindingSchema +
-				'}';
+		return "Schemas{" + "serviceInstanceSchema=" + this.serviceInstanceSchema + ", serviceBindingSchema="
+				+ this.serviceBindingSchema + '}';
 	}
 
 	/**
@@ -124,7 +117,6 @@ public class Schemas {
 
 		/**
 		 * The schemas available on a service instance.
-		 *
 		 * @param serviceInstanceSchema the schemas
 		 * @return the binder instance
 		 */
@@ -135,7 +127,6 @@ public class Schemas {
 
 		/**
 		 * The schemas available on a service binding.
-		 *
 		 * @param serviceBindingSchema the schemas
 		 * @return the binder instance
 		 */
@@ -146,11 +137,10 @@ public class Schemas {
 
 		/**
 		 * Construct a {@link Schemas} from the provided values.
-		 *
 		 * @return the newly constructed {@literal Schemas}
 		 */
 		public Schemas build() {
-			return new Schemas(serviceInstanceSchema, serviceBindingSchema);
+			return new Schemas(this.serviceInstanceSchema, this.serviceBindingSchema);
 		}
 
 	}

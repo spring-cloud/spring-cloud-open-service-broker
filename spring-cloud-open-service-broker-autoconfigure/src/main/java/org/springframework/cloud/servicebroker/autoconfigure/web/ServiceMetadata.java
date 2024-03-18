@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,12 +32,13 @@ import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties that describes a service
- * offered by this broker.
+ * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
+ * that describes a service offered by this broker.
  *
  * @author Roy Clarkson
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/profile.md#service-metadata">
- * 		Service Metadata API Specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/profile.md#service-metadata">
+ * Service Metadata API Specification</a>
  * @see org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition
  */
 public class ServiceMetadata {
@@ -59,48 +60,49 @@ public class ServiceMetadata {
 	private static final String IMAGE_DATA_FORMAT = "data:image/png;base64,%s";
 
 	/**
-	 * The name of the service to be displayed in graphical clients
+	 * The name of the service to be displayed in graphical clients.
 	 */
 	private String displayName;
 
 	/**
-	 * The URL to an image or a data URL containing an image
+	 * The URL to an image or a data URL containing an image.
 	 */
 	private String imageUrl;
 
 	/**
-	 * The location of an image resource on the class path. This resource will be converted to a byte array, Base64
-	 * encoded, and configured as the value of 'metadata.imageUrl' for the service offering.
+	 * The location of an image resource on the class path. This resource will be
+	 * converted to a byte array, Base64 encoded, and configured as the value of
+	 * 'metadata.imageUrl' for the service offering.
 	 */
 	private String imageUrlResource;
 
 	/**
-	 * Long description
+	 * Long description.
 	 */
 	private String longDescription;
 
 	/**
-	 * The name of the upstream entity providing the actual service
+	 * The name of the upstream entity providing the actual service.
 	 */
 	private String providerDisplayName;
 
 	/**
-	 * Link to documentation page for the service
+	 * Link to documentation page for the service.
 	 */
 	private String documentationUrl;
 
 	/**
-	 * Link to support page for the service
+	 * Link to support page for the service.
 	 */
 	private String supportUrl;
 
 	/**
-	 * Additional properties used to describe the service
+	 * Additional properties used to describe the service.
 	 */
 	private final Map<String, Object> properties = new HashMap<>();
 
 	public String getDisplayName() {
-		return displayName;
+		return this.displayName;
 	}
 
 	public void setDisplayName(String displayName) {
@@ -108,11 +110,11 @@ public class ServiceMetadata {
 	}
 
 	public String getImageUrl() {
-		return imageUrl;
+		return this.imageUrl;
 	}
 
 	public String getImageUrlResource() {
-		return imageUrlResource;
+		return this.imageUrlResource;
 	}
 
 	public void setImageUrlResource(String imageUrlResource) {
@@ -124,7 +126,7 @@ public class ServiceMetadata {
 	}
 
 	public String getLongDescription() {
-		return longDescription;
+		return this.longDescription;
 	}
 
 	public void setLongDescription(String longDescription) {
@@ -132,7 +134,7 @@ public class ServiceMetadata {
 	}
 
 	public String getProviderDisplayName() {
-		return providerDisplayName;
+		return this.providerDisplayName;
 	}
 
 	public void setProviderDisplayName(String providerDisplayName) {
@@ -140,7 +142,7 @@ public class ServiceMetadata {
 	}
 
 	public String getDocumentationUrl() {
-		return documentationUrl;
+		return this.documentationUrl;
 	}
 
 	public void setDocumentationUrl(String documentationUrl) {
@@ -148,7 +150,7 @@ public class ServiceMetadata {
 	}
 
 	public String getSupportUrl() {
-		return supportUrl;
+		return this.supportUrl;
 	}
 
 	public void setSupportUrl(String supportUrl) {
@@ -156,7 +158,7 @@ public class ServiceMetadata {
 	}
 
 	public Map<String, Object> getProperties() {
-		return properties;
+		return this.properties;
 	}
 
 	public void setProperties(Map<String, Object> properties) {
@@ -166,8 +168,7 @@ public class ServiceMetadata {
 	}
 
 	/**
-	 * Converts this object into its corresponding model
-	 *
+	 * Converts this object into its corresponding model.
 	 * @return a Map model
 	 * @see org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition
 	 */
@@ -208,8 +209,8 @@ public class ServiceMetadata {
 			String imageData = Base64.getEncoder().encodeToString(imageBytes);
 			formattedImageData = String.format(IMAGE_DATA_FORMAT, imageData);
 		}
-		catch (IOException e) {
-			LOG.warn("Error converting image file to byte array", e);
+		catch (IOException ex) {
+			LOG.warn("Error converting image file to byte array", ex);
 		}
 		return formattedImageData;
 	}

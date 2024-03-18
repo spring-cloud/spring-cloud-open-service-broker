@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,8 +25,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Service instance JSON Schemas.
  *
  * @author Sam Gunaratne
- * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-instance-schema-object">Open
- * 		Service Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-instance-schema-object">Open
+ * Service Broker API specification</a>
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceInstanceSchema {
@@ -36,27 +37,24 @@ public class ServiceInstanceSchema {
 	private final MethodSchema updateMethodSchema;
 
 	/**
-	 * Construct a new {@link ServiceInstanceSchema}
+	 * Construct a new {@link ServiceInstanceSchema}.
 	 */
 	public ServiceInstanceSchema() {
 		this(null, null);
 	}
 
 	/**
-	 * Construct a new {@link ServiceInstanceSchema}
-	 *
+	 * Construct a new {@link ServiceInstanceSchema}.
 	 * @param createMethodSchema the schema
 	 * @param updateMethodSchema the schema
 	 */
-	public ServiceInstanceSchema(MethodSchema createMethodSchema,
-			MethodSchema updateMethodSchema) {
+	public ServiceInstanceSchema(MethodSchema createMethodSchema, MethodSchema updateMethodSchema) {
 		this.createMethodSchema = createMethodSchema;
 		this.updateMethodSchema = updateMethodSchema;
 	}
 
 	/**
 	 * The JSON schema for configuration parameters when creating a service instance.
-	 *
 	 * @return the schema
 	 */
 	@JsonProperty("create")
@@ -66,7 +64,6 @@ public class ServiceInstanceSchema {
 
 	/**
 	 * The JSON schema for configuration parameters when updating a service instance.
-	 *
 	 * @return the schema
 	 */
 	@JsonProperty("update")
@@ -75,8 +72,8 @@ public class ServiceInstanceSchema {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal ServiceInstanceSchema}.
-	 *
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal ServiceInstanceSchema}.
 	 * @return the builder
 	 */
 	public static ServiceInstanceSchemaBuilder builder() {
@@ -92,21 +89,19 @@ public class ServiceInstanceSchema {
 			return false;
 		}
 		ServiceInstanceSchema that = (ServiceInstanceSchema) o;
-		return Objects.equals(createMethodSchema, that.createMethodSchema) &&
-				Objects.equals(updateMethodSchema, that.updateMethodSchema);
+		return Objects.equals(this.createMethodSchema, that.createMethodSchema)
+				&& Objects.equals(this.updateMethodSchema, that.updateMethodSchema);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(createMethodSchema, updateMethodSchema);
+		return Objects.hash(this.createMethodSchema, this.updateMethodSchema);
 	}
 
 	@Override
 	public String toString() {
-		return "ServiceInstanceSchema{" +
-				"createMethodSchema=" + createMethodSchema +
-				", updateMethodSchema=" + updateMethodSchema +
-				'}';
+		return "ServiceInstanceSchema{" + "createMethodSchema=" + this.createMethodSchema + ", updateMethodSchema="
+				+ this.updateMethodSchema + '}';
 	}
 
 	/**
@@ -123,7 +118,6 @@ public class ServiceInstanceSchema {
 
 		/**
 		 * The JSON schema for configuration parameters when creating a service instance.
-		 *
 		 * @param createMethodSchema the schema
 		 * @return the binder instance
 		 */
@@ -134,7 +128,6 @@ public class ServiceInstanceSchema {
 
 		/**
 		 * The JSON schema for configuration parameters when updating a service instance.
-		 *
 		 * @param updateMethodSchema the schema
 		 * @return the binder instance
 		 */
@@ -145,11 +138,10 @@ public class ServiceInstanceSchema {
 
 		/**
 		 * Construct a {@link ServiceInstanceSchema} from the provided values.
-		 *
 		 * @return the newly constructed {@literal ServiceInstanceSchema}
 		 */
 		public ServiceInstanceSchema build() {
-			return new ServiceInstanceSchema(createMethodSchema, updateMethodSchema);
+			return new ServiceInstanceSchema(this.createMethodSchema, this.updateMethodSchema);
 		}
 
 	}

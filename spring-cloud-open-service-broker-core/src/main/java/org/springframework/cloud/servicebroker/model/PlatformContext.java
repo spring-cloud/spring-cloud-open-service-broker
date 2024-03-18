@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,7 +21,8 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 
 /**
- * Platform specific contextual information under which the service instance is to be provisioned or updated.
+ * Platform specific contextual information under which the service instance is to be
+ * provisioned or updated.
  *
  * @author Scott Frederick
  */
@@ -32,8 +33,7 @@ public class PlatformContext extends Context {
 	}
 
 	/**
-	 * Construct a new {@link PlatformContext}
-	 *
+	 * Construct a new {@link PlatformContext}.
 	 * @param platform the name of the platform
 	 * @param properties collection of properties
 	 */
@@ -52,7 +52,6 @@ public class PlatformContext extends Context {
 	 *
 	 * <p>
 	 * This builder is provided to support testing of service implementations.
-	 *
 	 * @return the builder
 	 */
 	public static PlatformContextBuilder builder() {
@@ -76,7 +75,6 @@ public class PlatformContext extends Context {
 
 		/**
 		 * Construct a {@link PlatformContext} from the provided values.
-		 *
 		 * @return the newly constructed {@literal Context}
 		 */
 		@Override

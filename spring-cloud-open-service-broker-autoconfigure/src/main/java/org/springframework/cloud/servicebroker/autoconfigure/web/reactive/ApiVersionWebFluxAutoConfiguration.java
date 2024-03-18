@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,11 +31,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for the service broker API validation. Configures support for any
- * service broker API version if a version is not specifically configured.
+ * {@link EnableAutoConfiguration Auto-configuration} for the service broker API
+ * validation. Configures support for any service broker API version if a version is not
+ * specifically configured.
  *
  * <p>
- * API validation may be disabled completely by setting the following configuration property:
+ * API validation may be disabled completely by setting the following configuration
+ * property:
  *
  * <pre>
  * spring.cloud.openservicebroker.api-version-check-enabled = false
@@ -46,7 +48,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnBean(ServiceInstanceService.class)
-@ConditionalOnProperty(prefix = "spring.cloud.openservicebroker", name = "api-version-check-enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "spring.cloud.openservicebroker", name = "api-version-check-enabled",
+		havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter(WebFluxAutoConfiguration.class)
 @EnableConfigurationProperties(ServiceBrokerProperties.class)
 public class ApiVersionWebFluxAutoConfiguration {
@@ -54,8 +57,7 @@ public class ApiVersionWebFluxAutoConfiguration {
 	private final ServiceBrokerProperties serviceBrokerProperties;
 
 	/**
-	 * Construct a new {@link ApiVersionWebFluxAutoConfiguration}
-	 *
+	 * Construct a new {@link ApiVersionWebFluxAutoConfiguration}.
 	 * @param serviceBrokerProperties the service broker properties
 	 */
 	public ApiVersionWebFluxAutoConfiguration(ServiceBrokerProperties serviceBrokerProperties) {
@@ -63,8 +65,8 @@ public class ApiVersionWebFluxAutoConfiguration {
 	}
 
 	/**
-	 * Provides a {@link BrokerApiVersion} bean if the 'api-version' property is available in external configuration
-	 *
+	 * Provides a {@link BrokerApiVersion} bean if the 'api-version' property is available
+	 * in external configuration.
 	 * @return the bean
 	 */
 	@Bean
@@ -75,8 +77,7 @@ public class ApiVersionWebFluxAutoConfiguration {
 	}
 
 	/**
-	 * Conditionally provides a {@link BrokerApiVersion} bean
-	 *
+	 * Conditionally provides a {@link BrokerApiVersion} bean.
 	 * @return the bean
 	 */
 	@Bean
@@ -86,8 +87,7 @@ public class ApiVersionWebFluxAutoConfiguration {
 	}
 
 	/**
-	 * Conditionally provides a {@link ApiVersionWebFilter} bean
-	 *
+	 * Conditionally provides a {@link ApiVersionWebFilter} bean.
 	 * @param brokerApiVersion the api version
 	 * @return the bean
 	 */

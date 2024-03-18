@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,15 +21,14 @@ import reactor.core.publisher.Mono;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 
 /**
- * Error flow for create service instance request
+ * Error flow for create service instance request.
  *
  * @author Roy Clarkson
  */
 public interface CreateServiceInstanceErrorFlow {
 
 	/**
-	 * Performs the operation on the error flow
-	 *
+	 * Performs the operation on the error flow.
 	 * @param request the service broker request
 	 * @param t the error
 	 * @return an empty Mono

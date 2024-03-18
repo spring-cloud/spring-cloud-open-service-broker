@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,8 +39,7 @@ public class AsyncServiceBrokerResponse {
 	protected final String operation;
 
 	/**
-	 * Create a new AsyncServiceBrokerResponse
-	 *
+	 * Create a new AsyncServiceBrokerResponse.
 	 * @param async is the operation asynchronous
 	 * @param operation an identifier representing the operation in progress
 	 * @throws IllegalArgumentException if operation length exceeds 10,000 characters
@@ -52,19 +51,18 @@ public class AsyncServiceBrokerResponse {
 	}
 
 	/**
-	 * Get a boolean value indicating whether the requested operation is being performed synchronously or
-	 * asynchronously.
-	 *
+	 * Get a boolean value indicating whether the requested operation is being performed
+	 * synchronously or asynchronously.
 	 * @return the boolean value
 	 */
-	@JsonIgnore //not sent on the wire as json payload, but as http status instead
+	@JsonIgnore // not sent on the wire as json payload, but as http status instead
 	public boolean isAsync() {
 		return this.async;
 	}
 
 	/**
-	 * Get a description of the operation being performed in support of an asynchronous response.
-	 *
+	 * Get a description of the operation being performed in support of an asynchronous
+	 * response.
 	 * @return the operation description
 	 */
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -81,14 +79,11 @@ public class AsyncServiceBrokerResponse {
 			return false;
 		}
 		AsyncServiceBrokerResponse that = (AsyncServiceBrokerResponse) o;
-		return that.canEqual(this) &&
-				async == that.async &&
-				Objects.equals(operation, that.operation);
+		return that.canEqual(this) && this.async == that.async && Objects.equals(this.operation, that.operation);
 	}
 
 	/**
-	 * Is another object type compatible with this object
-	 *
+	 * Is another object type compatible with this object.
 	 * @param other the other object
 	 * @return true of compatible
 	 */
@@ -98,27 +93,24 @@ public class AsyncServiceBrokerResponse {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(async, operation);
+		return Objects.hash(this.async, this.operation);
 	}
 
 	@Override
 	public String toString() {
-		return "AsyncServiceInstanceResponse{" +
-				"async=" + async +
-				", operation='" + operation + '\'' +
-				'}';
+		return "AsyncServiceInstanceResponse{" + "async=" + this.async + ", operation='" + this.operation + '\'' + '}';
 	}
 
 	/**
-	 * Validate the length of the operation string to be within the 10,000 character limit
-	 *
+	 * Validate the length of the operation string to be within the 10,000 character
+	 * limit.
 	 * @param operation an identifier representing the operation in progress
 	 * @throws IllegalArgumentException if the operation is longer than 10,000 characters
 	 */
 	public static void validateOperationLength(String operation) {
 		if (StringUtils.hasLength(operation) && operation.length() > MAX_OPERATION_LENGTH) {
-			throw new IllegalArgumentException("operation strings are restricted to 10,000 characters in the response" +
-					" body");
+			throw new IllegalArgumentException(
+					"operation strings are restricted to 10,000 characters in the response" + " body");
 		}
 	}
 

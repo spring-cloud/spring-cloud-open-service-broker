@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,7 +28,8 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import org.springframework.util.CollectionUtils;
 
 /**
- * Cloud Foundry specific contextual information under which the service instance is to be provisioned or updated.
+ * Cloud Foundry specific contextual information under which the service instance is to be
+ * provisioned or updated.
  *
  * @author Scott Frederick
  * @author Roy Clarkson
@@ -38,42 +39,42 @@ import org.springframework.util.CollectionUtils;
 public final class CloudFoundryContext extends Context {
 
 	/**
-	 * Cloud Foundry platform key
+	 * Cloud Foundry platform key.
 	 */
 	public static final String CLOUD_FOUNDRY_PLATFORM = "cloudfoundry";
 
 	/**
-	 * Organization GUID key
+	 * Organization GUID key.
 	 */
 	public static final String ORGANIZATION_GUID_KEY = "organizationGuid";
 
 	/**
-	 * Organization Name key
+	 * Organization Name key.
 	 */
 	public static final String ORGANIZATION_NAME_KEY = "organizationName";
 
 	/**
-	 * Organization Annotations key
+	 * Organization Annotations key.
 	 */
 	public static final String ORGANIZATION_ANNOTATIONS_KEY = "organizationAnnotations";
 
 	/**
-	 * Space GUID key
+	 * Space GUID key.
 	 */
 	public static final String SPACE_GUID_KEY = "spaceGuid";
 
 	/**
-	 * Space Name key
+	 * Space Name key.
 	 */
 	public static final String SPACE_NAME_KEY = "spaceName";
 
 	/**
-	 * Space Annotations key
+	 * Space Annotations key.
 	 */
 	public static final String SPACE_ANNOTATIONS_KEY = "spaceAnnotations";
 
 	/**
-	 * Instance Name key
+	 * Instance Name key.
 	 */
 	public static final String INSTANCE_NAME_KEY = "instanceName";
 
@@ -82,8 +83,7 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	/**
-	 * Create a new CloudFoundryContext
-	 *
+	 * Create a new CloudFoundryContext.
 	 * @param organizationGuid the organization GUID
 	 * @param organizationName the organization name
 	 * @param spaceGuid the space GUID
@@ -102,8 +102,7 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	/**
-	 * Create a new CloudFoundryContext
-	 *
+	 * Create a new CloudFoundryContext.
 	 * @param organizationGuid the organization GUID
 	 * @param organizationName the organization name
 	 * @param organizationAnnotations organization annotations
@@ -127,8 +126,7 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	/**
-	 * Avoid polluting the serialized context with duplicated keys
-	 *
+	 * Avoid polluting the serialized context with duplicated keys.
 	 * @return a map of properties
 	 */
 	@JsonAnyGetter
@@ -146,8 +144,7 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	/**
-	 * Retrieve the organization GUID from the collection of platform properties
-	 *
+	 * Retrieve the organization GUID from the collection of platform properties.
 	 * @return the organization GUID
 	 */
 	@JsonProperty
@@ -160,8 +157,7 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	/**
-	 * Retrieve the organization name from the collection of platform properties
-	 *
+	 * Retrieve the organization name from the collection of platform properties.
 	 * @return the organization name
 	 */
 	@JsonProperty
@@ -174,8 +170,7 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	/**
-	 * Retrieve the organization annotations from the collection of platform properties
-	 *
+	 * Retrieve the organization annotations from the collection of platform properties.
 	 * @return the organization annotations
 	 */
 	@JsonProperty
@@ -188,8 +183,7 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	/**
-	 * Retrieve the space GUID from the collection of platform properties
-	 *
+	 * Retrieve the space GUID from the collection of platform properties.
 	 * @return the space GUID
 	 */
 	@JsonProperty
@@ -202,8 +196,7 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	/**
-	 * Retrieve the space name from the collection of platform properties
-	 *
+	 * Retrieve the space name from the collection of platform properties.
 	 * @return the space name
 	 */
 	@JsonProperty
@@ -216,8 +209,7 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	/**
-	 * Retrieve the space annotations from the collection of platform properties
-	 *
+	 * Retrieve the space annotations from the collection of platform properties.
 	 * @return the space annotations
 	 */
 	@JsonProperty
@@ -230,8 +222,7 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	/**
-	 * Retrieve the instance name from the collection of platform properties
-	 *
+	 * Retrieve the instance name from the collection of platform properties.
 	 * @return the instance name
 	 */
 	@JsonProperty
@@ -244,8 +235,7 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	/**
-	 * Builder for constructing a {@link CloudFoundryContext}
-	 *
+	 * Builder for constructing a {@link CloudFoundryContext}.
 	 * @return the builder
 	 */
 	public static CloudFoundryContextBuilder builder() {
@@ -253,7 +243,7 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	/**
-	 * Provides a fluent API for constructing a {@link CloudFoundryContext}
+	 * Provides a fluent API for constructing a {@link CloudFoundryContext}.
 	 */
 	public static final class CloudFoundryContextBuilder
 			extends ContextBaseBuilder<CloudFoundryContext, CloudFoundryContextBuilder> {
@@ -282,8 +272,7 @@ public final class CloudFoundryContext extends Context {
 		}
 
 		/**
-		 * Set the organization GUID
-		 *
+		 * Set the organization GUID.
 		 * @param organizationGuid the organization GUID
 		 * @return the builder
 		 */
@@ -293,8 +282,7 @@ public final class CloudFoundryContext extends Context {
 		}
 
 		/**
-		 * Set the organization name
-		 *
+		 * Set the organization name.
 		 * @param organizationName the organization name
 		 * @return the builder
 		 */
@@ -304,8 +292,7 @@ public final class CloudFoundryContext extends Context {
 		}
 
 		/**
-		 * Set the organization annotations
-		 *
+		 * Set the organization annotations.
 		 * @param organizationAnnotations the organization annotations
 		 * @return the builder
 		 */
@@ -318,8 +305,7 @@ public final class CloudFoundryContext extends Context {
 		}
 
 		/**
-		 * Set the space GUID
-		 *
+		 * Set the space GUID.
 		 * @param spaceGuid the space GUID
 		 * @return the builder
 		 */
@@ -329,8 +315,7 @@ public final class CloudFoundryContext extends Context {
 		}
 
 		/**
-		 * Set the space name
-		 *
+		 * Set the space name.
 		 * @param spaceName the space name
 		 * @return the builder
 		 */
@@ -340,8 +325,7 @@ public final class CloudFoundryContext extends Context {
 		}
 
 		/**
-		 * Set the space annotations
-		 *
+		 * Set the space annotations.
 		 * @param spaceAnnotations the space annotations
 		 * @return the builder
 		 */
@@ -354,8 +338,7 @@ public final class CloudFoundryContext extends Context {
 		}
 
 		/**
-		 * Set the instance name
-		 *
+		 * Set the instance name.
 		 * @param instanceName the instance name
 		 * @return the builder
 		 */
@@ -366,8 +349,8 @@ public final class CloudFoundryContext extends Context {
 
 		@Override
 		public CloudFoundryContext build() {
-			return new CloudFoundryContext(organizationGuid, organizationName, organizationAnnotations, spaceGuid,
-					spaceName, spaceAnnotations, instanceName, properties);
+			return new CloudFoundryContext(this.organizationGuid, this.organizationName, this.organizationAnnotations,
+					this.spaceGuid, this.spaceName, this.spaceAnnotations, this.instanceName, this.properties);
 		}
 
 	}

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,11 +17,12 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that a request to update a service instance can not be fulfilled by the service broker.
+ * Thrown to indicate that a request to update a service instance can not be fulfilled by
+ * the service broker.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 422 UNPROCESSABLE ENTITY} being returned to the
- * platform.
+ * Throwing this exception will result in an HTTP status code
+ * {@literal 422 UNPROCESSABLE ENTITY} being returned to the platform.
  *
  * @author Roy Clarkson
  */
@@ -33,7 +34,6 @@ public class ServiceInstanceUpdateNotSupportedException extends ServiceBrokerExc
 
 	/**
 	 * Construct an exception with a default message and the provided detail.
-	 *
 	 * @param message detail to add to the default message
 	 */
 	public ServiceInstanceUpdateNotSupportedException(String message) {
@@ -42,8 +42,8 @@ public class ServiceInstanceUpdateNotSupportedException extends ServiceBrokerExc
 
 	/**
 	 * Construct an exception with an error code, default message and the provided detail.
-	 *
-	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param errorCode a single word in camel case that uniquely identifies the error
+	 * condition
 	 * @param message detail to add to the default message
 	 */
 	public ServiceInstanceUpdateNotSupportedException(String errorCode, String message) {
@@ -52,7 +52,6 @@ public class ServiceInstanceUpdateNotSupportedException extends ServiceBrokerExc
 
 	/**
 	 * Construct an exception with a default message and the provided detail and a cause.
-	 *
 	 * @param message detail to add to the default message
 	 * @param cause the cause of the exception
 	 */
@@ -62,8 +61,8 @@ public class ServiceInstanceUpdateNotSupportedException extends ServiceBrokerExc
 
 	/**
 	 * Construct an exception with a default message and the provided detail and a cause.
-	 *
-	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param errorCode a single word in camel case that uniquely identifies the error
+	 * condition
 	 * @param message detail to add to the default message
 	 * @param cause the cause of the exception
 	 */
@@ -73,15 +72,17 @@ public class ServiceInstanceUpdateNotSupportedException extends ServiceBrokerExc
 
 	/**
 	 * Construct an exception with a default message and the provided detail and a cause.
-	 *
-	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param errorCode a single word in camel case that uniquely identifies the error
+	 * condition
 	 * @param message detail to add to the default message
-	 * @param instanceUsable If an update or deprovisioning operation failed, this flag indicates whether or not the
-	 * 		Service Instance is still usable. If true, the Service Instance can still be used, false otherwise. This field
-	 * 		MUST NOT be present for errors of other operations.
-	 * @param updateRepeatable If an update operation failed, this flag indicates whether this update can be repeated
-	 * 		or not. If true, the same update operation MAY be repeated and MAY succeed; if false, repeating the same
-	 * 		update operation will fail again. This field MUST NOT be present for errors of other operations.
+	 * @param instanceUsable if an update or deprovisioning operation failed, this flag
+	 * indicates whether or not the Service Instance is still usable. If true, the Service
+	 * Instance can still be used, false otherwise. This field MUST NOT be present for
+	 * errors of other operations.
+	 * @param updateRepeatable if an update operation failed, this flag indicates whether
+	 * this update can be repeated or not. If true, the same update operation MAY be
+	 * repeated and MAY succeed; if false, repeating the same update operation will fail
+	 * again. This field MUST NOT be present for errors of other operations.
 	 */
 	public ServiceInstanceUpdateNotSupportedException(String errorCode, String message, Boolean instanceUsable,
 			Boolean updateRepeatable) {
@@ -90,15 +91,17 @@ public class ServiceInstanceUpdateNotSupportedException extends ServiceBrokerExc
 
 	/**
 	 * Construct an exception with a default message and the provided detail and a cause.
-	 *
-	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param errorCode a single word in camel case that uniquely identifies the error
+	 * condition
 	 * @param message detail to add to the default message
-	 * @param instanceUsable If an update or deprovisioning operation failed, this flag indicates whether or not the
-	 * 		Service Instance is still usable. If true, the Service Instance can still be used, false otherwise. This field
-	 * 		MUST NOT be present for errors of other operations.
-	 * @param updateRepeatable If an update operation failed, this flag indicates whether this update can be repeated
-	 * 		or not. If true, the same update operation MAY be repeated and MAY succeed; if false, repeating the same
-	 * 		update operation will fail again. This field MUST NOT be present for errors of other operations.
+	 * @param instanceUsable if an update or deprovisioning operation failed, this flag
+	 * indicates whether or not the Service Instance is still usable. If true, the Service
+	 * Instance can still be used, false otherwise. This field MUST NOT be present for
+	 * errors of other operations.
+	 * @param updateRepeatable if an update operation failed, this flag indicates whether
+	 * this update can be repeated or not. If true, the same update operation MAY be
+	 * repeated and MAY succeed; if false, repeating the same update operation will fail
+	 * again. This field MUST NOT be present for errors of other operations.
 	 * @param cause the cause of the exception
 	 */
 	public ServiceInstanceUpdateNotSupportedException(String errorCode, String message, Boolean instanceUsable,
@@ -108,7 +111,6 @@ public class ServiceInstanceUpdateNotSupportedException extends ServiceBrokerExc
 
 	/**
 	 * Construct an exception with a default message and the provided cause.
-	 *
 	 * @param cause the cause of the exception
 	 */
 	public ServiceInstanceUpdateNotSupportedException(Throwable cause) {

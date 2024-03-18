@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,10 +21,10 @@ import jakarta.validation.constraints.NotEmpty;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
- * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties that describe a service plan
- * available for a {@link ServiceDefinition}.
+ * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
+ * that describe a service plan available for a {@link ServiceDefinition}.
  *
- * @author sgreenberg@pivotal.io
+ * @author S Greenberg
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see org.springframework.cloud.servicebroker.model.catalog.Plan
@@ -32,15 +32,15 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 public class Plan {
 
 	/**
-	 * An identifier used to correlate this plan in future requests to the catalog. This must be unique within the
-	 * platform. Using a GUID is recommended.
+	 * An identifier used to correlate this plan in future requests to the catalog. This
+	 * must be unique within the platform. Using a GUID is recommended.
 	 */
 	@NotEmpty
 	private String id;
 
 	/**
-	 * A CLI-friendly name of the plan that will appear in the catalog. The value should be all lowercase, with no
-	 * spaces.
+	 * A CLI-friendly name of the plan that will appear in the catalog. The value should
+	 * be all lowercase, with no spaces.
 	 */
 	@NotEmpty
 	private String name;
@@ -52,7 +52,7 @@ public class Plan {
 	private String description;
 
 	/**
-	 * The metadata for this plan
+	 * The metadata for this plan.
 	 */
 	@NestedConfigurationProperty
 	private PlanMetadata metadata;
@@ -64,31 +64,35 @@ public class Plan {
 	private Schemas schemas;
 
 	/**
-	 * Indicates whether the service with this plan can be bound to applications. This is an optional field. If the
-	 * value is <code>null</code>, the field will be omitted from the serialized JSON.
+	 * Indicates whether the service with this plan can be bound to applications. This is
+	 * an optional field. If the value is <code>null</code>, the field will be omitted
+	 * from the serialized JSON.
 	 */
 	private Boolean bindable;
 
 	/**
-	 * Indicates whether the plan can be limited by the non_basic_services_allowed field in a platform quota.
+	 * Indicates whether the plan can be limited by the non_basic_services_allowed field
+	 * in a platform quota.
 	 */
 	private Boolean free;
 
 	/**
-	 * Indicates whether the plan can be updated. This is an optional field. If the value is <code>null</code>, the
-	 * field will be omitted from the serialized JSON.
+	 * Indicates whether the plan can be updated. This is an optional field. If the value
+	 * is <code>null</code>, the field will be omitted from the serialized JSON.
 	 */
 	private Boolean planUpdateable;
 
 	/**
-	 * A duration, in seconds, that the Platform SHOULD use as the Service's maximum polling duration. If the value is
-	 * <code>null</code>, the field will be omitted from the serialized JSON.
+	 * A duration, in seconds, that the Platform SHOULD use as the Service's maximum
+	 * polling duration. If the value is <code>null</code>, the field will be omitted from
+	 * the serialized JSON.
 	 */
 	private Integer maximumPollingDuration;
 
 	/**
-	 * Maintenance information for a Service Instance which is provisioned using the Service Plan. If provided, a
-	 * version string MUST be provided and platforms MAY use this when Provisioning or Updating a Service Instance.
+	 * Maintenance information for a Service Instance which is provisioned using the
+	 * Service Plan. If provided, a version string MUST be provided and platforms MAY use
+	 * this when Provisioning or Updating a Service Instance.
 	 */
 	private MaintenanceInfo maintenanceInfo;
 
@@ -165,7 +169,7 @@ public class Plan {
 	}
 
 	public MaintenanceInfo getMaintenanceInfo() {
-		return maintenanceInfo;
+		return this.maintenanceInfo;
 	}
 
 	public void setMaintenanceInfo(MaintenanceInfo maintenanceInfo) {
@@ -173,24 +177,23 @@ public class Plan {
 	}
 
 	/**
-	 * Converts this object into its corresponding model
-	 *
+	 * Converts this object into its corresponding model.
 	 * @return a Plan model
 	 * @see org.springframework.cloud.servicebroker.model.catalog.Plan
 	 */
 	public org.springframework.cloud.servicebroker.model.catalog.Plan toModel() {
 		return org.springframework.cloud.servicebroker.model.catalog.Plan.builder()
-				.id(this.id)
-				.name(this.name)
-				.description(this.description)
-				.bindable(this.bindable)
-				.free(this.free)
-				.planUpdateable(this.planUpdateable)
-				.schemas(this.schemas == null ? null : this.schemas.toModel())
-				.metadata(this.metadata == null ? null : this.metadata.toModel())
-				.maximumPollingDuration(this.maximumPollingDuration)
-				.maintenanceInfo(this.maintenanceInfo == null ? null : this.maintenanceInfo.toModel())
-				.build();
+			.id(this.id)
+			.name(this.name)
+			.description(this.description)
+			.bindable(this.bindable)
+			.free(this.free)
+			.planUpdateable(this.planUpdateable)
+			.schemas((this.schemas != null) ? this.schemas.toModel() : null)
+			.metadata((this.metadata != null) ? this.metadata.toModel() : null)
+			.maximumPollingDuration(this.maximumPollingDuration)
+			.maintenanceInfo((this.maintenanceInfo == null) ? null : this.maintenanceInfo.toModel())
+			.build();
 	}
 
 }

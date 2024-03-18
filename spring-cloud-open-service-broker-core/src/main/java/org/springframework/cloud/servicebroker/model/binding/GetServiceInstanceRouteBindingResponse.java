@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,31 +21,32 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Details of a response to a request to create a new service instance binding associated with a route.
+ * Details of a response to a request to create a new service instance binding associated
+ * with a route.
  *
  * <p>
- * Objects of this type are constructed by the service broker application, and used to build the response to the
- * platform.
+ * Objects of this type are constructed by the service broker application, and used to
+ * build the response to the platform.
  *
  * @author Scott Frederick
  * @author Roy Clarkson
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API
- * 		specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open
+ * Service Broker API specification</a>
  */
 public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBindingResponse {
 
 	private final String routeServiceUrl;
 
 	/**
-	 * Construct a new {@link GetServiceInstanceRouteBindingResponse}
+	 * Construct a new {@link GetServiceInstanceRouteBindingResponse}.
 	 */
 	public GetServiceInstanceRouteBindingResponse() {
 		this(new HashMap<>(), null, null);
 	}
 
 	/**
-	 * Construct a new {@link GetServiceInstanceRouteBindingResponse}
-	 *
+	 * Construct a new {@link GetServiceInstanceRouteBindingResponse}.
 	 * @param parameters the parameters
 	 * @param metadata the service instance binding metadata
 	 * @param routeServiceUrl the route service URL
@@ -58,7 +59,6 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 
 	/**
 	 * Get a URL to which the platform should proxy requests for the bound route.
-	 *
 	 * @return the route service URL
 	 */
 	public String getRouteServiceUrl() {
@@ -66,8 +66,8 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal GetServiceInstanceRouteBindingResponse}.
-	 *
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal GetServiceInstanceRouteBindingResponse}.
 	 * @return the builder
 	 */
 	public static GetServiceInstanceRouteBindingResponseBuilder builder() {
@@ -86,7 +86,7 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 			return false;
 		}
 		GetServiceInstanceRouteBindingResponse that = (GetServiceInstanceRouteBindingResponse) o;
-		return Objects.equals(routeServiceUrl, that.routeServiceUrl);
+		return Objects.equals(this.routeServiceUrl, that.routeServiceUrl);
 	}
 
 	@Override
@@ -96,19 +96,18 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(super.hashCode(), routeServiceUrl);
+		return Objects.hash(super.hashCode(), this.routeServiceUrl);
 	}
 
 	@Override
 	public String toString() {
-		return super.toString() +
-				"GetServiceInstanceRouteBindingResponse{" +
-				"routeServiceUrl='" + routeServiceUrl + '\'' +
-				'}';
+		return super.toString() + "GetServiceInstanceRouteBindingResponse{" + "routeServiceUrl='" + this.routeServiceUrl
+				+ '\'' + '}';
 	}
 
 	/**
-	 * Provides a fluent API for constructing a {@link GetServiceInstanceRouteBindingResponse}.
+	 * Provides a fluent API for constructing a
+	 * {@link GetServiceInstanceRouteBindingResponse}.
 	 */
 	public static final class GetServiceInstanceRouteBindingResponseBuilder {
 
@@ -122,11 +121,12 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 		}
 
 		/**
-		 * Set a URL to which the platform should proxy requests for the bound route. Can be {@literal null}.
+		 * Set a URL to which the platform should proxy requests for the bound route. Can
+		 * be {@literal null}.
 		 *
 		 * <p>
-		 * This value will set the {@literal route_service_url} field in the body of the response to the platform
-		 *
+		 * This value will set the {@literal route_service_url} field in the body of the
+		 * response to the platform
 		 * @param routeServiceUrl the route service URL
 		 * @return the builder
 		 */
@@ -136,12 +136,12 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 		}
 
 		/**
-		 * Add a set of parameters from the provided {@literal Map} to the request parameters as were provided by the
-		 * platform at service binding creation.
+		 * Add a set of parameters from the provided {@literal Map} to the request
+		 * parameters as were provided by the platform at service binding creation.
 		 *
 		 * <p>
-		 * This value will set the {@literal parameters} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal parameters} field in the body of the response
+		 * to the platform.
 		 * @param parameters the parameters to add
 		 * @return the builder
 		 * @see #getParameters()
@@ -152,12 +152,12 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 		}
 
 		/**
-		 * Add a key/value pair to the request parameters as were provided in the request from the platform at service
-		 * binding creation.
+		 * Add a key/value pair to the request parameters as were provided in the request
+		 * from the platform at service binding creation.
 		 *
 		 * <p>
-		 * This value will set the {@literal parameters} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal parameters} field in the body of the response
+		 * to the platform.
 		 * @param key the parameter key to add
 		 * @param value the parameter value to add
 		 * @return the builder
@@ -172,8 +172,8 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 		 * Set the service instance binding metadata
 		 *
 		 * <p>
-		 * This value will set the {@literal metadata} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal metadata} field in the body of the response
+		 * to the platform.
 		 * @param metadata metadata about this service binding
 		 * @return the builder
 		 */
@@ -183,12 +183,12 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 		}
 
 		/**
-		 * Construct a {@link GetServiceInstanceRouteBindingResponse} from the provided values.
-		 *
+		 * Construct a {@link GetServiceInstanceRouteBindingResponse} from the provided
+		 * values.
 		 * @return the newly constructed {@literal GetServiceInstanceRouteBindingResponse}
 		 */
 		public GetServiceInstanceRouteBindingResponse build() {
-			return new GetServiceInstanceRouteBindingResponse(parameters, metadata, routeServiceUrl);
+			return new GetServiceInstanceRouteBindingResponse(this.parameters, this.metadata, this.routeServiceUrl);
 		}
 
 	}

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,31 +25,32 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
  * Details of a request to retrieve a service instance.
  *
  * <p>
- * Objects of this type are constructed by the framework from the headers, path variables, query parameters and message
- * body passed to the service broker by the platform.
+ * Objects of this type are constructed by the framework from the headers, path variables,
+ * query parameters and message body passed to the service broker by the platform.
  *
  * @author Scott Frederick
  * @author Roy Clarkson
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open Service Broker API
- * 		specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open
+ * Service Broker API specification</a>
  */
 public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 
-	private transient final String serviceInstanceId;
+	private final transient String serviceInstanceId;
 
-	private transient final String serviceDefinitionId;
+	private final transient String serviceDefinitionId;
 
-	private transient final String planId;
+	private final transient String planId;
 
 	/**
-	 * Construct a new {@link GetServiceInstanceRequest}
-	 *
+	 * Construct a new {@link GetServiceInstanceRequest}.
 	 * @param serviceInstanceId the service instance ID
 	 * @param serviceDefinitionId the service definition ID
 	 * @param planId the plan ID
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
-	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * @param originatingIdentity identity of the user that initiated the request from the
+	 * platform
 	 * @param requestIdentity identity of the request sent from server
 	 */
 	public GetServiceInstanceRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
@@ -61,12 +62,13 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 	}
 
 	/**
-	 * Get the ID of the service instance to retrieve. This value is assigned by the platform. It must be unique within
-	 * the platform and can be used to correlate any resources associated with the service instance.
+	 * Get the ID of the service instance to retrieve. This value is assigned by the
+	 * platform. It must be unique within the platform and can be used to correlate any
+	 * resources associated with the service instance.
 	 *
 	 * <p>
-	 * This value is set from the {@literal :instance_id} path element of the request from the platform.
-	 *
+	 * This value is set from the {@literal :instance_id} path element of the request from
+	 * the platform.
 	 * @return the service instance ID
 	 */
 	public String getServiceInstanceId() {
@@ -77,8 +79,8 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 	 * Get the ID of the service definition of the service instance.
 	 *
 	 * <p>
-	 * This value is set from the {@literal service_id} request parameter of the request from the platform
-	 *
+	 * This value is set from the {@literal service_id} request parameter of the request
+	 * from the platform
 	 * @return the service definition ID
 	 */
 	public String getServiceDefinitionId() {
@@ -89,8 +91,8 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 	 * Get the ID of the plan of the service instance.
 	 *
 	 * <p>
-	 * This value is set from the {@literal plan_id} request parameter of the request from the platform.
-	 *
+	 * This value is set from the {@literal plan_id} request parameter of the request from
+	 * the platform.
 	 * @return the plan ID
 	 */
 	public String getPlanId() {
@@ -98,12 +100,13 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal GetServiceInstanceRequest}.
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal GetServiceInstanceRequest}.
 	 *
 	 * <p>
-	 * This builder is provided to support testing of {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService}
+	 * This builder is provided to support testing of
+	 * {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService}
 	 * implementations.
-	 *
 	 * @return the builder
 	 */
 	public static GetServiceInstanceRequestBuilder builder() {
@@ -122,10 +125,9 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 			return false;
 		}
 		GetServiceInstanceRequest that = (GetServiceInstanceRequest) o;
-		return that.canEqual(this) &&
-				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
-				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
-				Objects.equals(planId, that.planId);
+		return that.canEqual(this) && Objects.equals(this.serviceInstanceId, that.serviceInstanceId)
+				&& Objects.equals(this.serviceDefinitionId, that.serviceDefinitionId)
+				&& Objects.equals(this.planId, that.planId);
 	}
 
 	@Override
@@ -135,17 +137,13 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(super.hashCode(), serviceInstanceId, serviceDefinitionId, planId);
+		return Objects.hash(super.hashCode(), this.serviceInstanceId, this.serviceDefinitionId, this.planId);
 	}
 
 	@Override
 	public String toString() {
-		return super.toString() +
-				"GetServiceInstanceRequest{" +
-				"serviceInstanceId='" + serviceInstanceId + '\'' +
-				", serviceDefinitionId='" + serviceDefinitionId + '\'' +
-				", planId='" + planId + '\'' +
-				'}';
+		return super.toString() + "GetServiceInstanceRequest{" + "serviceInstanceId='" + this.serviceInstanceId + '\''
+				+ ", serviceDefinitionId='" + this.serviceDefinitionId + '\'' + ", planId='" + this.planId + '\'' + '}';
 	}
 
 	/**
@@ -171,8 +169,8 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the service instance ID as would be provided in the request from the platform.
-		 *
+		 * Set the service instance ID as would be provided in the request from the
+		 * platform.
 		 * @param serviceInstanceId the service instance ID
 		 * @return the builder
 		 * @see #getServiceInstanceId()
@@ -183,8 +181,8 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the service definition ID as would be provided in the request from the platform.
-		 *
+		 * Set the service definition ID as would be provided in the request from the
+		 * platform.
 		 * @param serviceDefinitionId the service definition ID
 		 * @return the builder
 		 * @see #getServiceDefinitionId()
@@ -196,7 +194,6 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 
 		/**
 		 * Set the plan ID as would be provided in the request from the platform.
-		 *
 		 * @param planId the plan ID
 		 * @return the builder
 		 * @see #getPlanId()
@@ -207,8 +204,8 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the ID of the platform instance as would be provided in the request from the platform.
-		 *
+		 * Set the ID of the platform instance as would be provided in the request from
+		 * the platform.
 		 * @param platformInstanceId the platform instance ID
 		 * @return the builder
 		 * @see #getPlatformInstanceId()
@@ -219,9 +216,10 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the location of the API info endpoint as would be provided in the request from the platform.
-		 *
-		 * @param apiInfoLocation location of the API info endpoint of the platform instance
+		 * Set the location of the API info endpoint as would be provided in the request
+		 * from the platform.
+		 * @param apiInfoLocation location of the API info endpoint of the platform
+		 * instance
 		 * @return the builder
 		 * @see #getApiInfoLocation()
 		 */
@@ -231,8 +229,8 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the identity of the user making the request as would be provided in the request from the platform.
-		 *
+		 * Set the identity of the user making the request as would be provided in the
+		 * request from the platform.
 		 * @param originatingIdentity the user identity
 		 * @return the builder
 		 * @see #getOriginatingIdentity()
@@ -243,8 +241,7 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the identity of the request sent from the platform
-		 *
+		 * Set the identity of the request sent from the platform.
 		 * @param requestIdentity the request identity
 		 * @return the builder
 		 * @see #getRequestIdentity()
@@ -256,12 +253,11 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 
 		/**
 		 * Construct a {@link GetServiceInstanceRequest} from the provided values.
-		 *
 		 * @return the newly constructed {@literal GetServiceInstanceRequest}
 		 */
 		public GetServiceInstanceRequest build() {
-			return new GetServiceInstanceRequest(serviceInstanceId, serviceDefinitionId, planId, platformInstanceId,
-					apiInfoLocation, originatingIdentity, requestIdentity);
+			return new GetServiceInstanceRequest(this.serviceInstanceId, this.serviceDefinitionId, this.planId,
+					this.platformInstanceId, this.apiInfoLocation, this.originatingIdentity, this.requestIdentity);
 		}
 
 	}

@@ -37,6 +37,10 @@ contractTest {
 	}
 }
 
+generateContractTests {
+	mustRunAfter(checkFormatContractTest)
+}
+
 dependencies {
 	constraints {
 		testImplementation("com.github.tomakehurst:wiremock-standalone:${wiremockStandaloneVersion}") {

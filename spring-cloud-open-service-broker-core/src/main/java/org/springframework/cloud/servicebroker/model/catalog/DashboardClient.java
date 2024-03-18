@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,10 +23,13 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
- * The dashboard URI for a {@link ServiceDefinition}
+ * The dashboard URI for a {@link ServiceDefinition}.
  *
- * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#dashboard-client-object">Open
- * 		Service Broker API specification</a>
+ * @author Scott Frederick
+ * @author Roy Clarkson
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#dashboard-client-object">Open
+ * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,15 +42,14 @@ public class DashboardClient {
 	private final String redirectUri;
 
 	/**
-	 * Construct a new {@link DashboardClient}
+	 * Construct a new {@link DashboardClient}.
 	 */
 	public DashboardClient() {
 		this(null, null, null);
 	}
 
 	/**
-	 * Construct a new {@link DashboardClient}
-	 *
+	 * Construct a new {@link DashboardClient}.
 	 * @param id the client ID
 	 * @param secret the client secret
 	 * @param redirectUri the dashboard URI
@@ -59,10 +61,9 @@ public class DashboardClient {
 	}
 
 	/**
-	 * The client ID of the dashboard OAuth2 client that the service intends to use. The name must be unique within the
-	 * platform. If the name is already in use, the platform will return an error to the operator when the service is
-	 * registered.
-	 *
+	 * The client ID of the dashboard OAuth2 client that the service intends to use. The
+	 * name must be unique within the platform. If the name is already in use, the
+	 * platform will return an error to the operator when the service is registered.
 	 * @return the client ID
 	 */
 	public String getId() {
@@ -71,7 +72,6 @@ public class DashboardClient {
 
 	/**
 	 * The client secret for the dashboard OAuth2 client.
-	 *
 	 * @return the client secret
 	 */
 	public String getSecret() {
@@ -79,8 +79,8 @@ public class DashboardClient {
 	}
 
 	/**
-	 * A domain for the service dashboard that will be whitelisted by the UAA to enable dashboard SSO.
-	 *
+	 * A domain for the service dashboard that will be whitelisted by the UAA to enable
+	 * dashboard SSO.
 	 * @return the dashboard URI
 	 */
 	public String getRedirectUri() {
@@ -88,8 +88,8 @@ public class DashboardClient {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal DashboardClient}.
-	 *
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal DashboardClient}.
 	 * @return the builder
 	 */
 	public static DashboardClientBuilder builder() {
@@ -105,23 +105,19 @@ public class DashboardClient {
 			return false;
 		}
 		DashboardClient that = (DashboardClient) o;
-		return Objects.equals(id, that.id) &&
-				Objects.equals(secret, that.secret) &&
-				Objects.equals(redirectUri, that.redirectUri);
+		return Objects.equals(this.id, that.id) && Objects.equals(this.secret, that.secret)
+				&& Objects.equals(this.redirectUri, that.redirectUri);
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(id, secret, redirectUri);
+		return Objects.hash(this.id, this.secret, this.redirectUri);
 	}
 
 	@Override
 	public String toString() {
-		return "DashboardClient{" +
-				"id='" + id + '\'' +
-				", secret='" + secret + '\'' +
-				", redirectUri='" + redirectUri + '\'' +
-				'}';
+		return "DashboardClient{" + "id='" + this.id + '\'' + ", secret='" + this.secret + '\'' + ", redirectUri='"
+				+ this.redirectUri + '\'' + '}';
 	}
 
 	/**
@@ -139,10 +135,9 @@ public class DashboardClient {
 		}
 
 		/**
-		 * The client ID of the dashboard OAuth2 client that the service intends to use. The name must be unique within
-		 * the platform. If the name is already in use, the platform will return an error to the operator when the
-		 * service is registered.
-		 *
+		 * The client ID of the dashboard OAuth2 client that the service intends to use.
+		 * The name must be unique within the platform. If the name is already in use, the
+		 * platform will return an error to the operator when the service is registered.
 		 * @param id the client ID
 		 * @return the builder instance
 		 */
@@ -153,7 +148,6 @@ public class DashboardClient {
 
 		/**
 		 * The client secret for the dashboard OAuth2 client.
-		 *
 		 * @param secret the client secret
 		 * @return the builder instance
 		 */
@@ -163,8 +157,8 @@ public class DashboardClient {
 		}
 
 		/**
-		 * A domain for the service dashboard that will be whitelisted by the UAA to enable dashboard SSO.
-		 *
+		 * A domain for the service dashboard that will be whitelisted by the UAA to
+		 * enable dashboard SSO.
 		 * @param redirectUri the dashboard URI
 		 * @return the builder instance
 		 */
@@ -175,11 +169,10 @@ public class DashboardClient {
 
 		/**
 		 * Construct a {@link DashboardClient} from the provided values.
-		 *
 		 * @return the newly constructed {@literal DashboardClient}
 		 */
 		public DashboardClient build() {
-			return new DashboardClient(id, secret, redirectUri);
+			return new DashboardClient(this.id, this.secret, this.redirectUri);
 		}
 
 	}

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,19 +17,20 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Provides a formatted message indicating that the service broker does not support the version of the Open Service
- * Broker API provided by the platform.
+ * Provides a formatted message indicating that the service broker does not support the
+ * version of the Open Service Broker API provided by the platform.
+ *
+ * @author Roy Clarkson
  */
 public final class ServiceBrokerApiVersionErrorMessage {
 
-	private static final String MESSAGE_TEMPLATE = "The provided service broker API version is not supported: " +
-			"expected version=%s, provided version=%s";
+	private static final String MESSAGE_TEMPLATE = "The provided service broker API version is not supported: "
+			+ "expected version=%s, provided version=%s";
 
 	private final String message;
 
 	/**
 	 * Construct a message with the expected and provided version numbers.
-	 *
 	 * @param expectedVersion the version expected by the service broker
 	 * @param providedVersion the version provided by the platform
 	 */
@@ -39,12 +40,11 @@ public final class ServiceBrokerApiVersionErrorMessage {
 
 	@Override
 	public String toString() {
-		return message;
+		return this.message;
 	}
 
 	/**
 	 * Construct a message with the expected and provided version numbers.
-	 *
 	 * @param expectedVersion the version expected by the service broker
 	 * @param providedVersion the version provided by the platform
 	 * @return error message

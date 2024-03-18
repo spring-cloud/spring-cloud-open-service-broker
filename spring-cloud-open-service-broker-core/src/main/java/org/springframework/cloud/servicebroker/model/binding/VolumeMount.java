@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,12 +35,13 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
  * Details of a volume mount in a service binding response.
  *
  * <p>
- * Objects of this type are constructed by the service broker application, and used to build the response to the
- * platform.
+ * Objects of this type are constructed by the service broker application, and used to
+ * build the response to the platform.
  *
  * @author Scott Frederick
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#volume-mount-object">Open
- * 		Service Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#volume-mount-object">Open
+ * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -50,13 +51,14 @@ public class VolumeMount {
 	 * Values designating whether the mounted volume can be written to or read from.
 	 */
 	public enum Mode {
+
 		/**
-		 * Volume is Read-Only
+		 * Volume is Read-Only.
 		 */
 		READ_ONLY("r"),
 
 		/**
-		 * Volume is Read-Write
+		 * Volume is Read-Write.
 		 */
 		READ_WRITE("rw");
 
@@ -68,16 +70,19 @@ public class VolumeMount {
 
 		@Override
 		public String toString() {
-			return value;
+			return this.value;
 		}
+
 	}
 
 	/**
 	 * Values specifying the type of device to mount.
 	 */
 	public enum DeviceType {
+
 		/**
-		 * Indicates a distributed volume which can be mounted on multiple app instances simultaneously.
+		 * Indicates a distributed volume which can be mounted on multiple app instances
+		 * simultaneously.
 		 */
 		SHARED("shared");
 
@@ -89,8 +94,9 @@ public class VolumeMount {
 
 		@Override
 		public String toString() {
-			return value;
+			return this.value;
 		}
+
 	}
 
 	private final String driver;
@@ -104,15 +110,14 @@ public class VolumeMount {
 	private final VolumeDevice device;
 
 	/**
-	 * Construct a new {@link VolumeMount}
+	 * Construct a new {@link VolumeMount}.
 	 */
 	public VolumeMount() {
 		this(null, null, null, null, null);
 	}
 
 	/**
-	 * Construct a new {@link VolumeMount}
-	 *
+	 * Construct a new {@link VolumeMount}.
 	 * @param driver the name of the driver
 	 * @param containerDir the container directory
 	 * @param mode the volume read/write mode
@@ -129,7 +134,6 @@ public class VolumeMount {
 
 	/**
 	 * Get the name of the volume driver plugin which manages the device.
-	 *
 	 * @return the name of the driver
 	 */
 	public String getDriver() {
@@ -138,7 +142,6 @@ public class VolumeMount {
 
 	/**
 	 * Set the directory to mount inside the application container.
-	 *
 	 * @return the container directory
 	 */
 	public String getContainerDir() {
@@ -146,8 +149,8 @@ public class VolumeMount {
 	}
 
 	/**
-	 * Get a value indicating whether the volume can be mounted in read-only or read-write mode.
-	 *
+	 * Get a value indicating whether the volume can be mounted in read-only or read-write
+	 * mode.
 	 * @return the volume read/write mode
 	 */
 	@JsonSerialize(using = ToStringSerializer.class)
@@ -158,7 +161,6 @@ public class VolumeMount {
 
 	/**
 	 * Get the type of the volume device to mount.
-	 *
 	 * @return the volume device type
 	 */
 	@JsonSerialize(using = ToStringSerializer.class)
@@ -169,18 +171,17 @@ public class VolumeMount {
 
 	/**
 	 * Get the details of the volume device to mount.
-	 *
 	 * @return the volume device details
 	 */
 	@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "device_type")
-	@JsonSubTypes({@JsonSubTypes.Type(value = SharedVolumeDevice.class, name = "shared")})
+	@JsonSubTypes({ @JsonSubTypes.Type(value = SharedVolumeDevice.class, name = "shared") })
 	public VolumeDevice getDevice() {
 		return this.device;
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal VolumeMount}.
-	 *
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal VolumeMount}.
 	 * @return the builder
 	 */
 	public static VolumeMountBuilder builder() {
@@ -196,27 +197,20 @@ public class VolumeMount {
 			return false;
 		}
 		VolumeMount that = (VolumeMount) o;
-		return Objects.equals(driver, that.driver) &&
-				Objects.equals(containerDir, that.containerDir) &&
-				mode == that.mode &&
-				deviceType == that.deviceType &&
-				Objects.equals(device, that.device);
+		return Objects.equals(this.driver, that.driver) && Objects.equals(this.containerDir, that.containerDir)
+				&& this.mode == that.mode && this.deviceType == that.deviceType
+				&& Objects.equals(this.device, that.device);
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(driver, containerDir, mode, deviceType, device);
+		return Objects.hash(this.driver, this.containerDir, this.mode, this.deviceType, this.device);
 	}
 
 	@Override
 	public String toString() {
-		return "VolumeMount{" +
-				"driver='" + driver + '\'' +
-				", containerDir='" + containerDir + '\'' +
-				", mode=" + mode +
-				", deviceType=" + deviceType +
-				", device=" + device +
-				'}';
+		return "VolumeMount{" + "driver='" + this.driver + '\'' + ", containerDir='" + this.containerDir + '\''
+				+ ", mode=" + this.mode + ", deviceType=" + this.deviceType + ", device=" + this.device + '}';
 	}
 
 	/**
@@ -241,8 +235,8 @@ public class VolumeMount {
 		 * Set the name of the volume driver plugin which manages the device.
 		 *
 		 * <p>
-		 * This value will set the {@literal driver} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal driver} field in the body of the response to
+		 * the platform.
 		 * @param driver the driver name
 		 * @return the builder
 		 */
@@ -255,8 +249,8 @@ public class VolumeMount {
 		 * Set the directory to mount inside the application container.
 		 *
 		 * <p>
-		 * This value will set the {@literal container_dir} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal container_dir} field in the body of the
+		 * response to the platform.
 		 * @param containerDir the container directory
 		 * @return the builder
 		 */
@@ -266,11 +260,12 @@ public class VolumeMount {
 		}
 
 		/**
-		 * Set a value indicating whether the volume can be mounted in read-only or read-write mode.
+		 * Set a value indicating whether the volume can be mounted in read-only or
+		 * read-write mode.
 		 *
 		 * <p>
-		 * This value will set the {@literal mode} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal mode} field in the body of the response to
+		 * the platform.
 		 * @param mode the volume read/write mode
 		 * @return the builder
 		 */
@@ -283,8 +278,8 @@ public class VolumeMount {
 		 * Set the type of the volume device to mount.
 		 *
 		 * <p>
-		 * This value will set the {@literal device_type} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal device_type} field in the body of the
+		 * response to the platform.
 		 * @param deviceType the volume device type
 		 * @return the builder
 		 */
@@ -297,8 +292,8 @@ public class VolumeMount {
 		 * Set the details of the volume device to mount, specific to the device type.
 		 *
 		 * <p>
-		 * This value will set the {@literal device} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal device} field in the body of the response to
+		 * the platform.
 		 * @param device the volume device details
 		 * @return the builder
 		 */
@@ -309,41 +304,39 @@ public class VolumeMount {
 
 		/**
 		 * Construct a {@link VolumeMount} from the provided values.
-		 *
 		 * @return the newly constructed {@literal VolumeMount}
 		 */
 		public VolumeMount build() {
-			return new VolumeMount(driver, containerDir, mode, deviceType, device);
+			return new VolumeMount(this.driver, this.containerDir, this.mode, this.deviceType, this.device);
 		}
 
 	}
 
 	/**
-	 * Custom {@link DeviceType} Jackson Deserializer
+	 * Custom {@link DeviceType} Jackson Deserializer.
 	 */
 	private static class DeviceTypeDeserializer extends StdDeserializer<DeviceType> {
 
 		private static final long serialVersionUID = -7935903407118198514L;
 
 		/**
-		 * Construct a new {@link DeviceTypeDeserializer}
+		 * Construct a new {@link DeviceTypeDeserializer}.
 		 */
-		public DeviceTypeDeserializer() {
+		DeviceTypeDeserializer() {
 			this(null);
 		}
 
 		/**
-		 * Construct a new {@link DeviceTypeDeserializer}
-		 *
+		 * Construct a new {@link DeviceTypeDeserializer}.
 		 * @param c the type
 		 */
-		public DeviceTypeDeserializer(Class<?> c) {
+		DeviceTypeDeserializer(Class<?> c) {
 			super(c);
 		}
 
 		@Override
-		public DeviceType deserialize(JsonParser jsonParser,
-				DeserializationContext deserializationContext) throws IOException {
+		public DeviceType deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+				throws IOException {
 			for (DeviceType d : DeviceType.values()) {
 				if (d.toString().equalsIgnoreCase(jsonParser.getText())) {
 					return d;
@@ -355,31 +348,30 @@ public class VolumeMount {
 	}
 
 	/**
-	 * Custom {@link Mode} Jackson Deserializer
+	 * Custom {@link Mode} Jackson Deserializer.
 	 */
 	private static class ModeDeserializer extends StdDeserializer<Mode> {
 
 		private static final long serialVersionUID = -4985037236705821009L;
 
 		/**
-		 * Construct a new {@link ModeDeserializer}
+		 * Construct a new {@link ModeDeserializer}.
 		 */
-		public ModeDeserializer() {
+		ModeDeserializer() {
 			this(null);
 		}
 
 		/**
-		 * Construct a new {@link ModeDeserializer}
-		 *
+		 * Construct a new {@link ModeDeserializer}.
 		 * @param c the type
 		 */
-		public ModeDeserializer(Class<?> c) {
+		ModeDeserializer(Class<?> c) {
 			super(c);
 		}
 
 		@Override
-		public Mode deserialize(JsonParser jsonParser, DeserializationContext
-				deserializationContext) throws IOException {
+		public Mode deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+				throws IOException {
 			for (Mode m : Mode.values()) {
 				if (m.toString().equalsIgnoreCase(jsonParser.getText())) {
 					return m;

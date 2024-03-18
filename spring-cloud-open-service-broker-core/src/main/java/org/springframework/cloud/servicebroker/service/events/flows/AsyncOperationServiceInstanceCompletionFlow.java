@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,15 +22,14 @@ import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOper
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationResponse;
 
 /**
- * Completion flow for asynchronous get last operation reguest
+ * Completion flow for asynchronous get last operation reguest.
  *
  * @author Roy Clarkson
  */
 public interface AsyncOperationServiceInstanceCompletionFlow {
 
 	/**
-	 * Performs the operation on the completion flow
-	 *
+	 * Performs the operation on the completion flow.
 	 * @param request the service broker request
 	 * @param response the service broker response
 	 * @return an empty Mono

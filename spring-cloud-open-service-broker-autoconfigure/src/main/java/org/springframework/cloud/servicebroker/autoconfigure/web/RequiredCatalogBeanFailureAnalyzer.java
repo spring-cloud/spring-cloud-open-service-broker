@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,21 +23,24 @@ import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 
 /**
+ * Verifies that a required Catalog is configured.
+ *
  * @author Roy Clarkson
  */
 public class RequiredCatalogBeanFailureAnalyzer
 		extends AbstractFailureAnalyzer<CatalogDefinitionDoesNotExistException> {
 
-	private static final String REFERENCE_DOC = "https://docs.spring.io/spring-cloud-open-service-broker/docs/current" +
-			"/reference/html5/#service-catalog";
+	private static final String REFERENCE_DOC = "https://docs.spring.io/spring-cloud-open-service-broker/docs/current"
+			+ "/reference/html5/#service-catalog";
 
 	@Override
 	protected FailureAnalysis analyze(Throwable rootFailure, CatalogDefinitionDoesNotExistException cause) {
 		String description = "A 'service broker catalog' is required for Spring Cloud Open Service Broker applications";
-		String action = String.format("Consider defining a catalog in properties or a bean of type" +
-						" '%s' in your configuration. Alternatively, you may implement a service of type '%s'. See " +
-						"the reference documentation for more information: " + REFERENCE_DOC, Catalog.class,
-				CatalogService.class);
+		String action = String.format(
+				"Consider defining a catalog in properties or a bean of type"
+						+ " '%s' in your configuration. Alternatively, you may implement a service of type '%s'. See "
+						+ "the reference documentation for more information: " + REFERENCE_DOC,
+				Catalog.class, CatalogService.class);
 		return new FailureAnalysis(description, action, cause);
 	}
 

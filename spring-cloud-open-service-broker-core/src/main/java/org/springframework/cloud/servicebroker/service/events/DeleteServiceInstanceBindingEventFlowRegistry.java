@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,18 +27,15 @@ import org.springframework.cloud.servicebroker.service.events.flows.DeleteServic
 import org.springframework.cloud.servicebroker.service.events.flows.DeleteServiceInstanceBindingInitializationFlow;
 
 /**
- * Event flow registry for delete service instance binding requests
+ * Event flow registry for delete service instance binding requests.
  *
  * @author Roy Clarkson
  */
-public class DeleteServiceInstanceBindingEventFlowRegistry
-		extends EventFlowRegistry<DeleteServiceInstanceBindingInitializationFlow,
-		DeleteServiceInstanceBindingCompletionFlow, DeleteServiceInstanceBindingErrorFlow, DeleteServiceInstanceBindingRequest,
-		DeleteServiceInstanceBindingResponse> {
+public class DeleteServiceInstanceBindingEventFlowRegistry extends
+		EventFlowRegistry<DeleteServiceInstanceBindingInitializationFlow, DeleteServiceInstanceBindingCompletionFlow, DeleteServiceInstanceBindingErrorFlow, DeleteServiceInstanceBindingRequest, DeleteServiceInstanceBindingResponse> {
 
 	/**
-	 * Construct a new {@link DeleteServiceInstanceBindingEventFlowRegistry}
-	 *
+	 * Construct a new {@link DeleteServiceInstanceBindingEventFlowRegistry}.
 	 * @param initializationFlows the initialization flows
 	 * @param completionFlows the completion flows
 	 * @param errorFlows the error flows
@@ -52,21 +49,18 @@ public class DeleteServiceInstanceBindingEventFlowRegistry
 
 	@Override
 	public Flux<Void> getInitializationFlows(DeleteServiceInstanceBindingRequest request) {
-		return getInitializationFlowsInternal()
-				.flatMap(flow -> flow.initialize(request));
+		return getInitializationFlowsInternal().flatMap((flow) -> flow.initialize(request));
 	}
 
 	@Override
 	public Flux<Void> getCompletionFlows(DeleteServiceInstanceBindingRequest request,
 			DeleteServiceInstanceBindingResponse response) {
-		return getCompletionFlowsInternal()
-				.flatMap(flow -> flow.complete(request, response));
+		return getCompletionFlowsInternal().flatMap((flow) -> flow.complete(request, response));
 	}
 
 	@Override
 	public Flux<Void> getErrorFlows(DeleteServiceInstanceBindingRequest request, Throwable t) {
-		return getErrorFlowsInternal()
-				.flatMap(flow -> flow.error(request, t));
+		return getErrorFlowsInternal().flatMap((flow) -> flow.error(request, t));
 	}
 
 }

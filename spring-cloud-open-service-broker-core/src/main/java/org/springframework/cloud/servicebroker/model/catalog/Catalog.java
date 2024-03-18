@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,26 +16,26 @@
 
 package org.springframework.cloud.servicebroker.model.catalog;
 
-import jakarta.validation.constraints.NotEmpty;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotEmpty;
 
 /**
  * The catalog of services offered by the service broker.
  *
  * <p>
- * Objects of this type are constructed by the service broker application, and used to build the response to the
- * platform.
+ * Objects of this type are constructed by the service broker application, and used to
+ * build the response to the platform.
  *
- * @author sgreenberg@pivotal.io
+ * @author S Greenberg
  * @author Scott Frederick
- * @see <a href= "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#catalog-management">Open
- * 		Service Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#catalog-management">Open
+ * Service Broker API specification</a>
  */
 public class Catalog {
 
@@ -43,15 +43,14 @@ public class Catalog {
 	private final List<ServiceDefinition> serviceDefinitions;
 
 	/**
-	 * Construct a new {@link Catalog}
+	 * Construct a new {@link Catalog}.
 	 */
 	public Catalog() {
 		this(new ArrayList<>());
 	}
 
 	/**
-	 * Construct a new {@link Catalog}
-	 *
+	 * Construct a new {@link Catalog}.
 	 * @param serviceDefinitions a collection of services
 	 */
 	public Catalog(List<ServiceDefinition> serviceDefinitions) {
@@ -60,7 +59,6 @@ public class Catalog {
 
 	/**
 	 * Get the set of service offerings.
-	 *
 	 * @return a set of service offerings
 	 */
 	@JsonProperty("services")
@@ -77,24 +75,21 @@ public class Catalog {
 			return false;
 		}
 		Catalog catalog = (Catalog) o;
-		return Objects.equals(serviceDefinitions, catalog.serviceDefinitions);
+		return Objects.equals(this.serviceDefinitions, catalog.serviceDefinitions);
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(serviceDefinitions);
+		return Objects.hash(this.serviceDefinitions);
 	}
 
 	@Override
 	public String toString() {
-		return "Catalog{" +
-				"serviceDefinitions=" + serviceDefinitions +
-				'}';
+		return "Catalog{" + "serviceDefinitions=" + this.serviceDefinitions + '}';
 	}
 
 	/**
 	 * Create a builder that provides a fluent API for constructing a {@literal Catalog}.
-	 *
 	 * @return the builder
 	 */
 	public static CatalogBuilder builder() {
@@ -112,12 +107,11 @@ public class Catalog {
 		}
 
 		/**
-		 * Add a set of service offerings from the provided {@literal List} to the service offerings provided by the
-		 * service broker.
+		 * Add a set of service offerings from the provided {@literal List} to the service
+		 * offerings provided by the service broker.
 		 *
 		 * <p>
 		 * This value sets the {@literal services} field in the response to the platform.
-		 *
 		 * @param serviceDefinitions a {@literal List} of service offerings
 		 * @return the catalog builder instance
 		 */
@@ -127,12 +121,11 @@ public class Catalog {
 		}
 
 		/**
-		 * Add a set of service offerings from the provided array to the service offerings provided by the service
-		 * broker.
+		 * Add a set of service offerings from the provided array to the service offerings
+		 * provided by the service broker.
 		 *
 		 * <p>
 		 * This value sets the {@literal services} field in the response to the platform.
-		 *
 		 * @param serviceDefinitions an array of service offerings
 		 * @return the catalog builder instance
 		 */
@@ -143,11 +136,10 @@ public class Catalog {
 
 		/**
 		 * Construct a {@link Catalog} from the provided values.
-		 *
 		 * @return the newly constructed {@literal Catalog}
 		 */
 		public Catalog build() {
-			return new Catalog(serviceDefinitions);
+			return new Catalog(this.serviceDefinitions);
 		}
 
 	}

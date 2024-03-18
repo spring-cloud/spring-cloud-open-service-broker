@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +44,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 /**
  * Base functionality shared by controllers.
  *
- * @author sgreenberg@pivotal.io
+ * @author S Greenberg
  * @author Scott Frederick
  * @author Roy Clarkson
  */
@@ -55,8 +55,7 @@ public class BaseController {
 	protected CatalogService catalogService;
 
 	/**
-	 * Construct a new {@link BaseController}
-	 *
+	 * Construct a new {@link BaseController}.
 	 * @param catalogService the catalog service
 	 */
 	public BaseController(CatalogService catalogService) {
@@ -64,18 +63,18 @@ public class BaseController {
 	}
 
 	/**
-	 * Sets common headers for the request
-	 *
+	 * Sets common headers for the request.
 	 * @param request the request in which to set the headers
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
-	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param originatingIdentityString identity of the user that initiated the request
+	 * from the platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the request with the applied headers
 	 */
 	protected Mono<ServiceBrokerRequest> configureCommonRequestFields(ServiceBrokerRequest request,
-			String platformInstanceId,
-			String apiInfoLocation, String originatingIdentityString, String requestIdentity) {
+			String platformInstanceId, String apiInfoLocation, String originatingIdentityString,
+			String requestIdentity) {
 		request.setPlatformInstanceId(platformInstanceId);
 		request.setApiInfoLocation(apiInfoLocation);
 		request.setOriginatingIdentity(parseOriginatingIdentity(originatingIdentityString));
@@ -84,77 +83,73 @@ public class BaseController {
 	}
 
 	/**
-	 * Sets common headers for the request
-	 *
+	 * Sets common headers for the request.
 	 * @param request the request in which to set the headers
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
-	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * @param originatingIdentityString identity of the user that initiated the request
+	 * from the platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @param asyncAccepted does the platform accept asynchronous requests
 	 * @return the request with the applied headers
 	 */
 	protected Mono<AsyncServiceBrokerRequest> configureCommonRequestFields(AsyncServiceBrokerRequest request,
-			String platformInstanceId,
-			String apiInfoLocation, String originatingIdentityString, String requestIdentity, boolean asyncAccepted) {
+			String platformInstanceId, String apiInfoLocation, String originatingIdentityString, String requestIdentity,
+			boolean asyncAccepted) {
 		request.setAsyncAccepted(asyncAccepted);
 		return configureCommonRequestFields(request, platformInstanceId, apiInfoLocation, originatingIdentityString,
 				requestIdentity)
-				.cast(AsyncServiceBrokerRequest.class);
+			.cast(AsyncServiceBrokerRequest.class);
 	}
 
 	/**
 	 * Find the Service Definition for the provided ID. Emits an error if not found.
-	 *
 	 * @param serviceDefinitionId the service definition ID
 	 * @return the Service Definition
 	 */
 	protected Mono<ServiceDefinition> getRequiredServiceDefinition(String serviceDefinitionId) {
 		return getServiceDefinition(serviceDefinitionId)
-				.switchIfEmpty(Mono.error(new ServiceDefinitionDoesNotExistException(serviceDefinitionId)));
+			.switchIfEmpty(Mono.error(new ServiceDefinitionDoesNotExistException(serviceDefinitionId)));
 	}
 
 	/**
 	 * Find the Service Definition for the provided ID, or empty if not found.
-	 *
 	 * @param serviceDefinitionId the service definition ID
 	 * @return the Service Definition
 	 */
 	protected Mono<ServiceDefinition> getServiceDefinition(String serviceDefinitionId) {
-		return catalogService.getServiceDefinition(serviceDefinitionId);
+		return this.catalogService.getServiceDefinition(serviceDefinitionId);
 	}
 
 	/**
 	 * Find the Plan for the Service Definition and Plan ID, or empty if not found.
-	 *
 	 * @param serviceDefinition the Service Definition
 	 * @param planId the plan ID
 	 * @return the Plan
 	 */
 	protected Mono<Plan> getServiceDefinitionPlan(ServiceDefinition serviceDefinition, String planId) {
 		return Mono.justOrEmpty(serviceDefinition)
-				.flatMap(serviceDef -> Mono.justOrEmpty(serviceDef.getPlans())
-						.flatMap(plans -> Flux.fromIterable(plans)
-								.filter(plan -> plan.getId().equals(planId))
-								.singleOrEmpty()));
+			.flatMap((serviceDef) -> Mono.justOrEmpty(serviceDef.getPlans())
+				.flatMap((plans) -> Flux.fromIterable(plans)
+					.filter((plan) -> plan.getId().equals(planId))
+					.singleOrEmpty()));
 	}
 
 	/**
 	 * Find the Plan for the Service Definition and Plan ID. Emits an error if not found.
-	 *
 	 * @param serviceDefinition the Service Definition
 	 * @param planId the plan ID
 	 * @return the Plan
 	 */
 	protected Mono<Plan> getRequiredServiceDefinitionPlan(ServiceDefinition serviceDefinition, String planId) {
 		return getServiceDefinitionPlan(serviceDefinition, planId)
-				.switchIfEmpty(Mono.error(new ServiceDefinitionPlanDoesNotExistException(planId)));
+			.switchIfEmpty(Mono.error(new ServiceDefinitionPlanDoesNotExistException(planId)));
 	}
 
 	/**
-	 * Populates a platform specific context from the originating identity
-	 *
-	 * @param originatingIdentityString identity of the user that initiated the request from the platform
+	 * Populates a platform specific context from the originating identity.
+	 * @param originatingIdentityString identity of the user that initiated the request
+	 * from the platform
 	 * @return the Context
 	 */
 	protected Context parseOriginatingIdentity(String originatingIdentityString) {
@@ -168,20 +163,13 @@ public class BaseController {
 		String platform = parts[0];
 
 		if (CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM.equals(platform)) {
-			return CloudFoundryContext.builder()
-					.properties(properties)
-					.build();
+			return CloudFoundryContext.builder().properties(properties).build();
 		}
 		else if (KubernetesContext.KUBERNETES_PLATFORM.equals(platform)) {
-			return KubernetesContext.builder()
-					.properties(properties)
-					.build();
+			return KubernetesContext.builder().properties(properties).build();
 		}
 		else {
-			return PlatformContext.builder()
-					.platform(platform)
-					.properties(properties)
-					.build();
+			return PlatformContext.builder().platform(platform).properties(properties).build();
 		}
 	}
 
@@ -198,9 +186,9 @@ public class BaseController {
 		try {
 			return new String(Base64.getDecoder().decode(encodedProperties.getBytes()));
 		}
-		catch (IllegalArgumentException e) {
+		catch (IllegalArgumentException ex) {
 			throw new ServiceBrokerInvalidOriginatingIdentityException("Error decoding JSON properties from "
-					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request", e);
+					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request", ex);
 		}
 	}
 
@@ -208,20 +196,21 @@ public class BaseController {
 		try {
 			return readJsonFromString(encodedProperties);
 		}
-		catch (IOException e) {
+		catch (IOException ex) {
 			throw new ServiceBrokerInvalidOriginatingIdentityException("Error parsing JSON properties from "
-					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request", e);
+					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request", ex);
 		}
 	}
 
 	private Map<String, Object> readJsonFromString(String value) throws IOException {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
-		return objectMapper.readValue(value, new TypeReference<Map<String, Object>>() {});
+		return objectMapper.readValue(value, new TypeReference<Map<String, Object>>() {
+		});
 	}
 
 	/**
-	 * If an asynchronous request is received, then return HTTP 202 Accepted, otherwise HTTP 200 OK
-	 *
+	 * If an asynchronous request is received, then return HTTP 202 Accepted, otherwise
+	 * HTTP 200 OK.
 	 * @param response the response
 	 * @return the HTTP status
 	 */

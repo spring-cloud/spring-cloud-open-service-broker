@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,8 +22,8 @@ import java.util.Map;
 import org.springframework.util.CollectionUtils;
 
 /**
- * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties that describes a service
- * offered by this broker.
+ * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
+ * that describes a service offered by this broker.
  *
  * @author Roy Clarkson
  * @see org.springframework.cloud.servicebroker.model.catalog.Plan
@@ -35,8 +35,8 @@ public class Cost {
 	private static final String UNIT_KEY = "unit";
 
 	/**
-	 * An array of pricing in various currencies for the cost type as key-value pairs where key is currency code and
-	 * value (as a float) is currency amount.
+	 * An array of pricing in various currencies for the cost type as key-value pairs
+	 * where key is currency code and value (as a float) is currency amount.
 	 */
 	private final Map<String, Double> amount = new HashMap<>();
 
@@ -46,12 +46,11 @@ public class Cost {
 	private String unit;
 
 	public Map<String, Double> getAmount() {
-		return amount;
+		return this.amount;
 	}
 
 	/**
-	 * Set a single amount key-value pair
-	 *
+	 * Set a single amount key-value pair.
 	 * @param amount currency code
 	 * @param value currency amount
 	 */
@@ -68,7 +67,7 @@ public class Cost {
 	}
 
 	public String getUnit() {
-		return unit;
+		return this.unit;
 	}
 
 	public void setUnit(String unit) {
@@ -76,18 +75,17 @@ public class Cost {
 	}
 
 	/**
-	 * Converts this object into its corresponding model
-	 *
+	 * Converts this object into its corresponding model.
 	 * @return a Map model
 	 * @see org.springframework.cloud.servicebroker.model.catalog.Plan
 	 */
 	public Map<String, Object> toModel() {
 		Map<String, Object> model = new HashMap<>();
-		if (!CollectionUtils.isEmpty(amount)) {
-			model.put(AMOUNT_KEY, amount);
+		if (!CollectionUtils.isEmpty(this.amount)) {
+			model.put(AMOUNT_KEY, this.amount);
 		}
-		if (unit != null) {
-			model.put(UNIT_KEY, unit);
+		if (this.unit != null) {
+			model.put(UNIT_KEY, this.unit);
 		}
 		return model;
 	}

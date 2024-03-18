@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,11 +31,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 /**
  * Provide endpoints for the catalog API.
  *
- * @author sgreenberg@pivotal.io
+ * @author S Greenberg
  * @author Scott Frederick
  * @author Roy Clarkson
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#catalog-management">Open
- * 		Service Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#catalog-management">Open
+ * Service Broker API specification</a>
  */
 @ServiceBrokerRestController
 public class CatalogController extends BaseController {
@@ -43,8 +44,7 @@ public class CatalogController extends BaseController {
 	private static final Logger LOG = LoggerFactory.getLogger(CatalogController.class);
 
 	/**
-	 * Construct a new {@link CatalogController}
-	 *
+	 * Construct a new {@link CatalogController}.
 	 * @param service the catalog service
 	 */
 	public CatalogController(CatalogService service) {
@@ -52,31 +52,27 @@ public class CatalogController extends BaseController {
 	}
 
 	/**
-	 * REST controller for getting a catalog
-	 *
+	 * REST controller for getting a catalog.
+	 * @param httpHeaders the headers
 	 * @return the catalog
 	 */
-	@GetMapping({"/v2/catalog", "{platformInstanceId}/v2/catalog"})
+	@GetMapping({ "/v2/catalog", "{platformInstanceId}/v2/catalog" })
 	public Mono<ResponseEntity<Catalog>> getCatalog(@RequestHeader HttpHeaders httpHeaders) {
 		return catalogService.getResponseEntityCatalog(httpHeaders)
-				.switchIfEmpty(catalogService.getCatalog()
-						.doOnRequest(v -> {
-							if (LOG.isInfoEnabled()) {
-								LOG.info("Retrieving catalog");
-							}
-						})
-						.doOnSuccess(catalog -> {
-							if (LOG.isInfoEnabled()) {
-								LOG.info("Retrieving catalog success");
-							}
-							if (LOG.isDebugEnabled()) {
-								LOG.debug("catalog={}", catalog);
-							}
-						})
-						.doOnError(e -> LOG.error("Error retrieving catalog. error=" + e.getMessage(), e))
-						.flatMap(catalog -> Mono.just(ResponseEntity
-								.ok()
-								.body(catalog))));
+			.switchIfEmpty(catalogService.getCatalog().doOnRequest((v) -> {
+				if (LOG.isInfoEnabled()) {
+					LOG.info("Retrieving catalog");
+				}
+			}).doOnSuccess((catalog) -> {
+				if (LOG.isInfoEnabled()) {
+					LOG.info("Retrieving catalog success");
+				}
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("catalog={}", catalog);
+				}
+			})
+				.doOnError((e) -> LOG.error("Error retrieving catalog. error=" + e.getMessage(), e))
+				.flatMap((catalog) -> Mono.just(ResponseEntity.ok().body(catalog))));
 	}
 
 }

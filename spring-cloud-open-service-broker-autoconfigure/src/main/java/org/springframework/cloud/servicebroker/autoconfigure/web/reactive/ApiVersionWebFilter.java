@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,7 +36,8 @@ import org.springframework.web.util.pattern.PathPattern;
 import org.springframework.web.util.pattern.PathPatternParser;
 
 /**
- * {@link WebFilter} that configures checking for an appropriate service broker API version.
+ * {@link WebFilter} that configures checking for an appropriate service broker API
+ * version.
  *
  * @author Roy Clarkson
  */
@@ -54,8 +55,8 @@ public class ApiVersionWebFilter implements WebFilter {
 	}
 
 	/**
-	 * Construct a filter that validates the API version passed in request headers to the configured version.
-	 *
+	 * Construct a filter that validates the API version passed in request headers to the
+	 * configured version.
 	 * @param version the API version supported by the broker.
 	 */
 	public ApiVersionWebFilter(BrokerApiVersion version) {
@@ -63,9 +64,9 @@ public class ApiVersionWebFilter implements WebFilter {
 	}
 
 	/**
-	 * Process the web request and validate the API version in the header. If the API version does not match, then set
-	 * an HTTP 412 status and write the error message to the response.
-	 *
+	 * Process the web request and validate the API version in the header. If the API
+	 * version does not match, then set an HTTP 412 status and write the error message to
+	 * the response.
 	 * @param exchange {@inheritDoc}
 	 * @param chain {@inheritDoc}
 	 * @return {@inheritDoc}
@@ -73,15 +74,16 @@ public class ApiVersionWebFilter implements WebFilter {
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
 		PathPattern pathPattern = new PathPatternParser().parse(V2_API_PATH_PATTERN);
-		if (pathPattern.matches(exchange.getRequest().getPath()) && version != null && !anyVersionAllowed()) {
-			String requestedApiVersion = exchange.getRequest().getHeaders()
-					.getFirst(version.getBrokerApiVersionHeader());
+		if (pathPattern.matches(exchange.getRequest().getPath()) && this.version != null && !anyVersionAllowed()) {
+			String requestedApiVersion = exchange.getRequest()
+				.getHeaders()
+				.getFirst(this.version.getBrokerApiVersionHeader());
 			ServerHttpResponse response = exchange.getResponse();
 			if (requestedApiVersion == null) {
 				response.setStatusCode(HttpStatus.BAD_REQUEST);
 				return writeResponse(response, requestedApiVersion);
 			}
-			else if (!version.getApiVersion().equals(requestedApiVersion)) {
+			else if (!this.version.getApiVersion().equals(requestedApiVersion)) {
 				response.setStatusCode(HttpStatus.PRECONDITION_FAILED);
 				return writeResponse(response, requestedApiVersion);
 			}
@@ -90,14 +92,15 @@ public class ApiVersionWebFilter implements WebFilter {
 	}
 
 	private boolean anyVersionAllowed() {
-		return BrokerApiVersion.API_VERSION_ANY.equals(version.getApiVersion());
+		return BrokerApiVersion.API_VERSION_ANY.equals(this.version.getApiVersion());
 	}
 
 	private Mono<Void> writeResponse(ServerHttpResponse response, String requestedApiVersion) {
-		String message = ServiceBrokerApiVersionErrorMessage.from(version.getApiVersion(), requestedApiVersion)
-				.toString();
-		return response.writeWith(Flux.just(response.bufferFactory().allocateBuffer(DefaultDataBufferFactory.DEFAULT_INITIAL_CAPACITY)
-				.write(toJson(ErrorMessage.builder().message(message).build()), StandardCharsets.UTF_8)));
+		String message = ServiceBrokerApiVersionErrorMessage.from(this.version.getApiVersion(), requestedApiVersion)
+			.toString();
+		return response.writeWith(Flux.just(response.bufferFactory()
+			.allocateBuffer(DefaultDataBufferFactory.DEFAULT_INITIAL_CAPACITY)
+			.write(toJson(ErrorMessage.builder().message(message).build()), StandardCharsets.UTF_8)));
 	}
 
 	private String toJson(ErrorMessage message) {
@@ -105,7 +108,7 @@ public class ApiVersionWebFilter implements WebFilter {
 		try {
 			json = new ObjectMapper().writeValueAsString(message);
 		}
-		catch (JsonProcessingException e) {
+		catch (JsonProcessingException ex) {
 			json = "{}";
 		}
 		return json;

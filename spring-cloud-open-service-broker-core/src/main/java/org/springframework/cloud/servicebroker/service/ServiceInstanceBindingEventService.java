@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,8 +29,8 @@ import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceB
 import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 
 /**
- * Internal implementation of {@link ServiceInstanceBindingService} that attaches event hooks to the requests to create
- * and delete service instance bindings
+ * Internal implementation of {@link ServiceInstanceBindingService} that attaches event
+ * hooks to the requests to create and delete service instance bindings.
  *
  * @author Roy Clarkson
  */
@@ -41,8 +41,7 @@ public class ServiceInstanceBindingEventService implements ServiceInstanceBindin
 	private final EventFlowRegistries flows;
 
 	/**
-	 * Construct a new {@link ServiceInstanceBindingEventService}
-	 *
+	 * Construct a new {@link ServiceInstanceBindingEventService}.
 	 * @param service the service instance binding service
 	 * @param flows the event flow registries
 	 */
@@ -54,39 +53,45 @@ public class ServiceInstanceBindingEventService implements ServiceInstanceBindin
 	@Override
 	public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(
 			CreateServiceInstanceBindingRequest request) {
-		return flows.getCreateInstanceBindingRegistry().getInitializationFlows(request)
-				.then(service.createServiceInstanceBinding(request))
-				.onErrorResume(e -> flows.getCreateInstanceBindingRegistry().getErrorFlows(request, e)
-						.then(Mono.error(e)))
-				.flatMap(response -> flows.getCreateInstanceBindingRegistry().getCompletionFlows(request, response)
-						.then(Mono.just(response)));
+		return this.flows.getCreateInstanceBindingRegistry()
+			.getInitializationFlows(request)
+			.then(this.service.createServiceInstanceBinding(request))
+			.onErrorResume(
+					(e) -> this.flows.getCreateInstanceBindingRegistry().getErrorFlows(request, e).then(Mono.error(e)))
+			.flatMap((response) -> this.flows.getCreateInstanceBindingRegistry()
+				.getCompletionFlows(request, response)
+				.then(Mono.just(response)));
 	}
 
 	@Override
 	public Mono<GetServiceInstanceBindingResponse> getServiceInstanceBinding(GetServiceInstanceBindingRequest request) {
-		return service.getServiceInstanceBinding(request);
+		return this.service.getServiceInstanceBinding(request);
 	}
 
 	@Override
 	public Mono<GetLastServiceBindingOperationResponse> getLastOperation(
 			GetLastServiceBindingOperationRequest request) {
-		return flows.getAsyncOperationBindingRegistry().getInitializationFlows(request)
-				.then(service.getLastOperation(request))
-				.onErrorResume(e -> flows.getAsyncOperationBindingRegistry().getErrorFlows(request, e)
-						.then(Mono.error(e)))
-				.flatMap(response -> flows.getAsyncOperationBindingRegistry().getCompletionFlows(request, response)
-						.then(Mono.just(response)));
+		return this.flows.getAsyncOperationBindingRegistry()
+			.getInitializationFlows(request)
+			.then(this.service.getLastOperation(request))
+			.onErrorResume(
+					(e) -> this.flows.getAsyncOperationBindingRegistry().getErrorFlows(request, e).then(Mono.error(e)))
+			.flatMap((response) -> this.flows.getAsyncOperationBindingRegistry()
+				.getCompletionFlows(request, response)
+				.then(Mono.just(response)));
 	}
 
 	@Override
 	public Mono<DeleteServiceInstanceBindingResponse> deleteServiceInstanceBinding(
 			DeleteServiceInstanceBindingRequest request) {
-		return flows.getDeleteInstanceBindingRegistry().getInitializationFlows(request)
-				.then(service.deleteServiceInstanceBinding(request))
-				.onErrorResume(e -> flows.getDeleteInstanceBindingRegistry().getErrorFlows(request, e)
-						.then(Mono.error(e)))
-				.flatMap(response -> flows.getDeleteInstanceBindingRegistry().getCompletionFlows(request, response)
-						.then(Mono.just(response)));
+		return this.flows.getDeleteInstanceBindingRegistry()
+			.getInitializationFlows(request)
+			.then(this.service.deleteServiceInstanceBinding(request))
+			.onErrorResume(
+					(e) -> this.flows.getDeleteInstanceBindingRegistry().getErrorFlows(request, e).then(Mono.error(e)))
+			.flatMap((response) -> this.flows.getDeleteInstanceBindingRegistry()
+				.getCompletionFlows(request, response)
+				.then(Mono.just(response)));
 	}
 
 }

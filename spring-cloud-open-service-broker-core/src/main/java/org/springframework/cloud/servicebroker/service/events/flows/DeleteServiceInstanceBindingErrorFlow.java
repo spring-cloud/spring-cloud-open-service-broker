@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,15 +21,14 @@ import reactor.core.publisher.Mono;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 
 /**
- * Error flow for delete service instance binding request
+ * Error flow for delete service instance binding request.
  *
  * @author Roy Clarkson
  */
 public interface DeleteServiceInstanceBindingErrorFlow {
 
 	/**
-	 * Performs the operation on the error flow
-	 *
+	 * Performs the operation on the error flow.
 	 * @param request the service broker request
 	 * @param t the error
 	 * @return an empty Mono

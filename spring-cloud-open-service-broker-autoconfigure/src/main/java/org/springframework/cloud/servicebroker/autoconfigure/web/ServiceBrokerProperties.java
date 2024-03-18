@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,7 +21,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
 
 /**
- * {@link ConfigurationProperties} for a Service Broker
+ * {@link ConfigurationProperties} for a Service Broker.
  *
  * @author Roy Clarkson
  */
@@ -35,7 +35,7 @@ public class ServiceBrokerProperties {
 	private Catalog catalog;
 
 	public String getApiVersion() {
-		return apiVersion;
+		return this.apiVersion;
 	}
 
 	public void setApiVersion(String apiVersion) {
@@ -43,7 +43,7 @@ public class ServiceBrokerProperties {
 	}
 
 	public Catalog getCatalog() {
-		return catalog;
+		return this.catalog;
 	}
 
 	public void setCatalog(Catalog catalog) {

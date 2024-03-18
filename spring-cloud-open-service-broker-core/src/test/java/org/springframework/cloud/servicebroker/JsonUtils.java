@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,17 +42,17 @@ public final class JsonUtils {
 			ObjectMapper mapper = new ObjectMapper();
 			return mapper.writeValueAsString(object);
 		}
-		catch (JsonProcessingException e) {
-			fail("Error creating JSON string from object: " + e);
-			throw new IllegalStateException(e);
+		catch (JsonProcessingException ex) {
+			fail("Error creating JSON string from object: " + ex);
+			throw new IllegalStateException(ex);
 		}
 	}
 
 	public static DocumentContext toJsonPath(Object object) {
 		Configuration configuration = Configuration.builder()
-				.jsonProvider(new JacksonJsonProvider())
-				.mappingProvider(new JacksonMappingProvider())
-				.build();
+			.jsonProvider(new JacksonJsonProvider())
+			.mappingProvider(new JacksonMappingProvider())
+			.build();
 
 		return JsonPath.parse(toJson(object), configuration);
 	}
@@ -62,9 +62,9 @@ public final class JsonUtils {
 			ObjectMapper mapper = new ObjectMapper();
 			return mapper.readerFor(contentType).readValue(json);
 		}
-		catch (IOException e) {
-			fail("Error creating object from JSON: " + e);
-			throw new IllegalStateException(e);
+		catch (IOException ex) {
+			fail("Error creating object from JSON: " + ex);
+			throw new IllegalStateException(ex);
 		}
 	}
 
@@ -73,9 +73,9 @@ public final class JsonUtils {
 			ObjectMapper objectMapper = new ObjectMapper();
 			return objectMapper.readValue(getTestDataFileReader(filename), contentType);
 		}
-		catch (IOException e) {
-			fail("Error reading test JSON file: " + e);
-			throw new IllegalStateException(e);
+		catch (IOException ex) {
+			fail("Error reading test JSON file: " + ex);
+			throw new IllegalStateException(ex);
 		}
 	}
 
@@ -84,14 +84,15 @@ public final class JsonUtils {
 	}
 
 	/**
-	 * Detect duplicate properties in json object through searching ":" in json string (reading into a map would remove
-	 * such duplicate, preventing effective duplicate detection)
+	 * Detect duplicate properties in json object through searching ":" in json string
+	 * (reading into a map would remove such duplicate, preventing effective duplicate
+	 * detection)
 	 */
 	public static void assertThatJsonHasExactNumberOfProperties(Object object, int expectedNbProperties) {
 		//
 		String jsonString = toJson(object);
 		assertThat(jsonString.split(":")).as("extra duplicate properties in json object: " + jsonString)
-				.hasSize(1 + expectedNbProperties);
+			.hasSize(1 + expectedNbProperties);
 	}
 
 }

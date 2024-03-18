@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,14 +24,14 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Abstract class for defining an event flow registry
+ * Abstract class for defining an event flow registry.
  *
- * @author Roy Clarkson
  * @param <I> type of initialization flow
  * @param <C> type of completion flow
  * @param <E> type of error flow
  * @param <R> type of request
  * @param <S> type of response
+ * @author Roy Clarkson
  */
 public abstract class EventFlowRegistry<I, C, E, R, S> {
 
@@ -42,47 +42,41 @@ public abstract class EventFlowRegistry<I, C, E, R, S> {
 	private final List<Mono<E>> errorFlows = new ArrayList<>();
 
 	/**
-	 * Construct a new {@link EventFlowRegistry}
-	 *
+	 * Construct a new {@link EventFlowRegistry}.
 	 * @param initializationFlows the initialization flows
 	 * @param completionFlows the completion flows
 	 * @param errorFlows the error flows
 	 */
 	protected EventFlowRegistry(List<I> initializationFlows, List<C> completionFlows, List<E> errorFlows) {
 		if (CollectionUtils.isNotEmpty(initializationFlows)) {
-			initializationFlows.forEach(flow -> this.initializationFlows.add(Mono.just(flow)));
+			initializationFlows.forEach((flow) -> this.initializationFlows.add(Mono.just(flow)));
 		}
 		if (CollectionUtils.isNotEmpty(completionFlows)) {
-			completionFlows.forEach(flow -> this.completionFlows.add(Mono.just(flow)));
+			completionFlows.forEach((flow) -> this.completionFlows.add(Mono.just(flow)));
 		}
 		if (CollectionUtils.isNotEmpty(errorFlows)) {
-			errorFlows.forEach(flow -> this.errorFlows.add(Mono.just(flow)));
+			errorFlows.forEach((flow) -> this.errorFlows.add(Mono.just(flow)));
 		}
 	}
 
 	/**
-	 * Add an initialization flow
-	 *
+	 * Add an initialization flow.
 	 * @param object the initialization flow
 	 * @return an empty Mono
 	 */
 	public Mono<Void> addInitializationFlow(I object) {
-		return Mono.justOrEmpty(object)
-				.map(flow -> this.initializationFlows.add(Mono.just(flow)))
-				.then();
+		return Mono.justOrEmpty(object).map((flow) -> this.initializationFlows.add(Mono.just(flow))).then();
 	}
 
 	/**
-	 * Retrieve the initialization flows as a Flux
-	 *
+	 * Retrieve the initialization flows as a Flux.
 	 * @param request the service broker request
 	 * @return a Flux of initialization flows
 	 */
 	public abstract Flux<Void> getInitializationFlows(R request);
 
 	/**
-	 * Merges the initialization flows into a Flux
-	 *
+	 * Merges the initialization flows into a Flux.
 	 * @return a Flux of initialization flows
 	 */
 	protected Flux<I> getInitializationFlowsInternal() {
@@ -90,20 +84,16 @@ public abstract class EventFlowRegistry<I, C, E, R, S> {
 	}
 
 	/**
-	 * Add a completion flow
-	 *
+	 * Add a completion flow.
 	 * @param object the completion flow
 	 * @return an empty Mono
 	 */
 	public Mono<Void> addCompletionFlow(C object) {
-		return Mono.justOrEmpty(object)
-				.map(flow -> this.completionFlows.add(Mono.just(flow)))
-				.then();
+		return Mono.justOrEmpty(object).map((flow) -> this.completionFlows.add(Mono.just(flow))).then();
 	}
 
 	/**
-	 * Retrieve the completion flows as a Flux
-	 *
+	 * Retrieve the completion flows as a Flux.
 	 * @param request the service broker request
 	 * @param response the service broker response
 	 * @return a Flux of completion flows
@@ -111,8 +101,7 @@ public abstract class EventFlowRegistry<I, C, E, R, S> {
 	public abstract Flux<Void> getCompletionFlows(R request, S response);
 
 	/**
-	 * Merges the completion flows into a Flux
-	 *
+	 * Merges the completion flows into a Flux.
 	 * @return a Flux of completion flows
 	 */
 	protected Flux<C> getCompletionFlowsInternal() {
@@ -120,20 +109,16 @@ public abstract class EventFlowRegistry<I, C, E, R, S> {
 	}
 
 	/**
-	 * Add an error flow
-	 *
+	 * Add an error flow.
 	 * @param object the error flow
 	 * @return an empty Mono
 	 */
 	public Mono<Void> addErrorFlow(E object) {
-		return Mono.justOrEmpty(object)
-				.map(flow -> this.errorFlows.add(Mono.just(flow)))
-				.then();
+		return Mono.justOrEmpty(object).map((flow) -> this.errorFlows.add(Mono.just(flow))).then();
 	}
 
 	/**
-	 * Retrieve the error flows as a Flux
-	 *
+	 * Retrieve the error flows as a Flux.
 	 * @param request the service broker request
 	 * @param t the error
 	 * @return a Flux of error flows
@@ -141,8 +126,7 @@ public abstract class EventFlowRegistry<I, C, E, R, S> {
 	public abstract Flux<Void> getErrorFlows(R request, Throwable t);
 
 	/**
-	 * Merges the error flows into a Flux
-	 *
+	 * Merges the error flows into a Flux.
 	 * @return a Flux of error flows
 	 */
 	protected Flux<E> getErrorFlowsInternal() {

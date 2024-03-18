@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,8 +31,8 @@ import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInsta
 import org.springframework.cloud.servicebroker.service.events.EventFlowRegistries;
 
 /**
- * Internal implementation of {@link ServiceInstanceService} that attaches event hooks to requests related to
- * provisioning, updating, and deprovisioning service instances.
+ * Internal implementation of {@link ServiceInstanceService} that attaches event hooks to
+ * requests related to provisioning, updating, and deprovisioning service instances.
  *
  * @author Roy Clarkson
  */
@@ -43,8 +43,7 @@ public class ServiceInstanceEventService implements ServiceInstanceService {
 	private final EventFlowRegistries flows;
 
 	/**
-	 * Constructs a new {@link ServiceInstanceEventService}
-	 *
+	 * Constructs a new {@link ServiceInstanceEventService}.
 	 * @param serviceInstanceService the service instance service
 	 * @param eventFlowRegistries the event flow registries
 	 */
@@ -56,47 +55,51 @@ public class ServiceInstanceEventService implements ServiceInstanceService {
 
 	@Override
 	public Mono<CreateServiceInstanceResponse> createServiceInstance(CreateServiceInstanceRequest request) {
-		return flows.getCreateInstanceRegistry().getInitializationFlows(request)
-				.then(service.createServiceInstance(request))
-				.onErrorResume(e -> flows.getCreateInstanceRegistry().getErrorFlows(request, e)
-						.then(Mono.error(e)))
-				.flatMap(response -> flows.getCreateInstanceRegistry().getCompletionFlows(request, response)
-						.then(Mono.just(response)));
+		return this.flows.getCreateInstanceRegistry()
+			.getInitializationFlows(request)
+			.then(this.service.createServiceInstance(request))
+			.onErrorResume((e) -> this.flows.getCreateInstanceRegistry().getErrorFlows(request, e).then(Mono.error(e)))
+			.flatMap((response) -> this.flows.getCreateInstanceRegistry()
+				.getCompletionFlows(request, response)
+				.then(Mono.just(response)));
 	}
 
 	@Override
 	public Mono<GetServiceInstanceResponse> getServiceInstance(GetServiceInstanceRequest request) {
-		return service.getServiceInstance(request);
+		return this.service.getServiceInstance(request);
 	}
 
 	@Override
 	public Mono<GetLastServiceOperationResponse> getLastOperation(GetLastServiceOperationRequest request) {
-		return flows.getAsyncOperationRegistry().getInitializationFlows(request)
-				.then(service.getLastOperation(request))
-				.onErrorResume(e -> flows.getAsyncOperationRegistry().getErrorFlows(request, e)
-						.then(Mono.error(e)))
-				.flatMap(response -> flows.getAsyncOperationRegistry().getCompletionFlows(request, response)
-						.then(Mono.just(response)));
+		return this.flows.getAsyncOperationRegistry()
+			.getInitializationFlows(request)
+			.then(this.service.getLastOperation(request))
+			.onErrorResume((e) -> this.flows.getAsyncOperationRegistry().getErrorFlows(request, e).then(Mono.error(e)))
+			.flatMap((response) -> this.flows.getAsyncOperationRegistry()
+				.getCompletionFlows(request, response)
+				.then(Mono.just(response)));
 	}
 
 	@Override
 	public Mono<DeleteServiceInstanceResponse> deleteServiceInstance(DeleteServiceInstanceRequest request) {
-		return flows.getDeleteInstanceRegistry().getInitializationFlows(request)
-				.then(service.deleteServiceInstance(request))
-				.onErrorResume(e -> flows.getDeleteInstanceRegistry().getErrorFlows(request, e)
-						.then(Mono.error(e)))
-				.flatMap(response -> flows.getDeleteInstanceRegistry().getCompletionFlows(request, response)
-						.then(Mono.just(response)));
+		return this.flows.getDeleteInstanceRegistry()
+			.getInitializationFlows(request)
+			.then(this.service.deleteServiceInstance(request))
+			.onErrorResume((e) -> this.flows.getDeleteInstanceRegistry().getErrorFlows(request, e).then(Mono.error(e)))
+			.flatMap((response) -> this.flows.getDeleteInstanceRegistry()
+				.getCompletionFlows(request, response)
+				.then(Mono.just(response)));
 	}
 
 	@Override
 	public Mono<UpdateServiceInstanceResponse> updateServiceInstance(UpdateServiceInstanceRequest request) {
-		return flows.getUpdateInstanceRegistry().getInitializationFlows(request)
-				.then(service.updateServiceInstance(request))
-				.onErrorResume(e -> flows.getUpdateInstanceRegistry().getErrorFlows(request, e)
-						.then(Mono.error(e)))
-				.flatMap(response -> flows.getUpdateInstanceRegistry().getCompletionFlows(request, response)
-						.then(Mono.just(response)));
+		return this.flows.getUpdateInstanceRegistry()
+			.getInitializationFlows(request)
+			.then(this.service.updateServiceInstance(request))
+			.onErrorResume((e) -> this.flows.getUpdateInstanceRegistry().getErrorFlows(request, e).then(Mono.error(e)))
+			.flatMap((response) -> this.flows.getUpdateInstanceRegistry()
+				.getCompletionFlows(request, response)
+				.then(Mono.just(response)));
 	}
 
 }

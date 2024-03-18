@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,19 +50,13 @@ public class BasicServiceInstanceService implements ServiceInstanceService {
 			return Mono.error(new ServiceBrokerCreateOperationInProgressException("task_10"));
 		}
 		if (EXISTING_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
-			return Mono.just(CreateServiceInstanceResponse.builder()
-					.instanceExisted(true)
-					.build());
+			return Mono.just(CreateServiceInstanceResponse.builder().instanceExisted(true).build());
 		}
 		if (request.isAsyncAccepted()) {
-			return Mono.just(CreateServiceInstanceResponse.builder()
-					.async(true)
-					.operation("working")
-					.build());
+			return Mono.just(CreateServiceInstanceResponse.builder().async(true).operation("working").build());
 		}
 		else {
-			return Mono.just(CreateServiceInstanceResponse.builder()
-					.build());
+			return Mono.just(CreateServiceInstanceResponse.builder().build());
 		}
 	}
 
@@ -71,37 +65,36 @@ public class BasicServiceInstanceService implements ServiceInstanceService {
 		if (IN_PROGRESS_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
 			return Mono.error(new ServiceBrokerOperationInProgressException("task_10"));
 		}
-		return Mono.just(GetServiceInstanceResponse.builder()
-				.build());
+		return Mono.just(GetServiceInstanceResponse.builder().build());
 	}
 
 	@Override
 	public Mono<GetLastServiceOperationResponse> getLastOperation(GetLastServiceOperationRequest request) {
 		if (IN_PROGRESS_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
 			return Mono.just(GetLastServiceOperationResponse.builder()
-					.operationState(OperationState.IN_PROGRESS)
-					.description("working on it")
-					.build());
+				.operationState(OperationState.IN_PROGRESS)
+				.description("working on it")
+				.build());
 		}
 		// deleted service instance status
 		if (EXISTING_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
 			return Mono.just(GetLastServiceOperationResponse.builder()
-					.operationState(OperationState.SUCCEEDED)
-					.description("all gone")
-					.deleteOperation(true)
-					.build());
+				.operationState(OperationState.SUCCEEDED)
+				.description("all gone")
+				.deleteOperation(true)
+				.build());
 		}
 		// failed service instance status
 		if (UNKNOWN_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
 			return Mono.just(GetLastServiceOperationResponse.builder()
-					.operationState(OperationState.FAILED)
-					.description("not so good")
-					.build());
+				.operationState(OperationState.FAILED)
+				.description("not so good")
+				.build());
 		}
 		return Mono.just(GetLastServiceOperationResponse.builder()
-				.operationState(OperationState.SUCCEEDED)
-				.description("all good")
-				.build());
+			.operationState(OperationState.SUCCEEDED)
+			.description("all good")
+			.build());
 	}
 
 	@Override
@@ -113,14 +106,10 @@ public class BasicServiceInstanceService implements ServiceInstanceService {
 			return Mono.error(new ServiceInstanceDoesNotExistException(UNKNOWN_SERVICE_INSTANCE_ID));
 		}
 		if (request.isAsyncAccepted()) {
-			return Mono.just(DeleteServiceInstanceResponse.builder()
-					.async(true)
-					.operation("working")
-					.build());
+			return Mono.just(DeleteServiceInstanceResponse.builder().async(true).operation("working").build());
 		}
 		else {
-			return Mono.just(DeleteServiceInstanceResponse.builder()
-					.build());
+			return Mono.just(DeleteServiceInstanceResponse.builder().build());
 		}
 	}
 
@@ -134,15 +123,14 @@ public class BasicServiceInstanceService implements ServiceInstanceService {
 		}
 		if (request.isAsyncAccepted()) {
 			return Mono.just(UpdateServiceInstanceResponse.builder()
-					.async(true)
-					.operation("working")
-					.dashboardUrl("https://dashboard.example.local")
-					.build());
+				.async(true)
+				.operation("working")
+				.dashboardUrl("https://dashboard.example.local")
+				.build());
 		}
 		else {
-			return Mono.just(UpdateServiceInstanceResponse.builder()
-					.dashboardUrl("https://dashboard.example.local")
-					.build());
+			return Mono
+				.just(UpdateServiceInstanceResponse.builder().dashboardUrl("https://dashboard.example.local").build());
 		}
 	}
 

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,7 +28,8 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import org.springframework.util.CollectionUtils;
 
 /**
- * Kubernetes specific contextual information under which the service instance is to be provisioned or updated.
+ * Kubernetes specific contextual information under which the service instance is to be
+ * provisioned or updated.
  *
  * @author Scott Frederick
  * @author Roy Clarkson
@@ -38,32 +39,32 @@ import org.springframework.util.CollectionUtils;
 public final class KubernetesContext extends Context {
 
 	/**
-	 * Kubernetes platform name
+	 * Kubernetes platform name.
 	 */
 	public static final String KUBERNETES_PLATFORM = "kubernetes";
 
 	/**
-	 * Kubernetes Namespace key
+	 * Kubernetes Namespace key.
 	 */
 	public static final String NAMESPACE_KEY = "namespace";
 
 	/**
-	 * Kubernetes Namespace Annotations key
+	 * Kubernetes Namespace Annotations key.
 	 */
 	public static final String NAMESPACE_ANNOTATIONS_KEY = "namespaceAnnotations";
 
 	/**
-	 * Kubernetes Instance Annotations key
+	 * Kubernetes Instance Annotations key.
 	 */
 	public static final String INSTANCE_ANNOTATIONS_KEY = "instanceAnnotations";
 
 	/**
-	 * Kubernetes Instance Name
+	 * Kubernetes Instance Name.
 	 */
 	public static final String INSTANCE_NAME_KEY = "instanceName";
 
 	/**
-	 * Kubernetes Cluster ID key
+	 * Kubernetes Cluster ID key.
 	 */
 	public static final String CLUSTERID_KEY = "clusterid";
 
@@ -72,8 +73,7 @@ public final class KubernetesContext extends Context {
 	}
 
 	/**
-	 * Create a new KubernetesContext
-	 *
+	 * Create a new KubernetesContext.
 	 * @param namespace the kubernetes namespace
 	 * @param clusterid the kubernetes clusterid
 	 * @param properties a collection of properties
@@ -85,12 +85,11 @@ public final class KubernetesContext extends Context {
 	}
 
 	/**
-	 * Create a new KubernetesContext
-	 *
+	 * Create a new KubernetesContext.
 	 * @param namespace the kubernetes namespace
 	 * @param instanceName the service instance name
-	 * @param namespaceAnnotations The annotations attached to the namespace in which the Service Instance will be
-	 * 		visible
+	 * @param namespaceAnnotations the annotations attached to the namespace in which the
+	 * Service Instance will be visible
 	 * @param instanceAnnotations the annotations attached to the service instance
 	 * @param clusterid the kubernetes clusterid
 	 * @param properties a collection of properties
@@ -107,8 +106,7 @@ public final class KubernetesContext extends Context {
 	}
 
 	/**
-	 * Avoid polluting the serialized context with duplicated keys
-	 *
+	 * Avoid polluting the serialized context with duplicated keys.
 	 * @return properties
 	 */
 	@JsonAnyGetter
@@ -125,8 +123,7 @@ public final class KubernetesContext extends Context {
 	}
 
 	/**
-	 * Retrieve the kubernetes namespace from the collection of platform properties
-	 *
+	 * Retrieve the kubernetes namespace from the collection of platform properties.
 	 * @return the namespace
 	 */
 	@JsonProperty
@@ -139,8 +136,7 @@ public final class KubernetesContext extends Context {
 	}
 
 	/**
-	 * Retrieve the kubernetes clusterid from the collection of platform properties
-	 *
+	 * Retrieve the kubernetes clusterid from the collection of platform properties.
 	 * @return the clusterid
 	 */
 	@JsonProperty
@@ -153,8 +149,7 @@ public final class KubernetesContext extends Context {
 	}
 
 	/**
-	 * Retrieve the kubernetes instance name from the collection of platform properties
-	 *
+	 * Retrieve the kubernetes instance name from the collection of platform properties.
 	 * @return the instance name
 	 */
 	@JsonProperty
@@ -167,8 +162,8 @@ public final class KubernetesContext extends Context {
 	}
 
 	/**
-	 * Retrieve the kubernetes namespace annotations from the collection of platform properties
-	 *
+	 * Retrieve the kubernetes namespace annotations from the collection of platform
+	 * properties.
 	 * @return the namespace annotations
 	 */
 	@JsonProperty
@@ -181,8 +176,8 @@ public final class KubernetesContext extends Context {
 	}
 
 	/**
-	 * Retrieve the kubernetes instance annotations from the collection of platform properties
-	 *
+	 * Retrieve the kubernetes instance annotations from the collection of platform
+	 * properties.
 	 * @return the instance annotations
 	 */
 	public Map<String, Object> getInstanceAnnotations() {
@@ -194,8 +189,8 @@ public final class KubernetesContext extends Context {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal KubernetesContext}.
-	 *
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal KubernetesContext}.
 	 * @return the builder
 	 */
 	public static KubernetesContextBuilder builder() {
@@ -203,7 +198,7 @@ public final class KubernetesContext extends Context {
 	}
 
 	/**
-	 * Builder class for KubernetesContext
+	 * Builder class for KubernetesContext.
 	 */
 	public static final class KubernetesContextBuilder
 			extends ContextBaseBuilder<KubernetesContext, KubernetesContextBuilder> {
@@ -228,8 +223,7 @@ public final class KubernetesContext extends Context {
 		}
 
 		/**
-		 * Set the kubernetes namespace
-		 *
+		 * Set the kubernetes namespace.
 		 * @param namespace the namespace
 		 * @return the builder
 		 */
@@ -239,8 +233,7 @@ public final class KubernetesContext extends Context {
 		}
 
 		/**
-		 * Set the kubernetes clusterid
-		 *
+		 * Set the kubernetes clusterid.
 		 * @param clusterid the clusterid
 		 * @return the builder
 		 */
@@ -250,8 +243,7 @@ public final class KubernetesContext extends Context {
 		}
 
 		/**
-		 * Set the kubernetes instance name
-		 *
+		 * Set the kubernetes instance name.
 		 * @param instanceName the clusterid
 		 * @return the builder
 		 */
@@ -261,8 +253,7 @@ public final class KubernetesContext extends Context {
 		}
 
 		/**
-		 * Set the namespace annotations
-		 *
+		 * Set the namespace annotations.
 		 * @param namespaceAnnotations the namespace annotations
 		 * @return the builder
 		 */
@@ -275,8 +266,7 @@ public final class KubernetesContext extends Context {
 		}
 
 		/**
-		 * Set the instance annotations
-		 *
+		 * Set the instance annotations.
 		 * @param instanceAnnotations the instance annotations
 		 * @return the builder
 		 */
@@ -290,8 +280,8 @@ public final class KubernetesContext extends Context {
 
 		@Override
 		public KubernetesContext build() {
-			return new KubernetesContext(namespace, clusterid, instanceName, namespaceAnnotations, instanceAnnotations,
-					properties);
+			return new KubernetesContext(this.namespace, this.clusterid, this.instanceName, this.namespaceAnnotations,
+					this.instanceAnnotations, this.properties);
 		}
 
 	}

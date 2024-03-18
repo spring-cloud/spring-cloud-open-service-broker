@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,30 +30,30 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
  * Details of a request to delete a service instance.
  *
  * <p>
- * Objects of this type are constructed by the framework from the headers, path variables, query parameters and message
- * body passed to the service broker by the platform.
+ * Objects of this type are constructed by the framework from the headers, path variables,
+ * query parameters and message body passed to the service broker by the platform.
  *
- * @author krujos
+ * @author K Rujos
  * @author Scott Frederick
  * @author Roy Clarkson
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-6">Open Service
- * 		Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-6">Open
+ * Service Broker API specification</a>
  */
 public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 
-	private transient final String serviceInstanceId;
+	private final transient String serviceInstanceId;
 
-	private transient final String serviceDefinitionId;
+	private final transient String serviceDefinitionId;
 
-	private transient final String planId;
+	private final transient String planId;
 
-	private transient final ServiceDefinition serviceDefinition;
+	private final transient ServiceDefinition serviceDefinition;
 
-	private transient final Plan plan;
+	private final transient Plan plan;
 
 	/**
-	 * Construct a new {@link DeleteServiceInstanceRequest}
-	 *
+	 * Construct a new {@link DeleteServiceInstanceRequest}.
 	 * @param serviceInstanceId the service instance ID
 	 * @param serviceDefinitionId the service definition ID
 	 * @param planId the plan ID
@@ -62,12 +62,13 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	 * @param asyncAccepted does the platform accept asynchronous requests
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
-	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * @param originatingIdentity identity of the user that initiated the request from the
+	 * platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 */
-	public DeleteServiceInstanceRequest(String serviceInstanceId, String serviceDefinitionId,
-			String planId, ServiceDefinition serviceDefinition, Plan plan, boolean asyncAccepted,
-			String platformInstanceId, String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
+	public DeleteServiceInstanceRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
+			ServiceDefinition serviceDefinition, Plan plan, boolean asyncAccepted, String platformInstanceId,
+			String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
 		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.serviceDefinitionId = serviceDefinitionId;
@@ -77,26 +78,28 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	}
 
 	/**
-	 * Get the ID of the service instance to delete. This value is assigned by the platform. It must be unique within
-	 * the platform and can be used to correlate any resources associated with the service instance.
+	 * Get the ID of the service instance to delete. This value is assigned by the
+	 * platform. It must be unique within the platform and can be used to correlate any
+	 * resources associated with the service instance.
 	 *
 	 * <p>
-	 * This value is set from the {@literal :instance_id} path element of the request from the platform.
-	 *
+	 * This value is set from the {@literal :instance_id} path element of the request from
+	 * the platform.
 	 * @return the service instance ID
 	 */
-	@JsonIgnore //mapped as path param
+	@JsonIgnore // mapped as path param
 	public String getServiceInstanceId() {
 		return this.serviceInstanceId;
 	}
 
 	/**
-	 * Get the ID of the service definition for to the service instance to delete. This will match one of the service
-	 * definition IDs provided in the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog}.
+	 * Get the ID of the service definition for to the service instance to delete. This
+	 * will match one of the service definition IDs provided in the
+	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog}.
 	 *
 	 * <p>
-	 * This value is set from the {@literal service_id} request parameter of the request from the platform
-	 *
+	 * This value is set from the {@literal service_id} request parameter of the request
+	 * from the platform
 	 * @return the service definition ID
 	 */
 	@JsonProperty("service_id")
@@ -105,13 +108,14 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	}
 
 	/**
-	 * Get the ID of the plan for to the service instance to delete. This will match one of the plan IDs provided in the
-	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} within the specified {@link
-	 * ServiceDefinition}.
+	 * Get the ID of the plan for to the service instance to delete. This will match one
+	 * of the plan IDs provided in the
+	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} within the
+	 * specified {@link ServiceDefinition}.
 	 *
 	 * <p>
-	 * This value is set from the {@literal plan_id} request parameter of the request from the platform.
-	 *
+	 * This value is set from the {@literal plan_id} request parameter of the request from
+	 * the platform.
 	 * @return the plan ID
 	 */
 	@JsonProperty("plan_id")
@@ -123,19 +127,19 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	 * Get the service definition of the service to delete.
 	 *
 	 * <p>
-	 * The service definition is retrieved from the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog}
-	 * as a convenience.
-	 *
+	 * The service definition is retrieved from the
+	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a
+	 * convenience.
 	 * @return the service definition
 	 */
-	@JsonIgnore //internal support
+	@JsonIgnore // internal support
 	public ServiceDefinition getServiceDefinition() {
 		return this.serviceDefinition;
 	}
 
 	@JsonProperty(ASYNC_REQUEST_PARAMETER)
 	@JsonIgnore(false)
-	//in base class field is excluded, as other requests are passing this as query params
+	// in base class field is excluded, as other requests are passing this as query params
 	@Override
 	public boolean isAsyncAccepted() {
 		return super.isAsyncAccepted();
@@ -145,23 +149,24 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	 * Get the plan for the service definition to delete
 	 *
 	 * <p>
-	 * The plan is retrieved from the {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a
+	 * The plan is retrieved from the
+	 * {@link org.springframework.cloud.servicebroker.model.catalog.Catalog} as a
 	 * convenience.
-	 *
 	 * @return the plan
 	 */
-	@JsonIgnore /*internal field*/
+	@JsonIgnore /* internal field */
 	public Plan getPlan() {
 		return this.plan;
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal DeleteServiceInstanceRequest}.
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal DeleteServiceInstanceRequest}.
 	 *
 	 * <p>
-	 * This builder is provided to support testing of {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService}
+	 * This builder is provided to support testing of
+	 * {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService}
 	 * implementations.
-	 *
 	 * @return the builder
 	 */
 	public static DeleteServiceInstanceRequestBuilder builder() {
@@ -180,12 +185,11 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 			return false;
 		}
 		DeleteServiceInstanceRequest that = (DeleteServiceInstanceRequest) o;
-		return that.canEqual(this) &&
-				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
-				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
-				Objects.equals(planId, that.planId) &&
-				Objects.equals(serviceDefinition, that.serviceDefinition) &&
-				Objects.equals(plan, that.plan);
+		return that.canEqual(this) && Objects.equals(this.serviceInstanceId, that.serviceInstanceId)
+				&& Objects.equals(this.serviceDefinitionId, that.serviceDefinitionId)
+				&& Objects.equals(this.planId, that.planId)
+				&& Objects.equals(this.serviceDefinition, that.serviceDefinition)
+				&& Objects.equals(this.plan, that.plan);
 	}
 
 	@Override
@@ -195,18 +199,15 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(super.hashCode(), serviceInstanceId,
-				serviceDefinitionId, planId, serviceDefinition, plan);
+		return Objects.hash(super.hashCode(), this.serviceInstanceId, this.serviceDefinitionId, this.planId,
+				this.serviceDefinition, this.plan);
 	}
 
 	@Override
 	public String toString() {
-		return super.toString() +
-				"DeleteServiceInstanceRequest{" +
-				"serviceInstanceId='" + serviceInstanceId + '\'' +
-				", serviceDefinitionId='" + serviceDefinitionId + '\'' +
-				", planId='" + planId + '\'' +
-				'}';
+		return super.toString() + "DeleteServiceInstanceRequest{" + "serviceInstanceId='" + this.serviceInstanceId
+				+ '\'' + ", serviceDefinitionId='" + this.serviceDefinitionId + '\'' + ", planId='" + this.planId + '\''
+				+ '}';
 	}
 
 	/**
@@ -238,8 +239,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the service instance ID as would be provided in the request from the platform.
-		 *
+		 * Set the service instance ID as would be provided in the request from the
+		 * platform.
 		 * @param serviceInstanceId the service instance ID
 		 * @return the builder
 		 * @see #getServiceInstanceId()
@@ -250,8 +251,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the service definition ID as would be provided in the request from the platform.
-		 *
+		 * Set the service definition ID as would be provided in the request from the
+		 * platform.
 		 * @param serviceDefinitionId the service definition ID
 		 * @return the builder
 		 * @see #getServiceDefinitionId()
@@ -263,7 +264,6 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 
 		/**
 		 * Set the fully resolved service definition.
-		 *
 		 * @param serviceDefinition the service definition
 		 * @return the builder
 		 * @see #getServiceDefinition()
@@ -275,7 +275,6 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 
 		/**
 		 * Set the fully resolved plan.
-		 *
 		 * @param plan the plan
 		 * @return the builder
 		 * @see #getPlan()
@@ -286,8 +285,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the plan ID of the request as would be provided in the request from the platform.
-		 *
+		 * Set the plan ID of the request as would be provided in the request from the
+		 * platform.
 		 * @param planId the plan ID
 		 * @return the builder
 		 * @see #getPlanId()
@@ -298,9 +297,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the value of the flag indicating whether the platform supports asynchronous operations as would be
-		 * provided in the request from the platform.
-		 *
+		 * Set the value of the flag indicating whether the platform supports asynchronous
+		 * operations as would be provided in the request from the platform.
 		 * @param asyncAccepted the boolean value of the flag
 		 * @return the builder
 		 * @see #isAsyncAccepted()
@@ -311,8 +309,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the ID of the platform instance as would be provided in the request from the platform.
-		 *
+		 * Set the ID of the platform instance as would be provided in the request from
+		 * the platform.
 		 * @param platformInstanceId the platform instance ID
 		 * @return the builder
 		 * @see #getPlatformInstanceId()
@@ -323,9 +321,10 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the location of the API info endpoint as would be provided in the request from the platform.
-		 *
-		 * @param apiInfoLocation location of the API info endpoint of the platform instance
+		 * Set the location of the API info endpoint as would be provided in the request
+		 * from the platform.
+		 * @param apiInfoLocation location of the API info endpoint of the platform
+		 * instance
 		 * @return the builder
 		 * @see #getApiInfoLocation()
 		 */
@@ -335,8 +334,8 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the identity of the user making the request as would be provided in the request from the platform.
-		 *
+		 * Set the identity of the user making the request as would be provided in the
+		 * request from the platform.
 		 * @param originatingIdentity the user identity
 		 * @return the builder
 		 * @see #getOriginatingIdentity()
@@ -347,8 +346,7 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the identity of the request sent from the platform
-		 *
+		 * Set the identity of the request sent from the platform.
 		 * @param requestIdentity the request identity
 		 * @return the builder
 		 * @see #getRequestIdentity()
@@ -360,13 +358,12 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 
 		/**
 		 * Construct a {@link DeleteServiceInstanceRequest} from the provided values.
-		 *
 		 * @return the newly constructed {@literal DeleteServiceInstanceRequest}
 		 */
 		public DeleteServiceInstanceRequest build() {
-			return new DeleteServiceInstanceRequest(serviceInstanceId, serviceDefinitionId, planId,
-					serviceDefinition, plan, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity,
-					requestIdentity);
+			return new DeleteServiceInstanceRequest(this.serviceInstanceId, this.serviceDefinitionId, this.planId,
+					this.serviceDefinition, this.plan, this.asyncAccepted, this.platformInstanceId,
+					this.apiInfoLocation, this.originatingIdentity, this.requestIdentity);
 		}
 
 	}

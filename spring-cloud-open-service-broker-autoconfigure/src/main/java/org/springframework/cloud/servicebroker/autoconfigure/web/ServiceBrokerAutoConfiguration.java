@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,13 +31,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for the service broker implementation beans.
+ * {@link EnableAutoConfiguration Auto-configuration} for the service broker
+ * implementation beans.
  * <p>
- * Provides a default {@link CatalogService} bean if a {@link Catalog} bean is provided. A catalog may be defined in
- * external configuration, or via a Spring bean.
+ * Provides a default {@link CatalogService} bean if a {@link Catalog} bean is provided. A
+ * catalog may be defined in external configuration, or via a Spring bean.
  * <p>
- * Provides a {@link NonBindableServiceInstanceBindingService} if a {@link ServiceInstanceBindingService} is not
- * provided, indicating that the service broker provides no bindable services.
+ * Provides a {@link NonBindableServiceInstanceBindingService} if a
+ * {@link ServiceInstanceBindingService} is not provided, indicating that the service
+ * broker provides no bindable services.
  *
  * @author Scott Frederick
  * @author Roy Clarkson
@@ -47,8 +49,7 @@ import org.springframework.context.annotation.Configuration;
 public class ServiceBrokerAutoConfiguration {
 
 	/**
-	 * Conditionally provides a {@link CatalogService} bean
-	 *
+	 * Conditionally provides a {@link CatalogService} bean.
 	 * @param catalog the catalog
 	 * @return the bean
 	 */
@@ -62,8 +63,7 @@ public class ServiceBrokerAutoConfiguration {
 	}
 
 	/**
-	 * Conditionally provides a {@link ServiceInstanceBindingService} bean
-	 *
+	 * Conditionally provides a {@link ServiceInstanceBindingService} bean.
 	 * @return the bean
 	 */
 	@Bean
@@ -73,10 +73,11 @@ public class ServiceBrokerAutoConfiguration {
 	}
 
 	/**
-	 * Provides a {@link Catalog} bean when catalog properties are available in external configuration
+	 * Provides a {@link Catalog} bean when catalog properties are available in external.
+	 * configuration
 	 */
 	@Configuration
-	@ConditionalOnMissingBean({Catalog.class, CatalogService.class})
+	@ConditionalOnMissingBean({ Catalog.class, CatalogService.class })
 	@EnableConfigurationProperties(ServiceBrokerProperties.class)
 	@ConditionalOnProperty(prefix = "spring.cloud.openservicebroker.catalog.services[0]", name = "id")
 	protected static class CatalogPropertiesMinimalConfiguration {
@@ -84,8 +85,7 @@ public class ServiceBrokerAutoConfiguration {
 		private final ServiceBrokerProperties serviceBrokerProperties;
 
 		/**
-		 * Construct a new {@link CatalogPropertiesMinimalConfiguration}
-		 *
+		 * Construct a new {@link CatalogPropertiesMinimalConfiguration}.
 		 * @param serviceBrokerProperties the service broker properties
 		 */
 		public CatalogPropertiesMinimalConfiguration(ServiceBrokerProperties serviceBrokerProperties) {
@@ -93,8 +93,7 @@ public class ServiceBrokerAutoConfiguration {
 		}
 
 		/**
-		 * Privide a {@link Catalog} bean
-		 *
+		 * Privide a {@link Catalog} bean.
 		 * @return the bean
 		 */
 		@Bean

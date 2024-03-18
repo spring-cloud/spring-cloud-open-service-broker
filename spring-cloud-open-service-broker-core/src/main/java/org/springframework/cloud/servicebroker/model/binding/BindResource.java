@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,12 +31,13 @@ import org.springframework.util.CollectionUtils;
  * Details of any platform resources that a service binding will be associated with.
  *
  * <p>
- * Objects of this type are constructed by the framework from the message body passed to the service broker by the
- * platform in a service binding request.
+ * Objects of this type are constructed by the framework from the message body passed to
+ * the service broker by the platform in a service binding request.
  *
  * @author Scott Frederick
- * @see <a href=https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#bind-resource-object>Open
- * 		Service Broker API specification</a>
+ * @see <a
+ * href=https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#bind-resource-object>Open
+ * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class BindResource {
@@ -53,8 +54,7 @@ public class BindResource {
 	}
 
 	/**
-	 * Construct a new {@link BindResource}
-	 *
+	 * Construct a new {@link BindResource}.
 	 * @param appGuid the application GUID
 	 * @param route the application URL
 	 * @param properties a collection of properties
@@ -69,9 +69,9 @@ public class BindResource {
 
 	/**
 	 * Get the value of a property in the bind resource with the given key.
-	 *
 	 * @param key the key of the value to retrieve
-	 * @return the value of the property, or {@literal null} if the key is not present in the bind resource
+	 * @return the value of the property, or {@literal null} if the key is not present in
+	 * the bind resource
 	 */
 	public Object getProperty(String key) {
 		return this.properties.get(key);
@@ -79,7 +79,6 @@ public class BindResource {
 
 	/**
 	 * Get all properties in the bind resource.
-	 *
 	 * @return the set of bind resource properties
 	 */
 	@JsonAnyGetter
@@ -88,8 +87,8 @@ public class BindResource {
 	}
 
 	/**
-	 * Get the GUID of an application associated with the binding. May be provided for credentials bindings.
-	 *
+	 * Get the GUID of an application associated with the binding. May be provided for
+	 * credentials bindings.
 	 * @return the application GUID
 	 */
 	public String getAppGuid() {
@@ -97,8 +96,8 @@ public class BindResource {
 	}
 
 	/**
-	 * Get the URL of an application to be intermediated. May be provided for route services bindings.
-	 *
+	 * Get the URL of an application to be intermediated. May be provided for route
+	 * services bindings.
 	 * @return the application route
 	 */
 	public String getRoute() {
@@ -106,12 +105,13 @@ public class BindResource {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@link BindResource}.
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@link BindResource}.
 	 *
 	 * <p>
-	 * This builder is provided to support testing of {@link org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService}
+	 * This builder is provided to support testing of
+	 * {@link org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService}
 	 * implementations.
-	 *
 	 * @return the builder
 	 */
 	public static BindResourceBuilder builder() {
@@ -127,23 +127,19 @@ public class BindResource {
 			return false;
 		}
 		BindResource that = (BindResource) o;
-		return Objects.equals(appGuid, that.appGuid) &&
-				Objects.equals(route, that.route) &&
-				Objects.equals(properties, that.properties);
+		return Objects.equals(this.appGuid, that.appGuid) && Objects.equals(this.route, that.route)
+				&& Objects.equals(this.properties, that.properties);
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(appGuid, route, properties);
+		return Objects.hash(this.appGuid, this.route, this.properties);
 	}
 
 	@Override
 	public String toString() {
-		return "BindResource{" +
-				"appGuid='" + appGuid + '\'' +
-				", route='" + route + '\'' +
-				", properties=" + properties +
-				'}';
+		return "BindResource{" + "appGuid='" + this.appGuid + '\'' + ", route='" + this.route + '\'' + ", properties="
+				+ this.properties + '}';
 	}
 
 	/**
@@ -161,8 +157,8 @@ public class BindResource {
 		}
 
 		/**
-		 * Set an application GUID as would be provided in an app binding request from the platform.
-		 *
+		 * Set an application GUID as would be provided in an app binding request from the
+		 * platform.
 		 * @param appGuid the application GUID
 		 * @return the builder
 		 */
@@ -172,8 +168,8 @@ public class BindResource {
 		}
 
 		/**
-		 * Set an application route as would be provided in a route binding request from the platform.
-		 *
+		 * Set an application route as would be provided in a route binding request from
+		 * the platform.
 		 * @param route the application GUID
 		 * @return the builder
 		 */
@@ -183,9 +179,8 @@ public class BindResource {
 		}
 
 		/**
-		 * Add a set of properties from the provided {@literal Map} to the bind resource properties as would be provided
-		 * in the request from the platform.
-		 *
+		 * Add a set of properties from the provided {@literal Map} to the bind resource
+		 * properties as would be provided in the request from the platform.
 		 * @param properties the properties to add
 		 * @return the builder
 		 * @see #getProperties()
@@ -196,8 +191,8 @@ public class BindResource {
 		}
 
 		/**
-		 * Add a key/value pair to the bind resource properties as would be provided in the request from the platform.
-		 *
+		 * Add a key/value pair to the bind resource properties as would be provided in
+		 * the request from the platform.
 		 * @param key the property key to add
 		 * @param value the property value to add
 		 * @return the builder
@@ -210,11 +205,10 @@ public class BindResource {
 
 		/**
 		 * Construct a {@link BindResource} from the provided values.
-		 *
 		 * @return the newly constructed {@literal BindResource}
 		 */
 		public BindResource build() {
-			return new BindResource(appGuid, route, properties);
+			return new BindResource(this.appGuid, this.route, this.properties);
 		}
 
 	}

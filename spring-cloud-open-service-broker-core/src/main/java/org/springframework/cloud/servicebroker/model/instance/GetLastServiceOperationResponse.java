@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,16 +25,18 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
- * Details of a response to a request to get the state of the last operation on a service instance.
+ * Details of a response to a request to get the state of the last operation on a service
+ * instance.
  *
  * <p>
- * Objects of this type are constructed by the service broker application, and used to build the response to the
- * platform.
+ * Objects of this type are constructed by the service broker application, and used to
+ * build the response to the platform.
  *
  * @author Scott Frederick
  * @author Roy Clarkson
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-1">Open Service
- * 		Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-1">Open
+ * Service Broker API specification</a>
  */
 @JsonAutoDetect
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -52,21 +54,19 @@ public class GetLastServiceOperationResponse {
 	private final boolean deleteOperation;
 
 	/**
-	 * Construct a new {@link GetLastServiceOperationResponse}
+	 * Construct a new {@link GetLastServiceOperationResponse}.
 	 */
 	public GetLastServiceOperationResponse() {
 		this(null, null, null, null, false);
 	}
 
 	/**
-	 * Construct a new {@link GetLastServiceOperationResponse}
-	 *
+	 * Construct a new {@link GetLastServiceOperationResponse}.
 	 * @param state the current state
 	 * @param description the description
 	 * @param deleteOperation is delete operation
 	 * @deprecated in favor of
-	 *        {@link GetLastServiceOperationResponse#GetLastServiceOperationResponse(OperationState, String, Boolean,
-	 *        Boolean, boolean)}
+	 * {@link GetLastServiceOperationResponse#GetLastServiceOperationResponse(OperationState, String, Boolean, Boolean, boolean)}
 	 */
 	@Deprecated
 	public GetLastServiceOperationResponse(OperationState state, String description, boolean deleteOperation) {
@@ -74,8 +74,7 @@ public class GetLastServiceOperationResponse {
 	}
 
 	/**
-	 * Construct a new {@link GetLastServiceOperationResponse}
-	 *
+	 * Construct a new {@link GetLastServiceOperationResponse}.
 	 * @param state the current state
 	 * @param description the description
 	 * @param instanceUsable is the instance usable
@@ -93,7 +92,6 @@ public class GetLastServiceOperationResponse {
 
 	/**
 	 * Get the current state of an asynchronous operation.
-	 *
 	 * @return the operation state
 	 */
 	public OperationState getState() {
@@ -102,7 +100,6 @@ public class GetLastServiceOperationResponse {
 
 	/**
 	 * Get the description of the current asynchronous operation.
-	 *
 	 * @return the description, or {@literal null} if not provided
 	 */
 	public String getDescription() {
@@ -110,8 +107,8 @@ public class GetLastServiceOperationResponse {
 	}
 
 	/**
-	 * Get a boolean value indicating whether the instance is usable after a failed update or deprovisioning operation
-	 *
+	 * Get a boolean value indicating whether the instance is usable after a failed update
+	 * or deprovisioning operation.
 	 * @return the boolean value
 	 */
 	public Boolean isInstanceUsable() {
@@ -119,8 +116,7 @@ public class GetLastServiceOperationResponse {
 	}
 
 	/**
-	 * Get a boolean value indicating whether a failed update is repeatable
-	 *
+	 * Get a boolean value indicating whether a failed update is repeatable.
 	 * @return the boolean value
 	 */
 	public Boolean isUpdateRepeatable() {
@@ -129,7 +125,6 @@ public class GetLastServiceOperationResponse {
 
 	/**
 	 * Get a boolean value indicating whether the current operation is a delete operation.
-	 *
 	 * @return the boolean value
 	 */
 	@JsonIgnore
@@ -138,8 +133,8 @@ public class GetLastServiceOperationResponse {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal GetLastServiceOperationResponse}.
-	 *
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal GetLastServiceOperationResponse}.
 	 * @return the builder
 	 */
 	public static GetLastServiceOperationResponseBuilder builder() {
@@ -155,27 +150,23 @@ public class GetLastServiceOperationResponse {
 			return false;
 		}
 		GetLastServiceOperationResponse that = (GetLastServiceOperationResponse) o;
-		return state == that.state &&
-				Objects.equals(description, that.description) &&
-				Objects.equals(instanceUsable, that.instanceUsable) &&
-				Objects.equals(updateRepeatable, that.updateRepeatable) &&
-				deleteOperation == that.deleteOperation;
+		return this.state == that.state && Objects.equals(this.description, that.description)
+				&& Objects.equals(this.instanceUsable, that.instanceUsable)
+				&& Objects.equals(this.updateRepeatable, that.updateRepeatable)
+				&& this.deleteOperation == that.deleteOperation;
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(state, description, instanceUsable, updateRepeatable, deleteOperation);
+		return Objects.hash(this.state, this.description, this.instanceUsable, this.updateRepeatable,
+				this.deleteOperation);
 	}
 
 	@Override
 	public String toString() {
-		return "GetLastServiceOperationResponse{" +
-				"state=" + state +
-				", description='" + description + '\'' +
-				", instanceUsable=" + instanceUsable + '\'' +
-				", updateRepeatable=" + updateRepeatable + '\'' +
-				", deleteOperation=" + deleteOperation +
-				'}';
+		return "GetLastServiceOperationResponse{" + "state=" + this.state + ", description='" + this.description + '\''
+				+ ", instanceUsable=" + this.instanceUsable + '\'' + ", updateRepeatable=" + this.updateRepeatable
+				+ '\'' + ", deleteOperation=" + this.deleteOperation + '}';
 	}
 
 	/**
@@ -200,13 +191,14 @@ public class GetLastServiceOperationResponse {
 		 * Set the current state of the asynchronous operation.
 		 *
 		 * <p>
-		 * A value of {@link OperationState#IN_PROGRESS} will cause the platform to continue polling the service broker
-		 * for status. A value of {@link OperationState#SUCCEEDED} or {@link OperationState#FAILED} will cause the
-		 * platform to stop polling the service broker.
+		 * A value of {@link OperationState#IN_PROGRESS} will cause the platform to
+		 * continue polling the service broker for status. A value of
+		 * {@link OperationState#SUCCEEDED} or {@link OperationState#FAILED} will cause
+		 * the platform to stop polling the service broker.
 		 *
 		 * <p>
-		 * This value will set the {@literal state} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal state} field in the body of the response to
+		 * the platform.
 		 * @param state the current state
 		 * @return the builder
 		 */
@@ -216,12 +208,12 @@ public class GetLastServiceOperationResponse {
 		}
 
 		/**
-		 * Set a user-facing description of the operation that the platform can display to the API client. Can be
-		 * {@literal null}.
+		 * Set a user-facing description of the operation that the platform can display to
+		 * the API client. Can be {@literal null}.
 		 *
 		 * <p>
-		 * This value will set the {@literal description} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal description} field in the body of the
+		 * response to the platform.
 		 * @param description the description
 		 * @return the builder
 		 */
@@ -231,12 +223,13 @@ public class GetLastServiceOperationResponse {
 		}
 
 		/**
-		 * Set a boolean that indicates whether or not the Service Instance is still usable after a failed update or
-		 * delete action. If true, the Service Instance can still be used, false otherwise.
+		 * Set a boolean that indicates whether or not the Service Instance is still
+		 * usable after a failed update or delete action. If true, the Service Instance
+		 * can still be used, false otherwise.
 		 *
 		 * <p>
-		 * This value will set the {@literal instance_usable} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal instance_usable} field in the body of the
+		 * response to the platform.
 		 * @param instanceUsable the boolean value
 		 * @return the builder
 		 */
@@ -246,12 +239,13 @@ public class GetLastServiceOperationResponse {
 		}
 
 		/**
-		 * Set a boolean that indicates whether this update can be repeated or not. If true, the same update
-		 * operation MAY be repeated and MAY succeed; if false, repeating the same update operation will fail again.
+		 * Set a boolean that indicates whether this update can be repeated or not. If
+		 * true, the same update operation MAY be repeated and MAY succeed; if false,
+		 * repeating the same update operation will fail again.
 		 *
 		 * <p>
-		 * This value will set the {@literal update_repeatable} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal update_repeatable} field in the body of the
+		 * response to the platform.
 		 * @param updateRepeatable the boolean value
 		 * @return the builder
 		 */
@@ -261,16 +255,18 @@ public class GetLastServiceOperationResponse {
 		}
 
 		/**
-		 * Set a boolean value indicating whether the current asynchronous operation is a delete operation. Should be
-		 * set to <code>true</code> in response to a request for the status of an asynchronous delete request, and
-		 * <code>false</code> otherwise.
+		 * Set a boolean value indicating whether the current asynchronous operation is a
+		 * delete operation. Should be set to <code>true</code> in response to a request
+		 * for the status of an asynchronous delete request, and <code>false</code>
+		 * otherwise.
 		 *
 		 * <p>
-		 * This value is used to determine the HTTP response code to the platform. If the {@link
-		 * #operationState(OperationState)} is {@link OperationState#SUCCEEDED} and the value provided here is {@literal
-		 * true} will result in a response code {@literal 410 GONE}. Otherwise the response code will be {@literal 200
+		 * This value is used to determine the HTTP response code to the platform. If the
+		 * {@link #operationState(OperationState)} is {@link OperationState#SUCCEEDED} and
+		 * the value provided here is {@literal
+		 * true} will result in a response code {@literal 410 GONE}. Otherwise the
+		 * response code will be {@literal 200
 		 * OK}.
-		 *
 		 * @param deleteOperation the boolean value
 		 * @return the builder
 		 */
@@ -281,12 +277,11 @@ public class GetLastServiceOperationResponse {
 
 		/**
 		 * Construct a {@link GetLastServiceOperationResponse} from the provided values.
-		 *
 		 * @return the newly constructed {@literal GetLastServiceOperationResponse}
 		 */
 		public GetLastServiceOperationResponse build() {
-			return new GetLastServiceOperationResponse(state, description, instanceUsable, updateRepeatable,
-					deleteOperation);
+			return new GetLastServiceOperationResponse(this.state, this.description, this.instanceUsable,
+					this.updateRepeatable, this.deleteOperation);
 		}
 
 	}

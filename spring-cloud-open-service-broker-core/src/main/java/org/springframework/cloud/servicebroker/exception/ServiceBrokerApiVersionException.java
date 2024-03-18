@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,12 +17,14 @@
 package org.springframework.cloud.servicebroker.exception;
 
 /**
- * Thrown to indicate that the version of the API supported by the broker doesn't match the version provided by the
- * platform.
+ * Thrown to indicate that the version of the API supported by the broker doesn't match
+ * the version provided by the platform.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 412 PRECONDITION FAILED} being returned to the
- * platform.
+ * Throwing this exception will result in an HTTP status code
+ * {@literal 412 PRECONDITION FAILED} being returned to the platform.
+ *
+ * @author Scott Frederick
  */
 public class ServiceBrokerApiVersionException extends ServiceBrokerException {
 
@@ -30,7 +32,6 @@ public class ServiceBrokerApiVersionException extends ServiceBrokerException {
 
 	/**
 	 * Construct an exception with the expected and provided versions.
-	 *
 	 * @param expectedVersion the version expected by the service broker
 	 * @param providedVersion the version provided by the platform
 	 */
@@ -40,8 +41,8 @@ public class ServiceBrokerApiVersionException extends ServiceBrokerException {
 
 	/**
 	 * Construct an exception with an error code and the expected and provided versions.
-	 *
-	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param errorCode a single word in camel case that uniquely identifies the error
+	 * condition
 	 * @param expectedVersion the version expected by the service broker
 	 * @param providedVersion the version provided by the platform
 	 */

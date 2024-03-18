@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,8 +20,10 @@ package org.springframework.cloud.servicebroker.exception;
  * Thrown to indicate that the API version header is missing from the request.
  *
  * <p>
- * Throwing this exception will result in an HTTP status code {@literal 400 BAD REQUEST} being returned to the
- * platform.
+ * Throwing this exception will result in an HTTP status code {@literal 400 BAD REQUEST}
+ * being returned to the platform.
+ *
+ * @author Roy Clarkson
  */
 public class ServiceBrokerApiVersionMissingException extends ServiceBrokerException {
 
@@ -29,7 +31,6 @@ public class ServiceBrokerApiVersionMissingException extends ServiceBrokerExcept
 
 	/**
 	 * Construct an exception with the expected version.
-	 *
 	 * @param expectedVersion the version expected by the service broker
 	 */
 	public ServiceBrokerApiVersionMissingException(String expectedVersion) {
@@ -38,8 +39,8 @@ public class ServiceBrokerApiVersionMissingException extends ServiceBrokerExcept
 
 	/**
 	 * Construct an exception with an error code and the expected version.
-	 *
-	 * @param errorCode a single word in camel case that uniquely identifies the error condition
+	 * @param errorCode a single word in camel case that uniquely identifies the error
+	 * condition
 	 * @param expectedVersion the version expected by the service broker
 	 */
 	public ServiceBrokerApiVersionMissingException(String errorCode, String expectedVersion) {

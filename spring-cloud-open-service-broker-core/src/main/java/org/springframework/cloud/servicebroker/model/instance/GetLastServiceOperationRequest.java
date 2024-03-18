@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,34 +25,35 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
  * Details of a request to get the state of the last operation on a service instance.
  *
  * <p>
- * Objects of this type are constructed by the framework from the headers, path variables, query parameters and message
- * body passed to the service broker by the platform.
+ * Objects of this type are constructed by the framework from the headers, path variables,
+ * query parameters and message body passed to the service broker by the platform.
  *
  * @author Scott Frederick
  * @author Roy Clarkson
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-1">Open Service
- * 		Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-1">Open
+ * Service Broker API specification</a>
  */
 public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 
-	private transient final String serviceInstanceId;
+	private final transient String serviceInstanceId;
 
-	private transient final String serviceDefinitionId;
+	private final transient String serviceDefinitionId;
 
-	private transient final String planId;
+	private final transient String planId;
 
-	protected transient final String operation;
+	protected final transient String operation;
 
 	/**
-	 * Construct a new {@link GetLastServiceOperationRequest}
-	 *
+	 * Construct a new {@link GetLastServiceOperationRequest}.
 	 * @param serviceInstanceId the service instance ID
 	 * @param serviceDefinitionId the service definition ID
 	 * @param planId the plan ID
 	 * @param operation description of the operation being performed
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
-	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * @param originatingIdentity identity of the user that initiated the request from the
+	 * platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 */
 	public GetLastServiceOperationRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
@@ -69,8 +70,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	 * Get the ID of the service instance.
 	 *
 	 * <p>
-	 * This value is set from the {@literal :instance_id} path element of the request from the platform.
-	 *
+	 * This value is set from the {@literal :instance_id} path element of the request from
+	 * the platform.
 	 * @return the service instance ID
 	 */
 	public String getServiceInstanceId() {
@@ -81,8 +82,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	 * Get the ID of the service definition of the service instance.
 	 *
 	 * <p>
-	 * This value is set from the {@literal service_id} request parameter of the request from the platform
-	 *
+	 * This value is set from the {@literal service_id} request parameter of the request
+	 * from the platform
 	 * @return the service definition ID
 	 */
 	public String getServiceDefinitionId() {
@@ -93,8 +94,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	 * Get the ID of the plan of the service instance.
 	 *
 	 * <p>
-	 * This value is set from the {@literal plan_id} request parameter of the request from the platform.
-	 *
+	 * This value is set from the {@literal plan_id} request parameter of the request from
+	 * the platform.
 	 * @return the plan ID
 	 */
 	public String getPlanId() {
@@ -102,14 +103,16 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	}
 
 	/**
-	 * Get the value of the {@literal operation} field previously provided to the platform.
+	 * Get the value of the {@literal operation} field previously provided to the
+	 * platform.
 	 * <p>
-	 * Service brokers can optionally return an {@literal operation} value to the platform in the response from an async
-	 * create, update, or delete request. The platform will pass this value back to the broker if provided.
+	 * Service brokers can optionally return an {@literal operation} value to the platform
+	 * in the response from an async create, update, or delete request. The platform will
+	 * pass this value back to the broker if provided.
 	 *
 	 * <p>
-	 * This value is set from the {@literal operation} request parameter of the request from the platform.
-	 *
+	 * This value is set from the {@literal operation} request parameter of the request
+	 * from the platform.
 	 * @return the operation value
 	 */
 	public String getOperation() {
@@ -117,12 +120,13 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal GetLastServiceOperationRequestBuilder}.
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal GetLastServiceOperationRequestBuilder}.
 	 *
 	 * <p>
-	 * This builder is provided to support testing of {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService}
+	 * This builder is provided to support testing of
+	 * {@link org.springframework.cloud.servicebroker.service.ServiceInstanceService}
 	 * implementations.
-	 *
 	 * @return the builder
 	 */
 	public static GetLastServiceOperationRequestBuilder builder() {
@@ -141,11 +145,9 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 			return false;
 		}
 		GetLastServiceOperationRequest that = (GetLastServiceOperationRequest) o;
-		return that.canEqual(this) &&
-				Objects.equals(serviceInstanceId, that.serviceInstanceId) &&
-				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
-				Objects.equals(planId, that.planId) &&
-				Objects.equals(operation, that.operation);
+		return that.canEqual(this) && Objects.equals(this.serviceInstanceId, that.serviceInstanceId)
+				&& Objects.equals(this.serviceDefinitionId, that.serviceDefinitionId)
+				&& Objects.equals(this.planId, that.planId) && Objects.equals(this.operation, that.operation);
 	}
 
 	@Override
@@ -155,18 +157,15 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(super.hashCode(), serviceInstanceId, serviceDefinitionId, planId, operation);
+		return Objects.hash(super.hashCode(), this.serviceInstanceId, this.serviceDefinitionId, this.planId,
+				this.operation);
 	}
 
 	@Override
 	public String toString() {
-		return super.toString() +
-				"GetLastServiceOperationRequest{" +
-				"serviceInstanceId='" + serviceInstanceId + '\'' +
-				", serviceDefinitionId='" + serviceDefinitionId + '\'' +
-				", planId='" + planId + '\'' +
-				", operation='" + operation + '\'' +
-				'}';
+		return super.toString() + "GetLastServiceOperationRequest{" + "serviceInstanceId='" + this.serviceInstanceId
+				+ '\'' + ", serviceDefinitionId='" + this.serviceDefinitionId + '\'' + ", planId='" + this.planId + '\''
+				+ ", operation='" + this.operation + '\'' + '}';
 	}
 
 	/**
@@ -194,8 +193,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the service instance ID as would be provided in the request from the platform.
-		 *
+		 * Set the service instance ID as would be provided in the request from the
+		 * platform.
 		 * @param serviceInstanceId the service instance ID
 		 * @return the builder
 		 * @see #getServiceInstanceId()
@@ -206,8 +205,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the service definition ID as would be provided in the request from the platform.
-		 *
+		 * Set the service definition ID as would be provided in the request from the
+		 * platform.
 		 * @param serviceDefinitionId the service definition ID
 		 * @return the builder
 		 * @see #getServiceDefinitionId()
@@ -219,7 +218,6 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 
 		/**
 		 * Set the plan ID as would be provided in the request from the platform.
-		 *
 		 * @param planId the plan ID
 		 * @return the builder
 		 * @see #getPlanId()
@@ -231,7 +229,6 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 
 		/**
 		 * Set the operation as would be provided in the request from the platform.
-		 *
 		 * @param operation the operation
 		 * @return the builder
 		 */
@@ -241,8 +238,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the ID of the platform instance as would be provided in the request from the platform.
-		 *
+		 * Set the ID of the platform instance as would be provided in the request from
+		 * the platform.
 		 * @param platformInstanceId the platform instance ID
 		 * @return the builder
 		 * @see #getPlatformInstanceId()
@@ -253,9 +250,10 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the location of the API info endpoint as would be provided in the request from the platform.
-		 *
-		 * @param apiInfoLocation location of the API info endpoint of the platform instance
+		 * Set the location of the API info endpoint as would be provided in the request
+		 * from the platform.
+		 * @param apiInfoLocation location of the API info endpoint of the platform
+		 * instance
 		 * @return the builder
 		 * @see #getApiInfoLocation()
 		 */
@@ -265,8 +263,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the identity of the user making the request as would be provided in the request from the platform.
-		 *
+		 * Set the identity of the user making the request as would be provided in the
+		 * request from the platform.
 		 * @param originatingIdentity the user identity
 		 * @return the builder
 		 * @see #getOriginatingIdentity()
@@ -277,8 +275,7 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		}
 
 		/**
-		 * Set the identity of the request sent from the platform
-		 *
+		 * Set the identity of the request sent from the platform.
 		 * @param requestIdentity the request identity
 		 * @return the builder
 		 * @see #getRequestIdentity()
@@ -290,12 +287,12 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 
 		/**
 		 * Construct a {@link GetLastServiceOperationRequest} from the provided values.
-		 *
 		 * @return the newly constructed {@literal GetLastServiceOperationRequest}
 		 */
 		public GetLastServiceOperationRequest build() {
-			return new GetLastServiceOperationRequest(serviceInstanceId, serviceDefinitionId, planId,
-					operation, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
+			return new GetLastServiceOperationRequest(this.serviceInstanceId, this.serviceDefinitionId, this.planId,
+					this.operation, this.platformInstanceId, this.apiInfoLocation, this.originatingIdentity,
+					this.requestIdentity);
 		}
 
 	}

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,17 +26,20 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum OperationState {
 
 	/**
-	 * Indicates that a request is still being processed. The platform will continue polling for the current state.
+	 * Indicates that a request is still being processed. The platform will continue
+	 * polling for the current state.
 	 */
 	IN_PROGRESS("in progress"),
 
 	/**
-	 * Indicates that a request completed successfully. The platform will stop polling for the current state.
+	 * Indicates that a request completed successfully. The platform will stop polling for
+	 * the current state.
 	 */
 	SUCCEEDED("succeeded"),
 
 	/**
-	 * Indicates that a request completed unsuccessfully. The platform will stop polling for the current state.
+	 * Indicates that a request completed unsuccessfully. The platform will stop polling
+	 * for the current state.
 	 */
 	FAILED("failed");
 
@@ -48,21 +51,20 @@ public enum OperationState {
 
 	/**
 	 * Get the {@literal String} value of an enumerated value.
-	 *
 	 * @return the {@literal String} value
 	 */
 	@JsonValue
 	public String getValue() {
-		return state;
+		return this.state;
 	}
 
 	/**
 	 * Get the {@literal String} value of an enumerated value.
-	 *
 	 * @return the {@literal String} value
 	 */
 	@Override
 	public String toString() {
-		return state;
+		return this.state;
 	}
+
 }

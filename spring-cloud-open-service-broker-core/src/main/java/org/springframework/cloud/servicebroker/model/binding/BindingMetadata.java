@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,8 +24,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Service Instance Binding Metadata
  *
  * <p>
- * An OPTIONAL object containing metadata about this Service Binding. This metadata is mainly used to manage the Service
- * Binding itself and SHOULD NOT contain any data that is needed to connect to the Service Instance.
+ * An OPTIONAL object containing metadata about this Service Binding. This metadata is
+ * mainly used to manage the Service Binding itself and SHOULD NOT contain any data that
+ * is needed to connect to the Service Instance.
  *
  * @author Roy Clarkson
  */
@@ -34,15 +35,14 @@ public class BindingMetadata {
 	private final String expiresAt;
 
 	/**
-	 * Construct a new BindingMetadata
+	 * Construct a new BindingMetadata.
 	 */
 	public BindingMetadata() {
 		this(null);
 	}
 
 	/**
-	 * Construct a new BindingMetadata
-	 *
+	 * Construct a new BindingMetadata.
 	 * @param expiresAt the date and time in ISO 8601 format
 	 */
 	public BindingMetadata(String expiresAt) {
@@ -50,18 +50,17 @@ public class BindingMetadata {
 	}
 
 	/**
-	 * Get the expiration date and time
-	 *
+	 * Get the expiration date and time.
 	 * @return the date and time in ISO 8601 format
 	 */
 	@JsonProperty("expires_at")
 	public String getExpiresAt() {
-		return expiresAt;
+		return this.expiresAt;
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal BindingMetadata}.
-	 *
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal BindingMetadata}.
 	 * @return the builder
 	 */
 	public static BindingMetadataBuilder builder() {
@@ -77,13 +76,11 @@ public class BindingMetadata {
 			return false;
 		}
 		BindingMetadata that = (BindingMetadata) o;
-		return that.canEqual(this) &&
-				Objects.equals(expiresAt, that.expiresAt);
+		return that.canEqual(this) && Objects.equals(this.expiresAt, that.expiresAt);
 	}
 
 	/**
-	 * Is another object type compatible with this object
-	 *
+	 * Is another object type compatible with this object.
 	 * @param other the other object
 	 * @return true of compatible
 	 */
@@ -93,14 +90,12 @@ public class BindingMetadata {
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(expiresAt);
+		return Objects.hash(this.expiresAt);
 	}
 
 	@Override
 	public final String toString() {
-		return "BindingMetadata{" +
-				"expiresAt='" + expiresAt + '\'' +
-				'}';
+		return "BindingMetadata{" + "expiresAt='" + this.expiresAt + '\'' + '}';
 	}
 
 	/**
@@ -114,10 +109,10 @@ public class BindingMetadata {
 		}
 
 		/**
-		 * The date and time when the Service Binding becomes invalid and SHOULD NOT or CANNOT be used anymore.
-		 * Applications or Platforms MAY use this field to initiate a Service Binding/credential rotation. If present,
-		 * the string MUST follow ISO 8601 and this pattern: yyyy-mm-ddThh:mm:ss.ssZ.
-		 *
+		 * The date and time when the Service Binding becomes invalid and SHOULD NOT or
+		 * CANNOT be used anymore. Applications or Platforms MAY use this field to
+		 * initiate a Service Binding/credential rotation. If present, the string MUST
+		 * follow ISO 8601 and this pattern: yyyy-mm-ddThh:mm:ss.ssZ.
 		 * @param expiresAt the date and time in ISO 8601 format
 		 * @return the builder
 		 * @see #expiresAt(String)
@@ -129,11 +124,10 @@ public class BindingMetadata {
 
 		/**
 		 * Construct a {@link BindingMetadata} from the provided values.
-		 *
 		 * @return the newly constructed {@literal BindingMetadata}
 		 */
 		public BindingMetadata build() {
-			return new BindingMetadata(expiresAt);
+			return new BindingMetadata(this.expiresAt);
 		}
 
 	}

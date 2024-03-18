@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,8 +25,8 @@ import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
- * {@link HandlerInterceptor} that inspects the service broker API version passed in all request headers and compares it
- * to the API version supported by the broker.
+ * {@link HandlerInterceptor} that inspects the service broker API version passed in all
+ * request headers and compares it to the API version supported by the broker.
  *
  * @author Scott Frederick
  */
@@ -42,8 +42,8 @@ public class ApiVersionInterceptor implements HandlerInterceptor {
 	}
 
 	/**
-	 * Construct an interceptor that validates the API version passed in request headers to the configured version.
-	 *
+	 * Construct an interceptor that validates the API version passed in request headers
+	 * to the configured version.
 	 * @param version the API version supported by the broker.
 	 */
 	public ApiVersionInterceptor(BrokerApiVersion version) {
@@ -53,31 +53,30 @@ public class ApiVersionInterceptor implements HandlerInterceptor {
 
 	/**
 	 * Compares the service broker API version header to the supported version.
-	 *
 	 * @param request {@inheritDoc}
 	 * @param response {@inheritDoc}
 	 * @param handler {@inheritDoc}
-	 * @throws ServiceBrokerApiVersionException if the API version header value does not match the version supported
-	 * 		by the broker
+	 * @throws ServiceBrokerApiVersionException if the API version header value does not
+	 * match the version supported by the broker
 	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-		if (version != null && !anyVersionAllowed()) {
-			String apiVersion = request.getHeader(version.getBrokerApiVersionHeader());
+		if (this.version != null && !anyVersionAllowed()) {
+			String apiVersion = request.getHeader(this.version.getBrokerApiVersionHeader());
 
 			if (apiVersion == null) {
-				throw new ServiceBrokerApiVersionMissingException(version.getApiVersion());
+				throw new ServiceBrokerApiVersionMissingException(this.version.getApiVersion());
 			}
 
-			if (!version.getApiVersion().equals(apiVersion)) {
-				throw new ServiceBrokerApiVersionException(version.getApiVersion(), apiVersion);
+			if (!this.version.getApiVersion().equals(apiVersion)) {
+				throw new ServiceBrokerApiVersionException(this.version.getApiVersion(), apiVersion);
 			}
 		}
 		return true;
 	}
 
 	private boolean anyVersionAllowed() {
-		return BrokerApiVersion.API_VERSION_ANY.equals(version.getApiVersion());
+		return BrokerApiVersion.API_VERSION_ANY.equals(this.version.getApiVersion());
 	}
 
 }

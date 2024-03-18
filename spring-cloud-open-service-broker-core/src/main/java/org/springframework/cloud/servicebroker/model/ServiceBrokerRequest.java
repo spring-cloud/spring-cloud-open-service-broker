@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,42 +32,42 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 public class ServiceBrokerRequest {
 
 	/**
-	 * API Info Location header
+	 * API Info Location header.
 	 */
-	public final static String API_INFO_LOCATION_HEADER = "X-Api-Info-Location";
+	public static final String API_INFO_LOCATION_HEADER = "X-Api-Info-Location";
 
 	/**
-	 * API Originating Identity header
+	 * API Originating Identity header.
 	 */
-	public final static String ORIGINATING_IDENTITY_HEADER = "X-Broker-API-Originating-Identity";
+	public static final String ORIGINATING_IDENTITY_HEADER = "X-Broker-API-Originating-Identity";
 
 	/**
-	 * API Request Identity header
+	 * API Request Identity header.
 	 */
-	public final static String REQUEST_IDENTITY_HEADER = "X-Broker-API-Request-Identity";
+	public static final String REQUEST_IDENTITY_HEADER = "X-Broker-API-Request-Identity";
 
 	/**
-	 * Instance ID path variable name
+	 * Instance ID path variable name.
 	 */
 	public static final String INSTANCE_ID_PATH_VARIABLE = "instanceId";
 
 	/**
-	 * Binding ID path variable name
+	 * Binding ID path variable name.
 	 */
 	public static final String BINDING_ID_PATH_VARIABLE = "bindingId";
 
 	/**
-	 * Service ID parameter name
+	 * Service ID parameter name.
 	 */
 	public static final String SERVICE_ID_PARAMETER = "service_id";
 
 	/**
-	 * Plan ID parameter name
+	 * Plan ID parameter name.
 	 */
 	public static final String PLAN_ID_PARAMETER = "plan_id";
 
 	/**
-	 * Platform Instance ID variable name
+	 * Platform Instance ID variable name.
 	 */
 	public static final String PLATFORM_INSTANCE_ID_VARIABLE = "platformInstanceId";
 
@@ -80,18 +80,18 @@ public class ServiceBrokerRequest {
 	protected transient String requestIdentity;
 
 	/**
-	 * Construct a new {@link ServiceBrokerRequest}
+	 * Construct a new {@link ServiceBrokerRequest}.
 	 */
 	public ServiceBrokerRequest() {
 		// This constructor is intentionally empty to support JSON serialization
 	}
 
 	/**
-	 * Construct a new {@link ServiceBrokerRequest}
-	 *
+	 * Construct a new {@link ServiceBrokerRequest}.
 	 * @param platformInstanceId the platform instance ID
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
-	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * @param originatingIdentity identity of the user that initiated the request from the
+	 * platform
 	 * @param requestIdentity identity of the request being sent from the platform
 	 */
 	protected ServiceBrokerRequest(String platformInstanceId, String apiInfoLocation, Context originatingIdentity,
@@ -105,22 +105,22 @@ public class ServiceBrokerRequest {
 	/**
 	 * Get the ID used to identify the platform instance.
 	 * <p>
-	 * This is useful when the service broker is registered to multiple instances of a platform.
+	 * This is useful when the service broker is registered to multiple instances of a
+	 * platform.
 	 * <p>
-	 * This value is set from any path element that precedes {@literal /v2} in the request from the platform. Will be
-	 * {@literal null} if the service broker is not registered with an instance ID in the registration URL.
-	 *
+	 * This value is set from any path element that precedes {@literal /v2} in the request
+	 * from the platform. Will be {@literal null} if the service broker is not registered
+	 * with an instance ID in the registration URL.
 	 * @return the platform instance ID, or {@literal null} if not provided
 	 */
-	@JsonIgnore //relative path to Osb query path, not to include in Json body
+	@JsonIgnore // relative path to Osb query path, not to include in Json body
 	public String getPlatformInstanceId() {
 		return this.platformInstanceId;
 	}
 
 	/**
-	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this type
-	 * and set all field values.
-	 *
+	 * This method is intended to be used internally only; use a {@literal builder} to
+	 * construct an object of this type and set all field values.
 	 * @param platformInstanceId the platform instance ID
 	 */
 	public void setPlatformInstanceId(String platformInstanceId) {
@@ -130,22 +130,21 @@ public class ServiceBrokerRequest {
 	/**
 	 * Get the location of the API info endpoint of the platform instance.
 	 * <p>
-	 * This endpoint can be used to retrieve additional information about the platform making the request on platforms
-	 * that support the header.
+	 * This endpoint can be used to retrieve additional information about the platform
+	 * making the request on platforms that support the header.
 	 * <p>
-	 * This value is set from the {@literal X-Api-Info-Location} header in the request from the platform.
-	 *
+	 * This value is set from the {@literal X-Api-Info-Location} header in the request
+	 * from the platform.
 	 * @return the API info endpoint location, or {@literal null} if not provided
 	 */
-	@JsonIgnore //mapped as X-Api-Info-Location Header
+	@JsonIgnore // mapped as X-Api-Info-Location Header
 	public String getApiInfoLocation() {
 		return this.apiInfoLocation;
 	}
 
 	/**
-	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this type
-	 * and set all field values.
-	 *
+	 * This method is intended to be used internally only; use a {@literal builder} to
+	 * construct an object of this type and set all field values.
 	 * @param apiInfoLocation location of the API info endpoint of the platform instance
 	 */
 	public void setApiInfoLocation(String apiInfoLocation) {
@@ -155,40 +154,40 @@ public class ServiceBrokerRequest {
 	/**
 	 * Get the identity of the user that initiated the request from the platform.
 	 * <p>
-	 * This value is set from the {@literal X-Broker-API-Originating-Identity} header in the request from the platform.
-	 *
+	 * This value is set from the {@literal X-Broker-API-Originating-Identity} header in
+	 * the request from the platform.
 	 * @return the user identity, or {@literal null} if not provided
 	 */
-	@JsonIgnore //mapped as X-Broker-API-Originating-Identity Header
+	@JsonIgnore // mapped as X-Broker-API-Originating-Identity Header
 	public Context getOriginatingIdentity() {
 		return this.originatingIdentity;
 	}
 
 	/**
-	 * This method is intended to be used internally only; use a {@literal builder} to construct an object of this type
-	 * and set all field values.
-	 *
-	 * @param originatingIdentity identity of the user that initiated the request from the platform
+	 * This method is intended to be used internally only; use a {@literal builder} to
+	 * construct an object of this type and set all field values.
+	 * @param originatingIdentity identity of the user that initiated the request from the
+	 * platform
 	 */
 	public void setOriginatingIdentity(Context originatingIdentity) {
 		this.originatingIdentity = originatingIdentity;
 	}
 
 	/**
-	 * Get the identify of the request that was sent from the platform
+	 * Get the identify of the request that was sent from the platform.
 	 * <p>
-	 * This value is set from the {@literal X-Broker-API-Request-Identity} header in the request from the platform
-	 *
+	 * This value is set from the {@literal X-Broker-API-Request-Identity} header in the
+	 * request from the platform
 	 * @return the request identity, or {@literal null} if not provided
 	 */
-	@JsonIgnore //mapped as X-Broker-API-Request-Identity Header
+	@JsonIgnore // mapped as X-Broker-API-Request-Identity Header
 	public String getRequestIdentity() {
 		return this.requestIdentity;
 	}
 
 	/**
-	 * For internal use only; use a {@literal builder} to construct an object of this type and set all field values.
-	 *
+	 * For internal use only; use a {@literal builder} to construct an object of this type
+	 * and set all field values.
 	 * @param requestIdentity identify of the request sent from the platform
 	 */
 	public void setRequestIdentity(String requestIdentity) {
@@ -204,16 +203,14 @@ public class ServiceBrokerRequest {
 			return false;
 		}
 		ServiceBrokerRequest that = (ServiceBrokerRequest) o;
-		return that.canEqual(this) &&
-				Objects.equals(platformInstanceId, that.platformInstanceId) &&
-				Objects.equals(apiInfoLocation, that.apiInfoLocation) &&
-				Objects.equals(originatingIdentity, that.originatingIdentity) &&
-				Objects.equals(requestIdentity, that.requestIdentity);
+		return that.canEqual(this) && Objects.equals(this.platformInstanceId, that.platformInstanceId)
+				&& Objects.equals(this.apiInfoLocation, that.apiInfoLocation)
+				&& Objects.equals(this.originatingIdentity, that.originatingIdentity)
+				&& Objects.equals(this.requestIdentity, that.requestIdentity);
 	}
 
 	/**
-	 * Is another object type compatible with this object
-	 *
+	 * Is another object type compatible with this object.
 	 * @param other the other object
 	 * @return true of compatible
 	 */
@@ -223,17 +220,15 @@ public class ServiceBrokerRequest {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
+		return Objects.hash(this.platformInstanceId, this.apiInfoLocation, this.originatingIdentity,
+				this.requestIdentity);
 	}
 
 	@Override
 	public String toString() {
-		return "ServiceBrokerRequest{" +
-				"platformInstanceId='" + platformInstanceId + '\'' +
-				", apiInfoLocation='" + apiInfoLocation + '\'' +
-				", originatingIdentity=" + originatingIdentity + '\'' +
-				", requestIdentity=" + requestIdentity +
-				'}';
+		return "ServiceBrokerRequest{" + "platformInstanceId='" + this.platformInstanceId + '\'' + ", apiInfoLocation='"
+				+ this.apiInfoLocation + '\'' + ", originatingIdentity=" + this.originatingIdentity + '\''
+				+ ", requestIdentity=" + this.requestIdentity + '}';
 	}
 
 }

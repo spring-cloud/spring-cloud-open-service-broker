@@ -38,6 +38,7 @@ buildscript {
 plugins {
 	id 'checkstyle'
 	id 'io.spring.nohttp'
+	id 'io.spring.javaformat'
 }
 
 ext {
@@ -78,26 +79,29 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-acceptance-w
 	apply from: "${rootProject.projectDir}/publish-maven.gradle"
 }
 
-// perform lint checks on all code, except for sample code used in docs,
-// and generated contract tests
+// perform lint checks on all code, except for sample code used in docs
 configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 	apply plugin: 'checkstyle'
+	apply plugin: 'io.spring.javaformat'
 
 	checkstyle {
 		configFile = rootProject.file("src/checkstyle/checkstyle.xml")
 		configProperties = [config_path : rootProject.file("src/checkstyle")]
 		showViolations = true
 	}
+
 	checkstyleMain {
 		source = "src/main/java"
 	}
+
 	checkstyleTest {
 		source = ["src/test/java", "src/contractTest/java"]
 	}
-}
 
-// enable JUnit 5 tests, ignoring documentation subproject because there are no tests
-configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
+	dependencies {
+		checkstyle("io.spring.javaformat:spring-javaformat-checkstyle:0.0.41")
+	}
+
 	test {
 		useJUnitPlatform()
 		testLogging {

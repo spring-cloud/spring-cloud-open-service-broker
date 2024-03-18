@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,15 +33,14 @@ public class MethodSchema {
 	private final Map<String, Object> parameters;
 
 	/**
-	 * Construct a new {@link MethodSchema}
+	 * Construct a new {@link MethodSchema}.
 	 */
 	public MethodSchema() {
 		this(new HashMap<>());
 	}
 
 	/**
-	 * Construct a new {@link MethodSchema}
-	 *
+	 * Construct a new {@link MethodSchema}.
 	 * @param parameters a collection of parameters
 	 */
 	public MethodSchema(Map<String, Object> parameters) {
@@ -50,7 +49,6 @@ public class MethodSchema {
 
 	/**
 	 * A map of JSON schema for configuration parameters.
-	 *
 	 * @return the configuration parameters
 	 */
 	public Map<String, Object> getParameters() {
@@ -58,8 +56,8 @@ public class MethodSchema {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal MethodSchema}.
-	 *
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal MethodSchema}.
 	 * @return the builder
 	 */
 	public static MethodSchemaBuilder builder() {
@@ -75,19 +73,17 @@ public class MethodSchema {
 			return false;
 		}
 		MethodSchema that = (MethodSchema) o;
-		return Objects.equals(parameters, that.parameters);
+		return Objects.equals(this.parameters, that.parameters);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(parameters);
+		return Objects.hash(this.parameters);
 	}
 
 	@Override
 	public String toString() {
-		return "MethodSchema{" +
-				"parameters=" + parameters +
-				'}';
+		return "MethodSchema{" + "parameters=" + this.parameters + '}';
 	}
 
 	/**
@@ -102,7 +98,6 @@ public class MethodSchema {
 
 		/**
 		 * A map of JSON schema for configuration parameters.
-		 *
 		 * @param parameters the configuration parameters
 		 * @return the builder instance
 		 */
@@ -112,8 +107,7 @@ public class MethodSchema {
 		}
 
 		/**
-		 * A key/value pair to add to the JSON schema configuration parameters
-		 *
+		 * A key/value pair to add to the JSON schema configuration parameters.
 		 * @param key the unique key
 		 * @param value the value
 		 * @return the builder instance
@@ -125,11 +119,10 @@ public class MethodSchema {
 
 		/**
 		 * Construct a {@link MethodSchema} from the provided values.
-		 *
 		 * @return the newly constructed {@literal MethodSchema}
 		 */
 		public MethodSchema build() {
-			return new MethodSchema(parameters);
+			return new MethodSchema(this.parameters);
 		}
 
 	}

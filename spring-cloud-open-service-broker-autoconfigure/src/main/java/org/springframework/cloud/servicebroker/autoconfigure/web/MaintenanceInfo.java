@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,10 +17,11 @@
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 /**
- * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties that describes a maintenance
- * info available for a {@link Plan}.
+ * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
+ * that describes a maintenance info available for a {@link Plan}.
  *
- * @author ilyavy
+ * @author Ilya V
+ * @author Roy Clarkson
  * @see org.springframework.cloud.servicebroker.model.catalog.MaintenanceInfo
  */
 public class MaintenanceInfo {
@@ -36,7 +37,7 @@ public class MaintenanceInfo {
 	private String description;
 
 	public String getVersion() {
-		return version;
+		return this.version;
 	}
 
 	public void setVersion(String version) {
@@ -44,7 +45,7 @@ public class MaintenanceInfo {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -53,15 +54,14 @@ public class MaintenanceInfo {
 
 	/**
 	 * Converts this object into its corresponding model.
-	 *
 	 * @return a MaintenanceInfo model
 	 * @see org.springframework.cloud.servicebroker.model.catalog.MaintenanceInfo
 	 */
 	public org.springframework.cloud.servicebroker.model.catalog.MaintenanceInfo toModel() {
 		return org.springframework.cloud.servicebroker.model.catalog.MaintenanceInfo.builder()
-				.version(this.version)
-				.description(this.description)
-				.build();
+			.version(this.version)
+			.description(this.description)
+			.build();
 	}
 
 }

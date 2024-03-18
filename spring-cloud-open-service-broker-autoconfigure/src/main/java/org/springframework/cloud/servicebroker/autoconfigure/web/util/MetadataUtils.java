@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Internal class for marshaling abstract catalog metadata. Certain catalog metadata that is defined in YAML properties
- * needs to be adjusted to produce the expected JSON output.
+ * Internal class for marshaling abstract catalog metadata. Certain catalog metadata that
+ * is defined in YAML properties needs to be adjusted to produce the expected JSON output.
  *
  * @author Roy Clarkson
  */
@@ -33,8 +33,8 @@ public final class MetadataUtils {
 	}
 
 	/**
-	 * Traverses the tree and converts numbered maps into arrays for proper JSON serialization
-	 *
+	 * Traverses the tree and converts numbered maps into arrays for proper JSON.
+	 * serialization
 	 * @param parameters a {@link Map} to convert
 	 * @return the modified parameters
 	 */
@@ -47,9 +47,10 @@ public final class MetadataUtils {
 	private static Object convertEntry(Object value) {
 		Object convertedValue;
 		if (value instanceof Map) {
-			@SuppressWarnings("unchecked") //Spring YamlProcessor only provides String keys when loading yml,
-					//see https://github.com/spring-projects/spring-framework/blob/604361ee1f8bab4e4720e0fd1d18ca77eefc1b5f/spring-beans/src/main/java/org/springframework/beans/factory/config/YamlProcessor.java#L283-L287
-					Map<String, Object> valueMap = (Map<String, Object>) value;
+			@SuppressWarnings("unchecked")
+			// Spring YamlProcessor only provides String keys when loading yml
+			// https://github.com/spring-projects/spring-framework/blob/604361ee1f8bab4e4720e0fd1d18ca77eefc1b5f/spring-beans/src/main/java/org/springframework/beans/factory/config/YamlProcessor.java#L283-L287
+			Map<String, Object> valueMap = (Map<String, Object>) value;
 			if (isNumberedMap(valueMap)) {
 				convertedValue = convertNumberedMapToArray(valueMap);
 			}
@@ -84,7 +85,7 @@ public final class MetadataUtils {
 
 	private static List<Object> convertList(List<Object> value) {
 		List<Object> convertedList = new ArrayList<>(value.size());
-		value.forEach(item -> convertedList.add(convertEntry(item)));
+		value.forEach((item) -> convertedList.add(convertEntry(item)));
 		return convertedList;
 	}
 

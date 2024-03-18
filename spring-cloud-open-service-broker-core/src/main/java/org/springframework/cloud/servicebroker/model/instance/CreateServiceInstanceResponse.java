@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,12 +29,13 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
  * Details of a response to a request to create a new service instance.
  *
  * <p>
- * Objects of this type are constructed by the service broker application, and used to build the response to the
- * platform.
+ * Objects of this type are constructed by the service broker application, and used to
+ * build the response to the platform.
  *
  * @author Scott Frederick
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-2">Open Service
- * 		Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-2">Open
+ * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
@@ -46,23 +47,22 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	private final ServiceInstanceMetadata metadata;
 
 	/**
-	 * Construct a new {@link CreateServiceInstanceResponse}
+	 * Construct a new {@link CreateServiceInstanceResponse}.
 	 */
 	public CreateServiceInstanceResponse() {
 		this(false, null, null, false, null);
 	}
 
 	/**
-	 * Construct a new {@link CreateServiceInstanceResponse}
-	 *
+	 * Construct a new {@link CreateServiceInstanceResponse}.
 	 * @param async is the operation asynchronous
 	 * @param operation description of the operation being performed
 	 * @param dashboardUrl the dashboard URL
 	 * @param instanceExisted true if the instance exists
 	 * @param metadata containing metadata for the service instance
 	 */
-	public CreateServiceInstanceResponse(boolean async, String operation, String dashboardUrl,
-			boolean instanceExisted, ServiceInstanceMetadata metadata) {
+	public CreateServiceInstanceResponse(boolean async, String operation, String dashboardUrl, boolean instanceExisted,
+			ServiceInstanceMetadata metadata) {
 		super(async, operation);
 		this.dashboardUrl = dashboardUrl;
 		this.instanceExisted = instanceExisted;
@@ -71,7 +71,6 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 	/**
 	 * Get the URL of a web-based management user interface for the service instance.
-	 *
 	 * @return the dashboard URL, or {@literal null} if not provided
 	 */
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -80,19 +79,17 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	}
 
 	/**
-	 * Get the boolean value indicating whether the service instance already exists with the same parameters as the
-	 * requested service instance.
-	 *
+	 * Get the boolean value indicating whether the service instance already exists with
+	 * the same parameters as the requested service instance.
 	 * @return the boolean value
 	 */
-	@JsonIgnore //not sent on the wire as json payload, but as http status instead
+	@JsonIgnore // not sent on the wire as json payload, but as http status instead
 	public boolean isInstanceExisted() {
 		return this.instanceExisted;
 	}
 
 	/**
-	 * Get object containing metadata for the service instance
-	 *
+	 * Get object containing metadata for the service instance.
 	 * @return the service instance metadata
 	 */
 	@JsonInclude(JsonInclude.Include.NON_NULL)
@@ -101,8 +98,8 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal CreateServiceInstanceResponse}.
-	 *
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal CreateServiceInstanceResponse}.
 	 * @return the builder
 	 */
 	public static CreateServiceInstanceResponseBuilder builder() {
@@ -121,10 +118,8 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 			return false;
 		}
 		CreateServiceInstanceResponse that = (CreateServiceInstanceResponse) o;
-		return that.canEqual(this) &&
-				instanceExisted == that.instanceExisted &&
-				Objects.equals(dashboardUrl, that.dashboardUrl) &&
-				Objects.equals(metadata, that.metadata);
+		return that.canEqual(this) && this.instanceExisted == that.instanceExisted
+				&& Objects.equals(this.dashboardUrl, that.dashboardUrl) && Objects.equals(this.metadata, that.metadata);
 	}
 
 	@Override
@@ -134,17 +129,13 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(super.hashCode(), dashboardUrl, instanceExisted, metadata);
+		return Objects.hash(super.hashCode(), this.dashboardUrl, this.instanceExisted, this.metadata);
 	}
 
 	@Override
 	public String toString() {
-		return super.toString() +
-				"CreateServiceInstanceResponse{" +
-				"dashboardUrl='" + dashboardUrl + '\'' +
-				", instanceExisted=" + instanceExisted +
-				", metadata=" + metadata +
-				'}';
+		return super.toString() + "CreateServiceInstanceResponse{" + "dashboardUrl='" + this.dashboardUrl + '\''
+				+ ", instanceExisted=" + this.instanceExisted + ", metadata=" + this.metadata + '}';
 	}
 
 	/**
@@ -166,12 +157,13 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		}
 
 		/**
-		 * Set the URL of a web-based management user interface provided by the service broker for the service instance.
-		 * Can be {@literal null} to indicate that a management dashboard is not provided.
+		 * Set the URL of a web-based management user interface provided by the service
+		 * broker for the service instance. Can be {@literal null} to indicate that a
+		 * management dashboard is not provided.
 		 *
 		 * <p>
-		 * This value will set the {@literal dashboard_url} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal dashboard_url} field in the body of the
+		 * response to the platform.
 		 * @param dashboardUrl the dashboard URL
 		 * @return the builder
 		 */
@@ -181,16 +173,18 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		}
 
 		/**
-		 * Set a boolean value indicating whether the service instance already exists with the same parameters as the
-		 * requested service instance. A {@literal true} value indicates a service instance exists and no new resources
-		 * were created by the service broker, <code>false</code> indicates that new resources were created.
+		 * Set a boolean value indicating whether the service instance already exists with
+		 * the same parameters as the requested service instance. A {@literal true} value
+		 * indicates a service instance exists and no new resources were created by the
+		 * service broker, <code>false</code> indicates that new resources were created.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. If the service broker indicates
-		 * that it performed the operation synchronously, a {@literal true} value will result in a response code
-		 * {@literal 200 OK}, and a {@literal false} value will result in a response code {@literal 201 CREATED}.
-		 *
-		 * @param instanceExisted {@literal true} to indicate that the instance exists, {@literal false} otherwise
+		 * This value will be used to determine the HTTP response code to the platform. If
+		 * the service broker indicates that it performed the operation synchronously, a
+		 * {@literal true} value will result in a response code {@literal 200 OK}, and a
+		 * {@literal false} value will result in a response code {@literal 201 CREATED}.
+		 * @param instanceExisted {@literal true} to indicate that the instance exists,
+		 * {@literal false} otherwise
 		 * @return the builder
 		 * @see #async(boolean)
 		 */
@@ -200,12 +194,12 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		}
 
 		/**
-		 * Object containing metadata for the service instance
-		 * Can be {@literal null} to indicate that metadata was not provided for the service instance.
+		 * Object containing metadata for the service instance Can be {@literal null} to
+		 * indicate that metadata was not provided for the service instance.
 		 *
 		 * <p>
-		 * This value will set the {@literal metadata} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal metadata} field in the body of the response
+		 * to the platform.
 		 * @param metadata the service instance metadata
 		 * @return the builder
 		 */
@@ -215,15 +209,16 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		}
 
 		/**
-		 * Set a boolean value indicating whether the requested operation is being performed synchronously or
-		 * asynchronously.
+		 * Set a boolean value indicating whether the requested operation is being
+		 * performed synchronously or asynchronously.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
-		 * result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be determined by the
-		 * value of {@link #instanceExisted(boolean)}.
-		 *
-		 * @param async {@literal true} to indicate that the operation is being performed asynchronously, {@literal
+		 * This value will be used to determine the HTTP response code to the platform. A
+		 * {@literal true} value will result in a response code {@literal 202 ACCEPTED};
+		 * otherwise the response code will be determined by the value of
+		 * {@link #instanceExisted(boolean)}.
+		 * @param async {@literal true} to indicate that the operation is being performed
+		 * asynchronously, {@literal
 		 * 		false} to indicate that the operation was completed
 		 * @return the builder
 		 * @see #instanceExisted(boolean)
@@ -234,13 +229,13 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		}
 
 		/**
-		 * Set a value to inform the user of the operation being performed in support of an asynchronous response. This
-		 * value will be passed back to the service broker in subsequent {@link GetLastServiceOperationRequest}
-		 * requests.
+		 * Set a value to inform the user of the operation being performed in support of
+		 * an asynchronous response. This value will be passed back to the service broker
+		 * in subsequent {@link GetLastServiceOperationRequest} requests.
 		 *
 		 * <p>
-		 * This value will set the {@literal operation} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal operation} field in the body of the response
+		 * to the platform.
 		 * @param operation the informational value
 		 * @return the builder
 		 */
@@ -251,11 +246,11 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 		/**
 		 * Construct a {@link CreateServiceInstanceResponse} from the provided values.
-		 *
 		 * @return the newly constructed {@literal CreateServiceInstanceResponse}
 		 */
 		public CreateServiceInstanceResponse build() {
-			return new CreateServiceInstanceResponse(async, operation, dashboardUrl, instanceExisted, metadata);
+			return new CreateServiceInstanceResponse(this.async, this.operation, this.dashboardUrl,
+					this.instanceExisted, this.metadata);
 		}
 
 	}

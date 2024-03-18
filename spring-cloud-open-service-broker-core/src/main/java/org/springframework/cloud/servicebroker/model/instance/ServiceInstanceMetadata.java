@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.util.CollectionUtils;
 
 /**
- * Service instance metadata
+ * Service instance metadata.
  *
  * @author Andrea Alkalay
  */
@@ -33,20 +33,19 @@ import org.springframework.util.CollectionUtils;
 public class ServiceInstanceMetadata {
 
 	/**
-	 * Broker specified key-value pairs specifying attributes of Service Instances
+	 * Broker specified key-value pairs specifying attributes of Service Instances.
 	 */
 	private final Map<String, Object> labels = new HashMap<>();
 
 	/**
-	 * Create a new ServiceInstanceMetadata
+	 * Create a new ServiceInstanceMetadata.
 	 */
 	public ServiceInstanceMetadata() {
 		this(null);
 	}
 
 	/**
-	 * Create a new ServiceInstanceMetadata
-	 *
+	 * Create a new ServiceInstanceMetadata.
 	 * @param labels collection of labels
 	 */
 	public ServiceInstanceMetadata(Map<String, Object> labels) {
@@ -56,8 +55,7 @@ public class ServiceInstanceMetadata {
 	}
 
 	/**
-	 * Get the labels
-	 *
+	 * Get the labels.
 	 * @return the labels
 	 */
 	public Map<String, Object> getLabels() {
@@ -65,14 +63,13 @@ public class ServiceInstanceMetadata {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal ServiceInstanceMetadata}.
-	 *
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal ServiceInstanceMetadata}.
 	 * @return the builder
 	 */
 	public static ServiceInstanceMetadataBuilder builder() {
 		return new ServiceInstanceMetadataBuilder();
 	}
-
 
 	@Override
 	public final boolean equals(Object o) {
@@ -83,13 +80,11 @@ public class ServiceInstanceMetadata {
 			return false;
 		}
 		ServiceInstanceMetadata that = (ServiceInstanceMetadata) o;
-		return that.canEqual(this) &&
-				Objects.equals(labels, that.labels);
+		return that.canEqual(this) && Objects.equals(this.labels, that.labels);
 	}
 
 	/**
-	 * Is another object type compatible with this object
-	 *
+	 * Is another object type compatible with this object.
 	 * @param other the other object
 	 * @return true of compatible
 	 */
@@ -99,14 +94,12 @@ public class ServiceInstanceMetadata {
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(labels);
+		return Objects.hash(this.labels);
 	}
 
 	@Override
 	public final String toString() {
-		return "ServiceInstanceMetadata{" +
-				"labels='" + labels + '\'' +
-				'}';
+		return "ServiceInstanceMetadata{" + "labels='" + this.labels + '\'' + '}';
 	}
 
 	/**
@@ -115,7 +108,7 @@ public class ServiceInstanceMetadata {
 	public static final class ServiceInstanceMetadataBuilder {
 
 		/**
-		 * Broker specified key-value pairs specifying attributes of Service Instances
+		 * Broker specified key-value pairs specifying attributes of Service Instances.
 		 */
 		private final Map<String, Object> labels = new HashMap<>();
 
@@ -124,7 +117,6 @@ public class ServiceInstanceMetadata {
 
 		/**
 		 * Add a set of labels from the provided {@literal Map} to the metadata labels.
-		 *
 		 * @param labels the labels to add
 		 * @return the builder
 		 * @see #labels(Map)
@@ -138,7 +130,6 @@ public class ServiceInstanceMetadata {
 
 		/**
 		 * Add a key/value pair to the metadata labels.
-		 *
 		 * @param key the label key to add
 		 * @param value the label value to add
 		 * @return the builder
@@ -151,11 +142,10 @@ public class ServiceInstanceMetadata {
 
 		/**
 		 * Construct a {@link ServiceInstanceMetadata} from the provided values.
-		 *
 		 * @return the newly constructed {@literal ServiceInstanceMetadata}
 		 */
 		public ServiceInstanceMetadata build() {
-			return new ServiceInstanceMetadata(labels);
+			return new ServiceInstanceMetadata(this.labels);
 		}
 
 	}

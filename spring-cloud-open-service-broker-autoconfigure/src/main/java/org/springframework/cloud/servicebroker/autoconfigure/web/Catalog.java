@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,16 +16,17 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
-import jakarta.validation.constraints.NotEmpty;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.validation.constraints.NotEmpty;
+
 /**
- * Internal class for marshaling a catalog of services within {@link ServiceBrokerProperties} configuration properties.
+ * Internal class for marshaling a catalog of services within
+ * {@link ServiceBrokerProperties} configuration properties.
  *
- * @author sgreenberg@pivotal.io
+ * @author s greenberg
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see org.springframework.cloud.servicebroker.model.catalog.Catalog
@@ -43,20 +44,19 @@ public class Catalog {
 	}
 
 	/**
-	 * Converts this object into its corresponding model
-	 *
+	 * Converts this object into its corresponding model.
 	 * @return a Catalog model
 	 * @see org.springframework.cloud.servicebroker.model.catalog.Catalog
 	 */
 	public org.springframework.cloud.servicebroker.model.catalog.Catalog toModel() {
-		List<org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition> modelServiceDefinitions =
-				this.services.stream()
-						.map(ServiceDefinition::toModel)
-						.collect(Collectors.toList());
+		List<org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition> modelServiceDefinitions = this.services
+			.stream()
+			.map(ServiceDefinition::toModel)
+			.collect(Collectors.toList());
 
 		return org.springframework.cloud.servicebroker.model.catalog.Catalog.builder()
-				.serviceDefinitions(modelServiceDefinitions)
-				.build();
+			.serviceDefinitions(modelServiceDefinitions)
+			.build();
 	}
 
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,11 +28,12 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 /**
  * Details of an error reported to the platform from a service broker.
  *
- * @author sgreenberg@pivotal.io
+ * @author S Greenberg
  * @author Scott Frederick
  * @author Roy Clarkson
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-broker-errors">Open
- * 		Service Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-broker-errors">Open
+ * Service Broker API specification</a>
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -58,7 +59,6 @@ public class ErrorMessage implements Serializable {
 
 	/**
 	 * Construct an error message with the provided description.
-	 *
 	 * @param message a user-facing error message explaining why the request failed
 	 */
 	public ErrorMessage(String message) {
@@ -67,8 +67,8 @@ public class ErrorMessage implements Serializable {
 
 	/**
 	 * Construct an error message with the provided error code and description.
-	 *
-	 * @param error a single word in camel case that uniquely identifies the error condition
+	 * @param error a single word in camel case that uniquely identifies the error
+	 * condition
 	 * @param message a user-facing error message explaining why the request failed
 	 */
 	public ErrorMessage(String error, String message) {
@@ -77,8 +77,8 @@ public class ErrorMessage implements Serializable {
 
 	/**
 	 * Construct an error message.
-	 *
-	 * @param error a single word in camel case that uniquely identifies the error condition
+	 * @param error a single word in camel case that uniquely identifies the error
+	 * condition
 	 * @param message a user-facing error message explaining why the request failed
 	 * @param instanceUsable is the instance still usable after a failed operation
 	 * @param updateRepeatable can the update be repeated after a failed operation
@@ -92,7 +92,6 @@ public class ErrorMessage implements Serializable {
 
 	/**
 	 * Get the error code.
-	 *
 	 * @return the error code
 	 */
 	public String getError() {
@@ -101,7 +100,6 @@ public class ErrorMessage implements Serializable {
 
 	/**
 	 * Get the description.
-	 *
 	 * @return the description.
 	 */
 	@JsonProperty("description")
@@ -110,8 +108,8 @@ public class ErrorMessage implements Serializable {
 	}
 
 	/**
-	 * Get a boolean value indicating whether the instance is usable after a failed update or deprovisioning operation
-	 *
+	 * Get a boolean value indicating whether the instance is usable after a failed update
+	 * or deprovisioning operation.
 	 * @return the boolean value
 	 */
 	public Boolean isInstanceUsable() {
@@ -119,8 +117,7 @@ public class ErrorMessage implements Serializable {
 	}
 
 	/**
-	 * Get a boolean value indicating whether a failed update is repeatable
-	 *
+	 * Get a boolean value indicating whether a failed update is repeatable.
 	 * @return the boolean value
 	 */
 	public Boolean isUpdateRepeatable() {
@@ -128,8 +125,8 @@ public class ErrorMessage implements Serializable {
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing an {@literal ErrorMessage}.
-	 *
+	 * Create a builder that provides a fluent API for constructing an
+	 * {@literal ErrorMessage}.
 	 * @return the builder
 	 */
 	public static ErrorMessageBuilder builder() {
@@ -145,25 +142,21 @@ public class ErrorMessage implements Serializable {
 			return false;
 		}
 		ErrorMessage that = (ErrorMessage) o;
-		return Objects.equals(error, that.error) &&
-				Objects.equals(message, that.message) &&
-				Objects.equals(instanceUsable, that.instanceUsable) &&
-				Objects.equals(updateRepeatable, that.updateRepeatable);
+		return Objects.equals(this.error, that.error) && Objects.equals(this.message, that.message)
+				&& Objects.equals(this.instanceUsable, that.instanceUsable)
+				&& Objects.equals(this.updateRepeatable, that.updateRepeatable);
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(error, message, instanceUsable, updateRepeatable);
+		return Objects.hash(this.error, this.message, this.instanceUsable, this.updateRepeatable);
 	}
 
 	@Override
 	public final String toString() {
-		return "ErrorMessage{" +
-				"error='" + error + '\'' +
-				", message='" + message + '\'' +
-				", instanceUsable=" + instanceUsable + '\'' +
-				", updateRepeatable=" + updateRepeatable +
-				'}';
+		return "ErrorMessage{" + "error='" + this.error + '\'' + ", message='" + this.message + '\''
+				+ ", instanceUsable=" + this.instanceUsable + '\'' + ", updateRepeatable=" + this.updateRepeatable
+				+ '}';
 	}
 
 	/**
@@ -180,8 +173,7 @@ public class ErrorMessage implements Serializable {
 		private Boolean updateRepeatable;
 
 		/**
-		 * Set the error code
-		 *
+		 * Set the error code.
 		 * @param error the error code
 		 * @return builder
 		 * @see #getError()
@@ -192,8 +184,7 @@ public class ErrorMessage implements Serializable {
 		}
 
 		/**
-		 * Set the description
-		 *
+		 * Set the description.
 		 * @param message the error description
 		 * @return the builder
 		 * @see #getMessage()
@@ -204,12 +195,13 @@ public class ErrorMessage implements Serializable {
 		}
 
 		/**
-		 * Set a boolean that indicates whether or not the Service Instance is still usable after a failed update or
-		 * delete action. If true, the Service Instance can still be used, false otherwise.
+		 * Set a boolean that indicates whether or not the Service Instance is still
+		 * usable after a failed update or delete action. If true, the Service Instance
+		 * can still be used, false otherwise.
 		 *
 		 * <p>
-		 * This value will set the {@literal instance_usable} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal instance_usable} field in the body of the
+		 * response to the platform.
 		 * @param instanceUsable the boolean value
 		 * @return the builder
 		 * @see #isInstanceUsable()
@@ -220,12 +212,13 @@ public class ErrorMessage implements Serializable {
 		}
 
 		/**
-		 * Set a boolean that indicates whether this update can be repeated or not. If true, the same update
-		 * operation MAY be repeated and MAY succeed; if false, repeating the same update operation will fail again.
+		 * Set a boolean that indicates whether this update can be repeated or not. If
+		 * true, the same update operation MAY be repeated and MAY succeed; if false,
+		 * repeating the same update operation will fail again.
 		 *
 		 * <p>
-		 * This value will set the {@literal update_repeatable} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal update_repeatable} field in the body of the
+		 * response to the platform.
 		 * @param updateRepeatable the boolean value
 		 * @return the builder
 		 * @see #isUpdateRepeatable()
@@ -236,13 +229,13 @@ public class ErrorMessage implements Serializable {
 		}
 
 		/**
-		 * Construct an {@link ErrorMessage} from the provided values
-		 *
+		 * Construct an {@link ErrorMessage} from the provided values.
 		 * @return the newly constructed {@link ErrorMessage}
 		 */
 		public ErrorMessage build() {
-			return new ErrorMessage(error, message, instanceUsable, updateRepeatable);
+			return new ErrorMessage(this.error, this.message, this.instanceUsable, this.updateRepeatable);
 		}
+
 	}
 
 }

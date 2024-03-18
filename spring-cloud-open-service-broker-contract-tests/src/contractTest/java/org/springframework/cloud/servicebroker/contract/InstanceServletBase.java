@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.springframework.cloud.servicebroker.contract;
 
 import io.restassured.RestAssured;
@@ -35,11 +36,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(classes = InstanceServletBase.TestApplication.class,
 		properties = "spring.main.web-application-type=servlet",
-		webEnvironment = RANDOM_PORT)
+		webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class InstanceServletBase {
 
 	@LocalServerPort
@@ -56,19 +56,16 @@ public class InstanceServletBase {
 
 	@Test
 	void contextLoads() {
-		assertThat(context).isNotNull();
+		assertThat(this.context).isNotNull();
 	}
 
-	@SpringBootApplication(scanBasePackageClasses = {
-			ServiceBrokerAutoConfiguration.class,
-			ServiceBrokerWebMvcAutoConfiguration.class}, exclude = ServiceBrokerWebFluxAutoConfiguration.class)
+	@SpringBootApplication(scanBasePackageClasses = { ServiceBrokerAutoConfiguration.class,
+			ServiceBrokerWebMvcAutoConfiguration.class }, exclude = ServiceBrokerWebFluxAutoConfiguration.class)
 	protected static class TestApplication {
 
 		@Bean
 		protected Catalog catalog() {
-			return Catalog.builder()
-					.serviceDefinitions(ServiceFixture.getSimpleService())
-					.build();
+			return Catalog.builder().serviceDefinitions(ServiceFixture.getSimpleService()).build();
 		}
 
 		@Bean

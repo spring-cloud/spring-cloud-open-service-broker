@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,18 +24,20 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Details of a response to a request to create a new service instance binding associated with an application.
+ * Details of a response to a request to create a new service instance binding associated
+ * with an application.
  *
  * <p>
- * Objects of this type are constructed by the service broker application, and used to build the response to the
- * platform.
+ * Objects of this type are constructed by the service broker application, and used to
+ * build the response to the platform.
  *
- * @author sgreenberg@pivotal.io
+ * @author S Greenberg
  * @author Josh Long
  * @author Scott Frederick
  * @author Roy Clarkson
- * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-6">Open Service
- * 		Broker API specification</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-6">Open
+ * Service Broker API specification</a>
  */
 public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstanceBindingResponse {
 
@@ -48,18 +50,18 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	private final List<Endpoint> endpoints;
 
 	/**
-	 * Construct a new {@link CreateServiceInstanceAppBindingResponse}
+	 * Construct a new {@link CreateServiceInstanceAppBindingResponse}.
 	 */
 	public CreateServiceInstanceAppBindingResponse() {
 		this(false, null, false, null, new HashMap<>(), null, new ArrayList<>(), new ArrayList<>());
 	}
 
 	/**
-	 * Construct a new {@link CreateServiceInstanceAppBindingResponse}
-	 *
+	 * Construct a new {@link CreateServiceInstanceAppBindingResponse}.
 	 * @param async is the operation asynchronous
 	 * @param operation description of the operation being performed
 	 * @param bindingExisted does the service binding already exist
+	 * @param metadata the binding metadata
 	 * @param credentials the service binding credentials
 	 * @param syslogDrainUrl the syslog drain URL
 	 * @param volumeMounts the set of volume mounts
@@ -76,8 +78,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	}
 
 	/**
-	 * Get the credentials that the bound application can use to access the service instance.
-	 *
+	 * Get the credentials that the bound application can use to access the service.
+	 * instance.
 	 * @return the service binding credentials
 	 */
 	public Map<String, Object> getCredentials() {
@@ -86,7 +88,6 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 
 	/**
 	 * Get the URL to which the platform should drain logs for the bound application.
-	 *
 	 * @return the syslog drain URL
 	 */
 	public String getSyslogDrainUrl() {
@@ -94,8 +95,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	}
 
 	/**
-	 * Get the set of volume mounts that can be used in an application container file system.
-	 *
+	 * Get the set of volume mounts that can be used in an application container file
+	 * system.
 	 * @return the set of volume mounts
 	 */
 	public List<VolumeMount> getVolumeMounts() {
@@ -103,8 +104,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	}
 
 	/**
-	 * Get the set of endpoints that can be used by an application to connect to the service instance.
-	 *
+	 * Get the set of endpoints that can be used by an application to connect to the
+	 * service instance.
 	 * @return the set of endpoints
 	 */
 	public List<Endpoint> getEndpoints() {
@@ -112,8 +113,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	}
 
 	/**
-	 * Create a builder that provides a fluent API for constructing a {@literal CreateServiceInstanceAppBindingResponse}.
-	 *
+	 * Create a builder that provides a fluent API for constructing a
+	 * {@literal CreateServiceInstanceAppBindingResponse}.
 	 * @return the builder
 	 */
 	public static CreateServiceInstanceAppBindingResponseBuilder builder() {
@@ -132,11 +133,10 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 			return false;
 		}
 		CreateServiceInstanceAppBindingResponse that = (CreateServiceInstanceAppBindingResponse) o;
-		return that.canEqual(this) &&
-				Objects.equals(credentials, that.credentials) &&
-				Objects.equals(syslogDrainUrl, that.syslogDrainUrl) &&
-				Objects.equals(volumeMounts, that.volumeMounts) &&
-				Objects.equals(endpoints, that.endpoints);
+		return that.canEqual(this) && Objects.equals(this.credentials, that.credentials)
+				&& Objects.equals(this.syslogDrainUrl, that.syslogDrainUrl)
+				&& Objects.equals(this.volumeMounts, that.volumeMounts)
+				&& Objects.equals(this.endpoints, that.endpoints);
 	}
 
 	@Override
@@ -146,22 +146,19 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(super.hashCode(), credentials, syslogDrainUrl, volumeMounts, endpoints);
+		return Objects.hash(super.hashCode(), this.credentials, this.syslogDrainUrl, this.volumeMounts, this.endpoints);
 	}
 
 	@Override
 	public String toString() {
-		return super.toString() +
-				"CreateServiceInstanceAppBindingResponse{" +
-				"credentials=" + credentials +
-				", syslogDrainUrl='" + syslogDrainUrl + '\'' +
-				", volumeMounts=" + volumeMounts +
-				", endpoints=" + endpoints +
-				'}';
+		return super.toString() + "CreateServiceInstanceAppBindingResponse{" + "credentials=" + this.credentials
+				+ ", syslogDrainUrl='" + this.syslogDrainUrl + '\'' + ", volumeMounts=" + this.volumeMounts
+				+ ", endpoints=" + this.endpoints + '}';
 	}
 
 	/**
-	 * Provides a fluent API for constructing a {@link CreateServiceInstanceAppBindingResponse}.
+	 * Provides a fluent API for constructing a
+	 * {@link CreateServiceInstanceAppBindingResponse}.
 	 */
 	public static final class CreateServiceInstanceAppBindingResponseBuilder {
 
@@ -185,12 +182,12 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
-		 * Add a set of credentials from the provided {@literal Map} to the credentials that the bound application can
-		 * use to access the service instance.
+		 * Add a set of credentials from the provided {@literal Map} to the credentials
+		 * that the bound application can use to access the service instance.
 		 *
 		 * <p>
-		 * This value will set the {@literal credentials} field in the body of the response to the platform
-		 *
+		 * This value will set the {@literal credentials} field in the body of the
+		 * response to the platform
 		 * @param credentials a {@literal Map} of credentials
 		 * @return the builder
 		 */
@@ -200,11 +197,12 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
-		 * Add a key/value pair to the that the bound application can use to access the service instance.
+		 * Add a key/value pair to the that the bound application can use to access the
+		 * service instance.
 		 *
 		 * <p>
-		 * This value will set the {@literal credentials} field in the body of the response to the platform
-		 *
+		 * This value will set the {@literal credentials} field in the body of the
+		 * response to the platform
 		 * @param key the credential key
 		 * @param value the credential value
 		 * @return the builder
@@ -215,12 +213,13 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
-		 * Set the URL to which the platform should drain logs for the bound application. Can be {@literal null} to
-		 * indicate that the service binding does not support syslog drains.
+		 * Set the URL to which the platform should drain logs for the bound application.
+		 * Can be {@literal null} to indicate that the service binding does not support
+		 * syslog drains.
 		 *
 		 * <p>
-		 * This value will set the {@literal syslog_drain_url} field in the body of the response to the platform
-		 *
+		 * This value will set the {@literal syslog_drain_url} field in the body of the
+		 * response to the platform
 		 * @param syslogDrainUrl the syslog URL
 		 * @return the builder
 		 */
@@ -230,12 +229,12 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
-		 * Add a set of volume mounts from the provided {@literal List} to the volume mounts that can be used in an
-		 * application container file system.
+		 * Add a set of volume mounts from the provided {@literal List} to the volume
+		 * mounts that can be used in an application container file system.
 		 *
 		 * <p>
-		 * This value will set the {@literal volume_mounts} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal volume_mounts} field in the body of the
+		 * response to the platform.
 		 * @param volumeMounts a {@literal List} of volume mounts
 		 * @return the builder
 		 */
@@ -245,12 +244,12 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
-		 * Add a set of volume mounts from the provided array to the volume mounts that can be used in an application
-		 * container file system.
+		 * Add a set of volume mounts from the provided array to the volume mounts that
+		 * can be used in an application container file system.
 		 *
 		 * <p>
-		 * This value will set the {@literal volume_mounts} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal volume_mounts} field in the body of the
+		 * response to the platform.
 		 * @param volumeMounts one more volume mounts
 		 * @return the builder
 		 */
@@ -260,12 +259,12 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
-		 * Add a set of endpoints from the provided {@literal List} to the endpoints that can be used by an application
-		 * to connect to the service instance.
+		 * Add a set of endpoints from the provided {@literal List} to the endpoints that
+		 * can be used by an application to connect to the service instance.
 		 *
 		 * <p>
-		 * This value will set the {@literal endpoints} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal endpoints} field in the body of the response
+		 * to the platform.
 		 * @param endpoints one more endpoints
 		 * @return the builder
 		 */
@@ -275,12 +274,12 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
-		 * Add a set of endpoints from the provided array to the endpoints that can be used by an application to connect
-		 * to the service instance.
+		 * Add a set of endpoints from the provided array to the endpoints that can be
+		 * used by an application to connect to the service instance.
 		 *
 		 * <p>
-		 * This value will set the {@literal endpoints} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal endpoints} field in the body of the response
+		 * to the platform.
 		 * @param endpoints one more endpoints
 		 * @return the builder
 		 */
@@ -290,16 +289,17 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
-		 * Set a boolean value indicating whether the service binding already exists with the same parameters as the
-		 * requested service binding. A {@literal true} value indicates a service binding exists and no new resources
-		 * were created by the service broker, <code>false</code> indicates that new resources were created.
+		 * Set a boolean value indicating whether the service binding already exists with
+		 * the same parameters as the requested service binding. A {@literal true} value
+		 * indicates a service binding exists and no new resources were created by the
+		 * service broker, <code>false</code> indicates that new resources were created.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
-		 * result in a response code {@literal 200 OK}, and a {@literal false} value will result in a response code
-		 * {@literal 201 CREATED}.
-		 *
-		 * @param bindingExisted {@literal true} to indicate that the binding exists, {@literal false} otherwise
+		 * This value will be used to determine the HTTP response code to the platform. A
+		 * {@literal true} value will result in a response code {@literal 200 OK}, and a
+		 * {@literal false} value will result in a response code {@literal 201 CREATED}.
+		 * @param bindingExisted {@literal true} to indicate that the binding exists,
+		 * {@literal false} otherwise
 		 * @return the builder
 		 */
 		public CreateServiceInstanceAppBindingResponseBuilder bindingExisted(boolean bindingExisted) {
@@ -311,8 +311,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		 * Set the service instance binding metadata
 		 *
 		 * <p>
-		 * This value will set the {@literal metadata} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal metadata} field in the body of the response
+		 * to the platform.
 		 * @param metadata metadata about this service binding
 		 * @return the builder
 		 */
@@ -322,15 +322,16 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
-		 * Set a boolean value indicating whether the requested operation is being performed synchronously or
-		 * asynchronously.
+		 * Set a boolean value indicating whether the requested operation is being
+		 * performed synchronously or asynchronously.
 		 *
 		 * <p>
-		 * This value will be used to determine the HTTP response code to the platform. A {@literal true} value will
-		 * result in a response code {@literal 202 ACCEPTED}; otherwise the response code will be determined by the
-		 * value of {@link #bindingExisted(boolean)}.
-		 *
-		 * @param async {@literal true} to indicate that the operation is being performed asynchronously, {@literal
+		 * This value will be used to determine the HTTP response code to the platform. A
+		 * {@literal true} value will result in a response code {@literal 202 ACCEPTED};
+		 * otherwise the response code will be determined by the value of
+		 * {@link #bindingExisted(boolean)}.
+		 * @param async {@literal true} to indicate that the operation is being performed
+		 * asynchronously, {@literal
 		 * 		false} to indicate that the operation was completed
 		 * @return the builder
 		 * @see #bindingExisted(boolean)
@@ -341,13 +342,13 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
-		 * Set a value to inform the user of the operation being performed in support of an asynchronous response. This
-		 * value will be passed back to the service broker in subsequent {@link GetLastServiceBindingOperationRequest}
-		 * requests.
+		 * Set a value to inform the user of the operation being performed in support of
+		 * an asynchronous response. This value will be passed back to the service broker
+		 * in subsequent {@link GetLastServiceBindingOperationRequest} requests.
 		 *
 		 * <p>
-		 * This value will set the {@literal operation} field in the body of the response to the platform.
-		 *
+		 * This value will set the {@literal operation} field in the body of the response
+		 * to the platform.
 		 * @param operation description of the operation being performed
 		 * @return the builder
 		 */
@@ -357,13 +358,14 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		}
 
 		/**
-		 * Construct a {@link CreateServiceInstanceAppBindingResponse} from the provided values.
-		 *
-		 * @return the newly constructed {@literal CreateServiceInstanceAppBindingResponse}
+		 * Construct a {@link CreateServiceInstanceAppBindingResponse} from the provided
+		 * values.
+		 * @return the newly constructed
+		 * {@literal CreateServiceInstanceAppBindingResponse}
 		 */
 		public CreateServiceInstanceAppBindingResponse build() {
-			return new CreateServiceInstanceAppBindingResponse(async, operation, bindingExisted, metadata, credentials,
-					syslogDrainUrl, volumeMounts, endpoints);
+			return new CreateServiceInstanceAppBindingResponse(this.async, this.operation, this.bindingExisted,
+					this.metadata, this.credentials, this.syslogDrainUrl, this.volumeMounts, this.endpoints);
 		}
 
 	}

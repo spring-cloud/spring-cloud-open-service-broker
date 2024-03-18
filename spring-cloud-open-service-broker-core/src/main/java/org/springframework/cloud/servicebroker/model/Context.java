@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,23 +29,23 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Platform specific contextual information under which the service instance is to be provisioned or updated. Fields
- * known by concrete subtypes will be parsed into discrete properties of the appropriate subtype. Any additional
- * properties will available using {@link #getProperty(String)}.
+ * Platform specific contextual information under which the service instance is to be
+ * provisioned or updated. Fields known by concrete subtypes will be parsed into discrete
+ * properties of the appropriate subtype. Any additional properties will available using
+ * {@link #getProperty(String)}.
  *
  * @author Scott Frederick
  * @author Roy Clarkson
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY,
-		property = Context.PLATFORM_KEY, visible = true, defaultImpl = PlatformContext.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = Context.PLATFORM_KEY,
+		visible = true, defaultImpl = PlatformContext.class)
 @JsonSubTypes({
 		@JsonSubTypes.Type(value = CloudFoundryContext.class, name = CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM),
-		@JsonSubTypes.Type(value = KubernetesContext.class, name = KubernetesContext.KUBERNETES_PLATFORM)
-})
+		@JsonSubTypes.Type(value = KubernetesContext.class, name = KubernetesContext.KUBERNETES_PLATFORM) })
 public class Context {
 
 	/**
-	 * Platform key
+	 * Platform key.
 	 */
 	public static final String PLATFORM_KEY = "platform";
 
@@ -54,15 +54,14 @@ public class Context {
 	protected final Map<String, Object> properties = new HashMap<>();
 
 	/**
-	 * Create a new Context
+	 * Create a new Context.
 	 */
 	protected Context() {
 		this(null, null);
 	}
 
 	/**
-	 * Create a new Context
-	 *
+	 * Create a new Context.
 	 * @param platform the name of the platform
 	 * @param properties collection of properties
 	 */
@@ -75,7 +74,6 @@ public class Context {
 
 	/**
 	 * Get the name of the platform making the request.
-	 *
 	 * @return the platform identifier
 	 */
 	public String getPlatform() {
@@ -84,7 +82,6 @@ public class Context {
 
 	/**
 	 * Get all properties in the context.
-	 *
 	 * @return the collection of properties
 	 */
 	@JsonIgnore
@@ -94,7 +91,6 @@ public class Context {
 
 	/**
 	 * Set a property in the context.
-	 *
 	 * @param key the key of the property
 	 * @param value the value of the property
 	 */
@@ -105,9 +101,9 @@ public class Context {
 
 	/**
 	 * Get the value of a property in the context with the given key.
-	 *
 	 * @param key the key of the property to retrieve
-	 * @return the value of the property, or {@literal null} if the key is not present in the request
+	 * @return the value of the property, or {@literal null} if the key is not present in
+	 * the request
 	 */
 	public Object getProperty(String key) {
 		return this.properties.get(key);
@@ -115,9 +111,9 @@ public class Context {
 
 	/**
 	 * Get the String value of a property in the context with the given key.
-	 *
 	 * @param key the key of the property to retrieve
-	 * @return the value of the property, or {@literal null} if the key is not present in the request
+	 * @return the value of the property, or {@literal null} if the key is not present in
+	 * the request
 	 */
 	protected String getStringProperty(String key) {
 		if (getProperty(key) != null) {
@@ -127,22 +123,22 @@ public class Context {
 	}
 
 	/**
-	 * Set the String value of a property in the context with the given key. Null keys and values are ignored.
-	 *
+	 * Set the String value of a property in the context with the given key. Null keys and
+	 * values are ignored.
 	 * @param key the key of the property
 	 * @param value the value of the property
 	 */
 	protected void setStringProperty(String key, String value) {
 		if (StringUtils.hasText(key) && StringUtils.hasText(value)) {
-			this.properties.put(key,value);
+			this.properties.put(key, value);
 		}
 	}
 
 	/**
 	 * Get the Map value of a property in the context with the given key.
-	 *
 	 * @param key the key of the property to retrieve
-	 * @return the value of the property, or {@literal null} if the key is not present in the request
+	 * @return the value of the property, or {@literal null} if the key is not present in
+	 * the request
 	 */
 
 	@SuppressWarnings("unchecked")
@@ -151,8 +147,8 @@ public class Context {
 	}
 
 	/**
-	 * Set the Map value of a property in the context with the given key. Null keys and empty maps are ignored.
-	 *
+	 * Set the Map value of a property in the context with the given key. Null keys and
+	 * empty maps are ignored.
 	 * @param key the key of the property
 	 * @param map the map to set as the value of the property
 	 */
@@ -171,14 +167,12 @@ public class Context {
 			return false;
 		}
 		Context that = (Context) o;
-		return that.canEqual(this) &&
-				Objects.equals(platform, that.platform) &&
-				Objects.equals(properties, that.properties);
+		return that.canEqual(this) && Objects.equals(this.platform, that.platform)
+				&& Objects.equals(this.properties, that.properties);
 	}
 
 	/**
-	 * Is another object type compatible with this object
-	 *
+	 * Is another object type compatible with this object.
 	 * @param other the other object
 	 * @return true of compatible
 	 */
@@ -188,24 +182,21 @@ public class Context {
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(platform, properties);
+		return Objects.hash(this.platform, this.properties);
 	}
 
 	@Override
 	public final String toString() {
-		return "Context{" +
-				"platform='" + platform + '\'' +
-				", properties=" + properties +
-				'}';
+		return "Context{" + "platform='" + this.platform + '\'' + ", properties=" + this.properties + '}';
 	}
 
 	/**
-	 * Builder class for Context
+	 * Builder class for Context.
 	 *
 	 * @param <R> the type of Context
 	 * @param <B> the implementing Builder
 	 */
-	protected static abstract class ContextBaseBuilder<R extends Context, B extends ContextBaseBuilder<R, B>> {
+	protected abstract static class ContextBaseBuilder<R extends Context, B extends ContextBaseBuilder<R, B>> {
 
 		private final B thisObj;
 
@@ -214,46 +205,44 @@ public class Context {
 		protected Map<String, Object> properties = new HashMap<>();
 
 		/**
-		 * Construct a new ContextBaseBuilder
+		 * Construct a new ContextBaseBuilder.
 		 */
 		protected ContextBaseBuilder() {
 			this.thisObj = createBuilder();
 		}
 
 		/**
-		 * Construct a builder
-		 *
+		 * Construct a builder.
 		 * @return the builder
 		 */
 		protected abstract B createBuilder();
 
 		/**
-		 * Set the name of the platform as would be provided in the request from the platform.
-		 *
+		 * Set the name of the platform as would be provided in the request from the
+		 * platform.
 		 * @param platform the platform name
 		 * @return the builder
 		 */
 		public B platform(String platform) {
 			this.platform = platform;
-			return thisObj;
+			return this.thisObj;
 		}
 
 		/**
-		 * Add a set of properties from the provided {@literal Map} to the context properties as would be provided in
-		 * the request from the platform.
-		 *
+		 * Add a set of properties from the provided {@literal Map} to the context
+		 * properties as would be provided in the request from the platform.
 		 * @param properties the properties to add
 		 * @return the builder
 		 * @see #getProperties()
 		 */
 		public B properties(Map<String, Object> properties) {
 			this.properties.putAll(properties);
-			return thisObj;
+			return this.thisObj;
 		}
 
 		/**
-		 * Add a key/value pair to the context properties as would be provided in the request from the platform.
-		 *
+		 * Add a key/value pair to the context properties as would be provided in the
+		 * request from the platform.
 		 * @param key the parameter key to add
 		 * @param value the parameter value to add
 		 * @return the builder
@@ -261,12 +250,11 @@ public class Context {
 		 */
 		public B property(String key, Object value) {
 			this.properties.put(key, value);
-			return thisObj;
+			return this.thisObj;
 		}
 
 		/**
-		 * Construct an implementing {@link ContextBaseBuilder}
-		 *
+		 * Construct an implementing {@link ContextBaseBuilder}.
 		 * @return the newly constructed {@link Context} implementation
 		 */
 		public abstract R build();

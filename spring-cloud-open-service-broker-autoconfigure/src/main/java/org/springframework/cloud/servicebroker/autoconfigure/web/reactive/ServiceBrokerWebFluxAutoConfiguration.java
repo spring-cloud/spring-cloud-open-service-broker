@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,13 +38,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for the service broker REST API endpoints.
+ * {@link EnableAutoConfiguration Auto-configuration} for the service broker REST API
+ * endpoints.
  *
  * @author Roy Clarkson
  */
 @Configuration
-@AutoConfigureAfter({WebFluxAutoConfiguration.class,
-		ServiceBrokerAutoConfiguration.class, EventFlowsAutoConfiguration.class})
+@AutoConfigureAfter({ WebFluxAutoConfiguration.class, ServiceBrokerAutoConfiguration.class,
+		EventFlowsAutoConfiguration.class })
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 public class ServiceBrokerWebFluxAutoConfiguration {
 
@@ -55,8 +56,7 @@ public class ServiceBrokerWebFluxAutoConfiguration {
 	private final ServiceInstanceBindingEventService serviceInstanceBindingEventService;
 
 	/**
-	 * Construct a new {@link ServiceBrokerWebFluxAutoConfiguration}
-	 *
+	 * Construct a new {@link ServiceBrokerWebFluxAutoConfiguration}.
 	 * @param catalogService the CatalogService bean
 	 * @param serviceInstanceService the ServiceInstanceService bean
 	 * @param serviceInstanceBindingService the ServiceInstanceBindingService bean
@@ -64,21 +64,18 @@ public class ServiceBrokerWebFluxAutoConfiguration {
 	 */
 	protected ServiceBrokerWebFluxAutoConfiguration(CatalogService catalogService,
 			@Autowired(required = false) ServiceInstanceService serviceInstanceService,
-			ServiceInstanceBindingService serviceInstanceBindingService,
-			EventFlowRegistries eventFlowRegistries) {
+			ServiceInstanceBindingService serviceInstanceBindingService, EventFlowRegistries eventFlowRegistries) {
 		if (serviceInstanceService == null) {
 			throw new ServiceInstanceServiceBeanDoesNotExistException();
 		}
 		this.catalogService = catalogService;
-		this.serviceInstanceEventService = new ServiceInstanceEventService(
-				serviceInstanceService, eventFlowRegistries);
-		this.serviceInstanceBindingEventService = new ServiceInstanceBindingEventService(
-				serviceInstanceBindingService, eventFlowRegistries);
+		this.serviceInstanceEventService = new ServiceInstanceEventService(serviceInstanceService, eventFlowRegistries);
+		this.serviceInstanceBindingEventService = new ServiceInstanceBindingEventService(serviceInstanceBindingService,
+				eventFlowRegistries);
 	}
 
 	/**
-	 * Provide a {@link CatalogController} bean
-	 *
+	 * Provide a {@link CatalogController} bean.
 	 * @return the bean
 	 */
 	@Bean
@@ -87,30 +84,25 @@ public class ServiceBrokerWebFluxAutoConfiguration {
 	}
 
 	/**
-	 * Provide a {@link ServiceInstanceController} bean
-	 *
+	 * Provide a {@link ServiceInstanceController} bean.
 	 * @return the bean
 	 */
 	@Bean
 	public ServiceInstanceController serviceInstanceController() {
-		return new ServiceInstanceController(this.catalogService,
-				this.serviceInstanceEventService);
+		return new ServiceInstanceController(this.catalogService, this.serviceInstanceEventService);
 	}
 
 	/**
-	 * Provide a {@link ServiceInstanceBindingController} bean
-	 *
+	 * Provide a {@link ServiceInstanceBindingController} bean.
 	 * @return the bean
 	 */
 	@Bean
 	public ServiceInstanceBindingController serviceInstanceBindingController() {
-		return new ServiceInstanceBindingController(this.catalogService,
-				this.serviceInstanceBindingEventService);
+		return new ServiceInstanceBindingController(this.catalogService, this.serviceInstanceBindingEventService);
 	}
 
 	/**
-	 * Provide a {@link ServiceBrokerWebFluxExceptionHandler} bean
-	 *
+	 * Provide a {@link ServiceBrokerWebFluxExceptionHandler} bean.
 	 * @return the bean
 	 */
 	@Bean
@@ -119,8 +111,7 @@ public class ServiceBrokerWebFluxAutoConfiguration {
 	}
 
 	/**
-	 * Provide a {@link RequestIdentityWebFilter} bean
-	 *
+	 * Provide a {@link RequestIdentityWebFilter} bean.
 	 * @return the bean
 	 */
 	@Bean
