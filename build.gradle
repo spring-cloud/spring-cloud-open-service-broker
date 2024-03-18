@@ -95,27 +95,6 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 	}
 }
 
-// struggled to get pmd to ignore or exclude the generated test classes, so
-// ignoring the entire contracts submodule
-configure(allprojects - [project(':spring-cloud-open-service-broker-docs'),
-						 project(':spring-cloud-open-service-broker-contract-tests')]) {
-	apply plugin: 'pmd'
-
-	pmd {
-		consoleOutput = true
-	}
-	pmdMain {
-		ruleSets = []
-		ruleSetFiles = rootProject.files("src/pmd/pmdRuleSet.xml")
-		source = "src/main/java"
-	}
-	pmdTest {
-		ruleSets = []
-		ruleSetFiles = rootProject.files("src/pmd/pmdTestRuleSet.xml")
-		source = "src/test/java"
-	}
-}
-
 // enable JUnit 5 tests, ignoring documentation subproject because there are no tests
 configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 	test {

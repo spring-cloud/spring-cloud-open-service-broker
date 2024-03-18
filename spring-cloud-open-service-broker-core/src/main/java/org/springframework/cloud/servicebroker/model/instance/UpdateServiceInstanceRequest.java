@@ -44,7 +44,6 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-3">Open Service
  * 		Broker API specification</a>
  */
-@SuppressWarnings("PMD.ExcessivePublicCount")
 public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
 
 	@NotEmpty

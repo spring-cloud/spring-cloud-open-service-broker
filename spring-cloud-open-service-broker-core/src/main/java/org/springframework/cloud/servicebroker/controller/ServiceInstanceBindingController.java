@@ -60,7 +60,6 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @see <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#binding">Open Service Broker
  * 		API specification</a>
  */
-@SuppressWarnings("PMD.CognitiveComplexity")
 @ServiceBrokerRestController
 public class ServiceInstanceBindingController extends BaseController {
 

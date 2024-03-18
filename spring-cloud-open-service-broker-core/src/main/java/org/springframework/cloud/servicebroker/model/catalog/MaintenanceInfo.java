@@ -49,7 +49,6 @@ public class MaintenanceInfo {
 	/**
 	 * Constructs a new {@link MaintenanceInfo}
 	 */
-	@SuppressWarnings("PMD.NullAssignment")
 	public MaintenanceInfo() {
 		this.version = null;
 		this.description = null;
