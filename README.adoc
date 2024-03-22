@@ -56,7 +56,7 @@ implementation("org.springframework.cloud:spring-cloud-starter-open-service-brok
 
 == Build
 
-This project requires Java 8.
+This project requires Java 17.
 
 The project is built with Gradle. The https://docs.gradle.org/current/userguide/gradle_wrapper.html[Gradle wrapper] allows you to build the project on multiple platforms and even if you do not have Gradle installed; run it in place of the `gradle` command (as `./gradlew`) from the root of the main project directory.
 
@@ -68,9 +68,13 @@ Deploy the artifacts to your local maven repository:
 
     ./gradlew publishToMavenLocal
 
-Perform all checks, including checkstyle, pmd, unit tests, and contract tests:
+Perform all checks, including checkstyle, unit tests, and contract tests:
 
     ./gradlew check
+
+Format source according to the https://github.com/spring-io/spring-javaformat[spring-javaformat] project standards
+
+    ./gradlew format
 
 Run only unit tests:
 
