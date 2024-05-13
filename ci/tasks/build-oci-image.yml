@@ -1,0 +1,25 @@
+---
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    repository: ((open-service-broker-virtual-docker-registry))/concourse/oci-build-task
+    tag: 0.11.1
+    username: ((broadcom-jfrog-artifactory-robot-account.username))
+    password: ((broadcom-jfrog-artifactory-robot-account.password))
+
+inputs:
+  - name: git-repo
+  - name: docker-config
+
+outputs:
+  - name: image
+
+run:
+  path: build
+
+params:
+  CONTEXT:
+  DEBUG: true
+  DOCKER_CONFIG: docker-config
