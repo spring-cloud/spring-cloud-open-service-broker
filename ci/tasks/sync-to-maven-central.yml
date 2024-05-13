@@ -3,7 +3,9 @@ platform: linux
 image_resource:
   type: registry-image
   source:
-    repository: ((dockerhub-mirror-registry))/springio/concourse-release-scripts
+    repository: ((open-service-broker-virtual-docker-registry))/springio/concourse-release-scripts
+    username: ((broadcom-jfrog-artifactory-robot-account.username))
+    password: ((broadcom-jfrog-artifactory-robot-account.password))
     tag: '0.3.4'
 inputs:
   - name: git-repo
