@@ -3,9 +3,9 @@ platform: linux
 image_resource:
   type: registry-image
   source:
-    repository: ((corporate-harbor-registry))/((dockerhub-organization))/scosb-ci
-    username: ((corporate-harbor-robot-account.username))
-    password: ((corporate-harbor-robot-account.password))
+    repository: ((open-service-broker-dev-docker-registry))/ci/scosb-ci
+    username: ((broadcom-jfrog-artifactory-robot-account.username))
+    password: ((broadcom-jfrog-artifactory-robot-account.password))
     tag: ((ci-image-tag))
 inputs:
   - name: git-repo

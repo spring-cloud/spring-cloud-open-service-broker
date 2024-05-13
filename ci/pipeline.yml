@@ -22,20 +22,26 @@ jobs:
         trigger: true
       - get: ci-images-git-repo
         trigger: true
+      - task: generate-docker-credentials
+        file: ci-images-git-repo/ci/tasks/generate-docker-credentials.yml
+        input_mapping:
+          git-repo: ci-images-git-repo
+        vars:
+          registry: ((open-service-broker-dev-docker-registry))
+          registry-username: ((broadcom-jfrog-artifactory-robot-account.username))
+          registry-password: ((broadcom-jfrog-artifactory-robot-account.password))
       - task: build-image
         privileged: true
-        tags: [ btrfs ]
-        file: ci-images-git-repo/ci/tasks/build-image.yml
+        file: ci-images-git-repo/ci/tasks/build-oci-image.yml
         input_mapping:
-          source: ci-images-git-repo
+          git-repo: ci-images-git-repo
         params:
-          CONTEXT: source/ci/images/scosb-ci
+          CONTEXT: git-repo/ci/images/scosb-ci
       - put: scosb-ci-image
         inputs: detect
         params:
           image: image/image.tar
-        get_params:
-          skip_download: true
+        no_get: true
     on_failure: *slack-failure-notification
 
   - name: build
@@ -180,13 +186,17 @@ resource_types:
   - name: artifactory-resource
     type: registry-image
     source:
-      repository: ((dockerhub-mirror-registry))/springio/artifactory-resource
+      repository: ((open-service-broker-virtual-docker-registry))/springio/artifactory-resource
+      username: ((broadcom-jfrog-artifactory-robot-account.username))
+      password: ((broadcom-jfrog-artifactory-robot-account.password))
       tag: 0.0.14
 
   - name: slack-notification
     type: registry-image
     source:
-      repository: ((dockerhub-mirror-registry))/cfcommunity/slack-notification-resource
+      repository: ((open-service-broker-virtual-docker-registry))/cfcommunity/slack-notification-resource
+      username: ((broadcom-jfrog-artifactory-robot-account.username))
+      password: ((broadcom-jfrog-artifactory-robot-account.password))
       tag: latest
 
 resources:
@@ -226,14 +236,16 @@ resources:
       branch: ((branch))
       paths:
         - ci/images/*
-        - ci/tasks/build-image.*
+        - ci/scripts/generate-docker-credentials.sh
+        - ci/tasks/build-oci-image.yml
+        - ci/tasks/generate-docker-credentials.yml
 
   - name: scosb-ci-image
     type: registry-image
     source:
-      repository: ((corporate-harbor-registry))/((dockerhub-organization))/scosb-ci
-      username: ((corporate-harbor-robot-account.username))
-      password: ((corporate-harbor-robot-account.password))
+      repository: ((open-service-broker-dev-docker-registry))/ci/scosb-ci
+      username: ((broadcom-jfrog-artifactory-robot-account.username))
+      password: ((broadcom-jfrog-artifactory-robot-account.password))
       tag: ((ci-image-tag))
 
   - name: artifactory-repo
