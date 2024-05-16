@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-readonly FLY_TARGET="scosb"
+readonly FLY_TARGET="${FLY_TARGET:-"scosb"}"
 
 set_pipeline() {
 	local pipeline_name pipeline_definition branch ci_image_tag
