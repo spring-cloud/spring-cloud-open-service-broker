@@ -99,7 +99,7 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 	}
 
 	dependencies {
-		checkstyle("io.spring.javaformat:spring-javaformat-checkstyle:0.0.41")
+		checkstyle("io.spring.javaformat:spring-javaformat-checkstyle:0.0.42")
 	}
 
 	test {
