@@ -5,9 +5,9 @@ name: Java 8
 
 on:
   push:
-    branches: [ 3.6.*, 3.5.* ]
+    branches: [ 3.6.* ]
   pull_request:
-    branches: [ 3.6.*, 3.5.* ]
+    branches: [ 3.6.* ]
 
 jobs:
   build:
