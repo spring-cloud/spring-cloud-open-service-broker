@@ -21,6 +21,7 @@ import java.util.Map;
 
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.assertj.core.util.Maps;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
@@ -28,6 +29,8 @@ import org.springframework.cloud.servicebroker.JsonUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
+
+
 
 class GetServiceInstanceResponseTest {
 
@@ -40,6 +43,7 @@ class GetServiceInstanceResponseTest {
 		assertThat(response.getPlanId()).isNull();
 		assertThat(response.getDashboardUrl()).isNull();
 		assertThat(response.getParameters()).hasSize(0);
+		assertThat(response.getMetadata()).isNull();
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
@@ -47,6 +51,7 @@ class GetServiceInstanceResponseTest {
 		assertThat(json).hasNoPath("$.plan_id");
 		assertThat(json).hasNoPath("$.dashboard_url");
 		assertThat(json).hasMapAtPath("$.parameters").hasSize(0);
+		assertThat(json).hasNoPath("$.metadata");
 	}
 
 	@Test
@@ -63,6 +68,7 @@ class GetServiceInstanceResponseTest {
 				.parameters("field2", 2)
 				.parameters("field3", true)
 				.parameters(parameters)
+				.metadata(ServiceInstanceMetadata.builder().label("key","value").build())
 				.build();
 
 		assertThat(response.getServiceDefinitionId()).isEqualTo("service-definition-id");
@@ -76,6 +82,9 @@ class GetServiceInstanceResponseTest {
 		assertThat(response.getParameters().get("field4")).isEqualTo("value4");
 		assertThat(response.getParameters().get("field5")).isEqualTo("value5");
 
+		assertThat(response.getMetadata()).isEqualTo(
+				ServiceInstanceMetadata.builder().label("key","value").build());
+
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
 		assertThat(json).hasPath("$.service_id").isEqualTo("service-definition-id");
@@ -86,6 +95,8 @@ class GetServiceInstanceResponseTest {
 		assertThat(json).hasPath("$.parameters.field3").isEqualTo(true);
 		assertThat(json).hasPath("$.parameters.field4").isEqualTo("value4");
 		assertThat(json).hasPath("$.parameters.field5").isEqualTo("value5");
+		assertThat(json).hasPath("$.metadata.labels").isEqualTo(
+				Maps.newHashMap("key", "value"));
 	}
 
 	@Test
@@ -97,6 +108,13 @@ class GetServiceInstanceResponseTest {
 		assertThat(response.getPlanId()).isEqualTo("plan-id");
 		assertThat(response.getDashboardUrl()).isEqualTo("https://dashboard.local");
 		assertThat(response.getParameters()).containsOnly(entry("field1", "field-a"), entry("field2", "field-b"));
+
+		Map<String,Object> labels = new HashMap<>();
+		labels.put("key1","value1");
+		labels.put("key2","value2");
+
+		assertThat(response.getMetadata()).isEqualTo(ServiceInstanceMetadata.builder().labels(labels).build());
+
 	}
 
 	@Test
