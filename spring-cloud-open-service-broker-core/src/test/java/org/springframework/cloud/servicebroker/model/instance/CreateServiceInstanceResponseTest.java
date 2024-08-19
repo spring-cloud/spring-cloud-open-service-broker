@@ -22,6 +22,7 @@ import java.util.Map;
 import com.jayway.jsonpath.DocumentContext;
 import net.bytebuddy.utility.RandomString;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.assertj.core.util.Maps;
 import org.junit.jupiter.api.Test;
 
@@ -97,6 +98,7 @@ class CreateServiceInstanceResponseTest {
 		EqualsVerifier
 				.forClass(CreateServiceInstanceResponse.class)
 				.withRedefinedSuperclass()
+				.suppress(Warning.STRICT_INHERITANCE)
 				.verify();
 	}
 

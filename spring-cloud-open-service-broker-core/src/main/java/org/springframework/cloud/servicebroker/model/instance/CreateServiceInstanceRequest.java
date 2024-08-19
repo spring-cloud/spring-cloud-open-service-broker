@@ -324,7 +324,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final boolean equals(Object o) {
+	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
 		}
@@ -352,7 +352,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	}
 
 	@Override
-	public final int hashCode() {
+	public int hashCode() {
 		return Objects.hash(super.hashCode(), serviceDefinitionId, planId,
 				organizationGuid, spaceGuid, serviceInstanceId, serviceDefinition, plan, maintenanceInfo);
 	}

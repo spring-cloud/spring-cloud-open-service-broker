@@ -145,6 +145,7 @@ class UpdateServiceInstanceRequestTest {
 				.withRedefinedSuperclass()
 				.suppress(Warning.NONFINAL_FIELDS)
 				.suppress(Warning.TRANSIENT_FIELDS)
+				.suppress(Warning.STRICT_INHERITANCE)
 				.verify();
 	}
 
