@@ -56,6 +56,9 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 	/**
 	 * remains in the model for marshalling support but test harnesses should not use.
+	 * @deprecated in favor of {@link CloudFoundryContext#getOrganizationGuid()}.
+	 * @see <a
+	 * href=value=https://github.com/openservicebrokerapi/servicebroker/blob/v2.15/spec.md#body-3">https://github.com/openservicebrokerapi/servicebroker/blob/v2.15/spec.md#body-3</a>
 	 */
 	@Deprecated
 	@JsonProperty("organization_guid")
@@ -63,6 +66,9 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 	/**
 	 * remains in the model for marshalling support but test harnesses should not use.
+	 * @deprecated in favor of {@link CloudFoundryContext#getSpaceGuid()}.
+	 * @see <a
+	 * href=value=https://github.com/openservicebrokerapi/servicebroker/blob/v2.15/spec.md#body-3">https://github.com/openservicebrokerapi/servicebroker/blob/v2.15/spec.md#body-3</a>
 	 */
 	@Deprecated
 	@JsonProperty("space_guid")

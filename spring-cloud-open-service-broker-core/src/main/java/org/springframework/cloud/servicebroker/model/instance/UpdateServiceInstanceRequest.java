@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotEmpty;
 
+import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.catalog.MaintenanceInfo;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
@@ -287,6 +288,9 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 		/**
 		 * remains in the model for marshaling support.
+		 * @deprecated determined to be unnecessary as the value is immutable.
+		 * @see <a
+		 * href=https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object>https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object</a>
 		 */
 		@Deprecated
 		@JsonProperty("service_id")
@@ -297,12 +301,18 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 		/**
 		 * remains in the model for marshaling support.
+		 * @deprecated in favor of {@link CloudFoundryContext#getOrganizationGuid()}.
+		 * @see <a
+		 * href=https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object>https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object</a>
 		 */
 		@Deprecated
 		private final String organizationId;
 
 		/**
 		 * remains in the model for marshaling support.
+		 * @deprecated in favor of {@link CloudFoundryContext#getSpaceGuid()}.
+		 * @see <a
+		 * href=https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object>https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object</a>
 		 */
 		@Deprecated
 		private final String spaceId;
