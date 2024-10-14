@@ -1,4 +1,4 @@
-FROM harbor-repo.vmware.com/dockerhub-proxy-cache/library/ubuntu:jammy
+FROM spring-scosb-docker-virtual.usw1.packages.broadcom.com/ubuntu:jammy
 
 ARG CONCOURSE_JAVA_SCRIPTS_VERSION=0.0.4
 ARG CONCOURSE_RELEASE_SCRIPTS_VERSION=0.3.4
