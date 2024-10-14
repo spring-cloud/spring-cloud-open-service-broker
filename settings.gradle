@@ -18,7 +18,7 @@ pluginManagement {
 	resolutionStrategy {
 		eachPlugin {
 			if (requested.id.namespace?.startsWith('org.asciidoctor.jvm')) {
-				useVersion("4.0.1")
+				useVersion("4.0.3")
 			}
 		}
 	}
