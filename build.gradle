@@ -30,7 +30,7 @@ buildscript {
 		wiremockStandaloneVersion = "3.0.1"
 
 		// Static Analysis
-		blockHoundVersion = "1.0.9.RELEASE"
+		blockHoundVersion = "1.0.10.RELEASE"
 		junitPlatformLauncherVersion = "1.7.0"
 	}
 }
