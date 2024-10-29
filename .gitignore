@@ -15,3 +15,4 @@ out
 .rest-shell.log
 spring-shell.log
 .DS_Store
+.vscode
