@@ -47,7 +47,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -627,7 +626,8 @@ class ServiceInstanceBindingControllerIntegrationTests
 			.expectBody()
 			.jsonPath("$.state")
 			.isEqualTo(OperationState.IN_PROGRESS.toString())
-			.jsonPath("$.description", is("working on it"));
+			.jsonPath("$.description")
+			.isEqualTo("working on it");
 
 		then(this.serviceInstanceBindingService).should()
 			.getLastOperation(any(GetLastServiceBindingOperationRequest.class));
@@ -653,7 +653,8 @@ class ServiceInstanceBindingControllerIntegrationTests
 			.expectBody()
 			.jsonPath("$.state")
 			.isEqualTo(OperationState.SUCCEEDED.toString())
-			.jsonPath("$.description", is("all good"));
+			.jsonPath("$.description")
+			.isEqualTo("all good");
 
 		then(this.serviceInstanceBindingService).should()
 			.getLastOperation(any(GetLastServiceBindingOperationRequest.class));
@@ -685,7 +686,8 @@ class ServiceInstanceBindingControllerIntegrationTests
 			.expectBody()
 			.jsonPath("$.state")
 			.isEqualTo(OperationState.SUCCEEDED.toString())
-			.jsonPath("$.description", is("all good"));
+			.jsonPath("$.description")
+			.isEqualTo("all good");
 
 		then(this.serviceInstanceBindingService).should()
 			.getLastOperation(any(GetLastServiceBindingOperationRequest.class));
