@@ -24,6 +24,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Mono;
 
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
@@ -56,6 +57,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.StringContains.containsString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException.ASYNC_REQUIRED_ERROR;
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerMaintenanceInfoConflictException.MAINTENANCE_INFO_CONFLICT_ERROR;
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerMaintenanceInfoConflictException.MAINTENANCE_INFO_CONFLICT_MESSAGE;
@@ -421,7 +424,9 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 
 	@Test
 	void createServiceInstanceWithInvalidFieldsFails() throws Exception {
-		String body = this.createRequestBody.replace("service_id", "service-1");
+		given(this.catalogService.getServiceDefinition(eq("service-1"))).willReturn(Mono.empty());
+
+		String body = "{\"plan_id\":\"plan-one-id\",\"service_id\":\"service-1\"}";
 
 		this.client.put()
 			.uri(buildCreateUpdateUrl())
@@ -436,7 +441,8 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 			.expectBody()
 			.jsonPath("$.description")
 			.isNotEmpty()
-			.consumeWith((result) -> assertDescriptionContains(result, "serviceDefinitionId"));
+			.consumeWith(
+					(result) -> assertDescriptionContains(result, "Service definition does not exist: id=service-1"));
 	}
 
 	@Test
