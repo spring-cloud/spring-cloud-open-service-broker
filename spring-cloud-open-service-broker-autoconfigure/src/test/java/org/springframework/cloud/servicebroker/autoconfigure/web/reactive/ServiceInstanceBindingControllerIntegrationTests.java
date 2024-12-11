@@ -16,6 +16,10 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -382,8 +386,12 @@ class ServiceInstanceBindingControllerIntegrationTests
 			.expectBody()
 			.jsonPath("$.description")
 			.isNotEmpty()
-			.consumeWith((result) -> assertDescriptionContains(result, "serviceDefinitionId"))
-			.consumeWith((result) -> assertDescriptionContains(result, "planId"));
+			.consumeWith((result) -> {
+				String responseBody = new String(Objects.requireNonNull(result.getResponseBody()),
+						StandardCharsets.UTF_8);
+				String description = JsonPath.read(responseBody, "$.description");
+				assertThat(description).contains("Missing required fields:", "planId", "serviceDefinitionId");
+			});
 	}
 
 	@Test

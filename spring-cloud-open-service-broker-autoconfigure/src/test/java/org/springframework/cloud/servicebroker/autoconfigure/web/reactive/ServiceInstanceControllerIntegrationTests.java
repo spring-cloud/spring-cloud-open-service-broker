@@ -466,7 +466,7 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 				String responseBody = new String(Objects.requireNonNull(result.getResponseBody()),
 						StandardCharsets.UTF_8);
 				String description = JsonPath.read(responseBody, "$.description");
-				assertThat(description).contains("planId", "serviceDefinitionId");
+				assertThat(description).contains("Missing required fields:", "planId", "serviceDefinitionId");
 			});
 	}
 
