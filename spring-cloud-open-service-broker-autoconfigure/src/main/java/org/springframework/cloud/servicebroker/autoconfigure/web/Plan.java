@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -55,12 +56,14 @@ public class Plan {
 	 * The metadata for this plan.
 	 */
 	@NestedConfigurationProperty
+	@Valid
 	private PlanMetadata metadata;
 
 	/**
 	 * The schemas for this plan.
 	 */
 	@NestedConfigurationProperty
+	@Valid
 	private Schemas schemas;
 
 	/**

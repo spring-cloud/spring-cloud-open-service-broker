@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -91,6 +92,7 @@ public class ServiceDefinition {
 	 * A map of metadata to further describe a service offering.
 	 */
 	@NestedConfigurationProperty
+	@Valid
 	private ServiceMetadata metadata;
 
 	/**
@@ -106,6 +108,7 @@ public class ServiceDefinition {
 	 * Data necessary to activate the Dashboard SSO feature for this service.
 	 */
 	@NestedConfigurationProperty
+	@Valid
 	private DashboardClient dashboardClient;
 
 	/**
@@ -113,6 +116,7 @@ public class ServiceDefinition {
 	 */
 	@NestedConfigurationProperty
 	@NotEmpty
+	@Valid
 	private final List<Plan> plans = new ArrayList<>();
 
 	public String getId() {

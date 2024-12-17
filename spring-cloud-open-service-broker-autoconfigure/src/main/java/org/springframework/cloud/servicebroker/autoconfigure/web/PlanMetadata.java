@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import jakarta.validation.Valid;
+
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.CollectionUtils;
 
@@ -46,6 +48,7 @@ public class PlanMetadata {
 	 * the user (such as a monthly + usage costs at once).
 	 */
 	@NestedConfigurationProperty
+	@Valid
 	private final List<Cost> costs = new ArrayList<>();
 
 	/**

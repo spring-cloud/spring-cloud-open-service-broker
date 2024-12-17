@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 
 /**
@@ -37,6 +38,7 @@ public class Catalog {
 	 * A list of service offerings provided by the service broker.
 	 */
 	@NotEmpty
+	@Valid
 	private final List<ServiceDefinition> services = new ArrayList<>();
 
 	public List<ServiceDefinition> getServices() {
