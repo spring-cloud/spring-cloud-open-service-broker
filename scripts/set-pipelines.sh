@@ -21,7 +21,7 @@ set_pipeline() {
 }
 
 main() {
-	local -r branches=("4.3.x" "4.2.x" "4.1.x" "4.0.x" "3.6.x" "3.5.x")
+	local -r branches=("4.4.x" "4.3.x" "4.2.x" "4.1.x" "4.0.x" "3.6.x" "3.5.x")
 
 	pushd "$(dirname "$0")/../ci" >/dev/null
 
