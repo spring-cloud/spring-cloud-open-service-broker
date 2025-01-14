@@ -20,7 +20,7 @@ buildscript {
 		springBootVersion = "3.3.7"
 
 		// External Dependencies
-		beanUtilsVersion = "1.9.4"
+		beanUtilsVersion = "1.10.0"
 
 		// Test Dependencies
 		springCloudContractVersion = "4.1.5"
