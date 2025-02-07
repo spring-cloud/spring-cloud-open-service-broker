@@ -58,14 +58,9 @@ publishing {
 				}
 				developers {
 					developer {
-						id = "sfrederick"
-						name = "Scott Frederick"
-						email = "sfrederick@vmware.com"
-					}
-					developer {
 						id = "royclarkson"
 						name = "Roy Clarkson"
-						email = "rclarkson@vmware.com"
+						email = "roy.clarkson@broadcom.com"
 					}
 				}
 			}
