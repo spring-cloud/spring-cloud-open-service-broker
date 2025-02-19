@@ -21,7 +21,7 @@ buildscript {
 		springFrameworkVersion = "5.3.25"
 
 		// External Dependencies
-		beanUtilsVersion = "1.10.0"
+		beanUtilsVersion = "1.10.1"
 
 		// Test Dependencies
 		springCloudContractVersion = "3.1.10"
