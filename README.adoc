@@ -11,6 +11,7 @@ The following table describes the version compatibility matrix for the various r
 [%header,cols=5*]
 |===
 |https://spring.io/projects/spring-cloud-open-service-broker[Spring Cloud Open Service Broker]|https://github.com/openservicebrokerapi/servicebroker[Open Service Broker API] |https://spring.io/projects/spring-boot[Spring Boot] |https://projects.spring.io/spring-framework/[Spring Framework]|JDK
+|4.5.x |2.16 |3.5.x |6.2.x|17
 |4.4.x |2.16 |3.4.x |6.2.x|17
 |4.3.x |2.16 |3.3.x |6.1.x|17
 |4.2.x |2.16 |3.2.x |6.1.x|17
