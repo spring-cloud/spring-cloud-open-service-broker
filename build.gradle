@@ -23,7 +23,7 @@ buildscript {
 		beanUtilsVersion = "1.10.1"
 
 		// Test Dependencies
-		springCloudContractVersion = "4.3.0-M1"
+		springCloudContractVersion = "4.3.0-M2"
 		javaHamcrestVersion = "2.0.0.0"
 		equalsVerifierVersion = "3.19.1"
 		findbugsVersion = "3.0.1u2"
