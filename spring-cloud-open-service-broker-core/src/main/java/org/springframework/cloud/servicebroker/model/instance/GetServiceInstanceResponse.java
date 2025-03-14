@@ -49,11 +49,13 @@ public class GetServiceInstanceResponse {
 
 	private final Map<String, Object> parameters;
 
+	private final ServiceInstanceMetadata metadata;
+
 	/**
 	 * Construct a new {@link GetServiceInstanceResponse}
 	 */
 	public GetServiceInstanceResponse() {
-		this(null, null, null, new Hashtable<>());
+		this(null, null, null, new Hashtable<>(), null);
 	}
 
 	/**
@@ -63,13 +65,15 @@ public class GetServiceInstanceResponse {
 	 * @param planId the plan ID
 	 * @param dashboardUrl the dashboard URL
 	 * @param parameters the parameters
+	 * @param metadata containing metadata for the service instance
 	 */
 	public GetServiceInstanceResponse(String serviceDefinitionId, String planId, String dashboardUrl,
-			Map<String, Object> parameters) {
+			Map<String, Object> parameters, ServiceInstanceMetadata metadata) {
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
 		this.dashboardUrl = dashboardUrl;
 		this.parameters = parameters;
+		this.metadata = metadata;
 	}
 
 	/**
@@ -111,6 +115,15 @@ public class GetServiceInstanceResponse {
 	}
 
 	/**
+	 * Get object containing metadata for the service instance
+	 *
+	 * @return the service instance metadata
+	 */
+	public ServiceInstanceMetadata getMetadata() {
+		return this.metadata;
+	}
+
+	/**
 	 * Create a builder that provides a fluent API for constructing a {@literal GetServiceInstanceResponse}.
 	 *
 	 * @return the builder
@@ -132,7 +145,8 @@ public class GetServiceInstanceResponse {
 				Objects.equals(serviceDefinitionId, that.serviceDefinitionId) &&
 				Objects.equals(planId, that.planId) &&
 				Objects.equals(dashboardUrl, that.dashboardUrl) &&
-				Objects.equals(parameters, that.parameters);
+				Objects.equals(parameters, that.parameters) &&
+				Objects.equals(metadata, that.metadata);
 	}
 
 	/**
@@ -147,7 +161,7 @@ public class GetServiceInstanceResponse {
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(serviceDefinitionId, planId, dashboardUrl, parameters);
+		return Objects.hash(serviceDefinitionId, planId, dashboardUrl, parameters, metadata);
 	}
 
 	@Override
@@ -156,7 +170,8 @@ public class GetServiceInstanceResponse {
 				"serviceDefinitionId='" + serviceDefinitionId + '\'' +
 				", planId='" + planId + '\'' +
 				", dashboardUrl='" + dashboardUrl + '\'' +
-				", parameters=" + parameters +
+				", parameters=" + parameters + '\'' +
+				", metadata=" + metadata +
 				'}';
 	}
 
@@ -172,6 +187,8 @@ public class GetServiceInstanceResponse {
 		private String dashboardUrl;
 
 		private final Map<String, Object> parameters = new HashMap<>();
+
+		private ServiceInstanceMetadata metadata;
 
 		private GetServiceInstanceResponseBuilder() {
 		}
@@ -250,12 +267,27 @@ public class GetServiceInstanceResponse {
 		}
 
 		/**
+		 * Object containing metadata for the service instance
+		 * Can be {@literal null} to indicate that metadata was not provided for the service instance.
+		 *
+		 * <p>
+		 * This value will set the {@literal metadata} field in the body of the response to the platform.
+		 *
+		 * @param metadata the service instance metadata
+		 * @return the builder
+		 */
+		public GetServiceInstanceResponseBuilder metadata(ServiceInstanceMetadata metadata) {
+			this.metadata = metadata;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link GetServiceInstanceResponse} from the provided values.
 		 *
 		 * @return the newly constructed {@literal GetServiceInstanceResponse}
 		 */
 		public GetServiceInstanceResponse build() {
-			return new GetServiceInstanceResponse(serviceDefinitionId, planId, dashboardUrl, parameters);
+			return new GetServiceInstanceResponse(serviceDefinitionId, planId, dashboardUrl, parameters, metadata);
 		}
 
 	}
