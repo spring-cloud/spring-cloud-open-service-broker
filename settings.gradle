@@ -32,7 +32,7 @@ pluginManagement {
 	repositories {
 		gradlePluginPortal()
 		mavenCentral()
-		if (version.endsWith('-SNAPSHOT')) {
+		if (version =~ /((-M|-RC)[0-9]+|-SNAPSHOT)$/) {
 			maven { url "https://repo.spring.io/plugins-snapshot" }
 		}
 	}
