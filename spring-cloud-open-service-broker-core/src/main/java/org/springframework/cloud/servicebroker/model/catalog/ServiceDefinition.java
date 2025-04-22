@@ -251,7 +251,7 @@ public class ServiceDefinition {
 	}
 
 	@Override
-	public final boolean equals(Object o) {
+	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
 		}
@@ -259,7 +259,8 @@ public class ServiceDefinition {
 			return false;
 		}
 		ServiceDefinition that = (ServiceDefinition) o;
-		return bindable == that.bindable &&
+		return that.canEqual(this) &&
+				bindable == that.bindable &&
 				Objects.equals(planUpdateable, that.planUpdateable) &&
 				Objects.equals(instancesRetrievable, that.instancesRetrievable) &&
 				Objects.equals(bindingsRetrievable, that.bindingsRetrievable) &&
@@ -274,8 +275,18 @@ public class ServiceDefinition {
 				Objects.equals(dashboardClient, that.dashboardClient);
 	}
 
+	/**
+	 * Is another object type compatible with this object
+	 *
+	 * @param other the other object
+	 * @return true of compatible
+	 */
+	public boolean canEqual(Object other) {
+		return other instanceof ServiceDefinition;
+	}
+
 	@Override
-	public final int hashCode() {
+	public int hashCode() {
 		return Objects.hash(id, name, description, bindable, planUpdateable,
 				instancesRetrievable, bindingsRetrievable, allowContextUpdates,
 				plans, tags, metadata, requires, dashboardClient);

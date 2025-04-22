@@ -18,6 +18,7 @@ package org.springframework.cloud.servicebroker.model.instance;
 
 import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
@@ -136,6 +137,7 @@ class GetLastServiceOperationResponseTest {
 	void equalsAndHashCode() {
 		EqualsVerifier
 				.forClass(GetLastServiceOperationResponse.class)
+				.suppress(Warning.STRICT_INHERITANCE)
 				.verify();
 	}
 

@@ -146,8 +146,18 @@ public class GetLastServiceOperationResponse {
 		return new GetLastServiceOperationResponseBuilder();
 	}
 
+	/**
+	 * Is another object type compatible with this object
+	 *
+	 * @param other the other object
+	 * @return true of compatible
+	 */
+	public boolean canEqual(Object other) {
+		return other instanceof GetLastServiceOperationResponse;
+	}
+
 	@Override
-	public final boolean equals(Object o) {
+	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
 		}
@@ -155,7 +165,8 @@ public class GetLastServiceOperationResponse {
 			return false;
 		}
 		GetLastServiceOperationResponse that = (GetLastServiceOperationResponse) o;
-		return state == that.state &&
+		return that.canEqual(this) &&
+				state == that.state &&
 				Objects.equals(description, that.description) &&
 				Objects.equals(instanceUsable, that.instanceUsable) &&
 				Objects.equals(updateRepeatable, that.updateRepeatable) &&
@@ -163,7 +174,7 @@ public class GetLastServiceOperationResponse {
 	}
 
 	@Override
-	public final int hashCode() {
+	public int hashCode() {
 		return Objects.hash(state, description, instanceUsable, updateRepeatable, deleteOperation);
 	}
 

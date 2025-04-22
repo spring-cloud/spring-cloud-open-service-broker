@@ -104,7 +104,7 @@ public class GetLastServiceBindingOperationResponse {
 	}
 
 	@Override
-	public final boolean equals(Object o) {
+	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
 		}
@@ -112,13 +112,24 @@ public class GetLastServiceBindingOperationResponse {
 			return false;
 		}
 		GetLastServiceBindingOperationResponse that = (GetLastServiceBindingOperationResponse) o;
-		return deleteOperation == that.deleteOperation &&
+		return that.canEqual(this) &&
+				deleteOperation == that.deleteOperation &&
 				state == that.state &&
 				Objects.equals(description, that.description);
 	}
 
+	/**
+	 * Is another object type compatible with this object
+	 *
+	 * @param other the other object
+	 * @return true of compatible
+	 */
+	public boolean canEqual(Object other) {
+		return other instanceof GetLastServiceBindingOperationResponse;
+	}
+
 	@Override
-	public final int hashCode() {
+	public int hashCode() {
 		return Objects.hash(state, description, deleteOperation);
 	}
 

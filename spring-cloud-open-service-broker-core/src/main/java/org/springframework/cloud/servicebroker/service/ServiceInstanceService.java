@@ -61,7 +61,7 @@ public interface ServiceInstanceService {
 	 * @throws ServiceBrokerCreateOperationInProgressException if a an operation is in progress for the service
 	 * 		instance
 	 */
-	Mono<CreateServiceInstanceResponse> createServiceInstance(CreateServiceInstanceRequest request);
+	<T extends CreateServiceInstanceResponse> Mono<T> createServiceInstance(CreateServiceInstanceRequest request);
 
 	/**
 	 * Get the details of a service instance.
@@ -74,7 +74,7 @@ public interface ServiceInstanceService {
 	 * @throws ServiceBrokerConcurrencyException if a service instance is being updated and therefore cannot be
 	 * 		fetched
 	 */
-	default Mono<GetServiceInstanceResponse> getServiceInstance(GetServiceInstanceRequest request) {
+	default <T extends GetServiceInstanceResponse> Mono<T> getServiceInstance(GetServiceInstanceRequest request) {
 		return Mono.error(new UnsupportedOperationException("This service broker does not support retrieving service " +
 				"instances. The service broker should set 'instances_retrievable:false' in the service catalog, or " +
 				"provide an implementation of the fetch instance API."));
@@ -88,7 +88,8 @@ public interface ServiceInstanceService {
 	 * @throws ServiceInstanceDoesNotExistException if a service instance with the given ID is not known to the
 	 * 		broker
 	 */
-	default Mono<GetLastServiceOperationResponse> getLastOperation(GetLastServiceOperationRequest request) {
+	default <T extends GetLastServiceOperationResponse> Mono<T> getLastOperation(
+			GetLastServiceOperationRequest request) {
 		return Mono.error(new UnsupportedOperationException("This service broker does not support getting the status " +
 				"of an asynchronous operation. If the service broker returns '202 Accepted' in response to a " +
 				"provision, update, or deprovision request, it must also provide an implementation of the get last " +
@@ -105,7 +106,7 @@ public interface ServiceInstanceService {
 	 * @throws ServiceBrokerAsyncRequiredException if the broker requires asynchronous processing of the request
 	 * @throws ServiceBrokerDeleteOperationInProgressException if an operation is in progress for the service instance
 	 */
-	Mono<DeleteServiceInstanceResponse> deleteServiceInstance(DeleteServiceInstanceRequest request);
+	<T extends DeleteServiceInstanceResponse> Mono<T> deleteServiceInstance(DeleteServiceInstanceRequest request);
 
 	/**
 	 * Update a service instance.
@@ -120,7 +121,8 @@ public interface ServiceInstanceService {
 	 * @throws ServiceBrokerInvalidParametersException if any parameters passed in the request are invalid
 	 * @throws ServiceBrokerUpdateOperationInProgressException if an operation is in progress for the service instance
 	 */
-	default Mono<UpdateServiceInstanceResponse> updateServiceInstance(UpdateServiceInstanceRequest request) {
+	default <T extends UpdateServiceInstanceResponse> Mono<T> updateServiceInstance(
+			UpdateServiceInstanceRequest request) {
 		return Mono.error(new UnsupportedOperationException("This service broker does not support updating service " +
 				"instances. The service broker should set 'plan_updateable:false' in the service catalog, or " +
 				"provide an implementation of the update instance API."));

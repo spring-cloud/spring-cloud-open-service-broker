@@ -69,7 +69,7 @@ public class Catalog {
 	}
 
 	@Override
-	public final boolean equals(Object o) {
+	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
 		}
@@ -77,11 +77,21 @@ public class Catalog {
 			return false;
 		}
 		Catalog catalog = (Catalog) o;
-		return Objects.equals(serviceDefinitions, catalog.serviceDefinitions);
+		return catalog.canEqual(this) && Objects.equals(serviceDefinitions, catalog.serviceDefinitions);
+	}
+
+	/**
+	 * Is another object type compatible with this object
+	 *
+	 * @param other the other object
+	 * @return true of compatible
+	 */
+	public boolean canEqual(Object other) {
+		return other instanceof Catalog;
 	}
 
 	@Override
-	public final int hashCode() {
+	public int hashCode() {
 		return Objects.hash(serviceDefinitions);
 	}
 
