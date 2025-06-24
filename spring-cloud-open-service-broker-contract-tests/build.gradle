@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.cloud.contract.verifier.config.TestFramework
 import org.springframework.cloud.contract.verifier.config.TestMode
 
 plugins {
+	id 'org.springframework.boot' apply false
 	id 'groovy'
 	id 'org.springframework.cloud.contract' version "${springCloudContractVersion}"
 }
@@ -49,7 +51,7 @@ dependencies {
 	}
 
 	implementation platform("org.springframework.cloud:spring-cloud-contract-dependencies:${springCloudContractVersion}")
-	implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+	implementation platform(SpringBootPlugin.BOM_COORDINATES)
 	testImplementation project(':spring-cloud-starter-open-service-broker')
 	testImplementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
