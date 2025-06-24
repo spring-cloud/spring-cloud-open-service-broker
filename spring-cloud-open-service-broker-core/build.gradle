@@ -14,11 +14,17 @@
  * limitations under the License.
  */
 
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+	id 'org.springframework.boot' apply false
+}
+
 description = "Spring Cloud Open Service Broker Core"
 
 dependencies {
 	// BOM imports - The versions used in these files will override any other versions found in the graph
-	implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+	implementation platform(SpringBootPlugin.BOM_COORDINATES)
 
 	compileOnly 'jakarta.servlet:jakarta.servlet-api'
 	api 'org.springframework:spring-context'
