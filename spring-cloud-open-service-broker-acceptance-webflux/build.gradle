@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
 	id 'org.springframework.boot'
 }
@@ -21,7 +23,7 @@ plugins {
 description = "Spring Cloud Open Service Broker Acceptance WebFlux"
 
 dependencies {
-	implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+	implementation platform(SpringBootPlugin.BOM_COORDINATES)
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation project(':spring-cloud-starter-open-service-broker')
