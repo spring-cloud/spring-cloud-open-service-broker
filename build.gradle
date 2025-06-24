@@ -16,9 +16,6 @@
 
 buildscript {
 	ext {
-		// Spring Dependencies
-		springBootVersion = "3.4.6"
-
 		// External Dependencies
 		beanUtilsVersion = "1.11.0"
 
