@@ -15,19 +15,13 @@
  */
 
 pluginManagement {
-	resolutionStrategy {
-		eachPlugin {
-			if (requested.id.namespace?.startsWith('org.asciidoctor.jvm')) {
-				useVersion("4.0.3")
-			}
-		}
-	}
 	plugins {
-		id "org.springframework.boot" version "3.5.3"
-		id "io.spring.nohttp" version "0.0.11"
-		id "io.spring.javaformat" version "0.0.46"
-		id 'org.asciidoctor.jvm.pdf'
-		id 'org.asciidoctor.jvm.convert'
+		id "org.springframework.boot" version springBootVersion
+		id 'org.springframework.cloud.contract' version springCloudContractVersion
+		id "io.spring.nohttp" version nohttpVersion
+		id "io.spring.javaformat" version springJavaFormatVersion
+		id 'org.asciidoctor.jvm.pdf' version asciidoctorVersion
+		id 'org.asciidoctor.jvm.convert' version asciidoctorVersion
 	}
 	repositories {
 		gradlePluginPortal()
