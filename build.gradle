@@ -14,6 +14,24 @@
  * limitations under the License.
  */
 
+buildscript {
+	ext {
+		// External Dependencies
+		beanUtilsVersion = "1.11.0"
+
+		// Test Dependencies
+		springCloudContractVersion = "4.3.0"
+		javaHamcrestVersion = "2.0.0.0"
+		equalsVerifierVersion = "4.0"
+		findbugsVersion = "3.0.1u2"
+		wiremockStandaloneVersion = "3.0.1"
+
+		// Static Analysis
+		blockHoundVersion = "1.0.13.RELEASE"
+		junitPlatformLauncherVersion = "1.7.0"
+	}
+}
+
 plugins {
 	id 'checkstyle'
 	id 'io.spring.nohttp'
@@ -78,7 +96,7 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 	}
 
 	dependencies {
-		checkstyle("io.spring.javaformat:spring-javaformat-checkstyle:${springJavaFormatVersion}")
+		checkstyle("io.spring.javaformat:spring-javaformat-checkstyle:0.0.46")
 	}
 
 	test {
