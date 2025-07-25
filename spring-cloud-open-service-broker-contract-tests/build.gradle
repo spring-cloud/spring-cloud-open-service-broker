@@ -21,7 +21,7 @@ import org.springframework.cloud.contract.verifier.config.TestMode
 plugins {
 	id 'org.springframework.boot' apply false
 	id 'groovy'
-	id 'org.springframework.cloud.contract'
+	id 'org.springframework.cloud.contract' version "${springCloudContractVersion}"
 }
 
 description = "Spring Cloud Open Service Broker Contract Tests"
