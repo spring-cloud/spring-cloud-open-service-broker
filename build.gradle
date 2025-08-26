@@ -22,7 +22,7 @@ buildscript {
 		// Test Dependencies
 		springCloudContractVersion = "4.3.0"
 		javaHamcrestVersion = "2.0.0.0"
-		equalsVerifierVersion = "4.0.7"
+		equalsVerifierVersion = "4.0.9"
 		findbugsVersion = "3.0.1u2"
 		wiremockStandaloneVersion = "3.0.1"
 
