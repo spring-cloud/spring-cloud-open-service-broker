@@ -40,15 +40,19 @@ dependencies {
 	asciidoctorExtensions "io.spring.asciidoctor.backends:spring-asciidoctor-backends:0.0.7"
 }
 
+test {
+	failOnNoDiscoveredTests = false
+}
+
 javadoc {
 	enabled = false
 }
 
-task prepareAsciidocBuild(type: Sync) {
+tasks.register('prepareAsciidocBuild', Sync) {
 	// Copy doc sources
 	from "src/docs/asciidoc"
 	// to a temporary build directory
-	into "$buildDir/asciidoc"
+	into layout.buildDirectory.dir("asciidoc")
 }
 
 asciidoctorPdf {
@@ -56,17 +60,17 @@ asciidoctorPdf {
 	baseDirFollowsSourceFile()
 
 	asciidoctorj {
-		sourceDir "$buildDir/asciidoc"
+		sourceDir layout.buildDirectory.dir("asciidoc").get().asFile
 		inputs.dir(sourceDir)
 		sources {
-			include 'index.adoc'
+			include "index.adoc"
 		}
-		options doctype: 'book'
-		attributes 'icons': 'font',
-				'sectanchors': '',
-				'sectnums': '',
-				'toc': '',
-				'source-highlighter' : 'coderay',
+		options doctype: "book"
+		attributes "icons": "font",
+				"sectanchors": "",
+				"sectnums": "",
+				"toc": "",
+				"source-highlighter": "coderay",
 				revnumber: project.version,
 				'project-version': project.version
 	}
@@ -79,33 +83,33 @@ asciidoctor {
 		backends "spring-html"
 	}
 	baseDirFollowsSourceFile()
-	sourceDir = file("$buildDir/asciidoc")
+	sourceDir = layout.buildDirectory.dir("asciidoc").get().asFile
 	sources {
-		include '*.adoc'
+		include "*.adoc"
 	}
 	resources {
 		from(sourceDir) {
-			include 'images/*', 'css/**', 'js/**'
+			include "images/*", "css/**", "js/**"
 		}
 	}
 	logDocuments = true
-	options doctype: 'book', eruby: 'erubis'
-	attributes 'revnumber': project.version,
-			'spring-version': project.version,
-			'branch-or-tag': project.version.endsWith('SNAPSHOT') ? 'main' : "v${project.version}",
-			'icons': 'font',
-			'idprefix': '',
-			'idseparator': '-',
-			docinfo: 'shared',
-			sectanchors: '',
-			sectnums: '',
+	options doctype: "book", eruby: "erubis"
+	attributes "revnumber": project.version,
+			"spring-version": project.version,
+			"branch-or-tag": project.version.endsWith("SNAPSHOT") ? "main" : "v${project.version}",
+			"icons": "font",
+			"idprefix": "",
+			"idseparator": "-",
+			docinfo: "shared",
+			sectanchors: "",
+			sectnums: "",
 			stylesdir: "css/",
-			stylesheet: 'spring.css',
-			'linkcss': true,
-			'nofooter': true,
-			'allow-uri-read': '',
-			'source-highlighter': 'highlight.js',
-			'highlightjsdir': 'js/highlight',
-			'highlightjs-theme': 'github',
-			'project-version': project.version
+			stylesheet: "spring.css",
+			"linkcss": true,
+			"nofooter": true,
+			"allow-uri-read": "",
+			"source-highlighter": "highlight.js",
+			"highlightjsdir": "js/highlight",
+			"highlightjs-theme": "github",
+			"project-version": project.version
 }

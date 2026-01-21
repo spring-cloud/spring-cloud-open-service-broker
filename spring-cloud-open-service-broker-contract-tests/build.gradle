@@ -27,8 +27,8 @@ plugins {
 description = "Spring Cloud Open Service Broker Contract Tests"
 
 contracts {
-	testFramework(TestFramework.JUNIT5)
-	testMode(TestMode.EXPLICIT)
+	testFramework = TestFramework.JUNIT5
+	testMode = TestMode.EXPLICIT
 	packageWithBaseClasses = "org.springframework.cloud.servicebroker.contract"
 }
 
