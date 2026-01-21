@@ -31,4 +31,6 @@ dependencies {
 }
 
 // don't publish the jar for the acceptance tests project
-configurations.archives.artifacts.clear()
+tasks.named('jar') {
+	enabled = false
+}

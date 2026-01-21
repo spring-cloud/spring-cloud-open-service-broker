@@ -33,9 +33,9 @@ buildscript {
 }
 
 plugins {
-	id 'checkstyle'
-	id 'io.spring.nohttp'
-	id 'io.spring.javaformat'
+	id "checkstyle"
+	id "io.spring.nohttp"
+	id "io.spring.javaformat"
 }
 
 ext {
@@ -61,7 +61,7 @@ configure(allprojects) {
 	apply plugin: 'idea'
 
 	configurations {
-		all {
+		configureEach {
 			exclude group: 'commons-logging', module: 'commons-logging'
 		}
 	}
@@ -110,7 +110,7 @@ configure(allprojects - [project(':spring-cloud-open-service-broker-docs')]) {
 
 // define `dependencyReport` task to aggregate each subproject dependencies
 subprojects {
-	task dependencyReport(type: DependencyReportTask)
+	tasks.register('dependencyReport', DependencyReportTask)
 }
 
 // configure java compilation for all java source
@@ -141,7 +141,7 @@ configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) 
 	[compileJava, compileTestJava]*.options*.compilerArgs = compilerArgs
 
 	// see https://github.com/reactor/BlockHound/issues/33
-	tasks.withType(Test).all {
+	tasks.withType(Test).configureEach {
 		if (JavaVersion.current() >= JavaVersion.VERSION_13) {
 			jvmArgs += [
 					"-XX:+AllowRedefinitionToAddDeleteMethods"
@@ -179,24 +179,26 @@ configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) 
 		}
 	}
 
-	task testsJar(type: Jar) {
+	tasks.register('testsJar', Jar) {
 		archiveClassifier.set("tests")
 		from sourceSets.test.output
 	}
 
-	artifacts {
-		archives testsJar
+	tasks.named('assemble') {
+		dependsOn(testsJar)
 	}
 }
 
 // consolidate and package the javadoc, apidoc and sources
 configure(rootProject) {
-	task sourcesJar(type: Jar, dependsOn: classes) {
+	tasks.register('sourcesJar', Jar) {
+		dependsOn classes
 		archiveClassifier.set("sources")
 		from sourceSets.main.allSource
 	}
 
-	task javadocJar(type: Jar, dependsOn: javadoc) {
+	tasks.register('javadocJar', Jar) {
+		dependsOn javadoc
 		archiveClassifier.set("javadoc")
 		from javadoc.destinationDir
 	}
@@ -207,7 +209,7 @@ configure(rootProject) {
 										project(':spring-cloud-open-service-broker-contract-tests'),
 										project(':spring-cloud-open-service-broker-docs')]
 
-	task apidocs(type: Javadoc) {
+	tasks.register('apidocs', Javadoc) {
 		group = "Documentation"
 		description = "Generates aggregated Javadoc API documentation."
 		title = "${rootProject.description} ${version} API"
@@ -226,10 +228,11 @@ configure(rootProject) {
 		})
 
 		maxMemory = "1024m"
-		destinationDir = new File(buildDir, "apidocs")
+		destinationDir = layout.buildDirectory.dir("apidocs").get().asFile
 	}
 
-	task docsZip(type: Zip, dependsOn: [':spring-cloud-open-service-broker-docs:asciidoctor']) {
+	tasks.register('docsZip', Zip) {
+		dependsOn(':spring-cloud-open-service-broker-docs:asciidoctor')
 		group = "Distribution"
 		archiveClassifier.set("docs")
 		description = "Builds -${archiveClassifier} archive containing api and reference " +
@@ -238,9 +241,9 @@ configure(rootProject) {
 		from(apidocs) {
 			into "apidocs"
 		}
-		from(project.tasks.findByPath(':spring-cloud-open-service-broker-docs:asciidoctor')) {
-			into 'reference'
-		}
+		from {
+			project(':spring-cloud-open-service-broker-docs').tasks.findByName('asciidoctor')
+		} into("reference")
 	}
 
 	publishing {
@@ -253,13 +256,14 @@ configure(rootProject) {
 		}
 	}
 
-	task dist(dependsOn: assemble) {
+	tasks.register('dist') {
+		dependsOn assemble
 		group = "Distribution"
 		description = "Builds -dist and -docs distribution archives."
 	}
 }
 
 wrapper {
-	gradleVersion = "8.14.3"
+	gradleVersion = "9.3.1"
 	distributionType = Wrapper.DistributionType.ALL
 }

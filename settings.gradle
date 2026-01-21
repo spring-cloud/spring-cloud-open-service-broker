@@ -15,25 +15,18 @@
  */
 
 pluginManagement {
-	resolutionStrategy {
-		eachPlugin {
-			if (requested.id.namespace?.startsWith('org.asciidoctor.jvm')) {
-				useVersion("4.0.3")
-			}
-		}
-	}
 	plugins {
 		id "org.springframework.boot" version "3.5.10"
 		id "io.spring.nohttp" version "0.0.11"
 		id "io.spring.javaformat" version "0.0.46"
-		id 'org.asciidoctor.jvm.pdf'
-		id 'org.asciidoctor.jvm.convert'
+		id "org.asciidoctor.jvm.pdf" version "4.0.5"
+		id "org.asciidoctor.jvm.convert" version "4.0.5"
 	}
 	repositories {
 		gradlePluginPortal()
 		mavenCentral()
 		if (version =~ /((-M|-RC)[0-9]+|-SNAPSHOT)$/) {
-			maven { url "https://repo.spring.io/plugins-snapshot" }
+			maven { url = "https://repo.spring.io/plugins-snapshot" }
 		}
 	}
 }
@@ -44,12 +37,12 @@ dependencyResolutionManagement {
 	}
 	if (version =~ /((-M|-RC)[0-9]+|-SNAPSHOT)$/) {
 		repositories {
-			maven { url 'https://repo.spring.io/milestone' }
+			maven { url = "https://repo.spring.io/milestone" }
 		}
 	}
 	if (version.endsWith('-SNAPSHOT')) {
 		repositories {
-			maven { url 'https://repo.spring.io/snapshot' }
+			maven { url = "https://repo.spring.io/snapshot" }
 		}
 	}
 }
