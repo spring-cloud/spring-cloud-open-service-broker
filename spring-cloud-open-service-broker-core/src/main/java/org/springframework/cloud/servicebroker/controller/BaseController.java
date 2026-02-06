@@ -16,14 +16,14 @@
 
 package org.springframework.cloud.servicebroker.controller;
 
-import java.io.IOException;
 import java.util.Base64;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.json.JsonMapper;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerInvalidOriginatingIdentityException;
 import org.springframework.cloud.servicebroker.exception.ServiceDefinitionDoesNotExistException;
@@ -39,7 +39,6 @@ import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 /**
  * Base functionality shared by controllers.
@@ -196,15 +195,15 @@ public class BaseController {
 		try {
 			return readJsonFromString(encodedProperties);
 		}
-		catch (IOException ex) {
+		catch (JacksonException ex) {
 			throw new ServiceBrokerInvalidOriginatingIdentityException("Error parsing JSON properties from "
 					+ ServiceBrokerRequest.ORIGINATING_IDENTITY_HEADER + " header in request", ex);
 		}
 	}
 
-	private Map<String, Object> readJsonFromString(String value) throws IOException {
-		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
-		return objectMapper.readValue(value, new TypeReference<Map<String, Object>>() {
+	private Map<String, Object> readJsonFromString(String value) throws JacksonException {
+		JsonMapper mapper = JsonMapper.builderWithJackson2Defaults().build();
+		return mapper.readValue(value, new TypeReference<Map<String, Object>>() {
 		});
 	}
 

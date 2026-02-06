@@ -43,7 +43,7 @@ import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceB
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceRouteBindingResponse;
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -77,7 +77,7 @@ class ServiceInstanceBindingControllerIntegrationTests
 	void setUp() {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
 			.setControllerAdvice(ServiceBrokerWebMvcExceptionHandler.class)
-			.setMessageConverters(new MappingJackson2HttpMessageConverter())
+			.setMessageConverters(new JacksonJsonHttpMessageConverter())
 			.build();
 	}
 
@@ -288,7 +288,7 @@ class ServiceInstanceBindingControllerIntegrationTests
 			.andReturn();
 
 		this.mockMvc.perform(asyncDispatch(mvcResult))
-			.andExpect(status().isUnprocessableEntity())
+			.andExpect(status().isUnprocessableContent())
 			.andExpect(jsonPath("$.description", containsString(SERVICE_INSTANCE_ID)));
 	}
 
@@ -549,7 +549,7 @@ class ServiceInstanceBindingControllerIntegrationTests
 			.andReturn();
 
 		this.mockMvc.perform(asyncDispatch(mvcResult))
-			.andExpect(status().isUnprocessableEntity())
+			.andExpect(status().isUnprocessableContent())
 			.andExpect(jsonPath("$.description", containsString(SERVICE_INSTANCE_ID)));
 	}
 

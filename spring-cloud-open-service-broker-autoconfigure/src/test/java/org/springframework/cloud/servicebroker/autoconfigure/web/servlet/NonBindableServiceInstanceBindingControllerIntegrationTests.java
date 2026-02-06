@@ -27,7 +27,7 @@ import org.springframework.cloud.servicebroker.controller.ServiceInstanceBinding
 import org.springframework.cloud.servicebroker.service.NonBindableServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -51,7 +51,7 @@ class NonBindableServiceInstanceBindingControllerIntegrationTests extends Servic
 
 		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
 			.setControllerAdvice(ServiceBrokerWebMvcExceptionHandler.class)
-			.setMessageConverters(new MappingJackson2HttpMessageConverter())
+			.setMessageConverters(new JacksonJsonHttpMessageConverter())
 			.build();
 	}
 

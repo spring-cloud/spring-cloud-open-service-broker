@@ -53,11 +53,13 @@ dependencies {
 	implementation platform("org.springframework.cloud:spring-cloud-contract-dependencies:${springCloudContractVersion}")
 	implementation platform(SpringBootPlugin.BOM_COORDINATES)
 	testImplementation project(':spring-cloud-starter-open-service-broker')
-	testImplementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
 	testImplementation project(path: ':spring-cloud-open-service-broker-autoconfigure', configuration: 'testOutput')
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
+	// TODO: remove the RestAssured dependency when the managed version is upgraded to a version that supports Groovy 5
+	testImplementation 'io.rest-assured:rest-assured:6.0.0'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testRuntimeOnly 'jakarta.servlet:jakarta.servlet-api'
 }

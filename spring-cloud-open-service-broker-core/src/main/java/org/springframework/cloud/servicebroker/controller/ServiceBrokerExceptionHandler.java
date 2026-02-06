@@ -91,7 +91,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	 * @return an error message
 	 */
 	@ExceptionHandler(ServiceInstanceDoesNotExistException.class)
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	@ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
 	public ErrorMessage handleException(ServiceInstanceDoesNotExistException ex) {
 		return getErrorResponse(ex);
 	}
@@ -124,7 +124,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	 * @return an error message
 	 */
 	@ExceptionHandler(ServiceBrokerAsyncRequiredException.class)
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	@ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
 	public ErrorMessage handleException(ServiceBrokerAsyncRequiredException ex) {
 		return getErrorResponse(ex);
 	}
@@ -135,7 +135,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	 * @return an error message
 	 */
 	@ExceptionHandler(ServiceBrokerMaintenanceInfoConflictException.class)
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	@ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
 	public ErrorMessage handleException(ServiceBrokerMaintenanceInfoConflictException ex) {
 		return getErrorResponse(ex);
 	}
@@ -212,7 +212,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	 * @return an error message
 	 */
 	@ExceptionHandler(ServiceBrokerConcurrencyException.class)
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	@ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
 	public ErrorMessage handleException(ServiceBrokerConcurrencyException ex) {
 		return getErrorResponse(ex);
 	}
@@ -234,7 +234,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	 * @return an error message
 	 */
 	@ExceptionHandler(ServiceBrokerInvalidOriginatingIdentityException.class)
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	@ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
 	public ErrorMessage handleException(ServiceBrokerInvalidOriginatingIdentityException ex) {
 		getLog().error(UNPROCESSABLE_REQUEST, ex);
 		return getErrorResponse(ex);
@@ -269,7 +269,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	 * @return an error message
 	 */
 	@ExceptionHandler(ServiceInstanceUpdateNotSupportedException.class)
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	@ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
 	public ErrorMessage handleException(ServiceInstanceUpdateNotSupportedException ex) {
 		return getErrorResponse(ex);
 	}
@@ -291,7 +291,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	 * @return an error message
 	 */
 	@ExceptionHandler(ServiceInstanceBindingDoesNotExistException.class)
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	@ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
 	public ErrorMessage handleException(ServiceInstanceBindingDoesNotExistException ex) {
 		return getErrorResponse(ex);
 	}
@@ -302,7 +302,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	 * @return an error message
 	 */
 	@ExceptionHandler(ServiceBrokerBindingRequiresAppException.class)
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	@ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
 	public ErrorMessage handleException(ServiceBrokerBindingRequiresAppException ex) {
 		return getErrorResponse(ex);
 	}

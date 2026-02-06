@@ -56,7 +56,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.cloud.servicebroker.exception.ServiceBrokerAsyncRequiredException.ASYNC_REQUIRED_ERROR;
@@ -344,7 +343,7 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 			.expectStatus()
 			.is4xxClientError()
 			.expectStatus()
-			.isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+			.isEqualTo(HttpStatus.UNPROCESSABLE_CONTENT)
 			.expectBody()
 			.jsonPath("$.error")
 			.isEqualTo(ASYNC_REQUIRED_ERROR)
@@ -368,7 +367,7 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 			.expectStatus()
 			.is4xxClientError()
 			.expectStatus()
-			.isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+			.isEqualTo(HttpStatus.UNPROCESSABLE_CONTENT)
 			.expectBody()
 			.jsonPath("$.error")
 			.isEqualTo(MAINTENANCE_INFO_CONFLICT_ERROR)
@@ -391,7 +390,7 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 			.expectStatus()
 			.is4xxClientError()
 			.expectStatus()
-			.isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+			.isEqualTo(HttpStatus.UNPROCESSABLE_CONTENT)
 			.expectBody()
 			.jsonPath("$.error")
 			.isEqualTo(MAINTENANCE_INFO_CONFLICT_ERROR)
@@ -908,7 +907,7 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 			.expectStatus()
 			.is4xxClientError()
 			.expectStatus()
-			.isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+			.isEqualTo(HttpStatus.UNPROCESSABLE_CONTENT)
 			.expectHeader()
 			.contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
 			.expectBody()
@@ -1006,7 +1005,9 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 			.jsonPath("$.state")
 			.doesNotExist()
 			.jsonPath("$.description")
-			.value(containsString("The requested Service Instance does not exist"));
+			.isNotEmpty()
+			.consumeWith(
+					(result) -> assertDescriptionContains(result, "The requested Service Instance does not exist"));
 	}
 
 	@Test

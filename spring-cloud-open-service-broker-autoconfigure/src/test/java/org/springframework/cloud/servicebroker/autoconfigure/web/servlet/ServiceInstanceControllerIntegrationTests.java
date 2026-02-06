@@ -47,7 +47,7 @@ import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -82,7 +82,7 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 	void setUp() {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(this.controller)
 			.setControllerAdvice(ServiceBrokerWebMvcExceptionHandler.class)
-			.setMessageConverters(new MappingJackson2HttpMessageConverter())
+			.setMessageConverters(new JacksonJsonHttpMessageConverter())
 			.build();
 	}
 
@@ -336,7 +336,7 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 			.andReturn();
 
 		this.mockMvc.perform(asyncDispatch(mvcResult))
-			.andExpect(status().isUnprocessableEntity())
+			.andExpect(status().isUnprocessableContent())
 			.andExpect(jsonPath("$.error", is(ASYNC_REQUIRED_ERROR)))
 			.andExpect(jsonPath("$.description", endsWith("async required description")));
 	}
@@ -355,7 +355,7 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 			.andReturn();
 
 		this.mockMvc.perform(asyncDispatch(mvcResult))
-			.andExpect(status().isUnprocessableEntity())
+			.andExpect(status().isUnprocessableContent())
 			.andExpect(jsonPath("$.error", is(MAINTENANCE_INFO_CONFLICT_ERROR)))
 			.andExpect(jsonPath("$.description", equalTo(MAINTENANCE_INFO_CONFLICT_MESSAGE)));
 	}
@@ -374,7 +374,7 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 			.andReturn();
 
 		this.mockMvc.perform(asyncDispatch(mvcResult))
-			.andExpect(status().isUnprocessableEntity())
+			.andExpect(status().isUnprocessableContent())
 			.andExpect(jsonPath("$.error", is(MAINTENANCE_INFO_CONFLICT_ERROR)))
 			.andExpect(jsonPath("$.description", endsWith("nope old version")));
 	}
@@ -832,7 +832,7 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 			.andReturn();
 
 		this.mockMvc.perform(asyncDispatch(mvcResult))
-			.andExpect(status().isUnprocessableEntity())
+			.andExpect(status().isUnprocessableContent())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.description", containsString("description")));
 	}
