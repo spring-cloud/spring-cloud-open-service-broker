@@ -18,10 +18,10 @@ package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
 import java.nio.charset.StandardCharsets;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionErrorMessage;
 import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
@@ -106,9 +106,10 @@ public class ApiVersionWebFilter implements WebFilter {
 	private String toJson(ErrorMessage message) {
 		String json;
 		try {
-			json = new ObjectMapper().writeValueAsString(message);
+			JsonMapper mapper = JsonMapper.builderWithJackson2Defaults().build();
+			json = mapper.writeValueAsString(message);
 		}
-		catch (JsonProcessingException ex) {
+		catch (JacksonException ex) {
 			json = "{}";
 		}
 		return json;

@@ -16,19 +16,18 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import jakarta.validation.constraints.NotEmpty;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.deser.std.StdDeserializer;
+import tools.jackson.databind.ser.std.ToStringSerializer;
 
 /**
  * The network endpoints that the Application uses to connect to the Service Instance. If
@@ -254,13 +253,11 @@ public class Endpoint {
 	 */
 	private static class ProtocolDeserializer extends StdDeserializer<Protocol> {
 
-		private static final long serialVersionUID = -4451409880666814449L;
-
 		/**
 		 * Construct a new {@link ProtocolDeserializer}.
 		 */
 		ProtocolDeserializer() {
-			this(null);
+			this(Protocol.class);
 		}
 
 		/**
@@ -272,10 +269,9 @@ public class Endpoint {
 		}
 
 		@Override
-		public Protocol deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-				throws IOException {
+		public Protocol deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) {
 			for (Protocol m : Protocol.values()) {
-				if (m.toString().equalsIgnoreCase(jsonParser.getText())) {
+				if (m.toString().equalsIgnoreCase(jsonParser.getString())) {
 					return m;
 				}
 			}

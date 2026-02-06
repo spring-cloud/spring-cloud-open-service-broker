@@ -22,19 +22,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import reactor.core.publisher.Mono;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
 
 import org.springframework.cloud.servicebroker.autoconfigure.web.fixture.ServiceFixture;
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.service.CatalogService;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -89,11 +88,11 @@ public abstract class ControllerIntegrationTests {
 			.willReturn(serviceDefinitionMono);
 	}
 
-	protected String buildOriginatingIdentityHeader() throws JsonProcessingException {
+	protected String buildOriginatingIdentityHeader() throws JacksonException {
 		Map<String, Object> propMap = new HashMap<>();
 		propMap.put(ORIGINATING_USER_KEY, ORIGINATING_USER_VALUE);
 		propMap.put(ORIGINATING_EMAIL_KEY, ORIGINATING_EMAIL_VALUE);
-		ObjectMapper mapper = Jackson2ObjectMapperBuilder.json().build();
+		JsonMapper mapper = JsonMapper.builderWithJackson2Defaults().build();
 		String properties = mapper.writeValueAsString(propMap);
 		String encodedProperties = Base64.getEncoder().encodeToString(properties.getBytes());
 		return ORIGINATING_IDENTITY_PLATFORM + " " + encodedProperties;

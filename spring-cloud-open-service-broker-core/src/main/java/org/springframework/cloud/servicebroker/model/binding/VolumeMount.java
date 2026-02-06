@@ -16,20 +16,19 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
-import java.io.IOException;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.PropertyNamingStrategies;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonNaming;
+import tools.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.deser.std.StdDeserializer;
+import tools.jackson.databind.ser.std.ToStringSerializer;
 
 /**
  * Details of a volume mount in a service binding response.
@@ -317,13 +316,11 @@ public class VolumeMount {
 	 */
 	private static class DeviceTypeDeserializer extends StdDeserializer<DeviceType> {
 
-		private static final long serialVersionUID = -7935903407118198514L;
-
 		/**
 		 * Construct a new {@link DeviceTypeDeserializer}.
 		 */
 		DeviceTypeDeserializer() {
-			this(null);
+			this(DeviceType.class);
 		}
 
 		/**
@@ -335,10 +332,9 @@ public class VolumeMount {
 		}
 
 		@Override
-		public DeviceType deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-				throws IOException {
+		public DeviceType deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) {
 			for (DeviceType d : DeviceType.values()) {
-				if (d.toString().equalsIgnoreCase(jsonParser.getText())) {
+				if (d.toString().equalsIgnoreCase(jsonParser.getString())) {
 					return d;
 				}
 			}
@@ -352,13 +348,11 @@ public class VolumeMount {
 	 */
 	private static class ModeDeserializer extends StdDeserializer<Mode> {
 
-		private static final long serialVersionUID = -4985037236705821009L;
-
 		/**
 		 * Construct a new {@link ModeDeserializer}.
 		 */
 		ModeDeserializer() {
-			this(null);
+			this(Mode.class);
 		}
 
 		/**
@@ -370,10 +364,9 @@ public class VolumeMount {
 		}
 
 		@Override
-		public Mode deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-				throws IOException {
+		public Mode deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) {
 			for (Mode m : Mode.values()) {
-				if (m.toString().equalsIgnoreCase(jsonParser.getText())) {
+				if (m.toString().equalsIgnoreCase(jsonParser.getString())) {
 					return m;
 				}
 			}

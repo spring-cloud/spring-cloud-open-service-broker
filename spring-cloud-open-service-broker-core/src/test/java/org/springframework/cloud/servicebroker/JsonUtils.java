@@ -17,35 +17,28 @@
 package org.springframework.cloud.servicebroker;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Objects;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 public final class JsonUtils {
+
+	private static final JsonMapper mapper = JsonMapper.builderWithJackson2Defaults().build();
 
 	private JsonUtils() {
 	}
 
 	public static String toJson(Object object) {
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			return mapper.writeValueAsString(object);
-		}
-		catch (JsonProcessingException ex) {
-			fail("Error creating JSON string from object: " + ex);
-			throw new IllegalStateException(ex);
-		}
+		return mapper.writeValueAsString(object);
 	}
 
 	public static DocumentContext toJsonPath(Object object) {
@@ -53,34 +46,20 @@ public final class JsonUtils {
 			.jsonProvider(new JacksonJsonProvider())
 			.mappingProvider(new JacksonMappingProvider())
 			.build();
-
 		return JsonPath.parse(toJson(object), configuration);
 	}
 
 	public static <T> T fromJson(String json, Class<T> contentType) {
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			return mapper.readerFor(contentType).readValue(json);
-		}
-		catch (IOException ex) {
-			fail("Error creating object from JSON: " + ex);
-			throw new IllegalStateException(ex);
-		}
+		return mapper.readerFor(contentType).readValue(json);
 	}
 
 	public static <T> T readTestDataFile(String filename, Class<T> contentType) {
-		try {
-			ObjectMapper objectMapper = new ObjectMapper();
-			return objectMapper.readValue(getTestDataFileReader(filename), contentType);
-		}
-		catch (IOException ex) {
-			fail("Error reading test JSON file: " + ex);
-			throw new IllegalStateException(ex);
-		}
+		return mapper.readValue(getTestDataFileReader(filename), contentType);
 	}
 
 	private static Reader getTestDataFileReader(String fileName) {
-		return new BufferedReader(new InputStreamReader(JsonUtils.class.getResourceAsStream("/" + fileName)));
+		return new BufferedReader(
+				new InputStreamReader(Objects.requireNonNull(JsonUtils.class.getResourceAsStream("/" + fileName))));
 	}
 
 	/**
@@ -89,7 +68,6 @@ public final class JsonUtils {
 	 * detection)
 	 */
 	public static void assertThatJsonHasExactNumberOfProperties(Object object, int expectedNbProperties) {
-		//
 		String jsonString = toJson(object);
 		assertThat(jsonString.split(":")).as("extra duplicate properties in json object: " + jsonString)
 			.hasSize(1 + expectedNbProperties);

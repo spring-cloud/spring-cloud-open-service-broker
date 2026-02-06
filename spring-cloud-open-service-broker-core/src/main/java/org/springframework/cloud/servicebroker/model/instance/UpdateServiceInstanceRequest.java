@@ -22,9 +22,9 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotEmpty;
+import tools.jackson.databind.PropertyNamingStrategies;
+import tools.jackson.databind.annotation.JsonNaming;
 
 import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.Context;
@@ -48,8 +48,10 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
 
 	@NotEmpty
+	@JsonProperty("service_id")
 	private final String serviceDefinitionId;
 
+	@JsonProperty("plan_id")
 	private final String planId;
 
 	private final PreviousValues previousValues;
@@ -137,7 +139,6 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * from the platform
 	 * @return the service definition ID
 	 */
-	@JsonProperty("service_id")
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}

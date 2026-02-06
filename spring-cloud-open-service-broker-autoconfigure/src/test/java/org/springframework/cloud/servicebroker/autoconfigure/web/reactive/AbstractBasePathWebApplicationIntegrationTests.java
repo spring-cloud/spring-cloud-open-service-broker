@@ -17,7 +17,7 @@
 package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTestClient;
 import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.autoconfigure.web.AbstractBasePathIntegrationTests;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
