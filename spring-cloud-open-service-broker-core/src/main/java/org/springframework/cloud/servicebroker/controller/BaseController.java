@@ -202,7 +202,7 @@ public class BaseController {
 	}
 
 	private Map<String, Object> readJsonFromString(String value) throws JacksonException {
-		JsonMapper mapper = JsonMapper.builderWithJackson2Defaults().build();
+		JsonMapper mapper = JsonMapper.builder().build();
 		return mapper.readValue(value, new TypeReference<Map<String, Object>>() {
 		});
 	}

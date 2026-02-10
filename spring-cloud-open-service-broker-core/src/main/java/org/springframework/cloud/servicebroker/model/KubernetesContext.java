@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import tools.jackson.databind.PropertyNamingStrategies;
@@ -87,16 +88,19 @@ public final class KubernetesContext extends Context {
 	/**
 	 * Create a new KubernetesContext.
 	 * @param namespace the kubernetes namespace
+	 * @param clusterid the kubernetes clusterid
 	 * @param instanceName the service instance name
 	 * @param namespaceAnnotations the annotations attached to the namespace in which the
 	 * Service Instance will be visible
 	 * @param instanceAnnotations the annotations attached to the service instance
-	 * @param clusterid the kubernetes clusterid
 	 * @param properties a collection of properties
 	 */
-	public KubernetesContext(String namespace, String clusterid, String instanceName,
-			Map<String, Object> namespaceAnnotations, Map<String, Object> instanceAnnotations,
-			Map<String, Object> properties) {
+	@JsonCreator
+	public KubernetesContext(@JsonProperty("namespace") String namespace, @JsonProperty("clusterid") String clusterid,
+			@JsonProperty("instance_name") String instanceName,
+			@JsonProperty("namespace_annotations") Map<String, Object> namespaceAnnotations,
+			@JsonProperty("instance_annotations") Map<String, Object> instanceAnnotations,
+			@JsonProperty("properties") Map<String, Object> properties) {
 		super(KUBERNETES_PLATFORM, properties);
 		setNamespace(namespace);
 		setClusterid(clusterid);

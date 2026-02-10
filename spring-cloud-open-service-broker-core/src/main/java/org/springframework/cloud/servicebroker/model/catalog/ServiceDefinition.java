@@ -25,7 +25,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
@@ -99,9 +101,16 @@ public class ServiceDefinition {
 	 * @param requires the required permissions
 	 * @param dashboardClient the service dashboard URI
 	 */
-	public ServiceDefinition(String id, String name, String description, boolean bindable, Boolean planUpdateable,
-			Boolean instancesRetrievable, Boolean bindingsRetrievable, Boolean allowContextUpdates, List<Plan> plans,
-			List<String> tags, Map<String, Object> metadata, List<String> requires, DashboardClient dashboardClient) {
+	@JsonCreator
+	public ServiceDefinition(@JsonProperty("id") String id, @JsonProperty("name") String name,
+			@JsonProperty("description") String description, @JsonProperty("bindable") boolean bindable,
+			@JsonProperty("plan_updateable") Boolean planUpdateable,
+			@JsonProperty("instances_retrievable") Boolean instancesRetrievable,
+			@JsonProperty("bindings_retrievable") Boolean bindingsRetrievable,
+			@JsonProperty("allow_context_updates") Boolean allowContextUpdates, @JsonProperty("plans") List<Plan> plans,
+			@JsonProperty("tags") List<String> tags, @JsonProperty("metadata") Map<String, Object> metadata,
+			@JsonProperty("requires") List<String> requires,
+			@JsonProperty("dashboard_client") DashboardClient dashboardClient) {
 		this.id = id;
 		this.name = name;
 		this.description = description;

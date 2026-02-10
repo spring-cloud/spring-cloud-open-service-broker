@@ -18,7 +18,9 @@ package org.springframework.cloud.servicebroker.model.instance;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -57,8 +59,10 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 * @param dashboardUrl the dashboard URL
 	 * @param metadata containing metadata for the service instance
 	 */
-	public UpdateServiceInstanceResponse(boolean async, String operation, String dashboardUrl,
-			ServiceInstanceMetadata metadata) {
+	@JsonCreator
+	public UpdateServiceInstanceResponse(@JsonProperty("async") Boolean async,
+			@JsonProperty("operation") String operation, @JsonProperty("dashboard_url") String dashboardUrl,
+			@JsonProperty("metadata") ServiceInstanceMetadata metadata) {
 		super(async, operation);
 		this.dashboardUrl = dashboardUrl;
 		this.metadata = metadata;

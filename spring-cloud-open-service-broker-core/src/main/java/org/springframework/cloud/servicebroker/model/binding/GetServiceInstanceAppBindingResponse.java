@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Details of a response to a request to retrieve a service instance binding associated
  * with an application.
@@ -63,9 +66,13 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 	 * @param volumeMounts the set of volume mounts
 	 * @param endpoints the set of endpoints
 	 */
-	public GetServiceInstanceAppBindingResponse(Map<String, Object> parameters, BindingMetadata metadata,
-			Map<String, Object> credentials, String syslogDrainUrl, List<VolumeMount> volumeMounts,
-			List<Endpoint> endpoints) {
+	@JsonCreator
+	public GetServiceInstanceAppBindingResponse(@JsonProperty("parameters") Map<String, Object> parameters,
+			@JsonProperty("metadata") BindingMetadata metadata,
+			@JsonProperty("credentials") Map<String, Object> credentials,
+			@JsonProperty("syslog_drain_url") String syslogDrainUrl,
+			@JsonProperty("volume_mounts") List<VolumeMount> volumeMounts,
+			@JsonProperty("endpoints") List<Endpoint> endpoints) {
 		super(parameters, metadata);
 		this.credentials = credentials;
 		this.syslogDrainUrl = syslogDrainUrl;

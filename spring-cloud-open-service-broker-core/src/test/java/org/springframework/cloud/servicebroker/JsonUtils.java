@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public final class JsonUtils {
 
-	private static final JsonMapper mapper = JsonMapper.builderWithJackson2Defaults().build();
+	private static final JsonMapper mapper = JsonMapper.builder().build();
 
 	private JsonUtils() {
 	}

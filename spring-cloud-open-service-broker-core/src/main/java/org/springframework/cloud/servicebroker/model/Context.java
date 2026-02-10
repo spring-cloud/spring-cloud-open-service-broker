@@ -21,7 +21,9 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -65,7 +67,9 @@ public class Context {
 	 * @param platform the name of the platform
 	 * @param properties collection of properties
 	 */
-	protected Context(String platform, Map<String, Object> properties) {
+	@JsonCreator
+	protected Context(@JsonProperty("platform") String platform,
+			@JsonProperty("properties") Map<String, Object> properties) {
 		this.platform = platform;
 		if (!CollectionUtils.isEmpty(properties)) {
 			this.properties.putAll(properties);

@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
@@ -48,10 +49,8 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
 
 	@NotEmpty
-	@JsonProperty("service_id")
 	private final String serviceDefinitionId;
 
-	@JsonProperty("plan_id")
 	private final String planId;
 
 	private final PreviousValues previousValues;
@@ -89,11 +88,18 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @param maintenanceInfo the maintenance info (possibly null)
 	 */
-	public UpdateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
-			ServiceDefinition serviceDefinition, Plan plan, PreviousValues previousValues,
-			Map<String, Object> parameters, Context context, boolean asyncAccepted, String platformInstanceId,
-			String apiInfoLocation, Context originatingIdentity, String requestIdentity,
-			MaintenanceInfo maintenanceInfo) {
+	@JsonCreator
+	public UpdateServiceInstanceRequest(@JsonProperty("service_id") String serviceDefinitionId,
+			@JsonProperty("service_instance_id") String serviceInstanceId, @JsonProperty("plan_id") String planId,
+			@JsonProperty("service_definition") ServiceDefinition serviceDefinition, @JsonProperty("plan") Plan plan,
+			@JsonProperty("previous_values") PreviousValues previousValues,
+			@JsonProperty("parameters") Map<String, Object> parameters, @JsonProperty("context") Context context,
+			@JsonProperty("async_accepted") Boolean asyncAccepted,
+			@JsonProperty("platform_instance_id") String platformInstanceId,
+			@JsonProperty("api_info_location") String apiInfoLocation,
+			@JsonProperty("originating_identity") Context originatingIdentity,
+			@JsonProperty("request_identity") String requestIdentity,
+			@JsonProperty("maintenance_info") MaintenanceInfo maintenanceInfo) {
 		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity,
 				requestIdentity);
 		this.serviceDefinitionId = serviceDefinitionId;
@@ -139,6 +145,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * from the platform
 	 * @return the service definition ID
 	 */
+	@JsonProperty("service_id")
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}
@@ -154,6 +161,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * the platform.
 	 * @return the plan ID
 	 */
+	@JsonProperty("plan_id")
 	public String getPlanId() {
 		return this.planId;
 	}
@@ -294,7 +302,6 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 * href=https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object>https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object</a>
 		 */
 		@Deprecated
-		@JsonProperty("service_id")
 		private final String serviceDefinitionId;
 
 		@NotEmpty
@@ -332,8 +339,11 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 * @param spaceId the space ID for the service instance
 		 * @param maintenanceInfo the maintenance info (possibly null)
 		 */
-		public PreviousValues(String serviceDefinitionId, String planId, String organizationId, String spaceId,
-				MaintenanceInfo maintenanceInfo) {
+		@JsonCreator
+		public PreviousValues(@JsonProperty("service_id") String serviceDefinitionId,
+				@JsonProperty("plan_id") String planId, @JsonProperty("organization_id") String organizationId,
+				@JsonProperty("space_id") String spaceId,
+				@JsonProperty("maintenance_info") MaintenanceInfo maintenanceInfo) {
 			this.serviceDefinitionId = serviceDefinitionId;
 			this.planId = planId;
 			this.organizationId = organizationId;

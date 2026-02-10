@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -53,11 +54,9 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	private transient String bindingId;
 
 	@NotEmpty
-	@JsonProperty("service_id")
 	private final String serviceDefinitionId;
 
 	@NotEmpty
-	@JsonProperty("plan_id")
 	private final String planId;
 
 	@Deprecated
@@ -89,6 +88,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	 * @param serviceDefinition the service definition
 	 * @param plan the plan
 	 * @param asyncAccepted does the platform accept asynchronous requests
+	 * @param appGuid prefer bindResource.getAppGuid()
 	 * @param bindResource the binding resource
 	 * @param parameters the parameters
 	 * @param context the context
@@ -98,10 +98,35 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	 * platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 */
+	@JsonCreator
+	public CreateServiceInstanceBindingRequest(@JsonProperty("service_instance_id") String serviceInstanceId,
+			@JsonProperty("service_id") String serviceDefinitionId, @JsonProperty("plan_id") String planId,
+			@JsonProperty("binding_id") String bindingId,
+			@JsonProperty("service_definition") ServiceDefinition serviceDefinition, @JsonProperty("plan") Plan plan,
+			@JsonProperty("async_accepted") Boolean asyncAccepted, @JsonProperty("app_guid") String appGuid,
+			@JsonProperty("bind_resource") BindResource bindResource,
+			@JsonProperty("parameters") Map<String, Object> parameters, @JsonProperty("context") Context context,
+			@JsonProperty("platform_instance_id") String platformInstanceId,
+			@JsonProperty("api_info_location") String apiInfoLocation,
+			@JsonProperty("originating_identity") Context originatingIdentity,
+			@JsonProperty("request_identity") String requestIdentity) {
+		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity,
+				requestIdentity);
+		this.serviceInstanceId = serviceInstanceId;
+		this.serviceDefinitionId = serviceDefinitionId;
+		this.planId = planId;
+		this.bindingId = bindingId;
+		this.serviceDefinition = serviceDefinition;
+		this.plan = plan;
+		this.bindResource = bindResource;
+		this.appGuid = (bindResource != null && bindResource.getAppGuid() != null) ? bindResource.getAppGuid()
+				: appGuid;
+	}
+
 	public CreateServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
-			String bindingId, ServiceDefinition serviceDefinition, Plan plan, boolean asyncAccepted,
-			BindResource bindResource, Map<String, Object> parameters, Context context, String platformInstanceId,
-			String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
+			String bindingId, ServiceDefinition serviceDefinition, Plan plan, Boolean asyncAccepted,
+			BindResource bindResource, Map<String, Object> parameters, @JsonProperty("context") Context context,
+			String platformInstanceId, String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
 		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity,
 				requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
@@ -172,6 +197,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	 * from the platform
 	 * @return the service definition ID
 	 */
+	@JsonProperty("service_id")
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}
@@ -187,6 +213,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	 * the platform.
 	 * @return the plan ID
 	 */
+	@JsonProperty("plan_id")
 	public String getPlanId() {
 		return this.planId;
 	}

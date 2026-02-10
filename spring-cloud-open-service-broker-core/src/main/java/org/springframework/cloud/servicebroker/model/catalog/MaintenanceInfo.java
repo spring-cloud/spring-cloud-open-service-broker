@@ -19,7 +19,9 @@ package org.springframework.cloud.servicebroker.model.catalog;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -63,7 +65,8 @@ public class MaintenanceInfo {
 	 * @throws IllegalArgumentException if the provided to the builder version does not
 	 * comply to semantic versioning v2 specification
 	 */
-	public MaintenanceInfo(String version, String description) {
+	@JsonCreator
+	public MaintenanceInfo(@JsonProperty("version") String version, @JsonProperty("description") String description) {
 		if (!SEMANTIC_VERSION_V2_PATTERN.matcher(version).matches()) {
 			throw new IllegalArgumentException("Version provided should comply to semantic version v2 specification");
 		}

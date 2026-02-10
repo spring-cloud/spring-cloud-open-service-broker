@@ -62,7 +62,7 @@ class PlanTests {
 		assertThat(deserialized.getId()).isEqualTo("plan-id-one");
 		assertThat(deserialized.getName()).isEqualTo("plan-one");
 		assertThat(deserialized.getDescription()).isEqualTo("Plan One");
-		assertThat(deserialized.getMetadata()).isEmpty(); // it's ok to not return null
+		assertThat(deserialized.getMetadata()).isNull();
 		assertThat(deserialized.isFree()).isEqualTo(true);
 		assertThat(deserialized.isBindable()).isNull();
 		assertThat(deserialized.isPlanUpdateable()).isNull();

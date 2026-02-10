@@ -106,7 +106,7 @@ public class ApiVersionWebFilter implements WebFilter {
 	private String toJson(ErrorMessage message) {
 		String json;
 		try {
-			JsonMapper mapper = JsonMapper.builderWithJackson2Defaults().build();
+			JsonMapper mapper = JsonMapper.builder().build();
 			json = mapper.writeValueAsString(message);
 		}
 		catch (JacksonException ex) {

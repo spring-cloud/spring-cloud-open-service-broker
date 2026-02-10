@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Details of a response to a request to create a new service instance binding associated
  * with a route.
@@ -51,8 +54,10 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 	 * @param metadata the service instance binding metadata
 	 * @param routeServiceUrl the route service URL
 	 */
-	public GetServiceInstanceRouteBindingResponse(Map<String, Object> parameters, BindingMetadata metadata,
-			String routeServiceUrl) {
+	@JsonCreator
+	public GetServiceInstanceRouteBindingResponse(@JsonProperty("parameters") Map<String, Object> parameters,
+			@JsonProperty("metadata") BindingMetadata metadata,
+			@JsonProperty("route_service_url") String routeServiceUrl) {
 		super(parameters, metadata);
 		this.routeServiceUrl = routeServiceUrl;
 	}

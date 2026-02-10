@@ -18,7 +18,9 @@ package org.springframework.cloud.servicebroker.model.catalog;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -54,7 +56,9 @@ public class DashboardClient {
 	 * @param secret the client secret
 	 * @param redirectUri the dashboard URI
 	 */
-	public DashboardClient(String id, String secret, String redirectUri) {
+	@JsonCreator
+	public DashboardClient(@JsonProperty("id") String id, @JsonProperty("secret") String secret,
+			@JsonProperty("redirect_uri") String redirectUri) {
 		this.id = id;
 		this.secret = secret;
 		this.redirectUri = redirectUri;

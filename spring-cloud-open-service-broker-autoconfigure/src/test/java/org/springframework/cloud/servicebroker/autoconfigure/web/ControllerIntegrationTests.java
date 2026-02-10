@@ -92,7 +92,7 @@ public abstract class ControllerIntegrationTests {
 		Map<String, Object> propMap = new HashMap<>();
 		propMap.put(ORIGINATING_USER_KEY, ORIGINATING_USER_VALUE);
 		propMap.put(ORIGINATING_EMAIL_KEY, ORIGINATING_EMAIL_VALUE);
-		JsonMapper mapper = JsonMapper.builderWithJackson2Defaults().build();
+		JsonMapper mapper = JsonMapper.builder().build();
 		String properties = mapper.writeValueAsString(propMap);
 		String encodedProperties = Base64.getEncoder().encodeToString(properties.getBytes());
 		return ORIGINATING_IDENTITY_PLATFORM + " " + encodedProperties;

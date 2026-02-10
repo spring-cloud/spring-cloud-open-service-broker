@@ -18,6 +18,7 @@ package org.springframework.cloud.servicebroker.model.catalog;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -48,7 +49,9 @@ public class Schemas {
 	 * @param serviceInstanceSchema the service instance schema
 	 * @param serviceBindingSchema the service binding schema
 	 */
-	public Schemas(ServiceInstanceSchema serviceInstanceSchema, ServiceBindingSchema serviceBindingSchema) {
+	@JsonCreator
+	public Schemas(@JsonProperty("service_instance") ServiceInstanceSchema serviceInstanceSchema,
+			@JsonProperty("service_binding") ServiceBindingSchema serviceBindingSchema) {
 		this.serviceInstanceSchema = serviceInstanceSchema;
 		this.serviceBindingSchema = serviceBindingSchema;
 	}

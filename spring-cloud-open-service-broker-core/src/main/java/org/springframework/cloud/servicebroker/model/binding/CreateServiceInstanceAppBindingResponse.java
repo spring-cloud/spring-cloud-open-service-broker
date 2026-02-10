@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Details of a response to a request to create a new service instance binding associated
  * with an application.
@@ -67,9 +70,14 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	 * @param volumeMounts the set of volume mounts
 	 * @param endpoints the set of endpoints
 	 */
-	public CreateServiceInstanceAppBindingResponse(boolean async, String operation, boolean bindingExisted,
-			BindingMetadata metadata, Map<String, Object> credentials, String syslogDrainUrl,
-			List<VolumeMount> volumeMounts, List<Endpoint> endpoints) {
+	@JsonCreator
+	public CreateServiceInstanceAppBindingResponse(@JsonProperty("async") Boolean async,
+			@JsonProperty("operation") String operation, @JsonProperty("binding_existed") Boolean bindingExisted,
+			@JsonProperty("metadata") BindingMetadata metadata,
+			@JsonProperty("credentials") Map<String, Object> credentials,
+			@JsonProperty("syslog_drain_url") String syslogDrainUrl,
+			@JsonProperty("volume_mounts") List<VolumeMount> volumeMounts,
+			@JsonProperty("endpoints") List<Endpoint> endpoints) {
 		super(async, operation, bindingExisted, metadata);
 		this.credentials = credentials;
 		this.syslogDrainUrl = syslogDrainUrl;

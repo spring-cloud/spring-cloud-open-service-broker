@@ -51,10 +51,10 @@ public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
 	 * platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 */
-	protected AsyncServiceBrokerRequest(boolean asyncAccepted, String platformInstanceId, String apiInfoLocation,
+	protected AsyncServiceBrokerRequest(Boolean asyncAccepted, String platformInstanceId, String apiInfoLocation,
 			Context originatingIdentity, String requestIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
-		this.asyncAccepted = asyncAccepted;
+		this.asyncAccepted = (asyncAccepted != null) ? asyncAccepted : false;
 	}
 
 	/**
@@ -82,7 +82,7 @@ public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
 	 * @param asyncAccepted the value indicating whether the platform allows the broker to
 	 * complete the request asynchronously
 	 */
-	public void setAsyncAccepted(boolean asyncAccepted) {
+	public void setAsyncAccepted(Boolean asyncAccepted) {
 		this.asyncAccepted = asyncAccepted;
 	}
 
