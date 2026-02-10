@@ -44,8 +44,10 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 
 	private final transient String serviceInstanceId;
 
+	@JsonProperty("service_id")
 	private final transient String serviceDefinitionId;
 
+	@JsonProperty("plan_id")
 	private final transient String planId;
 
 	private final transient ServiceDefinition serviceDefinition;
@@ -102,7 +104,6 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	 * from the platform
 	 * @return the service definition ID
 	 */
-	@JsonProperty("service_id")
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}
@@ -118,7 +119,6 @@ public class DeleteServiceInstanceRequest extends AsyncServiceBrokerRequest {
 	 * the platform.
 	 * @return the plan ID
 	 */
-	@JsonProperty("plan_id")
 	public String getPlanId() {
 		return this.planId;
 	}

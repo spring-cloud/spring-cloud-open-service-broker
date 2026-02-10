@@ -49,9 +49,11 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
 
 	@NotEmpty
+	@JsonProperty("service_id")
 	private final String serviceDefinitionId;
 
 	@NotEmpty
+	@JsonProperty("plan_id")
 	private final String planId;
 
 	/**
@@ -165,7 +167,6 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * from the platform
 	 * @return the service definition ID
 	 */
-	@JsonProperty("service_id")
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}
@@ -181,7 +182,6 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * the platform.
 	 * @return the plan ID
 	 */
-	@JsonProperty("plan_id")
 	public String getPlanId() {
 		return this.planId;
 	}

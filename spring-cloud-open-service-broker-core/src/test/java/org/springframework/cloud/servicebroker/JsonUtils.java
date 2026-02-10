@@ -17,32 +17,35 @@
 package org.springframework.cloud.servicebroker;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 public final class JsonUtils {
 
+	private static final JsonMapper JSON_MAPPER = JsonMapper.builder()
+		.configure(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS, true)
+		.build();
+
 	private JsonUtils() {
 	}
 
 	public static String toJson(Object object) {
 		try {
-			ObjectMapper mapper = new ObjectMapper();
-			return mapper.writeValueAsString(object);
+			return JSON_MAPPER.writeValueAsString(object);
 		}
-		catch (JsonProcessingException ex) {
+		catch (JacksonException ex) {
 			fail("Error creating JSON string from object: " + ex);
 			throw new IllegalStateException(ex);
 		}
@@ -59,10 +62,9 @@ public final class JsonUtils {
 
 	public static <T> T fromJson(String json, Class<T> contentType) {
 		try {
-			ObjectMapper mapper = new ObjectMapper();
-			return mapper.readerFor(contentType).readValue(json);
+			return JSON_MAPPER.readerFor(contentType).readValue(json);
 		}
-		catch (IOException ex) {
+		catch (JacksonException ex) {
 			fail("Error creating object from JSON: " + ex);
 			throw new IllegalStateException(ex);
 		}
@@ -70,10 +72,9 @@ public final class JsonUtils {
 
 	public static <T> T readTestDataFile(String filename, Class<T> contentType) {
 		try {
-			ObjectMapper objectMapper = new ObjectMapper();
-			return objectMapper.readValue(getTestDataFileReader(filename), contentType);
+			return JSON_MAPPER.readValue(getTestDataFileReader(filename), contentType);
 		}
-		catch (IOException ex) {
+		catch (JacksonException ex) {
 			fail("Error reading test JSON file: " + ex);
 			throw new IllegalStateException(ex);
 		}

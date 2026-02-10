@@ -50,6 +50,7 @@ class ServiceInstanceBindingControllerRequestTests extends ControllerRequestTest
 			.apiInfoLocation("api-info-location")
 			.originatingIdentity(this.identityContext)
 			.requestIdentity("request-id")
+			.bindResource(BindResource.builder().appGuid("app-guid").build())
 			.build();
 
 		ServiceInstanceBindingController controller = createControllerUnderTest(expectedRequest);
@@ -95,7 +96,7 @@ class ServiceInstanceBindingControllerRequestTests extends ControllerRequestTest
 		return CreateServiceInstanceBindingRequest.builder()
 			.serviceDefinitionId(this.serviceDefinition.getId())
 			.planId("plan-id")
-			.bindResource(BindResource.builder().build())
+			.bindResource(BindResource.builder().appGuid("app-guid").build())
 			.parameters("create-param-1", "value1")
 			.parameters("create-param-2", "value2")
 			.context(this.requestContext);

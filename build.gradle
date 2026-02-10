@@ -20,7 +20,7 @@ buildscript {
 		beanUtilsVersion = "1.11.0"
 
 		// Test Dependencies
-		springCloudContractVersion = "4.3.1"
+		springCloudContractVersion = "5.0.1"
 		javaHamcrestVersion = "2.0.0.0"
 		equalsVerifierVersion = "4.3"
 		findbugsVersion = "3.0.1u2"
@@ -59,12 +59,6 @@ configure(allprojects) {
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
 	apply plugin: 'idea'
-
-	configurations {
-		all {
-			exclude group: 'commons-logging', module: 'commons-logging'
-		}
-	}
 }
 
 // configure submodules with published java artifacts

@@ -23,8 +23,8 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import tools.jackson.databind.PropertyNamingStrategies;
+import tools.jackson.databind.annotation.JsonNaming;
 
 /**
  * Details of a response to a request to get the details a service instance.
@@ -42,6 +42,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetServiceInstanceResponse {
 
+	@JsonProperty("service_id")
 	private final String serviceDefinitionId;
 
 	private final String planId;
@@ -76,7 +77,6 @@ public class GetServiceInstanceResponse {
 	 * Get the ID of the service definition associated with the service instance.
 	 * @return the service definition ID
 	 */
-	@JsonProperty("service_id")
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}

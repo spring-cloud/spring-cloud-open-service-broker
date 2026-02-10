@@ -40,6 +40,7 @@ import jakarta.validation.constraints.NotEmpty;
 public class Catalog {
 
 	@NotEmpty
+	@JsonProperty("services")
 	private final List<ServiceDefinition> serviceDefinitions;
 
 	/**
@@ -61,7 +62,6 @@ public class Catalog {
 	 * Get the set of service offerings.
 	 * @return a set of service offerings
 	 */
-	@JsonProperty("services")
 	public List<ServiceDefinition> getServiceDefinitions() {
 		return this.serviceDefinitions;
 	}

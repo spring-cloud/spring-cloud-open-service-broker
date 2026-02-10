@@ -32,8 +32,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Schemas {
 
+	@JsonProperty("service_instance")
 	private final ServiceInstanceSchema serviceInstanceSchema;
 
+	@JsonProperty("service_binding")
 	private final ServiceBindingSchema serviceBindingSchema;
 
 	/**
@@ -57,7 +59,6 @@ public class Schemas {
 	 * The schemas available on a service instance.
 	 * @return the schemas
 	 */
-	@JsonProperty("service_instance")
 	public ServiceInstanceSchema getServiceInstanceSchema() {
 		return this.serviceInstanceSchema;
 	}
@@ -66,7 +67,6 @@ public class Schemas {
 	 * The schemas available on a service binding.
 	 * @return the schemas
 	 */
-	@JsonProperty("service_binding")
 	public ServiceBindingSchema getServiceBindingSchema() {
 		return this.serviceBindingSchema;
 	}

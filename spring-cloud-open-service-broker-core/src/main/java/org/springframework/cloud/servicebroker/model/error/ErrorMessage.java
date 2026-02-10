@@ -22,8 +22,8 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import tools.jackson.databind.PropertyNamingStrategies;
+import tools.jackson.databind.annotation.JsonNaming;
 
 /**
  * Details of an error reported to the platform from a service broker.
@@ -44,6 +44,7 @@ public class ErrorMessage implements Serializable {
 
 	private final String error;
 
+	@JsonProperty("description")
 	private final String message;
 
 	private final Boolean instanceUsable;
@@ -102,7 +103,6 @@ public class ErrorMessage implements Serializable {
 	 * Get the description.
 	 * @return the description.
 	 */
-	@JsonProperty("description")
 	public String getMessage() {
 		return this.message;
 	}

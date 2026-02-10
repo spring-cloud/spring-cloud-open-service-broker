@@ -53,14 +53,17 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	private transient String bindingId;
 
 	@NotEmpty
+	@JsonProperty("service_id")
 	private final String serviceDefinitionId;
 
 	@NotEmpty
+	@JsonProperty("plan_id")
 	private final String planId;
 
 	@Deprecated
 	private final String appGuid;
 
+	@JsonProperty("bind_resource")
 	private final BindResource bindResource;
 
 	private transient ServiceDefinition serviceDefinition;
@@ -170,7 +173,6 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	 * from the platform
 	 * @return the service definition ID
 	 */
-	@JsonProperty("service_id")
 	public String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}

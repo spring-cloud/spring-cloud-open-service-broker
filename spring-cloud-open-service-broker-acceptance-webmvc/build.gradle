@@ -24,10 +24,10 @@ description = "Spring Cloud Open Service Broker Acceptance WebMvc"
 
 dependencies {
 	implementation platform(SpringBootPlugin.BOM_COORDINATES)
-	implementation 'org.springframework.boot:spring-boot-starter'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	implementation project(':spring-cloud-starter-open-service-broker')
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-restclient-test'
 }
 
 // don't publish the jar for the acceptance tests project

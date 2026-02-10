@@ -22,8 +22,9 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import tools.jackson.databind.PropertyNamingStrategies;
+import tools.jackson.databind.annotation.JsonNaming;
 
 import org.springframework.util.CollectionUtils;
 
@@ -42,8 +43,10 @@ import org.springframework.util.CollectionUtils;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class BindResource {
 
+	@JsonProperty("app_guid")
 	private final String appGuid;
 
+	@JsonProperty("route")
 	private final String route;
 
 	@JsonAnySetter

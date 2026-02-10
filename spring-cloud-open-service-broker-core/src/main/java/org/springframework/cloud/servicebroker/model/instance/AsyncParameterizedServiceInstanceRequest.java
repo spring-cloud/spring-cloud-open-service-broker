@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.Context;
@@ -36,6 +37,7 @@ import org.springframework.util.CollectionUtils;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServiceBrokerRequest {
 
+	@JsonProperty("parameters")
 	protected final Map<String, Object> parameters = new HashMap<>();
 
 	private final Context context;

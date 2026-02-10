@@ -28,10 +28,10 @@ dependencies {
 
 	compileOnly 'jakarta.servlet:jakarta.servlet-api'
 	api 'org.springframework:spring-context'
-	optionalApi 'org.springframework:spring-web'
+	optionalApi 'org.springframework:spring-webmvc'
 	optionalApi 'org.springframework:spring-webflux'
 	api 'io.projectreactor:reactor-core'
-	api 'com.fasterxml.jackson.core:jackson-databind'
+	api 'tools.jackson.core:jackson-databind'
 	api 'org.hibernate.validator:hibernate-validator'
 	api "commons-beanutils:commons-beanutils:${beanUtilsVersion}"
 	api 'org.slf4j:slf4j-api'
@@ -46,6 +46,7 @@ dependencies {
 	testImplementation 'org.mockito:mockito-core'
 	testImplementation 'org.mockito:mockito-junit-jupiter'
 	testImplementation 'com.jayway.jsonpath:json-path'
+	testImplementation 'org.springframework.boot:spring-boot-jackson2'
 	testImplementation "nl.jqno.equalsverifier:equalsverifier:${equalsVerifierVersion}"
 	testImplementation 'jakarta.servlet:jakarta.servlet-api'
 	testImplementation "com.google.code.findbugs:annotations:${findbugsVersion}"

@@ -29,7 +29,7 @@ import org.springframework.cloud.servicebroker.model.BrokerApiVersion;
 import org.springframework.cloud.servicebroker.model.catalog.Catalog;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -103,7 +103,7 @@ class ApiVersionInterceptorIntegrationTests {
 		return MockMvcBuilders.standaloneSetup(this.controller)
 			.addInterceptors(new ApiVersionInterceptor(new BrokerApiVersion()))
 			.setControllerAdvice(ServiceBrokerWebMvcExceptionHandler.class)
-			.setMessageConverters(new MappingJackson2HttpMessageConverter())
+			.setMessageConverters(new JacksonJsonHttpMessageConverter())
 			.build();
 	}
 
@@ -111,7 +111,7 @@ class ApiVersionInterceptorIntegrationTests {
 		return MockMvcBuilders.standaloneSetup(this.controller)
 			.addInterceptors(new ApiVersionInterceptor(new BrokerApiVersion("expected-version")))
 			.setControllerAdvice(ServiceBrokerWebMvcExceptionHandler.class)
-			.setMessageConverters(new MappingJackson2HttpMessageConverter())
+			.setMessageConverters(new JacksonJsonHttpMessageConverter())
 			.build();
 	}
 
