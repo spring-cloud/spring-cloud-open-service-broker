@@ -34,7 +34,7 @@ public class AsyncServiceBrokerResponse {
 
 	private static final int MAX_OPERATION_LENGTH = 10_000;
 
-	protected final boolean async;
+	protected final Boolean async;
 
 	protected final String operation;
 
@@ -44,7 +44,7 @@ public class AsyncServiceBrokerResponse {
 	 * @param operation an identifier representing the operation in progress
 	 * @throws IllegalArgumentException if operation length exceeds 10,000 characters
 	 */
-	protected AsyncServiceBrokerResponse(boolean async, String operation) {
+	protected AsyncServiceBrokerResponse(Boolean async, String operation) {
 		validateOperationLength(operation);
 		this.async = async;
 		this.operation = operation;
@@ -57,7 +57,7 @@ public class AsyncServiceBrokerResponse {
 	 */
 	@JsonIgnore // not sent on the wire as json payload, but as http status instead
 	public boolean isAsync() {
-		return this.async;
+		return (this.async != null) ? this.async : false;
 	}
 
 	/**

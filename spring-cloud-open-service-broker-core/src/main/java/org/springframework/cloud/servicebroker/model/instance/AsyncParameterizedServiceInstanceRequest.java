@@ -59,7 +59,7 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 * @param requestIdentity identity of the request sent from the platform
 	 */
 	protected AsyncParameterizedServiceInstanceRequest(Map<String, Object> parameters, Context context,
-			boolean asyncAccepted, String platformInstanceId, String apiInfoLocation, Context originatingIdentity,
+			Boolean asyncAccepted, String platformInstanceId, String apiInfoLocation, Context originatingIdentity,
 			String requestIdentity) {
 		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		if (!CollectionUtils.isEmpty(parameters)) {

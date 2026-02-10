@@ -20,7 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.springframework.util.CollectionUtils;
 
@@ -48,7 +50,8 @@ public class ServiceInstanceMetadata {
 	 * Create a new ServiceInstanceMetadata.
 	 * @param labels collection of labels
 	 */
-	public ServiceInstanceMetadata(Map<String, Object> labels) {
+	@JsonCreator
+	public ServiceInstanceMetadata(@JsonProperty("labels") Map<String, Object> labels) {
 		if (!CollectionUtils.isEmpty(labels)) {
 			this.labels.putAll(labels);
 		}

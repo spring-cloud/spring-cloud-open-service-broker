@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import tools.jackson.databind.PropertyNamingStrategies;
@@ -112,9 +113,14 @@ public final class CloudFoundryContext extends Context {
 	 * @param instanceName the instance name
 	 * @param properties additional properties
 	 */
-	public CloudFoundryContext(String organizationGuid, String organizationName,
-			Map<String, Object> organizationAnnotations, String spaceGuid, String spaceName,
-			Map<String, Object> spaceAnnotations, String instanceName, Map<String, Object> properties) {
+	@JsonCreator
+	public CloudFoundryContext(@JsonProperty("organization_guid") String organizationGuid,
+			@JsonProperty("organization_name") String organizationName,
+			@JsonProperty("organization_annotations") Map<String, Object> organizationAnnotations,
+			@JsonProperty("space_guid") String spaceGuid, @JsonProperty("space_name") String spaceName,
+			@JsonProperty("space_annotations") Map<String, Object> spaceAnnotations,
+			@JsonProperty("instance_name") String instanceName,
+			@JsonProperty("properties") Map<String, Object> properties) {
 		super(CLOUD_FOUNDRY_PLATFORM, properties);
 		setOrganizationGuid(organizationGuid);
 		setOrganizationName(organizationName);

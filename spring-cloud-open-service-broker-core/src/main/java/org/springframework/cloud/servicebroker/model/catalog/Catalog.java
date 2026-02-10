@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -53,7 +54,8 @@ public class Catalog {
 	 * Construct a new {@link Catalog}.
 	 * @param serviceDefinitions a collection of services
 	 */
-	public Catalog(List<ServiceDefinition> serviceDefinitions) {
+	@JsonCreator
+	public Catalog(@JsonProperty("services") List<ServiceDefinition> serviceDefinitions) {
 		this.serviceDefinitions = serviceDefinitions;
 	}
 

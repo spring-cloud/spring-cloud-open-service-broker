@@ -19,8 +19,10 @@ package org.springframework.cloud.servicebroker.model.binding;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
 
@@ -46,7 +48,7 @@ public class GetLastServiceBindingOperationResponse {
 
 	private final String description;
 
-	private final boolean deleteOperation;
+	private final Boolean deleteOperation;
 
 	/**
 	 * Construct a new {@link GetLastServiceBindingOperationResponse}.
@@ -61,10 +63,13 @@ public class GetLastServiceBindingOperationResponse {
 	 * @param description the description
 	 * @param deleteOperation is delete operation
 	 */
-	public GetLastServiceBindingOperationResponse(OperationState state, String description, boolean deleteOperation) {
+	@JsonCreator
+	public GetLastServiceBindingOperationResponse(@JsonProperty("state") OperationState state,
+			@JsonProperty("description") String description,
+			@JsonProperty("delete_operation") Boolean deleteOperation) {
 		this.state = state;
 		this.description = description;
-		this.deleteOperation = deleteOperation;
+		this.deleteOperation = (deleteOperation != null) ? deleteOperation : false;
 	}
 
 	/**
@@ -89,7 +94,7 @@ public class GetLastServiceBindingOperationResponse {
 	 */
 	@JsonIgnore
 	public boolean isDeleteOperation() {
-		return this.deleteOperation;
+		return (this.deleteOperation != null) ? this.deleteOperation : false;
 	}
 
 	/**

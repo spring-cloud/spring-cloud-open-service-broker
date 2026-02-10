@@ -21,6 +21,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import tools.jackson.databind.PropertyNamingStrategies;
@@ -64,8 +65,10 @@ public class GetServiceInstanceResponse {
 	 * @param dashboardUrl the dashboard URL
 	 * @param parameters the parameters
 	 */
-	public GetServiceInstanceResponse(String serviceDefinitionId, String planId, String dashboardUrl,
-			Map<String, Object> parameters) {
+	@JsonCreator
+	public GetServiceInstanceResponse(@JsonProperty("service_id") String serviceDefinitionId,
+			@JsonProperty("plan_id") String planId, @JsonProperty("dashboard_url") String dashboardUrl,
+			@JsonProperty("parameters") Map<String, Object> parameters) {
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
 		this.dashboardUrl = dashboardUrl;

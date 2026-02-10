@@ -18,6 +18,9 @@ package org.springframework.cloud.servicebroker.model.binding;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Details of a response to a request to create a new service instance binding associated
  * with a route.
@@ -51,8 +54,11 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 	 * @param metadata the service binding metadata
 	 * @param routeServiceUrl the route service URL
 	 */
-	public CreateServiceInstanceRouteBindingResponse(boolean async, String operation, boolean bindingExisted,
-			BindingMetadata metadata, String routeServiceUrl) {
+	@JsonCreator
+	public CreateServiceInstanceRouteBindingResponse(@JsonProperty("async") Boolean async,
+			@JsonProperty("operation") String operation, @JsonProperty("binding_existed") Boolean bindingExisted,
+			@JsonProperty("metadata") BindingMetadata metadata,
+			@JsonProperty("route_service_url") String routeServiceUrl) {
 		super(async, operation, bindingExisted, metadata);
 		this.routeServiceUrl = routeServiceUrl;
 	}

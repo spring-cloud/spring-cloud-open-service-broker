@@ -20,8 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
@@ -85,9 +87,13 @@ public class Plan {
 	 * @param maximumPollingDuration the maximum polling duration in seconds
 	 * @param maintenanceInfo the maintentance information
 	 */
-	public Plan(String id, String name, String description, Map<String, Object> metadata, Boolean free,
-			Boolean bindable, Boolean planUpdateable, Schemas schemas, Integer maximumPollingDuration,
-			MaintenanceInfo maintenanceInfo) {
+	@JsonCreator
+	public Plan(@JsonProperty("id") String id, @JsonProperty("name") String name,
+			@JsonProperty("description") String description, @JsonProperty("metadata") Map<String, Object> metadata,
+			@JsonProperty("free") Boolean free, @JsonProperty("bindable") Boolean bindable,
+			@JsonProperty("plan_updateable") Boolean planUpdateable, @JsonProperty("schemas") Schemas schemas,
+			@JsonProperty("maximum_polling_duration") Integer maximumPollingDuration,
+			@JsonProperty("maintenance_info") MaintenanceInfo maintenanceInfo) {
 		this.id = id;
 		this.name = name;
 		this.description = description;

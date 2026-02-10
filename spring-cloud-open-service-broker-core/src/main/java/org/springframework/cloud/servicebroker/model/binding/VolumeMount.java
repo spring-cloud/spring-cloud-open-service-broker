@@ -18,7 +18,9 @@ package org.springframework.cloud.servicebroker.model.binding;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import tools.jackson.core.JsonParser;
@@ -123,7 +125,10 @@ public class VolumeMount {
 	 * @param deviceType the volume device type
 	 * @param device the volume device details
 	 */
-	public VolumeMount(String driver, String containerDir, Mode mode, DeviceType deviceType, VolumeDevice device) {
+	@JsonCreator
+	public VolumeMount(@JsonProperty("driver") String driver, @JsonProperty("container_dir") String containerDir,
+			@JsonProperty("mode") Mode mode, @JsonProperty("device_type") DeviceType deviceType,
+			@JsonProperty("device") VolumeDevice device) {
 		this.driver = driver;
 		this.containerDir = containerDir;
 		this.mode = mode;

@@ -19,8 +19,10 @@ package org.springframework.cloud.servicebroker.model.instance;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -51,7 +53,7 @@ public class GetLastServiceOperationResponse {
 
 	private final Boolean updateRepeatable;
 
-	private final boolean deleteOperation;
+	private final Boolean deleteOperation;
 
 	/**
 	 * Construct a new {@link GetLastServiceOperationResponse}.
@@ -66,7 +68,7 @@ public class GetLastServiceOperationResponse {
 	 * @param description the description
 	 * @param deleteOperation is delete operation
 	 * @deprecated in favor of
-	 * {@link GetLastServiceOperationResponse#GetLastServiceOperationResponse(OperationState, String, Boolean, Boolean, boolean)}
+	 * {@link GetLastServiceOperationResponse#GetLastServiceOperationResponse(OperationState, String, Boolean, Boolean, Boolean)}
 	 */
 	@Deprecated
 	public GetLastServiceOperationResponse(OperationState state, String description, boolean deleteOperation) {
@@ -81,8 +83,11 @@ public class GetLastServiceOperationResponse {
 	 * @param updateRepeatable is the update repeatable
 	 * @param deleteOperation is delete operation
 	 */
-	public GetLastServiceOperationResponse(OperationState state, String description, Boolean instanceUsable,
-			Boolean updateRepeatable, boolean deleteOperation) {
+	@JsonCreator
+	public GetLastServiceOperationResponse(@JsonProperty("state") OperationState state,
+			@JsonProperty("description") String description, @JsonProperty("instance_usable") Boolean instanceUsable,
+			@JsonProperty("update_repeatable") Boolean updateRepeatable,
+			@JsonProperty("delete_operation") Boolean deleteOperation) {
 		this.state = state;
 		this.description = description;
 		this.instanceUsable = instanceUsable;
@@ -129,7 +134,7 @@ public class GetLastServiceOperationResponse {
 	 */
 	@JsonIgnore
 	public boolean isDeleteOperation() {
-		return this.deleteOperation;
+		return (this.deleteOperation != null) ? this.deleteOperation : false;
 	}
 
 	/**

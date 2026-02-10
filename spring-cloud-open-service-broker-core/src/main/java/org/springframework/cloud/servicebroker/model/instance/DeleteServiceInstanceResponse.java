@@ -16,6 +16,9 @@
 
 package org.springframework.cloud.servicebroker.model.instance;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
 
 /**
@@ -44,7 +47,9 @@ public class DeleteServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 * @param async is the operation asynchronous
 	 * @param operation description of the operation being performed
 	 */
-	public DeleteServiceInstanceResponse(boolean async, String operation) {
+	@JsonCreator
+	public DeleteServiceInstanceResponse(@JsonProperty("async") Boolean async,
+			@JsonProperty("operation") String operation) {
 		super(async, operation);
 	}
 

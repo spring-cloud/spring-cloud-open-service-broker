@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -52,7 +54,9 @@ public class SharedVolumeDevice extends VolumeDevice {
 	 * @param volumeId the volume ID
 	 * @param mountConfig the device configuration
 	 */
-	public SharedVolumeDevice(String volumeId, Map<String, Object> mountConfig) {
+	@JsonCreator
+	public SharedVolumeDevice(@JsonProperty("volume_id") String volumeId,
+			@JsonProperty("mount_config") Map<String, Object> mountConfig) {
 		super();
 		this.volumeId = volumeId;
 		this.mountConfig = mountConfig;

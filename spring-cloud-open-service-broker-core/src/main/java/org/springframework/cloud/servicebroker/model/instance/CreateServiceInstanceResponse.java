@@ -18,8 +18,10 @@ package org.springframework.cloud.servicebroker.model.instance;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -42,7 +44,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 	private final String dashboardUrl;
 
-	private final boolean instanceExisted;
+	private final Boolean instanceExisted;
 
 	private final ServiceInstanceMetadata metadata;
 
@@ -61,11 +63,14 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 * @param instanceExisted true if the instance exists
 	 * @param metadata containing metadata for the service instance
 	 */
-	public CreateServiceInstanceResponse(boolean async, String operation, String dashboardUrl, boolean instanceExisted,
-			ServiceInstanceMetadata metadata) {
+	@JsonCreator
+	public CreateServiceInstanceResponse(@JsonProperty("async") Boolean async,
+			@JsonProperty("operation") String operation, @JsonProperty("dashboard_url") String dashboardUrl,
+			@JsonProperty("instance_existed") Boolean instanceExisted,
+			@JsonProperty("metadata") ServiceInstanceMetadata metadata) {
 		super(async, operation);
 		this.dashboardUrl = dashboardUrl;
-		this.instanceExisted = instanceExisted;
+		this.instanceExisted = (instanceExisted != null) ? instanceExisted : false;
 		this.metadata = metadata;
 	}
 
@@ -85,7 +90,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 */
 	@JsonIgnore // not sent on the wire as json payload, but as http status instead
 	public boolean isInstanceExisted() {
-		return this.instanceExisted;
+		return (this.instanceExisted != null) ? this.instanceExisted : false;
 	}
 
 	/**

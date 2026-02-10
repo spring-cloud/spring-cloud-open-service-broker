@@ -22,6 +22,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -46,7 +47,6 @@ public class BindResource {
 
 	private final String route;
 
-	@JsonAnySetter
 	private final Map<String, Object> properties = new HashMap<>();
 
 	private BindResource() {
@@ -59,12 +59,23 @@ public class BindResource {
 	 * @param route the application URL
 	 * @param properties a collection of properties
 	 */
-	protected BindResource(String appGuid, String route, Map<String, Object> properties) {
+	protected BindResource(@JsonProperty("app_guid") String appGuid, @JsonProperty("route") String route,
+			@JsonProperty("properties") Map<String, Object> properties) {
 		this.appGuid = appGuid;
 		this.route = route;
 		if (!CollectionUtils.isEmpty(properties)) {
 			this.properties.putAll(properties);
 		}
+	}
+
+	/**
+	 * Set a property in the bind resource.
+	 * @param key the property key
+	 * @param value the property value
+	 */
+	@JsonAnySetter
+	public void setProperty(String key, Object value) {
+		this.properties.put(key, value);
 	}
 
 	/**

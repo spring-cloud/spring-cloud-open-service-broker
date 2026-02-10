@@ -18,6 +18,7 @@ package org.springframework.cloud.servicebroker.model.binding;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -45,7 +46,8 @@ public class BindingMetadata {
 	 * Construct a new BindingMetadata.
 	 * @param expiresAt the date and time in ISO 8601 format
 	 */
-	public BindingMetadata(String expiresAt) {
+	@JsonCreator
+	public BindingMetadata(@JsonProperty("expires_at") String expiresAt) {
 		this.expiresAt = expiresAt;
 	}
 

@@ -19,6 +19,8 @@ package org.springframework.cloud.servicebroker.model;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Platform specific contextual information under which the service instance is to be
@@ -37,7 +39,9 @@ public class PlatformContext extends Context {
 	 * @param platform the name of the platform
 	 * @param properties collection of properties
 	 */
-	public PlatformContext(String platform, Map<String, Object> properties) {
+	@JsonCreator
+	public PlatformContext(@JsonProperty("platform") String platform,
+			@JsonProperty("properties") Map<String, Object> properties) {
 		super(platform, properties);
 	}
 
