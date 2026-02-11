@@ -229,6 +229,12 @@ configure(rootProject) {
 
 		maxMemory = "1024m"
 		destinationDir = layout.buildDirectory.dir("apidocs").get().asFile
+		
+		// Note: Due to Gradle 9.3+ stricter locking, this task may fail when run in parallel
+		// with other tasks that resolve configurations. Run with --no-parallel if needed.
+		doFirst {
+			logger.warn("Running apidocs task - if you see configuration resolution errors, try running with --no-parallel")
+		}
 	}
 
 	tasks.register('docsZip', Zip) {
