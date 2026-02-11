@@ -40,7 +40,7 @@ git commit -m "Release v$stageVersion"
 git tag -a "v$stageVersion" -m "Release v$stageVersion"
 echo
 
-./gradlew clean publish -PpublicationRepository="${repository}"
+./gradlew clean publish --no-parallel -PpublicationRepository="${repository}"
 echo
 
 echo "Setting next development version (v$nextVersion)"
