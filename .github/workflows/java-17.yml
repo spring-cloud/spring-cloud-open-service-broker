@@ -5,9 +5,9 @@ name: Java 17
 
 on:
   push:
-    branches: [ 4.5.* ]
+    branches: [ 5.0.*, 4.5.* ]
   pull_request:
-    branches: [ 4.5.* ]
+    branches: [ 5.0.*, 4.5.* ]
 
 jobs:
   build:
