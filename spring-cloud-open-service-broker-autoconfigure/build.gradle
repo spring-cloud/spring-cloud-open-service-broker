@@ -36,7 +36,6 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webflux-test'
-//	testImplementation 'com.fasterxml.jackson.core:jackson-databind'
 	testImplementation "io.projectreactor.tools:blockhound-junit-platform:${blockHoundVersion}"
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testRuntimeOnly 'jakarta.servlet:jakarta.servlet-api'
