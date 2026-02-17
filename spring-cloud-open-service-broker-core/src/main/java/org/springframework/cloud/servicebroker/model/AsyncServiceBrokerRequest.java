@@ -33,6 +33,9 @@ public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
 	 */
 	public static final String ASYNC_REQUEST_PARAMETER = "accepts_incomplete";
 
+	/**
+	 * Whether async operations are accepted.
+	 */
 	protected transient boolean asyncAccepted;
 
 	/**

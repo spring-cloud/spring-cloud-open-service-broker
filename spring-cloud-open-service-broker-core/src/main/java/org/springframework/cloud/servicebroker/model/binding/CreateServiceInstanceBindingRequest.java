@@ -123,6 +123,23 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 				: appGuid;
 	}
 
+	/**
+	 * Construct a new {@link CreateServiceInstanceBindingRequest}.
+	 * @param serviceInstanceId the service instance ID
+	 * @param serviceDefinitionId the service definition ID
+	 * @param planId the plan ID
+	 * @param bindingId the binding ID
+	 * @param serviceDefinition the service definition
+	 * @param plan the plan
+	 * @param asyncAccepted whether async is accepted
+	 * @param bindResource the bind resource
+	 * @param parameters the parameters
+	 * @param context the context
+	 * @param platformInstanceId the platform instance ID
+	 * @param apiInfoLocation the API info location
+	 * @param originatingIdentity the originating identity
+	 * @param requestIdentity the request identity
+	 */
 	public CreateServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
 			String bindingId, ServiceDefinition serviceDefinition, Plan plan, Boolean asyncAccepted,
 			BindResource bindResource, Map<String, Object> parameters, @JsonProperty("context") Context context,

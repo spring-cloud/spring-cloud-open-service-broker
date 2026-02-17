@@ -39,6 +39,9 @@ public class OperationInProgressMessage implements Serializable {
 	@Serial
 	private static final long serialVersionUID = -8178107171824247656L;
 
+	/**
+	 * The operation identifier.
+	 */
 	private final String operation;
 
 	/**

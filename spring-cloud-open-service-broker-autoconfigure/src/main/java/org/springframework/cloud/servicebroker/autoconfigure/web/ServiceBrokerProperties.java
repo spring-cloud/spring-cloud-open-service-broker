@@ -37,18 +37,34 @@ public class ServiceBrokerProperties {
 	@Valid
 	private Catalog catalog;
 
+	/**
+	 * Get the API version.
+	 * @return the API version
+	 */
 	public String getApiVersion() {
 		return this.apiVersion;
 	}
 
+	/**
+	 * Set the API version.
+	 * @param apiVersion the API version
+	 */
 	public void setApiVersion(String apiVersion) {
 		this.apiVersion = apiVersion;
 	}
 
+	/**
+	 * Get the service broker catalog.
+	 * @return the catalog
+	 */
 	public Catalog getCatalog() {
 		return this.catalog;
 	}
 
+	/**
+	 * Set the service broker catalog.
+	 * @param catalog the catalog
+	 */
 	public void setCatalog(Catalog catalog) {
 		this.catalog = catalog;
 	}

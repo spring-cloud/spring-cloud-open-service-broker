@@ -151,7 +151,6 @@ configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) 
 		options.header = project.name
 		options.use = true
 		options.links(javadocLinks)
-		options.addStringOption('Xdoclint:none', '-quiet')
 		if (JavaVersion.current() == JavaVersion.VERSION_11) {
 			options.addBooleanOption('-no-module-directories', true)
 		}

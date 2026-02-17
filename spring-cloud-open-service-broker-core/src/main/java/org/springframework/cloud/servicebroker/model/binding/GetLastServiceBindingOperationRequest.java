@@ -45,6 +45,9 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 
 	private final transient String planId;
 
+	/**
+	 * The operation identifier.
+	 */
 	protected final transient String operation;
 
 	/**

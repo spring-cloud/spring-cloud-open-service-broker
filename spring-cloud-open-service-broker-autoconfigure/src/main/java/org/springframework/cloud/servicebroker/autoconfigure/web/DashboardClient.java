@@ -43,26 +43,50 @@ public class DashboardClient {
 	 */
 	private String redirectUri;
 
+	/**
+	 * Get the dashboard client ID.
+	 * @return the client ID
+	 */
 	public String getId() {
 		return this.id;
 	}
 
+	/**
+	 * Set the dashboard client ID.
+	 * @param id the client ID
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/**
+	 * Get the dashboard client secret.
+	 * @return the client secret
+	 */
 	public String getSecret() {
 		return this.secret;
 	}
 
+	/**
+	 * Set the dashboard client secret.
+	 * @param secret the client secret
+	 */
 	public void setSecret(String secret) {
 		this.secret = secret;
 	}
 
+	/**
+	 * Get the dashboard redirect URI.
+	 * @return the redirect URI
+	 */
 	public String getRedirectUri() {
 		return this.redirectUri;
 	}
 
+	/**
+	 * Set the dashboard redirect URI.
+	 * @param redirectUri the redirect URI
+	 */
 	public void setRedirectUri(String redirectUri) {
 		this.redirectUri = redirectUri;
 	}

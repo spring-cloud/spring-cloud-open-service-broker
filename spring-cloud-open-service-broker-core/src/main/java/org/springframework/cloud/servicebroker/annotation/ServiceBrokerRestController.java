@@ -26,6 +26,11 @@ import org.springframework.core.annotation.AliasFor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Annotation for service broker REST controllers.
+ *
+ * @author Scott Frederick
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -33,6 +38,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("${spring.cloud.openservicebroker.base-path:}")
 public @interface ServiceBrokerRestController {
 
+	/**
+	 * The value for the RestController annotation.
+	 * @return the controller value
+	 */
 	@AliasFor(annotation = RestController.class)
 	String value() default "";
 

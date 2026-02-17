@@ -41,6 +41,10 @@ public class Catalog {
 	@Valid
 	private final List<ServiceDefinition> services = new ArrayList<>();
 
+	/**
+	 * Get the list of service definitions.
+	 * @return the list of services
+	 */
 	public List<ServiceDefinition> getServices() {
 		return this.services;
 	}

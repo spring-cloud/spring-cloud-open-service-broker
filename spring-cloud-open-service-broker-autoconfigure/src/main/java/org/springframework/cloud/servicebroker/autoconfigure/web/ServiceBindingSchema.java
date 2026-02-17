@@ -37,10 +37,18 @@ public class ServiceBindingSchema {
 	@Valid
 	private MethodSchema create;
 
+	/**
+	 * Get the create method schema.
+	 * @return the create schema
+	 */
 	public MethodSchema getCreate() {
 		return this.create;
 	}
 
+	/**
+	 * Set the create method schema.
+	 * @param create the create schema
+	 */
 	public void setCreate(MethodSchema create) {
 		this.create = create;
 	}

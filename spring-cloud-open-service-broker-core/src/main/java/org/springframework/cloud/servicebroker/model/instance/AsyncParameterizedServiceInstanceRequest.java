@@ -36,6 +36,9 @@ import org.springframework.util.CollectionUtils;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServiceBrokerRequest {
 
+	/**
+	 * Configuration parameters for the service instance.
+	 */
 	protected final Map<String, Object> parameters = new HashMap<>();
 
 	private final Context context;

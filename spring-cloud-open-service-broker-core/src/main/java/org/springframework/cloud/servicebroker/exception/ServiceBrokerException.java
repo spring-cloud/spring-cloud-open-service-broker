@@ -33,6 +33,9 @@ public class ServiceBrokerException extends RuntimeException {
 
 	private static final long serialVersionUID = -5544859893499349135L;
 
+	/**
+	 * The error message associated with this exception.
+	 */
 	private final ErrorMessage errorMessage;
 
 	/**
@@ -136,6 +139,10 @@ public class ServiceBrokerException extends RuntimeException {
 		this.errorMessage = new ErrorMessage();
 	}
 
+	/**
+	 * Get the error message.
+	 * @return the error message
+	 */
 	public ErrorMessage getErrorMessage() {
 		return this.errorMessage;
 	}
