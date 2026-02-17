@@ -34,8 +34,14 @@ public class AsyncServiceBrokerResponse {
 
 	private static final int MAX_OPERATION_LENGTH = 10_000;
 
+	/**
+	 * Whether the operation is asynchronous.
+	 */
 	protected final boolean async;
 
+	/**
+	 * An identifier representing the operation in progress.
+	 */
 	protected final String operation;
 
 	/**

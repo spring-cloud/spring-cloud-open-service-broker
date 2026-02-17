@@ -44,18 +44,34 @@ public class ServiceInstanceSchema {
 	@Valid
 	private MethodSchema update;
 
+	/**
+	 * Get the create method schema.
+	 * @return the create schema
+	 */
 	public MethodSchema getCreate() {
 		return this.create;
 	}
 
+	/**
+	 * Set the create method schema.
+	 * @param create the create schema
+	 */
 	public void setCreate(MethodSchema create) {
 		this.create = create;
 	}
 
+	/**
+	 * Get the update method schema.
+	 * @return the update schema
+	 */
 	public MethodSchema getUpdate() {
 		return this.update;
 	}
 
+	/**
+	 * Set the update method schema.
+	 * @param update the update schema
+	 */
 	public void setUpdate(MethodSchema update) {
 		this.update = update;
 	}

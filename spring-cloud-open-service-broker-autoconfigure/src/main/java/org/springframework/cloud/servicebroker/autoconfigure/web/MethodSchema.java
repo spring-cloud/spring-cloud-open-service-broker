@@ -36,6 +36,10 @@ public class MethodSchema {
 	 */
 	private final Map<String, Object> parameters = new HashMap<>();
 
+	/**
+	 * Get the parameters map.
+	 * @return the parameters map
+	 */
 	public Map<String, Object> getParameters() {
 		return this.parameters;
 	}

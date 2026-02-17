@@ -99,82 +99,162 @@ public class Plan {
 	 */
 	private MaintenanceInfo maintenanceInfo;
 
+	/**
+	 * Get the plan ID.
+	 * @return the plan ID
+	 */
 	public String getId() {
 		return this.id;
 	}
 
+	/**
+	 * Set the plan ID.
+	 * @param id the plan ID
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/**
+	 * Get the plan name.
+	 * @return the plan name
+	 */
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 * Set the plan name.
+	 * @param name the plan name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Get the plan description.
+	 * @return the plan description
+	 */
 	public String getDescription() {
 		return this.description;
 	}
 
+	/**
+	 * Set the plan description.
+	 * @param description the plan description
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	/**
+	 * Get the plan metadata.
+	 * @return the plan metadata
+	 */
 	public PlanMetadata getMetadata() {
 		return this.metadata;
 	}
 
+	/**
+	 * Set the plan metadata.
+	 * @param metadata the plan metadata
+	 */
 	public void setMetadata(PlanMetadata metadata) {
 		this.metadata = metadata;
 	}
 
+	/**
+	 * Get the plan schemas.
+	 * @return the plan schemas
+	 */
 	public Schemas getSchemas() {
 		return this.schemas;
 	}
 
+	/**
+	 * Set the plan schemas.
+	 * @param schemas the plan schemas
+	 */
 	public void setSchemas(Schemas schemas) {
 		this.schemas = schemas;
 	}
 
+	/**
+	 * Get whether the plan is bindable.
+	 * @return true if bindable, false otherwise
+	 */
 	public Boolean isBindable() {
 		return this.bindable;
 	}
 
+	/**
+	 * Set whether the plan is bindable.
+	 * @param bindable true if bindable, false otherwise
+	 */
 	public void setBindable(Boolean bindable) {
 		this.bindable = bindable;
 	}
 
+	/**
+	 * Get whether the plan is free.
+	 * @return true if free, false otherwise
+	 */
 	public Boolean isFree() {
 		return this.free;
 	}
 
+	/**
+	 * Set whether the plan is free.
+	 * @param free true if free, false otherwise
+	 */
 	public void setFree(Boolean free) {
 		this.free = free;
 	}
 
+	/**
+	 * Get whether the plan is updateable.
+	 * @return true if updateable, false otherwise
+	 */
 	public Boolean isPlanUpdateable() {
 		return this.planUpdateable;
 	}
 
+	/**
+	 * Set whether the plan is updateable.
+	 * @param planUpdateable true if updateable, false otherwise
+	 */
 	public void setPlanUpdateable(Boolean planUpdateable) {
 		this.planUpdateable = planUpdateable;
 	}
 
+	/**
+	 * Get the maximum polling duration.
+	 * @return the maximum polling duration in seconds
+	 */
 	public Integer getMaximumPollingDuration() {
 		return this.maximumPollingDuration;
 	}
 
+	/**
+	 * Set the maximum polling duration.
+	 * @param maximumPollingDuration the maximum polling duration in seconds
+	 */
 	public void setMaximumPollingDuration(Integer maximumPollingDuration) {
 		this.maximumPollingDuration = maximumPollingDuration;
 	}
 
+	/**
+	 * Get the maintenance information.
+	 * @return the maintenance information
+	 */
 	public MaintenanceInfo getMaintenanceInfo() {
 		return this.maintenanceInfo;
 	}
 
+	/**
+	 * Set the maintenance information.
+	 * @param maintenanceInfo the maintenance information
+	 */
 	public void setMaintenanceInfo(MaintenanceInfo maintenanceInfo) {
 		this.maintenanceInfo = maintenanceInfo;
 	}

@@ -44,18 +44,34 @@ public class Schemas {
 	@Valid
 	private ServiceBindingSchema serviceBinding;
 
+	/**
+	 * Get the service instance schema.
+	 * @return the service instance schema
+	 */
 	public ServiceInstanceSchema getServiceInstance() {
 		return this.serviceInstance;
 	}
 
+	/**
+	 * Set the service instance schema.
+	 * @param serviceInstance the service instance schema
+	 */
 	public void setServiceInstance(ServiceInstanceSchema serviceInstance) {
 		this.serviceInstance = serviceInstance;
 	}
 
+	/**
+	 * Get the service binding schema.
+	 * @return the service binding schema
+	 */
 	public ServiceBindingSchema getServiceBinding() {
 		return this.serviceBinding;
 	}
 
+	/**
+	 * Set the service binding schema.
+	 * @param serviceBinding the service binding schema
+	 */
 	public void setServiceBinding(ServiceBindingSchema serviceBinding) {
 		this.serviceBinding = serviceBinding;
 	}

@@ -66,10 +66,18 @@ public class PlanMetadata {
 	 */
 	private final Map<String, Object> properties = new HashMap<>();
 
+	/**
+	 * Get the list of costs for this plan.
+	 * @return the list of costs
+	 */
 	public List<Cost> getCosts() {
 		return this.costs;
 	}
 
+	/**
+	 * Set the list of costs for this plan.
+	 * @param costs the list of costs
+	 */
 	public void setCosts(List<Cost> costs) {
 		if (!CollectionUtils.isEmpty(costs)) {
 			this.costs.clear();
@@ -77,10 +85,18 @@ public class PlanMetadata {
 		}
 	}
 
+	/**
+	 * Get the list of bullet points describing plan features.
+	 * @return the list of bullets
+	 */
 	public List<String> getBullets() {
 		return this.bullets;
 	}
 
+	/**
+	 * Set the list of bullet points describing plan features.
+	 * @param bullets the list of bullets
+	 */
 	public void setBullets(List<String> bullets) {
 		if (!CollectionUtils.isEmpty(bullets)) {
 			this.bullets.clear();
@@ -88,18 +104,34 @@ public class PlanMetadata {
 		}
 	}
 
+	/**
+	 * Get the display name of the plan.
+	 * @return the display name
+	 */
 	public String getDisplayName() {
 		return this.displayName;
 	}
 
+	/**
+	 * Set the display name of the plan.
+	 * @param displayName the display name
+	 */
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
 	}
 
+	/**
+	 * Get the additional properties for this plan.
+	 * @return the properties map
+	 */
 	public Map<String, Object> getProperties() {
 		return this.properties;
 	}
 
+	/**
+	 * Set additional properties for this plan.
+	 * @param properties the properties map
+	 */
 	public void setProperties(Map<String, Object> properties) {
 		if (!CollectionUtils.isEmpty(properties)) {
 			this.properties.putAll(properties);

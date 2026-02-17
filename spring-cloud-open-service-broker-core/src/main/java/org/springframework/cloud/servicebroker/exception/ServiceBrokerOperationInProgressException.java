@@ -35,6 +35,9 @@ public class ServiceBrokerOperationInProgressException extends ServiceBrokerExce
 	private static final String MESSAGE_PREFIX = "Service broker operation is in progress "
 			+ "for the requested service instance or binding";
 
+	/**
+	 * The operation in progress message.
+	 */
 	private final OperationInProgressMessage operationInProgressMessage;
 
 	/**
@@ -66,6 +69,10 @@ public class ServiceBrokerOperationInProgressException extends ServiceBrokerExce
 		this.operationInProgressMessage = new OperationInProgressMessage(operation);
 	}
 
+	/**
+	 * Get the operation in progress message.
+	 * @return the operation in progress message
+	 */
 	public OperationInProgressMessage getOperationInProgressMessage() {
 		return this.operationInProgressMessage;
 	}

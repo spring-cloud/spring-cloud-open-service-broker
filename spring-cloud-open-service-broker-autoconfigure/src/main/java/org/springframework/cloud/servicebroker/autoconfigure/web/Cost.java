@@ -45,6 +45,10 @@ public class Cost {
 	 */
 	private String unit;
 
+	/**
+	 * Get the amount map containing currency codes and amounts.
+	 * @return the amount map
+	 */
 	public Map<String, Double> getAmount() {
 		return this.amount;
 	}
@@ -60,16 +64,28 @@ public class Cost {
 		}
 	}
 
+	/**
+	 * Set the amount map containing currency codes and amounts.
+	 * @param amount the amount map
+	 */
 	public void setAmount(Map<String, Double> amount) {
 		if (!CollectionUtils.isEmpty(amount)) {
 			this.amount.putAll(amount);
 		}
 	}
 
+	/**
+	 * Get the unit of cost.
+	 * @return the unit
+	 */
 	public String getUnit() {
 		return this.unit;
 	}
 
+	/**
+	 * Set the unit of cost.
+	 * @param unit the unit
+	 */
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}

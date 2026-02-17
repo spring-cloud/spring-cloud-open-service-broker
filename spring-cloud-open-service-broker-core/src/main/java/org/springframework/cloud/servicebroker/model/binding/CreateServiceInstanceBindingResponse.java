@@ -40,7 +40,10 @@ import org.springframework.cloud.servicebroker.model.instance.CreateServiceInsta
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResponse {
 
-	protected final boolean bindingExisted;
+	/**
+	 * Whether the binding already existed.
+	 */
+	protected final Boolean bindingExisted;
 
 	private final BindingMetadata metadata;
 

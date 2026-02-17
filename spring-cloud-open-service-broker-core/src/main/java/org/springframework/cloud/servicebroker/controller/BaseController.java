@@ -52,6 +52,9 @@ public class BaseController {
 
 	private static final int ORIGINATING_IDENTITY_HEADER_PARTS = 2;
 
+	/**
+	 * The catalog service.
+	 */
 	protected CatalogService catalogService;
 
 	/**

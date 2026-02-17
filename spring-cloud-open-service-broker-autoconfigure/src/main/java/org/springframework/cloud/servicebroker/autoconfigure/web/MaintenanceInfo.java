@@ -36,18 +36,34 @@ public class MaintenanceInfo {
 	 */
 	private String description;
 
+	/**
+	 * Get the version of the maintenance update.
+	 * @return the version
+	 */
 	public String getVersion() {
 		return this.version;
 	}
 
+	/**
+	 * Set the version of the maintenance update.
+	 * @param version the version
+	 */
 	public void setVersion(String version) {
 		this.version = version;
 	}
 
+	/**
+	 * Get the description of the maintenance update.
+	 * @return the description
+	 */
 	public String getDescription() {
 		return this.description;
 	}
 
+	/**
+	 * Set the description of the maintenance update.
+	 * @param description the description
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}

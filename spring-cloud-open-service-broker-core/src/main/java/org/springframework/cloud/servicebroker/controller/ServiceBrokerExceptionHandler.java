@@ -55,6 +55,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 public abstract class ServiceBrokerExceptionHandler {
 
+	/**
+	 * Error message prefix for unprocessable requests.
+	 */
 	protected static final String UNPROCESSABLE_REQUEST = "Unprocessable request received: ";
 
 	/**

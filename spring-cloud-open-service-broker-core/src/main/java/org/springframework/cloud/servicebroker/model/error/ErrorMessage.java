@@ -42,12 +42,24 @@ public class ErrorMessage implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 2182737098581225395L;
 
+	/**
+	 * The error code.
+	 */
 	private final String error;
 
+	/**
+	 * The error message.
+	 */
 	private final String message;
 
+	/**
+	 * Whether the instance is usable.
+	 */
 	private final Boolean instanceUsable;
 
+	/**
+	 * Whether the update is repeatable.
+	 */
 	private final Boolean updateRepeatable;
 
 	/**

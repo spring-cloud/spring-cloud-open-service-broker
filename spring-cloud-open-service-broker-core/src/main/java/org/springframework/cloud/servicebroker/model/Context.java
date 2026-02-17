@@ -49,8 +49,14 @@ public class Context {
 	 */
 	public static final String PLATFORM_KEY = "platform";
 
+	/**
+	 * The platform name.
+	 */
 	protected final String platform;
 
+	/**
+	 * Additional properties.
+	 */
 	protected final Map<String, Object> properties = new HashMap<>();
 
 	/**
@@ -200,8 +206,14 @@ public class Context {
 
 		private final B thisObj;
 
+		/**
+		 * The platform name.
+		 */
 		protected String platform;
 
+		/**
+		 * Additional properties.
+		 */
 		protected Map<String, Object> properties = new HashMap<>();
 
 		/**

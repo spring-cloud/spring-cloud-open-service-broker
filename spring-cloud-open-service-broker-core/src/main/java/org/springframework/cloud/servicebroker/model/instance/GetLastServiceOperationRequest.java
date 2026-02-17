@@ -42,6 +42,9 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 
 	private final transient String planId;
 
+	/**
+	 * The operation identifier.
+	 */
 	protected final transient String operation;
 
 	/**

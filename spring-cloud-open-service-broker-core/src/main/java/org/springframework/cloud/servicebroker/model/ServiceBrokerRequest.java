@@ -71,12 +71,24 @@ public class ServiceBrokerRequest {
 	 */
 	public static final String PLATFORM_INSTANCE_ID_VARIABLE = "platformInstanceId";
 
+	/**
+	 * The platform instance ID.
+	 */
 	protected transient String platformInstanceId;
 
+	/**
+	 * The API info location.
+	 */
 	protected transient String apiInfoLocation;
 
+	/**
+	 * The originating identity context.
+	 */
 	protected transient Context originatingIdentity;
 
+	/**
+	 * The request identity.
+	 */
 	protected transient String requestIdentity;
 
 	/**

@@ -101,66 +101,130 @@ public class ServiceMetadata {
 	 */
 	private final Map<String, Object> properties = new HashMap<>();
 
+	/**
+	 * Get the display name of the service.
+	 * @return the display name
+	 */
 	public String getDisplayName() {
 		return this.displayName;
 	}
 
+	/**
+	 * Set the display name of the service.
+	 * @param displayName the display name
+	 */
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
 	}
 
+	/**
+	 * Get the image URL.
+	 * @return the image URL
+	 */
 	public String getImageUrl() {
 		return this.imageUrl;
 	}
 
+	/**
+	 * Get the image URL resource path.
+	 * @return the image URL resource path
+	 */
 	public String getImageUrlResource() {
 		return this.imageUrlResource;
 	}
 
+	/**
+	 * Set the image URL resource path.
+	 * @param imageUrlResource the image URL resource path
+	 */
 	public void setImageUrlResource(String imageUrlResource) {
 		this.imageUrlResource = imageUrlResource;
 	}
 
+	/**
+	 * Set the image URL.
+	 * @param imageUrl the image URL
+	 */
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
 
+	/**
+	 * Get the long description of the service.
+	 * @return the long description
+	 */
 	public String getLongDescription() {
 		return this.longDescription;
 	}
 
+	/**
+	 * Set the long description of the service.
+	 * @param longDescription the long description
+	 */
 	public void setLongDescription(String longDescription) {
 		this.longDescription = longDescription;
 	}
 
+	/**
+	 * Get the provider display name.
+	 * @return the provider display name
+	 */
 	public String getProviderDisplayName() {
 		return this.providerDisplayName;
 	}
 
+	/**
+	 * Set the provider display name.
+	 * @param providerDisplayName the provider display name
+	 */
 	public void setProviderDisplayName(String providerDisplayName) {
 		this.providerDisplayName = providerDisplayName;
 	}
 
+	/**
+	 * Get the documentation URL.
+	 * @return the documentation URL
+	 */
 	public String getDocumentationUrl() {
 		return this.documentationUrl;
 	}
 
+	/**
+	 * Set the documentation URL.
+	 * @param documentationUrl the documentation URL
+	 */
 	public void setDocumentationUrl(String documentationUrl) {
 		this.documentationUrl = documentationUrl;
 	}
 
+	/**
+	 * Get the support URL.
+	 * @return the support URL
+	 */
 	public String getSupportUrl() {
 		return this.supportUrl;
 	}
 
+	/**
+	 * Set the support URL.
+	 * @param supportUrl the support URL
+	 */
 	public void setSupportUrl(String supportUrl) {
 		this.supportUrl = supportUrl;
 	}
 
+	/**
+	 * Get the additional properties for the service metadata.
+	 * @return the properties map
+	 */
 	public Map<String, Object> getProperties() {
 		return this.properties;
 	}
 
+	/**
+	 * Set additional properties for the service metadata.
+	 * @param properties the properties map
+	 */
 	public void setProperties(Map<String, Object> properties) {
 		if (!CollectionUtils.isEmpty(properties)) {
 			this.properties.putAll(properties);
