@@ -71,7 +71,7 @@ public class CatalogController extends BaseController {
 					LOG.debug("catalog={}", catalog);
 				}
 			})
-				.doOnError((e) -> LOG.error("Error retrieving catalog. error=" + e.getMessage(), e))
+				.doOnError((e) -> LOG.error("Error retrieving catalog. error={}", e.getMessage(), e))
 				.flatMap((catalog) -> Mono.just(ResponseEntity.ok().body(catalog))));
 	}
 
