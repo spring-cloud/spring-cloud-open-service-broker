@@ -146,9 +146,7 @@ public class ServiceInstanceController extends BaseController {
 				if (LOG.isDebugEnabled()) {
 					LOG.debug(DEBUG_RESPONSE, response);
 				}
-			})
-				.doOnError((e) -> LOG
-					.error(String.format(ERROR_RESPONSE, "creating", serviceInstanceId, e.getMessage()), e)))
+			}).doOnError((e) -> LOG.error(ERROR_RESPONSE, "creating", serviceInstanceId, e.getMessage(), e)))
 			.map((response) -> new ResponseEntity<>(response, getCreateResponseCode(response)))
 			.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.CREATED)));
 	}
@@ -215,9 +213,7 @@ public class ServiceInstanceController extends BaseController {
 				if (LOG.isDebugEnabled()) {
 					LOG.debug(DEBUG_RESPONSE, response);
 				}
-			})
-				.doOnError((e) -> LOG.error(String.format(ERROR_RESPONSE, "getting", serviceInstanceId, e.getMessage()),
-						e)))
+			}).doOnError((e) -> LOG.error(ERROR_RESPONSE, "getting", serviceInstanceId, e.getMessage(), e)))
 			.map((response) -> new ResponseEntity<>(response, HttpStatus.OK))
 			.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
 			.onErrorResume((e) -> {
@@ -283,9 +279,8 @@ public class ServiceInstanceController extends BaseController {
 					LOG.debug(DEBUG_RESPONSE, response);
 				}
 			})
-				.doOnError((e) -> LOG.error(
-						String.format(ERROR_RESPONSE, "getting last operation for", serviceInstanceId, e.getMessage()),
-						e)))
+				.doOnError((e) -> LOG.error(ERROR_RESPONSE, "getting last operation for", serviceInstanceId,
+						e.getMessage(), e)))
 			.map((response) -> {
 				boolean isSuccessfulDelete = OperationState.SUCCEEDED.equals(response.getState())
 						&& response.isDeleteOperation();
@@ -358,9 +353,7 @@ public class ServiceInstanceController extends BaseController {
 				if (LOG.isDebugEnabled()) {
 					LOG.debug(DEBUG_RESPONSE, response);
 				}
-			})
-				.doOnError((e) -> LOG
-					.error(String.format(ERROR_RESPONSE, "deleting", serviceInstanceId, e.getMessage()), e)))
+			}).doOnError((e) -> LOG.error(ERROR_RESPONSE, "deleting", serviceInstanceId, e.getMessage(), e)))
 			.map((response) -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
 			.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
 			.onErrorResume((e) -> {
@@ -425,9 +418,7 @@ public class ServiceInstanceController extends BaseController {
 				if (LOG.isDebugEnabled()) {
 					LOG.debug(DEBUG_RESPONSE, response);
 				}
-			})
-				.doOnError((e) -> LOG
-					.error(String.format(ERROR_RESPONSE, "updating", serviceInstanceId, e.getMessage()), e)))
+			}).doOnError((e) -> LOG.error(ERROR_RESPONSE, "updating", serviceInstanceId, e.getMessage(), e)))
 			.map((response) -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
 			.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)));
 	}
