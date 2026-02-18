@@ -58,7 +58,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	/**
 	 * Error message prefix for unprocessable requests.
 	 */
-	protected static final String UNPROCESSABLE_REQUEST = "Unprocessable request received: ";
+	protected static final String UNPROCESSABLE_REQUEST = "Unprocessable request received";
 
 	/**
 	 * Callback to implementing classes to obtain the configured Logger.
@@ -251,7 +251,7 @@ public abstract class ServiceBrokerExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ErrorMessage handleException(Exception ex) {
-		getLog().error("Unknown exception handled: ", ex);
+		getLog().error("Unknown exception handled", ex);
 		return getErrorResponse(ex);
 	}
 

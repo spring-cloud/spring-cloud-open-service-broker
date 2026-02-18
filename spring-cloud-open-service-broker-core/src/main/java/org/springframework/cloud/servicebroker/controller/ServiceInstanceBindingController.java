@@ -152,9 +152,7 @@ public class ServiceInstanceBindingController extends BaseController {
 				if (LOG.isDebugEnabled()) {
 					LOG.debug(DEBUG_RESPONSE, response);
 				}
-			})
-				.doOnError((e) -> LOG
-					.error(String.format(ERROR_RESPONSE, "creating", serviceInstanceId, bindingId, e.getMessage()), e)))
+			}).doOnError((e) -> LOG.error(ERROR_RESPONSE, "creating", serviceInstanceId, bindingId, e.getMessage(), e)))
 			.map((response) -> new ResponseEntity<>(response, getCreateResponseCode(response)))
 			.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.CREATED)));
 	}
@@ -224,9 +222,7 @@ public class ServiceInstanceBindingController extends BaseController {
 				if (LOG.isDebugEnabled()) {
 					LOG.debug(DEBUG_RESPONSE, response);
 				}
-			})
-				.doOnError((e) -> LOG
-					.error(String.format(ERROR_RESPONSE, "getting", serviceInstanceId, bindingId, e.getMessage()), e)))
+			}).doOnError((e) -> LOG.error(ERROR_RESPONSE, "getting", serviceInstanceId, bindingId, e.getMessage(), e)))
 			.map((response) -> new ResponseEntity<>(response, HttpStatus.OK))
 			.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
 			.onErrorResume((e) -> {
@@ -297,8 +293,8 @@ public class ServiceInstanceBindingController extends BaseController {
 					LOG.debug(DEBUG_RESPONSE, response);
 				}
 			})
-				.doOnError((e) -> LOG.error(String.format(ERROR_RESPONSE, "getting last operation for",
-						serviceInstanceId, bindingId, e.getMessage()), e)))
+				.doOnError((e) -> LOG.error(ERROR_RESPONSE, "getting last operation for", serviceInstanceId, bindingId,
+						e.getMessage(), e)))
 			.flatMap((response) -> Mono
 				.just(response.getState().equals(OperationState.SUCCEEDED) && response.isDeleteOperation())
 				.flatMap((isSuccessfulDelete) -> Mono
@@ -364,9 +360,7 @@ public class ServiceInstanceBindingController extends BaseController {
 				if (LOG.isDebugEnabled()) {
 					LOG.debug(DEBUG_RESPONSE, response);
 				}
-			})
-				.doOnError((e) -> LOG
-					.error(String.format(ERROR_RESPONSE, "deleting", serviceInstanceId, bindingId, e.getMessage()), e)))
+			}).doOnError((e) -> LOG.error(ERROR_RESPONSE, "deleting", serviceInstanceId, bindingId, e.getMessage(), e)))
 			.map((response) -> new ResponseEntity<>(response, getAsyncResponseCode(response)))
 			.switchIfEmpty(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
 			.onErrorResume((e) -> {
