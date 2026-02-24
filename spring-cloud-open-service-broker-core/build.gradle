@@ -26,7 +26,7 @@ dependencies {
 	// BOM imports - The versions used in these files will override any other versions found in the graph
 	implementation platform(SpringBootPlugin.BOM_COORDINATES)
 
-	compileOnly 'org.jspecify:jspecify:1.0.0'
+	compileOnly 'org.jspecify:jspecify'
 	compileOnly 'jakarta.servlet:jakarta.servlet-api'
 	api 'org.springframework:spring-context'
 	optionalApi 'org.springframework:spring-webmvc'
