@@ -25,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.cloud.servicebroker.model.CloudFoundryContext;
 import org.springframework.cloud.servicebroker.model.Context;
@@ -63,7 +64,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 */
 	@Deprecated
 	@JsonProperty("organization_guid")
-	private final String organizationGuid;
+	private final @Nullable String organizationGuid;
 
 	/**
 	 * remains in the model for marshalling support but test harnesses should not use.
@@ -73,15 +74,15 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 */
 	@Deprecated
 	@JsonProperty("space_guid")
-	private final String spaceGuid;
+	private final @Nullable String spaceGuid;
 
-	private transient String serviceInstanceId;
+	private transient @Nullable String serviceInstanceId;
 
-	private transient ServiceDefinition serviceDefinition;
+	private transient @Nullable ServiceDefinition serviceDefinition;
 
-	private transient Plan plan;
+	private transient @Nullable Plan plan;
 
-	private final MaintenanceInfo maintenanceInfo;
+	private final @Nullable MaintenanceInfo maintenanceInfo;
 
 	/**
 	 * Construct a new {@link CreateServiceInstanceRequest}.
@@ -108,25 +109,30 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @param maintenanceInfo maintenance info sent by the platform
 	 */
 	@JsonCreator
-	public CreateServiceInstanceRequest(@JsonProperty("service_id") String serviceDefinitionId,
-			@JsonProperty("service_instance_id") String serviceInstanceId, @JsonProperty("plan_id") String planId,
-			@JsonProperty("service_definition") ServiceDefinition serviceDefinition, @JsonProperty("plan") Plan plan,
-			@JsonProperty("parameters") Map<String, Object> parameters, @JsonProperty("context") Context context,
-			@JsonProperty("async_accepted") Boolean asyncAccepted,
-			@JsonProperty("platform_instance_id") String platformInstanceId,
-			@JsonProperty("api_info_location") String apiInfoLocation,
-			@JsonProperty("originating_identity") Context originatingIdentity,
-			@JsonProperty("request_identity") String requestIdentity,
-			@JsonProperty("maintenance_info") MaintenanceInfo maintenanceInfo) {
+	public CreateServiceInstanceRequest(@JsonProperty("service_id") @Nullable String serviceDefinitionId,
+			@JsonProperty("service_instance_id") @Nullable String serviceInstanceId,
+			@JsonProperty("plan_id") @Nullable String planId,
+			@JsonProperty("service_definition") @Nullable ServiceDefinition serviceDefinition,
+			@JsonProperty("plan") @Nullable Plan plan,
+			@JsonProperty("parameters") @Nullable Map<String, Object> parameters,
+			@JsonProperty("context") @Nullable Context context,
+			@JsonProperty("async_accepted") @Nullable Boolean asyncAccepted,
+			@JsonProperty("platform_instance_id") @Nullable String platformInstanceId,
+			@JsonProperty("api_info_location") @Nullable String apiInfoLocation,
+			@JsonProperty("originating_identity") @Nullable Context originatingIdentity,
+			@JsonProperty("request_identity") @Nullable String requestIdentity,
+			@JsonProperty("maintenance_info") @Nullable MaintenanceInfo maintenanceInfo) {
 		this(serviceDefinitionId, serviceInstanceId, planId, serviceDefinition, plan, parameters, context,
 				asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity, null, null,
 				maintenanceInfo);
 	}
 
-	private CreateServiceInstanceRequest(String serviceDefinitionId, String serviceInstanceId, String planId,
-			ServiceDefinition serviceDefinition, Plan plan, Map<String, Object> parameters, Context context,
-			Boolean asyncAccepted, String platformInstanceId, String apiInfoLocation, Context originatingIdentity,
-			String requestIdentity, String organizationGuid, String spaceGuid, MaintenanceInfo maintenanceInfo) {
+	private CreateServiceInstanceRequest(@Nullable String serviceDefinitionId, @Nullable String serviceInstanceId,
+			@Nullable String planId, @Nullable ServiceDefinition serviceDefinition, @Nullable Plan plan,
+			@Nullable Map<String, Object> parameters, @Nullable Context context, @Nullable Boolean asyncAccepted,
+			@Nullable String platformInstanceId, @Nullable String apiInfoLocation,
+			@Nullable Context originatingIdentity, @Nullable String requestIdentity, @Nullable String organizationGuid,
+			@Nullable String spaceGuid, @Nullable MaintenanceInfo maintenanceInfo) {
 		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity,
 				requestIdentity);
 		this.serviceDefinitionId = serviceDefinitionId;
@@ -150,7 +156,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @return the service instance ID
 	 */
 	@JsonIgnore // mapped as path param
-	public String getServiceInstanceId() {
+	public @Nullable String getServiceInstanceId() {
 		return this.serviceInstanceId;
 	}
 
@@ -207,7 +213,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 */
 	@Deprecated
 	@JsonIgnore
-	public String getOrganizationGuid() {
+	public @Nullable String getOrganizationGuid() {
 		return this.organizationGuid;
 	}
 
@@ -224,7 +230,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 */
 	@Deprecated
 	@JsonIgnore
-	public String getSpaceGuid() {
+	public @Nullable String getSpaceGuid() {
 		return this.spaceGuid;
 	}
 
@@ -278,7 +284,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @return the service definition
 	 */
 	@JsonIgnore /* internal field */
-	public ServiceDefinition getServiceDefinition() {
+	public @Nullable ServiceDefinition getServiceDefinition() {
 		return this.serviceDefinition;
 	}
 
@@ -301,7 +307,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @return the plan
 	 */
 	@JsonIgnore /* internal field */
-	public Plan getPlan() {
+	public @Nullable Plan getPlan() {
 		return this.plan;
 	}
 
@@ -323,7 +329,7 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * request from the platform.
 	 * @return a MaintenanceInfo or null if none was provided
 	 */
-	public MaintenanceInfo getMaintenanceInfo() {
+	public @Nullable MaintenanceInfo getMaintenanceInfo() {
 		return this.maintenanceInfo;
 	}
 
@@ -389,31 +395,31 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 */
 	public static final class CreateServiceInstanceRequestBuilder {
 
-		private String serviceInstanceId;
+		private @Nullable String serviceInstanceId;
 
-		private String serviceDefinitionId;
+		private @Nullable String serviceDefinitionId;
 
-		private String planId;
+		private @Nullable String planId;
 
-		private ServiceDefinition serviceDefinition;
+		private @Nullable ServiceDefinition serviceDefinition;
 
-		private Plan plan;
+		private @Nullable Plan plan;
 
-		private Context context;
+		private @Nullable Context context;
 
 		private final Map<String, Object> parameters = new HashMap<>();
 
 		private boolean asyncAccepted;
 
-		private String platformInstanceId;
+		private @Nullable String platformInstanceId;
 
-		private String apiInfoLocation;
+		private @Nullable String apiInfoLocation;
 
-		private Context originatingIdentity;
+		private @Nullable Context originatingIdentity;
 
-		private String requestIdentity;
+		private @Nullable String requestIdentity;
 
-		private MaintenanceInfo maintenanceInfo;
+		private @Nullable MaintenanceInfo maintenanceInfo;
 
 		private CreateServiceInstanceRequestBuilder() {
 		}

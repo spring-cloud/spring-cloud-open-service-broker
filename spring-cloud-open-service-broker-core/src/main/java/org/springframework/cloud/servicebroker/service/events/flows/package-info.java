@@ -17,4 +17,7 @@
 /**
  * event flows.
  */
+@NullMarked
 package org.springframework.cloud.servicebroker.service.events.flows;
+
+import org.jspecify.annotations.NullMarked;

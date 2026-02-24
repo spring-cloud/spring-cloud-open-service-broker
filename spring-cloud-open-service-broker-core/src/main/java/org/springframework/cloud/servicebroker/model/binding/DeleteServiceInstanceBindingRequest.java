@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.Context;
@@ -42,17 +43,17 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
  */
 public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerRequest {
 
-	private final transient String serviceInstanceId;
+	private final transient @Nullable String serviceInstanceId;
 
-	private final transient String bindingId;
+	private final transient @Nullable String bindingId;
 
-	private final transient String serviceDefinitionId;
+	private final transient @Nullable String serviceDefinitionId;
 
-	private final transient String planId;
+	private final transient @Nullable String planId;
 
-	private final transient ServiceDefinition serviceDefinition;
+	private final transient @Nullable ServiceDefinition serviceDefinition;
 
-	private final transient Plan plan;
+	private final transient @Nullable Plan plan;
 
 	/**
 	 * Construct a new {@link DeleteServiceInstanceBindingRequest}.
@@ -69,9 +70,10 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 * platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 */
-	public DeleteServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
-			String bindingId, ServiceDefinition serviceDefinition, Plan plan, boolean acceptsAsync,
-			String platformInstanceId, String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
+	public DeleteServiceInstanceBindingRequest(@Nullable String serviceInstanceId, @Nullable String serviceDefinitionId,
+			@Nullable String planId, @Nullable String bindingId, @Nullable ServiceDefinition serviceDefinition,
+			@Nullable Plan plan, boolean acceptsAsync, @Nullable String platformInstanceId,
+			@Nullable String apiInfoLocation, @Nullable Context originatingIdentity, @Nullable String requestIdentity) {
 		super(acceptsAsync, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.serviceDefinitionId = serviceDefinitionId;
@@ -98,7 +100,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 * @return the service instance ID
 	 */
 	@JsonIgnore // mapped as path param
-	public String getServiceInstanceId() {
+	public @Nullable String getServiceInstanceId() {
 		return this.serviceInstanceId;
 	}
 
@@ -111,7 +113,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 * @return the service instance ID
 	 */
 	@JsonIgnore // mapped as path param
-	public String getBindingId() {
+	public @Nullable String getBindingId() {
 		return this.bindingId;
 	}
 
@@ -126,7 +128,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 * @return the service definition ID
 	 */
 	@JsonProperty("service_id")
-	public String getServiceDefinitionId() {
+	public @Nullable String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}
 
@@ -142,7 +144,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 * @return the plan ID
 	 */
 	@JsonProperty("plan_id")
-	public String getPlanId() {
+	public @Nullable String getPlanId() {
 		return this.planId;
 	}
 
@@ -156,7 +158,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 * @return the service definition
 	 */
 	@JsonIgnore /* internal field */
-	public ServiceDefinition getServiceDefinition() {
+	public @Nullable ServiceDefinition getServiceDefinition() {
 		return this.serviceDefinition;
 	}
 
@@ -170,7 +172,7 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 * @return the plan
 	 */
 	@JsonIgnore /* internal field */
-	public Plan getPlan() {
+	public @Nullable Plan getPlan() {
 		return this.plan;
 	}
 
@@ -232,27 +234,27 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 	 */
 	public static final class DeleteServiceInstanceBindingRequestBuilder {
 
-		private String serviceInstanceId;
+		private @Nullable String serviceInstanceId;
 
-		private String serviceDefinitionId;
+		private @Nullable String serviceDefinitionId;
 
-		private String planId;
+		private @Nullable String planId;
 
-		private String bindingId;
+		private @Nullable String bindingId;
 
 		private boolean asyncAccepted;
 
-		private String platformInstanceId;
+		private @Nullable String platformInstanceId;
 
-		private String apiInfoLocation;
+		private @Nullable String apiInfoLocation;
 
-		private Context originatingIdentity;
+		private @Nullable Context originatingIdentity;
 
-		private String requestIdentity;
+		private @Nullable String requestIdentity;
 
-		private ServiceDefinition serviceDefinition;
+		private @Nullable ServiceDefinition serviceDefinition;
 
-		private Plan plan;
+		private @Nullable Plan plan;
 
 		private DeleteServiceInstanceBindingRequestBuilder() {
 		}

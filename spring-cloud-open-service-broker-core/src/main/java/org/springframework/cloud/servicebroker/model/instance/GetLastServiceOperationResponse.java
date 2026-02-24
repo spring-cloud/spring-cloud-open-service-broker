@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -45,15 +46,15 @@ import tools.jackson.databind.annotation.JsonNaming;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class GetLastServiceOperationResponse {
 
-	private final OperationState state;
+	private final @Nullable OperationState state;
 
-	private final String description;
+	private final @Nullable String description;
 
-	private final Boolean instanceUsable;
+	private final @Nullable Boolean instanceUsable;
 
-	private final Boolean updateRepeatable;
+	private final @Nullable Boolean updateRepeatable;
 
-	private final Boolean deleteOperation;
+	private final @Nullable Boolean deleteOperation;
 
 	/**
 	 * Construct a new {@link GetLastServiceOperationResponse}.
@@ -84,10 +85,11 @@ public class GetLastServiceOperationResponse {
 	 * @param deleteOperation is delete operation
 	 */
 	@JsonCreator
-	public GetLastServiceOperationResponse(@JsonProperty("state") OperationState state,
-			@JsonProperty("description") String description, @JsonProperty("instance_usable") Boolean instanceUsable,
-			@JsonProperty("update_repeatable") Boolean updateRepeatable,
-			@JsonProperty("delete_operation") Boolean deleteOperation) {
+	public GetLastServiceOperationResponse(@JsonProperty("state") @Nullable OperationState state,
+			@JsonProperty("description") @Nullable String description,
+			@JsonProperty("instance_usable") @Nullable Boolean instanceUsable,
+			@JsonProperty("update_repeatable") @Nullable Boolean updateRepeatable,
+			@JsonProperty("delete_operation") @Nullable Boolean deleteOperation) {
 		this.state = state;
 		this.description = description;
 		this.instanceUsable = instanceUsable;
@@ -99,7 +101,7 @@ public class GetLastServiceOperationResponse {
 	 * Get the current state of an asynchronous operation.
 	 * @return the operation state
 	 */
-	public OperationState getState() {
+	public @Nullable OperationState getState() {
 		return this.state;
 	}
 
@@ -107,7 +109,7 @@ public class GetLastServiceOperationResponse {
 	 * Get the description of the current asynchronous operation.
 	 * @return the description, or {@literal null} if not provided
 	 */
-	public String getDescription() {
+	public @Nullable String getDescription() {
 		return this.description;
 	}
 
@@ -116,7 +118,7 @@ public class GetLastServiceOperationResponse {
 	 * or deprovisioning operation.
 	 * @return the boolean value
 	 */
-	public Boolean isInstanceUsable() {
+	public @Nullable Boolean isInstanceUsable() {
 		return this.instanceUsable;
 	}
 
@@ -124,7 +126,7 @@ public class GetLastServiceOperationResponse {
 	 * Get a boolean value indicating whether a failed update is repeatable.
 	 * @return the boolean value
 	 */
-	public Boolean isUpdateRepeatable() {
+	public @Nullable Boolean isUpdateRepeatable() {
 		return this.updateRepeatable;
 	}
 
@@ -179,13 +181,13 @@ public class GetLastServiceOperationResponse {
 	 */
 	public static final class GetLastServiceOperationResponseBuilder {
 
-		private OperationState state;
+		private @Nullable OperationState state;
 
-		private String description;
+		private @Nullable String description;
 
-		private Boolean instanceUsable;
+		private @Nullable Boolean instanceUsable;
 
-		private Boolean updateRepeatable;
+		private @Nullable Boolean updateRepeatable;
 
 		private boolean deleteOperation;
 

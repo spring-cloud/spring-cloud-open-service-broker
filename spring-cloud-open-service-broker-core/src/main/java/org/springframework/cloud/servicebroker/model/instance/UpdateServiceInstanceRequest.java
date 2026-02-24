@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -51,17 +52,17 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	@NotEmpty
 	private final String serviceDefinitionId;
 
-	private final String planId;
+	private final @Nullable String planId;
 
-	private final PreviousValues previousValues;
+	private final @Nullable PreviousValues previousValues;
 
-	private final MaintenanceInfo maintenanceInfo;
+	private final @Nullable MaintenanceInfo maintenanceInfo;
 
-	private transient String serviceInstanceId;
+	private transient @Nullable String serviceInstanceId;
 
-	private transient ServiceDefinition serviceDefinition;
+	private transient @Nullable ServiceDefinition serviceDefinition;
 
-	private transient Plan plan;
+	private transient @Nullable Plan plan;
 
 	/**
 	 * Construct a new {@link UpdateServiceInstanceRequest}.
@@ -89,17 +90,20 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @param maintenanceInfo the maintenance info (possibly null)
 	 */
 	@JsonCreator
-	public UpdateServiceInstanceRequest(@JsonProperty("service_id") String serviceDefinitionId,
-			@JsonProperty("service_instance_id") String serviceInstanceId, @JsonProperty("plan_id") String planId,
-			@JsonProperty("service_definition") ServiceDefinition serviceDefinition, @JsonProperty("plan") Plan plan,
-			@JsonProperty("previous_values") PreviousValues previousValues,
-			@JsonProperty("parameters") Map<String, Object> parameters, @JsonProperty("context") Context context,
-			@JsonProperty("async_accepted") Boolean asyncAccepted,
-			@JsonProperty("platform_instance_id") String platformInstanceId,
-			@JsonProperty("api_info_location") String apiInfoLocation,
-			@JsonProperty("originating_identity") Context originatingIdentity,
-			@JsonProperty("request_identity") String requestIdentity,
-			@JsonProperty("maintenance_info") MaintenanceInfo maintenanceInfo) {
+	public UpdateServiceInstanceRequest(@JsonProperty("service_id") @Nullable String serviceDefinitionId,
+			@JsonProperty("service_instance_id") @Nullable String serviceInstanceId,
+			@JsonProperty("plan_id") @Nullable String planId,
+			@JsonProperty("service_definition") @Nullable ServiceDefinition serviceDefinition,
+			@JsonProperty("plan") @Nullable Plan plan,
+			@JsonProperty("previous_values") @Nullable PreviousValues previousValues,
+			@JsonProperty("parameters") @Nullable Map<String, Object> parameters,
+			@JsonProperty("context") @Nullable Context context,
+			@JsonProperty("async_accepted") @Nullable Boolean asyncAccepted,
+			@JsonProperty("platform_instance_id") @Nullable String platformInstanceId,
+			@JsonProperty("api_info_location") @Nullable String apiInfoLocation,
+			@JsonProperty("originating_identity") @Nullable Context originatingIdentity,
+			@JsonProperty("request_identity") @Nullable String requestIdentity,
+			@JsonProperty("maintenance_info") @Nullable MaintenanceInfo maintenanceInfo) {
 		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity,
 				requestIdentity);
 		this.serviceDefinitionId = serviceDefinitionId;
@@ -122,7 +126,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @return the service instance ID
 	 */
 	@JsonIgnore
-	public String getServiceInstanceId() {
+	public @Nullable String getServiceInstanceId() {
 		return this.serviceInstanceId;
 	}
 
@@ -162,7 +166,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @return the plan ID
 	 */
 	@JsonProperty("plan_id")
-	public String getPlanId() {
+	public @Nullable String getPlanId() {
 		return this.planId;
 	}
 
@@ -174,7 +178,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * request from the platform.
 	 * @return the prior service instance details
 	 */
-	public PreviousValues getPreviousValues() {
+	public @Nullable PreviousValues getPreviousValues() {
 		return this.previousValues;
 	}
 
@@ -188,7 +192,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @return the service definition
 	 */
 	@JsonIgnore
-	public ServiceDefinition getServiceDefinition() {
+	public @Nullable ServiceDefinition getServiceDefinition() {
 		return this.serviceDefinition;
 	}
 
@@ -211,7 +215,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * @return the plan
 	 */
 	@JsonIgnore
-	public Plan getPlan() {
+	public @Nullable Plan getPlan() {
 		return this.plan;
 	}
 
@@ -233,7 +237,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * request from the platform.
 	 * @return a MaintenanceInfo or null if none was provided
 	 */
-	public MaintenanceInfo getMaintenanceInfo() {
+	public @Nullable MaintenanceInfo getMaintenanceInfo() {
 		return this.maintenanceInfo;
 	}
 
@@ -302,10 +306,10 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 * href=https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object>https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object</a>
 		 */
 		@Deprecated
-		private final String serviceDefinitionId;
+		private final @Nullable String serviceDefinitionId;
 
 		@NotEmpty
-		private final String planId;
+		private final @Nullable String planId;
 
 		/**
 		 * remains in the model for marshaling support.
@@ -314,7 +318,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 * href=https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object>https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object</a>
 		 */
 		@Deprecated
-		private final String organizationId;
+		private final @Nullable String organizationId;
 
 		/**
 		 * remains in the model for marshaling support.
@@ -323,9 +327,9 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 * href=https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object>https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object</a>
 		 */
 		@Deprecated
-		private final String spaceId;
+		private final @Nullable String spaceId;
 
-		private final MaintenanceInfo maintenanceInfo;
+		private final @Nullable MaintenanceInfo maintenanceInfo;
 
 		private PreviousValues() {
 			this(null, null, null, null, null);
@@ -340,10 +344,11 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 * @param maintenanceInfo the maintenance info (possibly null)
 		 */
 		@JsonCreator
-		public PreviousValues(@JsonProperty("service_id") String serviceDefinitionId,
-				@JsonProperty("plan_id") String planId, @JsonProperty("organization_id") String organizationId,
-				@JsonProperty("space_id") String spaceId,
-				@JsonProperty("maintenance_info") MaintenanceInfo maintenanceInfo) {
+		public PreviousValues(@JsonProperty("service_id") @Nullable String serviceDefinitionId,
+				@JsonProperty("plan_id") @Nullable String planId,
+				@JsonProperty("organization_id") @Nullable String organizationId,
+				@JsonProperty("space_id") @Nullable String spaceId,
+				@JsonProperty("maintenance_info") @Nullable MaintenanceInfo maintenanceInfo) {
 			this.serviceDefinitionId = serviceDefinitionId;
 			this.planId = planId;
 			this.organizationId = organizationId;
@@ -359,7 +364,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 * {@literal previous_values} field in the body of the request from the platform.
 		 * @return the ID of the service offering
 		 */
-		public String getServiceDefinitionId() {
+		public @Nullable String getServiceDefinitionId() {
 			return this.serviceDefinitionId;
 		}
 
@@ -371,7 +376,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 * {@literal previous_values} field in the body of the request from the platform.
 		 * @return the plan ID
 		 */
-		public String getPlanId() {
+		public @Nullable String getPlanId() {
 			return this.planId;
 		}
 
@@ -383,7 +388,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 * {@literal previous_values} field in the body of the request from the platform.
 		 * @return organization ID for the service instance
 		 */
-		public String getOrganizationId() {
+		public @Nullable String getOrganizationId() {
 			return this.organizationId;
 		}
 
@@ -395,7 +400,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 * {@literal previous_values} field in the body of the request from the platform.
 		 * @return the space ID for the service instance
 		 */
-		public String getSpaceId() {
+		public @Nullable String getSpaceId() {
 			return this.spaceId;
 		}
 
@@ -421,7 +426,7 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 * {@literal previous_values} field in the body of the request from the platform.
 		 * @return the maintenance info
 		 */
-		public MaintenanceInfo getMaintenanceInfo() {
+		public @Nullable MaintenanceInfo getMaintenanceInfo() {
 			return this.maintenanceInfo;
 		}
 
@@ -459,15 +464,15 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 */
 		public static final class PreviousValuesBuilder {
 
-			private String serviceDefinitionId;
+			private @Nullable String serviceDefinitionId;
 
-			private String planId;
+			private @Nullable String planId;
 
-			private String organizationId;
+			private @Nullable String organizationId;
 
-			private String spaceId;
+			private @Nullable String spaceId;
 
-			private MaintenanceInfo maintenanceInfo;
+			private @Nullable MaintenanceInfo maintenanceInfo;
 
 			private PreviousValuesBuilder() {
 			}
@@ -548,33 +553,33 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 */
 	public static final class UpdateServiceInstanceRequestBuilder {
 
-		private String serviceInstanceId;
+		private @Nullable String serviceInstanceId;
 
-		private String serviceDefinitionId;
+		private @Nullable String serviceDefinitionId;
 
-		private String planId;
+		private @Nullable String planId;
 
-		private ServiceDefinition serviceDefinition;
+		private @Nullable ServiceDefinition serviceDefinition;
 
-		private Plan plan;
+		private @Nullable Plan plan;
 
-		private PreviousValues previousValues;
+		private @Nullable PreviousValues previousValues;
 
 		private final Map<String, Object> parameters = new HashMap<>();
 
-		private Context context;
+		private @Nullable Context context;
 
 		private boolean asyncAccepted;
 
-		private String platformInstanceId;
+		private @Nullable String platformInstanceId;
 
-		private String apiInfoLocation;
+		private @Nullable String apiInfoLocation;
 
-		private Context originatingIdentity;
+		private @Nullable Context originatingIdentity;
 
-		private String requestIdentity;
+		private @Nullable String requestIdentity;
 
-		private MaintenanceInfo maintenanceInfo;
+		private @Nullable MaintenanceInfo maintenanceInfo;
 
 		private UpdateServiceInstanceRequestBuilder() {
 		}

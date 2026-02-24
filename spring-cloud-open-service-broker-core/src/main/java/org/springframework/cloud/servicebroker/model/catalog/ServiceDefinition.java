@@ -29,6 +29,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -58,24 +59,24 @@ public class ServiceDefinition {
 
 	private final boolean bindable;
 
-	private final Boolean planUpdateable;
+	private final @Nullable Boolean planUpdateable;
 
-	private final Boolean instancesRetrievable;
+	private final @Nullable Boolean instancesRetrievable;
 
-	private final Boolean bindingsRetrievable;
+	private final @Nullable Boolean bindingsRetrievable;
 
-	private final Boolean allowContextUpdates;
+	private final @Nullable Boolean allowContextUpdates;
 
 	@NotEmpty
 	private final List<Plan> plans;
 
-	private final List<String> tags;
+	private final @Nullable List<String> tags;
 
-	private final Map<String, Object> metadata;
+	private final @Nullable Map<String, Object> metadata;
 
-	private final List<String> requires;
+	private final @Nullable List<String> requires;
 
-	private final DashboardClient dashboardClient;
+	private final @Nullable DashboardClient dashboardClient;
 
 	/**
 	 * Construct a new {@link ServiceDefinition}.
@@ -102,15 +103,16 @@ public class ServiceDefinition {
 	 * @param dashboardClient the service dashboard URI
 	 */
 	@JsonCreator
-	public ServiceDefinition(@JsonProperty("id") String id, @JsonProperty("name") String name,
-			@JsonProperty("description") String description, @JsonProperty("bindable") boolean bindable,
-			@JsonProperty("plan_updateable") Boolean planUpdateable,
-			@JsonProperty("instances_retrievable") Boolean instancesRetrievable,
-			@JsonProperty("bindings_retrievable") Boolean bindingsRetrievable,
-			@JsonProperty("allow_context_updates") Boolean allowContextUpdates, @JsonProperty("plans") List<Plan> plans,
-			@JsonProperty("tags") List<String> tags, @JsonProperty("metadata") Map<String, Object> metadata,
-			@JsonProperty("requires") List<String> requires,
-			@JsonProperty("dashboard_client") DashboardClient dashboardClient) {
+	public ServiceDefinition(@JsonProperty("id") @Nullable String id, @JsonProperty("name") @Nullable String name,
+			@JsonProperty("description") @Nullable String description, @JsonProperty("bindable") boolean bindable,
+			@JsonProperty("plan_updateable") @Nullable Boolean planUpdateable,
+			@JsonProperty("instances_retrievable") @Nullable Boolean instancesRetrievable,
+			@JsonProperty("bindings_retrievable") @Nullable Boolean bindingsRetrievable,
+			@JsonProperty("allow_context_updates") @Nullable Boolean allowContextUpdates,
+			@JsonProperty("plans") List<Plan> plans, @JsonProperty("tags") @Nullable List<String> tags,
+			@JsonProperty("metadata") @Nullable Map<String, Object> metadata,
+			@JsonProperty("requires") @Nullable List<String> requires,
+			@JsonProperty("dashboard_client") @Nullable DashboardClient dashboardClient) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -165,7 +167,7 @@ public class ServiceDefinition {
 	 * different plan from the one used to provision a service instance.
 	 * @return true if the plan may be updated
 	 */
-	public Boolean isPlanUpdateable() {
+	public @Nullable Boolean isPlanUpdateable() {
 		return this.planUpdateable;
 	}
 
@@ -173,7 +175,7 @@ public class ServiceDefinition {
 	 * Indicates whether the service broker supports retrieving service instances.
 	 * @return true if the service instances may be retrieved
 	 */
-	public Boolean isInstancesRetrievable() {
+	public @Nullable Boolean isInstancesRetrievable() {
 		return this.instancesRetrievable;
 	}
 
@@ -181,7 +183,7 @@ public class ServiceDefinition {
 	 * Indicates whether the service broker supports retrieving service bindings.
 	 * @return true if the service bindings may be retrieved
 	 */
-	public Boolean isBindingsRetrievable() {
+	public @Nullable Boolean isBindingsRetrievable() {
 		return this.bindingsRetrievable;
 	}
 
@@ -190,7 +192,7 @@ public class ServiceDefinition {
 	 * for the service instance in the platform changes.
 	 * @return true if the service instances supports context updates
 	 */
-	public Boolean isAllowContextUpdates() {
+	public @Nullable Boolean isAllowContextUpdates() {
 		return this.allowContextUpdates;
 	}
 
@@ -207,7 +209,7 @@ public class ServiceDefinition {
 	 * characteristics.
 	 * @return the tags
 	 */
-	public List<String> getTags() {
+	public @Nullable List<String> getTags() {
 		return this.tags;
 	}
 
@@ -215,7 +217,7 @@ public class ServiceDefinition {
 	 * A map of metadata to further describe a service offering.
 	 * @return the service metadata
 	 */
-	public Map<String, Object> getMetadata() {
+	public @Nullable Map<String, Object> getMetadata() {
 		return this.metadata;
 	}
 
@@ -225,7 +227,7 @@ public class ServiceDefinition {
 	 * @return the required permissions
 	 * @see ServiceDefinitionRequires supported permissions
 	 */
-	public List<String> getRequires() {
+	public @Nullable List<String> getRequires() {
 		return this.requires;
 	}
 
@@ -233,7 +235,7 @@ public class ServiceDefinition {
 	 * Data necessary to activate the Dashboard SSO feature for this service.
 	 * @return the service dashboard URI
 	 */
-	public DashboardClient getDashboardClient() {
+	public @Nullable DashboardClient getDashboardClient() {
 		return this.dashboardClient;
 	}
 

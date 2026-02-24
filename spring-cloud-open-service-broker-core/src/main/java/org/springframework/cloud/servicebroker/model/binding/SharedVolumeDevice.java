@@ -22,6 +22,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -38,9 +39,9 @@ import tools.jackson.databind.annotation.JsonNaming;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class SharedVolumeDevice extends VolumeDevice {
 
-	private final String volumeId;
+	private final @Nullable String volumeId;
 
-	private final Map<String, Object> mountConfig;
+	private final @Nullable Map<String, Object> mountConfig;
 
 	/**
 	 * Construct a new {@link SharedVolumeDevice}.
@@ -55,8 +56,8 @@ public class SharedVolumeDevice extends VolumeDevice {
 	 * @param mountConfig the device configuration
 	 */
 	@JsonCreator
-	public SharedVolumeDevice(@JsonProperty("volume_id") String volumeId,
-			@JsonProperty("mount_config") Map<String, Object> mountConfig) {
+	public SharedVolumeDevice(@JsonProperty("volume_id") @Nullable String volumeId,
+			@JsonProperty("mount_config") @Nullable Map<String, Object> mountConfig) {
 		super();
 		this.volumeId = volumeId;
 		this.mountConfig = mountConfig;
@@ -114,7 +115,7 @@ public class SharedVolumeDevice extends VolumeDevice {
 	 */
 	public static final class SharedVolumeDeviceBuilder {
 
-		private String volumeId;
+		private @Nullable String volumeId;
 
 		private final Map<String, Object> mountConfig = new HashMap<>();
 

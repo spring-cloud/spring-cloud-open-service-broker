@@ -25,6 +25,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Details of a response to a request to create a new service instance binding associated
@@ -46,7 +47,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 
 	private final Map<String, Object> credentials;
 
-	private final String syslogDrainUrl;
+	private final @Nullable String syslogDrainUrl;
 
 	private final List<VolumeMount> volumeMounts;
 
@@ -71,11 +72,12 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	 * @param endpoints the set of endpoints
 	 */
 	@JsonCreator
-	public CreateServiceInstanceAppBindingResponse(@JsonProperty("async") Boolean async,
-			@JsonProperty("operation") String operation, @JsonProperty("binding_existed") Boolean bindingExisted,
-			@JsonProperty("metadata") BindingMetadata metadata,
+	public CreateServiceInstanceAppBindingResponse(@JsonProperty("async") @Nullable Boolean async,
+			@JsonProperty("operation") @Nullable String operation,
+			@JsonProperty("binding_existed") @Nullable Boolean bindingExisted,
+			@JsonProperty("metadata") @Nullable BindingMetadata metadata,
 			@JsonProperty("credentials") Map<String, Object> credentials,
-			@JsonProperty("syslog_drain_url") String syslogDrainUrl,
+			@JsonProperty("syslog_drain_url") @Nullable String syslogDrainUrl,
 			@JsonProperty("volume_mounts") List<VolumeMount> volumeMounts,
 			@JsonProperty("endpoints") List<Endpoint> endpoints) {
 		super(async, operation, bindingExisted, metadata);
@@ -172,7 +174,7 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 
 		private final Map<String, Object> credentials = new HashMap<>();
 
-		private String syslogDrainUrl;
+		private @Nullable String syslogDrainUrl;
 
 		private final List<VolumeMount> volumeMounts = new ArrayList<>();
 
@@ -180,11 +182,11 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 
 		private boolean bindingExisted;
 
-		private BindingMetadata metadata;
+		private @Nullable BindingMetadata metadata;
 
 		private boolean async;
 
-		private String operation;
+		private @Nullable String operation;
 
 		private CreateServiceInstanceAppBindingResponseBuilder() {
 		}

@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -40,47 +41,47 @@ public class ServiceDefinition {
 	 * This must be unique within the platform. Using a GUID is recommended.
 	 */
 	@NotEmpty
-	private String id;
+	private @Nullable String id;
 
 	/**
 	 * A CLI-friendly name of the service that will appear in the catalog. The value
 	 * should be all lowercase, with no spaces.
 	 */
 	@NotEmpty
-	private String name;
+	private @Nullable String name;
 
 	/**
 	 * A user-friendly short description of the service that will appear in the catalog.
 	 */
 	@NotEmpty
-	private String description;
+	private @Nullable String description;
 
 	/**
 	 * Indicates whether the service can be bound to applications.
 	 */
-	private Boolean bindable = false;
+	private @Nullable Boolean bindable = false;
 
 	/**
 	 * Indicates whether the service supports requests to update instances to use a
 	 * different plan from the one used to provision a service instance.
 	 */
-	private Boolean planUpdateable;
+	private @Nullable Boolean planUpdateable;
 
 	/**
 	 * Indicates whether the service broker supports retrieving service instances.
 	 */
-	private Boolean instancesRetrievable;
+	private @Nullable Boolean instancesRetrievable;
 
 	/**
 	 * Indicates whether the service broker supports retrieving service bindings.
 	 */
-	private Boolean bindingsRetrievable;
+	private @Nullable Boolean bindingsRetrievable;
 
 	/**
 	 * Specifies whether a Service Instance supports Update requests when contextual data
 	 * for the Service Instance in the Platform changes.
 	 */
-	private Boolean allowContextUpdates;
+	private @Nullable Boolean allowContextUpdates;
 
 	/**
 	 * A list of tags to aid in categorizing and classifying services with similar
@@ -93,7 +94,7 @@ public class ServiceDefinition {
 	 */
 	@NestedConfigurationProperty
 	@Valid
-	private ServiceMetadata metadata;
+	private @Nullable ServiceMetadata metadata;
 
 	/**
 	 * A list of permissions that the user would have to give the service, if they
@@ -109,7 +110,7 @@ public class ServiceDefinition {
 	 */
 	@NestedConfigurationProperty
 	@Valid
-	private DashboardClient dashboardClient;
+	private @Nullable DashboardClient dashboardClient;
 
 	/**
 	 * A list of plans for this service.

@@ -21,6 +21,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -37,11 +38,11 @@ import tools.jackson.databind.annotation.JsonNaming;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DashboardClient {
 
-	private final String id;
+	private final @Nullable String id;
 
-	private final String secret;
+	private final @Nullable String secret;
 
-	private final String redirectUri;
+	private final @Nullable String redirectUri;
 
 	/**
 	 * Construct a new {@link DashboardClient}.
@@ -57,8 +58,8 @@ public class DashboardClient {
 	 * @param redirectUri the dashboard URI
 	 */
 	@JsonCreator
-	public DashboardClient(@JsonProperty("id") String id, @JsonProperty("secret") String secret,
-			@JsonProperty("redirect_uri") String redirectUri) {
+	public DashboardClient(@JsonProperty("id") @Nullable String id, @JsonProperty("secret") @Nullable String secret,
+			@JsonProperty("redirect_uri") @Nullable String redirectUri) {
 		this.id = id;
 		this.secret = secret;
 		this.redirectUri = redirectUri;
@@ -70,7 +71,7 @@ public class DashboardClient {
 	 * platform will return an error to the operator when the service is registered.
 	 * @return the client ID
 	 */
-	public String getId() {
+	public @Nullable String getId() {
 		return this.id;
 	}
 
@@ -78,7 +79,7 @@ public class DashboardClient {
 	 * The client secret for the dashboard OAuth2 client.
 	 * @return the client secret
 	 */
-	public String getSecret() {
+	public @Nullable String getSecret() {
 		return this.secret;
 	}
 
@@ -87,7 +88,7 @@ public class DashboardClient {
 	 * dashboard SSO.
 	 * @return the dashboard URI
 	 */
-	public String getRedirectUri() {
+	public @Nullable String getRedirectUri() {
 		return this.redirectUri;
 	}
 
@@ -129,11 +130,11 @@ public class DashboardClient {
 	 */
 	public static final class DashboardClientBuilder {
 
-		private String id;
+		private @Nullable String id;
 
-		private String secret;
+		private @Nullable String secret;
 
-		private String redirectUri;
+		private @Nullable String redirectUri;
 
 		private DashboardClientBuilder() {
 		}

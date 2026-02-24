@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Details of a response to a request to create a new service instance binding associated
@@ -37,7 +38,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInstanceBindingResponse {
 
-	private final String routeServiceUrl;
+	private final @Nullable String routeServiceUrl;
 
 	/**
 	 * Construct a new {@link CreateServiceInstanceRouteBindingResponse}.
@@ -55,10 +56,11 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 	 * @param routeServiceUrl the route service URL
 	 */
 	@JsonCreator
-	public CreateServiceInstanceRouteBindingResponse(@JsonProperty("async") Boolean async,
-			@JsonProperty("operation") String operation, @JsonProperty("binding_existed") Boolean bindingExisted,
-			@JsonProperty("metadata") BindingMetadata metadata,
-			@JsonProperty("route_service_url") String routeServiceUrl) {
+	public CreateServiceInstanceRouteBindingResponse(@JsonProperty("async") @Nullable Boolean async,
+			@JsonProperty("operation") @Nullable String operation,
+			@JsonProperty("binding_existed") @Nullable Boolean bindingExisted,
+			@JsonProperty("metadata") @Nullable BindingMetadata metadata,
+			@JsonProperty("route_service_url") @Nullable String routeServiceUrl) {
 		super(async, operation, bindingExisted, metadata);
 		this.routeServiceUrl = routeServiceUrl;
 	}
@@ -117,15 +119,15 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 	 */
 	public static final class CreateServiceInstanceRouteBindingResponseBuilder {
 
-		private String routeServiceUrl;
+		private @Nullable String routeServiceUrl;
 
 		private boolean bindingExisted;
 
-		private BindingMetadata metadata;
+		private @Nullable BindingMetadata metadata;
 
 		private boolean async;
 
-		private String operation;
+		private @Nullable String operation;
 
 		private CreateServiceInstanceRouteBindingResponseBuilder() {
 		}

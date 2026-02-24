@@ -25,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -53,19 +54,19 @@ public class Plan {
 	@NotEmpty
 	private final String description;
 
-	private final Map<String, Object> metadata;
+	private final @Nullable Map<String, Object> metadata;
 
-	private final Boolean free;
+	private final @Nullable Boolean free;
 
-	private final Boolean bindable;
+	private final @Nullable Boolean bindable;
 
-	private final Boolean planUpdateable;
+	private final @Nullable Boolean planUpdateable;
 
-	private final Schemas schemas;
+	private final @Nullable Schemas schemas;
 
-	private final Integer maximumPollingDuration;
+	private final @Nullable Integer maximumPollingDuration;
 
-	private final MaintenanceInfo maintenanceInfo;
+	private final @Nullable MaintenanceInfo maintenanceInfo;
 
 	/**
 	 * Construct a new {@link Plan}.
@@ -88,12 +89,14 @@ public class Plan {
 	 * @param maintenanceInfo the maintentance information
 	 */
 	@JsonCreator
-	public Plan(@JsonProperty("id") String id, @JsonProperty("name") String name,
-			@JsonProperty("description") String description, @JsonProperty("metadata") Map<String, Object> metadata,
-			@JsonProperty("free") Boolean free, @JsonProperty("bindable") Boolean bindable,
-			@JsonProperty("plan_updateable") Boolean planUpdateable, @JsonProperty("schemas") Schemas schemas,
-			@JsonProperty("maximum_polling_duration") Integer maximumPollingDuration,
-			@JsonProperty("maintenance_info") MaintenanceInfo maintenanceInfo) {
+	public Plan(@JsonProperty("id") @Nullable String id, @JsonProperty("name") @Nullable String name,
+			@JsonProperty("description") @Nullable String description,
+			@JsonProperty("metadata") @Nullable Map<String, Object> metadata,
+			@JsonProperty("free") @Nullable Boolean free, @JsonProperty("bindable") @Nullable Boolean bindable,
+			@JsonProperty("plan_updateable") @Nullable Boolean planUpdateable,
+			@JsonProperty("schemas") @Nullable Schemas schemas,
+			@JsonProperty("maximum_polling_duration") @Nullable Integer maximumPollingDuration,
+			@JsonProperty("maintenance_info") @Nullable MaintenanceInfo maintenanceInfo) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -139,7 +142,7 @@ public class Plan {
 	 * "https://github.com/openservicebrokerapi/servicebroker/blob/master/profile.md#service-metadata">Service
 	 * metadata conventions</a>
 	 */
-	public Map<String, Object> getMetadata() {
+	public @Nullable Map<String, Object> getMetadata() {
 		return this.metadata;
 	}
 
@@ -148,7 +151,7 @@ public class Plan {
 	 * in a platform quota.
 	 * @return true if the plan has no cost
 	 */
-	public Boolean isFree() {
+	public @Nullable Boolean isFree() {
 		return this.free;
 	}
 
@@ -158,7 +161,7 @@ public class Plan {
 	 * from the serialized JSON.
 	 * @return true if the service with this plan may be bound
 	 */
-	public Boolean isBindable() {
+	public @Nullable Boolean isBindable() {
 		return this.bindable;
 	}
 
@@ -170,7 +173,7 @@ public class Plan {
 	 * serialized JSON.
 	 * @return true if the plan may be updated
 	 */
-	public Boolean isPlanUpdateable() {
+	public @Nullable Boolean isPlanUpdateable() {
 		return this.planUpdateable;
 	}
 
@@ -178,7 +181,7 @@ public class Plan {
 	 * The schemas for this plan.
 	 * @return the plan schemas
 	 */
-	public Schemas getSchemas() {
+	public @Nullable Schemas getSchemas() {
 		return this.schemas;
 	}
 
@@ -189,7 +192,7 @@ public class Plan {
 	 * <code>null</code>, the field will be omitted from the serialized JSON.
 	 * @return the maximum polling duration
 	 */
-	public Integer getMaximumPollingDuration() {
+	public @Nullable Integer getMaximumPollingDuration() {
 		return this.maximumPollingDuration;
 	}
 
@@ -199,7 +202,7 @@ public class Plan {
 	 * this when Provisioning or Updating a Service Instance.
 	 * @return the maintenance info
 	 */
-	public MaintenanceInfo getMaintenanceInfo() {
+	public @Nullable MaintenanceInfo getMaintenanceInfo() {
 		return this.maintenanceInfo;
 	}
 

@@ -17,6 +17,7 @@
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import jakarta.validation.Valid;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -35,20 +36,20 @@ public class Schemas {
 	 */
 	@NestedConfigurationProperty
 	@Valid
-	private ServiceInstanceSchema serviceInstance;
+	private @Nullable ServiceInstanceSchema serviceInstance;
 
 	/**
 	 * The schemas available on a service binding.
 	 */
 	@NestedConfigurationProperty
 	@Valid
-	private ServiceBindingSchema serviceBinding;
+	private @Nullable ServiceBindingSchema serviceBinding;
 
 	/**
 	 * Get the service instance schema.
 	 * @return the service instance schema
 	 */
-	public ServiceInstanceSchema getServiceInstance() {
+	public @Nullable ServiceInstanceSchema getServiceInstance() {
 		return this.serviceInstance;
 	}
 
@@ -64,7 +65,7 @@ public class Schemas {
 	 * Get the service binding schema.
 	 * @return the service binding schema
 	 */
-	public ServiceBindingSchema getServiceBinding() {
+	public @Nullable ServiceBindingSchema getServiceBinding() {
 		return this.serviceBinding;
 	}
 

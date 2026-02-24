@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -74,8 +75,8 @@ public class Context {
 	 * @param properties collection of properties
 	 */
 	@JsonCreator
-	protected Context(@JsonProperty("platform") String platform,
-			@JsonProperty("properties") Map<String, Object> properties) {
+	protected Context(@JsonProperty("platform") @Nullable String platform,
+			@JsonProperty("properties") @Nullable Map<String, Object> properties) {
 		this.platform = platform;
 		if (!CollectionUtils.isEmpty(properties)) {
 			this.properties.putAll(properties);
@@ -86,7 +87,7 @@ public class Context {
 	 * Get the name of the platform making the request.
 	 * @return the platform identifier
 	 */
-	public String getPlatform() {
+	public @Nullable String getPlatform() {
 		return this.platform;
 	}
 
@@ -115,7 +116,7 @@ public class Context {
 	 * @return the value of the property, or {@literal null} if the key is not present in
 	 * the request
 	 */
-	public Object getProperty(String key) {
+	public @Nullable Object getProperty(String key) {
 		return this.properties.get(key);
 	}
 
@@ -125,7 +126,7 @@ public class Context {
 	 * @return the value of the property, or {@literal null} if the key is not present in
 	 * the request
 	 */
-	protected String getStringProperty(String key) {
+	protected @Nullable String getStringProperty(String key) {
 		if (getProperty(key) != null) {
 			return getProperty(key).toString();
 		}
@@ -152,7 +153,7 @@ public class Context {
 	 */
 
 	@SuppressWarnings("unchecked")
-	protected Map<String, Object> getMapProperty(String key) {
+	protected @Nullable Map<String, Object> getMapProperty(String key) {
 		return (Map<String, Object>) this.properties.get(key);
 	}
 

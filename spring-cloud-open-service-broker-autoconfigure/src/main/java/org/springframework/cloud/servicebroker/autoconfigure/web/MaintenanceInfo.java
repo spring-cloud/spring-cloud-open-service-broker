@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
  * that describes a maintenance info available for a {@link Plan}.
@@ -29,18 +31,18 @@ public class MaintenanceInfo {
 	/**
 	 * The version of the maintenance update available for a plan.
 	 */
-	private String version;
+	private @Nullable String version;
 
 	/**
 	 * The description of the impact of the maintenance update.
 	 */
-	private String description;
+	private @Nullable String description;
 
 	/**
 	 * Get the version of the maintenance update.
 	 * @return the version
 	 */
-	public String getVersion() {
+	public @Nullable String getVersion() {
 		return this.version;
 	}
 
@@ -56,7 +58,7 @@ public class MaintenanceInfo {
 	 * Get the description of the maintenance update.
 	 * @return the description
 	 */
-	public String getDescription() {
+	public @Nullable String getDescription() {
 		return this.description;
 	}
 

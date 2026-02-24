@@ -19,6 +19,8 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -43,7 +45,7 @@ public class Cost {
 	/**
 	 * Display name for type of cost, e.g. Monthly, Hourly, Request, GB.
 	 */
-	private String unit;
+	private @Nullable String unit;
 
 	/**
 	 * Get the amount map containing currency codes and amounts.
@@ -78,7 +80,7 @@ public class Cost {
 	 * Get the unit of cost.
 	 * @return the unit
 	 */
-	public String getUnit() {
+	public @Nullable String getUnit() {
 		return this.unit;
 	}
 

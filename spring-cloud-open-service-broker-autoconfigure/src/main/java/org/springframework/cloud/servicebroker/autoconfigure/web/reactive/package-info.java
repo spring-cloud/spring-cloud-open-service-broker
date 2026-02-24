@@ -17,4 +17,7 @@
 /**
  * Auto-configuration to support Spring WebFlux.
  */
+@NullMarked
 package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
+
+import org.jspecify.annotations.NullMarked;

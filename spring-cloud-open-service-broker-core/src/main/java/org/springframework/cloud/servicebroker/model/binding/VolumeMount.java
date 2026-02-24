@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.core.JsonParser;
 import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.PropertyNamingStrategies;
@@ -100,15 +101,15 @@ public class VolumeMount {
 
 	}
 
-	private final String driver;
+	private final @Nullable String driver;
 
-	private final String containerDir;
+	private final @Nullable String containerDir;
 
-	private final Mode mode;
+	private final @Nullable Mode mode;
 
-	private final DeviceType deviceType;
+	private final @Nullable DeviceType deviceType;
 
-	private final VolumeDevice device;
+	private final @Nullable VolumeDevice device;
 
 	/**
 	 * Construct a new {@link VolumeMount}.
@@ -126,9 +127,10 @@ public class VolumeMount {
 	 * @param device the volume device details
 	 */
 	@JsonCreator
-	public VolumeMount(@JsonProperty("driver") String driver, @JsonProperty("container_dir") String containerDir,
-			@JsonProperty("mode") Mode mode, @JsonProperty("device_type") DeviceType deviceType,
-			@JsonProperty("device") VolumeDevice device) {
+	public VolumeMount(@JsonProperty("driver") @Nullable String driver,
+			@JsonProperty("container_dir") @Nullable String containerDir, @JsonProperty("mode") @Nullable Mode mode,
+			@JsonProperty("device_type") @Nullable DeviceType deviceType,
+			@JsonProperty("device") @Nullable VolumeDevice device) {
 		this.driver = driver;
 		this.containerDir = containerDir;
 		this.mode = mode;
@@ -222,15 +224,15 @@ public class VolumeMount {
 	 */
 	public static final class VolumeMountBuilder {
 
-		private String driver;
+		private @Nullable String driver;
 
-		private String containerDir;
+		private @Nullable String containerDir;
 
-		private Mode mode;
+		private @Nullable Mode mode;
 
-		private DeviceType deviceType;
+		private @Nullable DeviceType deviceType;
 
-		private VolumeDevice device;
+		private @Nullable VolumeDevice device;
 
 		private VolumeMountBuilder() {
 		}

@@ -17,4 +17,7 @@
 /**
  * Annotations to support configuring Service Brokers.
  */
+@NullMarked
 package org.springframework.cloud.servicebroker.annotation;
+
+import org.jspecify.annotations.NullMarked;

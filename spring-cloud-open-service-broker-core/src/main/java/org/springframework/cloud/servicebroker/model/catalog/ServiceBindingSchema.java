@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Service binding JSON Schemas.
@@ -32,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceBindingSchema {
 
-	private final MethodSchema createMethodSchema;
+	private final @Nullable MethodSchema createMethodSchema;
 
 	/**
 	 * Construct a new {@link ServiceBindingSchema}.
@@ -45,7 +46,7 @@ public class ServiceBindingSchema {
 	 * Construct a new {@link ServiceBindingSchema}.
 	 * @param createMethodSchema the JSON schema
 	 */
-	public ServiceBindingSchema(MethodSchema createMethodSchema) {
+	public ServiceBindingSchema(@Nullable MethodSchema createMethodSchema) {
 		this.createMethodSchema = createMethodSchema;
 	}
 
@@ -54,7 +55,7 @@ public class ServiceBindingSchema {
 	 * @return the schema
 	 */
 	@JsonProperty("create")
-	public MethodSchema getCreateMethodSchema() {
+	public @Nullable MethodSchema getCreateMethodSchema() {
 		return this.createMethodSchema;
 	}
 
@@ -94,7 +95,7 @@ public class ServiceBindingSchema {
 	 */
 	public static final class ServiceBindingSchemaBuilder {
 
-		private MethodSchema createMethodSchema;
+		private @Nullable MethodSchema createMethodSchema;
 
 		private ServiceBindingSchemaBuilder() {
 		}

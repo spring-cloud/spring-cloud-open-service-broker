@@ -17,4 +17,7 @@
 /**
  * Exceptions specific to auto-configuration errors.
  */
+@NullMarked
 package org.springframework.cloud.servicebroker.autoconfigure.web.exception;
+
+import org.jspecify.annotations.NullMarked;

@@ -17,4 +17,7 @@
 /**
  * Exceptions for Service Broker error conditions.
  */
+@NullMarked
 package org.springframework.cloud.servicebroker.exception;
+
+import org.jspecify.annotations.NullMarked;

@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
 
@@ -44,11 +45,11 @@ import org.springframework.cloud.servicebroker.model.instance.OperationState;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetLastServiceBindingOperationResponse {
 
-	private final OperationState state;
+	private final @Nullable OperationState state;
 
-	private final String description;
+	private final @Nullable String description;
 
-	private final Boolean deleteOperation;
+	private final @Nullable Boolean deleteOperation;
 
 	/**
 	 * Construct a new {@link GetLastServiceBindingOperationResponse}.
@@ -64,9 +65,9 @@ public class GetLastServiceBindingOperationResponse {
 	 * @param deleteOperation is delete operation
 	 */
 	@JsonCreator
-	public GetLastServiceBindingOperationResponse(@JsonProperty("state") OperationState state,
-			@JsonProperty("description") String description,
-			@JsonProperty("delete_operation") Boolean deleteOperation) {
+	public GetLastServiceBindingOperationResponse(@JsonProperty("state") @Nullable OperationState state,
+			@JsonProperty("description") @Nullable String description,
+			@JsonProperty("delete_operation") @Nullable Boolean deleteOperation) {
 		this.state = state;
 		this.description = description;
 		this.deleteOperation = (deleteOperation != null) ? deleteOperation : false;
@@ -76,7 +77,7 @@ public class GetLastServiceBindingOperationResponse {
 	 * Get the current state of an asynchronous operation.
 	 * @return the operation state
 	 */
-	public OperationState getState() {
+	public @Nullable OperationState getState() {
 		return this.state;
 	}
 
@@ -84,7 +85,7 @@ public class GetLastServiceBindingOperationResponse {
 	 * Get the description of the current asynchronous operation.
 	 * @return the description, or {@literal null} if not provided
 	 */
-	public String getDescription() {
+	public @Nullable String getDescription() {
 		return this.description;
 	}
 
@@ -136,9 +137,9 @@ public class GetLastServiceBindingOperationResponse {
 	 */
 	public static final class GetLastServiceBindingOperationResponseBuilder {
 
-		private OperationState state;
+		private @Nullable OperationState state;
 
-		private String description;
+		private @Nullable String description;
 
 		private boolean deleteOperation;
 

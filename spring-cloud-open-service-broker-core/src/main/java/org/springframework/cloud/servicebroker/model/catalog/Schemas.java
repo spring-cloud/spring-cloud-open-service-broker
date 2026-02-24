@@ -21,6 +21,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 
 /**
  * JSON Schemas available for a Plan.
@@ -33,9 +34,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Schemas {
 
-	private final ServiceInstanceSchema serviceInstanceSchema;
+	private final @Nullable ServiceInstanceSchema serviceInstanceSchema;
 
-	private final ServiceBindingSchema serviceBindingSchema;
+	private final @Nullable ServiceBindingSchema serviceBindingSchema;
 
 	/**
 	 * Construct a new {@link Schemas}.
@@ -50,8 +51,8 @@ public class Schemas {
 	 * @param serviceBindingSchema the service binding schema
 	 */
 	@JsonCreator
-	public Schemas(@JsonProperty("service_instance") ServiceInstanceSchema serviceInstanceSchema,
-			@JsonProperty("service_binding") ServiceBindingSchema serviceBindingSchema) {
+	public Schemas(@JsonProperty("service_instance") @Nullable ServiceInstanceSchema serviceInstanceSchema,
+			@JsonProperty("service_binding") @Nullable ServiceBindingSchema serviceBindingSchema) {
 		this.serviceInstanceSchema = serviceInstanceSchema;
 		this.serviceBindingSchema = serviceBindingSchema;
 	}
@@ -61,7 +62,7 @@ public class Schemas {
 	 * @return the schemas
 	 */
 	@JsonProperty("service_instance")
-	public ServiceInstanceSchema getServiceInstanceSchema() {
+	public @Nullable ServiceInstanceSchema getServiceInstanceSchema() {
 		return this.serviceInstanceSchema;
 	}
 
@@ -70,7 +71,7 @@ public class Schemas {
 	 * @return the schemas
 	 */
 	@JsonProperty("service_binding")
-	public ServiceBindingSchema getServiceBindingSchema() {
+	public @Nullable ServiceBindingSchema getServiceBindingSchema() {
 		return this.serviceBindingSchema;
 	}
 
@@ -111,9 +112,9 @@ public class Schemas {
 	 */
 	public static final class SchemasBuilder {
 
-		private ServiceInstanceSchema serviceInstanceSchema;
+		private @Nullable ServiceInstanceSchema serviceInstanceSchema;
 
-		private ServiceBindingSchema serviceBindingSchema;
+		private @Nullable ServiceBindingSchema serviceBindingSchema;
 
 		private SchemasBuilder() {
 		}

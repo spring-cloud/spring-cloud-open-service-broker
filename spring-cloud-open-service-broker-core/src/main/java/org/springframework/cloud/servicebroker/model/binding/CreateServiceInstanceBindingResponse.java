@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -43,9 +44,9 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	/**
 	 * Whether the binding already existed.
 	 */
-	protected final Boolean bindingExisted;
+	protected final @Nullable Boolean bindingExisted;
 
-	private final BindingMetadata metadata;
+	private final @Nullable BindingMetadata metadata;
 
 	/**
 	 * Construct a new {@link CreateServiceInstanceBindingResponse}.
@@ -55,8 +56,8 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	 * parameters
 	 * @param metadata the service instance binding metadata
 	 */
-	protected CreateServiceInstanceBindingResponse(Boolean async, String operation, Boolean bindingExisted,
-			BindingMetadata metadata) {
+	protected CreateServiceInstanceBindingResponse(@Nullable Boolean async, @Nullable String operation,
+			@Nullable Boolean bindingExisted, @Nullable BindingMetadata metadata) {
 		super(async, operation);
 		this.bindingExisted = bindingExisted;
 		this.metadata = metadata;
@@ -79,7 +80,7 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	 * @return the metadata
 	 */
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public BindingMetadata getMetadata() {
+	public @Nullable BindingMetadata getMetadata() {
 		return this.metadata;
 	}
 
@@ -122,11 +123,11 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 
 		private boolean bindingExisted;
 
-		private BindingMetadata metadata;
+		private @Nullable BindingMetadata metadata;
 
 		private boolean async;
 
-		private String operation;
+		private @Nullable String operation;
 
 		private CreateServiceInstanceBindingResponseBuilder() {
 		}

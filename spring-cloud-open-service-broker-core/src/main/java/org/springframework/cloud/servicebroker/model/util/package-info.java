@@ -17,4 +17,7 @@
 /**
  * Model utilities.
  */
+@NullMarked
 package org.springframework.cloud.servicebroker.model.util;
+
+import org.jspecify.annotations.NullMarked;

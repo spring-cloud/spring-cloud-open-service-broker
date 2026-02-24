@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -42,11 +43,11 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
-	private final String dashboardUrl;
+	private final @Nullable String dashboardUrl;
 
-	private final Boolean instanceExisted;
+	private final @Nullable Boolean instanceExisted;
 
-	private final ServiceInstanceMetadata metadata;
+	private final @Nullable ServiceInstanceMetadata metadata;
 
 	/**
 	 * Construct a new {@link CreateServiceInstanceResponse}.
@@ -64,10 +65,11 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 * @param metadata containing metadata for the service instance
 	 */
 	@JsonCreator
-	public CreateServiceInstanceResponse(@JsonProperty("async") Boolean async,
-			@JsonProperty("operation") String operation, @JsonProperty("dashboard_url") String dashboardUrl,
-			@JsonProperty("instance_existed") Boolean instanceExisted,
-			@JsonProperty("metadata") ServiceInstanceMetadata metadata) {
+	public CreateServiceInstanceResponse(@JsonProperty("async") @Nullable Boolean async,
+			@JsonProperty("operation") @Nullable String operation,
+			@JsonProperty("dashboard_url") @Nullable String dashboardUrl,
+			@JsonProperty("instance_existed") @Nullable Boolean instanceExisted,
+			@JsonProperty("metadata") @Nullable ServiceInstanceMetadata metadata) {
 		super(async, operation);
 		this.dashboardUrl = dashboardUrl;
 		this.instanceExisted = (instanceExisted != null) ? instanceExisted : false;
@@ -79,7 +81,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 * @return the dashboard URL, or {@literal null} if not provided
 	 */
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	public String getDashboardUrl() {
+	public @Nullable String getDashboardUrl() {
 		return this.dashboardUrl;
 	}
 
@@ -98,7 +100,7 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 * @return the service instance metadata
 	 */
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public ServiceInstanceMetadata getMetadata() {
+	public @Nullable ServiceInstanceMetadata getMetadata() {
 		return this.metadata;
 	}
 
@@ -148,15 +150,15 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 */
 	public static final class CreateServiceInstanceResponseBuilder {
 
-		private String dashboardUrl;
+		private @Nullable String dashboardUrl;
 
 		private boolean instanceExisted;
 
 		private boolean async;
 
-		private String operation;
+		private @Nullable String operation;
 
-		private ServiceInstanceMetadata metadata;
+		private @Nullable ServiceInstanceMetadata metadata;
 
 		private CreateServiceInstanceResponseBuilder() {
 		}

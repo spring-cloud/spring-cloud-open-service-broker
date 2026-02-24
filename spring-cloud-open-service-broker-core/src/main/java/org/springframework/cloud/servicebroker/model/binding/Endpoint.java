@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 
 import jakarta.validation.constraints.NotEmpty;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.core.JsonParser;
 import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.annotation.JsonDeserialize;
@@ -46,7 +47,7 @@ public class Endpoint {
 	 * A host name or a single IP address.
 	 */
 	@NotEmpty
-	private String host;
+	private @Nullable String host;
 
 	/**
 	 * A non-empty array. Each element is either a single port (for example "443") or a
@@ -60,7 +61,7 @@ public class Endpoint {
 	 */
 	@JsonSerialize(using = ToStringSerializer.class)
 	@JsonDeserialize(using = ProtocolDeserializer.class)
-	private Protocol protocol;
+	private @Nullable Protocol protocol;
 
 	/**
 	 * Get the host.
@@ -99,7 +100,7 @@ public class Endpoint {
 	 * @param ports the list of ports
 	 * @param protocol the network protocol
 	 */
-	public Endpoint(String host, List<String> ports, Protocol protocol) {
+	public Endpoint(@Nullable String host, List<String> ports, @Nullable Protocol protocol) {
 		this.host = host;
 		this.ports = ports;
 		this.protocol = protocol;
@@ -176,11 +177,11 @@ public class Endpoint {
 	 */
 	public static final class EndpointBuilder {
 
-		private String host;
+		private @Nullable String host;
 
 		private final List<String> ports = new ArrayList<>();
 
-		private Protocol protocol;
+		private @Nullable Protocol protocol;
 
 		/**
 		 * Set the host name.

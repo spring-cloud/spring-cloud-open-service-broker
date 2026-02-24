@@ -23,6 +23,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -43,9 +44,9 @@ import org.springframework.util.CollectionUtils;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class BindResource {
 
-	private final String appGuid;
+	private final @Nullable String appGuid;
 
-	private final String route;
+	private final @Nullable String route;
 
 	private final Map<String, Object> properties = new HashMap<>();
 
@@ -59,8 +60,9 @@ public class BindResource {
 	 * @param route the application URL
 	 * @param properties a collection of properties
 	 */
-	protected BindResource(@JsonProperty("app_guid") String appGuid, @JsonProperty("route") String route,
-			@JsonProperty("properties") Map<String, Object> properties) {
+	protected BindResource(@JsonProperty("app_guid") @Nullable String appGuid,
+			@JsonProperty("route") @Nullable String route,
+			@JsonProperty("properties") @Nullable Map<String, Object> properties) {
 		this.appGuid = appGuid;
 		this.route = route;
 		if (!CollectionUtils.isEmpty(properties)) {
@@ -84,7 +86,7 @@ public class BindResource {
 	 * @return the value of the property, or {@literal null} if the key is not present in
 	 * the bind resource
 	 */
-	public Object getProperty(String key) {
+	public @Nullable Object getProperty(String key) {
 		return this.properties.get(key);
 	}
 
@@ -102,7 +104,7 @@ public class BindResource {
 	 * credentials bindings.
 	 * @return the application GUID
 	 */
-	public String getAppGuid() {
+	public @Nullable String getAppGuid() {
 		return this.appGuid;
 	}
 
@@ -111,7 +113,7 @@ public class BindResource {
 	 * services bindings.
 	 * @return the application route
 	 */
-	public String getRoute() {
+	public @Nullable String getRoute() {
 		return this.route;
 	}
 
@@ -158,9 +160,9 @@ public class BindResource {
 	 */
 	public static final class BindResourceBuilder {
 
-		private String appGuid;
+		private @Nullable String appGuid;
 
-		private String route;
+		private @Nullable String route;
 
 		private final Map<String, Object> properties = new HashMap<>();
 

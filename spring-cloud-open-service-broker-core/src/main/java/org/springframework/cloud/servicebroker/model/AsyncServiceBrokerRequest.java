@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.model;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Details of a request that supports asynchronous operations.
@@ -54,8 +55,8 @@ public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
 	 * platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 */
-	protected AsyncServiceBrokerRequest(Boolean asyncAccepted, String platformInstanceId, String apiInfoLocation,
-			Context originatingIdentity, String requestIdentity) {
+	protected AsyncServiceBrokerRequest(@Nullable Boolean asyncAccepted, @Nullable String platformInstanceId,
+			@Nullable String apiInfoLocation, @Nullable Context originatingIdentity, @Nullable String requestIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		this.asyncAccepted = (asyncAccepted != null) ? asyncAccepted : false;
 	}

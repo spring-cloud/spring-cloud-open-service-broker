@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.util.StringUtils;
 
@@ -37,12 +38,12 @@ public class AsyncServiceBrokerResponse {
 	/**
 	 * Whether the operation is asynchronous.
 	 */
-	protected final Boolean async;
+	protected final @Nullable Boolean async;
 
 	/**
 	 * An identifier representing the operation in progress.
 	 */
-	protected final String operation;
+	protected final @Nullable String operation;
 
 	/**
 	 * Create a new AsyncServiceBrokerResponse.
@@ -50,7 +51,7 @@ public class AsyncServiceBrokerResponse {
 	 * @param operation an identifier representing the operation in progress
 	 * @throws IllegalArgumentException if operation length exceeds 10,000 characters
 	 */
-	protected AsyncServiceBrokerResponse(Boolean async, String operation) {
+	protected AsyncServiceBrokerResponse(@Nullable Boolean async, @Nullable String operation) {
 		validateOperationLength(operation);
 		this.async = async;
 		this.operation = operation;
@@ -72,7 +73,7 @@ public class AsyncServiceBrokerResponse {
 	 * @return the operation description
 	 */
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	public String getOperation() {
+	public @Nullable String getOperation() {
 		return this.operation;
 	}
 
@@ -113,7 +114,7 @@ public class AsyncServiceBrokerResponse {
 	 * @param operation an identifier representing the operation in progress
 	 * @throws IllegalArgumentException if the operation is longer than 10,000 characters
 	 */
-	public static void validateOperationLength(String operation) {
+	public static void validateOperationLength(@Nullable String operation) {
 		if (StringUtils.hasLength(operation) && operation.length() > MAX_OPERATION_LENGTH) {
 			throw new IllegalArgumentException(
 					"operation strings are restricted to 10,000 characters in the response" + " body");

@@ -17,6 +17,7 @@
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import jakarta.validation.Valid;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -31,17 +32,17 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class ServiceBrokerProperties {
 
-	private String apiVersion;
+	private @Nullable String apiVersion;
 
 	@NestedConfigurationProperty
 	@Valid
-	private Catalog catalog;
+	private @Nullable Catalog catalog;
 
 	/**
 	 * Get the API version.
 	 * @return the API version
 	 */
-	public String getApiVersion() {
+	public @Nullable String getApiVersion() {
 		return this.apiVersion;
 	}
 
@@ -57,7 +58,7 @@ public class ServiceBrokerProperties {
 	 * Get the service broker catalog.
 	 * @return the catalog
 	 */
-	public Catalog getCatalog() {
+	public @Nullable Catalog getCatalog() {
 		return this.catalog;
 	}
 

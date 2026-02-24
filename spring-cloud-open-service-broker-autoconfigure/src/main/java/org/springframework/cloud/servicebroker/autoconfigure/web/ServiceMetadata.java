@@ -22,6 +22,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,39 +63,39 @@ public class ServiceMetadata {
 	/**
 	 * The name of the service to be displayed in graphical clients.
 	 */
-	private String displayName;
+	private @Nullable String displayName;
 
 	/**
 	 * The URL to an image or a data URL containing an image.
 	 */
-	private String imageUrl;
+	private @Nullable String imageUrl;
 
 	/**
 	 * The location of an image resource on the class path. This resource will be
 	 * converted to a byte array, Base64 encoded, and configured as the value of
 	 * 'metadata.imageUrl' for the service offering.
 	 */
-	private String imageUrlResource;
+	private @Nullable String imageUrlResource;
 
 	/**
 	 * Long description.
 	 */
-	private String longDescription;
+	private @Nullable String longDescription;
 
 	/**
 	 * The name of the upstream entity providing the actual service.
 	 */
-	private String providerDisplayName;
+	private @Nullable String providerDisplayName;
 
 	/**
 	 * Link to documentation page for the service.
 	 */
-	private String documentationUrl;
+	private @Nullable String documentationUrl;
 
 	/**
 	 * Link to support page for the service.
 	 */
-	private String supportUrl;
+	private @Nullable String supportUrl;
 
 	/**
 	 * Additional properties used to describe the service.

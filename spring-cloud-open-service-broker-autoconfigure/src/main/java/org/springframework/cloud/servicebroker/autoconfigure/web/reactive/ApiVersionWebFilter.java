@@ -18,6 +18,7 @@ package org.springframework.cloud.servicebroker.autoconfigure.web.reactive;
 
 import java.nio.charset.StandardCharsets;
 
+import org.jspecify.annotations.Nullable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import tools.jackson.core.JacksonException;
@@ -45,7 +46,7 @@ public class ApiVersionWebFilter implements WebFilter {
 
 	private static final String V2_API_PATH_PATTERN = "/v2/**";
 
-	private final BrokerApiVersion version;
+	private final @Nullable BrokerApiVersion version;
 
 	/**
 	 * Construct a filter that disables API version validation.
@@ -59,7 +60,7 @@ public class ApiVersionWebFilter implements WebFilter {
 	 * configured version.
 	 * @param version the API version supported by the broker.
 	 */
-	public ApiVersionWebFilter(BrokerApiVersion version) {
+	public ApiVersionWebFilter(@Nullable BrokerApiVersion version) {
 		this.version = version;
 	}
 
@@ -95,7 +96,7 @@ public class ApiVersionWebFilter implements WebFilter {
 		return BrokerApiVersion.API_VERSION_ANY.equals(this.version.getApiVersion());
 	}
 
-	private Mono<Void> writeResponse(ServerHttpResponse response, String requestedApiVersion) {
+	private Mono<Void> writeResponse(ServerHttpResponse response, @Nullable String requestedApiVersion) {
 		String message = ServiceBrokerApiVersionErrorMessage.from(this.version.getApiVersion(), requestedApiVersion)
 			.toString();
 		return response.writeWith(Flux.just(response.bufferFactory()

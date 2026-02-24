@@ -25,6 +25,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Details of a response to a request to retrieve a service instance binding associated
@@ -44,7 +45,7 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 
 	private final Map<String, Object> credentials;
 
-	private final String syslogDrainUrl;
+	private final @Nullable String syslogDrainUrl;
 
 	private final List<VolumeMount> volumeMounts;
 
@@ -68,9 +69,9 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 	 */
 	@JsonCreator
 	public GetServiceInstanceAppBindingResponse(@JsonProperty("parameters") Map<String, Object> parameters,
-			@JsonProperty("metadata") BindingMetadata metadata,
+			@JsonProperty("metadata") @Nullable BindingMetadata metadata,
 			@JsonProperty("credentials") Map<String, Object> credentials,
-			@JsonProperty("syslog_drain_url") String syslogDrainUrl,
+			@JsonProperty("syslog_drain_url") @Nullable String syslogDrainUrl,
 			@JsonProperty("volume_mounts") List<VolumeMount> volumeMounts,
 			@JsonProperty("endpoints") List<Endpoint> endpoints) {
 		super(parameters, metadata);
@@ -167,7 +168,7 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 
 		private final Map<String, Object> credentials = new HashMap<>();
 
-		private String syslogDrainUrl;
+		private @Nullable String syslogDrainUrl;
 
 		private final List<VolumeMount> volumeMounts = new ArrayList<>();
 
@@ -175,7 +176,7 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 
 		private final Map<String, Object> parameters = new HashMap<>();
 
-		private BindingMetadata metadata;
+		private @Nullable BindingMetadata metadata;
 
 		private GetServiceInstanceAppBindingResponseBuilder() {
 		}

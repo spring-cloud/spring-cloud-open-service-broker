@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.model;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -74,22 +75,22 @@ public class ServiceBrokerRequest {
 	/**
 	 * The platform instance ID.
 	 */
-	protected transient String platformInstanceId;
+	protected transient @Nullable String platformInstanceId;
 
 	/**
 	 * The API info location.
 	 */
-	protected transient String apiInfoLocation;
+	protected transient @Nullable String apiInfoLocation;
 
 	/**
 	 * The originating identity context.
 	 */
-	protected transient Context originatingIdentity;
+	protected transient @Nullable Context originatingIdentity;
 
 	/**
 	 * The request identity.
 	 */
-	protected transient String requestIdentity;
+	protected transient @Nullable String requestIdentity;
 
 	/**
 	 * Construct a new {@link ServiceBrokerRequest}.
@@ -106,8 +107,8 @@ public class ServiceBrokerRequest {
 	 * platform
 	 * @param requestIdentity identity of the request being sent from the platform
 	 */
-	protected ServiceBrokerRequest(String platformInstanceId, String apiInfoLocation, Context originatingIdentity,
-			String requestIdentity) {
+	protected ServiceBrokerRequest(@Nullable String platformInstanceId, @Nullable String apiInfoLocation,
+			@Nullable Context originatingIdentity, @Nullable String requestIdentity) {
 		this.platformInstanceId = platformInstanceId;
 		this.apiInfoLocation = apiInfoLocation;
 		this.originatingIdentity = originatingIdentity;
@@ -126,7 +127,7 @@ public class ServiceBrokerRequest {
 	 * @return the platform instance ID, or {@literal null} if not provided
 	 */
 	@JsonIgnore // relative path to Osb query path, not to include in Json body
-	public String getPlatformInstanceId() {
+	public @Nullable String getPlatformInstanceId() {
 		return this.platformInstanceId;
 	}
 
@@ -150,7 +151,7 @@ public class ServiceBrokerRequest {
 	 * @return the API info endpoint location, or {@literal null} if not provided
 	 */
 	@JsonIgnore // mapped as X-Api-Info-Location Header
-	public String getApiInfoLocation() {
+	public @Nullable String getApiInfoLocation() {
 		return this.apiInfoLocation;
 	}
 
@@ -171,7 +172,7 @@ public class ServiceBrokerRequest {
 	 * @return the user identity, or {@literal null} if not provided
 	 */
 	@JsonIgnore // mapped as X-Broker-API-Originating-Identity Header
-	public Context getOriginatingIdentity() {
+	public @Nullable Context getOriginatingIdentity() {
 		return this.originatingIdentity;
 	}
 
@@ -193,7 +194,7 @@ public class ServiceBrokerRequest {
 	 * @return the request identity, or {@literal null} if not provided
 	 */
 	@JsonIgnore // mapped as X-Broker-API-Request-Identity Header
-	public String getRequestIdentity() {
+	public @Nullable String getRequestIdentity() {
 		return this.requestIdentity;
 	}
 
