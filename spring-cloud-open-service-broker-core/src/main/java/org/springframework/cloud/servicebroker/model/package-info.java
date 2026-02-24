@@ -17,4 +17,7 @@
 /**
  * Models that describe the interaction with the Service Broker API.
  */
+@NullMarked
 package org.springframework.cloud.servicebroker.model;
+
+import org.jspecify.annotations.NullMarked;

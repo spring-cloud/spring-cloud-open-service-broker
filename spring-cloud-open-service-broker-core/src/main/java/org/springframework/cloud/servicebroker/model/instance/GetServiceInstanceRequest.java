@@ -18,6 +18,8 @@ package org.springframework.cloud.servicebroker.model.instance;
 
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 
@@ -36,11 +38,11 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
  */
 public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 
-	private final transient String serviceInstanceId;
+	private final transient @Nullable String serviceInstanceId;
 
-	private final transient String serviceDefinitionId;
+	private final transient @Nullable String serviceDefinitionId;
 
-	private final transient String planId;
+	private final transient @Nullable String planId;
 
 	/**
 	 * Construct a new {@link GetServiceInstanceRequest}.
@@ -53,8 +55,9 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 	 * platform
 	 * @param requestIdentity identity of the request sent from server
 	 */
-	public GetServiceInstanceRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
-			String platformInstanceId, String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
+	public GetServiceInstanceRequest(@Nullable String serviceInstanceId, @Nullable String serviceDefinitionId,
+			@Nullable String planId, @Nullable String platformInstanceId, @Nullable String apiInfoLocation,
+			@Nullable Context originatingIdentity, @Nullable String requestIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.serviceDefinitionId = serviceDefinitionId;

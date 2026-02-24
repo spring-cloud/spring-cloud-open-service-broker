@@ -17,4 +17,7 @@
 /**
  * Provides Service Broker API endpoints.
  */
+@NullMarked
 package org.springframework.cloud.servicebroker.controller;
+
+import org.jspecify.annotations.NullMarked;

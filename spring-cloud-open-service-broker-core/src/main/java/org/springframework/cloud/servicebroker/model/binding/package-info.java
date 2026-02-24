@@ -17,4 +17,7 @@
 /**
  * Service binding models.
  */
+@NullMarked
 package org.springframework.cloud.servicebroker.model.binding;
+
+import org.jspecify.annotations.NullMarked;

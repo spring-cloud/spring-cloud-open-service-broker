@@ -18,6 +18,7 @@ package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerApiVersionMissingException;
@@ -32,7 +33,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
  */
 public class ApiVersionInterceptor implements HandlerInterceptor {
 
-	private final BrokerApiVersion version;
+	private final @Nullable BrokerApiVersion version;
 
 	/**
 	 * Construct an interceptor that disables API version validation.
@@ -46,7 +47,7 @@ public class ApiVersionInterceptor implements HandlerInterceptor {
 	 * to the configured version.
 	 * @param version the API version supported by the broker.
 	 */
-	public ApiVersionInterceptor(BrokerApiVersion version) {
+	public ApiVersionInterceptor(@Nullable BrokerApiVersion version) {
 		super();
 		this.version = version;
 	}

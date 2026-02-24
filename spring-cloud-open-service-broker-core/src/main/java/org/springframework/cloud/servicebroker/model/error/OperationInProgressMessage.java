@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
 
@@ -42,7 +43,7 @@ public class OperationInProgressMessage implements Serializable {
 	/**
 	 * The operation identifier.
 	 */
-	private final String operation;
+	private final @Nullable String operation;
 
 	/**
 	 * Construct a message with no operation.
@@ -55,7 +56,7 @@ public class OperationInProgressMessage implements Serializable {
 	 * Construct a message with the provided operation.
 	 * @param operation an identifier representing the operation
 	 */
-	public OperationInProgressMessage(String operation) {
+	public OperationInProgressMessage(@Nullable String operation) {
 		AsyncServiceBrokerResponse.validateOperationLength(operation);
 		this.operation = operation;
 	}
@@ -64,7 +65,7 @@ public class OperationInProgressMessage implements Serializable {
 	 * Get the operation.
 	 * @return the operation.
 	 */
-	public String getOperation() {
+	public @Nullable String getOperation() {
 		return this.operation;
 	}
 

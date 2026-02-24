@@ -22,6 +22,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -45,22 +46,22 @@ public class ErrorMessage implements Serializable {
 	/**
 	 * The error code.
 	 */
-	private final String error;
+	private final @Nullable String error;
 
 	/**
 	 * The error message.
 	 */
-	private final String message;
+	private final @Nullable String message;
 
 	/**
 	 * Whether the instance is usable.
 	 */
-	private final Boolean instanceUsable;
+	private final @Nullable Boolean instanceUsable;
 
 	/**
 	 * Whether the update is repeatable.
 	 */
-	private final Boolean updateRepeatable;
+	private final @Nullable Boolean updateRepeatable;
 
 	/**
 	 * Construct an error message with no error code or description.
@@ -73,7 +74,7 @@ public class ErrorMessage implements Serializable {
 	 * Construct an error message with the provided description.
 	 * @param message a user-facing error message explaining why the request failed
 	 */
-	public ErrorMessage(String message) {
+	public ErrorMessage(@Nullable String message) {
 		this(null, message);
 	}
 
@@ -83,7 +84,7 @@ public class ErrorMessage implements Serializable {
 	 * condition
 	 * @param message a user-facing error message explaining why the request failed
 	 */
-	public ErrorMessage(String error, String message) {
+	public ErrorMessage(@Nullable String error, @Nullable String message) {
 		this(error, message, null, null);
 	}
 
@@ -95,7 +96,8 @@ public class ErrorMessage implements Serializable {
 	 * @param instanceUsable is the instance still usable after a failed operation
 	 * @param updateRepeatable can the update be repeated after a failed operation
 	 */
-	public ErrorMessage(String error, String message, Boolean instanceUsable, Boolean updateRepeatable) {
+	public ErrorMessage(@Nullable String error, @Nullable String message, @Nullable Boolean instanceUsable,
+			@Nullable Boolean updateRepeatable) {
 		this.error = error;
 		this.message = message;
 		this.instanceUsable = instanceUsable;
@@ -106,7 +108,7 @@ public class ErrorMessage implements Serializable {
 	 * Get the error code.
 	 * @return the error code
 	 */
-	public String getError() {
+	public @Nullable String getError() {
 		return this.error;
 	}
 
@@ -115,7 +117,7 @@ public class ErrorMessage implements Serializable {
 	 * @return the description.
 	 */
 	@JsonProperty("description")
-	public String getMessage() {
+	public @Nullable String getMessage() {
 		return this.message;
 	}
 
@@ -124,7 +126,7 @@ public class ErrorMessage implements Serializable {
 	 * or deprovisioning operation.
 	 * @return the boolean value
 	 */
-	public Boolean isInstanceUsable() {
+	public @Nullable Boolean isInstanceUsable() {
 		return this.instanceUsable;
 	}
 
@@ -132,7 +134,7 @@ public class ErrorMessage implements Serializable {
 	 * Get a boolean value indicating whether a failed update is repeatable.
 	 * @return the boolean value
 	 */
-	public Boolean isUpdateRepeatable() {
+	public @Nullable Boolean isUpdateRepeatable() {
 		return this.updateRepeatable;
 	}
 
@@ -176,13 +178,13 @@ public class ErrorMessage implements Serializable {
 	 */
 	public static final class ErrorMessageBuilder {
 
-		private String error;
+		private @Nullable String error;
 
-		private String message;
+		private @Nullable String message;
 
-		private Boolean instanceUsable;
+		private @Nullable Boolean instanceUsable;
 
-		private Boolean updateRepeatable;
+		private @Nullable Boolean updateRepeatable;
 
 		/**
 		 * Set the error code.

@@ -18,6 +18,8 @@ package org.springframework.cloud.servicebroker.model.binding;
 
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 
@@ -37,18 +39,18 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
  */
 public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest {
 
-	private final transient String serviceInstanceId;
+	private final transient @Nullable String serviceInstanceId;
 
-	private final transient String bindingId;
+	private final transient @Nullable String bindingId;
 
-	private final transient String serviceDefinitionId;
+	private final transient @Nullable String serviceDefinitionId;
 
-	private final transient String planId;
+	private final transient @Nullable String planId;
 
 	/**
 	 * The operation identifier.
 	 */
-	protected final transient String operation;
+	protected final transient @Nullable String operation;
 
 	/**
 	 * Construct a new {@link GetLastServiceBindingOperationRequest}.
@@ -63,9 +65,10 @@ public class GetLastServiceBindingOperationRequest extends ServiceBrokerRequest 
 	 * platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 */
-	public GetLastServiceBindingOperationRequest(String serviceInstanceId, String bindingId, String serviceDefinitionId,
-			String planId, String operation, String platformInstanceId, String apiInfoLocation,
-			Context originatingIdentity, String requestIdentity) {
+	public GetLastServiceBindingOperationRequest(@Nullable String serviceInstanceId, @Nullable String bindingId,
+			@Nullable String serviceDefinitionId, @Nullable String planId, @Nullable String operation,
+			@Nullable String platformInstanceId, @Nullable String apiInfoLocation,
+			@Nullable Context originatingIdentity, @Nullable String requestIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.bindingId = bindingId;

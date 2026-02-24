@@ -17,4 +17,7 @@
 /**
  * Utilities.
  */
+@NullMarked
 package org.springframework.cloud.servicebroker.autoconfigure.web.util;
+
+import org.jspecify.annotations.NullMarked;

@@ -17,4 +17,7 @@
 /**
  * Error models.
  */
+@NullMarked
 package org.springframework.cloud.servicebroker.model.error;
+
+import org.jspecify.annotations.NullMarked;

@@ -17,4 +17,7 @@
 /**
  * Service instance models.
  */
+@NullMarked
 package org.springframework.cloud.servicebroker.model.instance;
+
+import org.jspecify.annotations.NullMarked;

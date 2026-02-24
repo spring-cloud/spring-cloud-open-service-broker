@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
 import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOperationRequest;
@@ -52,8 +53,8 @@ public class DeleteServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 	 * @param operation description of the operation being performed
 	 */
 	@JsonCreator
-	public DeleteServiceInstanceBindingResponse(@JsonProperty("async") Boolean async,
-			@JsonProperty("operation") String operation) {
+	public DeleteServiceInstanceBindingResponse(@JsonProperty("async") @Nullable Boolean async,
+			@JsonProperty("operation") @Nullable String operation) {
 		super(async, operation);
 	}
 
@@ -104,7 +105,7 @@ public class DeleteServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 
 		private boolean async;
 
-		private String operation;
+		private @Nullable String operation;
 
 		private DeleteServiceInstanceBindingResponseBuilder() {
 		}

@@ -24,6 +24,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -43,13 +44,13 @@ import tools.jackson.databind.annotation.JsonNaming;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetServiceInstanceResponse {
 
-	private final String serviceDefinitionId;
+	private final @Nullable String serviceDefinitionId;
 
-	private final String planId;
+	private final @Nullable String planId;
 
-	private final String dashboardUrl;
+	private final @Nullable String dashboardUrl;
 
-	private final Map<String, Object> parameters;
+	private final @Nullable Map<String, Object> parameters;
 
 	/**
 	 * Construct a new {@link GetServiceInstanceResponse}.
@@ -66,9 +67,10 @@ public class GetServiceInstanceResponse {
 	 * @param parameters the parameters
 	 */
 	@JsonCreator
-	public GetServiceInstanceResponse(@JsonProperty("service_id") String serviceDefinitionId,
-			@JsonProperty("plan_id") String planId, @JsonProperty("dashboard_url") String dashboardUrl,
-			@JsonProperty("parameters") Map<String, Object> parameters) {
+	public GetServiceInstanceResponse(@JsonProperty("service_id") @Nullable String serviceDefinitionId,
+			@JsonProperty("plan_id") @Nullable String planId,
+			@JsonProperty("dashboard_url") @Nullable String dashboardUrl,
+			@JsonProperty("parameters") @Nullable Map<String, Object> parameters) {
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
 		this.dashboardUrl = dashboardUrl;
@@ -80,7 +82,7 @@ public class GetServiceInstanceResponse {
 	 * @return the service definition ID
 	 */
 	@JsonProperty("service_id")
-	public String getServiceDefinitionId() {
+	public @Nullable String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}
 
@@ -88,7 +90,7 @@ public class GetServiceInstanceResponse {
 	 * Get the ID of the plan associated with the service instance.
 	 * @return the plan ID
 	 */
-	public String getPlanId() {
+	public @Nullable String getPlanId() {
 		return this.planId;
 	}
 
@@ -96,7 +98,7 @@ public class GetServiceInstanceResponse {
 	 * Get the URL of a web-based management user interface for the service instance.
 	 * @return the dashboard URL, or {@literal null} if not provided
 	 */
-	public String getDashboardUrl() {
+	public @Nullable String getDashboardUrl() {
 		return this.dashboardUrl;
 	}
 
@@ -106,7 +108,7 @@ public class GetServiceInstanceResponse {
 	 * @return the parameters, or {@literal null} if parameters were not provided at
 	 * creation or retrieval of parameters is not supported by the service broker
 	 */
-	public Map<String, Object> getParameters() {
+	public @Nullable Map<String, Object> getParameters() {
 		return this.parameters;
 	}
 
@@ -159,11 +161,11 @@ public class GetServiceInstanceResponse {
 	 */
 	public static final class GetServiceInstanceResponseBuilder {
 
-		private String serviceDefinitionId;
+		private @Nullable String serviceDefinitionId;
 
-		private String planId;
+		private @Nullable String planId;
 
-		private String dashboardUrl;
+		private @Nullable String dashboardUrl;
 
 		private final Map<String, Object> parameters = new HashMap<>();
 

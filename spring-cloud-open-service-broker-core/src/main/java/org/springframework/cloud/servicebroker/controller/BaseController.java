@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.controller;
 import java.util.Base64;
 import java.util.Map;
 
+import org.jspecify.annotations.Nullable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import tools.jackson.core.JacksonException;
@@ -154,7 +155,7 @@ public class BaseController {
 	 * from the platform
 	 * @return the Context
 	 */
-	protected Context parseOriginatingIdentity(String originatingIdentityString) {
+	protected @Nullable Context parseOriginatingIdentity(@Nullable String originatingIdentityString) {
 		if (originatingIdentityString == null) {
 			return null;
 		}

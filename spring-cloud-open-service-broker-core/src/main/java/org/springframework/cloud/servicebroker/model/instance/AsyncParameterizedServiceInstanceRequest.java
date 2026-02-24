@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.Context;
@@ -41,7 +42,7 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 */
 	protected final Map<String, Object> parameters = new HashMap<>();
 
-	private final Context context;
+	private final @Nullable Context context;
 
 	/**
 	 * Construct a new {@link AsyncParameterizedServiceInstanceRequest}.
@@ -61,9 +62,9 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 * platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 */
-	protected AsyncParameterizedServiceInstanceRequest(Map<String, Object> parameters, Context context,
-			Boolean asyncAccepted, String platformInstanceId, String apiInfoLocation, Context originatingIdentity,
-			String requestIdentity) {
+	protected AsyncParameterizedServiceInstanceRequest(@Nullable Map<String, Object> parameters,
+			@Nullable Context context, @Nullable Boolean asyncAccepted, @Nullable String platformInstanceId,
+			@Nullable String apiInfoLocation, @Nullable Context originatingIdentity, @Nullable String requestIdentity) {
 		super(asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		if (!CollectionUtils.isEmpty(parameters)) {
 			this.parameters.putAll(parameters);
@@ -123,7 +124,7 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 * the platform.
 	 * @return the contextual information
 	 */
-	public Context getContext() {
+	public @Nullable Context getContext() {
 		return this.context;
 	}
 

@@ -18,6 +18,8 @@ package org.springframework.cloud.servicebroker.model.binding;
 
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 
@@ -36,13 +38,13 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
  */
 public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 
-	private final transient String serviceInstanceId;
+	private final transient @Nullable String serviceInstanceId;
 
-	private final transient String bindingId;
+	private final transient @Nullable String bindingId;
 
-	private final transient String serviceDefinitionId;
+	private final transient @Nullable String serviceDefinitionId;
 
-	private final transient String planId;
+	private final transient @Nullable String planId;
 
 	/**
 	 * Construct a new {@link GetServiceInstanceBindingRequest}.
@@ -56,9 +58,9 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 * platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 */
-	public GetServiceInstanceBindingRequest(String serviceInstanceId, String bindingId, String serviceDefinitionId,
-			String planId, String platformInstanceId, String apiInfoLocation, Context originatingIdentity,
-			String requestIdentity) {
+	public GetServiceInstanceBindingRequest(@Nullable String serviceInstanceId, @Nullable String bindingId,
+			@Nullable String serviceDefinitionId, @Nullable String planId, @Nullable String platformInstanceId,
+			@Nullable String apiInfoLocation, @Nullable Context originatingIdentity, @Nullable String requestIdentity) {
 		super(platformInstanceId, apiInfoLocation, originatingIdentity, requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
 		this.bindingId = bindingId;
@@ -76,7 +78,7 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 * the platform.
 	 * @return the service instance ID
 	 */
-	public String getServiceInstanceId() {
+	public @Nullable String getServiceInstanceId() {
 		return this.serviceInstanceId;
 	}
 
@@ -90,7 +92,7 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 * the platform.
 	 * @return the service instance ID
 	 */
-	public String getBindingId() {
+	public @Nullable String getBindingId() {
 		return this.bindingId;
 	}
 
@@ -102,7 +104,7 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 * from the platform
 	 * @return the service definition ID
 	 */
-	public String getServiceDefinitionId() {
+	public @Nullable String getServiceDefinitionId() {
 		return this.serviceDefinitionId;
 	}
 
@@ -114,7 +116,7 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 * the platform.
 	 * @return the plan ID
 	 */
-	public String getPlanId() {
+	public @Nullable String getPlanId() {
 		return this.planId;
 	}
 
@@ -174,21 +176,21 @@ public class GetServiceInstanceBindingRequest extends ServiceBrokerRequest {
 	 */
 	public static final class GetServiceInstanceBindingRequestBuilder {
 
-		private String serviceInstanceId;
+		private @Nullable String serviceInstanceId;
 
-		private String bindingId;
+		private @Nullable String bindingId;
 
-		private String serviceDefinitionId;
+		private @Nullable String serviceDefinitionId;
 
-		private String planId;
+		private @Nullable String planId;
 
-		private String platformInstanceId;
+		private @Nullable String platformInstanceId;
 
-		private String apiInfoLocation;
+		private @Nullable String apiInfoLocation;
 
-		private Context originatingIdentity;
+		private @Nullable Context originatingIdentity;
 
-		private String requestIdentity;
+		private @Nullable String requestIdentity;
 
 		private GetServiceInstanceBindingRequestBuilder() {
 		}

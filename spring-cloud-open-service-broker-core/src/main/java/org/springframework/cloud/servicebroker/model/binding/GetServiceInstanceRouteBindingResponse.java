@@ -22,6 +22,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Details of a response to a request to create a new service instance binding associated
@@ -39,7 +40,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBindingResponse {
 
-	private final String routeServiceUrl;
+	private final @Nullable String routeServiceUrl;
 
 	/**
 	 * Construct a new {@link GetServiceInstanceRouteBindingResponse}.
@@ -56,8 +57,8 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 	 */
 	@JsonCreator
 	public GetServiceInstanceRouteBindingResponse(@JsonProperty("parameters") Map<String, Object> parameters,
-			@JsonProperty("metadata") BindingMetadata metadata,
-			@JsonProperty("route_service_url") String routeServiceUrl) {
+			@JsonProperty("metadata") @Nullable BindingMetadata metadata,
+			@JsonProperty("route_service_url") @Nullable String routeServiceUrl) {
 		super(parameters, metadata);
 		this.routeServiceUrl = routeServiceUrl;
 	}
@@ -116,11 +117,11 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 	 */
 	public static final class GetServiceInstanceRouteBindingResponseBuilder {
 
-		private String routeServiceUrl;
+		private @Nullable String routeServiceUrl;
 
 		private final Map<String, Object> parameters = new HashMap<>();
 
-		private BindingMetadata metadata;
+		private @Nullable BindingMetadata metadata;
 
 		private GetServiceInstanceRouteBindingResponseBuilder() {
 		}

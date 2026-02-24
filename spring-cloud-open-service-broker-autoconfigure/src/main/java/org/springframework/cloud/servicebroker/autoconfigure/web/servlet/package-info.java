@@ -17,4 +17,7 @@
 /**
  * Auto-configuration to support Spring MVC.
  */
+@NullMarked
 package org.springframework.cloud.servicebroker.autoconfigure.web.servlet;
+
+import org.jspecify.annotations.NullMarked;

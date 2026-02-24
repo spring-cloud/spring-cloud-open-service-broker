@@ -25,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
@@ -49,24 +50,24 @@ import org.springframework.cloud.servicebroker.model.instance.AsyncParameterized
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServiceInstanceRequest {
 
-	private transient String serviceInstanceId;
+	private transient @Nullable String serviceInstanceId;
 
-	private transient String bindingId;
-
-	@NotEmpty
-	private final String serviceDefinitionId;
+	private transient @Nullable String bindingId;
 
 	@NotEmpty
-	private final String planId;
+	private final @Nullable String serviceDefinitionId;
+
+	@NotEmpty
+	private final @Nullable String planId;
 
 	@Deprecated
-	private final String appGuid;
+	private final @Nullable String appGuid;
 
-	private final BindResource bindResource;
+	private final @Nullable BindResource bindResource;
 
-	private transient ServiceDefinition serviceDefinition;
+	private transient @Nullable ServiceDefinition serviceDefinition;
 
-	private transient Plan plan;
+	private transient @Nullable Plan plan;
 
 	/**
 	 * Construct a new {@link CreateServiceInstanceBindingRequest}.
@@ -99,17 +100,19 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	 * @param requestIdentity identity of the request sent from the platform
 	 */
 	@JsonCreator
-	public CreateServiceInstanceBindingRequest(@JsonProperty("service_instance_id") String serviceInstanceId,
-			@JsonProperty("service_id") String serviceDefinitionId, @JsonProperty("plan_id") String planId,
-			@JsonProperty("binding_id") String bindingId,
-			@JsonProperty("service_definition") ServiceDefinition serviceDefinition, @JsonProperty("plan") Plan plan,
-			@JsonProperty("async_accepted") Boolean asyncAccepted, @JsonProperty("app_guid") String appGuid,
-			@JsonProperty("bind_resource") BindResource bindResource,
-			@JsonProperty("parameters") Map<String, Object> parameters, @JsonProperty("context") Context context,
-			@JsonProperty("platform_instance_id") String platformInstanceId,
-			@JsonProperty("api_info_location") String apiInfoLocation,
-			@JsonProperty("originating_identity") Context originatingIdentity,
-			@JsonProperty("request_identity") String requestIdentity) {
+	public CreateServiceInstanceBindingRequest(@JsonProperty("service_instance_id") @Nullable String serviceInstanceId,
+			@JsonProperty("service_id") @Nullable String serviceDefinitionId,
+			@JsonProperty("plan_id") @Nullable String planId, @JsonProperty("binding_id") @Nullable String bindingId,
+			@JsonProperty("service_definition") @Nullable ServiceDefinition serviceDefinition,
+			@JsonProperty("plan") @Nullable Plan plan, @JsonProperty("async_accepted") @Nullable Boolean asyncAccepted,
+			@JsonProperty("app_guid") @Nullable String appGuid,
+			@JsonProperty("bind_resource") @Nullable BindResource bindResource,
+			@JsonProperty("parameters") @Nullable Map<String, Object> parameters,
+			@JsonProperty("context") @Nullable Context context,
+			@JsonProperty("platform_instance_id") @Nullable String platformInstanceId,
+			@JsonProperty("api_info_location") @Nullable String apiInfoLocation,
+			@JsonProperty("originating_identity") @Nullable Context originatingIdentity,
+			@JsonProperty("request_identity") @Nullable String requestIdentity) {
 		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity,
 				requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
@@ -372,33 +375,33 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	 */
 	public static final class CreateServiceInstanceBindingRequestBuilder {
 
-		private String serviceInstanceId;
+		private @Nullable String serviceInstanceId;
 
-		private String serviceDefinitionId;
+		private @Nullable String serviceDefinitionId;
 
-		private String planId;
+		private @Nullable String planId;
 
-		private String bindingId;
+		private @Nullable String bindingId;
 
-		private ServiceDefinition serviceDefinition;
+		private @Nullable ServiceDefinition serviceDefinition;
 
-		private Plan plan;
+		private @Nullable Plan plan;
 
 		private boolean asyncAccepted;
 
-		private BindResource bindResource;
+		private @Nullable BindResource bindResource;
 
 		private final Map<String, Object> parameters = new HashMap<>();
 
-		private Context context;
+		private @Nullable Context context;
 
-		private String platformInstanceId;
+		private @Nullable String platformInstanceId;
 
-		private String apiInfoLocation;
+		private @Nullable String apiInfoLocation;
 
-		private Context originatingIdentity;
+		private @Nullable Context originatingIdentity;
 
-		private String requestIdentity;
+		private @Nullable String requestIdentity;
 
 		private CreateServiceInstanceBindingRequestBuilder() {
 		}

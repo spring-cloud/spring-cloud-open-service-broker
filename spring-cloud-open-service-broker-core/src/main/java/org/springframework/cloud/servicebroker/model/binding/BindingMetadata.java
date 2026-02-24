@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Service Instance Binding Metadata
@@ -33,7 +34,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class BindingMetadata {
 
-	private final String expiresAt;
+	private final @Nullable String expiresAt;
 
 	/**
 	 * Construct a new BindingMetadata.
@@ -47,7 +48,7 @@ public class BindingMetadata {
 	 * @param expiresAt the date and time in ISO 8601 format
 	 */
 	@JsonCreator
-	public BindingMetadata(@JsonProperty("expires_at") String expiresAt) {
+	public BindingMetadata(@JsonProperty("expires_at") @Nullable String expiresAt) {
 		this.expiresAt = expiresAt;
 	}
 
@@ -56,7 +57,7 @@ public class BindingMetadata {
 	 * @return the date and time in ISO 8601 format
 	 */
 	@JsonProperty("expires_at")
-	public String getExpiresAt() {
+	public @Nullable String getExpiresAt() {
 		return this.expiresAt;
 	}
 
@@ -105,7 +106,7 @@ public class BindingMetadata {
 	 */
 	public static final class BindingMetadataBuilder {
 
-		private String expiresAt;
+		private @Nullable String expiresAt;
 
 		private BindingMetadataBuilder() {
 		}

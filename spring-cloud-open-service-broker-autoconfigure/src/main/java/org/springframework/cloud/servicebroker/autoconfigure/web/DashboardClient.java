@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.servicebroker.autoconfigure.web;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * Internal class for marshaling {@link ServiceBrokerProperties} configuration properties
  * that describe the dashboard URI for a {@link ServiceDefinition}.
@@ -30,24 +32,24 @@ public class DashboardClient {
 	 * name must be unique within the platform. If the name is already in use, the
 	 * platform will return an error to the operator when the service is registered.
 	 */
-	private String id;
+	private @Nullable String id;
 
 	/**
 	 * The client secret for the dashboard OAuth2 client.
 	 */
-	private String secret;
+	private @Nullable String secret;
 
 	/**
 	 * A domain for the service dashboard that will be whitelisted by the UAA to enable
 	 * dashboard SSO.
 	 */
-	private String redirectUri;
+	private @Nullable String redirectUri;
 
 	/**
 	 * Get the dashboard client ID.
 	 * @return the client ID
 	 */
-	public String getId() {
+	public @Nullable String getId() {
 		return this.id;
 	}
 
@@ -63,7 +65,7 @@ public class DashboardClient {
 	 * Get the dashboard client secret.
 	 * @return the client secret
 	 */
-	public String getSecret() {
+	public @Nullable String getSecret() {
 		return this.secret;
 	}
 
@@ -79,7 +81,7 @@ public class DashboardClient {
 	 * Get the dashboard redirect URI.
 	 * @return the redirect URI
 	 */
-	public String getRedirectUri() {
+	public @Nullable String getRedirectUri() {
 		return this.redirectUri;
 	}
 

@@ -23,6 +23,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.util.CollectionUtils;
 
@@ -51,7 +52,7 @@ public class ServiceInstanceMetadata {
 	 * @param labels collection of labels
 	 */
 	@JsonCreator
-	public ServiceInstanceMetadata(@JsonProperty("labels") Map<String, Object> labels) {
+	public ServiceInstanceMetadata(@JsonProperty("labels") @Nullable Map<String, Object> labels) {
 		if (!CollectionUtils.isEmpty(labels)) {
 			this.labels.putAll(labels);
 		}

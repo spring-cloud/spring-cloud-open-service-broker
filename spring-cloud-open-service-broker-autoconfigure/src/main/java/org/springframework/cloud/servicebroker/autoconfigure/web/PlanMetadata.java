@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.CollectionUtils;
@@ -59,7 +60,7 @@ public class PlanMetadata {
 	/**
 	 * Name of the plan to be displayed to clients.
 	 */
-	private String displayName;
+	private @Nullable String displayName;
 
 	/**
 	 * Additional properties used to describe the plan.
@@ -108,7 +109,7 @@ public class PlanMetadata {
 	 * Get the display name of the plan.
 	 * @return the display name
 	 */
-	public String getDisplayName() {
+	public @Nullable String getDisplayName() {
 		return this.displayName;
 	}
 

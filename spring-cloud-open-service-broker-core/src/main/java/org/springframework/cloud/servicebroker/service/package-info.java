@@ -17,4 +17,7 @@
 /**
  * Service interfaces and default implementations.
  */
+@NullMarked
 package org.springframework.cloud.servicebroker.service;
+
+import org.jspecify.annotations.NullMarked;

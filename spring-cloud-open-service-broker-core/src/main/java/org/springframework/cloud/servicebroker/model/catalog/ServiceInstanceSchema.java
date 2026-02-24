@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Service instance JSON Schemas.
@@ -32,9 +33,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceInstanceSchema {
 
-	private final MethodSchema createMethodSchema;
+	private final @Nullable MethodSchema createMethodSchema;
 
-	private final MethodSchema updateMethodSchema;
+	private final @Nullable MethodSchema updateMethodSchema;
 
 	/**
 	 * Construct a new {@link ServiceInstanceSchema}.
@@ -48,7 +49,7 @@ public class ServiceInstanceSchema {
 	 * @param createMethodSchema the schema
 	 * @param updateMethodSchema the schema
 	 */
-	public ServiceInstanceSchema(MethodSchema createMethodSchema, MethodSchema updateMethodSchema) {
+	public ServiceInstanceSchema(@Nullable MethodSchema createMethodSchema, @Nullable MethodSchema updateMethodSchema) {
 		this.createMethodSchema = createMethodSchema;
 		this.updateMethodSchema = updateMethodSchema;
 	}
@@ -58,7 +59,7 @@ public class ServiceInstanceSchema {
 	 * @return the schema
 	 */
 	@JsonProperty("create")
-	public MethodSchema getCreateMethodSchema() {
+	public @Nullable MethodSchema getCreateMethodSchema() {
 		return this.createMethodSchema;
 	}
 
@@ -67,7 +68,7 @@ public class ServiceInstanceSchema {
 	 * @return the schema
 	 */
 	@JsonProperty("update")
-	public MethodSchema getUpdateMethodSchema() {
+	public @Nullable MethodSchema getUpdateMethodSchema() {
 		return this.updateMethodSchema;
 	}
 
@@ -109,9 +110,9 @@ public class ServiceInstanceSchema {
 	 */
 	public static final class ServiceInstanceSchemaBuilder {
 
-		private MethodSchema createMethodSchema;
+		private @Nullable MethodSchema createMethodSchema;
 
-		private MethodSchema updateMethodSchema;
+		private @Nullable MethodSchema updateMethodSchema;
 
 		private ServiceInstanceSchemaBuilder() {
 		}

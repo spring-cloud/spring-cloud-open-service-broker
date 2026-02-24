@@ -18,6 +18,7 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -37,73 +38,73 @@ public class Plan {
 	 * must be unique within the platform. Using a GUID is recommended.
 	 */
 	@NotEmpty
-	private String id;
+	private @Nullable String id;
 
 	/**
 	 * A CLI-friendly name of the plan that will appear in the catalog. The value should
 	 * be all lowercase, with no spaces.
 	 */
 	@NotEmpty
-	private String name;
+	private @Nullable String name;
 
 	/**
 	 * A user-friendly short description of the plan that will appear in the catalog.
 	 */
 	@NotEmpty
-	private String description;
+	private @Nullable String description;
 
 	/**
 	 * The metadata for this plan.
 	 */
 	@NestedConfigurationProperty
 	@Valid
-	private PlanMetadata metadata;
+	private @Nullable PlanMetadata metadata;
 
 	/**
 	 * The schemas for this plan.
 	 */
 	@NestedConfigurationProperty
 	@Valid
-	private Schemas schemas;
+	private @Nullable Schemas schemas;
 
 	/**
 	 * Indicates whether the service with this plan can be bound to applications. This is
 	 * an optional field. If the value is <code>null</code>, the field will be omitted
 	 * from the serialized JSON.
 	 */
-	private Boolean bindable;
+	private @Nullable Boolean bindable;
 
 	/**
 	 * Indicates whether the plan can be limited by the non_basic_services_allowed field
 	 * in a platform quota.
 	 */
-	private Boolean free;
+	private @Nullable Boolean free;
 
 	/**
 	 * Indicates whether the plan can be updated. This is an optional field. If the value
 	 * is <code>null</code>, the field will be omitted from the serialized JSON.
 	 */
-	private Boolean planUpdateable;
+	private @Nullable Boolean planUpdateable;
 
 	/**
 	 * A duration, in seconds, that the Platform SHOULD use as the Service's maximum
 	 * polling duration. If the value is <code>null</code>, the field will be omitted from
 	 * the serialized JSON.
 	 */
-	private Integer maximumPollingDuration;
+	private @Nullable Integer maximumPollingDuration;
 
 	/**
 	 * Maintenance information for a Service Instance which is provisioned using the
 	 * Service Plan. If provided, a version string MUST be provided and platforms MAY use
 	 * this when Provisioning or Updating a Service Instance.
 	 */
-	private MaintenanceInfo maintenanceInfo;
+	private @Nullable MaintenanceInfo maintenanceInfo;
 
 	/**
 	 * Get the plan ID.
 	 * @return the plan ID
 	 */
-	public String getId() {
+	public @Nullable String getId() {
 		return this.id;
 	}
 
@@ -119,7 +120,7 @@ public class Plan {
 	 * Get the plan name.
 	 * @return the plan name
 	 */
-	public String getName() {
+	public @Nullable String getName() {
 		return this.name;
 	}
 
@@ -135,7 +136,7 @@ public class Plan {
 	 * Get the plan description.
 	 * @return the plan description
 	 */
-	public String getDescription() {
+	public @Nullable String getDescription() {
 		return this.description;
 	}
 
@@ -151,7 +152,7 @@ public class Plan {
 	 * Get the plan metadata.
 	 * @return the plan metadata
 	 */
-	public PlanMetadata getMetadata() {
+	public @Nullable PlanMetadata getMetadata() {
 		return this.metadata;
 	}
 
@@ -167,7 +168,7 @@ public class Plan {
 	 * Get the plan schemas.
 	 * @return the plan schemas
 	 */
-	public Schemas getSchemas() {
+	public @Nullable Schemas getSchemas() {
 		return this.schemas;
 	}
 
@@ -183,7 +184,7 @@ public class Plan {
 	 * Get whether the plan is bindable.
 	 * @return true if bindable, false otherwise
 	 */
-	public Boolean isBindable() {
+	public @Nullable Boolean isBindable() {
 		return this.bindable;
 	}
 
@@ -199,7 +200,7 @@ public class Plan {
 	 * Get whether the plan is free.
 	 * @return true if free, false otherwise
 	 */
-	public Boolean isFree() {
+	public @Nullable Boolean isFree() {
 		return this.free;
 	}
 
@@ -215,7 +216,7 @@ public class Plan {
 	 * Get whether the plan is updateable.
 	 * @return true if updateable, false otherwise
 	 */
-	public Boolean isPlanUpdateable() {
+	public @Nullable Boolean isPlanUpdateable() {
 		return this.planUpdateable;
 	}
 
@@ -231,7 +232,7 @@ public class Plan {
 	 * Get the maximum polling duration.
 	 * @return the maximum polling duration in seconds
 	 */
-	public Integer getMaximumPollingDuration() {
+	public @Nullable Integer getMaximumPollingDuration() {
 		return this.maximumPollingDuration;
 	}
 
@@ -247,7 +248,7 @@ public class Plan {
 	 * Get the maintenance information.
 	 * @return the maintenance information
 	 */
-	public MaintenanceInfo getMaintenanceInfo() {
+	public @Nullable MaintenanceInfo getMaintenanceInfo() {
 		return this.maintenanceInfo;
 	}
 

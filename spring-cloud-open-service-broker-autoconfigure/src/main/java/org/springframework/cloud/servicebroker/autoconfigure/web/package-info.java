@@ -17,4 +17,7 @@
 /**
  * Support for Spring Boot auto-configuration in web environments.
  */
+@NullMarked
 package org.springframework.cloud.servicebroker.autoconfigure.web;
+
+import org.jspecify.annotations.NullMarked;
