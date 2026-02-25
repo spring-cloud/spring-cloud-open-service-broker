@@ -27,7 +27,6 @@ dependencies {
 	implementation platform(SpringBootPlugin.BOM_COORDINATES)
 	annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
 
-	compileOnly 'org.jspecify:jspecify'
 	api project(':spring-cloud-open-service-broker-core')
 	optionalApi 'org.springframework.boot:spring-boot-starter-webmvc'
 	optionalApi 'org.springframework.boot:spring-boot-starter-webflux'
