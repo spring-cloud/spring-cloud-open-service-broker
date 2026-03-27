@@ -21,6 +21,6 @@ jobs:
           java-version: 17
           distribution: liberica          
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
       - name: Build with Gradle
         run: ./gradlew build
