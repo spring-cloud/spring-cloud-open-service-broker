@@ -19,9 +19,10 @@ package org.springframework.cloud.servicebroker.service.events;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import org.springframework.util.CollectionUtils;
 
 /**
  * Abstract class for defining an event flow registry.
@@ -48,13 +49,13 @@ public abstract class EventFlowRegistry<I, C, E, R, S> {
 	 * @param errorFlows the error flows
 	 */
 	protected EventFlowRegistry(List<I> initializationFlows, List<C> completionFlows, List<E> errorFlows) {
-		if (CollectionUtils.isNotEmpty(initializationFlows)) {
+		if (!CollectionUtils.isEmpty(initializationFlows)) {
 			initializationFlows.forEach((flow) -> this.initializationFlows.add(Mono.just(flow)));
 		}
-		if (CollectionUtils.isNotEmpty(completionFlows)) {
+		if (!CollectionUtils.isEmpty(completionFlows)) {
 			completionFlows.forEach((flow) -> this.completionFlows.add(Mono.just(flow)));
 		}
-		if (CollectionUtils.isNotEmpty(errorFlows)) {
+		if (!CollectionUtils.isEmpty(errorFlows)) {
 			errorFlows.forEach((flow) -> this.errorFlows.add(Mono.just(flow)));
 		}
 	}
