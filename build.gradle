@@ -16,9 +16,6 @@
 
 buildscript {
 	ext {
-		// External Dependencies
-		beanUtilsVersion = "1.11.0"
-
 		// Test Dependencies
 		springCloudContractVersion = "5.0.2"
 		equalsVerifierVersion = "4.4.2"
