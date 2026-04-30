@@ -48,7 +48,7 @@ dependencies {
 	testImplementation 'com.jayway.jsonpath:json-path'
 	testImplementation "nl.jqno.equalsverifier:equalsverifier:${equalsVerifierVersion}"
 	testImplementation 'jakarta.servlet:jakarta.servlet-api'
-	testImplementation "com.google.code.findbugs:annotations:${findbugsVersion}"
+	testCompileOnly "com.google.code.findbugs:annotations:${findbugsVersion}"
 }
 
 configurations {
