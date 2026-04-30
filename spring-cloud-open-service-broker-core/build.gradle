@@ -43,7 +43,7 @@ dependencies {
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 	testImplementation 'org.junit.jupiter:junit-jupiter'
 	testImplementation 'org.assertj:assertj-core'
-	testImplementation 'org.hamcrest:hamcrest-library'
+	testImplementation 'org.hamcrest:hamcrest'
 	testImplementation 'org.mockito:mockito-core'
 	testImplementation 'org.mockito:mockito-junit-jupiter'
 	testImplementation 'com.jayway.jsonpath:json-path'
