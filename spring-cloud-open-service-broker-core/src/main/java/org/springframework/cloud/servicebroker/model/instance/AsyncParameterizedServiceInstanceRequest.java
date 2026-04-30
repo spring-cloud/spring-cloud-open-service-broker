@@ -112,6 +112,7 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 * @param <T> the type of the object to instantiate and populate
 	 * @return the instantiated and populated object
 	 */
+	@SuppressWarnings("deprecation")
 	public <T> T getParameters(Class<T> cls) {
 		return ParameterBeanMapperUtils.mapParametersToBean(this.parameters, cls);
 	}

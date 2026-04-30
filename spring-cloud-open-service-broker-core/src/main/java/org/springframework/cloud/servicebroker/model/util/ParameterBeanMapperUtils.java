@@ -19,14 +19,18 @@ package org.springframework.cloud.servicebroker.model.util;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.beanutils.SuppressPropertiesBeanIntrospector;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.MutablePropertyValues;
 
 /**
  * Utilities for mapping parameter maps to Java beans.
  *
  * @author Scott Frederick
+ * @deprecated since 5.0.0 in favor of using Spring's {@link BeanWrapper} directly
  */
+@Deprecated(since = "5.0.0")
 public final class ParameterBeanMapperUtils {
 
 	private ParameterBeanMapperUtils() {
@@ -45,13 +49,13 @@ public final class ParameterBeanMapperUtils {
 		try {
 			T bean = cls.getDeclaredConstructor().newInstance();
 
-			BeanUtilsBean beanUtils = new BeanUtilsBean();
-			beanUtils.getPropertyUtils().addBeanIntrospector(SuppressPropertiesBeanIntrospector.SUPPRESS_CLASS);
-			beanUtils.populate(bean, parameters);
+			BeanWrapper wrapper = new BeanWrapperImpl(bean);
+			wrapper.setPropertyValues(new MutablePropertyValues(parameters), true);
 
 			return bean;
 		}
-		catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+		catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException
+				| BeansException ex) {
 			throw new IllegalArgumentException("Error mapping parameters to class of type " + cls.getName(), ex);
 		}
 	}

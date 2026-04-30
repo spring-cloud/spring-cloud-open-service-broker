@@ -26,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ParameterBeanMapperUtilsTests {
 
 	@Test
+	@SuppressWarnings("deprecation")
 	void mapParametersToBean() {
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("stringProperty", "value1");
