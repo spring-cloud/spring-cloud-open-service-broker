@@ -20,7 +20,6 @@ buildscript {
 		springCloudContractVersion = "4.3.3"
 		equalsVerifierVersion = "4.5"
 		findbugsVersion = "3.0.1u2"
-		wiremockStandaloneVersion = "3.0.1"
 
 		// Static Analysis
 		blockHoundVersion = "1.0.16.RELEASE"

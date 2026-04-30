@@ -44,12 +44,6 @@ generateContractTests {
 }
 
 dependencies {
-	constraints {
-		testImplementation("com.github.tomakehurst:wiremock-standalone:${wiremockStandaloneVersion}") {
-			because "avoid Logback classpath conflict"
-		}
-	}
-
 	implementation platform("org.springframework.cloud:spring-cloud-contract-dependencies:${springCloudContractVersion}")
 	implementation platform(SpringBootPlugin.BOM_COORDINATES)
 	testImplementation project(':spring-cloud-starter-open-service-broker')
