@@ -40,7 +40,6 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testRuntimeOnly 'jakarta.servlet:jakarta.servlet-api'
 	testImplementation 'org.mockito:mockito-core'
-	testImplementation "org.hamcrest:java-hamcrest:${javaHamcrestVersion}"
 	testImplementation 'org.assertj:assertj-core'
 	testImplementation 'org.apache.commons:commons-lang3'
 }
