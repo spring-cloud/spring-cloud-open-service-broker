@@ -18,7 +18,7 @@ buildscript {
 	ext {
 		// Test Dependencies
 		springCloudContractVersion = "5.0.2"
-		equalsVerifierVersion = "4.4.2"
+		equalsVerifierVersion = "4.5"
 		findbugsVersion = "3.0.1u2"
 
 		// Static Analysis
