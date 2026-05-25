@@ -295,10 +295,11 @@ public class ServiceInstanceBindingController extends BaseController {
 			})
 				.doOnError((e) -> LOG.error(ERROR_RESPONSE, "getting last operation for", serviceInstanceId, bindingId,
 						e.getMessage(), e)))
-			.flatMap((response) -> Mono
-				.just(response.getState().equals(OperationState.SUCCEEDED) && response.isDeleteOperation())
-				.flatMap((isSuccessfulDelete) -> Mono
-					.just(new ResponseEntity<>(response, isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK))));
+			.map((response) -> {
+				boolean isSuccessfulDelete = response.getState().equals(OperationState.SUCCEEDED)
+						&& response.isDeleteOperation();
+				return new ResponseEntity<>(response, isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK);
+			});
 	}
 
 	/**
