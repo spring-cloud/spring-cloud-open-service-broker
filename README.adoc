@@ -11,6 +11,7 @@ The following table describes the version compatibility matrix for the various r
 [%header,cols=5*]
 |===
 |https://spring.io/projects/spring-cloud-open-service-broker[Spring Cloud Open Service Broker]|https://github.com/openservicebrokerapi/servicebroker[Open Service Broker API] |https://spring.io/projects/spring-boot[Spring Boot] |https://projects.spring.io/spring-framework/[Spring Framework]|JDK
+|5.0.x |2.16 |4.0.x |7.0.x|17
 |4.5.x |2.16 |3.5.x |6.2.x|17
 |4.4.x |2.16 |3.4.x |6.2.x|17
 |4.3.x |2.16 |3.3.x |6.1.x|17
@@ -28,7 +29,7 @@ See the https://spring.io/projects/spring-cloud-open-service-broker/[project sit
 === Gradle Dependencies
 
 ```
-implementation("org.springframework.cloud:spring-cloud-starter-open-service-broker:4.4.0")
+implementation("org.springframework.cloud:spring-cloud-starter-open-service-broker:5.0.0")
 ```
 
 === Maven Dependencies:
@@ -37,7 +38,7 @@ implementation("org.springframework.cloud:spring-cloud-starter-open-service-brok
 <dependency>
   <groupId>org.springframework.cloud</groupId>
   <artifactId>spring-cloud-starter-open-service-broker</artifactId>
-  <version>4.4.0</version>
+  <version>5.0.0</version>
 </dependency>
 ```
 
