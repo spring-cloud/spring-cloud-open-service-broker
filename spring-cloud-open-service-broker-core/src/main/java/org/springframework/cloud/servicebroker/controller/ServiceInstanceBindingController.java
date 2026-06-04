@@ -296,7 +296,7 @@ public class ServiceInstanceBindingController extends BaseController {
 				.doOnError((e) -> LOG.error(ERROR_RESPONSE, "getting last operation for", serviceInstanceId, bindingId,
 						e.getMessage(), e)))
 			.map((response) -> {
-				boolean isSuccessfulDelete = response.getState().equals(OperationState.SUCCEEDED)
+				boolean isSuccessfulDelete = OperationState.SUCCEEDED.equals(response.getState())
 						&& response.isDeleteOperation();
 				return new ResponseEntity<>(response, isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK);
 			});
