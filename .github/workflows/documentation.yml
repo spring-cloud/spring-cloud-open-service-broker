@@ -45,7 +45,7 @@ jobs:
           echo "✅ Documentation ZIP created"
           
           # Check API documentation
-          test -f build/docs/javadoc/index.html
+          test -f build/apidocs/index.html
           echo "✅ API documentation generated"
           
           # Check module javadoc JARs
