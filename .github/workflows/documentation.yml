@@ -27,7 +27,7 @@ jobs:
       - name: Build API documentation
         run: ./gradlew apidocs --no-parallel
       - name: Build module javadocs
-        run: ./gradlew javadoc
+        run: ./gradlew javadoc javadocJar
       - name: Build documentation ZIP
         run: ./gradlew docsZip --no-parallel
       - name: Validate documentation outputs
