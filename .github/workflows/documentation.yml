@@ -56,7 +56,7 @@ jobs:
           echo "✅ Autoconfigure module javadoc JAR generated"
           
           # Verify javadoc JAR sizes are reasonable (not empty stubs)
-          core_size=$(find spring-cloud-open-service-broker-core/build/libs -name "*-javadoc.jar" -exec du -b {} \; | cut -f1)
+          core_size=$(find spring-cloud-open-service-broker-core/build/libs -name "*-javadoc.jar" -exec wc -c {} \; | awk '{print $1}')
           if [ "$core_size" -gt 500000 ]; then
             echo "✅ Core javadoc JAR size reasonable: $core_size bytes"
           else
@@ -64,7 +64,7 @@ jobs:
             exit 1
           fi
           
-          auto_size=$(find spring-cloud-open-service-broker-autoconfigure/build/libs -name "*-javadoc.jar" -exec du -b {} \; | cut -f1)
+          auto_size=$(find spring-cloud-open-service-broker-autoconfigure/build/libs -name "*-javadoc.jar" -exec wc -c {} \; | awk '{print $1}')
           if [ "$auto_size" -gt 100000 ]; then
             echo "✅ Autoconfigure javadoc JAR size reasonable: $auto_size bytes"
           else
