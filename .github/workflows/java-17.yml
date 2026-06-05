@@ -5,14 +5,17 @@ name: Java 17
 
 on:
   push:
-    branches: [ 5.0.*, 4.5.* ]
+    branches: [ 5.1.*, 5.0.*, 4.5.* ]
   pull_request:
-    branches: [ 5.0.*, 4.5.* ]
+    branches: [ 5.1.*, 5.0.*, 4.5.* ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest            
-    name: Java 17 build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    name: Java 17 build on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
       - name: Set up Java 17

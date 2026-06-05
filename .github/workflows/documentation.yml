@@ -1,0 +1,87 @@
+# This workflow builds and validates the documentation
+# It ensures the modernized AsciiDoctor setup works correctly
+
+name: Documentation
+
+on:
+  push:
+    branches: [ 5.1.*, 5.0.*, 4.5.* ]
+  pull_request:
+    branches: [ 5.1.*, 5.0.*, 4.5.* ]
+
+jobs:
+  documentation:
+    runs-on: ubuntu-latest            
+    name: Documentation build and validation
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Java 17
+        uses: actions/setup-java@v5
+        with:
+          java-version: 17
+          distribution: liberica          
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Build documentation
+        run: ./gradlew :spring-cloud-open-service-broker-docs:asciidoctor --no-parallel
+      - name: Build API documentation
+        run: ./gradlew apidocs --no-parallel
+      - name: Build module javadocs
+        run: ./gradlew javadoc
+      - name: Build documentation ZIP
+        run: ./gradlew docsZip --no-parallel
+      - name: Validate documentation outputs
+        run: |
+          # Check that HTML documentation was generated
+          test -f spring-cloud-open-service-broker-docs/build/docs/asciidoc/index.html
+          echo "✅ HTML documentation generated"
+          
+          # Check that PDF documentation was generated  
+          test -f spring-cloud-open-service-broker-docs/build/docs/asciidocPdf/index.pdf
+          echo "✅ PDF documentation generated"
+          
+          # Check that docs ZIP was created
+          test -f build/distributions/spring-cloud-open-service-broker-*-docs.zip
+          echo "✅ Documentation ZIP created"
+          
+          # Check API documentation
+          test -f build/docs/javadoc/index.html
+          echo "✅ API documentation generated"
+          
+          # Check module javadoc JARs
+          test -f spring-cloud-open-service-broker-core/build/libs/spring-cloud-open-service-broker-core-*-javadoc.jar
+          echo "✅ Core module javadoc JAR generated"
+          
+          test -f spring-cloud-open-service-broker-autoconfigure/build/libs/spring-cloud-open-service-broker-autoconfigure-*-javadoc.jar
+          echo "✅ Autoconfigure module javadoc JAR generated"
+          
+          # Verify javadoc JAR sizes are reasonable (not empty stubs)
+          core_size=$(find spring-cloud-open-service-broker-core/build/libs -name "*-javadoc.jar" -exec du -b {} \; | cut -f1)
+          if [ "$core_size" -gt 500000 ]; then
+            echo "✅ Core javadoc JAR size reasonable: $core_size bytes"
+          else
+            echo "❌ Core javadoc JAR too small: $core_size bytes"
+            exit 1
+          fi
+          
+          auto_size=$(find spring-cloud-open-service-broker-autoconfigure/build/libs -name "*-javadoc.jar" -exec du -b {} \; | cut -f1)
+          if [ "$auto_size" -gt 100000 ]; then
+            echo "✅ Autoconfigure javadoc JAR size reasonable: $auto_size bytes"
+          else
+            echo "❌ Autoconfigure javadoc JAR too small: $auto_size bytes"
+            exit 1
+          fi
+          
+          # Check documentation content
+          grep -q "Spring Cloud Open Service Broker" spring-cloud-open-service-broker-docs/build/docs/asciidoc/index.html
+          echo "✅ Documentation content validated"
+          
+          echo "📊 Documentation build summary:"
+          echo "HTML pages: $(find spring-cloud-open-service-broker-docs/build/docs/asciidoc -name '*.html' | wc -l)"
+          echo "PDF size: $(du -h spring-cloud-open-service-broker-docs/build/docs/asciidocPdf/index.pdf | cut -f1)"
+          echo "ZIP size: $(du -h build/distributions/spring-cloud-open-service-broker-*-docs.zip | cut -f1)"
+          echo "Javadoc JARs: $(find . -name '*-javadoc.jar' | wc -l)"
+          
+          # List all generated javadoc JARs with sizes
+          echo "📚 Generated javadoc JARs:"
+          find . -name '*-javadoc.jar' -exec ls -lh {} \; | awk '{print "  " $9 ": " $5}'
