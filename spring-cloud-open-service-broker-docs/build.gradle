@@ -40,6 +40,34 @@ dependencies {
 	asciidoctorExtensions "io.spring.asciidoctor.backends:spring-asciidoctor-backends:0.0.7"
 }
 
+// Consolidated AsciiDoctor configuration
+asciidoctorj {
+	// Common attributes for all tasks
+	attributes([
+		"revnumber": project.version,
+		"spring-version": project.version,
+		"project-version": project.version,
+		"branch-or-tag": project.version.endsWith("SNAPSHOT") ? "main" : "v${project.version}",
+		"icons": "font",
+		"idprefix": "",
+		"idseparator": "-",
+		"sectanchors": "",
+		"sectnums": "",
+		"toc": "",
+		"docinfo": "shared",
+		"allow-uri-read": "",
+		"source-highlighter": "highlight.js",
+		"highlightjsdir": "js/highlight",
+		"highlightjs-theme": "github",
+		"includedir": "${project.projectDir}/src/docs/asciidoc",
+		"examples-dir": "${project.projectDir}/src/test/java/com/example/servicebroker"
+	])
+	
+	options([
+		doctype: "book"
+	])
+}
+
 test {
 	failOnNoDiscoveredTests = false
 }
@@ -48,68 +76,77 @@ javadoc {
 	enabled = false
 }
 
-tasks.register('prepareAsciidocBuild', Sync) {
-	// Copy doc sources
-	from "src/docs/asciidoc"
-	// to a temporary build directory
-	into layout.buildDirectory.dir("asciidoc")
-}
-
 asciidoctorPdf {
-	dependsOn prepareAsciidocBuild
+	// Use native source directory instead of manual copying
+	sourceDir file("src/docs/asciidoc")
 	baseDirFollowsSourceFile()
-
-	asciidoctorj {
-		sourceDir layout.buildDirectory.dir("asciidoc").get().asFile
-		inputs.dir(sourceDir)
-		sources {
-			include "index.adoc"
-		}
-		options doctype: "book"
-		attributes "icons": "font",
-				"sectanchors": "",
-				"sectnums": "",
-				"toc": "",
-				"source-highlighter": "coderay",
-				revnumber: project.version,
-				'project-version': project.version
+	
+	// Set execution mode for better performance with managed classpath
+	executionMode = 'OUT_OF_PROCESS'
+	
+	// Enable parallel execution for better performance
+	parallelMode = true
+	
+	// PDF-specific sources (only index.adoc for complete document)
+	sources {
+		include "index.adoc"
 	}
+	
+	// PDF-specific attributes that override common configuration
+	attributes = attributes + [
+		"source-highlighter": "highlight.js"  // Standardize on highlight.js for consistency
+	]
+	
+	// Add proper input/output declarations for Gradle caching
+	inputs.dir(sourceDir)
+	inputs.dir("src/test/java/com/example/servicebroker")
+	outputs.dir(outputDir)
 }
 
 asciidoctor {
 	dependsOn asciidoctorPdf
+	
+	// Configure Spring HTML backend
 	configurations "asciidoctorExtensions"
 	outputOptions {
 		backends "spring-html"
 	}
+	
+	// Use native source directory
+	sourceDir file("src/docs/asciidoc")
 	baseDirFollowsSourceFile()
-	sourceDir = layout.buildDirectory.dir("asciidoc").get().asFile
+	
+	// Set execution mode for better performance with managed classpath
+	executionMode = 'OUT_OF_PROCESS'
+	
+	// Enable parallel execution
+	parallelMode = true
+	
+	// HTML-specific sources (all .adoc files)
 	sources {
 		include "*.adoc"
 	}
+	
+	// Native resource handling instead of manual copying
 	resources {
 		from(sourceDir) {
 			include "images/*", "css/**", "js/**"
 		}
 	}
+	
+	// Enable document logging for debugging
 	logDocuments = true
-	options doctype: "book", eruby: "erubis"
-	attributes "revnumber": project.version,
-			"spring-version": project.version,
-			"branch-or-tag": project.version.endsWith("SNAPSHOT") ? "main" : "v${project.version}",
-			"icons": "font",
-			"idprefix": "",
-			"idseparator": "-",
-			docinfo: "shared",
-			sectanchors: "",
-			sectnums: "",
-			stylesdir: "css/",
-			stylesheet: "spring.css",
-			"linkcss": true,
-			"nofooter": true,
-			"allow-uri-read": "",
-			"source-highlighter": "highlight.js",
-			"highlightjsdir": "js/highlight",
-			"highlightjs-theme": "github",
-			"project-version": project.version
+	
+	// HTML-specific attributes that override common configuration  
+	attributes = attributes + [
+		"stylesdir": "css/",
+		"stylesheet": "spring.css",
+		"linkcss": true,
+		"nofooter": true
+	]
+	
+	// Add proper input/output declarations for Gradle caching
+	inputs.dir(sourceDir)
+	inputs.dir("src/test/java/com/example/servicebroker")
+	outputs.dir(outputDir)
 }
