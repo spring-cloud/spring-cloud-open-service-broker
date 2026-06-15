@@ -22,7 +22,7 @@ buildscript {
 		findbugsVersion = "3.0.1u2"
 
 		// Static Analysis
-		blockHoundVersion = "1.0.16.RELEASE"
+		blockHoundVersion = "1.0.17.RELEASE"
 	}
 }
 
