@@ -1,3 +1,2 @@
-artifactory-server: https://repo.spring.io
 build-name: spring-cloud-open-service-broker
 github-repo: https://github.com/spring-cloud/spring-cloud-open-service-broker
