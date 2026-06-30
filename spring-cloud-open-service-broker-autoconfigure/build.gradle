@@ -23,10 +23,8 @@ plugins {
 description = "Spring Cloud Open Service Broker Auto-Configuration"
 
 dependencies {
-	// BOM imports - The versions used in these files will override any other versions found in the graph
 	implementation platform(SpringBootPlugin.BOM_COORDINATES)
 	annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
-
 	api project(':spring-cloud-open-service-broker-core')
 	compileOnly 'org.springframework.boot:spring-boot-starter-webmvc'
 	compileOnly 'org.springframework.boot:spring-boot-starter-webflux'

@@ -29,9 +29,7 @@ configurations {
 }
 
 dependencies {
-	// BOM imports - The versions used in these files will override any other versions found in the graph
 	implementation platform(SpringBootPlugin.BOM_COORDINATES)
-
 	implementation project(':spring-cloud-open-service-broker-core')
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-security'

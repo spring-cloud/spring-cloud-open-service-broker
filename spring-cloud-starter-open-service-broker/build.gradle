@@ -23,9 +23,7 @@ plugins {
 description = "Spring Cloud Open Service Broker Starter"
 
 dependencies {
-	// BOM imports - The versions used in these files will override any other versions found in the graph
 	implementation platform(SpringBootPlugin.BOM_COORDINATES)
-
 	api 'org.springframework.boot:spring-boot-starter'
 	api project(':spring-cloud-open-service-broker-autoconfigure')
 }
