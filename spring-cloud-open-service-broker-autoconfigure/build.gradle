@@ -28,8 +28,8 @@ dependencies {
 	annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
 
 	api project(':spring-cloud-open-service-broker-core')
-	optionalApi 'org.springframework.boot:spring-boot-starter-webmvc'
-	optionalApi 'org.springframework.boot:spring-boot-starter-webflux'
+	compileOnly 'org.springframework.boot:spring-boot-starter-webmvc'
+	compileOnly 'org.springframework.boot:spring-boot-starter-webflux'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.springframework.boot:spring-boot-autoconfigure-processor'
 	testImplementation project(path: ':spring-cloud-open-service-broker-core', configuration: 'testOutput')
