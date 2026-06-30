@@ -39,8 +39,6 @@ configure(allprojects) {
 	group = "org.springframework.cloud"
 
 	apply plugin: 'java'
-	apply plugin: 'eclipse'
-	apply plugin: 'idea'
 }
 
 // configure submodules with published java artifacts
