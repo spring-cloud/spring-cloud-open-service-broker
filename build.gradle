@@ -116,11 +116,7 @@ configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) 
 
 	// see https://github.com/reactor/BlockHound/issues/33
 	tasks.withType(Test).configureEach {
-		if (JavaVersion.current() >= JavaVersion.VERSION_13) {
-			jvmArgs += [
-					"-XX:+AllowRedefinitionToAddDeleteMethods"
-			]
-		}
+		jvmArgs += ["-XX:+AllowRedefinitionToAddDeleteMethods"]
 	}
 
 	javadoc {
@@ -131,9 +127,6 @@ configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) 
 		options.header = project.name
 		options.use = true
 		options.links(rootProject.ext.javadocLinks)
-		if (JavaVersion.current() == JavaVersion.VERSION_11) {
-			options.addBooleanOption('-no-module-directories', true)
-		}
 	}
 
 	// see https://docs.gradle.org/current/userguide/java_plugin.html
