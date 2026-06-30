@@ -14,18 +14,6 @@
  * limitations under the License.
  */
 
-buildscript {
-	ext {
-		// Test Dependencies
-		springCloudContractVersion = "5.0.3"
-		equalsVerifierVersion = "4.5"
-		findbugsVersion = "3.0.1u2"
-
-		// Static Analysis
-		blockHoundVersion = "1.0.17.RELEASE"
-	}
-}
-
 plugins {
 	id "checkstyle"
 	id "io.spring.nohttp"
@@ -144,7 +132,7 @@ configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) 
 		options.author = true
 		options.header = project.name
 		options.use = true
-		options.links(javadocLinks)
+		options.links(rootProject.ext.javadocLinks)
 		if (JavaVersion.current() == JavaVersion.VERSION_11) {
 			options.addBooleanOption('-no-module-directories', true)
 		}
