@@ -80,13 +80,8 @@ asciidoctorPdf {
 	// Use native source directory instead of manual copying
 	sourceDir file("src/docs/asciidoc")
 	baseDirFollowsSourceFile()
-	
-	// Set execution mode for better performance with managed classpath
-	executionMode = 'OUT_OF_PROCESS'
-	
-	// Enable parallel execution for better performance
 	parallelMode = true
-	
+
 	// PDF-specific sources (only index.adoc for complete document)
 	sources {
 		include "index.adoc"
@@ -115,13 +110,8 @@ asciidoctor {
 	// Use native source directory
 	sourceDir file("src/docs/asciidoc")
 	baseDirFollowsSourceFile()
-	
-	// Set execution mode for better performance with managed classpath
-	executionMode = 'OUT_OF_PROCESS'
-	
-	// Enable parallel execution
 	parallelMode = true
-	
+
 	// HTML-specific sources (all .adoc files)
 	sources {
 		include "*.adoc"
