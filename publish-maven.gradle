@@ -25,7 +25,6 @@ publishing {
 	}
 	publications {
 		mavenJava(MavenPublication) {
-			suppressAllPomMetadataWarnings()
 			from components.java
 			pom {
 				afterEvaluate {

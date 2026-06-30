@@ -159,11 +159,6 @@ configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) 
 		withSourcesJar()
 		withJavadocJar()
 
-		// define 'optional' dependency feature variant
-		// see https://docs.gradle.org/current/userguide/feature_variants.html
-		registerFeature('optional') {
-			usingSourceSet(sourceSets.main)
-		}
 	}
 
 	tasks.register('testsJar', Jar) {
