@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import org.asciidoctor.gradle.jvm.AbstractAsciidoctorTask
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
@@ -66,6 +67,16 @@ asciidoctorj {
 	])
 }
 
+// JRuby (embedded in AsciidoctorJ) needs reflective access to JDK IO internals for
+// native subprocess control; without this, JDK 16+'s stronger default module
+// encapsulation causes it to log a "Native subprocess control requires open access
+// to the JDK IO subsystem" warning instead of failing outright.
+tasks.withType(AbstractAsciidoctorTask).configureEach {
+	jvm {
+		jvmArgs("--add-opens", "java.base/java.io=ALL-UNNAMED", "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED")
+	}
+}
+
 test {
 	failOnNoDiscoveredTests = false
 }
@@ -78,6 +89,11 @@ asciidoctorPdf {
 	// Use native source directory instead of manual copying
 	sourceDir file("src/docs/asciidoc")
 	baseDirFollowsSourceFile()
+
+	// Unlike the asciidoctor (HTML) task, this task defaults to running in-process
+	// in the Gradle daemon's own JVM, so the jvm { jvmArgs } above have no effect
+	// unless it's forced to run in a real forked process.
+	executionMode = 'OUT_OF_PROCESS'
 	parallelMode = true
 
 	// PDF-specific sources (only index.adoc for complete document)
