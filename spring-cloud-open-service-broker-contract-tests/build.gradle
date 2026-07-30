@@ -53,8 +53,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
 	// TODO: remove the RestAssured dependencies when the managed version is upgraded to a version that supports Groovy 5
-	testImplementation 'io.rest-assured:rest-assured:6.0.1'
-	testImplementation 'io.rest-assured:spring-mock-mvc:6.0.1'
+	testImplementation "io.rest-assured:rest-assured:${restAssuredVersion}"
+	testImplementation "io.rest-assured:spring-mock-mvc:${restAssuredVersion}"
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testRuntimeOnly 'jakarta.servlet:jakarta.servlet-api'
 }
