@@ -21,7 +21,9 @@ set_pipeline() {
 }
 
 main() {
-	local -r branches=("5.1.x" "5.0.x" "4.5.x")
+	# When a branch is retired, remove it from this list and optionally destroy its pipeline instance with:
+	#   fly --target "$FLY_TARGET" destroy-pipeline --pipeline scosb --instance-var "branch=<branch>"
+	local -r branches=("5.1.x" "5.0.x")
 
 	pushd "$(dirname "$0")/../ci" >/dev/null
 
