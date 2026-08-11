@@ -19,6 +19,8 @@ package org.springframework.cloud.servicebroker.autoconfigure.web;
 import reactor.blockhound.BlockHound;
 import reactor.blockhound.integration.BlockHoundIntegration;
 
+// registered via META-INF/services and shared with other modules (e.g. contract-tests)
+// through the testOutput/testsJar configuration in the root build.gradle
 public class CustomBlockHoundIntegration implements BlockHoundIntegration {
 
 	@Override

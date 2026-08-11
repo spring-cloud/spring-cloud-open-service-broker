@@ -140,6 +140,9 @@ configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) 
 
 	}
 
+	// packages test resources (e.g. META-INF/services/reactor.blockhound.integration.BlockHoundIntegration)
+	// alongside test classes, so other modules consuming this via the testOutput configuration
+	// also pick up test-only BlockHound integrations such as CustomBlockHoundIntegration
 	tasks.register('testsJar', Jar) {
 		archiveClassifier.set("tests")
 		from sourceSets.test.output

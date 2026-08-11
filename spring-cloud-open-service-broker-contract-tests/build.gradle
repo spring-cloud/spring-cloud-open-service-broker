@@ -52,6 +52,7 @@ dependencies {
 	testImplementation project(path: ':spring-cloud-open-service-broker-autoconfigure', configuration: 'testOutput')
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
+	testImplementation "io.projectreactor.tools:blockhound-junit-platform:${blockHoundVersion}"
 	// TODO: remove the RestAssured dependencies when the managed version is upgraded to a version that supports Groovy 5
 	testImplementation "io.rest-assured:rest-assured:${restAssuredVersion}"
 	testImplementation "io.rest-assured:spring-mock-mvc:${restAssuredVersion}"
