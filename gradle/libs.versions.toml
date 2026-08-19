@@ -1,0 +1,29 @@
+[versions]
+javaformat = "0.0.48"
+spring-boot = "4.1.0"
+spring-nohttp = "0.0.11"
+asciidoctor = "4.0.5"
+spring-asciidoctor-backends = "0.0.7"
+spring-cloud-contract = "5.0.3"
+rest-assured = "6.0.1"
+equalsverifier = "4.5"
+findbugs = "3.0.1u2"
+blockhound = "1.0.17.RELEASE"
+
+[libraries]
+spring-javaformat-checkstyle = { module = "io.spring.javaformat:spring-javaformat-checkstyle", version.ref = "javaformat" }
+spring-cloud-contract-dependencies = { module = "org.springframework.cloud:spring-cloud-contract-dependencies", version.ref = "spring-cloud-contract" }
+blockhound-junit-platform = { module = "io.projectreactor.tools:blockhound-junit-platform", version.ref = "blockhound" }
+equalsverifier = { module = "nl.jqno.equalsverifier:equalsverifier", version.ref = "equalsverifier" }
+findbugs-annotations = { module = "com.google.code.findbugs:annotations", version.ref = "findbugs" }
+rest-assured-core = { module = "io.rest-assured:rest-assured", version.ref = "rest-assured" }
+rest-assured-spring-mock-mvc = { module = "io.rest-assured:spring-mock-mvc", version.ref = "rest-assured" }
+spring-asciidoctor-backends = { module = "io.spring.asciidoctor.backends:spring-asciidoctor-backends", version.ref = "spring-asciidoctor-backends" }
+
+[plugins]
+spring-javaformat = { id = "io.spring.javaformat", version.ref = "javaformat" }
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-nohttp = { id = "io.spring.nohttp", version.ref = "spring-nohttp" }
+asciidoctor-pdf = { id = "org.asciidoctor.jvm.pdf", version.ref = "asciidoctor" }
+asciidoctor-convert = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor" }
+spring-cloud-contract = { id = "org.springframework.cloud.contract", version.ref = "spring-cloud-contract" }

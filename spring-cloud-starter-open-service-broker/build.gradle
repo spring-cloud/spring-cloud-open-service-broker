@@ -17,7 +17,7 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
-	id 'org.springframework.boot' apply false
+	alias(libs.plugins.spring.boot) apply false
 }
 
 description = "Spring Cloud Open Service Broker Starter"

@@ -15,13 +15,6 @@
  */
 
 pluginManagement {
-	plugins {
-		id "org.springframework.boot" version "4.1.0"
-		id "io.spring.nohttp" version "0.0.11"
-		id "io.spring.javaformat" version "0.0.48"
-		id "org.asciidoctor.jvm.pdf" version "4.0.5"
-		id "org.asciidoctor.jvm.convert" version "4.0.5"
-	}
 	repositories {
 		if (System.getenv('ARTIFACTORY_SERVER')) {
 			maven {
