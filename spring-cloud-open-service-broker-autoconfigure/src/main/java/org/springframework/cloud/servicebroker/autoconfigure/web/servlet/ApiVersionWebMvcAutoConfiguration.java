@@ -22,6 +22,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.webmvc.autoconfigure.WebMvcAutoConfiguration;
 import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerProperties;
@@ -48,7 +49,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Roy Clarkson
  */
 @Configuration
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+@ConditionalOnWebApplication(type = Type.SERVLET)
 @ConditionalOnBean({ ServiceInstanceService.class })
 @ConditionalOnProperty(prefix = "spring.cloud.openservicebroker", name = "api-version-check-enabled",
 		havingValue = "true", matchIfMissing = true)

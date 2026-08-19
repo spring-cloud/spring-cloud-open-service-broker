@@ -20,9 +20,12 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import org.jspecify.annotations.Nullable;
 import tools.jackson.core.JsonParser;
 import tools.jackson.databind.DeserializationContext;
@@ -46,7 +49,7 @@ import tools.jackson.databind.ser.std.ToStringSerializer;
  * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(Include.NON_NULL)
 public class VolumeMount {
 
 	/**
@@ -179,7 +182,7 @@ public class VolumeMount {
 	 * Get the details of the volume device to mount.
 	 * @return the volume device details
 	 */
-	@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "device_type")
+	@JsonTypeInfo(use = Id.NAME, include = As.EXTERNAL_PROPERTY, property = "device_type")
 	@JsonSubTypes({ @JsonSubTypes.Type(value = SharedVolumeDevice.class, name = "shared") })
 	public VolumeDevice getDevice() {
 		return this.device;

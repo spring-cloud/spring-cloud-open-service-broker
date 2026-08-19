@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
 import org.springframework.boot.webflux.autoconfigure.WebFluxAutoConfiguration;
 import org.springframework.cloud.servicebroker.autoconfigure.web.EventFlowsAutoConfiguration;
 import org.springframework.cloud.servicebroker.autoconfigure.web.ServiceBrokerAutoConfiguration;
@@ -46,7 +47,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @AutoConfigureAfter({ WebFluxAutoConfiguration.class, ServiceBrokerAutoConfiguration.class,
 		EventFlowsAutoConfiguration.class })
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+@ConditionalOnWebApplication(type = Type.REACTIVE)
 public class ServiceBrokerWebFluxAutoConfiguration {
 
 	private final CatalogService catalogService;

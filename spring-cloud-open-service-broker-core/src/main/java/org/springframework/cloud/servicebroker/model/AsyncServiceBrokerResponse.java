@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.jspecify.annotations.Nullable;
 
 import org.springframework.util.StringUtils;
@@ -30,7 +31,7 @@ import org.springframework.util.StringUtils;
  * @author Scott Frederick
  * @author Roy Clarkson
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(Include.NON_NULL)
 public class AsyncServiceBrokerResponse {
 
 	private static final int MAX_OPERATION_LENGTH = 10_000;
@@ -72,7 +73,7 @@ public class AsyncServiceBrokerResponse {
 	 * response.
 	 * @return the operation description
 	 */
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	@JsonInclude(Include.NON_EMPTY)
 	public @Nullable String getOperation() {
 		return this.operation;
 	}

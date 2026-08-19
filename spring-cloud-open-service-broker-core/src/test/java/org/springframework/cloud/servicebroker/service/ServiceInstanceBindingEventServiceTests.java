@@ -287,7 +287,7 @@ class ServiceInstanceBindingEventServiceTests {
 			.subscribe();
 	}
 
-	private static class BasicServiceInstanceBindingService implements ServiceInstanceBindingService {
+	private static final class BasicServiceInstanceBindingService implements ServiceInstanceBindingService {
 
 		@Override
 		public Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(

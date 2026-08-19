@@ -21,13 +21,14 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * JSON Schema for a service broker object method.
  *
  * @author Sam Gunaratne
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(Include.NON_NULL)
 public class MethodSchema {
 
 	private final Map<String, Object> parameters;

@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.jspecify.annotations.Nullable;
 
 import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
@@ -34,7 +35,7 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
  * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.15/spec.md#response-3">Open
  * Service Broker API specification</a>
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(Include.NON_EMPTY)
 public class OperationInProgressMessage implements Serializable {
 
 	@Serial

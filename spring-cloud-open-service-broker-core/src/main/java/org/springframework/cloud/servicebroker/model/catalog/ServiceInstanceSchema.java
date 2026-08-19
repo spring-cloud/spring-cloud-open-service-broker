@@ -19,6 +19,7 @@ package org.springframework.cloud.servicebroker.model.catalog;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jspecify.annotations.Nullable;
 
@@ -30,7 +31,7 @@ import org.jspecify.annotations.Nullable;
  * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-instance-schema-object">Open
  * Service Broker API specification</a>
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(Include.NON_NULL)
 public class ServiceInstanceSchema {
 
 	private final @Nullable MethodSchema createMethodSchema;

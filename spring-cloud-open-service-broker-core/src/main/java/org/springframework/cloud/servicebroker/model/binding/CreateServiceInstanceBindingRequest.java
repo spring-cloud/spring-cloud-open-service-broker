@@ -23,6 +23,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 import org.jspecify.annotations.Nullable;
@@ -47,7 +48,7 @@ import org.springframework.cloud.servicebroker.model.instance.AsyncParameterized
  * Service Broker API specification</a>
  */
 @SuppressWarnings({ "DeprecatedIsStillUsed" })
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(Include.NON_NULL)
 public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServiceInstanceRequest {
 
 	private transient @Nullable String serviceInstanceId;
