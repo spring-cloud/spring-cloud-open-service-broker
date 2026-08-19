@@ -17,7 +17,7 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
-	id 'org.springframework.boot' apply false
+	alias(libs.plugins.spring.boot) apply false
 }
 
 description = "Spring Cloud Open Service Broker Auto-Configuration"
@@ -36,7 +36,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webflux-test'
-	testImplementation "io.projectreactor.tools:blockhound-junit-platform:${blockHoundVersion}"
+	testImplementation libs.blockhound.junit.platform
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testRuntimeOnly 'jakarta.servlet:jakarta.servlet-api'
 	testImplementation 'org.mockito:mockito-core'

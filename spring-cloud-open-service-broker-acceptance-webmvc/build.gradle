@@ -17,7 +17,7 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
-	id 'org.springframework.boot'
+	alias(libs.plugins.spring.boot)
 }
 
 description = "Spring Cloud Open Service Broker Acceptance WebMvc"

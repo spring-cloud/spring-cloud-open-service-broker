@@ -19,9 +19,9 @@ import org.springframework.cloud.contract.verifier.config.TestFramework
 import org.springframework.cloud.contract.verifier.config.TestMode
 
 plugins {
-	id 'org.springframework.boot' apply false
+	alias(libs.plugins.spring.boot) apply false
 	id 'groovy'
-	id 'org.springframework.cloud.contract' version "${springCloudContractVersion}"
+	alias(libs.plugins.spring.cloud.contract)
 }
 
 description = "Spring Cloud Open Service Broker Contract Tests"
@@ -44,7 +44,7 @@ generateContractTests {
 }
 
 dependencies {
-	implementation platform("org.springframework.cloud:spring-cloud-contract-dependencies:${springCloudContractVersion}")
+	implementation platform(libs.spring.cloud.contract.dependencies)
 	implementation platform(SpringBootPlugin.BOM_COORDINATES)
 	testImplementation project(':spring-cloud-starter-open-service-broker')
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc'
@@ -53,7 +53,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
 	// TODO: remove the RestAssured dependency when the managed version is upgraded to a version that supports Groovy 5
-	testImplementation 'io.rest-assured:rest-assured:6.0.1'
+	testImplementation libs.rest.assured
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testRuntimeOnly 'jakarta.servlet:jakarta.servlet-api'
 }

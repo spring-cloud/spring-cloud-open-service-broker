@@ -17,9 +17,9 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
-	id 'org.springframework.boot' apply false
-	id 'org.asciidoctor.jvm.pdf'
-	id 'org.asciidoctor.jvm.convert'
+	alias(libs.plugins.spring.boot) apply false
+	alias(libs.plugins.asciidoctor.pdf)
+	alias(libs.plugins.asciidoctor.convert)
 }
 
 description = "Spring Cloud Open Service Broker Documentation"
@@ -37,7 +37,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
 	implementation 'io.projectreactor:reactor-core'
-	asciidoctorExtensions "io.spring.asciidoctor.backends:spring-asciidoctor-backends:0.0.7"
+	asciidoctorExtensions libs.spring.asciidoctor.backends
 }
 
 test {
