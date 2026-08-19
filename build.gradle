@@ -39,8 +39,6 @@ configure(allprojects) {
 	group = "org.springframework.cloud"
 
 	apply plugin: 'java'
-	apply plugin: 'eclipse'
-	apply plugin: 'idea'
 }
 
 // configure submodules with published java artifacts
@@ -91,38 +89,34 @@ subprojects {
 
 // configure java compilation for all java source
 configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) {
-	[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
-
-	def compilerArgs = [
-			"-Xlint:serial",
-			"-Xlint:varargs",
-			"-Xlint:cast",
-			"-Xlint:classfile",
-			"-Xlint:dep-ann",
-			"-Xlint:divzero",
-			"-Xlint:empty",
-			"-Xlint:finally",
-			"-Xlint:overrides",
-			"-Xlint:path",
-			"-Xlint:-processing",
-			"-Xlint:static",
-			"-Xlint:try",
-			"-Xlint:fallthrough",
-			"-Xlint:rawtypes",
-			"-Xlint:deprecation",
-			"-Xlint:unchecked",
-			"-Xlint:options",
-			"-Werror"
-	]
-	[compileJava, compileTestJava]*.options*.compilerArgs = compilerArgs
+	tasks.withType(JavaCompile).configureEach {
+		options.encoding = "UTF-8"
+		options.compilerArgs = [
+				"-Xlint:serial",
+				"-Xlint:varargs",
+				"-Xlint:cast",
+				"-Xlint:classfile",
+				"-Xlint:dep-ann",
+				"-Xlint:divzero",
+				"-Xlint:empty",
+				"-Xlint:finally",
+				"-Xlint:overrides",
+				"-Xlint:path",
+				"-Xlint:-processing",
+				"-Xlint:static",
+				"-Xlint:try",
+				"-Xlint:fallthrough",
+				"-Xlint:rawtypes",
+				"-Xlint:deprecation",
+				"-Xlint:unchecked",
+				"-Xlint:options",
+				"-Werror"
+		]
+	}
 
 	// see https://github.com/reactor/BlockHound/issues/33
 	tasks.withType(Test).configureEach {
-		if (JavaVersion.current() >= JavaVersion.VERSION_13) {
-			jvmArgs += [
-					"-XX:+AllowRedefinitionToAddDeleteMethods"
-			]
-		}
+		jvmArgs += ["-XX:+AllowRedefinitionToAddDeleteMethods"]
 	}
 
 	javadoc {
@@ -132,10 +126,7 @@ configure(subprojects - [project(':spring-cloud-starter-open-service-broker')]) 
 		options.author = true
 		options.header = project.name
 		options.use = true
-		options.links(javadocLinks)
-		if (JavaVersion.current() == JavaVersion.VERSION_11) {
-			options.addBooleanOption('-no-module-directories', true)
-		}
+		options.links(rootProject.ext.javadocLinks)
 	}
 
 	// see https://docs.gradle.org/current/userguide/java_plugin.html
