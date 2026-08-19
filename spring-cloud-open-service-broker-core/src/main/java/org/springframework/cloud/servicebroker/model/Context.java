@@ -26,6 +26,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import org.jspecify.annotations.Nullable;
 
 import org.springframework.util.CollectionUtils;
@@ -40,8 +42,8 @@ import org.springframework.util.StringUtils;
  * @author Scott Frederick
  * @author Roy Clarkson
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = Context.PLATFORM_KEY,
-		visible = true, defaultImpl = PlatformContext.class)
+@JsonTypeInfo(use = Id.NAME, include = As.EXISTING_PROPERTY, property = Context.PLATFORM_KEY, visible = true,
+		defaultImpl = PlatformContext.class)
 @JsonSubTypes({
 		@JsonSubTypes.Type(value = CloudFoundryContext.class, name = CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM),
 		@JsonSubTypes.Type(value = KubernetesContext.class, name = KubernetesContext.KUBERNETES_PLATFORM) })

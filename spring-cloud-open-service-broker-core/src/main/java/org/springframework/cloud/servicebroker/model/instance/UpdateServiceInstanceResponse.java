@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
@@ -74,7 +75,7 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 * Get the URL of a web-based management user interface for the service instance.
 	 * @return the dashboard URL, or {@literal null} if not provided
 	 */
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	@JsonInclude(Include.NON_EMPTY)
 	public @Nullable String getDashboardUrl() {
 		return this.dashboardUrl;
 	}
@@ -83,7 +84,7 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 	 * Get object containing metadata for the service instance.
 	 * @return the service instance metadata
 	 */
-	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@JsonInclude(Include.NON_NULL)
 	public @Nullable ServiceInstanceMetadata getMetadata() {
 		return this.metadata;
 	}

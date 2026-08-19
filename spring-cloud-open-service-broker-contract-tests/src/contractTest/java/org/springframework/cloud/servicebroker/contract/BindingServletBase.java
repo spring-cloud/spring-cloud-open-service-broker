@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.cloud.servicebroker.autoconfigure.web.BasicServiceInstanceBindingService;
 import org.springframework.cloud.servicebroker.autoconfigure.web.BasicServiceInstanceService;
@@ -40,8 +41,7 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = BindingServletBase.TestApplication.class,
-		properties = "spring.main.web-application-type=servlet",
-		webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+		properties = "spring.main.web-application-type=servlet", webEnvironment = WebEnvironment.RANDOM_PORT)
 public class BindingServletBase {
 
 	@LocalServerPort

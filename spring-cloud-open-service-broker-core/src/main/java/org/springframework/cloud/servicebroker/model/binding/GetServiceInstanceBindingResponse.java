@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
@@ -34,7 +35,7 @@ import tools.jackson.databind.annotation.JsonNaming;
  * @author Roy Clarkson
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(Include.NON_EMPTY)
 public class GetServiceInstanceBindingResponse {
 
 	private final Map<String, Object> parameters;
@@ -63,7 +64,7 @@ public class GetServiceInstanceBindingResponse {
 	 * Get the service instance binding metadata.
 	 * @return the metadata
 	 */
-	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@JsonInclude(Include.NON_NULL)
 	public @Nullable BindingMetadata getMetadata() {
 		return this.metadata;
 	}

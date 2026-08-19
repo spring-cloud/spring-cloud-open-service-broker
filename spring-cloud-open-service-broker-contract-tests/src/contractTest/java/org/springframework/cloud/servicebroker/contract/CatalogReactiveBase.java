@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.web.context.reactive.ReactiveWebApplicationContext;
 import org.springframework.cloud.servicebroker.autoconfigure.web.BasicServiceInstanceService;
@@ -38,8 +39,7 @@ import org.springframework.context.annotation.Bean;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = CatalogReactiveBase.TestApplication.class,
-		properties = "spring.main.web-application-type=reactive",
-		webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+		properties = "spring.main.web-application-type=reactive", webEnvironment = WebEnvironment.RANDOM_PORT)
 public class CatalogReactiveBase {
 
 	@LocalServerPort

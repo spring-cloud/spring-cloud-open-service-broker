@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 
@@ -38,7 +39,7 @@ import jakarta.validation.constraints.NotNull;
  * @see org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest
  * @see org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(Include.NON_NULL)
 public class MaintenanceInfo {
 
 	private static final Pattern SEMANTIC_VERSION_V2_PATTERN = Pattern.compile("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|"

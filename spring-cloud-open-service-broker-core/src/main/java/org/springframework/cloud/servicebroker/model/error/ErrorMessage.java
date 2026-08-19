@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
@@ -36,7 +37,7 @@ import tools.jackson.databind.annotation.JsonNaming;
  * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-broker-errors">Open
  * Service Broker API specification</a>
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(Include.NON_EMPTY)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ErrorMessage implements Serializable {
 
