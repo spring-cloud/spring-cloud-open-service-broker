@@ -78,16 +78,16 @@ Run only contract tests:
 == Working with the code
 
 If you don't have an IDE preference we would recommend that you use
-https://spring.io/tools[Spring Tool Suite] or
-https://eclipse.org[Eclipse] when working with the code. We use the
-https://eclipse.org/m2e/[m2eclipse] eclipse plugin for maven support. Other IDEs and tools
-should also work without issue as long as they use Maven 3.3.3 or better.
+https://spring.io/tools[Spring Tools for VS Code or Eclipse] when working with the code.
+This project is built with Gradle (see the Build section above), so an IDE with Gradle
+support, such as Spring Tools for VS Code, Eclipse, or IntelliJ IDEA, should import the
+project without issue.
 
 == Contributing
 
 Spring Cloud is released under the non-restrictive Apache 2.0 license,
 and follows a very standard Github development process, using Github
-tracker for issues and merging pull requests into master. If you want
+tracker for issues and merging pull requests into main. If you want
 to contribute even something trivial please do not hesitate, but
 follow the guidelines below.
 
@@ -111,23 +111,19 @@ code-of-conduct@spring.io.
 None of these is essential for a pull request, but they will all help.  They can also be
 added after the original pull request but before a merge.
 
-* Use the Spring Framework code format conventions. If you use Eclipse
-  you can import formatter settings using the
-  `eclipse-code-formatter.xml` file from the
-  https://raw.githubusercontent.com/spring-cloud/spring-cloud-build/master/spring-cloud-dependencies-parent/eclipse-code-formatter.xml[Spring
-  Cloud Build] project. If using IntelliJ, you can use the
-  https://plugins.jetbrains.com/plugin/6546[Eclipse Code Formatter
-  Plugin] to import the same file.
+* Use the https://github.com/spring-io/spring-javaformat[spring-javaformat] code format
+  conventions used by this project; run `./gradlew format` to apply them before submitting
+  a pull request.
 * Make sure all new `.java` files to have a simple Javadoc class comment with at least an
   `@author` tag identifying you, and preferably at least a paragraph on what the class is
   for.
-* Add the ASF license header comment to all new `.java` files (copy from existing files
-  in the project)
+* Add the Apache 2.0 license header comment to all new `.java` files (copy from existing
+  files in the project)
 * Add yourself as an `@author` to the .java files that you modify substantially (more
   than cosmetic changes).
-* Add some Javadocs and, if you change the namespace, some XSD doc elements.
+* Add some Javadocs.
 * A few unit tests would help a lot as well -- someone has to do it.
-* If no-one else is using your branch, please rebase it against the current master (or
+* If no-one else is using your branch, please rebase it against the current main (or
   other target branch in the main project).
 * When writing a commit message please follow https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html[these conventions],
   if you are fixing an existing issue please add `Fixes #XXXX` at the end of the commit
