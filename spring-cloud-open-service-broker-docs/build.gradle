@@ -52,7 +52,6 @@ asciidoctorj {
 		"idseparator": "-",
 		"sectanchors": "",
 		"sectnums": "",
-		"toc": "",
 		"docinfo": "shared",
 		"allow-uri-read": "",
 		"source-highlighter": "highlight.js",
