@@ -1,4 +1,6 @@
-image:https://github.com/spring-cloud/spring-cloud-open-service-broker/workflows/build/badge.svg["GitHub Actions", link="https://github.com/spring-cloud/spring-cloud-open-service-broker/actions/workflows/build.yml"]
+image:https://github.com/spring-cloud/spring-cloud-open-service-broker/actions/workflows/java-17.yml/badge.svg["GitHub Actions", link="https://github.com/spring-cloud/spring-cloud-open-service-broker/actions/workflows/java-17.yml"]
+image:https://github.com/spring-cloud/spring-cloud-open-service-broker/actions/workflows/java-21.yml/badge.svg["GitHub Actions", link="https://github.com/spring-cloud/spring-cloud-open-service-broker/actions/workflows/java-21.yml"]
+image:https://github.com/spring-cloud/spring-cloud-open-service-broker/actions/workflows/java-25.yml/badge.svg["GitHub Actions", link="https://github.com/spring-cloud/spring-cloud-open-service-broker/actions/workflows/java-25.yml"]
 
 = Overview
 
