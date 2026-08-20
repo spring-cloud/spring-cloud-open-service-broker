@@ -16,27 +16,42 @@
 
 pluginManagement {
 	repositories {
+		if (System.getenv('ARTIFACTORY_SERVER')) {
+			maven {
+				def baseUrl = System.getenv('ARTIFACTORY_SERVER')
+				def path = System.getenv('ARTIFACTORY_SERVER_PATH')
+				url = path ? "${baseUrl.replaceAll('/+$', '')}/${path.replaceAll('^/+', '')}" : baseUrl
+				credentials {
+					username = System.getenv("ARTIFACTORY_USERNAME")
+					password = System.getenv("ARTIFACTORY_PASSWORD")
+				}
+			}
+		}
 		gradlePluginPortal()
 		mavenCentral()
-		if (version =~ /((-M|-RC)[0-9]+|-SNAPSHOT)$/) {
-			maven { url = "https://repo.spring.io/plugins-snapshot" }
-		}
 	}
 }
 
 dependencyResolutionManagement {
 	repositories {
-		mavenCentral()
-	}
-	if (version =~ /((-M|-RC)[0-9]+|-SNAPSHOT)$/) {
-		repositories {
+		if (System.getenv('ARTIFACTORY_SERVER')) {
+			maven {
+				def baseUrl = System.getenv('ARTIFACTORY_SERVER')
+				def path = System.getenv('ARTIFACTORY_SERVER_PATH')
+				url = path ? "${baseUrl.replaceAll('/+$', '')}/${path.replaceAll('^/+', '')}" : baseUrl
+				credentials {
+					username = System.getenv("ARTIFACTORY_USERNAME")
+					password = System.getenv("ARTIFACTORY_PASSWORD")
+				}
+			}
+		}
+		if (version =~ /((-M|-RC)[0-9]+|-SNAPSHOT)$/) {
 			maven { url = "https://repo.spring.io/milestone" }
 		}
-	}
-	if (version.endsWith('-SNAPSHOT')) {
-		repositories {
+		if (version.endsWith('-SNAPSHOT')) {
 			maven { url = "https://repo.spring.io/snapshot" }
 		}
+		mavenCentral()
 	}
 }
 
