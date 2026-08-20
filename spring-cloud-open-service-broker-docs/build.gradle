@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import org.asciidoctor.gradle.jvm.AbstractAsciidoctorTask
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
@@ -29,15 +30,50 @@ configurations {
 }
 
 dependencies {
-	// BOM imports - The versions used in these files will override any other versions found in the graph
 	implementation platform(SpringBootPlugin.BOM_COORDINATES)
-
 	implementation project(':spring-cloud-open-service-broker-core')
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
 	implementation 'io.projectreactor:reactor-core'
 	asciidoctorExtensions libs.spring.asciidoctor.backends
+}
+
+// Consolidated AsciiDoctor configuration
+asciidoctorj {
+	// Common attributes for all tasks
+	attributes([
+		"revnumber": project.version,
+		"spring-version": project.version,
+		"project-version": project.version,
+		"branch-or-tag": project.version.endsWith("SNAPSHOT") ? "main" : "v${project.version}",
+		"icons": "font",
+		"idprefix": "",
+		"idseparator": "-",
+		"sectanchors": "",
+		"sectnums": "",
+		"docinfo": "shared",
+		"allow-uri-read": "",
+		"source-highlighter": "highlight.js",
+		"highlightjsdir": "js/highlight",
+		"highlightjs-theme": "github",
+		"includedir": "${project.projectDir}/src/docs/asciidoc",
+		"examples-dir": "${project.projectDir}/src/test/java/com/example/servicebroker"
+	])
+
+	options([
+		doctype: "book"
+	])
+}
+
+// JRuby (embedded in AsciidoctorJ) needs reflective access to JDK IO internals for
+// native subprocess control; without this, JDK 16+'s stronger default module
+// encapsulation causes it to log a "Native subprocess control requires open access
+// to the JDK IO subsystem" warning instead of failing outright.
+tasks.withType(AbstractAsciidoctorTask).configureEach {
+	jvm {
+		jvmArgs("--add-opens", "java.base/java.io=ALL-UNNAMED", "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED")
+	}
 }
 
 test {
@@ -48,68 +84,72 @@ javadoc {
 	enabled = false
 }
 
-tasks.register('prepareAsciidocBuild', Sync) {
-	// Copy doc sources
-	from "src/docs/asciidoc"
-	// to a temporary build directory
-	into layout.buildDirectory.dir("asciidoc")
-}
-
 asciidoctorPdf {
-	dependsOn prepareAsciidocBuild
+	// Use native source directory instead of manual copying
+	sourceDir file("src/docs/asciidoc")
 	baseDirFollowsSourceFile()
 
-	asciidoctorj {
-		sourceDir layout.buildDirectory.dir("asciidoc").get().asFile
-		inputs.dir(sourceDir)
-		sources {
-			include "index.adoc"
-		}
-		options doctype: "book"
-		attributes "icons": "font",
-				"sectanchors": "",
-				"sectnums": "",
-				"toc": "",
-				"source-highlighter": "coderay",
-				revnumber: project.version,
-				'project-version': project.version
+	// Unlike the asciidoctor (HTML) task, this task defaults to running in-process
+	// in the Gradle daemon's own JVM, so the jvm { jvmArgs } above have no effect
+	// unless it's forced to run in a real forked process.
+	executionMode = 'OUT_OF_PROCESS'
+	parallelMode = true
+
+	// PDF-specific sources (only index.adoc for complete document)
+	sources {
+		include "index.adoc"
 	}
+
+	// PDF-specific attributes that override common configuration
+	attributes = attributes + [
+		"source-highlighter": "highlight.js"  // Standardize on highlight.js for consistency
+	]
+
+	// Add proper input/output declarations for Gradle caching
+	inputs.dir(sourceDir)
+	inputs.dir("src/test/java/com/example/servicebroker")
+	outputs.dir(outputDir)
 }
 
 asciidoctor {
 	dependsOn asciidoctorPdf
+
+	// Configure Spring HTML backend
 	configurations "asciidoctorExtensions"
 	outputOptions {
 		backends "spring-html"
 	}
+
+	// Use native source directory
+	sourceDir file("src/docs/asciidoc")
 	baseDirFollowsSourceFile()
-	sourceDir = layout.buildDirectory.dir("asciidoc").get().asFile
+	parallelMode = true
+
+	// HTML-specific sources (all .adoc files)
 	sources {
 		include "*.adoc"
 	}
+
+	// Native resource handling instead of manual copying
 	resources {
 		from(sourceDir) {
 			include "images/*", "css/**", "js/**"
 		}
 	}
+
+	// Enable document logging for debugging
 	logDocuments = true
-	options doctype: "book", eruby: "erubis"
-	attributes "revnumber": project.version,
-			"spring-version": project.version,
-			"branch-or-tag": project.version.endsWith("SNAPSHOT") ? "main" : "v${project.version}",
-			"icons": "font",
-			"idprefix": "",
-			"idseparator": "-",
-			docinfo: "shared",
-			sectanchors: "",
-			sectnums: "",
-			stylesdir: "css/",
-			stylesheet: "spring.css",
-			"linkcss": true,
-			"nofooter": true,
-			"allow-uri-read": "",
-			"source-highlighter": "highlight.js",
-			"highlightjsdir": "js/highlight",
-			"highlightjs-theme": "github",
-			"project-version": project.version
+
+	// HTML-specific attributes that override common configuration
+	attributes = attributes + [
+		"stylesdir": "css/",
+		"stylesheet": "spring.css",
+		"linkcss": true,
+		"nofooter": true
+	]
+
+	// Add proper input/output declarations for Gradle caching
+	inputs.dir(sourceDir)
+	inputs.dir("src/test/java/com/example/servicebroker")
+	outputs.dir(outputDir)
 }
