@@ -4,7 +4,7 @@ image:https://github.com/spring-cloud/spring-cloud-open-service-broker/actions/w
 
 = Overview
 
-Spring Cloud Open Service Broker is a framework for building https://projects.spring.io/spring-boot/[Spring Boot] applications that implement the https://www.openservicebrokerapi.org/[Open Service Broker API].
+Spring Cloud Open Service Broker is a framework for building https://projects.spring.io/spring-boot/[Spring Boot] applications that implement the https://www.openservicebrokerapi.org/[Open Service Broker API]. Both https://docs.spring.io/spring-framework/reference/web/webflux.html[Spring WebFlux] and https://docs.spring.io/spring-framework/reference/web/webmvc.html[Spring MVC] web frameworks are supported in Spring Cloud Open Service Broker.
 
 == Version Compatibility
 
@@ -21,9 +21,6 @@ The following table describes the version compatibility matrix for the various r
 |4.2.x |2.16 |3.2.x |6.1.x|17
 |3.6.x |2.16 |2.7.x |5.3.x|8
 |===
-
-[NOTE]
-Spring WebFlux and Spring MVC are both supported in version 3.0 and later
 
 == Getting Started
 
