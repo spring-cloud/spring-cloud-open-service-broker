@@ -15,6 +15,11 @@
 			"space_annotation2": "param-c",
 			"space_annotation3": true
 		},
+		"instance_annotations": {
+			"instance_annotation1": 4,
+			"instance_annotation2": "param-d",
+			"instance_annotation3": true
+		},
 		"field1": "data",
 		"field2": 2
 	},

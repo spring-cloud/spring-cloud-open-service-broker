@@ -27,6 +27,7 @@ import org.springframework.cloud.servicebroker.JsonUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.CLOUD_FOUNDRY_PLATFORM;
+import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.INSTANCE_ANNOTATIONS_KEY;
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.INSTANCE_NAME_KEY;
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.ORGANIZATION_ANNOTATIONS_KEY;
 import static org.springframework.cloud.servicebroker.model.CloudFoundryContext.ORGANIZATION_GUID_KEY;
@@ -49,6 +50,7 @@ class CloudFoundryContextTests {
 		assertThat(context.getSpaceName()).isNull();
 		assertThat(context.getSpaceAnnotations()).isNull();
 		assertThat(context.getInstanceName()).isNull();
+		assertThat(context.getInstanceAnnotations()).isNull();
 		assertThat(context.getProperties()).isEmpty();
 	}
 
@@ -63,6 +65,8 @@ class CloudFoundryContextTests {
 			.spaceName("space-name")
 			.spaceAnnotations(Collections.singletonMap("prefix-here.org/name-here", "space-annotation-value-here"))
 			.instanceName("instance-name")
+			.instanceAnnotations(
+					Collections.singletonMap("prefix-here.org/name-here", "instance-annotation-value-here"))
 			.property("key2", "value2")
 			.build();
 
@@ -77,6 +81,8 @@ class CloudFoundryContextTests {
 		assertThat(context.getSpaceAnnotations())
 			.isEqualTo(Collections.singletonMap("prefix-here.org/name-here", "space-annotation-value-here"));
 		assertThat(context.getInstanceName()).isEqualTo("instance-name");
+		assertThat(context.getInstanceAnnotations())
+			.isEqualTo(Collections.singletonMap("prefix-here.org/name-here", "instance-annotation-value-here"));
 		assertThat(context.getProperty("key1")).isEqualTo("value1");
 		assertThat(context.getProperty("key2")).isEqualTo("value2");
 
@@ -88,7 +94,8 @@ class CloudFoundryContextTests {
 				entry(SPACE_GUID_KEY, "space-guid"), entry(SPACE_NAME_KEY, "space-name"),
 				entry(SPACE_ANNOTATIONS_KEY,
 						Collections.singletonMap("prefix-here.org/name-here", "space-annotation-value-here")),
-				entry(INSTANCE_NAME_KEY, "instance-name"));
+				entry(INSTANCE_NAME_KEY, "instance-name"), entry(INSTANCE_ANNOTATIONS_KEY,
+						Collections.singletonMap("prefix-here.org/name-here", "instance-annotation-value-here")));
 	}
 
 	/**
@@ -150,6 +157,7 @@ class CloudFoundryContextTests {
 			.spaceName("abc-space-name")
 			.spaceAnnotations(Collections.singletonMap("myprovider.com/send-alerts-to-email", "me@myspace.com"))
 			.instanceName("abc-instance-name")
+			.instanceAnnotations(Collections.singletonMap("myprovider.com/send-alerts-to-email", "me@myinstance.com"))
 			.build();
 
 		DocumentContext json = JsonUtils.toJsonPath(context);
@@ -166,11 +174,14 @@ class CloudFoundryContextTests {
 			.hasPath("$.space_annotations")
 			.isEqualTo(Collections.singletonMap("myprovider.com/send-alerts-to-email", "me@myspace.com"));
 		JsonPathAssert.assertThat(json).hasPath("$.instance_name").isEqualTo("abc-instance-name");
+		JsonPathAssert.assertThat(json)
+			.hasPath("$.instance_annotations")
+			.isEqualTo(Collections.singletonMap("myprovider.com/send-alerts-to-email", "me@myinstance.com"));
 		JsonPathAssert.assertThat(json).hasPath("$.platform").isEqualTo("cloudfoundry");
 		// detect any double serialization due to inheritance and naming mismatch
-		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(8);
-		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 10); // +1 for
-		// annotations
+		JsonPathAssert.assertThat(json).hasMapAtPath("$").hasSize(9);
+		// +2 per annotations map (organization, space, instance)
+		JsonUtils.assertThatJsonHasExactNumberOfProperties(context, 12);
 	}
 
 }

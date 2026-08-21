@@ -61,6 +61,12 @@ class AsyncParameterizedServiceInstanceRequestTests {
 		assertThat(spaceAnnotations.get("space_annotation2")).isEqualTo("param-c");
 		assertThat(spaceAnnotations.get("space_annotation3")).isEqualTo(true);
 
+		Map<String, Object> instanceAnnotations = context.getInstanceAnnotations();
+		assertThat(instanceAnnotations).hasSize(3);
+		assertThat(instanceAnnotations.get("instance_annotation1")).isEqualTo(4);
+		assertThat(instanceAnnotations.get("instance_annotation2")).isEqualTo("param-d");
+		assertThat(instanceAnnotations.get("instance_annotation3")).isEqualTo(true);
+
 		assertThat(context.getProperty("field1")).isEqualTo("data");
 		assertThat(context.getProperty("field2")).isEqualTo(2);
 

@@ -80,6 +80,11 @@ public final class CloudFoundryContext extends Context {
 	 */
 	public static final String INSTANCE_NAME_KEY = "instanceName";
 
+	/**
+	 * Instance Annotations key.
+	 */
+	public static final String INSTANCE_ANNOTATIONS_KEY = "instanceAnnotations";
+
 	private CloudFoundryContext() {
 		super(CLOUD_FOUNDRY_PLATFORM, null);
 	}
@@ -112,6 +117,7 @@ public final class CloudFoundryContext extends Context {
 	 * @param spaceName the space name
 	 * @param spaceAnnotations the space annotations
 	 * @param instanceName the instance name
+	 * @param instanceAnnotations the instance annotations
 	 * @param properties additional properties
 	 */
 	@JsonCreator
@@ -121,6 +127,7 @@ public final class CloudFoundryContext extends Context {
 			@JsonProperty("space_guid") String spaceGuid, @JsonProperty("space_name") String spaceName,
 			@JsonProperty("space_annotations") Map<String, Object> spaceAnnotations,
 			@JsonProperty("instance_name") String instanceName,
+			@JsonProperty("instance_annotations") Map<String, Object> instanceAnnotations,
 			@JsonProperty("properties") Map<String, Object> properties) {
 		super(CLOUD_FOUNDRY_PLATFORM, properties);
 		setOrganizationGuid(organizationGuid);
@@ -130,6 +137,7 @@ public final class CloudFoundryContext extends Context {
 		setSpaceName(spaceName);
 		setSpaceAnnotations(spaceAnnotations);
 		setInstanceName(instanceName);
+		setInstanceAnnotations(instanceAnnotations);
 	}
 
 	/**
@@ -146,6 +154,7 @@ public final class CloudFoundryContext extends Context {
 		properties.remove(SPACE_NAME_KEY);
 		properties.remove(SPACE_ANNOTATIONS_KEY);
 		properties.remove(INSTANCE_NAME_KEY);
+		properties.remove(INSTANCE_ANNOTATIONS_KEY);
 		properties.remove(Context.PLATFORM_KEY);
 		return properties;
 	}
@@ -242,6 +251,19 @@ public final class CloudFoundryContext extends Context {
 	}
 
 	/**
+	 * Retrieve the instance annotations from the collection of platform properties.
+	 * @return the instance annotations
+	 */
+	@JsonProperty
+	public Map<String, Object> getInstanceAnnotations() {
+		return getMapProperty(INSTANCE_ANNOTATIONS_KEY);
+	}
+
+	private void setInstanceAnnotations(Map<String, Object> instanceAnnotations) {
+		setMapProperty(INSTANCE_ANNOTATIONS_KEY, instanceAnnotations);
+	}
+
+	/**
 	 * Builder for constructing a {@link CloudFoundryContext}.
 	 * @return the builder
 	 */
@@ -268,6 +290,8 @@ public final class CloudFoundryContext extends Context {
 		private final Map<String, Object> spaceAnnotations = new HashMap<>();
 
 		private String instanceName;
+
+		private final Map<String, Object> instanceAnnotations = new HashMap<>();
 
 		private CloudFoundryContextBuilder() {
 			super();
@@ -354,10 +378,24 @@ public final class CloudFoundryContext extends Context {
 			return this;
 		}
 
+		/**
+		 * Set the instance annotations.
+		 * @param instanceAnnotations the instance annotations
+		 * @return the builder
+		 */
+		public CloudFoundryContextBuilder instanceAnnotations(Map<String, Object> instanceAnnotations) {
+			if (!CollectionUtils.isEmpty(instanceAnnotations)) {
+				this.instanceAnnotations.clear();
+				this.instanceAnnotations.putAll(instanceAnnotations);
+			}
+			return this;
+		}
+
 		@Override
 		public CloudFoundryContext build() {
 			return new CloudFoundryContext(this.organizationGuid, this.organizationName, this.organizationAnnotations,
-					this.spaceGuid, this.spaceName, this.spaceAnnotations, this.instanceName, this.properties);
+					this.spaceGuid, this.spaceName, this.spaceAnnotations, this.instanceName, this.instanceAnnotations,
+					this.properties);
 		}
 
 	}
