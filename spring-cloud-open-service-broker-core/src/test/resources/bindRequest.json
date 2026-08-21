@@ -3,6 +3,9 @@
 	"plan_id": "test-plan-id",
 	"bind_resource": {
 		"credential_client_id": "test-credential-client-id",
+		"app_annotations": {
+			"app_annotation1": "value1"
+		},
 		"field1": "data",
 		"field2": 2
 	},

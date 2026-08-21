@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +36,7 @@ class BindResourceTests {
 		assertThat(bindResource.getAppGuid()).isNull();
 		assertThat(bindResource.getRoute()).isNull();
 		assertThat(bindResource.getCredentialClientId()).isNull();
+		assertThat(bindResource.getAppAnnotations()).isEmpty();
 		assertThat(bindResource.getProperties()).isEmpty();
 	}
 
@@ -48,6 +50,7 @@ class BindResourceTests {
 			.appGuid("app-guid")
 			.route("route")
 			.credentialClientId("credential-client-id")
+			.appAnnotations(Collections.singletonMap("prefix-here.org/name-here", "app-annotation-value-here"))
 			.properties("parameter1", "value1")
 			.properties("parameter2", 2)
 			.properties(parameters)
@@ -56,6 +59,8 @@ class BindResourceTests {
 		assertThat(bindResource.getAppGuid()).isEqualTo("app-guid");
 		assertThat(bindResource.getRoute()).isEqualTo("route");
 		assertThat(bindResource.getCredentialClientId()).isEqualTo("credential-client-id");
+		assertThat(bindResource.getAppAnnotations())
+			.isEqualTo(Collections.singletonMap("prefix-here.org/name-here", "app-annotation-value-here"));
 		assertThat(bindResource.getProperties()).hasSize(4);
 		assertThat(bindResource.getProperties().get("parameter1")).isEqualTo("value1");
 		assertThat(bindResource.getProperties().get("parameter2")).isEqualTo(2);
@@ -70,6 +75,10 @@ class BindResourceTests {
 		assertThat(bindResource.getAppGuid()).isEqualTo("test-app-guid");
 		assertThat(bindResource.getRoute()).isEqualTo("https://test.app.local");
 		assertThat(bindResource.getCredentialClientId()).isEqualTo("test-credential-client-id");
+		assertThat(bindResource.getAppAnnotations()).hasSize(3);
+		assertThat(bindResource.getAppAnnotations().get("app_annotation1")).isEqualTo(2);
+		assertThat(bindResource.getAppAnnotations().get("app_annotation2")).isEqualTo("param-b");
+		assertThat(bindResource.getAppAnnotations().get("app_annotation3")).isEqualTo(true);
 		assertThat(bindResource.getProperties()).hasSize(3);
 		assertThat(bindResource.getProperty("property1")).isEqualTo(1);
 		assertThat(bindResource.getProperty("property2")).isEqualTo("value2");

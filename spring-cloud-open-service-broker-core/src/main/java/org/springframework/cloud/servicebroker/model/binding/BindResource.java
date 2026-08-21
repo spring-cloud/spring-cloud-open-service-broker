@@ -22,6 +22,8 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
@@ -50,10 +52,12 @@ public class BindResource {
 
 	private final @Nullable String credentialClientId;
 
+	private final Map<String, Object> appAnnotations = new HashMap<>();
+
 	private final Map<String, Object> properties = new HashMap<>();
 
 	private BindResource() {
-		this(null, null, null, null);
+		this(null, null, null, null, null);
 	}
 
 	/**
@@ -61,15 +65,20 @@ public class BindResource {
 	 * @param appGuid the application GUID
 	 * @param route the application URL
 	 * @param credentialClientId the CredHub client id
+	 * @param appAnnotations the application annotations
 	 * @param properties a collection of properties
 	 */
 	protected BindResource(@JsonProperty("app_guid") @Nullable String appGuid,
 			@JsonProperty("route") @Nullable String route,
 			@JsonProperty("credential_client_id") @Nullable String credentialClientId,
+			@JsonProperty("app_annotations") @Nullable Map<String, Object> appAnnotations,
 			@JsonProperty("properties") @Nullable Map<String, Object> properties) {
 		this.appGuid = appGuid;
 		this.route = route;
 		this.credentialClientId = credentialClientId;
+		if (!CollectionUtils.isEmpty(appAnnotations)) {
+			this.appAnnotations.putAll(appAnnotations);
+		}
 		if (!CollectionUtils.isEmpty(properties)) {
 			this.properties.putAll(properties);
 		}
@@ -133,6 +142,16 @@ public class BindResource {
 	}
 
 	/**
+	 * Get the annotations attached to the application that the Service Binding is
+	 * associated with. May be provided for credentials bindings.
+	 * @return the application annotations
+	 */
+	@JsonInclude(Include.NON_EMPTY)
+	public Map<String, Object> getAppAnnotations() {
+		return this.appAnnotations;
+	}
+
+	/**
 	 * Create a builder that provides a fluent API for constructing a
 	 * {@link BindResource}.
 	 *
@@ -157,18 +176,20 @@ public class BindResource {
 		BindResource that = (BindResource) o;
 		return Objects.equals(this.appGuid, that.appGuid) && Objects.equals(this.route, that.route)
 				&& Objects.equals(this.credentialClientId, that.credentialClientId)
+				&& Objects.equals(this.appAnnotations, that.appAnnotations)
 				&& Objects.equals(this.properties, that.properties);
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(this.appGuid, this.route, this.credentialClientId, this.properties);
+		return Objects.hash(this.appGuid, this.route, this.credentialClientId, this.appAnnotations, this.properties);
 	}
 
 	@Override
 	public String toString() {
 		return "BindResource{" + "appGuid='" + this.appGuid + '\'' + ", route='" + this.route + '\''
-				+ ", credentialClientId='" + this.credentialClientId + '\'' + ", properties=" + this.properties + '}';
+				+ ", credentialClientId='" + this.credentialClientId + '\'' + ", appAnnotations=" + this.appAnnotations
+				+ ", properties=" + this.properties + '}';
 	}
 
 	/**
@@ -181,6 +202,8 @@ public class BindResource {
 		private @Nullable String route;
 
 		private @Nullable String credentialClientId;
+
+		private final Map<String, Object> appAnnotations = new HashMap<>();
 
 		private final Map<String, Object> properties = new HashMap<>();
 
@@ -221,6 +244,20 @@ public class BindResource {
 		}
 
 		/**
+		 * Set the application annotations as would be provided in an app binding request
+		 * from the platform.
+		 * @param appAnnotations the application annotations
+		 * @return the builder
+		 */
+		public BindResourceBuilder appAnnotations(Map<String, Object> appAnnotations) {
+			if (!CollectionUtils.isEmpty(appAnnotations)) {
+				this.appAnnotations.clear();
+				this.appAnnotations.putAll(appAnnotations);
+			}
+			return this;
+		}
+
+		/**
 		 * Add a set of properties from the provided {@literal Map} to the bind resource
 		 * properties as would be provided in the request from the platform.
 		 * @param properties the properties to add
@@ -250,7 +287,8 @@ public class BindResource {
 		 * @return the newly constructed {@literal BindResource}
 		 */
 		public BindResource build() {
-			return new BindResource(this.appGuid, this.route, this.credentialClientId, this.properties);
+			return new BindResource(this.appGuid, this.route, this.credentialClientId, this.appAnnotations,
+					this.properties);
 		}
 
 	}

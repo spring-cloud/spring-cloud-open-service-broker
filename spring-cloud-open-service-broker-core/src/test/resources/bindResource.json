@@ -2,6 +2,11 @@
 	"app_guid": "test-app-guid",
 	"route": "https://test.app.local",
 	"credential_client_id": "test-credential-client-id",
+	"app_annotations": {
+		"app_annotation1": 2,
+		"app_annotation2": "param-b",
+		"app_annotation3": true
+	},
 	"property1": 1,
 	"property2": "value2",
 	"property3": true

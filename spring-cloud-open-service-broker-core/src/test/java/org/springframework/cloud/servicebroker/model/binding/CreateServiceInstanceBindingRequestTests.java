@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,6 +64,7 @@ class CreateServiceInstanceBindingRequestTests {
 			.appGuid("app-guid")
 			.route("route")
 			.credentialClientId("credential-client-id")
+			.appAnnotations(Collections.singletonMap("prefix-here.org/name-here", "app-annotation-value-here"))
 			.build();
 		Context context = PlatformContext.builder().build();
 		Map<String, Object> parameters = new HashMap<>();
@@ -107,6 +109,8 @@ class CreateServiceInstanceBindingRequestTests {
 		assertThat(request.getBindResource().getAppGuid()).isEqualTo("app-guid");
 		assertThat(request.getBindResource().getRoute()).isEqualTo("route");
 		assertThat(request.getBindResource().getCredentialClientId()).isEqualTo("credential-client-id");
+		assertThat(request.getBindResource().getAppAnnotations())
+			.isEqualTo(Collections.singletonMap("prefix-here.org/name-here", "app-annotation-value-here"));
 
 		assertThat(request.getContext()).isEqualTo(context);
 		assertThat(request.isAsyncAccepted()).isEqualTo(true);
@@ -133,6 +137,8 @@ class CreateServiceInstanceBindingRequestTests {
 		assertThat(context.getProperty("field2")).isEqualTo(2);
 
 		assertThat(request.getBindResource().getCredentialClientId()).isEqualTo("test-credential-client-id");
+		assertThat(request.getBindResource().getAppAnnotations())
+			.isEqualTo(Collections.singletonMap("app_annotation1", "value1"));
 		assertThat(request.getBindResource().getProperty("field1")).isEqualTo("data");
 		assertThat(request.getBindResource().getProperty("field2")).isEqualTo(2);
 
@@ -174,6 +180,7 @@ class CreateServiceInstanceBindingRequestTests {
 				.appGuid("app-guid")
 				.route("route")
 				.credentialClientId("credential-client-id")
+				.appAnnotations(Collections.singletonMap("prefix-here.org/name-here", "app-annotation-value-here"))
 				.properties("resource-param1", "value1")
 				.properties("resource-param2", "value2")
 				.build())
