@@ -48,6 +48,13 @@ class ServiceBrokerWebMvcAutoConfigurationTests extends AbstractServiceBrokerWeb
 	}
 
 	@Test
+	void requestIdentityBeansAreCreated() {
+		webApplicationContextRunner().withUserConfiguration(FullServicesConfiguration.class)
+			.run((context) -> assertThat(context).hasSingleBean(RequestIdentityInterceptor.class)
+				.hasSingleBean(RequestIdentityWebMvcConfigurerAdapter.class));
+	}
+
+	@Test
 	void controllersAreNotCreatedWithMissingInstanceService() {
 		webApplicationContextRunner().withUserConfiguration(MissingServiceInstanceServiceConfiguration.class)
 			.run((context) -> {
