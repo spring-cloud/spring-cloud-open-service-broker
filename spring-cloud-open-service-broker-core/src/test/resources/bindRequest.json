@@ -2,6 +2,7 @@
 	"service_id": "test-service-id",
 	"plan_id": "test-plan-id",
 	"bind_resource": {
+		"credential_client_id": "test-credential-client-id",
 		"field1": "data",
 		"field2": 2
 	},

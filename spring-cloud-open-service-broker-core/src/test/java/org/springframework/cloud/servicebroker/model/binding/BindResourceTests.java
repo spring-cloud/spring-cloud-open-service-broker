@@ -34,6 +34,7 @@ class BindResourceTests {
 
 		assertThat(bindResource.getAppGuid()).isNull();
 		assertThat(bindResource.getRoute()).isNull();
+		assertThat(bindResource.getCredentialClientId()).isNull();
 		assertThat(bindResource.getProperties()).isEmpty();
 	}
 
@@ -46,6 +47,7 @@ class BindResourceTests {
 		BindResource bindResource = BindResource.builder()
 			.appGuid("app-guid")
 			.route("route")
+			.credentialClientId("credential-client-id")
 			.properties("parameter1", "value1")
 			.properties("parameter2", 2)
 			.properties(parameters)
@@ -53,6 +55,7 @@ class BindResourceTests {
 
 		assertThat(bindResource.getAppGuid()).isEqualTo("app-guid");
 		assertThat(bindResource.getRoute()).isEqualTo("route");
+		assertThat(bindResource.getCredentialClientId()).isEqualTo("credential-client-id");
 		assertThat(bindResource.getProperties()).hasSize(4);
 		assertThat(bindResource.getProperties().get("parameter1")).isEqualTo("value1");
 		assertThat(bindResource.getProperties().get("parameter2")).isEqualTo(2);
@@ -66,6 +69,7 @@ class BindResourceTests {
 
 		assertThat(bindResource.getAppGuid()).isEqualTo("test-app-guid");
 		assertThat(bindResource.getRoute()).isEqualTo("https://test.app.local");
+		assertThat(bindResource.getCredentialClientId()).isEqualTo("test-credential-client-id");
 		assertThat(bindResource.getProperties()).hasSize(3);
 		assertThat(bindResource.getProperty("property1")).isEqualTo(1);
 		assertThat(bindResource.getProperty("property2")).isEqualTo("value2");

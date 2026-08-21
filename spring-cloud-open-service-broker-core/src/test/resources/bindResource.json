@@ -1,6 +1,7 @@
 {
 	"app_guid": "test-app-guid",
 	"route": "https://test.app.local",
+	"credential_client_id": "test-credential-client-id",
 	"property1": 1,
 	"property2": "value2",
 	"property3": true

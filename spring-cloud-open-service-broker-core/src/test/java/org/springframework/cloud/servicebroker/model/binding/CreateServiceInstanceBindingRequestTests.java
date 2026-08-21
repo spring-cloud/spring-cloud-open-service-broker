@@ -59,7 +59,11 @@ class CreateServiceInstanceBindingRequestTests {
 
 	@Test
 	void requestWithAllValuesIsBuilt() {
-		BindResource bindResource = BindResource.builder().build();
+		BindResource bindResource = BindResource.builder()
+			.appGuid("app-guid")
+			.route("route")
+			.credentialClientId("credential-client-id")
+			.build();
 		Context context = PlatformContext.builder().build();
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("field4", "value4");
@@ -100,6 +104,9 @@ class CreateServiceInstanceBindingRequestTests {
 		assertThat(boundParameters.getField3()).isEqualTo(true);
 
 		assertThat(request.getBindResource()).isEqualTo(bindResource);
+		assertThat(request.getBindResource().getAppGuid()).isEqualTo("app-guid");
+		assertThat(request.getBindResource().getRoute()).isEqualTo("route");
+		assertThat(request.getBindResource().getCredentialClientId()).isEqualTo("credential-client-id");
 
 		assertThat(request.getContext()).isEqualTo(context);
 		assertThat(request.isAsyncAccepted()).isEqualTo(true);
@@ -125,6 +132,7 @@ class CreateServiceInstanceBindingRequestTests {
 		assertThat(context.getProperty("field1")).isEqualTo("data");
 		assertThat(context.getProperty("field2")).isEqualTo(2);
 
+		assertThat(request.getBindResource().getCredentialClientId()).isEqualTo("test-credential-client-id");
 		assertThat(request.getBindResource().getProperty("field1")).isEqualTo("data");
 		assertThat(request.getBindResource().getProperty("field2")).isEqualTo(2);
 
@@ -165,6 +173,7 @@ class CreateServiceInstanceBindingRequestTests {
 			.bindResource(BindResource.builder()
 				.appGuid("app-guid")
 				.route("route")
+				.credentialClientId("credential-client-id")
 				.properties("resource-param1", "value1")
 				.properties("resource-param2", "value2")
 				.build())

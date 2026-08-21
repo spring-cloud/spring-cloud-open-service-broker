@@ -48,23 +48,28 @@ public class BindResource {
 
 	private final @Nullable String route;
 
+	private final @Nullable String credentialClientId;
+
 	private final Map<String, Object> properties = new HashMap<>();
 
 	private BindResource() {
-		this(null, null, null);
+		this(null, null, null, null);
 	}
 
 	/**
 	 * Construct a new {@link BindResource}.
 	 * @param appGuid the application GUID
 	 * @param route the application URL
+	 * @param credentialClientId the CredHub client id
 	 * @param properties a collection of properties
 	 */
 	protected BindResource(@JsonProperty("app_guid") @Nullable String appGuid,
 			@JsonProperty("route") @Nullable String route,
+			@JsonProperty("credential_client_id") @Nullable String credentialClientId,
 			@JsonProperty("properties") @Nullable Map<String, Object> properties) {
 		this.appGuid = appGuid;
 		this.route = route;
+		this.credentialClientId = credentialClientId;
 		if (!CollectionUtils.isEmpty(properties)) {
 			this.properties.putAll(properties);
 		}
@@ -118,6 +123,16 @@ public class BindResource {
 	}
 
 	/**
+	 * Get the CredHub client id that will be granted read access to the credentials
+	 * reference returned in the binding response. May be provided for Service Key
+	 * bindings using CredHub.
+	 * @return the CredHub client id
+	 */
+	public @Nullable String getCredentialClientId() {
+		return this.credentialClientId;
+	}
+
+	/**
 	 * Create a builder that provides a fluent API for constructing a
 	 * {@link BindResource}.
 	 *
@@ -141,18 +156,19 @@ public class BindResource {
 		}
 		BindResource that = (BindResource) o;
 		return Objects.equals(this.appGuid, that.appGuid) && Objects.equals(this.route, that.route)
+				&& Objects.equals(this.credentialClientId, that.credentialClientId)
 				&& Objects.equals(this.properties, that.properties);
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(this.appGuid, this.route, this.properties);
+		return Objects.hash(this.appGuid, this.route, this.credentialClientId, this.properties);
 	}
 
 	@Override
 	public String toString() {
-		return "BindResource{" + "appGuid='" + this.appGuid + '\'' + ", route='" + this.route + '\'' + ", properties="
-				+ this.properties + '}';
+		return "BindResource{" + "appGuid='" + this.appGuid + '\'' + ", route='" + this.route + '\''
+				+ ", credentialClientId='" + this.credentialClientId + '\'' + ", properties=" + this.properties + '}';
 	}
 
 	/**
@@ -163,6 +179,8 @@ public class BindResource {
 		private @Nullable String appGuid;
 
 		private @Nullable String route;
+
+		private @Nullable String credentialClientId;
 
 		private final Map<String, Object> properties = new HashMap<>();
 
@@ -188,6 +206,17 @@ public class BindResource {
 		 */
 		public BindResourceBuilder route(String route) {
 			this.route = route;
+			return this;
+		}
+
+		/**
+		 * Set a CredHub client id as would be provided in an app binding request from the
+		 * platform for a Service Key using CredHub.
+		 * @param credentialClientId the CredHub client id
+		 * @return the builder
+		 */
+		public BindResourceBuilder credentialClientId(String credentialClientId) {
+			this.credentialClientId = credentialClientId;
 			return this;
 		}
 
@@ -221,7 +250,7 @@ public class BindResource {
 		 * @return the newly constructed {@literal BindResource}
 		 */
 		public BindResource build() {
-			return new BindResource(this.appGuid, this.route, this.properties);
+			return new BindResource(this.appGuid, this.route, this.credentialClientId, this.properties);
 		}
 
 	}
