@@ -288,10 +288,9 @@ public class ServiceInstanceController extends BaseController {
 			})
 			.onErrorResume((e) -> {
 				if (e instanceof ServiceInstanceDoesNotExistException) {
-					// TODO: v2.16 of the OSB API spec changes this to an HTTP 404
 					return Mono.just(new ResponseEntity<>(GetLastServiceOperationResponse.builder()
 						.description("The requested Service Instance does not exist")
-						.build(), HttpStatus.BAD_REQUEST));
+						.build(), HttpStatus.NOT_FOUND));
 				}
 				else {
 					return Mono.error(e);

@@ -990,7 +990,7 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 	}
 
 	@Test
-	void lastOperationWithUnknownInstanceBadRequest() {
+	void lastOperationWithUnknownInstanceNotFound() {
 		setupServiceInstanceServiceLastOperation(new ServiceInstanceDoesNotExistException("nonexistent-instance-id"));
 
 		this.client.get()
@@ -1000,7 +1000,7 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 			.expectStatus()
 			.is4xxClientError()
 			.expectStatus()
-			.isEqualTo(HttpStatus.BAD_REQUEST)
+			.isEqualTo(HttpStatus.NOT_FOUND)
 			.expectBody()
 			.jsonPath("$.state")
 			.doesNotExist()
