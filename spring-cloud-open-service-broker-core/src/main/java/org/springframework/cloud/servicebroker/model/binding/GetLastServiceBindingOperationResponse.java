@@ -39,7 +39,7 @@ import org.springframework.cloud.servicebroker.model.instance.OperationState;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-2">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#polling-last-operation-for-service-bindings">Open
  * Service Broker API specification</a>
  */
 @JsonAutoDetect
@@ -76,6 +76,8 @@ public class GetLastServiceBindingOperationResponse {
 
 	/**
 	 * Get the current state of an asynchronous operation.
+	 * <p>
+	 * Since OSB API 2.14.
 	 * @return the operation state
 	 */
 	public @Nullable OperationState getState() {
@@ -159,6 +161,8 @@ public class GetLastServiceBindingOperationResponse {
 		 * <p>
 		 * This value will set the {@literal state} field in the body of the response to
 		 * the platform.
+		 * <p>
+		 * Since OSB API 2.14.
 		 * @param state the current state
 		 * @return the builder
 		 */

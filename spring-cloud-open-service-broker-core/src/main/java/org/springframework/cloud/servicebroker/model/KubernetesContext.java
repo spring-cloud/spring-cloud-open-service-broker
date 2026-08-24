@@ -35,6 +35,9 @@ import org.springframework.util.CollectionUtils;
  *
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/profile.md#kubernetes-context-object">Open
+ * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(Include.NON_EMPTY)
@@ -129,6 +132,8 @@ public final class KubernetesContext extends Context {
 
 	/**
 	 * Retrieve the kubernetes namespace from the collection of platform properties.
+	 * <p>
+	 * Since OSB API 2.11.
 	 * @return the namespace
 	 */
 	@JsonProperty
@@ -142,6 +147,8 @@ public final class KubernetesContext extends Context {
 
 	/**
 	 * Retrieve the kubernetes clusterid from the collection of platform properties.
+	 * <p>
+	 * Since OSB API 2.14.
 	 * @return the clusterid
 	 */
 	@JsonProperty
@@ -155,6 +162,8 @@ public final class KubernetesContext extends Context {
 
 	/**
 	 * Retrieve the kubernetes instance name from the collection of platform properties.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return the instance name
 	 */
 	@JsonProperty
@@ -169,6 +178,8 @@ public final class KubernetesContext extends Context {
 	/**
 	 * Retrieve the kubernetes namespace annotations from the collection of platform
 	 * properties.
+	 * <p>
+	 * Since OSB API 2.16.
 	 * @return the namespace annotations
 	 */
 	@JsonProperty
@@ -183,6 +194,8 @@ public final class KubernetesContext extends Context {
 	/**
 	 * Retrieve the kubernetes instance annotations from the collection of platform
 	 * properties.
+	 * <p>
+	 * Since OSB API 2.16.
 	 * @return the instance annotations
 	 */
 	public Map<String, Object> getInstanceAnnotations() {
@@ -229,6 +242,8 @@ public final class KubernetesContext extends Context {
 
 		/**
 		 * Set the kubernetes namespace.
+		 * <p>
+		 * Since OSB API 2.11.
 		 * @param namespace the namespace
 		 * @return the builder
 		 */
@@ -239,6 +254,8 @@ public final class KubernetesContext extends Context {
 
 		/**
 		 * Set the kubernetes clusterid.
+		 * <p>
+		 * Since OSB API 2.14.
 		 * @param clusterid the clusterid
 		 * @return the builder
 		 */
@@ -249,7 +266,9 @@ public final class KubernetesContext extends Context {
 
 		/**
 		 * Set the kubernetes instance name.
-		 * @param instanceName the clusterid
+		 * <p>
+		 * Since OSB API 2.15.
+		 * @param instanceName the instance name
 		 * @return the builder
 		 */
 		public KubernetesContextBuilder instanceName(String instanceName) {
@@ -259,6 +278,8 @@ public final class KubernetesContext extends Context {
 
 		/**
 		 * Set the namespace annotations.
+		 * <p>
+		 * Since OSB API 2.16.
 		 * @param namespaceAnnotations the namespace annotations
 		 * @return the builder
 		 */
@@ -272,6 +293,8 @@ public final class KubernetesContext extends Context {
 
 		/**
 		 * Set the instance annotations.
+		 * <p>
+		 * Since OSB API 2.16.
 		 * @param instanceAnnotations the instance annotations
 		 * @return the builder
 		 */

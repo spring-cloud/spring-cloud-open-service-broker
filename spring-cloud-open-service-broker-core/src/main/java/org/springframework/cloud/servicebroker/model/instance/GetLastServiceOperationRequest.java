@@ -33,7 +33,7 @@ import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-1">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#polling-last-operation-for-service-instances">Open
  * Service Broker API specification</a>
  */
 public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
@@ -77,6 +77,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	 * <p>
 	 * This value is set from the {@literal :instance_id} path element of the request from
 	 * the platform.
+	 * <p>
+	 * Since OSB API 2.7.
 	 * @return the service instance ID
 	 */
 	public String getServiceInstanceId() {
@@ -89,6 +91,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	 * <p>
 	 * This value is set from the {@literal service_id} request parameter of the request
 	 * from the platform
+	 * <p>
+	 * Since OSB API 2.9.
 	 * @return the service definition ID
 	 */
 	public String getServiceDefinitionId() {
@@ -101,6 +105,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	 * <p>
 	 * This value is set from the {@literal plan_id} request parameter of the request from
 	 * the platform.
+	 * <p>
+	 * Since OSB API 2.9.
 	 * @return the plan ID
 	 */
 	public String getPlanId() {
@@ -118,6 +124,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 	 * <p>
 	 * This value is set from the {@literal operation} request parameter of the request
 	 * from the platform.
+	 * <p>
+	 * Since OSB API 2.9.
 	 * @return the operation value
 	 */
 	public String getOperation() {
@@ -200,6 +208,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		/**
 		 * Set the service instance ID as would be provided in the request from the
 		 * platform.
+		 * <p>
+		 * Since OSB API 2.7.
 		 * @param serviceInstanceId the service instance ID
 		 * @return the builder
 		 * @see #getServiceInstanceId()
@@ -212,6 +222,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		/**
 		 * Set the service definition ID as would be provided in the request from the
 		 * platform.
+		 * <p>
+		 * Since OSB API 2.9.
 		 * @param serviceDefinitionId the service definition ID
 		 * @return the builder
 		 * @see #getServiceDefinitionId()
@@ -223,6 +235,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 
 		/**
 		 * Set the plan ID as would be provided in the request from the platform.
+		 * <p>
+		 * Since OSB API 2.9.
 		 * @param planId the plan ID
 		 * @return the builder
 		 * @see #getPlanId()
@@ -234,6 +248,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 
 		/**
 		 * Set the operation as would be provided in the request from the platform.
+		 * <p>
+		 * Since OSB API 2.9.
 		 * @param operation the operation
 		 * @return the builder
 		 */
@@ -270,6 +286,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 		/**
 		 * Set the identity of the user making the request as would be provided in the
 		 * request from the platform.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param originatingIdentity the user identity
 		 * @return the builder
 		 * @see #getOriginatingIdentity()
@@ -281,6 +299,8 @@ public class GetLastServiceOperationRequest extends ServiceBrokerRequest {
 
 		/**
 		 * Set the identity of the request sent from the platform.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param requestIdentity the request identity
 		 * @return the builder
 		 * @see #getRequestIdentity()

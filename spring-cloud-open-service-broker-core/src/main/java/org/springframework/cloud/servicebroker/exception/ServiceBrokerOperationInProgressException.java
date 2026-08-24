@@ -26,7 +26,16 @@ import org.springframework.cloud.servicebroker.model.error.OperationInProgressMe
  * Throwing this exception will result in an HTTP status code {@literal 404 NOT FOUND}
  * being returned to the platform.
  *
+ * <p>
+ * Since OSB API 2.14.
+ *
  * @author Scott Frederick
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#fetching-a-service-instance">Open
+ * Service Broker API specification: Fetching a Service Instance</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#fetching-a-service-binding">Open
+ * Service Broker API specification: Fetching a Service Binding</a>
  */
 public class ServiceBrokerOperationInProgressException extends ServiceBrokerException {
 

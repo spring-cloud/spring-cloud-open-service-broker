@@ -37,7 +37,7 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
  *
  * @author Scott Frederick
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-3">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#updating-a-service-instance">Open
  * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -73,6 +73,8 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 	/**
 	 * Get the URL of a web-based management user interface for the service instance.
+	 * <p>
+	 * Since OSB API 2.14.
 	 * @return the dashboard URL, or {@literal null} if not provided
 	 */
 	@JsonInclude(Include.NON_EMPTY)
@@ -82,6 +84,8 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 	/**
 	 * Get object containing metadata for the service instance.
+	 * <p>
+	 * Since OSB API 2.16.
 	 * @return the service instance metadata
 	 */
 	@JsonInclude(Include.NON_NULL)
@@ -154,6 +158,8 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * <p>
 		 * This value will set the {@literal dashboard_url} field in the body of the
 		 * response to the platform.
+		 * <p>
+		 * Since OSB API 2.14.
 		 * @param dashboardUrl the dashboard URL
 		 * @return the builder
 		 */
@@ -169,6 +175,8 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * <p>
 		 * This value will set the {@literal metadata} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.16.
 		 * @param metadata the service instance metadata
 		 * @return the builder
 		 */
@@ -186,6 +194,8 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * This value will be used to determine the HTTP response code to the platform. A
 		 * {@literal true} value will result in a response code {@literal 202 ACCEPTED},
 		 * and a {@literal false} value will result in a response code {@literal 200 OK}.
+		 * <p>
+		 * Since OSB API 2.7.
 		 * @param async {@literal true} to indicate that the operation is being performed
 		 * asynchronously, {@literal
 		 * 		false} to indicate that the operation was completed
@@ -204,6 +214,8 @@ public class UpdateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * <p>
 		 * This value will set the {@literal operation} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.9.
 		 * @param operation the informational value
 		 * @return the builder
 		 */

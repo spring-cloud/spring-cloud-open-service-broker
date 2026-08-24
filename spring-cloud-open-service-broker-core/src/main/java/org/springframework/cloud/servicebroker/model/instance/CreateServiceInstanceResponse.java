@@ -38,7 +38,7 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
  *
  * @author Scott Frederick
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-2">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#provisioning">Open
  * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -98,6 +98,8 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 
 	/**
 	 * Get object containing metadata for the service instance.
+	 * <p>
+	 * Since OSB API 2.16.
 	 * @return the service instance metadata
 	 */
 	@JsonInclude(Include.NON_NULL)
@@ -208,6 +210,8 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * <p>
 		 * This value will set the {@literal metadata} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.16.
 		 * @param metadata the service instance metadata
 		 * @return the builder
 		 */
@@ -225,6 +229,8 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * {@literal true} value will result in a response code {@literal 202 ACCEPTED};
 		 * otherwise the response code will be determined by the value of
 		 * {@link #instanceExisted(boolean)}.
+		 * <p>
+		 * Since OSB API 2.7.
 		 * @param async {@literal true} to indicate that the operation is being performed
 		 * asynchronously, {@literal
 		 * 		false} to indicate that the operation was completed
@@ -244,6 +250,8 @@ public class CreateServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * <p>
 		 * This value will set the {@literal operation} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.9.
 		 * @param operation the informational value
 		 * @return the builder
 		 */

@@ -25,6 +25,9 @@ package org.springframework.cloud.servicebroker.exception;
  * {@literal 422 UNPROCESSABLE ENTITY} being returned to the platform.
  *
  * @author Roy Clarkson
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#updating-a-service-instance">Open
+ * Service Broker API specification</a>
  */
 public class ServiceInstanceUpdateNotSupportedException extends ServiceBrokerException {
 

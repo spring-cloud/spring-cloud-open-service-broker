@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#catalog-management">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#catalog-management">Open
  * Service Broker API specification</a>
  */
 @ServiceBrokerRestController

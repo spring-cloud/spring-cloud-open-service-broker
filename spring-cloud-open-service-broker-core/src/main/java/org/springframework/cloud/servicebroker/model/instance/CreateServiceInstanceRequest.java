@@ -44,7 +44,7 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-2">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#provisioning">Open
  * Service Broker API specification</a>
  */
 @SuppressWarnings({ "deprecation", "DeprecatedIsStillUsed" })
@@ -59,8 +59,6 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	/**
 	 * remains in the model for marshalling support but test harnesses should not use.
 	 * @deprecated in favor of {@link CloudFoundryContext#getOrganizationGuid()}.
-	 * @see <a
-	 * href=value=https://github.com/openservicebrokerapi/servicebroker/blob/v2.15/spec.md#body-3">https://github.com/openservicebrokerapi/servicebroker/blob/v2.15/spec.md#body-3</a>
 	 */
 	@Deprecated
 	@JsonProperty("organization_guid")
@@ -69,8 +67,6 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	/**
 	 * remains in the model for marshalling support but test harnesses should not use.
 	 * @deprecated in favor of {@link CloudFoundryContext#getSpaceGuid()}.
-	 * @see <a
-	 * href=value=https://github.com/openservicebrokerapi/servicebroker/blob/v2.15/spec.md#body-3">https://github.com/openservicebrokerapi/servicebroker/blob/v2.15/spec.md#body-3</a>
 	 */
 	@Deprecated
 	@JsonProperty("space_guid")
@@ -327,6 +323,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * <p>
 	 * This value is set from the {@literal :maintenance_info} field in the body of the
 	 * request from the platform.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return a MaintenanceInfo or null if none was provided
 	 */
 	public @Nullable MaintenanceInfo getMaintenanceInfo() {
@@ -484,6 +482,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * Add a set of parameters from the provided {@literal Map} to the request
 		 * parameters as would be provided in the request from the platform.
+		 * <p>
+		 * Since OSB API 2.5.
 		 * @param parameters the parameters to add
 		 * @return the builder
 		 * @see #getParameters()
@@ -496,6 +496,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * Add a key/value pair to the request parameters as would be provided in the
 		 * request from the platform.
+		 * <p>
+		 * Since OSB API 2.5.
 		 * @param key the parameter key to add
 		 * @param value the parameter value to add
 		 * @return the builder
@@ -508,6 +510,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 		/**
 		 * Set the {@link Context} as would be provided in the request from the platform.
+		 * <p>
+		 * Since OSB API 2.12.
 		 * @param context the context
 		 * @return the builder
 		 * @see #getContext()
@@ -520,6 +524,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * Set the value of the flag indicating whether the platform supports asynchronous
 		 * operations.
+		 * <p>
+		 * Since OSB API 2.7.
 		 * @param asyncAccepted the boolean value of the flag
 		 * @return the builder
 		 * @see #isAsyncAccepted()
@@ -557,6 +563,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * Set the identity of the user making the request as would be provided in the
 		 * request from the platform.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param originatingIdentity the user identity
 		 * @return the builder
 		 * @see #getOriginatingIdentity()
@@ -568,6 +576,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 		/**
 		 * Set the identity of the request sent from the platform.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param requestIdentity the request identity
 		 * @return the builder
 		 * @see #getRequestIdentity()
@@ -579,6 +589,8 @@ public class CreateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 		/**
 		 * Set the maintenance info related to the plan.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param maintenanceInfo the maintenance info
 		 * @return the builder
 		 * @see #getMaintenanceInfo()

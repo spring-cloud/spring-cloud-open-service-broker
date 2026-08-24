@@ -66,9 +66,6 @@ public interface ServiceInstanceBindingService {
 	 * processing of the request
 	 * @throws ServiceBrokerCreateOperationInProgressException if an operation is in
 	 * progress for the service binding
-	 * @see <a href=
-	 * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#response-6">
-	 * https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#response-6</a>
 	 */
 	default Mono<CreateServiceInstanceBindingResponse> createServiceInstanceBinding(
 			CreateServiceInstanceBindingRequest request) {
@@ -78,6 +75,8 @@ public interface ServiceInstanceBindingService {
 
 	/**
 	 * Get the details of a binding to a service instance.
+	 * <p>
+	 * Since OSB API 2.14.
 	 * @param request containing the details of the request
 	 * @return a {@link GetServiceInstanceBindingResponse} on successful processing of the
 	 * request
@@ -98,6 +97,8 @@ public interface ServiceInstanceBindingService {
 
 	/**
 	 * Get the status of the last requested operation for a service instance.
+	 * <p>
+	 * Since OSB API 2.14.
 	 * @param request containing the details of the request
 	 * @return a {@link GetLastServiceBindingOperationResponse} on successful processing
 	 * of the request

@@ -35,6 +35,9 @@ import org.springframework.util.CollectionUtils;
  *
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/profile.md#cloud-foundry-context-object">Open
+ * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(Include.NON_EMPTY)
@@ -161,6 +164,8 @@ public final class CloudFoundryContext extends Context {
 
 	/**
 	 * Retrieve the organization GUID from the collection of platform properties.
+	 * <p>
+	 * Since OSB API 2.11.
 	 * @return the organization GUID
 	 */
 	@JsonProperty
@@ -174,6 +179,8 @@ public final class CloudFoundryContext extends Context {
 
 	/**
 	 * Retrieve the organization name from the collection of platform properties.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return the organization name
 	 */
 	@JsonProperty
@@ -187,6 +194,8 @@ public final class CloudFoundryContext extends Context {
 
 	/**
 	 * Retrieve the organization annotations from the collection of platform properties.
+	 * <p>
+	 * Since OSB API 2.16.
 	 * @return the organization annotations
 	 */
 	@JsonProperty
@@ -200,6 +209,8 @@ public final class CloudFoundryContext extends Context {
 
 	/**
 	 * Retrieve the space GUID from the collection of platform properties.
+	 * <p>
+	 * Since OSB API 2.11.
 	 * @return the space GUID
 	 */
 	@JsonProperty
@@ -213,6 +224,8 @@ public final class CloudFoundryContext extends Context {
 
 	/**
 	 * Retrieve the space name from the collection of platform properties.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return the space name
 	 */
 	@JsonProperty
@@ -226,6 +239,8 @@ public final class CloudFoundryContext extends Context {
 
 	/**
 	 * Retrieve the space annotations from the collection of platform properties.
+	 * <p>
+	 * Since OSB API 2.16.
 	 * @return the space annotations
 	 */
 	@JsonProperty
@@ -239,6 +254,8 @@ public final class CloudFoundryContext extends Context {
 
 	/**
 	 * Retrieve the instance name from the collection of platform properties.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return the instance name
 	 */
 	@JsonProperty
@@ -252,6 +269,8 @@ public final class CloudFoundryContext extends Context {
 
 	/**
 	 * Retrieve the instance annotations from the collection of platform properties.
+	 * <p>
+	 * Since OSB API 2.16.
 	 * @return the instance annotations
 	 */
 	@JsonProperty
@@ -304,6 +323,8 @@ public final class CloudFoundryContext extends Context {
 
 		/**
 		 * Set the organization GUID.
+		 * <p>
+		 * Since OSB API 2.11.
 		 * @param organizationGuid the organization GUID
 		 * @return the builder
 		 */
@@ -314,6 +335,8 @@ public final class CloudFoundryContext extends Context {
 
 		/**
 		 * Set the organization name.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param organizationName the organization name
 		 * @return the builder
 		 */
@@ -324,6 +347,8 @@ public final class CloudFoundryContext extends Context {
 
 		/**
 		 * Set the organization annotations.
+		 * <p>
+		 * Since OSB API 2.16.
 		 * @param organizationAnnotations the organization annotations
 		 * @return the builder
 		 */
@@ -337,6 +362,8 @@ public final class CloudFoundryContext extends Context {
 
 		/**
 		 * Set the space GUID.
+		 * <p>
+		 * Since OSB API 2.11.
 		 * @param spaceGuid the space GUID
 		 * @return the builder
 		 */
@@ -347,6 +374,8 @@ public final class CloudFoundryContext extends Context {
 
 		/**
 		 * Set the space name.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param spaceName the space name
 		 * @return the builder
 		 */
@@ -357,6 +386,8 @@ public final class CloudFoundryContext extends Context {
 
 		/**
 		 * Set the space annotations.
+		 * <p>
+		 * Since OSB API 2.16.
 		 * @param spaceAnnotations the space annotations
 		 * @return the builder
 		 */
@@ -370,6 +401,8 @@ public final class CloudFoundryContext extends Context {
 
 		/**
 		 * Set the instance name.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param instanceName the instance name
 		 * @return the builder
 		 */
@@ -380,6 +413,8 @@ public final class CloudFoundryContext extends Context {
 
 		/**
 		 * Set the instance annotations.
+		 * <p>
+		 * Since OSB API 2.16.
 		 * @param instanceAnnotations the instance annotations
 		 * @return the builder
 		 */

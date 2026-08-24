@@ -27,6 +27,9 @@ package org.springframework.cloud.servicebroker.exception;
  * @author S Greenberg
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#binding">Open
+ * Service Broker API specification</a>
  */
 public class ServiceInstanceBindingExistsException extends ServiceBrokerException {
 

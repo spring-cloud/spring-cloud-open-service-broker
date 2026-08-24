@@ -85,6 +85,8 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 * The platform will pass the user-supplied JSON structure to the service broker
 	 * as-is. The service broker is responsible for validating the contents of the
 	 * parameters for correctness or applicability.
+	 * <p>
+	 * Since OSB API 2.5.
 	 * @return the populated {@literal Map}
 	 */
 	@JsonInclude(Include.NON_EMPTY)
@@ -108,6 +110,8 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 * The platform will pass the user-supplied JSON structure to the service broker
 	 * as-is. The service broker is responsible for validating the contents of the
 	 * parameters for correctness or applicability.
+	 * <p>
+	 * Since OSB API 2.5.
 	 * @param cls the {@link Class} representing the type of object to map the parameter
 	 * key/value pairs to
 	 * @param <T> the type of the object to instantiate and populate
@@ -124,6 +128,8 @@ public abstract class AsyncParameterizedServiceInstanceRequest extends AsyncServ
 	 * <p>
 	 * This value is set from the {@literal context} field in the body of the request from
 	 * the platform.
+	 * <p>
+	 * Since OSB API 2.12.
 	 * @return the contextual information
 	 */
 	public @Nullable Context getContext() {

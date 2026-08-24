@@ -57,7 +57,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#binding">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#binding">Open
  * Service Broker API specification</a>
  */
 @ServiceBrokerRestController
@@ -106,6 +106,9 @@ public class ServiceInstanceBindingController extends BaseController {
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @param request the request body
 	 * @return the response
+	 * @see <a href=
+	 * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#binding">Open
+	 * Service Broker API specification: Binding</a>
 	 */
 	@PutMapping({ PLATFORM_PATH_MAPPING, PATH_MAPPING })
 	public Mono<ResponseEntity<CreateServiceInstanceBindingResponse>> createServiceInstanceBinding(
@@ -172,6 +175,8 @@ public class ServiceInstanceBindingController extends BaseController {
 
 	/**
 	 * REST controller for getting a service instance binding.
+	 * <p>
+	 * Since OSB API 2.14.
 	 * @param pathVariables the path variables
 	 * @param serviceInstanceId the service instance ID
 	 * @param bindingId the service binding ID
@@ -182,6 +187,9 @@ public class ServiceInstanceBindingController extends BaseController {
 	 * from the platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the response
+	 * @see <a href=
+	 * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#fetching-a-service-binding">Open
+	 * Service Broker API specification: Fetching a Service Binding</a>
 	 */
 	@GetMapping({ PLATFORM_PATH_MAPPING, PATH_MAPPING })
 	public Mono<ResponseEntity<GetServiceInstanceBindingResponse>> getServiceInstanceBinding(
@@ -238,6 +246,8 @@ public class ServiceInstanceBindingController extends BaseController {
 
 	/**
 	 * REST Controller for getting the last operation of a service instance binding.
+	 * <p>
+	 * Since OSB API 2.14.
 	 * @param pathVariables the path variables
 	 * @param serviceInstanceId the service instance ID
 	 * @param bindingId the service binding ID
@@ -249,6 +259,9 @@ public class ServiceInstanceBindingController extends BaseController {
 	 * from the platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the response
+	 * @see <a href=
+	 * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#polling-last-operation-for-service-bindings">Open
+	 * Service Broker API specification: Polling Last Operation for Service Bindings</a>
 	 */
 	@GetMapping({ PLATFORM_PATH_MAPPING + "/last_operation", PATH_MAPPING + "/last_operation" })
 	public Mono<ResponseEntity<GetLastServiceBindingOperationResponse>> getServiceInstanceBindingLastOperation(
@@ -330,6 +343,9 @@ public class ServiceInstanceBindingController extends BaseController {
 	 * from the platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the response
+	 * @see <a href=
+	 * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#unbinding">Open
+	 * Service Broker API specification: Unbinding</a>
 	 */
 	@DeleteMapping({ PLATFORM_PATH_MAPPING, PATH_MAPPING })
 	public Mono<ResponseEntity<DeleteServiceInstanceBindingResponse>> deleteServiceInstanceBinding(

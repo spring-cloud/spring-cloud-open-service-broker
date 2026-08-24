@@ -31,6 +31,9 @@ import org.jspecify.annotations.Nullable;
  * is needed to connect to the Service Instance.
  *
  * @author Roy Clarkson
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#binding-metadata-object">Open
+ * Service Broker API specification</a>
  */
 public class BindingMetadata {
 

@@ -38,7 +38,7 @@ import tools.jackson.databind.ser.std.ToStringSerializer;
  *
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#endpoint-object">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#endpoint-object">Open
  * Service Broker API specification</a>
  */
 public class Endpoint {
@@ -65,6 +65,8 @@ public class Endpoint {
 
 	/**
 	 * Get the host.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return the host
 	 */
 	public String getHost() {
@@ -73,6 +75,8 @@ public class Endpoint {
 
 	/**
 	 * Get the list of ports.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return the ports
 	 */
 	public List<String> getPorts() {
@@ -81,6 +85,8 @@ public class Endpoint {
 
 	/**
 	 * Get the network protocol.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return the protocol
 	 */
 	public Protocol getProtocol() {
@@ -189,6 +195,8 @@ public class Endpoint {
 		 * <p>
 		 * This value will set the {@literal host} field in the body of the response to
 		 * the platform.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param host the host name
 		 * @return the builder
 		 */
@@ -203,6 +211,8 @@ public class Endpoint {
 		 * <p>
 		 * This value will set the {@literal ports} field in the body of the response to
 		 * the platform.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param ports the ports
 		 * @return the builder
 		 */
@@ -217,6 +227,8 @@ public class Endpoint {
 		 * <p>
 		 * This value will set the {@literal ports} field in the body of the response to
 		 * the platform.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param ports the ports
 		 * @return the builder
 		 */
@@ -231,6 +243,8 @@ public class Endpoint {
 		 * <p>
 		 * This value will set the {@literal protocol} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param protocol the protocol
 		 * @return the builder
 		 */

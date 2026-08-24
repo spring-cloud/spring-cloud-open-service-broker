@@ -44,7 +44,7 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-3">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#updating-a-service-instance">Open
  * Service Broker API specification</a>
  */
 public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInstanceRequest {
@@ -235,6 +235,8 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 	 * <p>
 	 * This value is set from the {@literal :maintenance_info} field in the body of the
 	 * request from the platform.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return a MaintenanceInfo or null if none was provided
 	 */
 	public @Nullable MaintenanceInfo getMaintenanceInfo() {
@@ -302,8 +304,6 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * remains in the model for marshaling support.
 		 * @deprecated determined to be unnecessary as the value is immutable.
-		 * @see <a
-		 * href=https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object>https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object</a>
 		 */
 		@Deprecated
 		private final @Nullable String serviceDefinitionId;
@@ -314,8 +314,6 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * remains in the model for marshaling support.
 		 * @deprecated in favor of {@link CloudFoundryContext#getOrganizationGuid()}.
-		 * @see <a
-		 * href=https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object>https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object</a>
 		 */
 		@Deprecated
 		private final @Nullable String organizationId;
@@ -323,8 +321,6 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * remains in the model for marshaling support.
 		 * @deprecated in favor of {@link CloudFoundryContext#getSpaceGuid()}.
-		 * @see <a
-		 * href=https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object>https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#previous-values-object</a>
 		 */
 		@Deprecated
 		private final @Nullable String spaceId;
@@ -424,6 +420,8 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		 * <p>
 		 * This value is set from the {@literal maintenance_info} field in the
 		 * {@literal previous_values} field in the body of the request from the platform.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @return the maintenance info
 		 */
 		public @Nullable MaintenanceInfo getMaintenanceInfo() {
@@ -526,6 +524,8 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 			/**
 			 * Set the maintenance info as would be provided in the request from the
 			 * platform.
+			 * <p>
+			 * Since OSB API 2.15.
 			 * @param maintenanceInfo the maintenance info
 			 * @return the builder
 			 * @see #getMaintenanceInfo()
@@ -656,6 +656,8 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * Add a set of parameters from the provided {@literal Map} to the request
 		 * parameters as would be provided in the request from the platform.
+		 * <p>
+		 * Since OSB API 2.5.
 		 * @param parameters the parameters to add
 		 * @return the builder
 		 * @see #getParameters()
@@ -668,6 +670,8 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * Add a key/value pair to the request parameters as would be provided in the
 		 * request from the platform.
+		 * <p>
+		 * Since OSB API 2.5.
 		 * @param key the parameter key to add
 		 * @param value the parameter value to add
 		 * @return the builder
@@ -681,6 +685,8 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * Set the {@link Context} of the request as would be provided in the request from
 		 * the platform.
+		 * <p>
+		 * Since OSB API 2.12.
 		 * @param context the context
 		 * @return the builder
 		 * @see #getContext()
@@ -693,6 +699,8 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * Set the value of the flag indicating whether the platform supports asynchronous
 		 * operations as would be provided in the request from the platform.
+		 * <p>
+		 * Since OSB API 2.7.
 		 * @param asyncAccepted the boolean value of the flag
 		 * @return the builder
 		 * @see #isAsyncAccepted()
@@ -730,6 +738,8 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 		/**
 		 * Set the identity of the user making the request as would be provided in the
 		 * request from the platform.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param originatingIdentity the user identity
 		 * @return the builder
 		 * @see #getOriginatingIdentity()
@@ -741,6 +751,8 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 		/**
 		 * Set the identity of the request sent from the platform.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param requestIdentity the request identity
 		 * @return the builder
 		 * @see #getRequestIdentity()
@@ -752,6 +764,8 @@ public class UpdateServiceInstanceRequest extends AsyncParameterizedServiceInsta
 
 		/**
 		 * Set the maintenance info related to the plan.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param maintenanceInfo the maintenance info
 		 * @return the builder
 		 * @see #getMaintenanceInfo()

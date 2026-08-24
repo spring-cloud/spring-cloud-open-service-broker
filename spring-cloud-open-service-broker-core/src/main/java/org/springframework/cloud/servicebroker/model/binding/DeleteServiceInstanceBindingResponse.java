@@ -35,7 +35,7 @@ import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOper
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-8">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#unbinding">Open
  * Service Broker API specification</a>
  */
 public class DeleteServiceInstanceBindingResponse extends AsyncServiceBrokerResponse {
@@ -118,6 +118,8 @@ public class DeleteServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 * This value will be used to determine the HTTP response code to the platform. A
 		 * {@literal true} value will result in a response code {@literal 202 ACCEPTED},
 		 * and a {@literal false} value will result in a response code {@literal 200 OK}.
+		 * <p>
+		 * Since OSB API 2.7.
 		 * @param async {@literal true} to indicate that the operation is being performed
 		 * asynchronously, {@literal
 		 * 		false} to indicate that the operation was completed
@@ -136,6 +138,8 @@ public class DeleteServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 * <p>
 		 * This value will set the {@literal operation} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.9.
 		 * @param operation the informational value
 		 * @return the builder
 		 */

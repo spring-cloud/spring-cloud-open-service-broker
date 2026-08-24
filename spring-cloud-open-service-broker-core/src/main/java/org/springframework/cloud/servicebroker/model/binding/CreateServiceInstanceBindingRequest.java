@@ -44,7 +44,7 @@ import org.springframework.cloud.servicebroker.model.instance.AsyncParameterized
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-4">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#binding">Open
  * Service Broker API specification</a>
  */
 @SuppressWarnings({ "DeprecatedIsStillUsed" })
@@ -247,6 +247,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	 * <p>
 	 * This value is set from the {@literal app_guid} field in the body of the request
 	 * from the platform.
+	 * <p>
+	 * Since OSB API 2.1.
 	 * @return the app GUID
 	 * @deprecated {@link #getBindResource()} provides platform-neutral access to binding
 	 * resource details
@@ -263,6 +265,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	 * <p>
 	 * This value is set from the {@literal bind_resource} field in the body of the
 	 * request from the platform.
+	 * <p>
+	 * Since OSB API 2.8.
 	 * @return the binding resource details
 	 */
 	public BindResource getBindResource() {
@@ -489,6 +493,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 
 		/**
 		 * Set the binding resource as would be provided in the request from the platform.
+		 * <p>
+		 * Since OSB API 2.8.
 		 * @param bindResource the binding resource
 		 * @return the builder
 		 * @see #getBindResource()
@@ -501,6 +507,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 		/**
 		 * Add a set of parameters from the provided {@literal Map} to the request
 		 * parameters as would be provided in the request from the platform.
+		 * <p>
+		 * Since OSB API 2.5.
 		 * @param parameters the parameters to add
 		 * @return the builder
 		 * @see #getParameters()
@@ -513,6 +521,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 		/**
 		 * Add a key/value pair to the request parameters as would be provided in the
 		 * request from the platform.
+		 * <p>
+		 * Since OSB API 2.5.
 		 * @param key the parameter key to add
 		 * @param value the parameter value to add
 		 * @return the builder
@@ -525,6 +535,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 
 		/**
 		 * Set the {@link Context} as would be provided in the request from the platform.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param context the context
 		 * @return the builder
 		 * @see #getContext()
@@ -562,6 +574,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 		/**
 		 * Set the identity of the user making the request as would be provided in the
 		 * request from the platform.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param originatingIdentity the user identity
 		 * @return the builder
 		 * @see #getOriginatingIdentity()
@@ -573,6 +587,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 
 		/**
 		 * Set the identity of the request sent from the platform.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param requestIdentity the request identity
 		 * @return the builder
 		 * @see #getRequestIdentity()

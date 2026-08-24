@@ -39,7 +39,7 @@ import tools.jackson.databind.annotation.JsonNaming;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-1">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#polling-last-operation-for-service-instances">Open
  * Service Broker API specification</a>
  */
 @JsonAutoDetect
@@ -100,6 +100,8 @@ public class GetLastServiceOperationResponse {
 
 	/**
 	 * Get the current state of an asynchronous operation.
+	 * <p>
+	 * Since OSB API 2.7.
 	 * @return the operation state
 	 */
 	public @Nullable OperationState getState() {
@@ -117,6 +119,8 @@ public class GetLastServiceOperationResponse {
 	/**
 	 * Get a boolean value indicating whether the instance is usable after a failed update
 	 * or deprovisioning operation.
+	 * <p>
+	 * Since OSB API 2.16.
 	 * @return the boolean value
 	 */
 	public @Nullable Boolean isInstanceUsable() {
@@ -125,6 +129,8 @@ public class GetLastServiceOperationResponse {
 
 	/**
 	 * Get a boolean value indicating whether a failed update is repeatable.
+	 * <p>
+	 * Since OSB API 2.16.
 	 * @return the boolean value
 	 */
 	public @Nullable Boolean isUpdateRepeatable() {
@@ -207,6 +213,8 @@ public class GetLastServiceOperationResponse {
 		 * <p>
 		 * This value will set the {@literal state} field in the body of the response to
 		 * the platform.
+		 * <p>
+		 * Since OSB API 2.7.
 		 * @param state the current state
 		 * @return the builder
 		 */
@@ -238,6 +246,8 @@ public class GetLastServiceOperationResponse {
 		 * <p>
 		 * This value will set the {@literal instance_usable} field in the body of the
 		 * response to the platform.
+		 * <p>
+		 * Since OSB API 2.16.
 		 * @param instanceUsable the boolean value
 		 * @return the builder
 		 */
@@ -254,6 +264,8 @@ public class GetLastServiceOperationResponse {
 		 * <p>
 		 * This value will set the {@literal update_repeatable} field in the body of the
 		 * response to the platform.
+		 * <p>
+		 * Since OSB API 2.16.
 		 * @param updateRepeatable the boolean value
 		 * @return the builder
 		 */

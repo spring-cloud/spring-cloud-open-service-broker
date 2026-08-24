@@ -26,6 +26,9 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#asynchronous-operations">Open
+ * Service Broker API specification</a>
  */
 public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
 
@@ -73,6 +76,8 @@ public abstract class AsyncServiceBrokerRequest extends ServiceBrokerRequest {
 	 * A <code>false</code> value indicates that clients do not allow asynchronous
 	 * processing of requests, a <code>true</code> value indicates that clients do allow
 	 * asynchronous processing.
+	 * <p>
+	 * Since OSB API 2.7.
 	 * @return the boolean value
 	 */
 	@JsonIgnore // accepts_incomplete Osb field passed as query param in most subclasses

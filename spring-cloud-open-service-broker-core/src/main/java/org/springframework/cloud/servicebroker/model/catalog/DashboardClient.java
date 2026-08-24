@@ -32,7 +32,7 @@ import tools.jackson.databind.annotation.JsonNaming;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#dashboard-client-object">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/profile.md#dashboard-client-object">Open
  * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -70,6 +70,8 @@ public class DashboardClient {
 	 * The client ID of the dashboard OAuth2 client that the service intends to use. The
 	 * name must be unique within the platform. If the name is already in use, the
 	 * platform will return an error to the operator when the service is registered.
+	 * <p>
+	 * Since OSB API 2.3.
 	 * @return the client ID
 	 */
 	public @Nullable String getId() {
@@ -78,6 +80,8 @@ public class DashboardClient {
 
 	/**
 	 * The client secret for the dashboard OAuth2 client.
+	 * <p>
+	 * Since OSB API 2.3.
 	 * @return the client secret
 	 */
 	public @Nullable String getSecret() {
@@ -87,6 +91,8 @@ public class DashboardClient {
 	/**
 	 * A domain for the service dashboard that will be whitelisted by the UAA to enable
 	 * dashboard SSO.
+	 * <p>
+	 * Since OSB API 2.3.
 	 * @return the dashboard URI
 	 */
 	public @Nullable String getRedirectUri() {
@@ -144,6 +150,8 @@ public class DashboardClient {
 		 * The client ID of the dashboard OAuth2 client that the service intends to use.
 		 * The name must be unique within the platform. If the name is already in use, the
 		 * platform will return an error to the operator when the service is registered.
+		 * <p>
+		 * Since OSB API 2.3.
 		 * @param id the client ID
 		 * @return the builder instance
 		 */
@@ -154,6 +162,8 @@ public class DashboardClient {
 
 		/**
 		 * The client secret for the dashboard OAuth2 client.
+		 * <p>
+		 * Since OSB API 2.3.
 		 * @param secret the client secret
 		 * @return the builder instance
 		 */
@@ -165,6 +175,8 @@ public class DashboardClient {
 		/**
 		 * A domain for the service dashboard that will be whitelisted by the UAA to
 		 * enable dashboard SSO.
+		 * <p>
+		 * Since OSB API 2.3.
 		 * @param redirectUri the dashboard URI
 		 * @return the builder instance
 		 */

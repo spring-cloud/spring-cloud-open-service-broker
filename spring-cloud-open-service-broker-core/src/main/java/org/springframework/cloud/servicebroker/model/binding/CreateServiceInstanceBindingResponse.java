@@ -37,6 +37,9 @@ import org.springframework.cloud.servicebroker.model.instance.CreateServiceInsta
  *
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#binding">Open
+ * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(Include.NON_EMPTY)
@@ -179,6 +182,8 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 * the service broker indicates that it performed the operation synchronously, a
 		 * {@literal true} value will result in a response code {@literal 200 OK}, and a
 		 * {@literal false} value will result in a response code {@literal 201 CREATED}.
+		 * <p>
+		 * Since OSB API 2.7.
 		 * @param async {@literal true} to indicate that the operation is being performed
 		 * asynchronously, {@literal
 		 * 		false} to indicate that the operation was completed
@@ -197,6 +202,8 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 * <p>
 		 * This value will set the {@literal operation} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.9.
 		 * @param operation description of the operation being performed
 		 * @return the builder
 		 */

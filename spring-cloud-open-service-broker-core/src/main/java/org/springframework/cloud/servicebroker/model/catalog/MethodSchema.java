@@ -27,6 +27,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  * JSON Schema for a service broker object method.
  *
  * @author Sam Gunaratne
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#input-parameters-schema-object">Open
+ * Service Broker API specification</a>
  */
 @JsonInclude(Include.NON_NULL)
 public class MethodSchema {
@@ -50,6 +53,8 @@ public class MethodSchema {
 
 	/**
 	 * A map of JSON schema for configuration parameters.
+	 * <p>
+	 * Since OSB API 2.13.
 	 * @return the configuration parameters
 	 */
 	public Map<String, Object> getParameters() {
@@ -99,6 +104,8 @@ public class MethodSchema {
 
 		/**
 		 * A map of JSON schema for configuration parameters.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param parameters the configuration parameters
 		 * @return the builder instance
 		 */
@@ -109,6 +116,8 @@ public class MethodSchema {
 
 		/**
 		 * A key/value pair to add to the JSON schema configuration parameters.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param key the unique key
 		 * @param value the value
 		 * @return the builder instance

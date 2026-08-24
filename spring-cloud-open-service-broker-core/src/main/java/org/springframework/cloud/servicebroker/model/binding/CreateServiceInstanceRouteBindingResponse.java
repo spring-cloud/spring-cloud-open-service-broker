@@ -33,7 +33,7 @@ import org.jspecify.annotations.Nullable;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-6">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#binding">Open
  * Service Broker API specification</a>
  */
 public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInstanceBindingResponse {
@@ -67,6 +67,8 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 
 	/**
 	 * Get a URL to which the platform should proxy requests for the bound route.
+	 * <p>
+	 * Since OSB API 2.8.
 	 * @return the route service URL
 	 */
 	public String getRouteServiceUrl() {
@@ -139,6 +141,8 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 		 * <p>
 		 * This value will set the {@literal route_service_url} field in the body of the
 		 * response to the platform
+		 * <p>
+		 * Since OSB API 2.8.
 		 * @param routeServiceUrl the route service URL
 		 * @return the builder
 		 */
@@ -189,6 +193,8 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 		 * {@literal true} value will result in a response code {@literal 202 ACCEPTED};
 		 * otherwise the response code will be determined by the value of
 		 * {@link #bindingExisted(boolean)}.
+		 * <p>
+		 * Since OSB API 2.7.
 		 * @param async {@literal true} to indicate that the operation is being performed
 		 * asynchronously, {@literal
 		 * 		false} to indicate that the operation was completed
@@ -208,6 +214,8 @@ public class CreateServiceInstanceRouteBindingResponse extends CreateServiceInst
 		 * <p>
 		 * This value will set the {@literal operation} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.9.
 		 * @param operation the informational value
 		 * @return the builder
 		 */

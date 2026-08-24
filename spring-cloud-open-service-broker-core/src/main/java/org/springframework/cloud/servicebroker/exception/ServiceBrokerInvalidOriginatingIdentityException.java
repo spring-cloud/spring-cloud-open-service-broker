@@ -24,6 +24,9 @@ package org.springframework.cloud.servicebroker.exception;
  * Throwing this exception will result in an HTTP status code
  * {@literal 422 UNPROCESSABLE ENTITY} being returned to the platform.
  *
+ * <p>
+ * Since OSB API 2.13.
+ *
  * @author Roy Clarkson
  */
 public class ServiceBrokerInvalidOriginatingIdentityException extends ServiceBrokerException {

@@ -35,7 +35,7 @@ import org.jspecify.annotations.Nullable;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#fetching-a-service-binding">Open
  * Service Broker API specification</a>
  */
 public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBindingResponse {
@@ -65,6 +65,8 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 
 	/**
 	 * Get a URL to which the platform should proxy requests for the bound route.
+	 * <p>
+	 * Since OSB API 2.8.
 	 * @return the route service URL
 	 */
 	public String getRouteServiceUrl() {
@@ -133,6 +135,8 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 		 * <p>
 		 * This value will set the {@literal route_service_url} field in the body of the
 		 * response to the platform
+		 * <p>
+		 * Since OSB API 2.8.
 		 * @param routeServiceUrl the route service URL
 		 * @return the builder
 		 */
@@ -148,6 +152,8 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 		 * <p>
 		 * This value will set the {@literal parameters} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.14.
 		 * @param parameters the parameters to add
 		 * @return the builder
 		 * @see #getParameters()
@@ -164,6 +170,8 @@ public class GetServiceInstanceRouteBindingResponse extends GetServiceInstanceBi
 		 * <p>
 		 * This value will set the {@literal parameters} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.14.
 		 * @param key the parameter key to add
 		 * @param value the parameter value to add
 		 * @return the builder

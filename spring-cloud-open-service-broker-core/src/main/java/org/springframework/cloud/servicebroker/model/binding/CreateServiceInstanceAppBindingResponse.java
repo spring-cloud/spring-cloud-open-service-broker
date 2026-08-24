@@ -40,7 +40,7 @@ import org.jspecify.annotations.Nullable;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-6">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#binding">Open
  * Service Broker API specification</a>
  */
 public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstanceBindingResponse {
@@ -107,6 +107,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	/**
 	 * Get the set of volume mounts that can be used in an application container file
 	 * system.
+	 * <p>
+	 * Since OSB API 2.10.
 	 * @return the set of volume mounts
 	 */
 	public List<VolumeMount> getVolumeMounts() {
@@ -116,6 +118,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 	/**
 	 * Get the set of endpoints that can be used by an application to connect to the
 	 * service instance.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return the set of endpoints
 	 */
 	public List<Endpoint> getEndpoints() {
@@ -245,6 +249,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		 * <p>
 		 * This value will set the {@literal volume_mounts} field in the body of the
 		 * response to the platform.
+		 * <p>
+		 * Since OSB API 2.10.
 		 * @param volumeMounts a {@literal List} of volume mounts
 		 * @return the builder
 		 */
@@ -260,6 +266,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		 * <p>
 		 * This value will set the {@literal volume_mounts} field in the body of the
 		 * response to the platform.
+		 * <p>
+		 * Since OSB API 2.10.
 		 * @param volumeMounts one more volume mounts
 		 * @return the builder
 		 */
@@ -275,6 +283,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		 * <p>
 		 * This value will set the {@literal endpoints} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param endpoints one more endpoints
 		 * @return the builder
 		 */
@@ -290,6 +300,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		 * <p>
 		 * This value will set the {@literal endpoints} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param endpoints one more endpoints
 		 * @return the builder
 		 */
@@ -340,6 +352,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		 * {@literal true} value will result in a response code {@literal 202 ACCEPTED};
 		 * otherwise the response code will be determined by the value of
 		 * {@link #bindingExisted(boolean)}.
+		 * <p>
+		 * Since OSB API 2.7.
 		 * @param async {@literal true} to indicate that the operation is being performed
 		 * asynchronously, {@literal
 		 * 		false} to indicate that the operation was completed
@@ -359,6 +373,8 @@ public class CreateServiceInstanceAppBindingResponse extends CreateServiceInstan
 		 * <p>
 		 * This value will set the {@literal operation} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.9.
 		 * @param operation description of the operation being performed
 		 * @return the builder
 		 */

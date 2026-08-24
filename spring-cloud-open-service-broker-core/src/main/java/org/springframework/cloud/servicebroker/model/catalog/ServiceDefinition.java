@@ -42,7 +42,7 @@ import org.springframework.util.CollectionUtils;
  * @author S Greenberg
  * @author Scott Frederick
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-offering-object">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#service-offering-object">Open
  * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -174,6 +174,8 @@ public class ServiceDefinition {
 
 	/**
 	 * Indicates whether the service broker supports retrieving service instances.
+	 * <p>
+	 * Since OSB API 2.14.
 	 * @return true if the service instances may be retrieved
 	 */
 	public @Nullable Boolean isInstancesRetrievable() {
@@ -182,6 +184,8 @@ public class ServiceDefinition {
 
 	/**
 	 * Indicates whether the service broker supports retrieving service bindings.
+	 * <p>
+	 * Since OSB API 2.14.
 	 * @return true if the service bindings may be retrieved
 	 */
 	public @Nullable Boolean isBindingsRetrievable() {
@@ -191,6 +195,8 @@ public class ServiceDefinition {
 	/**
 	 * Indicates whether a service instance supports update requests when contextual data
 	 * for the service instance in the platform changes.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return true if the service instances supports context updates
 	 */
 	public @Nullable Boolean isAllowContextUpdates() {
@@ -234,6 +240,8 @@ public class ServiceDefinition {
 
 	/**
 	 * Data necessary to activate the Dashboard SSO feature for this service.
+	 * <p>
+	 * Since OSB API 2.3.
 	 * @return the service dashboard URI
 	 */
 	public @Nullable DashboardClient getDashboardClient() {
@@ -376,6 +384,8 @@ public class ServiceDefinition {
 
 		/**
 		 * Indicates whether the service broker supports retrieving service instances.
+		 * <p>
+		 * Since OSB API 2.14.
 		 * @param instancesRetrievable true if the service instances may be retrieved
 		 * @return the binder instance
 		 */
@@ -386,6 +396,8 @@ public class ServiceDefinition {
 
 		/**
 		 * Indicates whether the service broker supports retrieving service bindings.
+		 * <p>
+		 * Since OSB API 2.14.
 		 * @param bindingsRetrievable true if the service bindings may be retrieved
 		 * @return the binder instance
 		 */
@@ -396,6 +408,8 @@ public class ServiceDefinition {
 
 		/**
 		 * Indicates whether the service instance supports contextual updates.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param allowContextUpdates true if the service instance supports context
 		 * updates
 		 * @return the builder
@@ -531,6 +545,8 @@ public class ServiceDefinition {
 
 		/**
 		 * Data necessary to activate the Dashboard SSO feature for this service.
+		 * <p>
+		 * Since OSB API 2.3.
 		 * @param dashboardClient the service dashboard URI
 		 * @return the binder instance
 		 */

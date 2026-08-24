@@ -33,7 +33,7 @@ import jakarta.validation.constraints.NotNull;
  * @author Ilya V
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#maintenance-info-object">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#maintenance-info-object">Open
  * Service Broker API specification</a>
  * @see Plan
  * @see org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest
@@ -77,6 +77,8 @@ public class MaintenanceInfo {
 
 	/**
 	 * The version of the maintenance update available for a plan.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return the version
 	 */
 	public String getVersion() {
@@ -85,6 +87,8 @@ public class MaintenanceInfo {
 
 	/**
 	 * The description of the impact of the maintenance update.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return the description
 	 */
 	public String getDescription() {
@@ -136,6 +140,8 @@ public class MaintenanceInfo {
 
 		/**
 		 * The version of the maintenance update available for a plan.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param version the version
 		 * @return the builder instance
 		 */
@@ -146,6 +152,8 @@ public class MaintenanceInfo {
 
 		/**
 		 * The version of the maintenance update available for a plan.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param major major version when you make incompatible API changes
 		 * @param minor minor version when you add functionality in a backwards-compatible
 		 * manner
@@ -159,6 +167,8 @@ public class MaintenanceInfo {
 
 		/**
 		 * The description of the impact of the maintenance update.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param description the description
 		 * @return the builder instance
 		 */

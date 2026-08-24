@@ -30,6 +30,9 @@ import org.springframework.util.StringUtils;
  *
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#asynchronous-operations">Open
+ * Service Broker API specification</a>
  */
 @JsonInclude(Include.NON_NULL)
 public class AsyncServiceBrokerResponse {
@@ -61,6 +64,8 @@ public class AsyncServiceBrokerResponse {
 	/**
 	 * Get a boolean value indicating whether the requested operation is being performed
 	 * synchronously or asynchronously.
+	 * <p>
+	 * Since OSB API 2.7.
 	 * @return the boolean value
 	 */
 	@JsonIgnore // not sent on the wire as json payload, but as http status instead
@@ -71,6 +76,8 @@ public class AsyncServiceBrokerResponse {
 	/**
 	 * Get a description of the operation being performed in support of an asynchronous
 	 * response.
+	 * <p>
+	 * Since OSB API 2.9.
 	 * @return the operation description
 	 */
 	@JsonInclude(Include.NON_EMPTY)

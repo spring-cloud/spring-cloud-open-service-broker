@@ -31,7 +31,7 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
  *
  * @author Scott Frederick
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#response-6">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#deprovisioning">Open
  * Service Broker API specification</a>
  */
 public class DeleteServiceInstanceResponse extends AsyncServiceBrokerResponse {
@@ -88,6 +88,8 @@ public class DeleteServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * This value will be used to determine the HTTP response code to the platform. A
 		 * {@literal true} value will result in a response code {@literal 202 ACCEPTED},
 		 * and a {@literal false} value will result in a response code {@literal 200 OK}.
+		 * <p>
+		 * Since OSB API 2.7.
 		 * @param async {@literal true} to indicate that the operation is being performed
 		 * asynchronously, {@literal
 		 * 		false} to indicate that the operation was completed
@@ -106,6 +108,8 @@ public class DeleteServiceInstanceResponse extends AsyncServiceBrokerResponse {
 		 * <p>
 		 * This value will set the {@literal operation} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.9.
 		 * @param operation description of the operation being performed
 		 * @return the builder
 		 */

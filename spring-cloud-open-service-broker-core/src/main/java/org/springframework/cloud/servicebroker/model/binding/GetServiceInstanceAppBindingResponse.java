@@ -38,7 +38,7 @@ import org.jspecify.annotations.Nullable;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#fetching-a-service-binding">Open
  * Service Broker API specification</a>
  */
 public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBindingResponse {
@@ -101,6 +101,8 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 	/**
 	 * Get the set of volume mounts that can be used in an application container file
 	 * system.
+	 * <p>
+	 * Since OSB API 2.10.
 	 * @return the set of volume mounts
 	 */
 	public List<VolumeMount> getVolumeMounts() {
@@ -110,6 +112,8 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 	/**
 	 * Get the set of endpoints that can be used by an application to connect to the
 	 * service instance.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return the set of endpoints
 	 */
 	public List<Endpoint> getEndpoints() {
@@ -235,6 +239,8 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		 * <p>
 		 * This value will set the {@literal volume_mounts} field in the body of the
 		 * response to the platform.
+		 * <p>
+		 * Since OSB API 2.10.
 		 * @param volumeMounts a {@literal List} of volume mounts
 		 * @return the builder
 		 */
@@ -250,6 +256,8 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		 * <p>
 		 * This value will set the {@literal volume_mounts} field in the body of the
 		 * response to the platform.
+		 * <p>
+		 * Since OSB API 2.10.
 		 * @param volumeMounts one more volume mounts
 		 * @return the builder
 		 */
@@ -265,6 +273,8 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		 * <p>
 		 * This value will set the {@literal endpoints} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param endpoints one more endpoints
 		 * @return the builder
 		 */
@@ -280,6 +290,8 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		 * <p>
 		 * This value will set the {@literal endpoints} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param endpoints one more endpoints
 		 * @return the builder
 		 */
@@ -295,6 +307,8 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		 * <p>
 		 * This value will set the {@literal parameters} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.14.
 		 * @param parameters the parameters to add
 		 * @return the builder
 		 * @see #getParameters()
@@ -311,6 +325,8 @@ public class GetServiceInstanceAppBindingResponse extends GetServiceInstanceBind
 		 * <p>
 		 * This value will set the {@literal parameters} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.14.
 		 * @param key the parameter key to add
 		 * @param value the parameter value to add
 		 * @return the builder

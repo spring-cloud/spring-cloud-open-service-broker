@@ -58,7 +58,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#provisioning">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#provisioning">Open
  * Service Broker API specification</a>
  */
 @ServiceBrokerRestController
@@ -103,6 +103,9 @@ public class ServiceInstanceController extends BaseController {
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @param request the request body
 	 * @return the response
+	 * @see <a href=
+	 * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#provisioning">Open
+	 * Service Broker API specification: Provisioning</a>
 	 */
 	@PutMapping({ PLATFORM_PATH_MAPPING, PATH_MAPPING })
 	public Mono<ResponseEntity<CreateServiceInstanceResponse>> createServiceInstance(
@@ -166,6 +169,8 @@ public class ServiceInstanceController extends BaseController {
 
 	/**
 	 * REST controller for getting a service instance.
+	 * <p>
+	 * Since OSB API 2.14.
 	 * @param pathVariables the path variables
 	 * @param serviceInstanceId the service instance ID
 	 * @param serviceDefinitionId the service definition ID
@@ -175,6 +180,9 @@ public class ServiceInstanceController extends BaseController {
 	 * from the platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the response
+	 * @see <a href=
+	 * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#fetching-a-service-instance">Open
+	 * Service Broker API specification: Fetching a Service Instance</a>
 	 */
 	@GetMapping({ PLATFORM_PATH_MAPPING, PATH_MAPPING })
 	public Mono<ResponseEntity<GetServiceInstanceResponse>> getServiceInstance(
@@ -228,6 +236,8 @@ public class ServiceInstanceController extends BaseController {
 
 	/**
 	 * REST controller for getting the last operation of a service instance.
+	 * <p>
+	 * Since OSB API 2.7.
 	 * @param pathVariables the path variables
 	 * @param serviceInstanceId the service instance ID
 	 * @param serviceDefinitionId the service definition ID
@@ -238,6 +248,9 @@ public class ServiceInstanceController extends BaseController {
 	 * from the platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the response
+	 * @see <a href=
+	 * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#polling-last-operation-for-service-instances">Open
+	 * Service Broker API specification: Polling Last Operation for Service Instances</a>
 	 */
 	@GetMapping({ PLATFORM_PATH_MAPPING + "/last_operation", PATH_MAPPING + "/last_operation" })
 	public Mono<ResponseEntity<GetLastServiceOperationResponse>> getServiceInstanceLastOperation(
@@ -310,6 +323,9 @@ public class ServiceInstanceController extends BaseController {
 	 * from the platform
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @return the response
+	 * @see <a href=
+	 * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#deprovisioning">Open
+	 * Service Broker API specification: Deprovisioning</a>
 	 */
 	@DeleteMapping({ PLATFORM_PATH_MAPPING, PATH_MAPPING })
 	public Mono<ResponseEntity<DeleteServiceInstanceResponse>> deleteServiceInstance(
@@ -376,6 +392,9 @@ public class ServiceInstanceController extends BaseController {
 	 * @param requestIdentity identity of the request sent from the platform
 	 * @param request the request body
 	 * @return the response
+	 * @see <a href=
+	 * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#updating-a-service-instance">Open
+	 * Service Broker API specification: Updating a Service Instance</a>
 	 */
 	@PatchMapping({ PLATFORM_PATH_MAPPING, PATH_MAPPING })
 	public Mono<ResponseEntity<UpdateServiceInstanceResponse>> updateServiceInstance(

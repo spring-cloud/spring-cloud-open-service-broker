@@ -25,7 +25,16 @@ package org.springframework.cloud.servicebroker.exception;
  * Throwing this exception will result in an HTTP status code {@literal 202 ACCEPTED}
  * being returned to the platform.
  *
+ * <p>
+ * Since OSB API 2.7.
+ *
  * @author Roy Clarkson
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#provisioning">Open
+ * Service Broker API specification: Provisioning</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#binding">Open
+ * Service Broker API specification: Binding</a>
  */
 public class ServiceBrokerCreateOperationInProgressException extends ServiceBrokerOperationInProgressException {
 

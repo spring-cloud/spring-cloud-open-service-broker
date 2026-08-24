@@ -45,7 +45,7 @@ import tools.jackson.databind.ser.std.ToStringSerializer;
  *
  * @author Scott Frederick
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#volume-mount-object">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#volume-mount-object">Open
  * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -143,6 +143,8 @@ public class VolumeMount {
 
 	/**
 	 * Get the name of the volume driver plugin which manages the device.
+	 * <p>
+	 * Since OSB API 2.13.
 	 * @return the name of the driver
 	 */
 	public String getDriver() {
@@ -151,6 +153,8 @@ public class VolumeMount {
 
 	/**
 	 * Set the directory to mount inside the application container.
+	 * <p>
+	 * Since OSB API 2.13.
 	 * @return the container directory
 	 */
 	public String getContainerDir() {
@@ -160,6 +164,8 @@ public class VolumeMount {
 	/**
 	 * Get a value indicating whether the volume can be mounted in read-only or read-write
 	 * mode.
+	 * <p>
+	 * Since OSB API 2.13.
 	 * @return the volume read/write mode
 	 */
 	@JsonSerialize(using = ToStringSerializer.class)
@@ -170,6 +176,8 @@ public class VolumeMount {
 
 	/**
 	 * Get the type of the volume device to mount.
+	 * <p>
+	 * Since OSB API 2.13.
 	 * @return the volume device type
 	 */
 	@JsonSerialize(using = ToStringSerializer.class)
@@ -180,6 +188,8 @@ public class VolumeMount {
 
 	/**
 	 * Get the details of the volume device to mount.
+	 * <p>
+	 * Since OSB API 2.13.
 	 * @return the volume device details
 	 */
 	@JsonTypeInfo(use = Id.NAME, include = As.EXTERNAL_PROPERTY, property = "device_type")
@@ -246,6 +256,8 @@ public class VolumeMount {
 		 * <p>
 		 * This value will set the {@literal driver} field in the body of the response to
 		 * the platform.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param driver the driver name
 		 * @return the builder
 		 */
@@ -260,6 +272,8 @@ public class VolumeMount {
 		 * <p>
 		 * This value will set the {@literal container_dir} field in the body of the
 		 * response to the platform.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param containerDir the container directory
 		 * @return the builder
 		 */
@@ -275,6 +289,8 @@ public class VolumeMount {
 		 * <p>
 		 * This value will set the {@literal mode} field in the body of the response to
 		 * the platform.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param mode the volume read/write mode
 		 * @return the builder
 		 */
@@ -289,6 +305,8 @@ public class VolumeMount {
 		 * <p>
 		 * This value will set the {@literal device_type} field in the body of the
 		 * response to the platform.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param deviceType the volume device type
 		 * @return the builder
 		 */
@@ -303,6 +321,8 @@ public class VolumeMount {
 		 * <p>
 		 * This value will set the {@literal device} field in the body of the response to
 		 * the platform.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param device the volume device details
 		 * @return the builder
 		 */

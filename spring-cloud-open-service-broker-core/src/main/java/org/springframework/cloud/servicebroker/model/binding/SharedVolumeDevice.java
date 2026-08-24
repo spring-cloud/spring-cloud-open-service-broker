@@ -35,6 +35,9 @@ import tools.jackson.databind.annotation.JsonNaming;
  * build the response to the platform.
  *
  * @author Scott Frederick
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#device-object">Open
+ * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class SharedVolumeDevice extends VolumeDevice {
@@ -65,6 +68,8 @@ public class SharedVolumeDevice extends VolumeDevice {
 
 	/**
 	 * Get the ID of the shared volume device to mount on each app instance.
+	 * <p>
+	 * Since OSB API 2.13.
 	 * @return the volume ID
 	 */
 	public String getVolumeId() {
@@ -73,6 +78,8 @@ public class SharedVolumeDevice extends VolumeDevice {
 
 	/**
 	 * Get the configuration properties for the volume device.
+	 * <p>
+	 * Since OSB API 2.13.
 	 * @return the device configuration
 	 */
 	public Map<String, Object> getMountConfig() {
@@ -128,6 +135,8 @@ public class SharedVolumeDevice extends VolumeDevice {
 		 * <p>
 		 * This value sets the {@literal volume_id} field in the body of the response to
 		 * the platform.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param volumeId the volume ID
 		 * @return the builder
 		 */
@@ -143,6 +152,8 @@ public class SharedVolumeDevice extends VolumeDevice {
 		 * <p>
 		 * This value sets the {@literal mount_config} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param mountConfig the configuration properties to add
 		 * @return the builder
 		 */
@@ -157,6 +168,8 @@ public class SharedVolumeDevice extends VolumeDevice {
 		 * <p>
 		 * This value sets the {@literal mount_config} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param key the configuration properties key
 		 * @param value the configuration properties value
 		 * @return the builder

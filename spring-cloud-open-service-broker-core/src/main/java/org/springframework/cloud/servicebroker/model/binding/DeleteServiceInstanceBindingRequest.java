@@ -38,7 +38,7 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#request-5">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#unbinding">Open
  * Service Broker API specification</a>
  */
 public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerRequest {
@@ -308,6 +308,8 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		/**
 		 * Set the value of the flag indicating whether the platform supports asynchronous
 		 * operations as would be provided in the request from the platform.
+		 * <p>
+		 * Since OSB API 2.7.
 		 * @param asyncAccepted the boolean value of the flag
 		 * @return the builder
 		 * @see #isAsyncAccepted()
@@ -367,6 +369,8 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 		/**
 		 * Set the identity of the user making the request as would be provided in the
 		 * request from the platform.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param originatingIdentity the user identity
 		 * @return the builder
 		 * @see #getOriginatingIdentity()
@@ -378,6 +382,8 @@ public class DeleteServiceInstanceBindingRequest extends AsyncServiceBrokerReque
 
 		/**
 		 * Set the identity of the request sent from the platform.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param requestIdentity the request identity
 		 * @return the builder
 		 * @see #getRequestIdentity()

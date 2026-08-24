@@ -38,7 +38,7 @@ import tools.jackson.databind.annotation.JsonNaming;
  *
  * @author Scott Frederick
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#fetching-a-service-instance">Open
  * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -80,6 +80,8 @@ public class GetServiceInstanceResponse {
 
 	/**
 	 * Get the ID of the service definition associated with the service instance.
+	 * <p>
+	 * Since OSB API 2.14.
 	 * @return the service definition ID
 	 */
 	@JsonProperty("service_id")
@@ -89,6 +91,8 @@ public class GetServiceInstanceResponse {
 
 	/**
 	 * Get the ID of the plan associated with the service instance.
+	 * <p>
+	 * Since OSB API 2.14.
 	 * @return the plan ID
 	 */
 	public @Nullable String getPlanId() {
@@ -97,6 +101,8 @@ public class GetServiceInstanceResponse {
 
 	/**
 	 * Get the URL of a web-based management user interface for the service instance.
+	 * <p>
+	 * Since OSB API 2.14.
 	 * @return the dashboard URL, or {@literal null} if not provided
 	 */
 	public @Nullable String getDashboardUrl() {
@@ -106,6 +112,8 @@ public class GetServiceInstanceResponse {
 	/**
 	 * Get any parameters provided to the service broker when the service instance was
 	 * created.
+	 * <p>
+	 * Since OSB API 2.14.
 	 * @return the parameters, or {@literal null} if parameters were not provided at
 	 * creation or retrieval of parameters is not supported by the service broker
 	 */
@@ -179,6 +187,8 @@ public class GetServiceInstanceResponse {
 		 * <p>
 		 * This value will set the {@literal service_id} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.14.
 		 * @param serviceDefinitionId the service definition ID
 		 * @return the builder
 		 */
@@ -193,6 +203,8 @@ public class GetServiceInstanceResponse {
 		 * <p>
 		 * This value will set the {@literal plan_id} field in the body of the response to
 		 * the platform.
+		 * <p>
+		 * Since OSB API 2.14.
 		 * @param planId the plan ID
 		 * @return the builder
 		 */
@@ -209,6 +221,8 @@ public class GetServiceInstanceResponse {
 		 * <p>
 		 * This value will set the {@literal dashboard_url} field in the body of the
 		 * response to the platform.
+		 * <p>
+		 * Since OSB API 2.14.
 		 * @param dashboardUrl the dashboard URL
 		 * @return the builder
 		 */
@@ -224,6 +238,8 @@ public class GetServiceInstanceResponse {
 		 * <p>
 		 * This value will set the {@literal parameters} field in the body of the response
 		 * to the platform
+		 * <p>
+		 * Since OSB API 2.14.
 		 * @param parameters the parameters {@literal Map}
 		 * @return the builder
 		 */
@@ -239,6 +255,8 @@ public class GetServiceInstanceResponse {
 		 * <p>
 		 * This value will set the {@literal parameters} field in the body of the response
 		 * to the platform
+		 * <p>
+		 * Since OSB API 2.14.
 		 * @param key the parameter key
 		 * @param value the parameter value
 		 * @return the builder

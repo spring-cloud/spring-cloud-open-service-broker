@@ -32,6 +32,9 @@ import org.springframework.util.CollectionUtils;
  * Service instance metadata.
  *
  * @author Andrea Alkalay
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#service-instance-metadata">Open
+ * Service Broker API specification</a>
  */
 @JsonInclude(Include.NON_NULL)
 public class ServiceInstanceMetadata {
@@ -61,6 +64,8 @@ public class ServiceInstanceMetadata {
 
 	/**
 	 * Get the labels.
+	 * <p>
+	 * Since OSB API 2.16.
 	 * @return the labels
 	 */
 	public Map<String, Object> getLabels() {
@@ -122,6 +127,8 @@ public class ServiceInstanceMetadata {
 
 		/**
 		 * Add a set of labels from the provided {@literal Map} to the metadata labels.
+		 * <p>
+		 * Since OSB API 2.16.
 		 * @param labels the labels to add
 		 * @return the builder
 		 * @see #labels(Map)
@@ -135,6 +142,8 @@ public class ServiceInstanceMetadata {
 
 		/**
 		 * Add a key/value pair to the metadata labels.
+		 * <p>
+		 * Since OSB API 2.16.
 		 * @param key the label key to add
 		 * @param value the label value to add
 		 * @return the builder

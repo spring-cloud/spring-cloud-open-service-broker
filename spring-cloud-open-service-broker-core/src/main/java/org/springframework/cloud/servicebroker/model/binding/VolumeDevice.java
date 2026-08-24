@@ -20,6 +20,9 @@ package org.springframework.cloud.servicebroker.model.binding;
  * Base class for types of volume devices.
  *
  * @author Scott Frederick
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#device-object">Open
+ * Service Broker API specification</a>
  */
 public class VolumeDevice {
 

@@ -33,6 +33,9 @@ import tools.jackson.databind.annotation.JsonNaming;
  *
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#fetching-a-service-binding">Open
+ * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(Include.NON_EMPTY)
@@ -54,6 +57,8 @@ public class GetServiceInstanceBindingResponse {
 
 	/**
 	 * Get any parameters passed by the user at service binding creation.
+	 * <p>
+	 * Since OSB API 2.14.
 	 * @return the populated {@literal Map}
 	 */
 	public Map<String, Object> getParameters() {

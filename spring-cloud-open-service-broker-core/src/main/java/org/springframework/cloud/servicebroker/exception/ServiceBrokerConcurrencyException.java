@@ -25,6 +25,9 @@ package org.springframework.cloud.servicebroker.exception;
  * {@literal 422 UNPROCESSABLE ENTITY} being returned to the platform.
  *
  * @author Scott Frederick
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#service-broker-errors">Open
+ * Service Broker API specification</a>
  */
 public class ServiceBrokerConcurrencyException extends ServiceBrokerException {
 

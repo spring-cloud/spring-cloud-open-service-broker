@@ -28,6 +28,9 @@ import tools.jackson.databind.annotation.JsonNaming;
  *
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#headers">Open
+ * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ServiceBrokerRequest {
@@ -169,6 +172,8 @@ public class ServiceBrokerRequest {
 	 * <p>
 	 * This value is set from the {@literal X-Broker-API-Originating-Identity} header in
 	 * the request from the platform.
+	 * <p>
+	 * Since OSB API 2.13.
 	 * @return the user identity, or {@literal null} if not provided
 	 */
 	@JsonIgnore // mapped as X-Broker-API-Originating-Identity Header
@@ -191,6 +196,8 @@ public class ServiceBrokerRequest {
 	 * <p>
 	 * This value is set from the {@literal X-Broker-API-Request-Identity} header in the
 	 * request from the platform
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return the request identity, or {@literal null} if not provided
 	 */
 	@JsonIgnore // mapped as X-Broker-API-Request-Identity Header

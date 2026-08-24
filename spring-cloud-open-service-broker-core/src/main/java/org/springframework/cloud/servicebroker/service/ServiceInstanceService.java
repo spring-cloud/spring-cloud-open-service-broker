@@ -67,6 +67,8 @@ public interface ServiceInstanceService {
 
 	/**
 	 * Get the details of a service instance.
+	 * <p>
+	 * Since OSB API 2.14.
 	 * @param request containing the details of the request
 	 * @return a {@link GetServiceInstanceResponse} on successful processing of the
 	 * request
@@ -85,6 +87,8 @@ public interface ServiceInstanceService {
 
 	/**
 	 * Get the status of the last requested operation for a service instance.
+	 * <p>
+	 * Since OSB API 2.7.
 	 * @param request containing the details of the request
 	 * @return a {@link GetLastServiceOperationResponse} on successful processing of the
 	 * request

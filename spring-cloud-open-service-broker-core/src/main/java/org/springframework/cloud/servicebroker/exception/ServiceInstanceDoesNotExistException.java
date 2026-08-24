@@ -33,6 +33,15 @@ package org.springframework.cloud.servicebroker.exception;
  * @author Roy Clarkson
  * @see org.springframework.cloud.servicebroker.controller.ServiceInstanceController
  * @see org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#fetching-a-service-instance">Open
+ * Service Broker API specification: Fetching a Service Instance</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#fetching-a-service-binding">Open
+ * Service Broker API specification: Fetching a Service Binding</a>
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#deprovisioning">Open
+ * Service Broker API specification: Deprovisioning</a>
  */
 public class ServiceInstanceDoesNotExistException extends ServiceBrokerException {
 

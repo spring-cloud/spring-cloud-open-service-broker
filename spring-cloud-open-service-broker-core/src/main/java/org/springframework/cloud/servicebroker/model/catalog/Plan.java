@@ -38,7 +38,7 @@ import org.springframework.util.CollectionUtils;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-plan-object">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#service-plan-object">Open
  * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -138,9 +138,6 @@ public class Plan {
 	/**
 	 * A map of metadata to further describe a service plan.
 	 * @return the plan metadata
-	 * @see <a href=
-	 * "https://github.com/openservicebrokerapi/servicebroker/blob/master/profile.md#service-metadata">Service
-	 * metadata conventions</a>
 	 */
 	public @Nullable Map<String, Object> getMetadata() {
 		return this.metadata;
@@ -159,6 +156,8 @@ public class Plan {
 	 * Indicates whether the service with this plan can be bound to applications. This is
 	 * an optional field. If the value is <code>null</code>, the field will be omitted
 	 * from the serialized JSON.
+	 * <p>
+	 * Since OSB API 2.11.
 	 * @return true if the service with this plan may be bound
 	 */
 	public @Nullable Boolean isBindable() {
@@ -171,6 +170,8 @@ public class Plan {
 	 * plan_updateable field. If not specified, the default is derived from the Service
 	 * Offering. If the value is <code>null</code>, the field will be omitted from the
 	 * serialized JSON.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return true if the plan may be updated
 	 */
 	public @Nullable Boolean isPlanUpdateable() {
@@ -179,6 +180,8 @@ public class Plan {
 
 	/**
 	 * The schemas for this plan.
+	 * <p>
+	 * Since OSB API 2.13.
 	 * @return the plan schemas
 	 */
 	public @Nullable Schemas getSchemas() {
@@ -190,6 +193,8 @@ public class Plan {
 	 * polling duration. If the maximum polling duration is reached, the platform should
 	 * cease polling and the operation state MUST be considered failed. If the value is
 	 * <code>null</code>, the field will be omitted from the serialized JSON.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return the maximum polling duration
 	 */
 	public @Nullable Integer getMaximumPollingDuration() {
@@ -200,6 +205,8 @@ public class Plan {
 	 * Maintenance information for a Service Instance which is provisioned using the
 	 * Service Plan. If provided, a version string MUST be provided and platforms MAY use
 	 * this when Provisioning or Updating a Service Instance.
+	 * <p>
+	 * Since OSB API 2.15.
 	 * @return the maintenance info
 	 */
 	public @Nullable MaintenanceInfo getMaintenanceInfo() {
@@ -310,9 +317,6 @@ public class Plan {
 		 * A map of plan metadata to further describe the plan.
 		 * @param metadata plan metadata
 		 * @return the builder instance
-		 * @see <a href=
-		 * "https://github.com/openservicebrokerapi/servicebroker/blob/master/profile.md#service-metadata">Service
-		 * metadata conventions</a>
 		 */
 		public PlanBuilder metadata(Map<String, Object> metadata) {
 			if (CollectionUtils.isEmpty(metadata)) {
@@ -330,9 +334,6 @@ public class Plan {
 		 * @param key a unique key
 		 * @param value the value
 		 * @return the builder instance
-		 * @see <a href=
-		 * "https://github.com/openservicebrokerapi/servicebroker/blob/master/profile.md#service-metadata">Service
-		 * metadata conventions</a>
 		 */
 		public PlanBuilder metadata(String key, Object value) {
 			if (key == null || value == null) {
@@ -359,6 +360,8 @@ public class Plan {
 		 * Indicates whether the service with this plan can be bound to applications. This
 		 * is an optional field. If the value is <code>null</code>, the field will be
 		 * omitted from the serialized JSON.
+		 * <p>
+		 * Since OSB API 2.11.
 		 * @param bindable true if the service with this plan may be bound
 		 * @return the builder instance
 		 */
@@ -371,6 +374,8 @@ public class Plan {
 		 * Indicates whether the the plan can be updated. This is an optional field. If
 		 * the value is <code>null</code>, the field will be omitted from the serialized
 		 * JSON.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param planUpdateable true if the service with this plan may be bound
 		 * @return the builder instance
 		 */
@@ -381,6 +386,8 @@ public class Plan {
 
 		/**
 		 * The schemas for this plan.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param schemas plan schemas
 		 * @return the builder instance
 		 */
@@ -393,6 +400,8 @@ public class Plan {
 		 * A duration, in seconds, that the Platform SHOULD use as the Service's maximum
 		 * polling duration. If the value is <code>null</code>, the field will be omitted
 		 * from the serialized JSON.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param maximumPollingDuration the maximum polling duration
 		 * @return the builder instance
 		 */
@@ -405,6 +414,8 @@ public class Plan {
 		 * Maintenance information for a Service Instance which is provisioned using the
 		 * Service Plan. If provided a version string MUST be provided and platforms MAY
 		 * use this when Provisioning or Updating a Service Instance.
+		 * <p>
+		 * Since OSB API 2.15.
 		 * @param maintenanceInfo the maintenanceInfo
 		 * @return the builder instance
 		 */

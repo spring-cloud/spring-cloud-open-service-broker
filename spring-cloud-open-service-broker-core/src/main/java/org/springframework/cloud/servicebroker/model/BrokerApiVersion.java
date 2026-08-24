@@ -21,6 +21,9 @@ package org.springframework.cloud.servicebroker.model;
  *
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#api-version-header">Open
+ * Service Broker API specification</a>
  */
 public class BrokerApiVersion {
 

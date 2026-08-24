@@ -35,7 +35,7 @@ import jakarta.validation.constraints.NotEmpty;
  * @author S Greenberg
  * @author Scott Frederick
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#catalog-management">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#catalog-management">Open
  * Service Broker API specification</a>
  */
 public class Catalog {

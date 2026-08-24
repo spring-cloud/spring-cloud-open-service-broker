@@ -32,7 +32,7 @@ import org.springframework.cloud.servicebroker.model.AsyncServiceBrokerResponse;
  *
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.15/spec.md#response-3">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#asynchronous-operations">Open
  * Service Broker API specification</a>
  */
 @JsonInclude(Include.NON_EMPTY)
@@ -64,6 +64,8 @@ public class OperationInProgressMessage implements Serializable {
 
 	/**
 	 * Get the operation.
+	 * <p>
+	 * Since OSB API 2.9.
 	 * @return the operation.
 	 */
 	public @Nullable String getOperation() {

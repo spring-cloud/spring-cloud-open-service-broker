@@ -51,6 +51,8 @@ public interface CatalogService {
 	 * broker. Implementing service brokers may use this method to manage ETag responses
 	 * and caching of the catalog. This ResponseEntity returned by this method is directly
 	 * returned in the {@link CatalogController#getCatalog(HttpHeaders)} method.
+	 * <p>
+	 * Since OSB API 2.16.
 	 * @param httpHeaders the HttpHeaders from the request
 	 * @return the ResponseEntity with catalog or an appropriate ETag response
 	 */

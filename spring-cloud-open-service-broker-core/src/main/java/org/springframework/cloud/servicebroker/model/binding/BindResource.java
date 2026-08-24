@@ -40,7 +40,7 @@ import org.springframework.util.CollectionUtils;
  *
  * @author Scott Frederick
  * @see <a
- * href=https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#bind-resource-object>Open
+ * href=https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#bind-resource-object>Open
  * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -135,6 +135,8 @@ public class BindResource {
 	 * Get the CredHub client id that will be granted read access to the credentials
 	 * reference returned in the binding response. May be provided for Service Key
 	 * bindings using CredHub.
+	 * <p>
+	 * Since OSB API 2.16.
 	 * @return the CredHub client id
 	 */
 	public @Nullable String getCredentialClientId() {
@@ -144,6 +146,8 @@ public class BindResource {
 	/**
 	 * Get the annotations attached to the application that the Service Binding is
 	 * associated with. May be provided for credentials bindings.
+	 * <p>
+	 * Since OSB API 2.16.
 	 * @return the application annotations
 	 */
 	@JsonInclude(Include.NON_EMPTY)
@@ -235,6 +239,8 @@ public class BindResource {
 		/**
 		 * Set a CredHub client id as would be provided in an app binding request from the
 		 * platform for a Service Key using CredHub.
+		 * <p>
+		 * Since OSB API 2.16.
 		 * @param credentialClientId the CredHub client id
 		 * @return the builder
 		 */
@@ -246,6 +252,8 @@ public class BindResource {
 		/**
 		 * Set the application annotations as would be provided in an app binding request
 		 * from the platform.
+		 * <p>
+		 * Since OSB API 2.16.
 		 * @param appAnnotations the application annotations
 		 * @return the builder
 		 */

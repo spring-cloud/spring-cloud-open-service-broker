@@ -25,6 +25,9 @@ package org.springframework.cloud.servicebroker.exception;
  * {@literal 412 PRECONDITION FAILED} being returned to the platform.
  *
  * @author Scott Frederick
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#api-version-header">Open
+ * Service Broker API specification</a>
  */
 public class ServiceBrokerApiVersionException extends ServiceBrokerException {
 

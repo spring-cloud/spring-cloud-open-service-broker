@@ -22,24 +22,33 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * The list of acceptable states for an operation that is being processed asynchronously.
  *
  * @author Scott Frederick
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#polling-last-operation-for-service-instances">Open
+ * Service Broker API specification</a>
  */
 public enum OperationState {
 
 	/**
 	 * Indicates that a request is still being processed. The platform will continue
 	 * polling for the current state.
+	 * <p>
+	 * Since OSB API 2.7.
 	 */
 	IN_PROGRESS("in progress"),
 
 	/**
 	 * Indicates that a request completed successfully. The platform will stop polling for
 	 * the current state.
+	 * <p>
+	 * Since OSB API 2.7.
 	 */
 	SUCCEEDED("succeeded"),
 
 	/**
 	 * Indicates that a request completed unsuccessfully. The platform will stop polling
 	 * for the current state.
+	 * <p>
+	 * Since OSB API 2.7.
 	 */
 	FAILED("failed");
 

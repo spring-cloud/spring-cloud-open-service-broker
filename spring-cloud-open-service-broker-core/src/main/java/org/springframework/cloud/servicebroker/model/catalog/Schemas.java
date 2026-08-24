@@ -29,7 +29,7 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Sam Gunaratne
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#schemas-object">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#schemas-object">Open
  * Service Broker API specification</a>
  */
 @JsonInclude(Include.NON_NULL)
@@ -60,6 +60,8 @@ public class Schemas {
 
 	/**
 	 * The schemas available on a service instance.
+	 * <p>
+	 * Since OSB API 2.13.
 	 * @return the schemas
 	 */
 	@JsonProperty("service_instance")
@@ -69,6 +71,8 @@ public class Schemas {
 
 	/**
 	 * The schemas available on a service binding.
+	 * <p>
+	 * Since OSB API 2.13.
 	 * @return the schemas
 	 */
 	@JsonProperty("service_binding")
@@ -122,6 +126,8 @@ public class Schemas {
 
 		/**
 		 * The schemas available on a service instance.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param serviceInstanceSchema the schemas
 		 * @return the binder instance
 		 */
@@ -132,6 +138,8 @@ public class Schemas {
 
 		/**
 		 * The schemas available on a service binding.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param serviceBindingSchema the schemas
 		 * @return the binder instance
 		 */

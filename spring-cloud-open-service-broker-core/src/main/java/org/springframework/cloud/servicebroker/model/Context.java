@@ -41,6 +41,9 @@ import org.springframework.util.StringUtils;
  *
  * @author Scott Frederick
  * @author Roy Clarkson
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/profile.md#context-object">Open
+ * Service Broker API specification</a>
  */
 @JsonTypeInfo(use = Id.NAME, include = As.EXISTING_PROPERTY, property = Context.PLATFORM_KEY, visible = true,
 		defaultImpl = PlatformContext.class)
@@ -87,6 +90,8 @@ public class Context {
 
 	/**
 	 * Get the name of the platform making the request.
+	 * <p>
+	 * Since OSB API 2.12.
 	 * @return the platform identifier
 	 */
 	public @Nullable String getPlatform() {
@@ -239,6 +244,8 @@ public class Context {
 		/**
 		 * Set the name of the platform as would be provided in the request from the
 		 * platform.
+		 * <p>
+		 * Since OSB API 2.12.
 		 * @param platform the platform name
 		 * @return the builder
 		 */

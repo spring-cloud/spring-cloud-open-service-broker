@@ -27,6 +27,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * provisioned or updated.
  *
  * @author Scott Frederick
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/profile.md#context-object">Open
+ * Service Broker API specification</a>
  */
 public class PlatformContext extends Context {
 

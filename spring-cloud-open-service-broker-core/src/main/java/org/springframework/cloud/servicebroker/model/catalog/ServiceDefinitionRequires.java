@@ -21,6 +21,9 @@ package org.springframework.cloud.servicebroker.model.catalog;
  * definition.
  *
  * @author Scott Frederick
+ * @see <a href=
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#service-offering-object">Open
+ * Service Broker API specification</a>
  */
 public enum ServiceDefinitionRequires {
 
@@ -39,6 +42,8 @@ public enum ServiceDefinitionRequires {
 	 * receive bind requests with a <code>route</code> value in the
 	 * <code>bindResource</code> field of a
 	 * <code>CreateServiceInstanceBindingRequest</code>.
+	 * <p>
+	 * Since OSB API 2.8.
 	 */
 	SERVICE_REQUIRES_ROUTE_FORWARDING("route_forwarding"),
 
@@ -48,6 +53,8 @@ public enum ServiceDefinitionRequires {
 	 * should provide a non-null value in the
 	 * <code>CreateServiceInstanceVolumeBindingResponse.volumeMounts</code> field in
 	 * response to a bind request.
+	 * <p>
+	 * Since OSB API 2.10.
 	 */
 	SERVICE_REQUIRES_VOLUME_MOUNT("volume_mount");
 

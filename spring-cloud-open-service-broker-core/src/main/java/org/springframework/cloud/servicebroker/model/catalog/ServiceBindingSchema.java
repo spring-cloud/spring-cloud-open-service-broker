@@ -28,7 +28,7 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Sam Gunaratne
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/master/spec.md#service-binding-schema-object">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#service-binding-schema-object">Open
  * Service Broker API specification</a>
  */
 @JsonInclude(Include.NON_NULL)
@@ -53,6 +53,8 @@ public class ServiceBindingSchema {
 
 	/**
 	 * The JSON schema for configuration parameters when creating a service binding.
+	 * <p>
+	 * Since OSB API 2.13.
 	 * @return the schema
 	 */
 	@JsonProperty("create")
@@ -103,6 +105,8 @@ public class ServiceBindingSchema {
 
 		/**
 		 * The JSON schema for configuration parameters when creating a service binding.
+		 * <p>
+		 * Since OSB API 2.13.
 		 * @param createMethodSchema the schema
 		 * @return the binder instance
 		 */
