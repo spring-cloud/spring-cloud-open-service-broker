@@ -39,6 +39,7 @@ import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceB
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.http.HttpStatus;
@@ -230,6 +231,51 @@ class ServiceInstanceBindingControllerResponseCodeTests {
 
 		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
+	}
+
+	@Test
+	void getLastOperationWithInProgressResponseGivesExpectedStatus() {
+		validateGetLastOperationWithResponseStatus(GetLastServiceBindingOperationResponse.builder()
+			.operationState(OperationState.IN_PROGRESS)
+			.description("in progress")
+			.build(), HttpStatus.OK);
+	}
+
+	@Test
+	void getLastOperationWithSucceededResponseGivesExpectedStatus() {
+		validateGetLastOperationWithResponseStatus(GetLastServiceBindingOperationResponse.builder()
+			.operationState(OperationState.SUCCEEDED)
+			.deleteOperation(false)
+			.build(), HttpStatus.OK);
+	}
+
+	@Test
+	void getLastOperationWithDeleteSucceededResponseGivesExpectedStatus() {
+		validateGetLastOperationWithResponseStatus(GetLastServiceBindingOperationResponse.builder()
+			.operationState(OperationState.SUCCEEDED)
+			.deleteOperation(true)
+			.build(), HttpStatus.GONE);
+	}
+
+	@Test
+	void getLastOperationWithFailedResponseGivesExpectedStatus() {
+		validateGetLastOperationWithResponseStatus(
+				GetLastServiceBindingOperationResponse.builder().operationState(OperationState.FAILED).build(),
+				HttpStatus.OK);
+	}
+
+	private void validateGetLastOperationWithResponseStatus(GetLastServiceBindingOperationResponse response,
+			HttpStatus expectedStatus) {
+		given(this.bindingService.getLastOperation(any(GetLastServiceBindingOperationRequest.class)))
+			.willReturn(Mono.just(response));
+
+		ResponseEntity<GetLastServiceBindingOperationResponse> responseEntity = this.controller
+			.getServiceInstanceBindingLastOperation(this.pathVariables, null, null, null, null, null, null, null, null)
+			.block();
+
+		assertThat(responseEntity).isNotNull();
+		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
+		assertThat(responseEntity.getBody()).isEqualTo(response);
 	}
 
 	@Test
