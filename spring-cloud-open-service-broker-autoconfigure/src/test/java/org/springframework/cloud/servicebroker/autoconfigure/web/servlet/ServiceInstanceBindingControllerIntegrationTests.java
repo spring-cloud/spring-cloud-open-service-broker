@@ -658,6 +658,37 @@ class ServiceInstanceBindingControllerIntegrationTests
 	}
 
 	@Test
+	void lastOperationWithUnknownBindingNotFound() throws Exception {
+		setupServiceInstanceBindingServiceLastOperation(
+				new ServiceInstanceBindingDoesNotExistException("nonexistent-binding-id"));
+
+		MvcResult mvcResult = this.mockMvc.perform(get(buildLastOperationUrl()))
+			.andExpect(request().asyncStarted())
+			.andReturn();
+
+		this.mockMvc.perform(asyncDispatch(mvcResult))
+			.andExpect(status().isNotFound())
+			.andExpect(jsonPath("$.state").doesNotExist())
+			.andExpect(
+					jsonPath("$.description", containsString("The requested Service Instance Binding does not exist")));
+	}
+
+	@Test
+	void lastOperationWithUnknownServiceInstanceNotFound() throws Exception {
+		setupServiceInstanceBindingServiceLastOperation(
+				new ServiceInstanceDoesNotExistException("nonexistent-instance-id"));
+
+		MvcResult mvcResult = this.mockMvc.perform(get(buildLastOperationUrl()))
+			.andExpect(request().asyncStarted())
+			.andReturn();
+
+		this.mockMvc.perform(asyncDispatch(mvcResult))
+			.andExpect(status().isNotFound())
+			.andExpect(jsonPath("$.state").doesNotExist())
+			.andExpect(jsonPath("$.description", containsString("The requested Service Instance does not exist")));
+	}
+
+	@Test
 	void lastOperationHasFailedStatus() throws Exception {
 		setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse.builder()
 			.operationState(OperationState.FAILED)

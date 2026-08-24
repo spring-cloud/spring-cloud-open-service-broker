@@ -24,6 +24,8 @@ import reactor.core.publisher.Mono;
 import org.springframework.cloud.servicebroker.controller.ServiceInstanceBindingController;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerCreateOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerDeleteOperationInProgressException;
+import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
+import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
@@ -67,6 +69,17 @@ public abstract class AbstractServiceInstanceBindingControllerIntegrationTests
 	protected void setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse response) {
 		given(this.serviceInstanceBindingService.getLastOperation(any(GetLastServiceBindingOperationRequest.class)))
 			.willReturn(Mono.just(response));
+	}
+
+	protected void setupServiceInstanceBindingServiceLastOperation(
+			ServiceInstanceBindingDoesNotExistException exception) {
+		given(this.serviceInstanceBindingService.getLastOperation(any(GetLastServiceBindingOperationRequest.class)))
+			.willReturn(Mono.error(exception));
+	}
+
+	protected void setupServiceInstanceBindingServiceLastOperation(ServiceInstanceDoesNotExistException exception) {
+		given(this.serviceInstanceBindingService.getLastOperation(any(GetLastServiceBindingOperationRequest.class)))
+			.willReturn(Mono.error(exception));
 	}
 
 	protected void setupServiceInstanceBindingService(ServiceBrokerCreateOperationInProgressException exception) {

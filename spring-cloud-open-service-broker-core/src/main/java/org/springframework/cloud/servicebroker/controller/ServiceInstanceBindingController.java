@@ -299,6 +299,21 @@ public class ServiceInstanceBindingController extends BaseController {
 				boolean isSuccessfulDelete = OperationState.SUCCEEDED.equals(response.getState())
 						&& response.isDeleteOperation();
 				return new ResponseEntity<>(response, isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK);
+			})
+			.onErrorResume((e) -> {
+				if (e instanceof ServiceInstanceBindingDoesNotExistException) {
+					return Mono.just(new ResponseEntity<>(GetLastServiceBindingOperationResponse.builder()
+						.description("The requested Service Instance Binding does not exist")
+						.build(), HttpStatus.NOT_FOUND));
+				}
+				else if (e instanceof ServiceInstanceDoesNotExistException) {
+					return Mono.just(new ResponseEntity<>(GetLastServiceBindingOperationResponse.builder()
+						.description("The requested Service Instance does not exist")
+						.build(), HttpStatus.NOT_FOUND));
+				}
+				else {
+					return Mono.error(e);
+				}
 			});
 	}
 

@@ -710,6 +710,50 @@ class ServiceInstanceBindingControllerIntegrationTests
 	}
 
 	@Test
+	void lastOperationWithUnknownBindingNotFound() {
+		setupServiceInstanceBindingServiceLastOperation(
+				new ServiceInstanceBindingDoesNotExistException("nonexistent-binding-id"));
+
+		this.client.get()
+			.uri(buildLastOperationUrl())
+			.accept(MediaType.APPLICATION_JSON)
+			.exchange()
+			.expectStatus()
+			.is4xxClientError()
+			.expectStatus()
+			.isEqualTo(HttpStatus.NOT_FOUND)
+			.expectBody()
+			.jsonPath("$.state")
+			.doesNotExist()
+			.jsonPath("$.description")
+			.isNotEmpty()
+			.consumeWith((result) -> assertDescriptionContains(result,
+					"The requested Service Instance Binding does not exist"));
+	}
+
+	@Test
+	void lastOperationWithUnknownServiceInstanceNotFound() {
+		setupServiceInstanceBindingServiceLastOperation(
+				new ServiceInstanceDoesNotExistException("nonexistent-instance-id"));
+
+		this.client.get()
+			.uri(buildLastOperationUrl())
+			.accept(MediaType.APPLICATION_JSON)
+			.exchange()
+			.expectStatus()
+			.is4xxClientError()
+			.expectStatus()
+			.isEqualTo(HttpStatus.NOT_FOUND)
+			.expectBody()
+			.jsonPath("$.state")
+			.doesNotExist()
+			.jsonPath("$.description")
+			.isNotEmpty()
+			.consumeWith(
+					(result) -> assertDescriptionContains(result, "The requested Service Instance does not exist"));
+	}
+
+	@Test
 	void lastOperationHasFailedStatus() {
 		setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse.builder()
 			.operationState(OperationState.FAILED)

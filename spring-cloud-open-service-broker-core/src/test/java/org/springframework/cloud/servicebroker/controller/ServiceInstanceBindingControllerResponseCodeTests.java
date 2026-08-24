@@ -32,6 +32,8 @@ import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstan
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.DeleteServiceInstanceBindingResponse;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationRequest;
+import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindingOperationResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
@@ -228,6 +230,34 @@ class ServiceInstanceBindingControllerResponseCodeTests {
 
 		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.GONE);
+	}
+
+	@Test
+	void getLastOperationWithUnknownBindingGivesExpectedStatus() {
+		given(this.bindingService.getLastOperation(any(GetLastServiceBindingOperationRequest.class)))
+			.willReturn(Mono.error(new ServiceInstanceBindingDoesNotExistException("binding never existed")));
+
+		ResponseEntity<GetLastServiceBindingOperationResponse> responseEntity = this.controller
+			.getServiceInstanceBindingLastOperation(this.pathVariables, null, null, "service-definition-id",
+					"service-definition-plan-id", null, null, null, null)
+			.block();
+
+		assertThat(responseEntity).isNotNull();
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	void getLastOperationWithUnknownServiceInstanceGivesExpectedStatus() {
+		given(this.bindingService.getLastOperation(any(GetLastServiceBindingOperationRequest.class)))
+			.willReturn(Mono.error(new ServiceInstanceDoesNotExistException("instance never existed")));
+
+		ResponseEntity<GetLastServiceBindingOperationResponse> responseEntity = this.controller
+			.getServiceInstanceBindingLastOperation(this.pathVariables, null, null, "service-definition-id",
+					"service-definition-plan-id", null, null, null, null)
+			.block();
+
+		assertThat(responseEntity).isNotNull();
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
 }
