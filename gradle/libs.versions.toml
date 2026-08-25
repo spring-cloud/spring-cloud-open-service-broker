@@ -1,6 +1,6 @@
 [versions]
 javaformat = "0.0.48"
-spring-boot = "4.1.0"
+spring-boot = "4.1.1"
 spring-nohttp = "0.0.11"
 asciidoctor = "4.0.5"
 spring-asciidoctor-backends = "0.0.7"
