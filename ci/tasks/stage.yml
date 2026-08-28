@@ -16,6 +16,10 @@ params:
   RELEASE_TYPE: ((release-type))
   USER_NAME: ((git-username))
   USER_EMAIL: ((git-email))
+  ARTIFACTORY_SERVER: ((artifactory-server))
+  ARTIFACTORY_SERVER_PATH: libs-release
+  ARTIFACTORY_USERNAME: ((artifactory-username))
+  ARTIFACTORY_PASSWORD: ((artifactory-password))
 caches:
   - path: maven
   - path: gradle
