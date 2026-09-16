@@ -67,6 +67,8 @@ public class GetServiceInstanceBindingResponse {
 
 	/**
 	 * Get the service instance binding metadata.
+	 * <p>
+	 * Since OSB API 2.16.
 	 * @return the metadata
 	 */
 	@JsonInclude(Include.NON_NULL)

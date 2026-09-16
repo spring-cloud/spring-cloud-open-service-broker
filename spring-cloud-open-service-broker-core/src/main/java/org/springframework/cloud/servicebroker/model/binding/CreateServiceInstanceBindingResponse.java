@@ -81,6 +81,8 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 
 	/**
 	 * Get the service instance binding metadata.
+	 * <p>
+	 * Since OSB API 2.16.
 	 * @return the metadata
 	 */
 	@JsonInclude(Include.NON_NULL)
@@ -165,6 +167,8 @@ public class CreateServiceInstanceBindingResponse extends AsyncServiceBrokerResp
 		 * <p>
 		 * This value will set the {@literal metadata} field in the body of the response
 		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.16.
 		 * @param metadata metadata about this service binding
 		 * @return the builder
 		 */

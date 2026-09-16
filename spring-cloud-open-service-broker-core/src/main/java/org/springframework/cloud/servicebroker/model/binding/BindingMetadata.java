@@ -63,6 +63,8 @@ public class BindingMetadata {
 
 	/**
 	 * Get the expiration date and time.
+	 * <p>
+	 * Since OSB API 2.16.
 	 * @return the date and time in ISO 8601 format
 	 */
 	@JsonProperty("expires_at")
@@ -139,10 +141,12 @@ public class BindingMetadata {
 		 * The date and time when the Service Binding becomes invalid and SHOULD NOT or
 		 * CANNOT be used anymore. Applications or Platforms MAY use this field to
 		 * initiate a Service Binding/credential rotation. If present, the string MUST
-		 * follow ISO 8601 and this pattern: yyyy-mm-ddThh:mm:ss.ssZ.
+		 * follow ISO 8601 and this pattern: yyyy-mm-ddThh:mm:ss.sZ.
+		 * <p>
+		 * Since OSB API 2.16.
 		 * @param expiresAt the date and time in ISO 8601 format
 		 * @return the builder
-		 * @see #expiresAt(String)
+		 * @see #getExpiresAt()
 		 */
 		public BindingMetadata.BindingMetadataBuilder expiresAt(String expiresAt) {
 			this.expiresAt = expiresAt;
