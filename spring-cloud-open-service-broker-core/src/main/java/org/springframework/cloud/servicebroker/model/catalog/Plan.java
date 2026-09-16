@@ -74,7 +74,7 @@ public class Plan {
 	 * Construct a new {@link Plan}.
 	 */
 	public Plan() {
-		this(null, null, null, new HashMap<>(), null, null, null, null, null, null, null);
+		this(null, null, null, null, null, null, null, null, null, null, null);
 	}
 
 	/**

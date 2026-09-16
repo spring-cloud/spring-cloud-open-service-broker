@@ -151,6 +151,17 @@ class PlanTests {
 	}
 
 	@Test
+	void noArgConstructorOmitsMetadataFromJson() {
+		Plan plan = new Plan();
+
+		assertThat(plan.getMetadata()).isNull();
+
+		DocumentContext json = JsonUtils.toJsonPath(plan);
+
+		assertThat(json).hasNoPath("$.metadata");
+	}
+
+	@Test
 	void equalsAndHashCode() {
 		EqualsVerifier.forClass(Plan.class).verify();
 	}
