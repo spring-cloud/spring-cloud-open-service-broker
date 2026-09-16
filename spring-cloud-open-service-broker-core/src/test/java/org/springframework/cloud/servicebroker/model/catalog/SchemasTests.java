@@ -140,6 +140,21 @@ class SchemasTests {
 	}
 
 	@Test
+	void emptyMethodSchemaParametersIsOmittedFromJson() {
+		Schemas schemas = Schemas.builder()
+			.serviceInstanceSchema(
+					ServiceInstanceSchema.builder().createMethodSchema(MethodSchema.builder().build()).build())
+			.build();
+
+		assertThat(schemas.getServiceInstanceSchema().getCreateMethodSchema().getParameters()).isEmpty();
+
+		DocumentContext json = JsonUtils.toJsonPath(schemas);
+
+		assertThat(json).hasPath("$.service_instance.create");
+		assertThat(json).hasNoPath("$.service_instance.create.parameters");
+	}
+
+	@Test
 	void equalsAndHashCode() {
 		EqualsVerifier.forClass(Schemas.class).verify();
 	}

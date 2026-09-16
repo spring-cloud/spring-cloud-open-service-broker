@@ -57,6 +57,7 @@ public class MethodSchema {
 	 * Since OSB API 2.13.
 	 * @return the configuration parameters
 	 */
+	@JsonInclude(Include.NON_EMPTY)
 	public Map<String, Object> getParameters() {
 		return this.parameters;
 	}
