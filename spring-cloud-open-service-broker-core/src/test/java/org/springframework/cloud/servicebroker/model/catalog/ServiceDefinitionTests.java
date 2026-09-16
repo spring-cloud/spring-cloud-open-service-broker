@@ -134,6 +134,21 @@ class ServiceDefinitionTests {
 	}
 
 	@Test
+	void noArgConstructorOmitsOptionalCollectionsFromJson() {
+		ServiceDefinition serviceDefinition = new ServiceDefinition();
+
+		assertThat(serviceDefinition.getTags()).isNull();
+		assertThat(serviceDefinition.getMetadata()).isNull();
+		assertThat(serviceDefinition.getRequires()).isNull();
+
+		DocumentContext json = JsonUtils.toJsonPath(serviceDefinition);
+
+		assertThat(json).hasNoPath("$.tags");
+		assertThat(json).hasNoPath("$.metadata");
+		assertThat(json).hasNoPath("$.requires");
+	}
+
+	@Test
 	void equalsAndHashCode() {
 		EqualsVerifier.forClass(ServiceDefinition.class).verify();
 	}

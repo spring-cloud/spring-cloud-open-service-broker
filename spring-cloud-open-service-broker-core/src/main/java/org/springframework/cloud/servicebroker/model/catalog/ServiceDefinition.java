@@ -83,8 +83,7 @@ public class ServiceDefinition {
 	 * Construct a new {@link ServiceDefinition}.
 	 */
 	public ServiceDefinition() {
-		this(null, null, null, false, null, null, null, null, new ArrayList<>(), new ArrayList<>(), new HashMap<>(),
-				new ArrayList<>(), null);
+		this(null, null, null, false, null, null, null, null, new ArrayList<>(), null, null, null, null);
 	}
 
 	/**
