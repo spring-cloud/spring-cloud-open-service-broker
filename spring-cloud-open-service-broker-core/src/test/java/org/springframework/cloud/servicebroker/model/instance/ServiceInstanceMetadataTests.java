@@ -20,9 +20,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.cloud.servicebroker.JsonPathAssert;
+import org.springframework.cloud.servicebroker.JsonUtils;
 import org.springframework.cloud.servicebroker.model.KubernetesContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -140,6 +143,40 @@ class ServiceInstanceMetadataTests {
 	@Test
 	void equalsAndHashCode() {
 		EqualsVerifier.forClass(ServiceInstanceMetadata.class).verify();
+	}
+
+	@Test
+	void emptyLabelsAndAttributesAreOmittedFromJson() {
+		ServiceInstanceMetadata serviceInstanceMetadata = ServiceInstanceMetadata.builder().build();
+
+		DocumentContext json = JsonUtils.toJsonPath(serviceInstanceMetadata);
+
+		JsonPathAssert.assertThat(json).hasNoPath("$.labels");
+		JsonPathAssert.assertThat(json).hasNoPath("$.attributes");
+	}
+
+	@Test
+	void populatedLabelsIsSerializedButEmptyAttributesIsOmitted() {
+		ServiceInstanceMetadata serviceInstanceMetadata = ServiceInstanceMetadata.builder()
+			.label("key", "value")
+			.build();
+
+		DocumentContext json = JsonUtils.toJsonPath(serviceInstanceMetadata);
+
+		JsonPathAssert.assertThat(json).hasPath("$.labels.key").isEqualTo("value");
+		JsonPathAssert.assertThat(json).hasNoPath("$.attributes");
+	}
+
+	@Test
+	void populatedAttributesIsSerializedButEmptyLabelsIsOmitted() {
+		ServiceInstanceMetadata serviceInstanceMetadata = ServiceInstanceMetadata.builder()
+			.attribute("key", "value")
+			.build();
+
+		DocumentContext json = JsonUtils.toJsonPath(serviceInstanceMetadata);
+
+		JsonPathAssert.assertThat(json).hasPath("$.attributes.key").isEqualTo("value");
+		JsonPathAssert.assertThat(json).hasNoPath("$.labels");
 	}
 
 }

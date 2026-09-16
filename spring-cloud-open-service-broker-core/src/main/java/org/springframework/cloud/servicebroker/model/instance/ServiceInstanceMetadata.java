@@ -79,6 +79,7 @@ public class ServiceInstanceMetadata {
 	 * Since OSB API 2.16.
 	 * @return the labels
 	 */
+	@JsonInclude(Include.NON_EMPTY)
 	public Map<String, Object> getLabels() {
 		return this.labels;
 	}
@@ -89,6 +90,7 @@ public class ServiceInstanceMetadata {
 	 * Since OSB API 2.17.
 	 * @return the attributes
 	 */
+	@JsonInclude(Include.NON_EMPTY)
 	public Map<String, Object> getAttributes() {
 		return this.attributes;
 	}
