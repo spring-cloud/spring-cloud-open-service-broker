@@ -44,7 +44,7 @@ import org.springframework.cloud.servicebroker.model.instance.AsyncParameterized
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#binding">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.17/spec.md#binding">Open
  * Service Broker API specification</a>
  */
 @SuppressWarnings({ "DeprecatedIsStillUsed" })
@@ -70,6 +70,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 
 	private transient @Nullable Plan plan;
 
+	private final @Nullable String predecessorBindingId;
+
 	/**
 	 * Construct a new {@link CreateServiceInstanceBindingRequest}.
 	 */
@@ -79,6 +81,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 		this.planId = null;
 		this.appGuid = null;
 		this.bindResource = null;
+		this.predecessorBindingId = null;
 	}
 
 	/**
@@ -99,6 +102,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	 * @param originatingIdentity identity of the user that initiated the request from the
 	 * platform
 	 * @param requestIdentity identity of the request sent from the platform
+	 * @param predecessorBindingId the ID of the non-expired service binding to rotate
 	 */
 	@JsonCreator
 	public CreateServiceInstanceBindingRequest(@JsonProperty("service_instance_id") @Nullable String serviceInstanceId,
@@ -113,7 +117,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 			@JsonProperty("platform_instance_id") @Nullable String platformInstanceId,
 			@JsonProperty("api_info_location") @Nullable String apiInfoLocation,
 			@JsonProperty("originating_identity") @Nullable Context originatingIdentity,
-			@JsonProperty("request_identity") @Nullable String requestIdentity) {
+			@JsonProperty("request_identity") @Nullable String requestIdentity,
+			@JsonProperty("predecessor_binding_id") @Nullable String predecessorBindingId) {
 		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity,
 				requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
@@ -125,6 +130,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 		this.bindResource = bindResource;
 		this.appGuid = (bindResource != null && bindResource.getAppGuid() != null) ? bindResource.getAppGuid()
 				: appGuid;
+		this.predecessorBindingId = predecessorBindingId;
 	}
 
 	/**
@@ -143,11 +149,13 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	 * @param apiInfoLocation the API info location
 	 * @param originatingIdentity the originating identity
 	 * @param requestIdentity the request identity
+	 * @param predecessorBindingId the ID of the non-expired service binding to rotate
 	 */
 	public CreateServiceInstanceBindingRequest(String serviceInstanceId, String serviceDefinitionId, String planId,
 			String bindingId, ServiceDefinition serviceDefinition, Plan plan, Boolean asyncAccepted,
 			BindResource bindResource, Map<String, Object> parameters, @JsonProperty("context") Context context,
-			String platformInstanceId, String apiInfoLocation, Context originatingIdentity, String requestIdentity) {
+			String platformInstanceId, String apiInfoLocation, Context originatingIdentity, String requestIdentity,
+			String predecessorBindingId) {
 		super(parameters, context, asyncAccepted, platformInstanceId, apiInfoLocation, originatingIdentity,
 				requestIdentity);
 		this.serviceInstanceId = serviceInstanceId;
@@ -158,6 +166,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 		this.plan = plan;
 		this.bindResource = bindResource;
 		this.appGuid = (bindResource != null) ? bindResource.getAppGuid() : null;
+		this.predecessorBindingId = predecessorBindingId;
 	}
 
 	/**
@@ -321,6 +330,22 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	}
 
 	/**
+	 * Get the ID of the service binding to rotate. If provided, this MUST be the ID of a
+	 * non-expired service binding of the same service instance.
+	 *
+	 * <p>
+	 * This value is set from the {@literal predecessor_binding_id} field in the body of
+	 * the request from the platform.
+	 * <p>
+	 * Since OSB API 2.17.
+	 * @return the predecessor binding ID
+	 */
+	@JsonProperty("predecessor_binding_id")
+	public String getPredecessorBindingId() {
+		return this.predecessorBindingId;
+	}
+
+	/**
 	 * Create a builder that provides a fluent API for constructing a
 	 * {@literal CreateServiceInstanceBindingRequest}.
 	 *
@@ -352,7 +377,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 				&& Objects.equals(this.bindingId, that.bindingId) && Objects.equals(this.appGuid, that.appGuid)
 				&& Objects.equals(this.bindResource, that.bindResource)
 				&& Objects.equals(this.serviceDefinition, that.serviceDefinition)
-				&& Objects.equals(this.plan, that.plan);
+				&& Objects.equals(this.plan, that.plan)
+				&& Objects.equals(this.predecessorBindingId, that.predecessorBindingId);
 	}
 
 	@Override
@@ -363,7 +389,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 	@Override
 	public final int hashCode() {
 		return Objects.hash(super.hashCode(), this.serviceDefinitionId, this.serviceInstanceId, this.planId,
-				this.bindingId, this.appGuid, this.bindResource, this.serviceDefinition, this.plan);
+				this.bindingId, this.appGuid, this.bindResource, this.serviceDefinition, this.plan,
+				this.predecessorBindingId);
 	}
 
 	@Override
@@ -371,7 +398,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 		return super.toString() + "CreateServiceInstanceBindingRequest{" + "serviceDefinitionId='"
 				+ this.serviceDefinitionId + '\'' + ", planId='" + this.planId + '\'' + ", appGuid='" + this.appGuid
 				+ '\'' + ", bindResource=" + this.bindResource + ", serviceInstanceId='" + this.serviceInstanceId + '\''
-				+ ", bindingId='" + this.bindingId + '\'' + '}';
+				+ ", bindingId='" + this.bindingId + '\'' + ", predecessorBindingId='" + this.predecessorBindingId
+				+ '\'' + '}';
 	}
 
 	/**
@@ -407,6 +435,8 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 		private @Nullable Context originatingIdentity;
 
 		private @Nullable String requestIdentity;
+
+		private @Nullable String predecessorBindingId;
 
 		private CreateServiceInstanceBindingRequestBuilder() {
 		}
@@ -599,6 +629,21 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 		}
 
 		/**
+		 * Set the ID of the service binding to rotate as would be provided in the request
+		 * from the platform. If provided, this MUST be the ID of a non-expired service
+		 * binding of the same service instance.
+		 * <p>
+		 * Since OSB API 2.17.
+		 * @param predecessorBindingId the predecessor binding ID
+		 * @return the builder
+		 * @see #getPredecessorBindingId()
+		 */
+		public CreateServiceInstanceBindingRequestBuilder predecessorBindingId(String predecessorBindingId) {
+			this.predecessorBindingId = predecessorBindingId;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link CreateServiceInstanceBindingRequest} from the provided
 		 * values.
 		 * @return the newly constructed {@literal CreateServiceInstanceBindingRequest}
@@ -607,7 +652,7 @@ public class CreateServiceInstanceBindingRequest extends AsyncParameterizedServi
 			return new CreateServiceInstanceBindingRequest(this.serviceInstanceId, this.serviceDefinitionId,
 					this.planId, this.bindingId, this.serviceDefinition, this.plan, this.asyncAccepted,
 					this.bindResource, this.parameters, this.context, this.platformInstanceId, this.apiInfoLocation,
-					this.originatingIdentity, this.requestIdentity);
+					this.originatingIdentity, this.requestIdentity, this.predecessorBindingId);
 		}
 
 	}

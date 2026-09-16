@@ -56,6 +56,7 @@ class CreateServiceInstanceBindingRequestTests {
 		assertThat(request.getPlatformInstanceId()).isNull();
 		assertThat(request.getOriginatingIdentity()).isNull();
 		assertThat(request.getRequestIdentity()).isNull();
+		assertThat(request.getPredecessorBindingId()).isNull();
 	}
 
 	@Test
@@ -87,6 +88,7 @@ class CreateServiceInstanceBindingRequestTests {
 			.apiInfoLocation("https://api.app.local")
 			.originatingIdentity(originatingIdentity)
 			.requestIdentity("request-id")
+			.predecessorBindingId("predecessor-binding-id")
 			.build();
 
 		assertThat(request.getServiceDefinitionId()).isEqualTo("service-definition-id");
@@ -119,6 +121,7 @@ class CreateServiceInstanceBindingRequestTests {
 		assertThat(request.getApiInfoLocation()).isEqualTo("https://api.app.local");
 		assertThat(request.getOriginatingIdentity()).isEqualTo(originatingIdentity);
 		assertThat(request.getRequestIdentity()).isEqualTo("request-id");
+		assertThat(request.getPredecessorBindingId()).isEqualTo("predecessor-binding-id");
 	}
 
 	@Test
@@ -189,12 +192,17 @@ class CreateServiceInstanceBindingRequestTests {
 				.property("context-property1", "value1")
 				.property("context-property2", "value2")
 				.build())
+			.predecessorBindingId("predecessor-binding-id")
 			.build();
 
 		CreateServiceInstanceBindingRequest fromJson = fromJson(toJson(request),
 				CreateServiceInstanceBindingRequest.class);
 
 		assertThat(fromJson).isEqualTo(request);
+
+		JsonPathAssert.assertThat(JsonUtils.toJsonPath(request))
+			.hasPath("$.predecessor_binding_id")
+			.isEqualTo("predecessor-binding-id");
 	}
 
 	@Test

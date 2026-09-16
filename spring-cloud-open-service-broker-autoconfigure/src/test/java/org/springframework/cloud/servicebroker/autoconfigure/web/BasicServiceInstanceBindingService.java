@@ -23,6 +23,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerDeleteOper
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceBindingDoesNotExistException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
+import org.springframework.cloud.servicebroker.model.binding.BindingMetadata;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.CreateServiceInstanceBindingResponse;
@@ -63,6 +64,12 @@ public class BasicServiceInstanceBindingService implements ServiceInstanceBindin
 				.async(true)
 				.operation("working")
 				.bindingExisted(false)
+				.build());
+		}
+		else if (request.getPredecessorBindingId() != null) {
+			return Mono.just(CreateServiceInstanceAppBindingResponse.builder()
+				.bindingExisted(false)
+				.metadata(BindingMetadata.builder().renewBefore("2019-12-24T23:59:59.0Z").build())
 				.build());
 		}
 		else {
