@@ -32,27 +32,33 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#binding-metadata-object">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.17/spec.md#binding-metadata-object">Open
  * Service Broker API specification</a>
  */
 public class BindingMetadata {
 
 	private final @Nullable String expiresAt;
 
+	private final @Nullable String renewBefore;
+
 	/**
 	 * Construct a new BindingMetadata.
 	 */
 	public BindingMetadata() {
-		this(null);
+		this(null, null);
 	}
 
 	/**
 	 * Construct a new BindingMetadata.
 	 * @param expiresAt the date and time in ISO 8601 format
+	 * @param renewBefore the date and time before which the binding should be renewed, in
+	 * ISO 8601 format
 	 */
 	@JsonCreator
-	public BindingMetadata(@JsonProperty("expires_at") @Nullable String expiresAt) {
+	public BindingMetadata(@JsonProperty("expires_at") @Nullable String expiresAt,
+			@JsonProperty("renew_before") @Nullable String renewBefore) {
 		this.expiresAt = expiresAt;
+		this.renewBefore = renewBefore;
 	}
 
 	/**
@@ -62,6 +68,17 @@ public class BindingMetadata {
 	@JsonProperty("expires_at")
 	public @Nullable String getExpiresAt() {
 		return this.expiresAt;
+	}
+
+	/**
+	 * Get the date and time before which the Service Binding SHOULD be renewed.
+	 * <p>
+	 * Since OSB API 2.17.
+	 * @return the date and time in ISO 8601 format
+	 */
+	@JsonProperty("renew_before")
+	public @Nullable String getRenewBefore() {
+		return this.renewBefore;
 	}
 
 	/**
@@ -82,7 +99,8 @@ public class BindingMetadata {
 			return false;
 		}
 		BindingMetadata that = (BindingMetadata) o;
-		return that.canEqual(this) && Objects.equals(this.expiresAt, that.expiresAt);
+		return that.canEqual(this) && Objects.equals(this.expiresAt, that.expiresAt)
+				&& Objects.equals(this.renewBefore, that.renewBefore);
 	}
 
 	/**
@@ -96,12 +114,13 @@ public class BindingMetadata {
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(this.expiresAt);
+		return Objects.hash(this.expiresAt, this.renewBefore);
 	}
 
 	@Override
 	public final String toString() {
-		return "BindingMetadata{" + "expiresAt='" + this.expiresAt + '\'' + '}';
+		return "BindingMetadata{" + "expiresAt='" + this.expiresAt + '\'' + ", renewBefore='" + this.renewBefore + '\''
+				+ '}';
 	}
 
 	/**
@@ -110,6 +129,8 @@ public class BindingMetadata {
 	public static final class BindingMetadataBuilder {
 
 		private @Nullable String expiresAt;
+
+		private @Nullable String renewBefore;
 
 		private BindingMetadataBuilder() {
 		}
@@ -129,11 +150,27 @@ public class BindingMetadata {
 		}
 
 		/**
+		 * The date and time before the Service Binding SHOULD be renewed. Applications or
+		 * Platforms MAY use this field to initiate a Service Binding rotation or create a
+		 * new Service Binding on time. If present, the string MUST follow ISO 8601 and
+		 * this pattern: yyyy-mm-ddThh:mm:ss.sZ.
+		 * <p>
+		 * Since OSB API 2.17.
+		 * @param renewBefore the date and time in ISO 8601 format
+		 * @return the builder
+		 * @see #getRenewBefore()
+		 */
+		public BindingMetadata.BindingMetadataBuilder renewBefore(String renewBefore) {
+			this.renewBefore = renewBefore;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link BindingMetadata} from the provided values.
 		 * @return the newly constructed {@literal BindingMetadata}
 		 */
 		public BindingMetadata build() {
-			return new BindingMetadata(this.expiresAt);
+			return new BindingMetadata(this.expiresAt, this.renewBefore);
 		}
 
 	}

@@ -28,13 +28,18 @@ class BindingMetadataTests {
 		BindingMetadata metadata = BindingMetadata.builder().build();
 
 		assertThat(metadata.getExpiresAt()).isNull();
+		assertThat(metadata.getRenewBefore()).isNull();
 	}
 
 	@Test
 	void bindingMetadataIsBuildWithAllValues() {
-		BindingMetadata metadata = BindingMetadata.builder().expiresAt("2019-12-31T23:59:59.0Z").build();
+		BindingMetadata metadata = BindingMetadata.builder()
+			.expiresAt("2019-12-31T23:59:59.0Z")
+			.renewBefore("2019-12-24T23:59:59.0Z")
+			.build();
 
 		assertThat(metadata.getExpiresAt()).isEqualTo("2019-12-31T23:59:59.0Z");
+		assertThat(metadata.getRenewBefore()).isEqualTo("2019-12-24T23:59:59.0Z");
 	}
 
 	@Test
