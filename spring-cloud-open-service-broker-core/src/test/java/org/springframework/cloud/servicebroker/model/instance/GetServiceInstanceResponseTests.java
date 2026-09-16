@@ -48,7 +48,7 @@ class GetServiceInstanceResponseTests {
 		assertThat(json).hasNoPath("$.service_id");
 		assertThat(json).hasNoPath("$.plan_id");
 		assertThat(json).hasNoPath("$.dashboard_url");
-		assertThat(json).hasMapAtPath("$.parameters").hasSize(0);
+		assertThat(json).hasNoPath("$.parameters");
 		assertThat(json).hasNoPath("$.maintenance_info");
 		assertThat(json).hasNoPath("$.metadata");
 	}

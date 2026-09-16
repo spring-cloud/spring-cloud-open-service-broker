@@ -129,6 +129,7 @@ public class GetServiceInstanceResponse {
 	 * @return the parameters, or {@literal null} if parameters were not provided at
 	 * creation or retrieval of parameters is not supported by the service broker
 	 */
+	@JsonInclude(Include.NON_EMPTY)
 	public @Nullable Map<String, Object> getParameters() {
 		return this.parameters;
 	}
