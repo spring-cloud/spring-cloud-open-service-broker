@@ -75,6 +75,12 @@ Otherwise, this method is never called by the platform, and the default implemen
 
 Service brokers are responsible for maintaining any service binding state necessary to support the retrieval operation.
 
+=== Service Binding Rotation
+
+If the `binding_rotatable` field is set to `true` for a plan in the service catalog, the platform may request a new service binding as a successor to an existing one by including a `predecessor_binding_id` in the {scosb-api}org/springframework/cloud/servicebroker/model/binding/CreateServiceInstanceBindingRequest.html[`CreateServiceInstanceBindingRequest`], identifying a non-expired service binding of the same service instance.
+
+A service broker can also signal when a binding should be rotated by setting the `renewBefore` property of the {scosb-api}org/springframework/cloud/servicebroker/model/binding/BindingMetadata.html[`BindingMetadata`] returned in the binding response, alongside `expiresAt`.
+
 === Example Implementation
 
 The following example implements a service binding:
