@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
@@ -40,6 +42,7 @@ import tools.jackson.databind.annotation.JsonNaming;
  * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+@JsonInclude(Include.NON_NULL)
 public class SharedVolumeDevice extends VolumeDevice {
 
 	private final @Nullable String volumeId;
@@ -82,6 +85,7 @@ public class SharedVolumeDevice extends VolumeDevice {
 	 * Since OSB API 2.13.
 	 * @return the device configuration
 	 */
+	@JsonInclude(Include.NON_EMPTY)
 	public Map<String, Object> getMountConfig() {
 		return this.mountConfig;
 	}

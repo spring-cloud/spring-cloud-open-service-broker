@@ -16,10 +16,29 @@
 
 package org.springframework.cloud.servicebroker.model.binding;
 
+import com.jayway.jsonpath.DocumentContext;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.cloud.servicebroker.JsonUtils;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.servicebroker.JsonPathAssert.assertThat;
+
 class SharedVolumeDeviceTests {
+
+	@Test
+	void deviceWithDefaultsIsSerializedToJson() {
+		SharedVolumeDevice device = SharedVolumeDevice.builder().build();
+
+		assertThat(device.getVolumeId()).isNull();
+		assertThat(device.getMountConfig()).isEmpty();
+
+		DocumentContext json = JsonUtils.toJsonPath(device);
+
+		assertThat(json).hasNoPath("$.volume_id");
+		assertThat(json).hasNoPath("$.mount_config");
+	}
 
 	@Test
 	void equalsAndHashCode() {
