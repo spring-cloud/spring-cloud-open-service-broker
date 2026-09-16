@@ -23,6 +23,7 @@ import org.springframework.cloud.servicebroker.exception.ServiceBrokerDeleteOper
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceBrokerUpdateOperationInProgressException;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
+import org.springframework.cloud.servicebroker.model.catalog.MaintenanceInfo;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.CreateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.DeleteServiceInstanceRequest;
@@ -32,6 +33,7 @@ import org.springframework.cloud.servicebroker.model.instance.GetLastServiceOper
 import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.GetServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
+import org.springframework.cloud.servicebroker.model.instance.ServiceInstanceMetadata;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceService;
@@ -43,6 +45,8 @@ public class BasicServiceInstanceService implements ServiceInstanceService {
 	private static final String EXISTING_SERVICE_INSTANCE_ID = "service-instance-three-id";
 
 	private static final String UNKNOWN_SERVICE_INSTANCE_ID = "service-instance-four-id";
+
+	private static final String WITH_METADATA_SERVICE_INSTANCE_ID = "service-instance-five-id";
 
 	@Override
 	public Mono<CreateServiceInstanceResponse> createServiceInstance(CreateServiceInstanceRequest request) {
@@ -64,6 +68,12 @@ public class BasicServiceInstanceService implements ServiceInstanceService {
 	public Mono<GetServiceInstanceResponse> getServiceInstance(GetServiceInstanceRequest request) {
 		if (IN_PROGRESS_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
 			return Mono.error(new ServiceBrokerOperationInProgressException("task_10"));
+		}
+		if (WITH_METADATA_SERVICE_INSTANCE_ID.equals(request.getServiceInstanceId())) {
+			return Mono.just(GetServiceInstanceResponse.builder()
+				.maintenanceInfo(MaintenanceInfo.builder().version("1.0.0-alpha+001").build())
+				.metadata(ServiceInstanceMetadata.builder().label("key1", "value1").build())
+				.build());
 		}
 		return Mono.just(GetServiceInstanceResponse.builder().build());
 	}

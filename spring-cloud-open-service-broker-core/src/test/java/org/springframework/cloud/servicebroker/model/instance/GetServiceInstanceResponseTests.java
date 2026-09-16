@@ -24,6 +24,7 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.servicebroker.JsonUtils;
+import org.springframework.cloud.servicebroker.model.catalog.MaintenanceInfo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
@@ -39,6 +40,8 @@ class GetServiceInstanceResponseTests {
 		assertThat(response.getPlanId()).isNull();
 		assertThat(response.getDashboardUrl()).isNull();
 		assertThat(response.getParameters()).hasSize(0);
+		assertThat(response.getMaintenanceInfo()).isNull();
+		assertThat(response.getMetadata()).isNull();
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
@@ -46,6 +49,8 @@ class GetServiceInstanceResponseTests {
 		assertThat(json).hasNoPath("$.plan_id");
 		assertThat(json).hasNoPath("$.dashboard_url");
 		assertThat(json).hasMapAtPath("$.parameters").hasSize(0);
+		assertThat(json).hasNoPath("$.maintenance_info");
+		assertThat(json).hasNoPath("$.metadata");
 	}
 
 	@Test
@@ -62,6 +67,8 @@ class GetServiceInstanceResponseTests {
 			.parameters("field2", 2)
 			.parameters("field3", true)
 			.parameters(parameters)
+			.maintenanceInfo(MaintenanceInfo.builder().version(1, 0, 0, "-alpha+001").build())
+			.metadata(ServiceInstanceMetadata.builder().label("key1", "value1").build())
 			.build();
 
 		assertThat(response.getServiceDefinitionId()).isEqualTo("service-definition-id");
@@ -74,6 +81,8 @@ class GetServiceInstanceResponseTests {
 		assertThat(response.getParameters().get("field3")).isEqualTo(true);
 		assertThat(response.getParameters().get("field4")).isEqualTo("value4");
 		assertThat(response.getParameters().get("field5")).isEqualTo("value5");
+		assertThat(response.getMaintenanceInfo().getVersion()).isEqualTo("1.0.0-alpha+001");
+		assertThat(response.getMetadata().getLabels()).containsExactly(entry("key1", "value1"));
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
@@ -85,6 +94,8 @@ class GetServiceInstanceResponseTests {
 		assertThat(json).hasPath("$.parameters.field3").isEqualTo(true);
 		assertThat(json).hasPath("$.parameters.field4").isEqualTo("value4");
 		assertThat(json).hasPath("$.parameters.field5").isEqualTo("value5");
+		assertThat(json).hasPath("$.maintenance_info.version").isEqualTo("1.0.0-alpha+001");
+		assertThat(json).hasPath("$.metadata.labels.key1").isEqualTo("value1");
 	}
 
 	@Test

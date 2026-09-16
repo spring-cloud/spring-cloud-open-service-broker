@@ -29,6 +29,8 @@ import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
+import org.springframework.cloud.servicebroker.model.catalog.MaintenanceInfo;
+
 /**
  * Details of a response to a request to get the details a service instance.
  *
@@ -38,7 +40,7 @@ import tools.jackson.databind.annotation.JsonNaming;
  *
  * @author Scott Frederick
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#fetching-a-service-instance">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.17/spec.md#fetching-a-service-instance">Open
  * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -53,11 +55,15 @@ public class GetServiceInstanceResponse {
 
 	private final @Nullable Map<String, Object> parameters;
 
+	private final @Nullable MaintenanceInfo maintenanceInfo;
+
+	private final @Nullable ServiceInstanceMetadata metadata;
+
 	/**
 	 * Construct a new {@link GetServiceInstanceResponse}.
 	 */
 	public GetServiceInstanceResponse() {
-		this(null, null, null, new Hashtable<>());
+		this(null, null, null, new Hashtable<>(), null, null);
 	}
 
 	/**
@@ -66,16 +72,22 @@ public class GetServiceInstanceResponse {
 	 * @param planId the plan ID
 	 * @param dashboardUrl the dashboard URL
 	 * @param parameters the parameters
+	 * @param maintenanceInfo the maintenance info
+	 * @param metadata the service instance metadata
 	 */
 	@JsonCreator
 	public GetServiceInstanceResponse(@JsonProperty("service_id") @Nullable String serviceDefinitionId,
 			@JsonProperty("plan_id") @Nullable String planId,
 			@JsonProperty("dashboard_url") @Nullable String dashboardUrl,
-			@JsonProperty("parameters") @Nullable Map<String, Object> parameters) {
+			@JsonProperty("parameters") @Nullable Map<String, Object> parameters,
+			@JsonProperty("maintenance_info") @Nullable MaintenanceInfo maintenanceInfo,
+			@JsonProperty("metadata") @Nullable ServiceInstanceMetadata metadata) {
 		this.serviceDefinitionId = serviceDefinitionId;
 		this.planId = planId;
 		this.dashboardUrl = dashboardUrl;
 		this.parameters = parameters;
+		this.maintenanceInfo = maintenanceInfo;
+		this.metadata = metadata;
 	}
 
 	/**
@@ -122,6 +134,26 @@ public class GetServiceInstanceResponse {
 	}
 
 	/**
+	 * Get the maintenance info currently associated with the service instance.
+	 * <p>
+	 * Since OSB API 2.17.
+	 * @return the maintenance info, or {@literal null} if not provided
+	 */
+	public @Nullable MaintenanceInfo getMaintenanceInfo() {
+		return this.maintenanceInfo;
+	}
+
+	/**
+	 * Get the metadata for the service instance.
+	 * <p>
+	 * Since OSB API 2.17.
+	 * @return the service instance metadata, or {@literal null} if not provided
+	 */
+	public @Nullable ServiceInstanceMetadata getMetadata() {
+		return this.metadata;
+	}
+
+	/**
 	 * Create a builder that provides a fluent API for constructing a
 	 * {@literal GetServiceInstanceResponse}.
 	 * @return the builder
@@ -141,7 +173,9 @@ public class GetServiceInstanceResponse {
 		GetServiceInstanceResponse that = (GetServiceInstanceResponse) o;
 		return that.canEqual(this) && Objects.equals(this.serviceDefinitionId, that.serviceDefinitionId)
 				&& Objects.equals(this.planId, that.planId) && Objects.equals(this.dashboardUrl, that.dashboardUrl)
-				&& Objects.equals(this.parameters, that.parameters);
+				&& Objects.equals(this.parameters, that.parameters)
+				&& Objects.equals(this.maintenanceInfo, that.maintenanceInfo)
+				&& Objects.equals(this.metadata, that.metadata);
 	}
 
 	/**
@@ -155,14 +189,15 @@ public class GetServiceInstanceResponse {
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(this.serviceDefinitionId, this.planId, this.dashboardUrl, this.parameters);
+		return Objects.hash(this.serviceDefinitionId, this.planId, this.dashboardUrl, this.parameters,
+				this.maintenanceInfo, this.metadata);
 	}
 
 	@Override
 	public String toString() {
 		return "GetServiceInstanceResponse{" + "serviceDefinitionId='" + this.serviceDefinitionId + '\'' + ", planId='"
 				+ this.planId + '\'' + ", dashboardUrl='" + this.dashboardUrl + '\'' + ", parameters=" + this.parameters
-				+ '}';
+				+ ", maintenanceInfo=" + this.maintenanceInfo + ", metadata=" + this.metadata + '}';
 	}
 
 	/**
@@ -177,6 +212,10 @@ public class GetServiceInstanceResponse {
 		private @Nullable String dashboardUrl;
 
 		private final Map<String, Object> parameters = new HashMap<>();
+
+		private @Nullable MaintenanceInfo maintenanceInfo;
+
+		private @Nullable ServiceInstanceMetadata metadata;
 
 		private GetServiceInstanceResponseBuilder() {
 		}
@@ -267,12 +306,44 @@ public class GetServiceInstanceResponse {
 		}
 
 		/**
+		 * Set the maintenance info currently associated with the service instance.
+		 *
+		 * <p>
+		 * This value will set the {@literal maintenance_info} field in the body of the
+		 * response to the platform.
+		 * <p>
+		 * Since OSB API 2.17.
+		 * @param maintenanceInfo the maintenance info
+		 * @return the builder
+		 */
+		public GetServiceInstanceResponseBuilder maintenanceInfo(MaintenanceInfo maintenanceInfo) {
+			this.maintenanceInfo = maintenanceInfo;
+			return this;
+		}
+
+		/**
+		 * Set the metadata for the service instance.
+		 *
+		 * <p>
+		 * This value will set the {@literal metadata} field in the body of the response
+		 * to the platform.
+		 * <p>
+		 * Since OSB API 2.17.
+		 * @param metadata the service instance metadata
+		 * @return the builder
+		 */
+		public GetServiceInstanceResponseBuilder metadata(ServiceInstanceMetadata metadata) {
+			this.metadata = metadata;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link GetServiceInstanceResponse} from the provided values.
 		 * @return the newly constructed {@literal GetServiceInstanceResponse}
 		 */
 		public GetServiceInstanceResponse build() {
 			return new GetServiceInstanceResponse(this.serviceDefinitionId, this.planId, this.dashboardUrl,
-					this.parameters);
+					this.parameters, this.maintenanceInfo, this.metadata);
 		}
 
 	}

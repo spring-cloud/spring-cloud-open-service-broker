@@ -1,0 +1,10 @@
+{
+  "maintenance_info": {
+    "version": "1.0.0-alpha+001"
+  },
+  "metadata": {
+    "labels": {
+      "key1": "value1"
+    }
+  }
+}
