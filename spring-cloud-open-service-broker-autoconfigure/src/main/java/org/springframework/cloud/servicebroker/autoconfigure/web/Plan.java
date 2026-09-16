@@ -101,6 +101,13 @@ public class Plan {
 	private @Nullable MaintenanceInfo maintenanceInfo;
 
 	/**
+	 * Indicates whether bindings created against this plan support rotation via a
+	 * predecessor binding ID. This is an optional field. If the value is
+	 * <code>null</code>, the field will be omitted from the serialized JSON.
+	 */
+	private @Nullable Boolean bindingRotatable;
+
+	/**
 	 * Get the plan ID.
 	 * @return the plan ID
 	 */
@@ -261,6 +268,22 @@ public class Plan {
 	}
 
 	/**
+	 * Get whether bindings for the plan support rotation.
+	 * @return true if bindings for the plan support rotation
+	 */
+	public @Nullable Boolean isBindingRotatable() {
+		return this.bindingRotatable;
+	}
+
+	/**
+	 * Set whether bindings for the plan support rotation.
+	 * @param bindingRotatable true if bindings for the plan support rotation
+	 */
+	public void setBindingRotatable(Boolean bindingRotatable) {
+		this.bindingRotatable = bindingRotatable;
+	}
+
+	/**
 	 * Converts this object into its corresponding model.
 	 * @return a Plan model
 	 * @see org.springframework.cloud.servicebroker.model.catalog.Plan
@@ -277,6 +300,7 @@ public class Plan {
 			.metadata((this.metadata != null) ? this.metadata.toModel() : null)
 			.maximumPollingDuration(this.maximumPollingDuration)
 			.maintenanceInfo((this.maintenanceInfo == null) ? null : this.maintenanceInfo.toModel())
+			.bindingRotatable(this.bindingRotatable)
 			.build();
 	}
 

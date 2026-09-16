@@ -46,6 +46,7 @@ class PlanTests {
 		assertThat(plan.isPlanUpdateable()).isNull();
 		assertThat(plan.getSchemas()).isNull();
 		assertThat(plan.getMaximumPollingDuration()).isNull();
+		assertThat(plan.isBindingRotatable()).isNull();
 
 		DocumentContext json = JsonUtils.toJsonPath(plan);
 
@@ -57,6 +58,7 @@ class PlanTests {
 		assertThat(json).hasNoPath("$.bindable");
 		assertThat(json).hasNoPath("$.plan_updateable");
 		assertThat(json).hasNoPath("$.schemas");
+		assertThat(json).hasNoPath("$.binding_rotatable");
 
 		Plan deserialized = JsonUtils.fromJson(JsonUtils.toJson(plan), Plan.class);
 		assertThat(deserialized.getId()).isEqualTo("plan-id-one");
@@ -67,6 +69,7 @@ class PlanTests {
 		assertThat(deserialized.isBindable()).isNull();
 		assertThat(deserialized.isPlanUpdateable()).isNull();
 		assertThat(deserialized.getSchemas()).isNull();
+		assertThat(deserialized.isBindingRotatable()).isNull();
 	}
 
 	@Test
@@ -104,6 +107,7 @@ class PlanTests {
 				.version(1, 0, 0, "-alpha+001")
 				.description("Description for maintenance info")
 				.build())
+			.bindingRotatable(true)
 			.build();
 
 		assertThat(plan.getId()).isEqualTo("plan-id-one");
@@ -112,6 +116,7 @@ class PlanTests {
 		assertThat(plan.isFree()).isEqualTo(false);
 		assertThat(plan.isBindable()).isEqualTo(true);
 		assertThat(plan.isPlanUpdateable()).isEqualTo(true);
+		assertThat(plan.isBindingRotatable()).isEqualTo(true);
 		assertThat(plan.getMetadata()).hasSize(7);
 		assertThat(plan.getMetadata()).contains(entry("field1", "value1"), entry("field2", "value2"),
 				entry("field3", "value3"), entry("field4", "value4"), entry("displayName", "sample display name"),
@@ -142,6 +147,7 @@ class PlanTests {
 		assertThat(json).hasPath("$.maximum_polling_duration").isEqualTo(210);
 		assertThat(json).hasPath("$.maintenance_info.version").isEqualTo("1.0.0-alpha+001");
 		assertThat(json).hasPath("$.maintenance_info.description").isEqualTo("Description for maintenance info");
+		assertThat(json).hasPath("$.binding_rotatable").isEqualTo(true);
 	}
 
 	@Test

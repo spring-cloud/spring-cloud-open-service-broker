@@ -120,6 +120,7 @@ class ServiceBrokerPropertiesTests {
 		this.map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].bindable", "true");
 		this.map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].free", "true");
 		this.map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].planUpdateable", "true");
+		this.map.put("spring.cloud.openservicebroker.catalog.services[0].plans[1].bindingRotatable", "true");
 		this.map.put(
 				"spring.cloud.openservicebroker.catalog.services[0].plans[1].schemas.serviceinstance.create.parameters[$schema]",
 				"http://json-schema.org/draft-04/schema#");
@@ -230,6 +231,7 @@ class ServiceBrokerPropertiesTests {
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isFree()).isTrue();
 		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isPlanUpdateable()).isTrue();
+		assertThat(properties.getCatalog().getServices().get(0).getPlans().get(1).isBindingRotatable()).isTrue();
 		assertThat(properties.getCatalog()
 			.getServices()
 			.get(0)
@@ -358,6 +360,7 @@ class ServiceBrokerPropertiesTests {
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).isBindable()).isTrue();
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).isFree()).isTrue();
 		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).isPlanUpdateable()).isTrue();
+		assertThat(catalog.getServiceDefinitions().get(0).getPlans().get(1).isBindingRotatable()).isTrue();
 		assertThat(catalog.getServiceDefinitions()
 			.get(0)
 			.getPlans()

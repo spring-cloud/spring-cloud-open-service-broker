@@ -38,7 +38,7 @@ import org.springframework.util.CollectionUtils;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#service-plan-object">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.17/spec.md#service-plan-object">Open
  * Service Broker API specification</a>
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -68,11 +68,13 @@ public class Plan {
 
 	private final @Nullable MaintenanceInfo maintenanceInfo;
 
+	private final @Nullable Boolean bindingRotatable;
+
 	/**
 	 * Construct a new {@link Plan}.
 	 */
 	public Plan() {
-		this(null, null, null, new HashMap<>(), null, null, null, null, null, null);
+		this(null, null, null, new HashMap<>(), null, null, null, null, null, null, null);
 	}
 
 	/**
@@ -87,6 +89,7 @@ public class Plan {
 	 * @param schemas the plan schemas
 	 * @param maximumPollingDuration the maximum polling duration in seconds
 	 * @param maintenanceInfo the maintentance information
+	 * @param bindingRotatable true if bindings for the plan support rotation
 	 */
 	@JsonCreator
 	public Plan(@JsonProperty("id") @Nullable String id, @JsonProperty("name") @Nullable String name,
@@ -96,7 +99,8 @@ public class Plan {
 			@JsonProperty("plan_updateable") @Nullable Boolean planUpdateable,
 			@JsonProperty("schemas") @Nullable Schemas schemas,
 			@JsonProperty("maximum_polling_duration") @Nullable Integer maximumPollingDuration,
-			@JsonProperty("maintenance_info") @Nullable MaintenanceInfo maintenanceInfo) {
+			@JsonProperty("maintenance_info") @Nullable MaintenanceInfo maintenanceInfo,
+			@JsonProperty("binding_rotatable") @Nullable Boolean bindingRotatable) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -107,6 +111,7 @@ public class Plan {
 		this.schemas = schemas;
 		this.maximumPollingDuration = maximumPollingDuration;
 		this.maintenanceInfo = maintenanceInfo;
+		this.bindingRotatable = bindingRotatable;
 	}
 
 	/**
@@ -214,6 +219,18 @@ public class Plan {
 	}
 
 	/**
+	 * Indicates whether bindings created against this plan support rotation via a
+	 * predecessor binding ID. This is an optional field. If the value is
+	 * <code>null</code>, the field will be omitted from the serialized JSON.
+	 * <p>
+	 * Since OSB API 2.17.
+	 * @return true if bindings for the plan support rotation
+	 */
+	public @Nullable Boolean isBindingRotatable() {
+		return this.bindingRotatable;
+	}
+
+	/**
 	 * Create a builder that provides a fluent API for constructing a {@literal Plan}.
 	 * @return the builder
 	 */
@@ -236,13 +253,15 @@ public class Plan {
 				&& Objects.equals(this.planUpdateable, plan.planUpdateable)
 				&& Objects.equals(this.schemas, plan.schemas)
 				&& Objects.equals(this.maximumPollingDuration, plan.maximumPollingDuration)
-				&& Objects.equals(this.maintenanceInfo, plan.maintenanceInfo);
+				&& Objects.equals(this.maintenanceInfo, plan.maintenanceInfo)
+				&& Objects.equals(this.bindingRotatable, plan.bindingRotatable);
 	}
 
 	@Override
 	public final int hashCode() {
 		return Objects.hash(this.id, this.name, this.description, this.metadata, this.free, this.bindable,
-				this.planUpdateable, this.schemas, this.maximumPollingDuration, this.maintenanceInfo);
+				this.planUpdateable, this.schemas, this.maximumPollingDuration, this.maintenanceInfo,
+				this.bindingRotatable);
 	}
 
 	@Override
@@ -250,7 +269,8 @@ public class Plan {
 		return "Plan{" + "id='" + this.id + '\'' + ", name='" + this.name + '\'' + ", description='" + this.description
 				+ '\'' + ", metadata=" + this.metadata + ", free=" + this.free + ", bindable=" + this.bindable
 				+ ", planUpdateable=" + this.planUpdateable + ", schemas=" + this.schemas + ", maximumPollingDuration="
-				+ this.maximumPollingDuration + ", maintenanceInfo=" + this.maintenanceInfo + '}';
+				+ this.maximumPollingDuration + ", maintenanceInfo=" + this.maintenanceInfo + ", bindingRotatable="
+				+ this.bindingRotatable + '}';
 	}
 
 	/**
@@ -277,6 +297,8 @@ public class Plan {
 		private Integer maximumPollingDuration;
 
 		private MaintenanceInfo maintenanceInfo;
+
+		private Boolean bindingRotatable;
 
 		private PlanBuilder() {
 		}
@@ -425,12 +447,27 @@ public class Plan {
 		}
 
 		/**
+		 * Indicates whether bindings created against this plan support rotation via a
+		 * predecessor binding ID. This is an optional field. If the value is
+		 * <code>null</code>, the field will be omitted from the serialized JSON.
+		 * <p>
+		 * Since OSB API 2.17.
+		 * @param bindingRotatable true if bindings for the plan support rotation
+		 * @return the builder instance
+		 */
+		public PlanBuilder bindingRotatable(Boolean bindingRotatable) {
+			this.bindingRotatable = bindingRotatable;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link Plan} from the provided values.
 		 * @return the newly constructed {@literal Plan}
 		 */
 		public Plan build() {
 			return new Plan(this.id, this.name, this.description, this.metadata, this.free, this.bindable,
-					this.planUpdateable, this.schemas, this.maximumPollingDuration, this.maintenanceInfo);
+					this.planUpdateable, this.schemas, this.maximumPollingDuration, this.maintenanceInfo,
+					this.bindingRotatable);
 		}
 
 	}

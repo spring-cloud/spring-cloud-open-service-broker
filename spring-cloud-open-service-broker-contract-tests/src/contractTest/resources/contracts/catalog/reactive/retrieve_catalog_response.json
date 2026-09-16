@@ -13,7 +13,8 @@
         {
           "id": "plan-one-id",
           "name": "Plan One",
-          "description": "Description for Plan One"
+          "description": "Description for Plan One",
+          "binding_rotatable": true
         },
         {
           "id": "plan-two-id",

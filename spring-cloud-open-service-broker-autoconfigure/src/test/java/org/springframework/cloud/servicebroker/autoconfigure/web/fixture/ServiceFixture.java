@@ -67,6 +67,7 @@ public final class ServiceFixture {
 				.version("1.0.0-alpha+001")
 				.description("Description for maintenance info")
 				.build())
+			.bindingRotatable(true)
 			.build();
 	}
 
