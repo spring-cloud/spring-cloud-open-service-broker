@@ -35,6 +35,7 @@ class ServiceInstanceMetadataTests {
 		ServiceInstanceMetadata serviceInstanceMetadata = ServiceInstanceMetadata.builder().build();
 
 		assertThat(serviceInstanceMetadata.getLabels()).isEqualTo(Collections.emptyMap());
+		assertThat(serviceInstanceMetadata.getAttributes()).isEqualTo(Collections.emptyMap());
 	}
 
 	@Test
@@ -67,6 +68,31 @@ class ServiceInstanceMetadataTests {
 			.build();
 
 		assertThat(serviceInstanceMetadata.getLabels()).containsOnly(entry("key", "value"), entry("key2", "value2"));
+	}
+
+	@Test
+	void populatedServiceInstanceMetadataWithAttributes() {
+		Map<String, Object> attributes = new HashMap<>();
+		attributes.put("key", "value");
+		attributes.put("key2", "value2");
+
+		ServiceInstanceMetadata serviceInstanceMetadata = ServiceInstanceMetadata.builder()
+			.attributes(attributes)
+			.build();
+
+		assertThat(serviceInstanceMetadata.getAttributes()).containsOnly(entry("key", "value"),
+				entry("key2", "value2"));
+	}
+
+	@Test
+	void populatedServiceInstanceMetadataWithAttribute() {
+		ServiceInstanceMetadata serviceInstanceMetadata = ServiceInstanceMetadata.builder()
+			.attribute("key", "value")
+			.attribute("key2", "value2")
+			.build();
+
+		assertThat(serviceInstanceMetadata.getAttributes()).containsOnly(entry("key", "value"),
+				entry("key2", "value2"));
 	}
 
 	@Test
@@ -107,7 +133,8 @@ class ServiceInstanceMetadataTests {
 	void testToStringReturnsNullLabels() {
 		ServiceInstanceMetadata serviceInstanceMetadata = new ServiceInstanceMetadata();
 
-		assertThat(serviceInstanceMetadata.toString()).isEqualTo("ServiceInstanceMetadata{labels='{}'}");
+		assertThat(serviceInstanceMetadata.toString())
+			.isEqualTo("ServiceInstanceMetadata{labels='{}', attributes='{}'}");
 	}
 
 	@Test
