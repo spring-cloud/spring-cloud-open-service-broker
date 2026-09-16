@@ -87,7 +87,7 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 	 * This value is set from the {@literal service_id} request parameter of the request
 	 * from the platform
 	 * <p>
-	 * Since OSB API 2.14.
+	 * Since OSB API 2.16.
 	 * @return the service definition ID
 	 */
 	public String getServiceDefinitionId() {
@@ -101,7 +101,7 @@ public class GetServiceInstanceRequest extends ServiceBrokerRequest {
 	 * This value is set from the {@literal plan_id} request parameter of the request from
 	 * the platform.
 	 * <p>
-	 * Since OSB API 2.14.
+	 * Since OSB API 2.16.
 	 * @return the plan ID
 	 */
 	public String getPlanId() {
