@@ -22,7 +22,7 @@ package org.springframework.cloud.servicebroker.model;
  * @author Scott Frederick
  * @author Roy Clarkson
  * @see <a href=
- * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#api-version-header">Open
+ * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.17/spec.md#api-version-header">Open
  * Service Broker API specification</a>
  */
 public class BrokerApiVersion {
@@ -40,7 +40,7 @@ public class BrokerApiVersion {
 	/**
 	 * Current API Version supported by this library.
 	 */
-	public static final String API_VERSION_CURRENT = "2.16";
+	public static final String API_VERSION_CURRENT = "2.17";
 
 	private final String brokerApiVersionHeader;
 
