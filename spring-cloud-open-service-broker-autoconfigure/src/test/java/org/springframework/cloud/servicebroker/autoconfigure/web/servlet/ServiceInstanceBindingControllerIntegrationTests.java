@@ -42,6 +42,7 @@ import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceA
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceRouteBindingResponse;
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
@@ -62,6 +63,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -607,6 +609,23 @@ class ServiceInstanceBindingControllerIntegrationTests
 
 		GetLastServiceBindingOperationRequest actualRequest = verifyLastOperation();
 		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
+	void lastOperationSetsRetryAfterHeaderWhenProvided() throws Exception {
+		setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse.builder()
+			.operationState(OperationState.IN_PROGRESS)
+			.description("working on it")
+			.retryAfter(30)
+			.build());
+
+		MvcResult mvcResult = this.mockMvc.perform(get(buildLastOperationUrl()).contentType(MediaType.APPLICATION_JSON))
+			.andExpect(request().asyncStarted())
+			.andReturn();
+
+		this.mockMvc.perform(asyncDispatch(mvcResult))
+			.andExpect(status().isOk())
+			.andExpect(header().string(HttpHeaders.RETRY_AFTER, "30"));
 	}
 
 	@Test

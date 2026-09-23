@@ -52,11 +52,13 @@ public class GetLastServiceBindingOperationResponse {
 
 	private final @Nullable Boolean deleteOperation;
 
+	private final @Nullable Integer retryAfter;
+
 	/**
 	 * Construct a new {@link GetLastServiceBindingOperationResponse}.
 	 */
 	public GetLastServiceBindingOperationResponse() {
-		this(null, null, false);
+		this(null, null, false, null);
 	}
 
 	/**
@@ -64,14 +66,32 @@ public class GetLastServiceBindingOperationResponse {
 	 * @param state the current state
 	 * @param description the description
 	 * @param deleteOperation is delete operation
+	 * @deprecated in favor of
+	 * {@link GetLastServiceBindingOperationResponse#GetLastServiceBindingOperationResponse(OperationState, String, Boolean, Integer)}
+	 */
+	@Deprecated
+	public GetLastServiceBindingOperationResponse(OperationState state, String description,
+			@Nullable Boolean deleteOperation) {
+		this(state, description, deleteOperation, null);
+	}
+
+	/**
+	 * Construct a new {@link GetLastServiceBindingOperationResponse}.
+	 * @param state the current state
+	 * @param description the description
+	 * @param deleteOperation is delete operation
+	 * @param retryAfter the number of seconds the platform should wait before polling
+	 * again
 	 */
 	@JsonCreator
 	public GetLastServiceBindingOperationResponse(@JsonProperty("state") @Nullable OperationState state,
 			@JsonProperty("description") @Nullable String description,
-			@JsonProperty("delete_operation") @Nullable Boolean deleteOperation) {
+			@JsonProperty("delete_operation") @Nullable Boolean deleteOperation,
+			@JsonProperty("retry_after") @Nullable Integer retryAfter) {
 		this.state = state;
 		this.description = description;
 		this.deleteOperation = (deleteOperation != null) ? deleteOperation : false;
+		this.retryAfter = retryAfter;
 	}
 
 	/**
@@ -102,6 +122,22 @@ public class GetLastServiceBindingOperationResponse {
 	}
 
 	/**
+	 * Get the number of seconds the platform should wait before polling again. This value
+	 * is used to set the {@literal Retry-After} HTTP header on the response, and is not
+	 * included in the response body.
+	 * <p>
+	 * Since OSB API 2.15.
+	 * @return the number of seconds, or {@literal null} if not provided
+	 * @see <a href=
+	 * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.15/spec.md#polling-last-operation-for-service-bindings">Open
+	 * Service Broker API specification: Polling Last Operation for Service Bindings</a>
+	 */
+	@JsonIgnore
+	public @Nullable Integer getRetryAfter() {
+		return this.retryAfter;
+	}
+
+	/**
 	 * Create a builder that provides a fluent API for constructing a
 	 * {@literal GetLastServiceBindingOperationResponse}.
 	 * @return the builder
@@ -120,18 +156,19 @@ public class GetLastServiceBindingOperationResponse {
 		}
 		GetLastServiceBindingOperationResponse that = (GetLastServiceBindingOperationResponse) o;
 		return this.deleteOperation == that.deleteOperation && this.state == that.state
-				&& Objects.equals(this.description, that.description);
+				&& Objects.equals(this.description, that.description)
+				&& Objects.equals(this.retryAfter, that.retryAfter);
 	}
 
 	@Override
 	public final int hashCode() {
-		return Objects.hash(this.state, this.description, this.deleteOperation);
+		return Objects.hash(this.state, this.description, this.deleteOperation, this.retryAfter);
 	}
 
 	@Override
 	public String toString() {
 		return "GetLastServiceBindingOperationResponse{" + "state=" + this.state + ", description='" + this.description
-				+ '\'' + ", deleteOperation=" + this.deleteOperation + '}';
+				+ '\'' + ", deleteOperation=" + this.deleteOperation + ", retryAfter=" + this.retryAfter + '}';
 	}
 
 	/**
@@ -145,6 +182,8 @@ public class GetLastServiceBindingOperationResponse {
 		private @Nullable String description;
 
 		private boolean deleteOperation;
+
+		private @Nullable Integer retryAfter;
 
 		private GetLastServiceBindingOperationResponseBuilder() {
 		}
@@ -208,12 +247,28 @@ public class GetLastServiceBindingOperationResponse {
 		}
 
 		/**
+		 * Set the number of seconds the platform should wait before polling again. This
+		 * value is used to set the {@literal Retry-After} HTTP header on the response,
+		 * and is not included in the response body. It is RECOMMENDED that this be a
+		 * duration rather than a timestamp.
+		 * <p>
+		 * Since OSB API 2.15.
+		 * @param retryAfter the number of seconds
+		 * @return the builder
+		 */
+		public GetLastServiceBindingOperationResponseBuilder retryAfter(Integer retryAfter) {
+			this.retryAfter = retryAfter;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link GetLastServiceBindingOperationResponse} from the provided
 		 * values.
 		 * @return the newly constructed {@literal GetLastServiceOperationResponse}
 		 */
 		public GetLastServiceBindingOperationResponse build() {
-			return new GetLastServiceBindingOperationResponse(this.state, this.description, this.deleteOperation);
+			return new GetLastServiceBindingOperationResponse(this.state, this.description, this.deleteOperation,
+					this.retryAfter);
 		}
 
 	}

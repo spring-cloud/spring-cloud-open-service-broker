@@ -38,8 +38,11 @@ import org.springframework.cloud.servicebroker.model.PlatformContext;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
 import org.springframework.cloud.servicebroker.model.catalog.Plan;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
+import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.service.CatalogService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 /**
  * Base functionality shared by controllers.
@@ -222,6 +225,31 @@ public class BaseController {
 			return HttpStatus.ACCEPTED;
 		}
 		return HttpStatus.OK;
+	}
+
+	/**
+	 * Builds a response entity for a "Polling Last Operation" response, deriving the HTTP
+	 * status from the operation state and setting the {@literal Retry-After} header when
+	 * a value is provided. Has no effect on headers if {@code retryAfterSeconds} is
+	 * {@literal null}.
+	 * @param body the response body
+	 * @param state the current state of the asynchronous operation
+	 * @param isDeleteOperation is the current operation a delete operation
+	 * @param retryAfterSeconds the number of seconds the platform should wait before
+	 * polling again, or {@literal null} to omit the header
+	 * @param <T> the response body type
+	 * @return the response entity, with the {@literal Retry-After} header applied when
+	 * provided
+	 */
+	protected <T> ResponseEntity<T> buildLastOperationResponse(T body, @Nullable OperationState state,
+			boolean isDeleteOperation, @Nullable Integer retryAfterSeconds) {
+		boolean isSuccessfulDelete = OperationState.SUCCEEDED.equals(state) && isDeleteOperation;
+		HttpStatus status = isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK;
+		HttpHeaders headers = new HttpHeaders();
+		if (retryAfterSeconds != null) {
+			headers.add(HttpHeaders.RETRY_AFTER, String.valueOf(retryAfterSeconds));
+		}
+		return new ResponseEntity<>(body, headers, status);
 	}
 
 }

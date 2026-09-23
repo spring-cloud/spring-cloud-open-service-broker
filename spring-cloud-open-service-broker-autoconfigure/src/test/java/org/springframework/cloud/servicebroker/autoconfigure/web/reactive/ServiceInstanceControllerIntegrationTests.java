@@ -51,6 +51,7 @@ import org.springframework.cloud.servicebroker.model.instance.GetServiceInstance
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -936,6 +937,23 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 
 		GetLastServiceOperationRequest actualRequest = verifyLastOperation();
 		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
+	void lastOperationSetsRetryAfterHeaderWhenProvided() {
+		setupServiceInstanceService(GetLastServiceOperationResponse.builder()
+			.operationState(OperationState.IN_PROGRESS)
+			.description("working on it")
+			.retryAfter(30)
+			.build());
+
+		this.client.get()
+			.uri(buildLastOperationUrl())
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectHeader()
+			.valueEquals(HttpHeaders.RETRY_AFTER, "30");
 	}
 
 	@Test

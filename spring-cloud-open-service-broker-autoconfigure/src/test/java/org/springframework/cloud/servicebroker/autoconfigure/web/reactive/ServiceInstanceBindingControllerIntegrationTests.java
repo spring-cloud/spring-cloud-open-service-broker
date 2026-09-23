@@ -47,6 +47,7 @@ import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceA
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceRouteBindingResponse;
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -647,6 +648,23 @@ class ServiceInstanceBindingControllerIntegrationTests
 
 		GetLastServiceBindingOperationRequest actualRequest = verifyLastOperation();
 		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
+	void lastOperationSetsRetryAfterHeaderWhenProvided() {
+		setupServiceInstanceBindingService(GetLastServiceBindingOperationResponse.builder()
+			.operationState(OperationState.IN_PROGRESS)
+			.description("working on it")
+			.retryAfter(30)
+			.build());
+
+		this.client.get()
+			.uri(buildLastOperationUrl())
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectHeader()
+			.valueEquals(HttpHeaders.RETRY_AFTER, "30");
 	}
 
 	@Test

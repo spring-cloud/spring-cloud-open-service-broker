@@ -57,11 +57,13 @@ public class GetLastServiceOperationResponse {
 
 	private final @Nullable Boolean deleteOperation;
 
+	private final @Nullable Integer retryAfter;
+
 	/**
 	 * Construct a new {@link GetLastServiceOperationResponse}.
 	 */
 	public GetLastServiceOperationResponse() {
-		this(null, null, null, null, false);
+		this(null, null, null, null, false, null);
 	}
 
 	/**
@@ -70,11 +72,11 @@ public class GetLastServiceOperationResponse {
 	 * @param description the description
 	 * @param deleteOperation is delete operation
 	 * @deprecated in favor of
-	 * {@link GetLastServiceOperationResponse#GetLastServiceOperationResponse(OperationState, String, Boolean, Boolean, Boolean)}
+	 * {@link GetLastServiceOperationResponse#GetLastServiceOperationResponse(OperationState, String, Boolean, Boolean, Boolean, Integer)}
 	 */
 	@Deprecated
 	public GetLastServiceOperationResponse(OperationState state, String description, boolean deleteOperation) {
-		this(state, description, true, true, deleteOperation);
+		this(state, description, true, true, deleteOperation, null);
 	}
 
 	/**
@@ -84,18 +86,38 @@ public class GetLastServiceOperationResponse {
 	 * @param instanceUsable is the instance usable
 	 * @param updateRepeatable is the update repeatable
 	 * @param deleteOperation is delete operation
+	 * @deprecated in favor of
+	 * {@link GetLastServiceOperationResponse#GetLastServiceOperationResponse(OperationState, String, Boolean, Boolean, Boolean, Integer)}
+	 */
+	@Deprecated
+	public GetLastServiceOperationResponse(OperationState state, String description, @Nullable Boolean instanceUsable,
+			@Nullable Boolean updateRepeatable, @Nullable Boolean deleteOperation) {
+		this(state, description, instanceUsable, updateRepeatable, deleteOperation, null);
+	}
+
+	/**
+	 * Construct a new {@link GetLastServiceOperationResponse}.
+	 * @param state the current state
+	 * @param description the description
+	 * @param instanceUsable is the instance usable
+	 * @param updateRepeatable is the update repeatable
+	 * @param deleteOperation is delete operation
+	 * @param retryAfter the number of seconds the platform should wait before polling
+	 * again
 	 */
 	@JsonCreator
 	public GetLastServiceOperationResponse(@JsonProperty("state") @Nullable OperationState state,
 			@JsonProperty("description") @Nullable String description,
 			@JsonProperty("instance_usable") @Nullable Boolean instanceUsable,
 			@JsonProperty("update_repeatable") @Nullable Boolean updateRepeatable,
-			@JsonProperty("delete_operation") @Nullable Boolean deleteOperation) {
+			@JsonProperty("delete_operation") @Nullable Boolean deleteOperation,
+			@JsonProperty("retry_after") @Nullable Integer retryAfter) {
 		this.state = state;
 		this.description = description;
 		this.instanceUsable = instanceUsable;
 		this.updateRepeatable = updateRepeatable;
 		this.deleteOperation = deleteOperation;
+		this.retryAfter = retryAfter;
 	}
 
 	/**
@@ -147,6 +169,22 @@ public class GetLastServiceOperationResponse {
 	}
 
 	/**
+	 * Get the number of seconds the platform should wait before polling again. This value
+	 * is used to set the {@literal Retry-After} HTTP header on the response, and is not
+	 * included in the response body.
+	 * <p>
+	 * Since OSB API 2.15.
+	 * @return the number of seconds, or {@literal null} if not provided
+	 * @see <a href=
+	 * "https://github.com/openservicebrokerapi/servicebroker/blob/v2.15/spec.md#polling-last-operation-for-service-instances">Open
+	 * Service Broker API specification: Polling Last Operation for Service Instances</a>
+	 */
+	@JsonIgnore
+	public @Nullable Integer getRetryAfter() {
+		return this.retryAfter;
+	}
+
+	/**
 	 * Create a builder that provides a fluent API for constructing a
 	 * {@literal GetLastServiceOperationResponse}.
 	 * @return the builder
@@ -167,20 +205,20 @@ public class GetLastServiceOperationResponse {
 		return this.state == that.state && Objects.equals(this.description, that.description)
 				&& Objects.equals(this.instanceUsable, that.instanceUsable)
 				&& Objects.equals(this.updateRepeatable, that.updateRepeatable)
-				&& this.deleteOperation == that.deleteOperation;
+				&& this.deleteOperation == that.deleteOperation && Objects.equals(this.retryAfter, that.retryAfter);
 	}
 
 	@Override
 	public final int hashCode() {
 		return Objects.hash(this.state, this.description, this.instanceUsable, this.updateRepeatable,
-				this.deleteOperation);
+				this.deleteOperation, this.retryAfter);
 	}
 
 	@Override
 	public String toString() {
 		return "GetLastServiceOperationResponse{" + "state=" + this.state + ", description='" + this.description + '\''
 				+ ", instanceUsable=" + this.instanceUsable + '\'' + ", updateRepeatable=" + this.updateRepeatable
-				+ '\'' + ", deleteOperation=" + this.deleteOperation + '}';
+				+ '\'' + ", deleteOperation=" + this.deleteOperation + ", retryAfter=" + this.retryAfter + '}';
 	}
 
 	/**
@@ -197,6 +235,8 @@ public class GetLastServiceOperationResponse {
 		private @Nullable Boolean updateRepeatable;
 
 		private boolean deleteOperation;
+
+		private @Nullable Integer retryAfter;
 
 		private GetLastServiceOperationResponseBuilder() {
 		}
@@ -296,12 +336,27 @@ public class GetLastServiceOperationResponse {
 		}
 
 		/**
+		 * Set the number of seconds the platform should wait before polling again. This
+		 * value is used to set the {@literal Retry-After} HTTP header on the response,
+		 * and is not included in the response body. It is RECOMMENDED that this be a
+		 * duration rather than a timestamp.
+		 * <p>
+		 * Since OSB API 2.15.
+		 * @param retryAfter the number of seconds
+		 * @return the builder
+		 */
+		public GetLastServiceOperationResponseBuilder retryAfter(Integer retryAfter) {
+			this.retryAfter = retryAfter;
+			return this;
+		}
+
+		/**
 		 * Construct a {@link GetLastServiceOperationResponse} from the provided values.
 		 * @return the newly constructed {@literal GetLastServiceOperationResponse}
 		 */
 		public GetLastServiceOperationResponse build() {
 			return new GetLastServiceOperationResponse(this.state, this.description, this.instanceUsable,
-					this.updateRepeatable, this.deleteOperation);
+					this.updateRepeatable, this.deleteOperation, this.retryAfter);
 		}
 
 	}

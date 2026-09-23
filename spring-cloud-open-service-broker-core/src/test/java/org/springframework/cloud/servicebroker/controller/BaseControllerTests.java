@@ -26,6 +26,10 @@ import org.springframework.cloud.servicebroker.model.Context;
 import org.springframework.cloud.servicebroker.model.KubernetesContext;
 import org.springframework.cloud.servicebroker.model.PlatformContext;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
+import org.springframework.cloud.servicebroker.model.instance.OperationState;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatException;
@@ -82,6 +86,35 @@ class BaseControllerTests {
 		assertThat(context.getPlatform()).isEqualTo("test-platform");
 		assertThat(context.getProperty("key1")).isEqualTo("value1");
 		assertThat(context.getProperty("key2")).isEqualTo("value2");
+	}
+
+	@Test
+	void buildLastOperationResponseReturnsGoneOnSuccessfulDelete() {
+		ResponseEntity<String> result = this.controller.buildLastOperationResponse("body", OperationState.SUCCEEDED,
+				true, 30);
+
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.GONE);
+		assertThat(result.getBody()).isEqualTo("body");
+		assertThat(result.getHeaders().getFirst(HttpHeaders.RETRY_AFTER)).isEqualTo("30");
+	}
+
+	@Test
+	void buildLastOperationResponseReturnsOkWhenNotDeleteOperation() {
+		ResponseEntity<String> result = this.controller.buildLastOperationResponse("body", OperationState.SUCCEEDED,
+				false, null);
+
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).isEqualTo("body");
+		assertThat(result.getHeaders().containsHeader(HttpHeaders.RETRY_AFTER)).isFalse();
+	}
+
+	@Test
+	void buildLastOperationResponseReturnsOkWhenInProgress() {
+		ResponseEntity<String> result = this.controller.buildLastOperationResponse("body", OperationState.IN_PROGRESS,
+				false, null);
+
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getHeaders().containsHeader(HttpHeaders.RETRY_AFTER)).isFalse();
 	}
 
 	private String encode(String json) {

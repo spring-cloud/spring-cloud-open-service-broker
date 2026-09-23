@@ -42,6 +42,7 @@ import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -117,6 +118,24 @@ class ServiceInstanceBindingControllerResponseCodeTests {
 		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(httpStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(response);
+	}
+
+	@Test
+	void createServiceInstanceBindingDoesNotAddRetryAfterHeader() {
+		given(this.bindingService.createServiceInstanceBinding(any(CreateServiceInstanceBindingRequest.class)))
+			.willReturn(Mono.just(CreateServiceInstanceAppBindingResponse.builder().async(true).build()));
+
+		CreateServiceInstanceBindingRequest createRequest = CreateServiceInstanceBindingRequest.builder()
+			.serviceDefinitionId("service-definition-id")
+			.planId("service-definition-plan-id")
+			.build();
+
+		ResponseEntity<CreateServiceInstanceBindingResponse> responseEntity = this.controller
+			.createServiceInstanceBinding(this.pathVariables, null, null, false, null, null, null, createRequest)
+			.block();
+
+		assertThat(responseEntity).isNotNull();
+		assertThat(responseEntity.getHeaders().containsHeader(HttpHeaders.RETRY_AFTER)).isFalse();
 	}
 
 	@Test
@@ -276,6 +295,35 @@ class ServiceInstanceBindingControllerResponseCodeTests {
 		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getStatusCode()).isEqualTo(expectedStatus);
 		assertThat(responseEntity.getBody()).isEqualTo(response);
+	}
+
+	@Test
+	void getLastOperationWithRetryAfterAddsHeader() {
+		given(this.bindingService.getLastOperation(any(GetLastServiceBindingOperationRequest.class)))
+			.willReturn(Mono.just(GetLastServiceBindingOperationResponse.builder()
+				.operationState(OperationState.IN_PROGRESS)
+				.retryAfter(30)
+				.build()));
+
+		ResponseEntity<GetLastServiceBindingOperationResponse> responseEntity = this.controller
+			.getServiceInstanceBindingLastOperation(this.pathVariables, null, null, null, null, null, null, null, null)
+			.block();
+
+		assertThat(responseEntity).isNotNull();
+		assertThat(responseEntity.getHeaders().getFirst(HttpHeaders.RETRY_AFTER)).isEqualTo("30");
+	}
+
+	@Test
+	void getLastOperationWithoutRetryAfterOmitsHeader() {
+		given(this.bindingService.getLastOperation(any(GetLastServiceBindingOperationRequest.class))).willReturn(Mono
+			.just(GetLastServiceBindingOperationResponse.builder().operationState(OperationState.IN_PROGRESS).build()));
+
+		ResponseEntity<GetLastServiceBindingOperationResponse> responseEntity = this.controller
+			.getServiceInstanceBindingLastOperation(this.pathVariables, null, null, null, null, null, null, null, null)
+			.block();
+
+		assertThat(responseEntity).isNotNull();
+		assertThat(responseEntity.getHeaders().containsHeader(HttpHeaders.RETRY_AFTER)).isFalse();
 	}
 
 	@Test

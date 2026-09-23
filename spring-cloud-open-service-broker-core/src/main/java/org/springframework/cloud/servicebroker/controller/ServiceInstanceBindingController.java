@@ -37,7 +37,6 @@ import org.springframework.cloud.servicebroker.model.binding.GetLastServiceBindi
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingRequest;
 import org.springframework.cloud.servicebroker.model.binding.GetServiceInstanceBindingResponse;
 import org.springframework.cloud.servicebroker.model.catalog.ServiceDefinition;
-import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.service.CatalogService;
 import org.springframework.cloud.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.http.HttpStatus;
@@ -308,11 +307,8 @@ public class ServiceInstanceBindingController extends BaseController {
 			})
 				.doOnError((e) -> LOG.error(ERROR_RESPONSE, "getting last operation for", serviceInstanceId, bindingId,
 						e.getMessage(), e)))
-			.map((response) -> {
-				boolean isSuccessfulDelete = OperationState.SUCCEEDED.equals(response.getState())
-						&& response.isDeleteOperation();
-				return new ResponseEntity<>(response, isSuccessfulDelete ? HttpStatus.GONE : HttpStatus.OK);
-			})
+			.map((response) -> buildLastOperationResponse(response, response.getState(), response.isDeleteOperation(),
+					response.getRetryAfter()))
 			.onErrorResume((e) -> {
 				if (e instanceof ServiceInstanceBindingDoesNotExistException) {
 					return Mono.just(new ResponseEntity<>(GetLastServiceBindingOperationResponse.builder()

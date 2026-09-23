@@ -35,11 +35,13 @@ class GetLastServiceBindingOperationResponseTests {
 		assertThat(response.getState()).isNull();
 		assertThat(response.getDescription()).isNull();
 		assertThat(response.isDeleteOperation()).isEqualTo(false);
+		assertThat(response.getRetryAfter()).isNull();
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
 		assertThat(json).hasNoPath("$.state");
 		assertThat(json).hasNoPath("$.description");
+		assertThat(json).hasNoPath("$.retry_after");
 	}
 
 	@Test
@@ -64,16 +66,19 @@ class GetLastServiceBindingOperationResponseTests {
 			.operationState(OperationState.SUCCEEDED)
 			.description("description")
 			.deleteOperation(true)
+			.retryAfter(30)
 			.build();
 
 		assertThat(response.getState()).isEqualTo(OperationState.SUCCEEDED);
 		assertThat(response.getDescription()).isEqualTo("description");
 		assertThat(response.isDeleteOperation()).isEqualTo(true);
+		assertThat(response.getRetryAfter()).isEqualTo(30);
 
 		DocumentContext json = JsonUtils.toJsonPath(response);
 
 		assertThat(json).hasPath("$.state").isEqualTo(OperationState.SUCCEEDED.toString());
 		assertThat(json).hasPath("$.description").isEqualTo("description");
+		assertThat(json).hasNoPath("$.retry_after");
 	}
 
 	@Test

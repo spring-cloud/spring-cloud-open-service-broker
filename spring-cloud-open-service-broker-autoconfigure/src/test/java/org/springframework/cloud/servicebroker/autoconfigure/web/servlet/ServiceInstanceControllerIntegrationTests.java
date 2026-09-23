@@ -46,6 +46,7 @@ import org.springframework.cloud.servicebroker.model.instance.GetServiceInstance
 import org.springframework.cloud.servicebroker.model.instance.OperationState;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceRequest;
 import org.springframework.cloud.servicebroker.model.instance.UpdateServiceInstanceResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
@@ -68,6 +69,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -855,6 +857,23 @@ class ServiceInstanceControllerIntegrationTests extends AbstractServiceInstanceC
 
 		GetLastServiceOperationRequest actualRequest = verifyLastOperation();
 		assertHeaderValuesNotSet(actualRequest);
+	}
+
+	@Test
+	void lastOperationSetsRetryAfterHeaderWhenProvided() throws Exception {
+		setupServiceInstanceService(GetLastServiceOperationResponse.builder()
+			.operationState(OperationState.IN_PROGRESS)
+			.description("working on it")
+			.retryAfter(30)
+			.build());
+
+		MvcResult mvcResult = this.mockMvc.perform(get(buildLastOperationUrl()))
+			.andExpect(request().asyncStarted())
+			.andReturn();
+
+		this.mockMvc.perform(asyncDispatch(mvcResult))
+			.andExpect(status().isOk())
+			.andExpect(header().string(HttpHeaders.RETRY_AFTER, "30"));
 	}
 
 	@Test
