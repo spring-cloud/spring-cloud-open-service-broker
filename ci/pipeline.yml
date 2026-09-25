@@ -72,7 +72,7 @@ jobs:
         params:
           <<: *artifactory-params
           repo: libs-staging-local
-      - put: git-repo-staging
+      - put: git-repo
         params:
           repository: stage-git-repo
 
@@ -89,7 +89,7 @@ jobs:
         params:
           <<: *artifactory-params
           repo: libs-staging-local
-      - put: git-repo-staging
+      - put: git-repo
         params:
           repository: stage-git-repo
 
@@ -106,7 +106,7 @@ jobs:
         params:
           <<: *artifactory-params
           repo: libs-staging-local
-      - put: git-repo-staging
+      - put: git-repo
         params:
           repository: stage-git-repo
 
@@ -193,14 +193,6 @@ resources:
       branch: ((branch))
       ignore_paths: ["ci/images/*"]
       fetch_tags: true
-
-  - name: git-repo-staging
-    type: git
-    source:
-      uri: ((github-repo))
-      username: ((github-token))
-      password: ((github-password))
-      branch: ((github-username))/staging
 
   - name: ci-images-git-repo
     type: git
