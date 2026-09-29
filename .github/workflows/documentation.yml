@@ -9,6 +9,13 @@ on:
   pull_request:
     branches: [ 5.2.*, 5.1.*, 5.0.* ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   documentation:
     runs-on: ubuntu-latest            
