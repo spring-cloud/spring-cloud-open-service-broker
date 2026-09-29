@@ -2,28 +2,24 @@ image:https://github.com/spring-cloud/spring-cloud-open-service-broker/actions/w
 
 = Overview
 
-Spring Cloud Open Service Broker is a framework for building https://projects.spring.io/spring-boot/[Spring Boot] applications that implement the https://www.openservicebrokerapi.org/[Open Service Broker API]. Both https://docs.spring.io/spring-framework/reference/web/webflux.html[Spring WebFlux] and https://docs.spring.io/spring-framework/reference/web/webmvc.html[Spring MVC] web frameworks are supported in Spring Cloud Open Service Broker.
+Spring Cloud Open Service Broker is a framework for building https://spring.io/projects/spring-boot[Spring Boot] applications that implement the https://www.openservicebrokerapi.org/[Open Service Broker API]. Both https://docs.spring.io/spring-framework/reference/web/webflux.html[Spring WebFlux] and https://docs.spring.io/spring-framework/reference/web/webmvc.html[Spring MVC] web frameworks are supported in Spring Cloud Open Service Broker.
 
 == Version Compatibility
 
-The following table describes the version compatibility matrix for the various releases of Spring Cloud Open Service Broker. Please note that certain Spring Boot versions have reached https://spring.io/projects/spring-boot#support[end of support]. We recommend upgrading to a version of Spring Cloud Open Service Broker that supports a newer version of Spring Boot.
+Spring Cloud Open Service Broker 5.2.x is built against https://spring.io/projects/spring-boot[Spring Boot] 4.1 and requires Java 17+.
 
-[%header,cols=5*]
+[%header,cols=2*]
 |===
-|https://spring.io/projects/spring-cloud-open-service-broker[Spring Cloud Open Service Broker]|https://github.com/openservicebrokerapi/servicebroker[Open Service Broker API] |https://spring.io/projects/spring-boot[Spring Boot] |https://projects.spring.io/spring-framework/[Spring Framework]|JDK
-|5.2.x |2.17 |4.1.x |7.0.x|17
-|5.1.x |2.16 |4.1.x |7.0.x|17
-|5.0.x |2.16 |4.0.x |7.0.x|17
-|4.5.x |2.16 |3.5.x |6.2.x|17
-|4.4.x |2.16 |3.4.x |6.2.x|17
-|4.3.x |2.16 |3.3.x |6.1.x|17
-|4.2.x |2.16 |3.2.x |6.1.x|17
-|3.6.x |2.16 |2.7.x |5.3.x|8
+|Component |Version
+|https://spring.io/projects/spring-boot[Spring Boot] |4.1.x
+|https://spring.io/projects/spring-framework[Spring Framework] |7.0.x
+|Java |17+
+|https://github.com/openservicebrokerapi/servicebroker[OSB API] |2.17
 |===
 
 == Getting Started
 
-See the https://spring.io/projects/spring-cloud-open-service-broker/[project site] and https://docs.spring.io/spring-cloud-open-service-broker/docs/current/reference/[reference documentation] to get started building a service broker using this framework.
+See the https://spring.io/projects/spring-cloud-open-service-broker[project site] and https://docs.spring.io/spring-cloud-open-service-broker/docs/current/reference/[reference documentation] to get started building a service broker using this framework.
 
 === Gradle Dependencies
 
