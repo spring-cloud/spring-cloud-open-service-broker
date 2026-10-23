@@ -19,35 +19,32 @@ package org.springframework.cloud.servicebroker.acceptance;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.resttestclient.TestRestTemplate;
-import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.cloud.servicebroker.model.ServiceBrokerRequest;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.client.RestTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestRestTemplate
+@AutoConfigureRestTestClient
 class RequestIdentityTests {
 
 	@Autowired
-	private TestRestTemplate rest;
+	private RestTestClient rest;
 
 	@Test
 	void requestIdentityHeaderIsEchoedInResponse() {
-		HttpHeaders headers = new HttpHeaders();
-		headers.add(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, "request-id");
+		HttpHeaders responseHeaders = this.rest.get()
+			.uri("/v2/catalog")
+			.header(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, "request-id")
+			.exchange()
+			.returnResult()
+			.getResponseHeaders();
 
-		ResponseEntity<String> response = this.rest.exchange("/v2/catalog", HttpMethod.GET, new HttpEntity<>(headers),
-				String.class);
-
-		assertThat(response.getHeaders().getFirst(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER))
-			.isEqualTo("request-id");
+		assertThat(responseHeaders.getFirst(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER)).isEqualTo("request-id");
 	}
 
 }

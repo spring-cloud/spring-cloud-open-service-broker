@@ -23,24 +23,29 @@ import com.jayway.jsonpath.ReadContext;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.resttestclient.TestRestTemplate;
-import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.web.servlet.client.RestTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestRestTemplate
+@AutoConfigureRestTestClient
 class CatalogControllerTests {
 
 	@Autowired
-	private TestRestTemplate rest;
+	private RestTestClient rest;
 
 	@SuppressWarnings("unchecked")
 	@Test
 	void fullCatalog() {
-		String body = this.rest.getForObject("/v2/catalog", String.class);
+		String body = this.rest.get()
+			.uri("/v2/catalog")
+			.exchangeSuccessfully()
+			.expectBody(String.class)
+			.returnResult()
+			.getResponseBody();
 
 		assertThat(body).isNotNull();
 		ReadContext ctx = JsonPath.parse(body);
