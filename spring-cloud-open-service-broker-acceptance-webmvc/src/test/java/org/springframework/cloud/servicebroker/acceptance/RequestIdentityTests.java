@@ -44,7 +44,7 @@ class RequestIdentityTests {
 			.returnResult()
 			.getResponseHeaders();
 
-		assertThat(responseHeaders.getFirst(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER)).isEqualTo("request-id");
+		assertThat(responseHeaders.get(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER)).containsExactly("request-id");
 	}
 
 }

@@ -54,7 +54,7 @@ class RequestIdentityInterceptorTests {
 		given(this.request.getHeader(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER)).willReturn("request-id");
 		RequestIdentityInterceptor interceptor = new RequestIdentityInterceptor();
 		assertThat(interceptor.preHandle(this.request, this.response, null)).isTrue();
-		verify(this.response, times(1)).addHeader(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, "request-id");
+		verify(this.response, times(1)).setHeader(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, "request-id");
 	}
 
 	@Test
