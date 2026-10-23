@@ -6,13 +6,13 @@ Spring Cloud Open Service Broker is a framework for building https://spring.io/p
 
 == Version Compatibility
 
-Spring Cloud Open Service Broker 5.2.x is built against https://spring.io/projects/spring-boot[Spring Boot] 4.1 and requires Java 17+.
+Spring Cloud Open Service Broker 5.3.x is a prerelease line built against https://spring.io/projects/spring-boot[Spring Boot] 4.2 and requires Java 17+.
 
 [%header,cols=2*]
 |===
 |Component |Version
-|https://spring.io/projects/spring-boot[Spring Boot] |4.1.x
-|https://spring.io/projects/spring-framework[Spring Framework] |7.0.x
+|https://spring.io/projects/spring-boot[Spring Boot] |4.2.x
+|https://spring.io/projects/spring-framework[Spring Framework] |7.1.x
 |Java |17+
 |https://github.com/openservicebrokerapi/servicebroker[OSB API] |2.17
 |===
