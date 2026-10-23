@@ -46,8 +46,8 @@ class RequestIdentityTests {
 		ResponseEntity<String> response = this.rest.exchange("/v2/catalog", HttpMethod.GET, new HttpEntity<>(headers),
 				String.class);
 
-		assertThat(response.getHeaders().getFirst(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER))
-			.isEqualTo("request-id");
+		assertThat(response.getHeaders().get(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER))
+			.containsExactly("request-id");
 	}
 
 }

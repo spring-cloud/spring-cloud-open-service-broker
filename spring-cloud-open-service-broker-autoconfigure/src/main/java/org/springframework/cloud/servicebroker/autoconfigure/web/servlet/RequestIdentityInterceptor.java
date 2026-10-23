@@ -43,7 +43,7 @@ public class RequestIdentityInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		String requestIdentity = request.getHeader(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER);
 		if (StringUtils.hasLength(requestIdentity)) {
-			response.addHeader(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, requestIdentity);
+			response.setHeader(ServiceBrokerRequest.REQUEST_IDENTITY_HEADER, requestIdentity);
 		}
 		return true;
 	}
